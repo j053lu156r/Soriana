@@ -1,0 +1,338 @@
+<mvc:View displayBlock="true" controllerName="demo.controllers.Orders.Detail" height="100%"
+		xmlns="sap.uxap"
+		xmlns:mvc="sap.ui.core.mvc"
+		xmlns:m="sap.m"
+		xmlns:f="sap.f"
+        xmlns:core="sap.ui.core" 
+		xmlns:form="sap.ui.layout.form">
+
+	<ObjectPageLayout id="ObjectPageLayout"
+            showTitleInHeaderContent="true"
+            alwaysShowContentHeader="false"
+            preserveHeaderStateOnScroll="false"
+            headerContentPinnable="true"
+            isChildPage="true"
+            upperCaseAnchorBar="false">
+        <headerTitle>
+            <ObjectPageDynamicHeaderTitle>
+                <expandedHeading>
+                    <m:Title text="{appTxts>/order.title}: {tableDetailMoves>/IEbeln}" wrapping="true" class="sapUiSmallMarginEnd"/>
+                </expandedHeading>
+
+                <snappedHeading>
+                    <m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Center">
+                        <m:FlexBox wrap="NoWrap" fitContainer="true" alignItems="Center" class="sapUiTinyMarginEnd">
+                            <f:Avatar src="../../../../../../../{products>ProductPicUrl}" displaySize="S" displayShape="Square"/>
+                            <m:Title text="{products>Name}" wrapping="true" class="sapUiTinyMarginEnd"/>
+                        </m:FlexBox>
+                    </m:FlexBox>
+                </snappedHeading>
+
+                <navigationActions>
+                    <!--m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/-->
+                    <!--m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/-->
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }" />
+                </navigationActions>
+
+            </ObjectPageDynamicHeaderTitle>
+        </headerTitle>
+
+        <headerContent>
+            <m:FlexBox class="columns" renderType="Bare">
+                <f:Avatar src="sap-icon://customer-order-entry"
+                            displaySize="L"
+                            displayShape="Square"
+                            class="sapUiTinyMarginEnd">
+                </f:Avatar>
+                <m:VBox class="sapUiSmallMarginEnd">
+                    <m:ObjectAttribute title="{appTxts>/order.assorment}" />
+                    <m:ObjectStatus text="{tableDetailMoves>/OEKKONAV/results/0/Telf1}" class="sapUiLargeMarginEnd"/>
+                    <m:ObjectAttribute title="{appTxts>/order.status}" />
+                    <m:ObjectStatus text="{ path: 'tableDetailMoves>/OEKKONAV/results/0/Elikz', formatter: '.formatSatusOrder' }"/>
+                    
+                    <m:ObjectAttribute title="{appTxts>/order.amount}" />
+                    <m:ObjectStatus text="{tableDetailMoves>/OEKKONAV/results/0/Netwr} {tableDetailMoves>/OEKKONAV/results/0/Waers}"/>
+                    <m:layoutData>
+                        <m:FlexItemData
+                            growFactor="1"
+                            baseSize="auto"
+                            backgroundDesign="Solid"
+                            styleClass="sapUiTinyMargin" />
+                    </m:layoutData>
+                </m:VBox>
+<!--Inicio de Insert BORTA 27.07.2021 Se Homologar Fechas por DD-MM-YYYY  -->                
+                <m:VBox class="sapUiSmallMarginEnd">
+                    <m:ObjectAttribute title="{appTxts>/order.date}" />
+                    <!--<m:ObjectStatus text="{tableDetailMoves>/OEKKONAV/results/0/Fini}"/>  -->
+                    <m:ObjectStatus text="{path: 'tableDetailMoves>/OEKKONAV/results/0/Bedat', formatter: '.ReverseDate'}"/>  
+
+                    <m:ObjectAttribute title="{appTxts>/order.dateE}" />
+                    <!--<m:ObjectStatus text="{tableDetailMoves>/OEKKONAV/results/0/Eindt}"/>  -->
+                    <m:ObjectStatus text="{path: 'tableDetailMoves>/OEKKONAV/results/0/Eindt', formatter: '.ReverseDate'}"/>   
+
+                    <m:layoutData>
+                        <m:FlexItemData
+                            growFactor="1"
+                            baseSize="auto"
+                            backgroundDesign="Solid"
+                            styleClass="sapUiTinyMargin" />
+                    </m:layoutData>
+                </m:VBox>
+                <m:VBox class="sapUiSmallMarginEnd">
+                    <m:ObjectAttribute title="{appTxts>/order.shipmentbegin}" /> 
+                    <!--<m:ObjectStatus text="{tableDetailMoves>/OEKKONAV/results/0/Kdatb}"/> -->
+                    <m:ObjectStatus text="{path: 'tableDetailMoves>/OEKKONAV/results/0/Kdatb', formatter: '.ReverseDate'}"/>
+
+                    <m:ObjectAttribute title="{appTxts>/order.shipmentend}" />
+                    <!--<m:ObjectStatus text="{tableDetailMoves>/OEKKONAV/results/0/Kdate}"/>-->
+                    <m:ObjectStatus text="{path: 'tableDetailMoves>/OEKKONAV/results/0/Kdate', formatter: '.ReverseDate'}"/>
+<!--Fin de Insert BORTA 27.07.2021 Se Homologar Fechas por DD-MM-YYYY  -->   
+<!--Inicio de Insert BORTA 27.07.2021 Se solicita dato de Sucursal  -->
+                    <m:ObjectAttribute title="{appTxts>/order.branch}" />          
+                    <m:ObjectStatus text="{ parts: ['tableDetailMoves>/OEKKONAV/results/0/Importacion', 'appTxts>/order.many', 'tableDetailMoves>/Oekponav/results/0/Werks', 'tableDetailMoves>/Oekponav/results/0/Name1'], formatter: '.formatBranch' }"/>                             
+<!--Fin de Insert BORTA 27.07.2021 Se solicita dato de Sucursal -->
+                    <m:layoutData>
+                        <m:FlexItemData
+                            growFactor="1"
+                            baseSize="auto"
+                            backgroundDesign="Solid"
+                            styleClass="sapUiTinyMargin" />
+                    </m:layoutData>
+                </m:VBox>
+            </m:FlexBox>
+        </headerContent>
+
+		<sections>
+                <ObjectPageSection showTitle="false" title="{appTxts>/order.positions}">
+                    <subSections>
+                        <ObjectPageSubSection>
+                            <blocks>
+                            <m:IconTabBar>
+                            <m:items>
+                                <m:IconTabFilter text="{appTxts>/order.detail}" icon="sap-icon://detail-view">
+                                <m:content>
+                                    <m:VBox>
+                                        <m:Table id="suppliersTable"
+                                                items="{path : 'tableDetailMoves>/Oekponav/Paginated/results'}">
+                                            <m:headerToolbar>
+                                                <m:OverflowToolbar>
+                                                    <m:Title text="{appTxts>/order.positions}" />
+                                                    <m:ToolbarSpacer/>
+                                                    <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
+                                                        press=".buildExcel"
+                                                        />
+                                                    <m:Select 
+                                                        visible="{= ${tableDetailMoves>/Oekponav/Paginated/results/length} > 0 }"
+                                                        change=".paginateValue(${$parameters>/selectedItem}, 'tableDetailMoves', '/Oekponav')">
+                                                        <m:items>
+                                                            <core:Item key="10" text="10"/>
+                                                            <core:Item key="20" text="20"/>
+                                                            <core:Item key="50" text="50"/>
+                                                            <core:Item key="100" text="100"/>
+                                                        </m:items>
+                                                    </m:Select>
+                                                </m:OverflowToolbar>
+                                            </m:headerToolbar>
+                                            <m:columns>
+                                                <m:Column><m:Text text="{appTxts>/order.position}" /></m:Column>
+                                                <m:Column><m:Text text="{appTxts>/order.barcode}" /></m:Column>
+                                                <m:Column><m:Text text="{appTxts>/order.description}" /></m:Column>
+                                                <m:Column><m:Text text="{appTxts>/order.quantity}" /></m:Column>
+                                                <m:Column><m:Text text="{appTxts>/order.unitprice}" /></m:Column>
+                                                <m:Column><m:Text text="{appTxts>/order.amount}" /></m:Column>
+<!--Inicio de Insert BORTA 27.07.2021 Se solicita dato Capacidad de Empaque -->                                               
+                                                <m:Column><m:Text text="{appTxts>/order.package}" /></m:Column>
+<!-- Inicio de Insert BORTA 27.07.2021 Se solicita dato Capacidad de Empaque  -->     
+<!--Inicio de Insert BORTA 27.07.2021 Se solicita dato Sucursal por posicion -->
+                                               <m:Column><m:Text text="{appTxts>/order.branch}" /></m:Column>
+<!--Inicio de Insert BORTA 27.07.2021 Se solicita dato Sucursal por posicion -->                                             
+                                            </m:columns>
+                                            <m:items>
+                                                <m:ColumnListItem>
+                                                    <m:cells>
+                                                        <m:ObjectIdentifier text="{tableDetailMoves>Ebelp}" />
+                                                        <m:ObjectIdentifier text="{tableDetailMoves>Ean11}" />
+                                                        <m:ObjectIdentifier text="{tableDetailMoves>Txz01}" />
+                                                        <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                            xmlns="sap.m"
+                                                            number="{parts: [{path: 'tableDetailMoves>Menge'}, {path: 'tableDetailMoves>Meins'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                            unit="{tableDetailMoves>Meins}" emphasized="false" state="None"/>
+                                                        <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                            xmlns="sap.m"
+                                                            number="{parts: [{path: 'tableDetailMoves>Netpr'}, {path: 'tableDetailMoves>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                            unit="{tableDetailMoves>Waers}" emphasized="false" state="None"/>
+                                                        <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                            xmlns="sap.m"
+                                                            number="{parts: [{path: 'tableDetailMoves>Brtwr'}, {path: 'tableDetailMoves>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                            unit="{tableDetailMoves>Waers}" emphasized="false" state="None"/>
+<!--Inicio de Insert BORTA 27.07.2021 Se solicita dato Capacidad de Empaque  -->                                                        
+                                                        <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                            xmlns="sap.m"
+                                                            number="{parts: [{path: 'tableDetailMoves>Cempaque'}], formatOptions: {showMeasure:false}}" 
+                                                            unit="{tableDetailMoves>Cempumb}" emphasized="false" state="None"/>                                                    
+<!--Inicio de Insert BORTA 27.07.2021 Se solicita dato Capacidad de Empaque  -->
+<!--Inicio de Insert BORTA 27.07.2021 Se solicita dato Sucursal a nivel posicion  -->                                                        
+                                                        <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"  emphasized="false"
+                                                            xmlns="sap.m"
+                                                            number="{tableDetailMoves>Werks} {tableDetailMoves>Name1}"/>                                                    
+<!--Inicio de Insert BORTA 27.07.2021 Se solicita dato Sucursal a nivel posicion  -->
+                                                    </m:cells>
+                                                </m:ColumnListItem>
+                                            </m:items>
+                                        </m:Table>
+                                        <m:OverflowToolbar>
+                                                <m:Text text="{tableDetailMoves>/Oekponav/Paginated/initRow} - {tableDetailMoves>/Oekponav/Paginated/endRow} {appTxts>/pagination.of} {tableDetailMoves>/Oekponav/results/length}" />
+                                                <m:ToolbarSpacer/>
+                                                <m:Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableDetailMoves>/Oekponav/Paginated/iterator}, ${tableDetailMoves>/Oekponav/Paginated/initRow}, 'tableDetailMoves', '/Oekponav')" enabled="{= ${tableDetailMoves>/Oekponav/Paginated/iterator} !== 1}" />
+                                                <m:Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableDetailMoves>/Oekponav/Paginated/iterator}, ${tableDetailMoves>/Oekponav/Paginated/endRow}, 'tableDetailMoves', '/Oekponav')" enabled="{= ${tableDetailMoves>/Oekponav/Paginated/endRow} !== ${tableDetailMoves>/Oekponav/results/length}}" />
+                                        </m:OverflowToolbar>
+                                        </m:VBox>
+                                        </m:content>
+                                    </m:IconTabFilter>
+                                    <m:IconTabFilter text="{appTxts>/order.supply}" icon="sap-icon://shipping-status">
+                                    <m:content>
+                                        <m:VBox >
+                                            <m:Table
+                                                    items="{path : 'tableDetailMoves>/Oekponav/Paginated/results'}">
+                                                <m:headerToolbar>
+                                                    <m:OverflowToolbar>
+                                                        <m:Title text="Posiciones" />
+                                                        <m:ToolbarSpacer/>
+                                                        <m:Select 
+                                                            visible="{= ${tableDetailMoves>/Oekponav/Paginated/results/length} > 0 }"
+                                                            change=".paginateValue(${$parameters>/selectedItem}, 'tableDetailMoves', '/Oekponav')">
+                                                            <m:items>
+                                                                <core:Item key="10" text="10"/>
+                                                                <core:Item key="20" text="20"/>
+                                                                <core:Item key="50" text="50"/>
+                                                                <core:Item key="100" text="100"/>
+                                                            </m:items>
+                                                        </m:Select>
+                                                    </m:OverflowToolbar>
+                                                </m:headerToolbar>
+                                                <m:columns>
+                                                    <m:Column><m:Text text="{appTxts>/order.position}" /></m:Column>
+                                                    <m:Column><m:Text text="{appTxts>/order.barcode}" /></m:Column>
+                                                    <m:Column><m:Text text="{appTxts>/order.description}" /></m:Column>
+                                                    <m:Column><m:Text text="{appTxts>/order.quantity}" /></m:Column>
+                                            <!--        <m:Column><m:Text text="{appTxts>/order.unitprice}" /></m:Column> 
+                                                    <m:Column><m:Text text="{appTxts>/order.amount}" /></m:Column>     -->                                           
+                                                    <m:Column><m:Text text="{appTxts>/order.delivqty}" /></m:Column>
+                                                    <m:Column><m:Text text="{appTxts>/order.delivpend}" /></m:Column>
+                                                </m:columns>
+                                                <m:items>
+                                                    <m:ColumnListItem> <!--type="Navigation"   press="handleItemPress"> -->
+                                                        <m:cells>
+                                                            <m:ObjectIdentifier text="{tableDetailMoves>Ebelp}" />
+                                                            <m:ObjectIdentifier text="{tableDetailMoves>Ean11}" />
+                                                            <m:ObjectIdentifier text="{tableDetailMoves>Txz01}" />
+<!--Inicio de Insert BORTA 27.07.2021 Se solicita indicar valores en columnas y no en boton expandible  -->                                                            
+                                                            <m:ObjectIdentifier text="{tableDetailMoves>Menge} {tableDetailMoves>Meins}"/>
+                                                            <m:ObjectIdentifier text="{tableDetailMoves>Centregada} {tableDetailMoves>Meins}" />
+                                                            <m:ObjectIdentifier text="{tableDetailMoves>Cresta} {tableDetailMoves>Meins}" />
+<!--Inicio de CAMBIO BORTA 27.07.2021 Se solicita indicar valores en columnas y no en boton expandible
+                                                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                                xmlns="sap.m"
+                                                                number="{parts: [{path: 'tableDetailMoves>Menge'}, {path: 'tableDetailMoves>Meins'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                                unit="{tableDetailMoves>Meins}" emphasized="false" state="None"/>
+                                                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                                xmlns="sap.m"
+                                                                number="{parts: [{path: 'tableDetailMoves>Centregada'}, {path: 'tableDetailMoves>Meins'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                                unit="{tableDetailMoves>Meins}" emphasized="false" state="None"/>
+                                                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                                xmlns="sap.m"
+                                                                number="{parts: [{path: 'tableDetailMoves>Cresta'}, {path: 'tableDetailMoves>Meins'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                                unit="{tableDetailMoves>Meins}" emphasized="false" state="None"/>
+Inicio de CAMBIO BORTA 27.07.2021 Se solicita indicar valores en columnas y no en boton expandible--> 
+                                                        </m:cells>
+                                                    </m:ColumnListItem>
+                                                </m:items>
+                                            </m:Table>
+                                            <m:OverflowToolbar>
+                                                <m:Text text="{tableDetailMoves>/Oekponav/Paginated/initRow} - {tableDetailMoves>/Oekponav/Paginated/endRow} {appTxts>/pagination.of} {tableDetailMoves>/Oekponav/results/length}" />
+                                                <m:ToolbarSpacer/>
+                                                <m:Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableDetailMoves>/Oekponav/Paginated/iterator}, ${tableDetailMoves>/Oekponav/Paginated/initRow}, 'tableDetailMoves', '/Oekponav')" enabled="{= ${tableDetailMoves>/Oekponav/Paginated/iterator} !== 1}" />
+                                                <m:Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableDetailMoves>/Oekponav/Paginated/iterator}, ${tableDetailMoves>/Oekponav/Paginated/endRow}, 'tableDetailMoves', '/Oekponav')" enabled="{= ${tableDetailMoves>/Oekponav/Paginated/endRow} !== ${tableDetailMoves>/Oekponav/results/length}}" />
+                                            </m:OverflowToolbar>
+                                            </m:VBox>
+                                        </m:content>
+                                    </m:IconTabFilter>
+                                </m:items>
+                            </m:IconTabBar>
+                            </blocks>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+		</sections>
+
+        <sections>
+			<ObjectPageSection title="Publicidad y/o servicio" visible="{= ${tableDetailMoves>/OEKKOADVRNAV/results/length} > 0 }">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+                            <m:VBox>
+							<m:Table id="publicServTable"
+									 items="{path : 'tableDetailMoves>/OEKKOADVRNAV/Paginated/results'}">
+                                <m:headerToolbar>
+                                    <m:OverflowToolbar>
+                                        <m:ToolbarSpacer/>
+                                        <m:Select 
+                                            visible="{= ${tableDetailMoves>/OEKKOADVRNAV/Paginated/results/length} > 0 }"
+                                            change=".paginateValue(${$parameters>/selectedItem}, 'tableDetailMoves', '/OEKKOADVRNAV')">
+                                            <m:items>
+                                                <core:Item key="10" text="10"/>
+                                                <core:Item key="20" text="20"/>
+                                                <core:Item key="50" text="50"/>
+                                                <core:Item key="100" text="100"/>
+                                            </m:items>
+                                        </m:Select>
+                                    </m:OverflowToolbar>
+                                </m:headerToolbar>
+								<m:columns>
+									<m:Column><m:Text text="Posicion" /></m:Column>
+                                    <m:Column><m:Text text="Fecha publicación" /></m:Column>
+                                    <m:Column><m:Text text="Numero de servicio" /></m:Column>
+                                    <m:Column><m:Text text="Articulo" /></m:Column>
+                                    <m:Column><m:Text text="Versión" /></m:Column>
+                                    <m:Column><m:Text text="Cantidad" /></m:Column>
+                                    <m:Column><m:Text text="Costo unitario" /></m:Column>
+                                    <m:Column><m:Text text="Costo total" /></m:Column>
+								</m:columns>
+								<m:items>
+									<m:ColumnListItem type="Navigation" press="handleItemPress">
+										<m:cells>
+											<m:ObjectIdentifier text="{tableDetailMoves>Ebelp}" />
+                                            <m:ObjectIdentifier text="{tableDetailMoves>Extrow}" />
+                                            <m:ObjectIdentifier text="{tableDetailMoves>Srvpos}" />
+                                            <m:ObjectIdentifier text="{tableDetailMoves>Ktext1}" />
+                                            <m:ObjectIdentifier text="{tableDetailMoves>Userf1Txt}" />
+                                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'tableDetailMoves>Menge'}, {path: 'tableDetailMoves>Meins'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{tableDetailMoves>Meins}" emphasized="false" state="None"/>
+                                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'tableDetailMoves>Netwr'}, {path: 'tableDetailMoves>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{tableDetailMoves>Waers}" emphasized="false" state="None"/>
+                                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'tableDetailMoves>Brtwr'}, {path: 'tableDetailMoves>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{tableDetailMoves>Waers}" emphasized="false" state="None"/>
+										</m:cells>
+									</m:ColumnListItem>
+								</m:items>
+							</m:Table>
+                            <m:OverflowToolbar>
+                                    <m:Text text="{tableDetailMoves>/OEKKOADVRNAV/Paginated/initRow} - {tableDetailMoves>/OEKKOADVRNAV/Paginated/endRow} {appTxts>/pagination.of} {tableDetailMoves>/OEKKOADVRNAV/results/length}" />
+                                    <m:ToolbarSpacer/>
+                                    <m:Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableDetailMoves>/OEKKOADVRNAV/Paginated/iterator}, ${tableDetailMoves>/OEKKOADVRNAV/Paginated/initRow}, 'tableDetailMoves', '/OEKKOADVRNAV')" enabled="{= ${tableDetailMoves>/OEKKOADVRNAV/Paginated/iterator} !== 1}" />
+                                    <m:Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableDetailMoves>/OEKKOADVRNAV/Paginated/iterator}, ${tableDetailMoves>/OEKKOADVRNAV/Paginated/endRow}, 'tableDetailMoves', '/OEKKOADVRNAV')" enabled="{= ${tableDetailMoves>/OEKKOADVRNAV/Paginated/endRow} !== ${tableDetailMoves>/OEKKOADVRNAV/results/length}}" />
+                            </m:OverflowToolbar>
+                            </m:VBox>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>
+	</ObjectPageLayout>
+</mvc:View>

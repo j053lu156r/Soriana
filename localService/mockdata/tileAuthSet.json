@@ -1,0 +1,40 @@
+{
+	"results": [{
+		"Rol": "A",
+		"Tileid": "0001"
+	}, {
+		"Rol": "A",
+		"Tileid": "0007"
+	}, {
+		"Rol": "A",
+		"Tileid": "0009"
+	}, {
+		"Rol": "A",
+		"Tileid": "0006"
+	}, {
+		"Rol": "A",
+		"Tileid": "0016"
+	}, {
+		"Rol": "A",
+		"Tileid": "0004"
+	}, {
+		"Rol": "A",
+		"Tileid": "0018"
+	},
+	{
+		"Rol": "A",
+		"Tileid": "0005"
+	},
+	{
+		"Rol": "A",
+		"Tileid": "0008"
+	},
+	{
+		"Rol":"A",
+		"Tileid": "0014"
+	},
+	{
+		"Rol":"A",
+		"Tileid": "0022"
+	}]
+}

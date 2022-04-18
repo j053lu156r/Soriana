@@ -1,0 +1,16 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<ResponsivePopover title="{appTxts>/sendf.title}" class="sapUiPopupWithPadding" placement="Bottom">
+		<content>
+			<List class="sapContrast sapContrastPlus">
+				<NotificationListItem title="New order (#2523) With a long title - Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+					description="And short description" showCloseButton="false" unread="false" datetime="3 days" priority="High" close="onItemClose"
+					press="onListItemPress" authorName="Patricia Clark" authorPicture="test-resources/sap/m/images/female_BaySu.jpg">
+					<buttons>
+						<Button text="{appTxts>/sendf.accept}" type="Accept" press="onAcceptPress" icon="sap-icon://accept"/>
+						<Button text="{appTxts>/sendf.reject}" type="Reject" press="onRejectPress" icon="sap-icon://sys-cancel"/>
+					</buttons>
+				</NotificationListItem>
+			</List>
+		</content>
+	</ResponsivePopover>
+</core:FragmentDefinition>

@@ -1,0 +1,617 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:f="sap.f"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:u="sap.ui.unified"
+    xmlns:table="sap.ui.table"
+	xmlns:layout="sap.ui.layout">
+	<Dialog
+		id="wizardDialog"
+		showHeader="true"
+        title="Creación manual aviso consolidado"
+		verticalScrolling="false"
+        resizable="true"
+        draggable="true"
+		contentHeight="70%"
+		contentWidth="90%">
+		<f:DynamicPage
+			stickySubheaderProvider="CreateProductWizard"
+			toggleHeaderOnTitleClick="false"
+			class="sapUiNoContentPadding"
+			showFooter="true">
+			
+			<f:content>
+				<Wizard id="CreateProductWizard"
+                    class="sapUiResponsivePadding--header sapUiResponsivePadding--content"
+                    showNextButton="false"
+                    renderMode="Page">
+                    <WizardStep id="RemissionDetail"
+                        title="Datos generales"
+                        activate="remissionValidate"
+                        validated="true">
+                        <HBox width="100%">
+                            <VBox width="33%" alignItems="Center">
+                                <Label text="Tipo moneda" labelFor="currency"/>
+                                <Select id="currency" >
+                                    <core:Item key="1" text="MXN" />
+                                    <core:Item key="2" text="USD" />
+                                    <core:Item key="3" text="EUR" />
+                                </Select>
+                                <Label text="Tipo de bulto"/>
+                                <Select id="package">
+                                    <core:Item key="1" text="Caja" />
+                                    <core:Item key="2" text="Bolsa" />
+                                </Select>
+                            </VBox>
+                            <VBox width="33%">
+                                <Label text="Cita:" />
+                                <Input id="appointment" width="auto" change=".hasOnlyNumbers" />
+                                <Label text="Fecha entrega de mercancias" />
+                                <DatePicker
+                                    id="deliveryDate"
+                                    valueFormat="MM/dd/yy"
+                                    class="sapUiSmallMarginBottom"
+                                    change="remissionValidate"
+                                    width="auto"/>
+                                <Label text="Cantidad de bultos" />
+                                <Input id="packagesNo" width="auto" change=".hasOnlyNumbers" />
+                            </VBox>
+                            <VBox width="33%">
+                                <CheckBox id="reqFisc" text="Cumple requerimientos fiscales" ></CheckBox>
+                                <RadioButtonGroup id="typePackage">
+                                    	<RadioButton id="boxes" text="Empaque en cajas" />
+			                            <RadioButton id="pallet" text="Empaque en tarimas" />
+                                </RadioButtonGroup>
+                            </VBox>
+                        </HBox>
+
+                        <core:Fragment fragmentName="demo.views.Remissions.fragments.Imports" type="XML" />
+                    </WizardStep>
+                    <WizardStep id="ProductInfoStep"
+								title="Pedidos/Articulos"
+                                complete="positionValidation"
+								activate="positionValidation">
+                        <VBox>
+                            <Table mode="MultiSelect" id="tableWizardOrderPosition" 
+                            items="{path : 'tableWizardOrderPosition>/Oekponav/Paginated/results'}"
+                            selectionChange=".selectChange" >
+                                <headerToolbar>
+                                    <OverflowToolbar>
+                                        <HBox alignContent="Center" alignItems="Center">
+                                            <Input id="searchOrder" textAlign="Initial" placeholder="{appTxts>/rem.order}" type="Number" showValueHelp="true" valueHelpIconSrc="sap-icon://feeder-arrow" valueHelpRequest=".searchRemissionOrder" liveChange=".hasOnlyNumbers" />
+                                        </HBox>
+                                        <ToolbarSpacer/>
+                                        <Input id="searchPosition" width="auto" textAlign="Initial" placeholder="{appTxts>/rem.search}" showValueHelp="true" valueHelpIconSrc="sap-icon://search" valueHelpRequest=".filterOrderPositions" change=".filterOrderPositions" />
+                                        <Select 
+                                            id="paginatedWizardOrederPosition"
+                                            visible="{= ${tableWizardOrderPosition>/Oekponav/Paginated/results/length} > 0 }"
+                                            change=".paginateValue(${$parameters>/selectedItem}, 'tableWizardOrderPosition', '/Oekponav')">
+                                            <items>
+                                                <core:Item key="10" text="10"/>
+                                                <core:Item key="20" text="20"/>
+                                                <core:Item key="50" text="50"/>
+                                                <core:Item key="100" text="100"/>
+                                            </items>
+                                        </Select>
+                                        <Button type="Emphasized" icon="sap-icon://add" text="Agregar" press="addSelecteds" />
+                                    </OverflowToolbar>
+                                </headerToolbar>
+                                <columns>
+                                    <Column width="auto" hAlign="Left">
+                                        <header>
+                                            <Text text="{appTxts>/rem.position}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </header>
+                                        <footer/>
+                                    </Column>
+                                    <Column width="auto" hAlign="Left">
+                                        <header>
+                                            <Text text="{appTxts>/rem.codebar}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </header>
+                                        <footer/>
+                                    </Column>
+                                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <header>
+                                            <Text text="{appTxts>/rem.description}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </header>
+                                    </Column>
+                                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <header>
+                                        <Text text="{appTxts>/rem.quantity}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </header>
+                                        <footer/>
+                                    </Column>
+                                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <header>
+                                        <Text text="{appTxts>/rem.uom}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </header>
+                                        <footer/>
+                                    </Column>
+                                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <header>
+                                        <Text text="{appTxts>/rem.netcost}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </header>
+                                        <footer/>
+                                    </Column>
+                                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <header>
+                                        <Text text="{appTxts>/rem.totalcost}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </header>
+                                        <footer/>
+                                    </Column>                    
+                                </columns>
+                                <items>
+                                    <ColumnListItem press="onListItemPress" selected="{tableWizardOrderPosition>Selected}"  visible="{= ${tableWizardOrderPosition>Cresta} > 0}">
+                                        <cells>
+                                            <ObjectIdentifier text="{tableWizardOrderPosition>Ebelp}" />
+                                            <ObjectIdentifier text="{tableWizardOrderPosition>Ean11}" />
+                                            <ObjectIdentifier text="{tableWizardOrderPosition>Txz01}" />                                                       
+                                            <ObjectIdentifier text="{tableWizardOrderPosition>Cresta}"/>
+                                            <ObjectIdentifier text="{tableWizardOrderPosition>Meins}" />
+                                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'tableWizardOrderPosition>Netpr'}, {path: 'tableWizardOrderPosition>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{tableWizardOrderPosition>Waers}" emphasized="false" state="None"/>
+                                        <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: ['tableWizardOrderPosition>Netpr', 'tableWizardOrderPosition>Cresta', 'tableWizardOrderPosition>Waers'], formatter: '.calculateTotal'}"
+                                                unit="{tableWizardOrderPosition>Waers}" emphasized="false" state="None"/>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                            <OverflowToolbar visible="{= ${tableWizardOrderPosition>/Oekponav/Paginated/results/length} > 0 }">
+                                <Text text="{tableWizardOrderPosition>/Oekponav/Paginated/initRow} - {tableWizardOrderPosition>/Oekponav/Paginated/endRow} {appTxts>/pagination.of} {tableWizardOrderPosition>/Oekponav/results/length}" />
+                                <ToolbarSpacer/>
+                                <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableWizardOrderPosition>/Oekponav/Paginated/iterator}, ${tableWizardOrderPosition>/Oekponav/Paginated/initRow}, 'tableWizardOrderPosition', '/Oekponav')" enabled="{= ${tableWizardOrderPosition>/Oekponav/Paginated/iterator} !== 1}" />
+                                <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableWizardOrderPosition>/Oekponav/Paginated/iterator}, ${tableWizardOrderPosition>/Oekponav/Paginated/endRow}, 'tableWizardOrderPosition', '/Oekponav')" enabled="{= ${tableWizardOrderPosition>/Oekponav/Paginated/endRow} !== ${tableWizardOrderPosition>/Oekponav/results/length}}" />
+                            </OverflowToolbar>
+                        </VBox>
+					</WizardStep>
+					<WizardStep 
+                        id="QuantityStep"
+                        title="Cantidades"
+                        complete="qtyValidation"
+                        activate="activateQty"
+                        >
+                        <!-- aqui va la nueva -->
+                            <table:TreeTable
+                                id="tableWizardOrderQty"
+                                rows="{
+                                        path:'selectedPositionsQty>/selecteds', 
+                                        parameters: {
+                                            arrayNames:['results'],
+                                            numberOfExpandedLevels: 1,
+                                            useServersideApplicationFilters: false
+                                        },
+                                        events: {
+                                            change: '.onTreeChange'
+                                        }
+                                    }"
+                                selectionMode="None"
+                                visibleRowCount="10"
+                                ariaLabelledBy="title">
+                                <table:extension>
+                                    <OverflowToolbar>
+                                        <Button type="Transparent" icon="sap-icon://expand" press=".onExpandFirstLevel" />
+                                        <Button type="Transparent" icon="sap-icon://collapse" press=".onCollapseAll" />
+                                        <ToolbarSpacer />
+                                        <SearchField width="auto" placeholder="{appTxts>/rem.search}" value="{search>/query}" liveChange=".filterQtysTree" />
+                                    </OverflowToolbar>
+                                </table:extension>
+                            <table:columns>
+                                <table:Column width="10rem">
+                                    <Label text="{appTxts>/rem.order}"/>
+                                    <table:template>
+                                        <ObjectIdentifier text="{selectedPositionsQty>Ebeln}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="4rem">
+                                    <Label text="{appTxts>/rem.position}"/>
+                                    <table:template>
+                                        <ObjectIdentifier text="{selectedPositionsQty>Ebelp}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="10rem">
+                                    <Label text="Tienda"/>
+                                    <table:template>
+                                        <VBox>
+                                            <ObjectIdentifier text="{selectedPositionsQty>Werks} - {selectedPositionsQty>Name1}" />
+                                        </VBox>
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="9rem">
+                                    <Label text="{appTxts>/rem.codebar}"/>
+                                    <table:template>
+                                        <VBox>
+                                            <ObjectIdentifier text="{selectedPositionsQty>Ean11}" />
+                                        </VBox>
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="11rem">
+                                    <Label text="{appTxts>/rem.description}"/>
+                                    <table:template>
+                                        <ObjectIdentifier text="{selectedPositionsQty>Txz01}" />
+                                    </table:template>
+                                </table:Column>
+                                <table:Column>
+                                    <Label text="{appTxts>/rem.quantity}"/>
+                                    <table:template>
+                                        <VBox>
+                                            <Text text="{selectedPositionsQty>QtySend}" visible="{= !${selectedPositionsQty>Bednr}}" />
+                                            <Input value="{selectedPositionsQty>QtySendChild}" type="Number" change=".changeQty" visible="{= !!${selectedPositionsQty>Bednr}}" />
+                                        </VBox>
+                                    </table:template>
+                                </table:Column>
+                                <table:Column>
+                                    <Label text="{appTxts>/rem.quantityP}"/>
+                                    <table:template>
+                                        <VBox>
+                                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'selectedPositionsQty>Cresta'}, {path: 'selectedPositionsQty>Meins'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{selectedPositionsQty>Meins}" emphasized="false" state="None"  visible="{= !${selectedPositionsQty>Bednr}}"/>
+                                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'selectedPositionsQty>CantPendiente'}, {path: 'selectedPositionsQty>Meins'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{selectedPositionsQty>Meins}" emphasized="false" state="None"  visible="{= !!${selectedPositionsQty>Bednr}}"/>
+                                        </VBox>
+                                    </table:template>
+                                </table:Column>
+                                <table:Column>
+                                    <Label text="{appTxts>/rem.netcost}"/>
+                                    <table:template>
+                                        <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'selectedPositionsQty>QtyNet'}, {path: 'selectedPositionsQty>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{selectedPositionsQty>Waers}" emphasized="false" state="None"/>
+                                    </table:template>
+                                </table:Column>
+                                <table:Column>
+                                    <Label text="IVA"/>
+                                    <table:template>
+                                        <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'selectedPositionsQty>QtyIva'}, {path: 'selectedPositionsQty>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{selectedPositionsQty>Waers}" emphasized="false" state="None"/>
+                                    </table:template>
+                                </table:Column>
+                                <table:Column>
+                                    <Label text="IEPS"/>
+                                    <table:template>
+                                        <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'selectedPositionsQty>QtyIeps'}, {path: 'selectedPositionsQty>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{selectedPositionsQty>Waers}" emphasized="false" state="None"/>
+                                    </table:template>
+                                </table:Column>
+                                <table:Column>
+                                    <Label text="{appTxts>/rem.totalcost}"/>
+                                    <table:template>
+                                        <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'selectedPositionsQty>QtyTotal'}, {path: 'selectedPositionsQty>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{selectedPositionsQty>Waers}" emphasized="false" state="None"/>
+                                    </table:template>
+                                </table:Column>
+                                <table:Column>
+                                    <Label text="Caja/Tarima" />
+                                    <table:template>
+                                        <HBox>
+                                            <Input visible="{= !!${selectedPositionsQty>QtySendChild} &amp;&amp; ${selectedPositionsQty>QtySendChild} > 0 }" tooltip="CajaTarima" value="{selectedPositionsQty>Package}" change=".setPackage"/>
+                                        </HBox>
+                                    </table:template>
+                                </table:Column>
+                            </table:columns>
+                        </table:TreeTable>
+					</WizardStep>
+					<WizardStep
+							id="ReviewPage"
+							validated="true"
+							title="Verificación">
+								<form:SimpleForm
+										title="1. Remisión"
+										minWidth="1024"
+										editable="false"
+                                        layout="ColumnLayout"
+                                        columnsM="2"
+                                        columnsL="2"
+                                        columnsXL="2"
+										>
+									<form:content>
+										<Label text="Proveedor"/>
+										<Text  text="{reviewModel>/Remision/columnas/0/Proveedor}"/>
+										<Label text="Remision"/>
+										<Input  value="{reviewModel>/Remision/columnas/0/Remision}" change=".changeRemission" maxLength="10"/>
+                                        <Label text="Consecutivo"/>
+										<Text  text="{reviewModel>/Remision/columnas/0/Consecutivo}"/>
+                                        <Label text="Fecha Remision"/>
+										<Text  text="{reviewModel>/Remision/columnas/0/FechaRemision}"/>
+                                        <Label text="Tienda"/>
+										<Text  text="{reviewModel>/Remision/columnas/0/Tienda} - {reviewModel>/Remision/columnas/0/TiendaText}"/>
+                                        <Label text="Tipo de moneda"/>
+										<Text  text="{reviewModel>/Remision/columnas/0/TipoMonedaText}"/>
+                                        <Label text="Tipo de bulto"/>
+										<Text  text="{reviewModel>/Remision/columnas/0/TipoBultoText}"/>
+                                        <Label text="Requisitos fiscales"/>
+										<Text  text="{reviewModel>/Remision/columnas/0/CumpleReqFiscales}"/>
+                                        <Label text="Empaque en cajas"/>
+										<Text  text="{reviewModel>/Remision/columnas/0/EmpaqueEnCajas}"/>
+                                        <Label text="Empaque en tarimas"/>
+										<Text  text="{reviewModel>/Remision/columnas/0/EmpaqueEnTarimas}"/>
+                                        <Label text="Cantidad de bultos"/>
+										<Text  text="{reviewModel>/Remision/columnas/0/CantidadBultos}"/>
+                                        <Label text="Subtotal"/>
+                                        <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'reviewModel>/Remision/columnas/0/Subtotal'}, {path: 'reviewModel>/Remision/columnas/0/TipoMonedaText'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{reviewModel>/Remision/columnas/0/TipoMonedaText}" emphasized="false" state="None"/>
+                                        <Label text="Descuentos"/>
+                                        <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'reviewModel>/Remision/columnas/0/Descuentos'}, {path: 'reviewModel>/Remision/columnas/0/TipoMonedaText'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{reviewModel>/Remision/columnas/0/TipoMonedaText}" emphasized="false" state="None"/>
+                                        <Label text="IEPS"/>
+                                        <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'reviewModel>/Remision/columnas/0/IEPS'}, {path: 'reviewModel>/Remision/columnas/0/TipoMonedaText'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{reviewModel>/Remision/columnas/0/TipoMonedaText}" emphasized="false" state="None"/>
+                                        <Label text="IVA"/>
+                                        <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'reviewModel>/Remision/columnas/0/IVA'}, {path: 'reviewModel>/Remision/columnas/0/TipoMonedaText'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{reviewModel>/Remision/columnas/0/TipoMonedaText}" emphasized="false" state="None"/>
+                                        <Label text="Otros impuestos"/>
+                                        <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'reviewModel>/Remision/columnas/0/OtrosImpuestos'}, {path: 'reviewModel>/Remision/columnas/0/TipoMonedaText'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{reviewModel>/Remision/columnas/0/TipoMonedaText}" emphasized="false" state="None"/>
+                                        <Label text="Total"/>
+                                        <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'reviewModel>/Remision/columnas/0/Total'}, {path: 'reviewModel>/Remision/columnas/0/TipoMonedaText'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{reviewModel>/Remision/columnas/0/TipoMonedaText}" emphasized="false" state="None"/>
+                                        <Label text="Cantidad de pedidos"/>
+										<Text  text="{reviewModel>/Remision/columnas/0/CantidadPedidos}"/>
+                                        <Label text="Fecha entrega"/>
+										<Text  text="{reviewModel>/Remision/columnas/0/FechaEntregaMercancia}"/>
+                                        
+
+                                        <Label text="Pedimento" visible="{= ${configSite>/supplierInportation} === 'X' }"/>
+										<Text  text="{reviewModel>/Pedimento/columnas/0/Pedimento}" visible="{= ${configSite>/supplierInportation} === 'X' }"/>
+                                        <Label text="Tipo de pedimento" visible="{= ${configSite>/supplierInportation} === 'X' }"/>
+										<Text  text="{reviewModel>/Pedimento/columnas/0/TipoPedimento}"/>
+                                        <Label text="Aduana" visible="{= ${configSite>/supplierInportation} === 'X' }"/>
+										<Text  text="{reviewModel>/Pedimento/columnas/0/Aduana}" visible="{= ${configSite>/supplierInportation} === 'X' }"/>
+                                        <Label text="Agente aduanal" visible="{= ${configSite>/supplierInportation} === 'X' }"/>
+										<Text  text="{reviewModel>/Pedimento/columnas/0/AgenteAduanal}" visible="{= ${configSite>/supplierInportation} === 'X' }"/>
+                                        <Label text="Fecha pedimento" visible="{= ${configSite>/supplierInportation} === 'X' }"/>
+										<Text  text="{reviewModel>/Pedimento/columnas/0/FechaPedimento}" visible="{= ${configSite>/supplierInportation} === 'X' }"/>
+                                        <Label text="Fecha recibo laredo" visible="{= ${configSite>/supplierInportation} === 'X' }"/>
+										<Text  text="{reviewModel>/Pedimento/columnas/0/FechaReciboLaredo}" visible="{= ${configSite>/supplierInportation} === 'X' }"/>
+                                        <Label text="Fecha bill of landing" visible="{= ${configSite>/supplierInportation} === 'X' }"/>
+										<Text  text="{reviewModel>/Pedimento/columnas/0/FechaBillOfLading}" visible="{= ${configSite>/supplierInportation} === 'X' }"/>
+									</form:content>
+								</form:SimpleForm>
+
+                                <VBox>
+                                    <Table mode="None"
+                                    items="{reviewModel>/Pedidos/columnas}" >
+                                        <headerToolbar>
+                                            <OverflowToolbar>
+                                                <Title text="2. Pedidos" />
+                                                <ToolbarSpacer/>
+                                                <Select 
+                                                    visible="{= ${reviewModel>/selecteds/Paginated/results/length} > 0 }"
+                                                    change=".paginateValue(${$parameters>/selectedItem}, 'reviewModel', '/selecteds')">
+                                                    <items>
+                                                        <core:Item key="10" text="10"/>
+                                                        <core:Item key="20" text="20"/>
+                                                        <core:Item key="50" text="50"/>
+                                                        <core:Item key="100" text="100"/>
+                                                    </items>
+                                                </Select>
+                                            </OverflowToolbar>
+                                        </headerToolbar>
+                                        <columns>
+                                            <Column width="auto" hAlign="Left">
+                                                <header>
+                                                    <Text text="{appTxts>/rem.order}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                                </header>
+                                                <footer/>
+                                            </Column>
+                                            <Column width="auto" hAlign="Left">
+                                                <header>
+                                                    <Text text="Tienda" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                                </header>
+                                                <footer/>
+                                            </Column>
+                                            <Column width="auto" hAlign="Left">
+                                                <header>
+                                                    <Text text="Cantidad articulos" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                                </header>
+                                                <footer/>
+                                            </Column>  
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem press="onListItemPress">
+                                                <cells>
+                                                    <ObjectIdentifier text="{reviewModel>FolioPedido}" />
+                                                    <ObjectIdentifier text="{reviewModel>Tienda} - {reviewModel>TiendaText}" />
+                                                    <ObjectIdentifier text="{reviewModel>CantidadArticulos}" />
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                    <OverflowToolbar visible="{= ${selectedPositionsQty>/selecteds/Paginated/results/length} > 0 }">
+                                        <Text text="{selectedPositionsQty>/selecteds/Paginated/initRow} - {selectedPositionsQty>/selecteds/Paginated/endRow} {appTxts>/pagination.of} {selectedPositionsQty>/selecteds/results/length}" />
+                                        <ToolbarSpacer/>
+                                        <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${selectedPositionsQty>/selecteds/Paginated/iterator}, ${selectedPositionsQty>/selecteds/Paginated/initRow}, 'selectedPositionsQty', '/selecteds')" enabled="{= ${selectedPositionsQty>/selecteds/Paginated/iterator} !== 1}" />
+                                        <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${selectedPositionsQty>/selecteds/Paginated/iterator}, ${selectedPositionsQty>/selecteds/Paginated/endRow}, 'selectedPositionsQty', '/selecteds')" enabled="{= ${selectedPositionsQty>/selecteds/Paginated/endRow} !== ${selectedPositionsQty>/selecteds/results/length}}" />
+                                    </OverflowToolbar>
+                                </VBox>
+
+								<VBox>
+                                    <Table mode="None"
+                                    items="{reviewModel>/Articulos/columnas}" >
+                                        <headerToolbar>
+                                            <OverflowToolbar>
+                                                <Title text="3. Articulos" />
+                                                <ToolbarSpacer/>
+                                                <Select 
+                                                    visible="{= ${reviewModel>/selecteds/Paginated/results/length} > 0 }"
+                                                    change=".paginateValue(${$parameters>/selectedItem}, 'reviewModel', '/selecteds')">
+                                                    <items>
+                                                        <core:Item key="10" text="10"/>
+                                                        <core:Item key="20" text="20"/>
+                                                        <core:Item key="50" text="50"/>
+                                                        <core:Item key="100" text="100"/>
+                                                    </items>
+                                                </Select>
+                                            </OverflowToolbar>
+                                        </headerToolbar>
+                                        <columns>
+                                            <Column width="auto" hAlign="Left">
+                                                <header>
+                                                    <Text text="{appTxts>/rem.order}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                                </header>
+                                                <footer/>
+                                            </Column>
+                                            <Column width="auto" hAlign="Left">
+                                                <header>
+                                                    <Text text="Tienda" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                                </header>
+                                                <footer/>
+                                            </Column>
+                                            <Column width="auto" hAlign="Left">
+                                                <header>
+                                                    <Text text="Código" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                                </header>
+                                                <footer/>
+                                            </Column>
+                                            <Column width="auto" hAlign="Left">
+                                                <header>
+                                                    <Text text="Descripción" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                                </header>
+                                                <footer/>
+                                            </Column>
+                                            <Column width="auto" hAlign="Left">
+                                                <header>
+                                                    <Text text="Cantidad" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                                </header>
+                                                <footer/>
+                                            </Column>
+                                            <Column width="auto" hAlign="Left">
+                                                <header>
+                                                    <Text text="Costo neto" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                                </header>
+                                                <footer/>
+                                            </Column>
+                                            <Column width="auto" hAlign="Left">
+                                                <header>
+                                                    <Text text="IEPS" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                                </header>
+                                                <footer/>
+                                            </Column>
+                                            <Column width="auto" hAlign="Left">
+                                                <header>
+                                                    <Text text="IVA
+                                                    " width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                                </header>
+                                                <footer/>
+                                            </Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem press="onListItemPress">
+                                                <cells>
+                                                    <ObjectIdentifier text="{reviewModel>FolioPedido}" />
+                                                    <ObjectIdentifier text="{reviewModel>Tienda} - {reviewModel>TiendaText}" />
+                                                    <ObjectIdentifier text="{reviewModel>Codigo}" />
+                                                    <ObjectIdentifier text="{reviewModel>CodigoText}" />
+                                                    <ObjectIdentifier text="{reviewModel>CantidadUnidadCompra}" />
+                                                    <ObjectIdentifier text="{reviewModel>CostoNetoUnidadCompra}" />
+                                                    <ObjectIdentifier text="{reviewModel>PorcentajeIEPS}" />
+                                                    <ObjectIdentifier text="{reviewModel>PorcentajeIVA}" />
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                    <OverflowToolbar visible="{= ${selectedPositionsQty>/selecteds/Paginated/results/length} > 0 }">
+                                        <Text text="{selectedPositionsQty>/selecteds/Paginated/initRow} - {selectedPositionsQty>/selecteds/Paginated/endRow} {appTxts>/pagination.of} {selectedPositionsQty>/selecteds/results/length}" />
+                                        <ToolbarSpacer/>
+                                        <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${selectedPositionsQty>/selecteds/Paginated/iterator}, ${selectedPositionsQty>/selecteds/Paginated/initRow}, 'selectedPositionsQty', '/selecteds')" enabled="{= ${selectedPositionsQty>/selecteds/Paginated/iterator} !== 1}" />
+                                        <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${selectedPositionsQty>/selecteds/Paginated/iterator}, ${selectedPositionsQty>/selecteds/Paginated/endRow}, 'selectedPositionsQty', '/selecteds')" enabled="{= ${selectedPositionsQty>/selecteds/Paginated/endRow} !== ${selectedPositionsQty>/selecteds/results/length}}" />
+                                    </OverflowToolbar>
+                                </VBox>
+
+                                <VBox>
+                                <Title text="4. Cajas/Tarimas" titleStyle="H3" />
+                                    <VBox items="{reviewModel>/CajasTarimas/columnas}">
+                                        <items>
+                                            <Panel expandable="true" width="auto">
+                                                <headerToolbar>
+                                                    <OverflowToolbar >
+                                                        <Title text="No: {reviewModel>NumeroCajaTarima}" />
+                                                        <ToolbarSpacer />
+                                                        <Label text="Sucursal a distribuir:" />
+                                                        <Text text="{reviewModel>SucursalDistribuir} - {reviewModel>Name1}" />
+                                                        <ToolbarSpacer />
+                                                        <Label text="Cantidad de articulos" />
+                                                        <Text text="{reviewModel>CantidadArticulos}" />
+                                                    </OverflowToolbar>
+                                                </headerToolbar>
+                                                <content>
+                                                    <Table mode="None"
+                                                    items="{path: 'reviewModel>items', templateShareable:false}" >
+                                                        <columns>
+                                                            <Column width="auto" hAlign="Left">
+                                                                <header>
+                                                                    <Text text="{appTxts>/rem.codebar}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                                                </header>
+                                                                <footer/>
+                                                            </Column>
+                                                            <Column width="auto" hAlign="Left">
+                                                                <header>
+                                                                    <Text text="{appTxts>/rem.description}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                                                </header>
+                                                                <footer/>
+                                                            </Column>
+                                                            <Column width="auto" hAlign="Left">
+                                                                <header>
+                                                                    <Text text="{aooTxts>/rem.quantityArticle}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                                                </header>
+                                                                <footer/>
+                                                            </Column>  
+                                                        </columns>
+                                                        <items>
+                                                            <ColumnListItem press="onListItemPress">
+                                                                <cells>
+                                                                    <ObjectIdentifier text="{reviewModel>Codigo}" />
+                                                                    <ObjectIdentifier text="{reviewModel>Descripcion}" />
+                                                                    <ObjectIdentifier text="{reviewModel>CantidadUnidadCompra}" />
+                                                                </cells>
+                                                            </ColumnListItem>
+                                                        </items>
+                                                    </Table>
+                                                </content>
+                                            </Panel>
+                                        </items>
+                                    </VBox>
+                                </VBox>
+					</WizardStep>
+				</Wizard>
+			</f:content>
+
+			<f:footer>
+				<OverflowToolbar>
+					<ToolbarSpacer/>
+					<Button text="{appTxts>/rem.back}" visible="{/backButtonVisible}" press="onDialogBackButton" />
+					<Button text="{appTxts>/rem.next}" type="Emphasized" enabled="{/nextButtonEnabled}" visible="{/nextButtonVisible}" press="onDialogNextButton" />
+					<Button text="{appTxts>/rem.review}" type="Emphasized" enabled="{/reviewButtonEnabled}" visible="{/reviewButtonVisible}" press="onDialogNextButton" />
+					<Button text="{appTxts>/rem.finish}" type="Emphasized" visible="{/finishButtonVisible}" press="handleWizardSubmit" />
+					<Button	text="{appTxts>/rem.cancel}" type="Transparent" press="onCloseWizard"/>
+				</OverflowToolbar>
+			</f:footer>
+		</f:DynamicPage>
+	</Dialog>
+</core:FragmentDefinition>

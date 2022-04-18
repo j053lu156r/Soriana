@@ -1,0 +1,46 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:unified="sap.ui.unified">
+	<Dialog title="{appTxts>/recipient.title}" horizontalScrolling="true">
+		<Table noDataText="{appTxts>/recipient.noData}" fixedLayout="false" mode="MultiSelect"
+			items="{ path : 'devProvs>/results', sorter : { path : 'Lifnr', descending : false } }" id="nuevoDes">
+			<headerToolbar>
+				<Toolbar visible="true" enabled="true" width="" design="Solid">
+					<content>
+						<SearchField placeholder="{appTxts>/recipient.search}" showSearchButton="true" search="filtrado" visible="true" width="100%"/>
+						<Select xmlns="sap.m" id="selectFilterUsr">
+							<items>
+								<core:Item xmlns:core="sap.ui.core" key="Lifnr" text="{appTxts>/recipient.id}"/>
+								<core:Item xmlns:core="sap.ui.core" key="Name1" text="{appTxts>/recipient.name}"/>
+							</items>
+						</Select>
+					</content>
+				</Toolbar>
+			</headerToolbar>
+			<items>
+				<ColumnListItem type="Active">
+					<cells>
+						<Text text="{devProvs>Lifnr}"/>
+						<Text text="{devProvs>Name1}"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+			<columns>
+				<Column>
+					<header>
+						<Text text="{appTxts>/recipient.id} "/>
+					</header>
+				</Column>
+				<Column>
+					<header>
+						<Text text="{appTxts>/recipient.name} "/>
+					</header>
+				</Column>
+			</columns>
+		</Table>
+		<buttons>
+			<Button id="guardarDes" text="{appTxts>/recipient.save}" press="saveNewDes"/>
+		</buttons>
+		<buttons>
+			<Button id="closeDialogDes" text="{appTxts>/recipient.close}" press="onCloseDialog"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

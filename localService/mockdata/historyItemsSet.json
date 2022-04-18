@@ -1,0 +1,22 @@
+{
+	"results": [{
+		"PoNumber": "4500000239",
+		"PoItem": "10",
+		"DocYear": "2021",
+		"MatDoc": "",
+		"MoveType": "101",
+		"RefDocNo": "ERP1",
+		"Quantity": 7,
+		"HistType": "Q"
+	},
+	{
+		"PoNumber": "4500000239",
+		"PoItem": "20",
+		"DocYear": "2021",
+		"MatDoc": "500002321",
+		"MoveType": "101",
+		"RefDocNo": "ERP1",
+		"Quantity": 10,
+		"HistType": "E"
+	}]
+}

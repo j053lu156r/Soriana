@@ -1,0 +1,24 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		contentWidth= "450px"
+		contentHeight= "300px"
+		noDataText="{appTxts>/tolerance.noData}"
+		title="{appTxts>/tolerance.title}"
+		search="handleSearch"
+		confirm="handleClose"
+		cancel="handleClose"
+		multiSelect="true" 
+		items="{
+			path: '/nacionality'
+		}" >
+		<StandardListItem
+			title="{C}"
+			description="{D}"
+			iconDensityAware="false"
+			iconInset="false"
+			type="Active"
+			/>
+	</SelectDialog>
+</core:FragmentDefinition>

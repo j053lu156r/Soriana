@@ -1,0 +1,154 @@
+<mvc:View displayBlock="true" controllerName="demo.controllers.Detail.Detail" height="100%"
+		xmlns="sap.uxap"
+		xmlns:mvc="sap.ui.core.mvc"
+		xmlns:m="sap.m"
+		xmlns:f="sap.f"
+        xmlns:core="sap.ui.core" 
+		xmlns:form="sap.ui.layout.form">
+
+	<ObjectPageLayout id="ObjectPageLayout"
+					 showTitleInHeaderContent="true"
+					alwaysShowContentHeader="false"
+					preserveHeaderStateOnScroll="false"
+					headerContentPinnable="true"
+					isChildPage="true"
+					upperCaseAnchorBar="false">
+				<headerTitle>
+					<ObjectPageDynamicHeaderTitle>
+						<expandedHeading>
+                            <m:Title text="{appTxts>/sendInv.recepNumber}: {tableDetailMoves>/EDOCHDRNAV/results/0/Xblnr} " wrapping="true" class="sapUiSmallMarginEnd"/>
+						</expandedHeading>
+
+						<snappedHeading>
+							<m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Center">
+								<m:FlexBox wrap="NoWrap" fitContainer="true" alignItems="Center" class="sapUiTinyMarginEnd">
+									<f:Avatar src="../../../../../../../{products>ProductPicUrl}" displaySize="S" displayShape="Square"/>
+									<m:Title text="{products>Name}" wrapping="true" class="sapUiTinyMarginEnd"/>
+								</m:FlexBox>
+							</m:FlexBox>
+						</snappedHeading>
+
+						<navigationActions>
+							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
+							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
+							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }" />
+						</navigationActions>
+
+					</ObjectPageDynamicHeaderTitle>
+				</headerTitle>
+
+				<headerContent>
+					<m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Stretch">
+						<f:Avatar src="sap-icon://monitor-payments"
+								  displaySize="L"
+								  displayShape="Square"
+								  class="sapUiTinyMarginEnd">
+						</f:Avatar>
+						<m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
+							<m:Label text="{appTxts>/global.document}"/>
+							<m:Text text="{tableDetailMoves>/EDOCHDRNAV/results/0/Belnr} - {tableDetailMoves>/EDOCHDRNAV/results/0/Gjahr}"/>
+                            <m:Label text="{appTxts>/global.amount}"/>
+							<m:ObjectNumber number="{tableDetailMoves>/EDOCHDRNAV/results/0/Dmbtr} {tableDetailMoves>/EDOCHDRNAV/results/0/Waers}" emphasized="false"/>
+							<m:Label text="{appTxts>/global.tax}"/>
+							<m:ObjectNumber number="{tableDetailMoves>/EDOCHDRNAV/results/0/Impuesto} {tableDetailMoves>/EDOCHDRNAV/results/0/Waers}" emphasized="false"/>
+							<m:Label text="{appTxts>/global.total}"/>
+							<m:ObjectNumber number="{tableDetailMoves>/EDOCHDRNAV/results/0/Total} {tableDetailMoves>/EDOCHDRNAV/results/0/Waers}" emphasized="false"/>
+
+                        <m:layoutData>
+						    <m:FlexItemData growFactor="1" />
+					    </m:layoutData>
+						</m:VBox>
+                        <m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
+                            <m:Label text="{appTxts>/global.purchaseOrder}"/>
+							<m:Text text="{tableDetailMoves>/EDOCHDRNAV/results/0/Ebeln}"/> 
+                            <m:Label text="{appTxts>/sendInv.reference}"/>
+							<m:Text text="{tableDetailMoves>/EDOCHDRNAV/results/0/Bktxt}"/>
+                            <m:Label text="{appTxts>/global.vendor}" />
+                            <m:Text text="{tableDetailMoves>/EDOCHDRNAV/results/0/Sociedad}"/>
+                        <m:layoutData>
+						    <m:FlexItemData growFactor="1" />
+					    </m:layoutData>
+                        </m:VBox>
+                        <m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
+                            <m:Label text="{appTxts>/sendInv.date}"/>
+							<m:Text text="{path : 'tableDetailMoves>/EDOCHDRNAV/results/0/Budat' , formatter: '.ReverseDate'}"/>
+							<m:Label text="{appTxts>/order.branch}"/>
+							<m:Text text="{tableDetailMoves>/EDOCHDRNAV/results/0/Werks} {tableDetailMoves>/EDOCHDRNAV/results/0/Centro}"/>
+                        <m:layoutData>
+						    <m:FlexItemData growFactor="1" />
+					    </m:layoutData>
+                        </m:VBox>
+					</m:FlexBox>
+				</headerContent>
+
+		<sections>
+			<ObjectPageSection title="{appTxts>/global.positions}">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+                            <m:VBox>
+							<m:Table id="suppliersTable"
+									 items="{path : 'tableDetailMoves>/EDOCDTLNAV/Paginated/results'}">
+                                     <m:headerToolbar>
+                                        <m:OverflowToolbar>
+                                             <m:ToolbarSpacer/>
+                                            <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExcel" visible="{= ${tableDetailMoves>/EDOCDTLNAV/results/length} > 0}" />
+                                            <m:Select 
+                                                visible="{= ${tableDetailMoves>/EDOCDTLNAV/Paginated/results/length} > 0 }"
+                                                change=".paginateValue(${$parameters>/selectedItem}, 'tableDetailMoves', '/EDOCDTLNAV')">
+                                                <m:items>
+                                                    <core:Item key="10" text="10"/>
+                                                    <core:Item key="20" text="20"/>
+                                                    <core:Item key="50" text="50"/>
+                                                    <core:Item key="100" text="100"/>
+                                                </m:items>
+                                            </m:Select>
+                                        </m:OverflowToolbar>
+                                    </m:headerToolbar>
+								<m:columns>
+									<m:Column><m:Text text="{appTxts>/sendInv.position}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/sendInv.barcode}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/sendInv.description}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/sendInv.qty}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/sendInv.unitPrice}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/global.amount}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/sendInv.packCap}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/sendInv.store}" /></m:Column>
+								</m:columns>
+								<m:items>
+									<m:ColumnListItem press="handleItemPress">
+										<m:cells>
+                                            <m:ObjectIdentifier text="{tableDetailMoves>Ebelp}" />
+                                            <m:ObjectIdentifier text="{tableDetailMoves>Ean11}" />
+                                            <m:ObjectIdentifier text="{tableDetailMoves>Txz01}" />
+                                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" 
+                                            xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'tableDetailMoves>Bpmng'}, {path: 'tableDetailMoves>Bprme'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{tableDetailMoves>Bprme}" emphasized="false" state="None"/>
+                                            <m:ObjectIdentifier text="{tableDetailMoves>Unitp}" />                                            
+                                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" 
+                                            xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'tableDetailMoves>Dmbtr'}, {path: 'tableDetailMoves>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{tableDetailMoves>Waers}" emphasized="false" state="None"/>
+                                            <m:ObjectIdentifier text="{tableDetailMoves>Emp_cap} {tableDetailMoves>Packu}"/>    
+                                            <m:ObjectIdentifier title="{tableDetailMoves>Werks}" text="{tableDetailMoves>Centro}" />
+										</m:cells>
+									</m:ColumnListItem>
+								</m:items>
+							</m:Table>
+                            <m:OverflowToolbar visible="{= ${tableDetailMoves>/EDOCDTLNAV/Paginated/results/length} > 0 }">
+                                <m:Text text="{tableDetailMoves>/EDOCDTLNAV/Paginated/initRow} - {tableDetailMoves>/EDOCDTLNAV/Paginated/endRow} {appTxts>/pagination.of} {tableDetailMoves>/EDOCDTLNAV/results/length}" />
+                                <m:ToolbarSpacer/>
+                                <m:Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableDetailMoves>/EDOCDTLNAV/Paginated/iterator}, ${tableDetailMoves>/EDOCDTLNAV/Paginated/initRow}, 'tableDetailMoves', '/EDOCDTLNAV')" enabled="{= ${tableDetailMoves>/EDOCDTLNAV/Paginated/iterator} !== 1}" />
+                                <m:Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableDetailMoves>/EDOCDTLNAV/Paginated/iterator}, ${tableDetailMoves>/EDOCDTLNAV/Paginated/endRow}, 'tableDetailMoves', '/EDOCDTLNAV')" enabled="{= ${tableDetailMoves>/EDOCDTLNAV/Paginated/endRow} !== ${tableDetailMoves>/EDOCDTLNAV/results/length}}" />
+                            </m:OverflowToolbar>
+                            </m:VBox>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>
+	</ObjectPageLayout>
+</mvc:View>

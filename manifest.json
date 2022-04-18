@@ -1,0 +1,744 @@
+{
+    "_version": "1.8.0",
+    "sap.cloud": {
+        "service": "myservice"
+    },
+    "sap.app": {
+        "croosNavigation":{
+            "inbounds":{
+                "intent1": {
+                    "signature": {
+                        "parameters": {},
+                        "aditionalParameters": "allowed"
+                    },
+                    "semanticObject": "nsmigrationNeo",
+                    "action": "display",
+                    "title": "myTitle",
+                    "subTitle": "mySubTitle"
+                }
+            }
+        },
+        "id": "demo",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "applicationVersion": {
+            "version": "1.0.0"
+        },
+        "sourceTemplate": {
+            "id": "servicecatalog.connectivityComponentForManifest",
+            "version": "0.0.0"
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        },
+        "supportedThemes": [
+            "sap_belize_plus"
+        ]
+    },
+    "sap.ui5": {
+        "rootView": "demo.views.App",
+         "config": { "fullWidth": true },
+        "dependencies": {
+            "minUI5Version": "1.30",
+            "libs": {
+                "sap.f": {
+				},
+                "sap.m": {},
+                "sap.ui.commons": {
+                    "minVersion": ""
+                },
+                "sap.ui.core": {
+                    "minVersion": ""
+                },
+                "sap.ui.layout": {
+                    "minVersion": ""
+                },
+                "sap.ui.unified": {
+                    "minVersion": ""
+                },
+				"sap.uxap": {
+				}
+            }
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "demo.i18n.i18n"
+                }
+            },
+            "feedsModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "uri": "localService/mockdata/rssFeedSet.json",
+                "preload": true
+            },
+            "authsTiles": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "uri": "localService/mockdata/tileAuthSet.json",
+                "preload": true
+            },
+            "ordersModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "preload": true,
+                "uri": "localService/mockdata/OSuppordersSet.json"
+            },
+            "tilesModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "preload": true,
+                "uri": "mock/tiles.json"
+            },
+            "matdocsModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "preload": true,
+                "uri": "localService/mockdata/TZmatdoclistvendorSet.json"
+            },
+            "isueOrder": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "preload": true,
+                "uri": "localService/mockdata/invoicesSet.json"
+            },
+            "ComplPago": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "uri": "localService/mockdata/zbsakSet.json",
+                "preload": true
+            },
+            "dueDateModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "uri": "localService/mockdata/documentsSet.json",
+                "preload": true
+            },
+            "taxesModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "uri": "localService/mockdata/TTaxesSet.json",
+                "preload": true
+            },
+            "orderHeader": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "uri": "localService/mockdata/oHeaderSet.json",
+                "preload": true
+            },
+            "payConditionModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "uri": "localService/mockdata/payConditionSet.json",
+                "preload": true
+            },
+            "orderItemsModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "uri": "localService/mockdata/oItemsSet.json",
+                "preload": true
+            },
+            "historyOrderModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "uri": "localService/mockdata/historyItemsSet.json",
+                "preload": true
+            },
+            "scheduleOrderModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "uri": "localService/mockdata/scheduleItemSet.json",
+                "preload": true
+            },
+            "vendorModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "uri": "localService/mockdata/TLfb1Set.json",
+                "preload": true
+            },
+            "matDocDetailModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "uri": "localService/mockdata/TZmatdocdetail1Set.json",
+                "preload": true
+            },
+            "matDocDevolModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "uri": "localService/mockdata/TZmatdocdetailDevSet.json",
+                "preload": true
+            },
+            "paramsModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "uri": "localService/mockdata/paramsSet.json",
+                "preload": true
+            },
+            "billHeader": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "uri": "localService/mockdata/billData.json",
+                "preload": true
+            },
+            "notifModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "uri": "localService/mockdata/notifModel.json",
+                "preload": true
+            },
+            "aportacionesModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "uri": "localService/mockdata/aportacionesModel.json",
+                "preload": true
+            }
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.f.routing.Router",
+                "viewType": "XML",
+                "viewPath": "demo.views",
+                "controlId": "app",
+                "transition": "slide",
+                "bypassed": {
+                    "target": "notFound"
+                },
+                "async": true
+            },
+            "routes": [
+                {
+                    "pattern": "",
+                    "name": "appHome",
+                    "target": "logon"
+                },
+                {
+                    "pattern": "tile",
+                    "name": "tile",
+                    "target": "tile"
+                },
+                {
+                    "pattern": "detail",
+                    "name": "detail",
+                    "target": [
+                        "masterDetail",
+						"detailDetail"
+					]
+                },
+                {
+                    "pattern": "masterDelivReview",
+                    "name": "masterDelivReview",
+                    "target": [
+                        "masterDelivReview"
+                    ]
+                },
+                {
+					"pattern": "masterCfdi",
+					"name": "masterCfdi",
+					"target": [
+                        "masterCfdi",
+                        "detailCfdi"
+					]
+				},
+				{
+					"pattern": "detailCfdi/{document}/{year}/{layout}",
+					"name": "detailCfdi",
+					"target": [
+                        "masterCfdi",
+                        "detailCfdi"
+					]
+                },
+                {
+					"pattern": "masterOrders",
+					"name": "masterOrders",
+					"target": [
+                        "masterOrders",
+                        "detailOrders"
+					]
+				},
+				{
+					"pattern": "detailOrders/{document}/{layout}",
+					"name": "detailOrders",
+					"target": [
+                        "masterOrders",
+						"detailOrders"
+					]
+                },
+                {
+					"pattern": "masterUsers",
+					"name": "masterUsers",
+					"target": [
+                        "masterUsers",
+                        "detailUsers"
+					]
+				},
+				{
+					"pattern": "detailUsers/{user}/{supplier}/{layout}",
+					"name": "detailUsers",
+					"target": [
+                        "masterUsers",
+						"detailUsers"
+					]
+                },
+                {
+					"pattern": "historyUsers/{user}/{supplier}/{layout}",
+					"name": "historyUsers",
+					"target": [
+                        "masterUsers",
+                        "detailUsers",
+                        "historyUsers"
+					]
+                },
+                {
+					"pattern": "masterPayPlan",
+					"name": "masterPayPlan",
+					"target": [
+                        "masterPayPlan",
+                        "detailPayPlan"
+					]
+				},
+				{
+					"pattern": "detailPayPlan/{document}/{laufd}/{laufi}/{zbukr}/{lifnr}/{layout}",
+					"name": "detailPayPlan",
+					"target": [
+                        "masterPayPlan",
+						"detailPayPlan"
+					]
+                },
+                {
+                    "name": "Logout",
+                    "pattern": "Logout",
+                    "titleTarget": "",
+                    "greedy": false,
+                    "target": [
+                        "Logout"
+                    ]
+                },
+                {
+                    "name": "ConfirmUser",
+                    "pattern": "ConfirmUser/{mail}",
+                    "titleTarget": "",
+                    "greedy": false,
+                    "target": [
+                        "ConfirmUser"
+                    ]
+                },
+                {
+                    "name": "Aclaraciones",
+                    "pattern": "Aclaraciones",
+                    "target": [
+                        "Aclaraciones",
+                        "detailAclaracion"
+                    ]
+                },
+                {
+                    "name": "detailAclaracion",
+                    "pattern": "detailAclaracion/{document}/{layout}/{modo}/{tipo}",
+                    "target": [
+                        "Aclaraciones",
+                        "detailAclaracion"
+                    ]
+                },
+                {
+                    "name": "masterRelease",
+                    "pattern": "masterRelease",
+                    "target": [
+                        "masterRelease",
+                        "detailRelease"
+                    ]
+                },
+                {
+                    "name": "detailRelease",
+                    "pattern": "detailRelease/{layout}/{releaseId}",
+                    "target": [
+                        "masterRelease",
+                        "detailRelease"
+                    ]
+                },
+                {
+                    "name": "NewRelease",
+                    "pattern": "NewRelease",
+                    "target": [
+                        "NewRelease"
+                    ]
+                },
+                {
+					"pattern": "masterCompl",
+					"name": "masterCompl",
+					"target": [
+                        "masterCompl",
+                        "detailCompl"
+					]
+				},
+				{
+					"pattern": "detailCompl/{document}/{layout}",
+					"name": "detailCompl",
+					"target": [
+                        "masterCompl",
+						"detailCompl"
+					]
+				},
+                {
+                    "name": "EstadoCuenta",
+                    "pattern": "EstadoCuenta",
+                    "titleTarget": "",
+                    "greedy": false,
+                    "target": [
+                        "EstadoCuenta"
+                    ]
+                },
+                {
+                    "name": "MiBandeja",
+                    "pattern": "MiBandeja",
+                    "target": [
+                        "MiBandeja"
+                    ]
+                },
+                {
+                    "name": "NewUsers",
+                    "pattern": "NewUsers",
+                    "target": [
+                        "NewUsers"
+                    ]
+                },
+                {
+                    "name": "masterFacSoriana",
+                    "pattern": "masterFacSoriana",
+                    "target": [
+                        "masterFacSoriana" , "detailFacSoriana"
+                    ]
+                },
+                {
+                    "name": "detailFacSoriana",
+                    "pattern": "detailFacSoriana/{layout}/{document}/{budat}/{zconfact}/{lifnr}/{bukrs}",
+                    "target": [
+                        "masterFacSoriana" , "detailFacSoriana"
+                    ]
+                },
+                {    
+                    "name": "masterHelpDocs",
+                    "pattern": "masterHelpDocs",
+                    "target": [
+                        "masterHelpDocs"
+                    ]
+                },
+                {
+                    "name": "masterDevoluciones",
+                    "pattern": "masterDevoluciones",
+                    "target": [
+                        "masterDevoluciones" , "detailDevo"
+                    ]
+                },
+                {
+                    "name": "detailDevo",
+                    "pattern": "detailDevo/{layout}/{xblnr}/{lifnr}/{ebeln}",
+                    "target": [
+                        "masterDevoluciones" , "detailDevo"
+                    ]
+                },
+                {
+                    "name": "Dashboard",
+                    "pattern": "Dashboard",
+                    "target": [
+                        "Dashboard"
+                    ]
+                },
+                {
+                    "name": "masterRepartidores",
+                    "pattern": "masterRepartidores",
+                    "target": [
+                        "masterRepartidores"
+                    ]
+                },
+                {
+                    "name": "masterRemission",
+                    "pattern": "masterRemission",
+                    "target": [
+                        "masterRemission",
+                        "detailRemission"
+                    ]
+                },
+                {
+                    "name": "detailRemission",
+                    "pattern": "detailRemission/{layout}/{document}",
+                    "target": [
+                        "masterRemission",
+                        "detailRemission"
+                    ]
+                },
+                {
+                    "name": "masterIncidencias",
+                    "pattern": "masterIncidencias",
+                    "target": [
+                        "masterIncidencias"
+                    ]
+                },
+                {
+                    "name": "masterAportaciones",
+                    "pattern": "masterAportaciones",
+                    "target": [
+                        "masterAportaciones"
+                    ]
+                },
+                {
+                    "name": "Products",
+                    "pattern": "Products",
+                    "target": [
+                        "Products"
+                    ]
+                },
+                {
+                    "name": "masterQuotes",
+                    "pattern": "masterQuotes",
+                    "target": [
+                        "masterQuotes",
+                        "detailQuotes"
+                    ]
+                },
+                {
+                    "name": "detailQuotes",
+                    "pattern": "detailQuotes/{layout}/{document}",
+                    "target": [
+                        "masterQuotes",
+                        "detailQuotes"
+                    ]
+                }
+            ],
+            "targets": {
+                "logon": {
+                    "viewId": "logon",
+                    "viewName": "Logon",
+                    "viewLevel": 1,
+                    "viewType": "XML",
+                    "controlAggregation": "beginColumnPages",
+                    "viewPath": "demo.views.Users"
+                },
+                "tile": {
+                    "viewId": "tile",
+                    "viewPath": "demo.views",
+                    "viewName": "Tile",
+                    "controlAggregation": "beginColumnPages",
+                    "viewType": "XML"
+                },
+                "detail": {
+                    "viewId": "detail",
+                    "viewPath": "demo.views.Detail",
+                    "viewName": "Master",
+                    "controlAggregation": "beginColumnPages",
+                    "viewLevel": 3,
+                    "viewType": "XML"
+                },
+                "notFound": {
+                    "viewId": "notFound",
+                    "viewName": "NotFound",
+                    "controlAggregation": "beginColumnPages",
+                    "viewType": "XML",
+                    "viewPath": "demo.views"
+                },
+                "Logout": {
+                    "viewType": "XML",
+                    "viewName": "Logout",
+                    "controlAggregation": "beginColumnPages",
+                    "viewPath": "demo.views.Users"
+                },
+                "ConfirmUser": {
+                    "viewType": "XML",
+                    "viewName": "ConfirmUser",
+                    "controlAggregation": "beginColumnPages",
+                    "viewPath": "demo.views.Users"
+                },
+                "Aclaraciones": {
+                    "viewName": "Aclaraciones",
+                    "controlAggregation": "beginColumnPages",
+                    "viewPath": "demo.views.Aclaraciones"
+                },
+                "detailAclaracion": {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.Aclaraciones",
+                    "controlAggregation": "midColumnPages"
+                },
+                "NewClarification": {
+                    "viewName": "NewClarification",
+                    "viewPath": "demo.views.Aclaraciones",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "EstadoCuenta": {
+                    "viewType": "XML",
+                    "viewName": "EstadoCuenta",
+                    "controlAggregation": "beginColumnPages",
+                    "controlId": "app",
+                    "viewPath": "demo.views.Statement"
+                },
+                "masterRelease":{
+                    "viewName": "Master",
+                    "viewPath": "demo.views.MiBandeja.Releases",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailRelease": {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.MiBandeja.Releases",
+                    "controlAggregation": "midColumnPages"
+                },
+                "NewRelease": {
+                    "viewName": "NewRelease",
+                    "viewPath": "demo.views.MiBandeja.Releases",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "masterCompl": {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.ComplPago",
+                    "controlAggregation": "beginColumnPages"
+				},
+				"detailCompl": {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.ComplPago",
+                    "controlAggregation": "midColumnPages"
+                },
+                "masterCfdi": {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.Detail",
+                    "controlAggregation": "beginColumnPages"
+				},
+				"detailCfdi": {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.Detail",
+                    "controlAggregation": "midColumnPages"
+                },
+                "masterOrders": {
+                    "viewName": "Master",
+                    "viewId": "masterOrders",
+                    "viewPath": "demo.views.Orders",
+                    "controlAggregation": "beginColumnPages"
+				},
+				"detailOrders": {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.Orders",
+                    "controlAggregation": "midColumnPages"
+                },
+                "masterUsers": {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.Users",
+                    "controlAggregation": "beginColumnPages"
+				},
+				"detailUsers": {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.Users",
+                    "controlAggregation": "midColumnPages"
+                },
+                "masterDelivReview":{
+                    "viewName": "Master",
+                    "viewPath": "demo.views.DeliveryReview",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "historyUsers": {
+                    "viewName": "History",
+                    "viewPath": "demo.views.Users",
+                    "controlAggregation": "endColumnPages"
+                },
+                "MiBandeja": {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.MiBandeja",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "masterPayPlan": {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.PaymentPlan",
+                    "controlAggregation": "beginColumnPages"
+				},
+				"detailPayPlan": {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.PaymentPlan",
+                    "controlAggregation": "midColumnPages"
+                },
+                "NewUsers": {
+                    "viewName": "NewUsers",
+                    "viewPath": "demo.views.Users",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "masterFacSoriana" : {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.FacSoriana",
+                    "controlAggregation": "beginColumnPages"
+                }, 
+                "detailFacSoriana" : {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.FacSoriana" , "controlAggregation": "midColumnPages"
+                },
+                "masterHelpDocs": {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.HelpDocs",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "masterDevoluciones" : {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.Devoluciones",
+                    "controlAggregation": "beginColumnPages"
+                }, 
+                "detailDevo" : {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.Devoluciones" , "controlAggregation": "midColumnPages"
+                },
+                "Dashboard": {
+                    "viewName": "Master",
+                    "controlAggregation": "beginColumnPages",
+                    "viewPath": "demo.views.Dashboard"
+                },
+                "masterRepartidores" : {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.Repartidores",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "masterRemission" : {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.Remissions",
+                    "controlAggregation": "beginColumnPages"
+                }, 
+                "detailRemission" : {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.Remissions" , 
+                    "controlAggregation": "midColumnPages"
+                },
+                "masterIncidencias" : {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.Incidencias",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "masterAportaciones" : {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.Aportaciones",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "Products": {
+                    "viewName": "Master",
+                    "controlAggregation": "beginColumnPages",
+                    "viewPath": "demo.views.Products"
+                },
+                "masterQuotes": {
+                    "viewName": "Master",
+                    "controlAggregation": "beginColumnPages",
+                    "viewPath": "demo.views.Quotes"
+                },
+                "detailQuotes" : {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.Quotes" , 
+                    "controlAggregation": "midColumnPages"
+                }
+            }
+        },
+        "contentDensities": {
+            "compact": false,
+            "cozy": false
+        }
+    },
+    "sap.platform.abap": {
+        "uri": "/sap/bc/ui5_ui5/sap/zportalsoriana/sendfac/webapp",
+        "_version": "1.2.0"
+    }
+}

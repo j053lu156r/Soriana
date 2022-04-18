@@ -1,0 +1,28 @@
+
+<core:FragmentDefinition
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+>			
+    <Bar>
+    <contentLeft>
+    <Button type="Back" press="onNavBack" />
+    </contentLeft>
+    <contentRight>
+    <Button
+            id="BadgedButton"
+            type="Transparent"
+            text="Erick Amilcar Haro Chavez"
+            class="sapUiTinyMarginBeginEnd sapUiSmallMarginTopBottom"
+            icon="sap-icon://customer"
+            >
+            <customData>
+                <BadgeCustomData
+                    key="badge"
+                    value="3"
+                    visible="true"
+                    />
+            </customData>
+        </Button>
+    </contentRight>
+    </Bar>
+</core:FragmentDefinition>

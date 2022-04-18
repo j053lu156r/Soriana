@@ -1,0 +1,22 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<ValueHelpDialog
+		noDataText="{appTxts>/country.noData}"
+		title="{appTxts>/country.title}"
+		search="handleSearch"
+		confirm="handleClose"
+		cancel="handleClose"
+		multiSelect="true" 
+		items="{
+			path: '/country'
+		}" >
+		<StandardListItem
+			title="{C}"
+			description="{D}"
+			iconDensityAware="false"
+			iconInset="false"
+			type="Active"
+			/>
+	</ValueHelpDialog>
+</core:FragmentDefinition>

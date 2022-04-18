@@ -1,0 +1,181 @@
+<mvc:View displayBlock="true" 
+        controllerName="demo.controllers.PaymentPlan.Detail" 
+        height="100%"
+		xmlns="sap.uxap"
+		xmlns:mvc="sap.ui.core.mvc"
+		xmlns:m="sap.m"
+		xmlns:f="sap.f"
+        xmlns:core="sap.ui.core" 
+		xmlns:form="sap.ui.layout.form">
+	<ObjectPageLayout id="ObjectPageLayout"
+            showTitleInHeaderContent="true"
+            alwaysShowContentHeader="false"
+            preserveHeaderStateOnScroll="false"
+            headerContentPinnable="true"
+            isChildPage="true"
+            upperCaseAnchorBar="false">
+        <headerTitle>
+            <ObjectPageDynamicHeaderTitle>
+                <expandedHeading>
+                    <m:Title text="{appTxts>/plan.paymentDoc}: {payPlanDetail>/Vblnr}" wrapping="true" class="sapUiSmallMarginEnd"/>
+                </expandedHeading>
+
+                <navigationActions>
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }" />
+                </navigationActions>
+
+            </ObjectPageDynamicHeaderTitle>
+        </headerTitle>
+
+        <headerContent>
+            <m:FlexBox class="columns" renderType="Bare">
+                <f:Avatar src="sap-icon://customer-order-entry"
+                            displaySize="L"
+                            displayShape="Square"
+                            class="sapUiTinyMarginEnd">
+                </f:Avatar>
+                <m:VBox class="sapUiSmallMarginEnd">
+                    <m:ObjectAttribute title="{appTxts>/plan.paymentDoc}" />
+                    <m:ObjectStatus text="{payPlanDetail>/Vblnr}" class="sapUiLargeMarginEnd"/>
+                    <m:ObjectAttribute title="{appTxts>/plan.datePay}" />
+                    <m:ObjectStatus text="{path: 'payPlanDetail>/Valut', formatter: '.ReverseDate'}"/>
+                    
+                    <m:ObjectAttribute title="{appTxts>/global.vendor}" />
+                    <m:ObjectStatus text="{payPlanDetail>/Lifnr} {payPlanDetail>/Name1}"/>
+                    <m:layoutData>
+                        <m:FlexItemData
+                            growFactor="1"
+                            baseSize="auto"
+                            backgroundDesign="Solid"
+                            styleClass="sapUiTinyMargin" />
+                    </m:layoutData>
+                </m:VBox>
+                <m:VBox class="sapUiSmallMarginEnd">
+                    <m:ObjectAttribute title="{appTxts>/global.company}" />
+                    <m:ObjectStatus text="{payPlanDetail>/Zbukr} - {payPlanDetail>/Butxt}"/>
+
+                    <m:ObjectAttribute title="{appTxts>/global.year}" />
+                    <m:ObjectStatus text="{payPlanDetail>/Gjahr}"/>
+
+                    <m:layoutData>
+                        <m:FlexItemData
+                            growFactor="1"
+                            baseSize="auto"
+                            backgroundDesign="Solid"
+                            styleClass="sapUiTinyMargin" />
+                    </m:layoutData>
+                </m:VBox>
+                <m:VBox class="sapUiSmallMarginEnd">
+                    <m:ObjectAttribute title="{appTxts>/plan.amount}"/>
+                    <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                    xmlns="sap.m"
+                    number="{parts: [{path: 'payPlanDetail>/Rwbtr'}, {path: 'payPlanDetail>/Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                    unit="{payPlanDetail>/Waers}" emphasized="false" state="None"/>
+
+                    <m:layoutData>
+                        <m:FlexItemData
+                            growFactor="1"
+                            baseSize="auto"
+                            backgroundDesign="Solid"
+                            styleClass="sapUiTinyMargin" />
+                    </m:layoutData>
+                </m:VBox>
+            </m:FlexBox>
+        </headerContent>
+
+		<sections>
+                <ObjectPageSection title="{appTxts>/plan.detail}">
+                    <subSections>
+                        <ObjectPageSubSection>
+                            <blocks>
+                                <m:Table items="{path : 'payPlanDetail>/EGRPNAV/results'}">
+                                    <m:columns>
+                                        <m:Column><m:Text text="{appTxts>/plan.docType}" /></m:Column>
+                                        <m:Column><m:Text text="{appTxts>/plan.docCount}" /></m:Column>
+                                        <m:Column><m:Text text="{appTxts>/plan.amount}" /></m:Column>
+                                    </m:columns>
+                                    <m:items>
+                                        <m:ColumnListItem>
+                                            <m:cells>
+                                                <m:ObjectIdentifier text="{payPlanDetail>Descr}" />
+                                                <m:ObjectIdentifier text="{payPlanDetail>Total}" />
+                                                <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'payPlanDetail>Imprt'}, {path: 'payPlanDetail>/Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{payPlanDetail>/Waers}" emphasized="false" state="None"/>
+                                                
+                                            </m:cells>
+                                        </m:ColumnListItem>
+                                        <!--m:ColumnListItem visible="{= ${payPlanDetail>/Cdescara} > 0 ? true : false }">
+                                            <m:cells>
+                                                <m:ObjectIdentifier text="Acuerdos comerciales" />
+                                                <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'payPlanDetail>/Tdescara'}, {path: 'payPlanDetail>/Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{payPlanDetail>/Waers}" emphasized="false" state="None"/>
+                                                <m:ObjectIdentifier text="{payPlanDetail>/Cdescara}" />
+                                            </m:cells>
+                                        </m:ColumnListItem>
+                                        <m:ColumnListItem visible="{= ${payPlanDetail>/Cdescakd} > 0 ? true : false }">
+                                            <m:cells>
+                                                <m:ObjectIdentifier text="Descuentos" />
+                                                <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'payPlanDetail>/Tdescakd'}, {path: 'payPlanDetail>/Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{payPlanDetail>/Waers}" emphasized="false" state="None"/>
+                                                <m:ObjectIdentifier text="{payPlanDetail>/Cdescakd}" />
+                                            </m:cells>
+                                        </m:ColumnListItem>
+                                        <m:ColumnListItem visible="{= ${payPlanDetail>/Ccombanc} > 0 ? true : false }">
+                                            <m:cells>
+                                                <m:ObjectIdentifier text="Comisiones bancarias" />
+                                                <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'payPlanDetail>/Tcombanc'}, {path: 'payPlanDetail>/Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{payPlanDetail>/Waers}" emphasized="false" state="None"/>
+                                                <m:ObjectIdentifier text="{payPlanDetail>/Ccombanc}" />
+                                            </m:cells>
+                                        </m:ColumnListItem>
+                                        <m:ColumnListItem visible="{= ${payPlanDetail>/Cdescakg} > 0 ? true : false }">
+                                            <m:cells>
+                                                <m:ObjectIdentifier text="Descuentos sin aportaciones" />
+                                                <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'payPlanDetail>/Tdescakg'}, {path: 'payPlanDetail>/Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{payPlanDetail>/Waers}" emphasized="false" state="None"/>
+                                                <m:ObjectIdentifier text="{payPlanDetail>/Cdescakg}" />
+                                            </m:cells>
+                                        </m:ColumnListItem>
+                                        <m:ColumnListItem visible="{= ${payPlanDetail>/Cotrosdo} > 0 ? true : false }">
+                                            <m:cells>
+                                                <m:ObjectIdentifier text="Otros documentos" />
+                                                <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'payPlanDetail>/Totrosdo'}, {path: 'payPlanDetail>/Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{payPlanDetail>/Waers}" emphasized="false" state="None"/>
+                                                <m:ObjectIdentifier text="{payPlanDetail>/Cotrosdo}" />
+                                            </m:cells>
+                                        </m:ColumnListItem-->
+                                    </m:items>
+                                </m:Table>
+                            </blocks>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+		</sections>
+
+        <sections>
+			<ObjectPageSection showTitle="false" title="{appTxts>/plan.documents}">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+                            <core:Fragment fragmentName="demo.views.PaymentPlan.TablePagination" type="XML" />
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>
+	</ObjectPageLayout>
+</mvc:View>

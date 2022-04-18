@@ -1,0 +1,153 @@
+<mvc:View displayBlock="true" 
+        controllerName="demo.controllers.Devoluciones.Detail" 
+        height="100%"
+		xmlns="sap.uxap"
+		xmlns:mvc="sap.ui.core.mvc"
+		xmlns:m="sap.m"
+		xmlns:f="sap.f"
+        xmlns:core="sap.ui.core" 
+        xmlns:t="sap.ui.table"        
+		xmlns:form="sap.ui.layout.form">
+
+	<ObjectPageLayout id="ObjectPageLayout"
+            showTitleInHeaderContent="true"
+            alwaysShowContentHeader="false"
+            preserveHeaderStateOnScroll="false"
+            headerContentPinnable="true"
+            isChildPage="true"
+            upperCaseAnchorBar="false">
+        <headerTitle>
+            <ObjectPageDynamicHeaderTitle>
+                <expandedHeading>
+                    <m:Title
+                      text="{= ${path: 'devoDetail>/ETFDEVNAV/results/0/Zfolagrup'} === '' ? ${appTxts>/devo.folioDevo} : ${appTxts>/devo.Code} } : {= ${path: 'devoDetail>/ETFDEVNAV/results/0/Zfolagrup'} === '' ? ${headerDetail>/Xblnr} : ${path: 'devoDetail>/ETFDEVNAV/results/0/Zfolagrup'} }" 
+                      wrapping="true" class="sapUiSmallMarginEnd"/>                    
+                </expandedHeading>                
+
+                <navigationActions>
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }" />
+                </navigationActions>
+
+            </ObjectPageDynamicHeaderTitle>
+        </headerTitle>
+
+        <headerContent>
+            <m:FlexBox class="columns" renderType="Bare">
+                <f:Avatar src="sap-icon://customer-order-entry"
+                            displaySize="L"
+                            displayShape="Square"
+                            class="sapUiTinyMarginEnd">
+                </f:Avatar>
+                <m:VBox class="sapUiSmallMarginEnd">
+                    <m:ObjectAttribute title="{appTxts>/devo.fechaDevo}" />
+                    <m:ObjectStatus text="{path: 'devoDetail>/ETFDEVNAV/results/0/Budat', formatter: '.ReverseDate'}"/>
+                    
+                    <m:ObjectAttribute title="{appTxts>/devo.sucursal}" />
+                    <m:ObjectStatus text="{parts: [{path: 'devoDetail>/ETFDEVNAV/results/0/Werks' }, {path: 'devoDetail>/ETFDEVNAV/results/0/Nwerks' }]}"/>
+                    <m:layoutData>
+                        <m:FlexItemData
+                            growFactor="1"
+                            baseSize="auto"
+                            backgroundDesign="Solid"
+                            styleClass="sapUiTinyMargin" />
+                    </m:layoutData>
+                    <m:ObjectAttribute title="{appTxts>/devo.status}" visible="{= ${path: 'devoDetail>/ETFDEVNAV/results/0/Zstatusdev'} === '' ? false : true }" />
+                     <m:ObjectStatus text="{path: 'devoDetail>/ETFDEVNAV/results/0/Zstatusdev'}" visible="{= ${path: 'devoDetail>/ETFDEVNAV/results/0/Zstatusdev'} === '' ? false : true }"/>
+                </m:VBox>
+                <m:VBox class="sapUiSmallMarginEnd">
+<!--Se deja vacío para de dar espacio -->
+                </m:VBox>
+                <m:VBox class="sapUiSmallMarginEnd">
+                    <m:ObjectAttribute title="{appTxts>/plan.amount}"/>
+                    <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                    xmlns="sap.m"
+                    number="{path: 'devoDetail>/EMtotal'}"
+                    unit="{path: 'devoDetail>/ETDTDEVNAV/Paginated/results/0/Waers'}" emphasized="false" state="None"/>
+
+                    <m:ObjectAttribute title="{appTxts>/devo.Code}" />
+
+                    <m:ObjectStatus text="{path: 'devoDetail>/ETFDEVNAV/results/0/Zfolagrup'}"/>                    
+                    <m:layoutData>
+                        <m:FlexItemData
+                            growFactor="1"
+                            baseSize="auto"
+                            backgroundDesign="Solid"
+                            styleClass="sapUiTinyMargin" />
+                    </m:layoutData>
+                    <m:ObjectAttribute title="{appTxts>/devo.fechacode}" />
+                    <m:ObjectStatus text="{path: 'devoDetail>/ETFDEVNAV/results/0/Zfechreg', formatter: '.ReverseDate'}"/>
+                    <m:ObjectAttribute title="{appTxts>/devo.beforeto}" visible="{= ${headerDetail>Flimrec} === '' ? false : true }"/>
+                    <m:ObjectStatus text="{path: 'devoDetail>/ETFDEVNAV/results/0/Flimrec', formatter: '.ReverseDate'}" visible="{= ${headerDetail>Flimrec} === '' ? false : true }"/>
+                    <m:ObjectAttribute title="{appTxts>/devo.fechaentrega}" visible="{= ${headerDetail>Fechent} === '' ? false : true }"/>
+                    <m:ObjectStatus text="{path: 'devoDetail>/ETFDEVNAV/results/0/Fechent', formatter: '.ReverseDate'}" visible="{= ${headerDetail>Fechent} === '' ? false : true }"/>                    
+                </m:VBox>
+            </m:FlexBox>
+        </headerContent>
+
+		<sections>
+                <ObjectPageSection showTitle="false" title="{appTxts>/fs.detailtype}">
+                    <subSections>
+                        <ObjectPageSubSection>
+                            <blocks>
+                            <m:VBox>
+                                <m:Table items="{path : 'devoDetail>/ETDTDEVNAV/Paginated/results' , sorter : { path : 'Xblnr', ascending : true }}">
+                                        <m:headerToolbar>
+                                            <m:OverflowToolbar>
+                                                <!--<m:Title text="{appTxts>/order.positions}" /> -->
+                                                <m:ToolbarSpacer/>
+                                                <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
+                                                    press=".buildExcel"/>
+                                                <m:Select 
+                                                    visible="{= ${devoDetail>/ETDTDEVNAV/Paginated/results/length} > 0 }"
+                                                    change=".paginateValue(${$parameters>/selectedItem}, 'devoDetail', '/ETDTDEVNAV')">
+                                                    <m:items>
+                                                        <core:Item key="10" text="10"/>
+                                                        <core:Item key="20" text="20"/>
+                                                        <core:Item key="50" text="50"/>
+                                                        <core:Item key="100" text="100"/>
+                                                    </m:items>
+                                                </m:Select>
+                                            </m:OverflowToolbar>
+                                        </m:headerToolbar>
+                                    <m:columns>
+                                        <m:Column><m:Text text="{appTxts>/devo.folioDevo}" /></m:Column>
+                                        <m:Column><m:Text text="{appTxts>/devo.item}" /></m:Column>
+                                        <m:Column><m:Text text="{appTxts>/devo.codigo}" /></m:Column>                                  
+                                        <m:Column><m:Text text="{appTxts>/devo.descr}" /></m:Column>
+                                        <m:Column><m:Text text="{appTxts>/devo.qty}" /></m:Column>    
+                                        <m:Column><m:Text text="{appTxts>/devo.umb}" /></m:Column>                                              
+                                        <m:Column><m:Text text="{appTxts>/devo.uprice}" /></m:Column>
+                                        <m:Column><m:Text text="{appTxts>/devo.total}" /></m:Column>                                     
+                                    </m:columns>
+                                    <m:items>
+
+                                    <m:ColumnListItem >
+                                    <m:cells>
+                                        <m:ObjectIdentifier text="{devoDetail>Xblnr}"/>
+                                        <m:ObjectIdentifier text="{devoDetail>Ebelp}"/>
+                                        <m:ObjectIdentifier text="{devoDetail>Ean11}"/>
+                                        <m:ObjectIdentifier text="{devoDetail>Txz01}"/>
+                                        <m:ObjectIdentifier text="{devoDetail>Menge}"/>
+                                        <m:ObjectIdentifier text="{devoDetail>Meins}"/>
+                                        <m:ObjectIdentifier text="{devoDetail>Netpr} {devoDetail>Waers}"/>
+                                        <m:ObjectIdentifier text="{devoDetail>Brtwr} {devoDetail>Waers}"/>
+                                    </m:cells>
+                                    </m:ColumnListItem>
+                                    </m:items>
+                                </m:Table>
+                                <m:OverflowToolbar visible="{= ${devoDetail>/ETDTDEVNAV/Paginated/results/length} > 0 }">
+                                    <m:Text text="{devoDetail>/ETDTDEVNAV/Paginated/initRow} - {devoDetail>/ETDTDEVNAV/Paginated/endRow} {appTxts>/pagination.of} {devoDetail>/ETDTDEVNAV/results/length}" />
+                                    <m:ToolbarSpacer/>
+                                    <m:Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${devoDetail>/ETDTDEVNAV/Paginated/iterator}, ${devoDetail>/ETDTDEVNAV/Paginated/initRow}, 'devoDetail', '/ETDTDEVNAV')" enabled="{= ${devoDetail>/ETDTDEVNAV/Paginated/iterator} !== 1}" />
+                                    <m:Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${devoDetail>/ETDTDEVNAV/Paginated/iterator}, ${devoDetail>/ETDTDEVNAV/Paginated/endRow}, 'devoDetail', '/ETDTDEVNAV')" enabled="{= ${devoDetail>/ETDTDEVNAV/Paginated/endRow} !== ${devoDetail>/ETDTDEVNAV/results/length}}" />
+                                </m:OverflowToolbar>
+                                </m:VBox>                           
+                            </blocks>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+		</sections>		
+	</ObjectPageLayout>
+</mvc:View>

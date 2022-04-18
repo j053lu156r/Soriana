@@ -1,0 +1,22 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+    xmlns:u="sap.ui.unified"
+	xmlns:core="sap.ui.core">
+    <Dialog title="{appTxts>/iupload.title2}" class="sapUiContentPadding">
+        <List
+            id="logUploadList"
+            mode="None"
+            items="{
+                path: '/Log/results'
+            }">
+            <items>
+                <StandardListItem
+                    title="{Description}"
+                    highlight="{path:'Sts', formatter: '.defineHighlight'}" />
+            </items>
+        </List>
+        <buttons>
+            <Button id="closeDialog" text="{appTxts>/date.close}" press="onCloseDialogUpload"/>
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

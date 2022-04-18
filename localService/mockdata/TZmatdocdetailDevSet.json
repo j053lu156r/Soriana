@@ -1,0 +1,34 @@
+{
+	"results": [{
+		"Belnr": "500004663",
+		"Ebelp": "10",
+		"Txz01": "Empaque carton",
+		"Bpmng": 100,
+		"Bprme": "PZ",
+		"Budat": "2021-01-17 00:00:00",
+		"Dmbtr": 3226,
+		"Waers": "USD",
+		"Xblnr": "FAC1",
+		"Frbnr": "asdf",
+		"Gjahr": "2021",
+		"Ebeln": "400002323",
+		"Lifnr": "253T",
+		"Bukrs": "2530"
+	},
+	{
+		"Belnr": "500006354",
+		"Ebelp": "20",
+		"Txz01": "Bolsa plastica",
+		"Bpmng": 60,
+		"Bprme": "PZ",
+		"Budat": "2021-01-17 00:00:00",
+		"Dmbtr": 2360.5,
+		"Waers": "EUR",
+		"Xblnr": "A000001",
+		"Frbnr": "asdf",
+		"Gjahr": "2021",
+		"Ebeln": "400002323",
+		"Lifnr": "253T",
+		"Bukrs": "2530"
+	}]
+}

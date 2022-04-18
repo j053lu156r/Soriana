@@ -1,0 +1,43 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+ 
+    <Dialog title = "{appTxts>/corder.title}">
+    <l:Grid defaultSpan = "L12 M12 S12" width = "800px" id = "idGrid">
+    <l:content>
+        <f:SimpleForm id="SimpleFormDisplay480_12120"
+			editable="false"
+			layout="ResponsiveGridLayout"
+			labelSpanXL="4"
+			labelSpanL="4"
+			labelSpanM="12"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="0"
+			emptySpanL="0"
+			emptySpanM="0"
+			emptySpanS="0"
+			columnsXL="3"
+			columnsL="3"
+			columnsM="3"
+			singleContainerFullSize="false" >
+			<f:content>
+				<core:Title text="{appTxts>/corder.contact}" />
+				<Text text="{oContact>/Eknam}" />
+				<core:Title text="{appTxts>/corder.telephone}" />
+				<Text text="{oContact>/Ektel}" />
+				<core:Title text="{appTxts>/corder.mail}" />
+				<Text text="{oContact>/SmtpAddr}" />
+			</f:content>
+		</f:SimpleForm>
+    </l:content>
+    </l:Grid>
+    <buttons>
+    <Button
+				text="{i18n>dialogCloseButtonText}"
+				press="onCloseDialog"/>
+    </buttons>
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,21 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		contentWidth= "450px"
+		contentHeight= "300px"
+        id= "StatusSearch"
+		title="{appTxts>/rep.dealers}"
+		confirm="onValueStatus"
+		cancel="handleClose"
+		items="{
+			path: 'catalogStatus>/Status'
+		}" >
+		<StandardListItem
+			title="{catalogStatus>description}"
+			iconDensityAware="false"
+			iconInset="false"
+			type="Active"
+			/>
+	</SelectDialog>
+</core:FragmentDefinition>

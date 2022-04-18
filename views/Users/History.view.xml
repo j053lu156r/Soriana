@@ -1,0 +1,54 @@
+<mvc:View displayBlock="true" 
+controllerName="demo.controllers.Users.History" 
+height="100%"
+		xmlns:mvc="sap.ui.core.mvc"
+		xmlns="sap.f"
+		xmlns:m="sap.m">
+
+	<DynamicPage toggleHeaderOnTitleClick="false">
+		<title>
+			<DynamicPageTitle>
+				<heading>
+					<m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Center">
+						<m:Title text="{appTxts>/historyU.title}" wrapping="true" class="sapUiTinyMarginEnd"/>
+					</m:FlexBox>
+				</heading>
+
+				<navigationActions>
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://excel-attachment" press=".exportHistoryXls" tooltip="{appTxts>/global.export}" visible="{= ${historyUserModel>/ETHISTORINAV/results/length} > 0}"/>
+					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/endColumn/fullScreen} !== null }"/>
+					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/endColumn/exitFullScreen} !== null }"/>
+					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close column" visible="{= ${/actionButtonsInfo/endColumn/closeColumn} !== null }"/>
+				</navigationActions>
+
+			</DynamicPageTitle>
+		</title>
+		<content>
+			<m:Table id="historyTable"
+                    items="{path : 'historyUserModel>/ETHISTORINAV/results', sorter: [{
+						path: 'Erdat',
+						descending: true
+					},
+                    {
+                        path: 'Cputm',
+                        descending: true
+                    }]}">
+                <m:columns>
+                    <m:Column />
+                </m:columns>
+                <m:items>
+                    <m:ColumnListItem>
+                        <m:cells>
+                            <m:VBox>
+                            <m:ObjectIdentifier title="{historyUserModel>Hname}" text="{historyUserModel>Erdat} {historyUserModel>Cputm}" />
+                            <m:Text text="{appTxts>/historyU.chagedBy}: {historyUserModel>Email}" visible="{= ${historyUserModel>Email} !== '' }"/>                            
+                            <m:Text text="{appTxts>/global.vendor}: {historyUserModel>Lifnr}" visible="{= ${historyUserModel>Lifnr} !== '' }"/>    
+                            <m:Text text="{appTxts>/historyU.function}: {historyUserModel>Fname}" visible="{= ${historyUserModel>Fname} !== '' }"/>                            
+                            </m:VBox>
+                        </m:cells>
+                    </m:ColumnListItem>
+                </m:items>
+            </m:Table>
+		</content>
+	</DynamicPage>
+</mvc:View>

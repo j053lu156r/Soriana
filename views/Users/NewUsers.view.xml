@@ -1,0 +1,127 @@
+<mvc:View
+	controllerName="demo.controllers.Users.NewUsers"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+    xmlns:f1="sap.f"
+	xmlns="sap.m">
+    <f1:DynamicPage  
+		class="sapUiContentPadding" showFooter="true">
+        <f1:content>
+        <VBox class="sapUiSmallMargin">
+            <f:SimpleForm id="SimpleFormToolbar"
+                editable="false"
+                layout="ResponsiveGridLayout"
+                title="{appTxts>/nuser.btnnew}"
+                labelSpanXL="4"
+                labelSpanL="3"
+                labelSpanM="4"
+                labelSpanS="12"
+                adjustLabelSpan="false"
+                emptySpanXL="0"
+                emptySpanL="4"
+                emptySpanM="0"
+                emptySpanS="0"
+                columnsXL="2"
+                columnsL="1"
+                columnsM="1"
+                singleContainerFullSize="false"
+                ariaLabelledBy="Title1" >
+                <f:toolbar>
+				<Toolbar id="TB1">
+					<Title id="Title1" text="{appTxts>/nuser.btnnew}"/>
+					<ToolbarSpacer />
+					<Button type="Reject" text="{appTxts>/nuser.cancel}" press="onCancel" />
+                    <Button type="Accept" text="{appTxts>/nuser.save}" press="createUser" />
+				</Toolbar>
+			    </f:toolbar>
+                <f:content>
+                    <core:Title text="{appTxts>/nuser.personalData}" />
+                    <Label text="{appTxts>/nuser.name}" />
+                    <Input id="Name1" maxLength="35"/>
+                    <Label text="{appTxts>/nuser.lastName}" />
+                    <Input id="Name2" maxLength="35"/>
+                    <Label text="{appTxts>/nuser.secondLastName}" />
+                    <Input id="Name3" maxLength="35"/>
+                    <Label text="{appTxts>/nuser.dep}" />
+                    <Input id="Depto" maxLength="30" />
+                    <Label text="{appTxts>/nuser.telephone}" />
+                    <Input id="Celular2" type="Tel" change="hasChangePhone" maxLength="20" />
+                    
+
+                    <Label text="{appTxts>/nuser.supplier}" />
+                    <Input
+                            id="supplierInput"
+                            placeholder="{appTxts>/nuser.supplier}"
+                            showSuggestion="true"
+                            valueHelpOnly="true"
+                            showValueHelp="true"
+                            valueHelpRequest=".onValueHelpRequest"
+                            value="{configSite>/supplierInput}"
+                            >
+                            
+                    </Input>
+                    <RadioButtonGroup >
+                        <RadioButton id="provUser" visible="{= ${userdata>/ERol} === '0001'}" select="onSelectColaborator" text="{appTxts>/rol.supplier}" />
+                        <RadioButton id="bussUser" visible="{= ${userdata>/ERol} === '0001'}" select="onSelectColaborator" text="{appTxts>/rol.collabSoriana}" />
+                        <RadioButton id="callUser" visible="{= ${userdata>/ERol} === '0001'}" select="onSelectColaborator" text="{appTxts>/rol.callCenter}" />
+                    </RadioButtonGroup>
+
+                    <Label text="{appTxts>/nuser.job}" />
+                    <Input id="Puesto" maxLength="40"/>
+                    <Label text="{appTxts>/nuser.directBoss}" />
+                    <Input id="Jefe" maxLength="50"/>
+                    <Label text="{appTxts>/nuser.telephone}" />
+                    <Input id="Tel2" type="Text" change="hasChangePhone" maxLength="20" />
+
+                    <core:Title text="{appTxts>/nuser.connectionData}" />
+                    <Label text="{appTxts>/nuser.mail}" />
+                    <Input id="Mail" type="Email" change="hasChangeMail" />
+                    <Label text="{appTxts>/nuser.confirmMail}" />
+                    <Input id="Mail2" type="Email" change="hasChangeMail"/>
+                    
+                </f:content>
+            </f:SimpleForm>
+
+        <Title text="{appTxts>/nuser.function}" titleStyle="H1" class="sapUiMediumMarginBegin" />
+            <FlexBox 
+                direction="Column"
+                alignItems="Start"
+                alignContent="Stretch" 
+                items="{tilesModelLocal>/sections}">
+                <items>
+                    <FlexBox 
+                    alignItems="Stretch" 
+                    alignContent="Stretch" 
+                    direction="Row" 
+                    renderType="Bare" 
+                    wrap="Wrap" 
+                    width="100%" 
+                    displayInline="false" 
+                    fitContainer="true" 
+                    items="{path: 'tilesModelLocal>tiles', templateShareable:false}"
+                    class="sapUiMediumMargin">
+                        <items>
+                            <VBox width="25%">
+                                <Title text="{path: 'tilesModelLocal>title', formatter: '.formatTranslate'}" />
+                                <FlexBox
+                                id="fBoxFunctions"
+                                direction="Column" 
+                                alignItems="Start"
+                                items="{path: 'tilesModelLocal>functions', templateShareable:false}">
+                                    <items>
+                                        <CheckBox text="{path: 'tilesModelLocal>idFunction', formatter: '.findFunName'}" select=".functionSelected" selected="{= ${tilesModelLocal>selected}}" />
+                                    </items>
+                                </FlexBox>
+                            </VBox>                            
+                        </items>
+                    </FlexBox>
+            
+                </items>
+            </FlexBox>
+        </VBox>
+        
+    </f1:content>
+	</f1:DynamicPage>
+</mvc:View>

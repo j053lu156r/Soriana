@@ -1,0 +1,80 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+    xmlns:upload="sap.m.upload"
+	xmlns:core="sap.ui.core"
+    id="CreateDealersFragment">
+    <Dialog title="{appTxts>/rep.create}" class="sapUiContentPadding" 
+    		contentWidth= "680px"
+		    contentHeight= "400px" 
+            >
+    	<Label text="{appTxts>/rep.Id}" tooltip="{appTxts>/rep.Id}"/> 
+            <Input                
+                id="Id"
+                placeholder="{appTxts>/rep.tooltipdealer}"
+                showSuggestion="false"
+                textAlign="Center"
+                required="false"
+                editable="false"
+                >
+            </Input>
+    	<Label id="lblSupplier" text="{appTxts>/rep.supplier}" tooltip="{appTxts>/rep.supplier}"/> 
+            <Input                
+                id="supplier"
+                placeholder="{appTxts>/rep.tooltipsupplier}"
+                showSuggestion="false"
+                valueHelpOnly="true"
+                showValueHelp="true"
+                valueHelpRequest=".onSupplierHelpRequest"
+                textAlign="Center"
+                required="true"
+                editable="false"
+                >
+            </Input>
+            <Label text="{appTxts>/rep.name}" tooltip="{appTxts>/rep.name}"/>
+            <Input                
+                id="name"
+                placeholder="{appTxts>/rep.tooltipnames}"
+                showSuggestion="false"
+                valueHelpOnly="false"
+                showValueHelp="false"
+                textAlign="Center"
+                required="true"
+                >
+            </Input>
+        <Label text="{appTxts>/rep.key}" tooltip="{appTxts>/rep.key}"/> 
+            <Input
+                id="key"
+                placeholder="{appTxts>/rep.tooltipkey}"
+                showSuggestion="false"
+                valueHelpOnly="false"
+                showValueHelp="false"
+                textAlign="Center"
+                required="true"
+                 >
+            </Input> 
+        <Label text="{appTxts>/rep.fcad}" tooltip="{appTxts>/rep.fcad}"/> 
+                <DatePicker 
+                    id="fcad" 
+                    change="onChange" 
+                    required="true" 
+                    textAlign="Center"/>
+        <Label text="{appTxts>/rep.status}" tooltip="{appTxts>/rep.status}"/> 
+            <Input
+                id="status"
+                placeholder="{appTxts>/rep.tooltipfcad}"
+                showSuggestion="false"
+                valueHelpOnly="true"
+                showValueHelp="true"
+                valueHelpRequest=".getStatus"
+                editable="true"
+                textAlign="Center"
+                required="true"            
+                >
+            </Input>          
+        <buttons>
+            <Button id="saveDialog" text="{appTxts>/rep.savedealer}" press="onSave" />
+            <Button id="modifyDialog" text="{appTxts>/rep.modify}" press="onModify" />
+            <Button id="closeDialog" text="{appTxts>/rep.cancel}" press="onCancel"/>
+        </buttons>
+	</Dialog>
+</core:FragmentDefinition>

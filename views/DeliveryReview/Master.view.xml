@@ -1,0 +1,208 @@
+<mvc:View displayBlock="true" xmlns:f="sap.f" xmlns:mvc="sap.ui.core.mvc"
+xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants" xmlns="sap.m" xmlns:core="sap.ui.core"
+	 controllerName="demo.controllers.DeliveryReview.Master" height="100%">
+	<f:DynamicPage  
+		class="sapUiContentPadding">
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle backgroundDesign="Transparent">
+                <f:heading>
+                    <vm:VariantManagement standardItemText="{appTxts>/invoice.title}">
+                    </vm:VariantManagement>
+                </f:heading>
+                <f:actions>
+                    <ToolbarSpacer/>
+                    <Button
+                            text="{appTxts>/sendInv.load}"
+                            type="Emphasized"
+                            press="openUploadDialog"/>
+                    <Button
+                            id= "btnLog"
+                            text="{appTxts>/invoice.explog}"
+                            type="Emphasized"
+                            press=".createLogExcel"
+                            visible= "false" />  
+                </f:actions> 
+            </f:DynamicPageTitle>
+        </f:title>
+        <!-- DynamicPage Header -->
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <fb:FilterBar id="filterBar"  header="Header"
+		                reset="onReset" search="searchData" clear="onClear" cancel="onCancel" 
+		                filtersDialogClosed = "onFiltersDialogClosed"
+		                showRestoreButton="false" showClearButton="false" useToolbar="false">
+			
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="{appTxts>/global.date}" mandatory="true" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <DateRangeSelection id="dateRange" required="false"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab" label="{appTxts>/invoice.vendor}" mandatory="true" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        id="supplierInput"
+                                        placeholder="Proveedor"
+                                        showSuggestion="true"
+                                        valueHelpOnly="true"
+                                        showValueHelp="true"
+                                        valueHelpRequest=".onValueHelpRequest"
+                                        value="{configSite>/supplierInput}"
+                                        >
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                         <fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="A1" label="{appTxts>/invoice.receiptsheet}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input type="Text" id="folioRecibo" change="onChange"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="A2" label="{appTxts>/invoice.ffactura}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="false">
+                                <fb:control>
+                                    <Input type="Text" id="fact" change="onChange"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>    
+<!-- Begin of Insert BORTA 23.07.2021 - Filtro para buscar por Folio Factura -->
+                            <fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="A3" label="{appTxts>/invoice.invoicesheet}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="false">
+                                <fb:control>
+                                    <Input type="Text" id="xblnr" change="onChange"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>                                                 
+<!-- End of Insert BORTA 23.07.2021 - Filtro para buscar por Folio Factura -->
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Contabilizadas" label="{appTxts>/invoice.cont}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <CheckBox id="conta"  visible="true" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+
+	                </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+		<f:content>
+            <VBox>
+			<Table sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
+                noDataText="{appTxts>/pay.merchandise}" 
+                id="complPagoList"
+                mode="MultiSelect" 
+                alternateRowColors="true" 
+                items="{path: 'tableDelivReview>/FACNAV/Paginated/results', sorter : { path : 'Belnr', descending : true }}"
+				>
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title text="{appTxts>/invoice.title} ({tableDelivReview>/FACNAV/results/length})" />
+                        <ToolbarSpacer/>
+                        <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
+                        press=".buildExportTable"
+                        visible="{= ${tableDelivReview>/FACNAV/results/length} > 0}"
+                        />
+                        <Select 
+                            visible="{= ${tableDelivReview>/FACNAV/Paginated/results/length} > 0 }"
+                            change=".paginateValue(${$parameters>/selectedItem}, 'tableDelivReview', '/FACNAV')">
+                            <items>
+                                <core:Item key="10" text="10"/>
+                                <core:Item key="20" text="20"/>
+                                <core:Item key="50" text="50"/>
+                                <core:Item key="100" text="100"/>
+                            </items>
+                        </Select>
+                    </OverflowToolbar>
+                </headerToolbar>
+				<columns>
+					<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/invoice.invoicesheet}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+					<Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/invoice.ffactura}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+					<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/invoice.invoicedate}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/global.year}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/invoice.amount}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+					<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/invoice.uuid}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+					<Column xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+						xmlns="sap.m" width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline"
+						mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/invoice.order}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+                    <Column xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+						xmlns="sap.m" width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline"
+						mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/invoice.receiptsheet}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+                    <Column xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+						xmlns="sap.m" width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline"
+						mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/invoice.status}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem type ="Navigation" press="onListItemPress">
+						<cells>
+							<Text xmlns="sap.m" text="{tableDelivReview>Xblnr}"/>
+							<Text xmlns="sap.m" text="{tableDelivReview>Belnr}"/>
+ <!--                           <Text xmlns="sap.m" text="{path: 'tableDelivReview>Bldat', formatter: '.formatDate'}"/> !-->
+                            <Text xmlns="sap.m" text="{path: 'tableDelivReview>Bldat', formatter: '.ReverseDate'}"/>
+                            <Text xmlns="sap.m" text="{tableDelivReview>Gjahr}"/>                          
+                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+								xmlns="sap.m"
+								number="{parts: [{path: 'tableDelivReview>Rmwwr'}, {path: 'tableDelivReview>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+								unit="{tableDelivReview>Waers}" emphasized="false" state="None"/>
+                            <Text xmlns="sap.m" text="{tableDelivReview>ZtfiglUuid}"/>
+							<Text xmlns="sap.m" text="{tableDelivReview>Ebeln}"/>
+                            <Text xmlns="sap.m" text="{tableDelivReview>Sgtxt}"/>
+                            <Text xmlns="sap.m" text="{tableDelivReview>Estatus}"/>                            
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+            <OverflowToolbar visible="{= ${tableDelivReview>/FACNAV/Paginated/results/length} > 0 }">
+                <Text text="{tableDelivReview>/FACNAV/Paginated/initRow} - {tableDelivReview>/FACNAV/Paginated/endRow} {appTxts>/pagination.of} {tableDelivReview>/FACNAV/results/length}" />
+                <ToolbarSpacer/>
+                <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableDelivReview>/FACNAV/Paginated/iterator}, ${tableDelivReview>/FACNAV/Paginated/initRow}, 'tableDelivReview', '/FACNAV')" enabled="{= ${tableDelivReview>/FACNAV/Paginated/iterator} !== 1}" />
+                <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableDelivReview>/FACNAV/Paginated/iterator}, ${tableDelivReview>/FACNAV/Paginated/endRow}, 'tableDelivReview', '/FACNAV')" enabled="{= ${tableDelivReview>/FACNAV/Paginated/endRow} !== ${tableDelivReview>/FACNAV/results/length}}" />
+            </OverflowToolbar>
+            </VBox>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

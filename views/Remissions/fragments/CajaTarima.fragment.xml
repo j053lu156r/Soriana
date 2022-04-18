@@ -1,0 +1,39 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:f="sap.f"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:u="sap.ui.unified"
+	xmlns:layout="sap.ui.layout">
+	<Dialog
+		id="selectTypeDialog"
+		showHeader="true"
+		verticalScrolling="false"
+        title="Seleccionar caja/tarima"
+        class="sapUiContentPadding"
+		>
+        <Text class="sapUiSmallMarginBottom"
+                text="Selecciona o crea la caja/tarima para este registro."/>
+        <VBox
+            alignItems="Center"
+            justifyContent="Center"
+            width="100%">
+            <HBox>
+                <Select id="packageList"
+                    items="{selectedPositionsQty>/packages/pallets}"
+                    visible="{= ${selectedPositionsQty>/packages/pallets/length} > 0}"
+                        >
+                    <items>
+                        <core:Item key="{selectedPositionsQty>id}" text="Caja/Tarima {selectedPositionsQty>id} ({selectedPositionsQty>Werks} - {selectedPositionsQty>Name1})" />
+                    </items>
+                </Select>
+                <Button icon="sap-icon://add" visible="{= ${selectedPositionsQty>/packages/pallets/length} > 0}" press="addToPackage(${/itemPath})" />
+            </HBox>
+            <Button text="Nueva caja/tarima" icon="sap-icon://add-product" press="newPackage(${/itemPath})" />
+        </VBox>
+        <buttons>
+            <Button text="{appTxts>/rem.cancel}" press="onCloseNewPackage"/>
+            <Button text="{appTxts>/rem.continue}" press="onContinueSelect" visible="{= ${selectedPositionsQty>/packages/length} > 0}"/>
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,28 @@
+{
+	"results": [{
+		"Mandt": "250",
+		"Ebelp": "50002326",
+		"Retpo": "",
+		"Ebeln": "4500000239",
+		"Bedat": "2021-01-17 00:00:00",
+		"Waers": "MXN",
+		"Webre": "asdf",
+		"Netwr": 7468.59,
+		"Repos": "asd",
+		"Lifnr": "253T",
+		"Lifre": "asdf"
+	},
+	{
+		"Mandt": "250",
+		"Ebelp": "50002326",
+		"Retpo": "X",
+		"Ebeln": "4500000240",
+		"Bedat": "2021-01-17 00:00:00",
+		"Waers": "MXN",
+		"Webre": "asdf",
+		"Netwr": 1573.5,
+		"Repos": "asd",
+		"Lifnr": "253T",
+		"Lifre": "asdf"
+	}]
+}

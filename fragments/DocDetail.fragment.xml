@@ -1,0 +1,58 @@
+<!DOCTYPE XML>
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:unified="sap.ui.unified">
+	<Dialog title="{appTxts>/docdetail.title}" horizontalScrolling="true">
+	<Table
+		noDataText="{appTxts>/docdetail.noData}"
+		fixedLayout="false"
+		items="{
+			path : 'dialog>/NavDetails/results',
+			sorter : {
+				path : 'Belnr',
+				descending : false
+			}
+		}">
+		<ColumnListItem>
+			<cells>
+				<Text text="{dialog>Ebelp}" />
+				<Text text="{dialog>Txz01}" />
+				<Text text="{dialog>Xblnr}" />
+				<Text text="{dialog>Bpmng} {dialog>Bprme}" />
+				<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout" xmlns="sap.m" number="{parts: [{path: 'dialog>Dmbtr'}, {path: 'dialog>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{dialog>Waers}" emphasized="false" state="None"/>
+			</cells>
+		</ColumnListItem>
+		<columns>
+			<Column>
+				<header>
+					<Text text="{appTxts>/docdetail.position} " />
+				</header>
+			</Column>
+			<Column>
+				<header>
+					<Text text="{appTxts>/docdetail.textBrief} " />
+				</header>
+			</Column>
+			<Column>
+				<header>
+					<Text text="{appTxts>/docdetail.reference} " />
+				</header>
+			</Column>
+			<Column>
+				<header>
+					<Text text="{appTxts>/docdetail.quantity} " />
+				</header>
+			</Column>
+			<Column hAlign="Center">
+				<header>
+					<Text text="{appTxts>/docdetail.amount} " />
+				</header>
+			</Column>
+		</columns>
+	</Table>
+	<buttons>
+			<Button id="closeDialog" text="{appTxts>/docdetail.close}" press="onCloseDialog"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

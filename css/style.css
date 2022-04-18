@@ -1,0 +1,29 @@
+@charset "ISO-8859-1";
+
+.factsNumDetail{
+	font-size: 10px;
+	color: "#ffffff";
+}
+
+
+.myTextField { margin-left: 100%; }
+
+
+.side-navigation-demo {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+
+    -webkit-box-direction: normal;
+    -webkit-box-orient: vertical;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+
+    max-width: 15rem;
+}
+
+.development{
+	font-size:4pt;
+}

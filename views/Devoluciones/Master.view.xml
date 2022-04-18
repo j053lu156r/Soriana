@@ -1,0 +1,187 @@
+<mvc:View displayBlock="true" 
+xmlns:f="sap.f" 
+xmlns:mvc="sap.ui.core.mvc"
+xmlns:fb="sap.ui.comp.filterbar" 
+xmlns:vm="sap.ui.comp.variants" 
+xmlns="sap.m"
+xmlns:t="sap.ui.table"
+xmlns:core="sap.ui.core" 
+	 controllerName="demo.controllers.Devoluciones.Master" height="100%">
+	<f:DynamicPage  
+		class="sapUiContentPadding">
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle backgroundDesign="Transparent">
+                <f:heading>
+                    <vm:VariantManagement standardItemText="{appTxts>/devo.title}">
+                    </vm:VariantManagement>
+                </f:heading>
+                 <f:actions>
+                    <ToolbarSpacer/>
+                    <Button text="{appTxts>/devo.createcode}" type="Emphasized" press="codeButton"/>
+                    <ToolbarSpacer/>
+                    <Button text="{appTxts>/devo.view}" type="Emphasized" press="printButton"/>
+                 </f:actions>
+            </f:DynamicPageTitle>
+        </f:title>
+        <!-- DynamicPage Header -->
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <fb:FilterBar id="filterBar"  header="Header"
+		                reset="onReset" search="searchData" clear="onClear" cancel="onCancel" 
+		                filtersDialogClosed = "onFiltersDialogClosed"
+		                showRestoreButton="false" showClearButton="false" useToolbar="false">
+			
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="F1" name="budat" label="{appTxts>/devo.fechaDevo}" mandatory="true" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <DateRangeSelection id="budat" change="onChange" required="false"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab" label="Proveedor" mandatory="true" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        id="supplierInput"
+                                        placeholder="Proveedor"
+                                        showSuggestion="true"
+                                        valueHelpOnly="true"
+                                        showValueHelp="true"
+                                        valueHelpRequest=".onValueHelpRequest"
+                                        value="{configSite>/supplierInput}"
+                                        >
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="Documento" label="{appTxts>/devo.folioDevo}" labelTooltip="Tooltip GroupItem Example" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input type="Text" id="xblnr"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="F1" name="zfechreg" label="{appTxts>/devo.fechaentrega}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="false">
+                                <fb:control>
+                                    <DateRangeSelection id="zfechreg" change="onChange" required="false"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="werks" label="{appTxts>/devo.sucursal}" labelTooltip="Tooltip GroupItem Example" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input type="Text" id="werks"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="zfolagrup" label="{appTxts>/devo.Code}" labelTooltip="Tooltip GroupItem Example" partOfCurrentVariant="true" visibleInFilterBar="false">
+                                <fb:control>
+                                    <Input type="Text" id="zfolagrup"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="zfolfedex" label="{appTxts>/devo.folioFedex}" labelTooltip="Tooltip GroupItem Example" partOfCurrentVariant="true" visibleInFilterBar="false">
+                                <fb:control>
+                                    <Input type="Text" id="zfolfedex"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Anuladas" label="{appTxts>/devo.Anuladas}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <CheckBox id="anul"  visible="true" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                        </fb:filterGroupItems>
+	                </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+		<f:content>
+            <VBox>
+			<Table sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
+                    noDataText="{appTxts>/fs.nodata}"
+                    id="tableHeader"
+                    mode="MultiSelect"
+                    rememberSelections="false"
+                    alternateRowColors="true" 
+                    items="{path: 'tableHeaderDevo>/ETFDEVNAV/Paginated/results', sorter : [{ path : 'Zfolagrup' , descending : true  }, { path : 'Xblnr', descending : true }]}">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title text="{appTxts>/devo.title} ({tableHeaderDevo>/ETFDEVNAV/results/length})" />
+                        <ToolbarSpacer/>  
+                        <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
+                        press=".buildExportTable"
+                        visible="{= ${tableHeaderDevo>/ETFDEVNAV/results/length} > 0}"/>                                             
+                        <Select 
+                            visible="{= ${tableHeaderDevo>/ETFDEVNAV/Paginated/results/length} > 0 }"
+                            change=".paginateValue(${$parameters>/selectedItem}, 'tableHeaderDevo', '/ETFDEVNAV')">
+                            <items>
+                                <core:Item key="10" text="10"/>
+                                <core:Item key="20" text="20"/>
+                                <core:Item key="50" text="50"/>
+                                <core:Item key="100" text="100"/>
+                            </items>
+                        </Select>
+                    </OverflowToolbar>
+                </headerToolbar>
+				<columns>
+					<Column width="auto" hAlign="Left">
+						<header>
+							<Text text="{appTxts>/devo.folioDevo}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/devo.fechaDevo}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/devo.sucursal}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/devo.folioFedex}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/devo.Code}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/devo.type}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press="onListItemPress" selected="{tableHeaderDevo>Selected}">
+						<cells>
+                            <ObjectIdentifier title="{tableHeaderDevo>Xblnr}" text="" titleActive="false" visible="true" />
+							<Text text="{path: 'tableHeaderDevo>Budat', formatter: '.ReverseDate'}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{tableHeaderDevo>Werks} - {tableHeaderDevo>Nwerks}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/> 
+                            <Text text="{tableHeaderDevo>Zfolfedex }" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>   
+                            <Text text="{tableHeaderDevo>Zfolagrup}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{tableHeaderDevo>Devol}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>   
+						</cells>                        
+					</ColumnListItem>
+				</items>
+			</Table>
+            <OverflowToolbar visible="{= ${tableHeaderDevo>/ETFDEVNAV/Paginated/results/length} > 0 }">
+                <Text text="{tableHeaderDevo>/ETFDEVNAV/Paginated/initRow} - {tableHeaderDevo>/ETFDEVNAV/Paginated/endRow} {appTxts>/pagination.of} {tableHeaderDevo>/ETFDEVNAV/results/length}" />
+                <ToolbarSpacer/>
+                <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableHeaderDevo>/ETFDEVNAV/Paginated/iterator}, ${tableHeaderDevo>/ETFDEVNAV/Paginated/initRow}, 'tableHeaderDevo', '/ETFDEVNAV')" enabled="{= ${tableHeaderDevo>/ETFDEVNAV/Paginated/iterator} !== 1}" />
+                <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableHeaderDevo>/ETFDEVNAV/Paginated/iterator}, ${tableHeaderDevo>/ETFDEVNAV/Paginated/endRow}, 'tableHeaderDevo', '/ETFDEVNAV')" enabled="{= ${tableHeaderDevo>/ETFDEVNAV/Paginated/endRow} !== ${tableHeaderDevo>/ETFDEVNAV/results/length}}" />
+            </OverflowToolbar>
+            </VBox>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

@@ -1,0 +1,59 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:unified="sap.ui.unified">
+	<Dialog id="idDialogUsDet" title="{appTxts>/duser.title}">
+		
+		<VBox
+		class="sapUiSmallMargin"
+			id=""
+			models=""
+			bindingContexts=""
+			objectBindings=""
+			metadataContexts=""
+			Type=""
+			blocked="false"
+			busy="false"
+			busyIndicatorDelay="1000"
+			busyIndicatorSize="Medium"
+			visible="true"
+			fieldGroupIds="[]"
+			height="auto"
+			width="auto"
+			displayInline="false"
+			direction="Column"
+			fitContainer="false"
+			renderType="Div"
+			justifyContent="Start"
+			alignItems="Stretch"
+			wrap="NoWrap"
+			alignContent="Stretch"
+			backgroundDesign="Transparent"
+		
+			>
+			
+			<items items="{contactsDet>}">
+				<Label text="{appTxts>/duser.user} " /><Text id="userText" text="{Smtp_addr}" />
+				<Input xmlns="sap.m" id="userInput" value="{Smtp_addr}" visible="false"/>
+			
+				<Label text="{appTxts>/duser.dep} " /><Text id="deptoText" text="{contactsDet>Abtnr}" />
+				<Input xmlns="sap.m" id="deptoInput" value="{contactsDet>Abtnr}"  visible="false"/>
+				
+				<Label text="{appTxts>/duser.post} " /><Text id="puestoText" text="{contacts>Pafkt}" />
+				<Input xmlns="sap.m" id="puestoInput" value="{contacts>Pafkt}"  visible="false"/>
+				
+				<Label text="{appTxts>/duser.telephone} " /><Text id="telText" text="XXX-XXXX" />
+				<Input xmlns="sap.m" id="telInput" value="XXX-XXXX"  visible="false"/>
+				
+				<Label text="{appTxts>/duser.mobile} " /><Text id="celText" text="55-XXX-XXXX" />
+				<Input xmlns="sap.m" id="celInput" value="55-XXX-XXXX"  visible="false"/>
+				
+				<Button xmlns="sap.m" text="{appTxts>/duser.edit}" id="editBtn" visible="true"  press="editUser"/>
+				<Button xmlns="sap.m" text="{appTxts>/duser.save}" id="saveBtn" visible="false"  press="saveUser"/>
+				
+				<CheckBox text="{appTxts>/duser.blocked}"  />
+			</items><!-- sap.ui.core.Control -->
+		</VBox>
+		
+		<buttons>
+			<Button text="{i18n>dialogCloseButtonText}" press="onCloseDialog"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

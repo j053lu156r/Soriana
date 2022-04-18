@@ -1,0 +1,13 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+    <Dialog title="{appTxts>/quotes.cardTitle}" class="sapUiContentPadding">
+        <core:HTML content='{/html}'>
+		</core:HTML>
+        <buttons>
+            <Button text="{appTxts>/quotes.print}" press="saveCoordinates"/>
+            <Button text="{appTxts>/quotes.sendMail}" press="senMailCard" />
+            <Button id="closeDialog" text="{appTxts>/date.close}" press="handleCloseCard"/>
+        </buttons>
+	</Dialog>
+</core:FragmentDefinition>

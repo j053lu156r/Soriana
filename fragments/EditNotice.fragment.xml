@@ -1,0 +1,28 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		contentWidth= "450px"
+		contentHeight= "300px"
+		noDataText="{appTxts>/ednotice.noData}"
+		title="{appTxts>/ednotice.title}"
+		search="handleSearch"
+		confirm="onUpdate"
+		cancel="handleClose"
+		items="{
+			path: 'notice>/results',
+			sorter : {
+				path : 'Fecha',
+				descending : false
+			}
+		}" >
+		<StandardListItem
+			id="iDListItem"
+			title="{notice>Head}"
+			description="{notice>Fecha}"
+			icon="resources/2018-03-13_12-04-04.jpg"
+			iconDensityAware="false"
+			iconInset="false"
+			type="Active" />
+	</SelectDialog>
+</core:FragmentDefinition>

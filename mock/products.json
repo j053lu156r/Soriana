@@ -1,0 +1,198 @@
+{
+	"Name": "Product test",
+	"ProductCollection": {
+		"results": [{
+			"ProductId": "",
+			"Category": "Smartphones and Tablets",
+			"MainCategory": "Smartphones & Tablets",
+			"TaxTarifCode": "1",
+			"SupplierName": "Ultrasonic United",
+			"WeightMeasure": 0.75,
+			"WeightUnit": "KG",
+			"Description": "7 inch 1280x800 HD display (216 ppi), Quad-core processor, 16 GB internal storage (actual formatted capacity will be less), 4325 mAh battery (Up to 8 hours of active use), white or black",
+			"Name": "Por entrada de mercancia",
+			"Status": "Available",
+			"Quantity": 19,
+			"UoM": "PC",
+			"CurrencyCode": "EUR",
+			"Price": 549,
+			"Width": 9,
+			"Depth": 15,
+			"Height": 1.5,
+			"DimUnit": "cm"
+		}, {
+			"ProductId": "",
+			"Category": "Smartphones and Tablets",
+			"MainCategory": "Smartphones & Tablets",
+			"TaxTarifCode": "1",
+			"SupplierName": "Ultrasonic United",
+			"WeightMeasure": 2.8,
+			"WeightUnit": "KG",
+			"Description": "10.5-inch Multitouch HD Screen (1280 x 800), 16GB Internal Memory, Wireless N Wi-Fi; Bluetooth, GPS Enabled, 1GHz Dual-Core Processor",
+			"Name": "Por orden de compra",
+			"Status": "Available",
+			"Quantity": 17,
+			"UoM": "PC",
+			"CurrencyCode": "EUR",
+			"Price": 549,
+			"Width": 48,
+			"Depth": 31,
+			"Height": 4.5,
+			"DimUnit": "cm"
+		}, {
+			"ProductId": "",
+			"Category": "Smartphones and Tablets",
+			"MainCategory": "Smartphones & Tablets",
+			"TaxTarifCode": "1",
+			"SupplierName": "Ultrasonic United",
+			"WeightMeasure": 2.5,
+			"WeightUnit": "KG",
+			"Description": "8-inch Multitouch HD Screen (2000 x 1500) 32GB Internal Memory, Wireless N Wi-Fi, Bluetooth, GPS Enabled, 1.5 GHz Quad-Core Processor",
+			"Name": "Otros costos en compra",
+			"Status": "Available",
+			"Quantity": 24,
+			"UoM": "PC",
+			"CurrencyCode": "EUR",
+			"Price": 529,
+			"Width": 38,
+			"Depth": 21,
+			"Height": 3.5,
+			"DimUnit": "cm"
+		}
+	]},
+	"ProductCollectionStats": {
+		"Counts": {
+			"Total": 123,
+			"Weight": {
+				"Ok": 53,
+				"Heavy": 51,
+				"Overweight": 19
+			}
+		},
+		"Groups": {
+			"Category": {
+				"Accessories": 34,
+				"Desktop Computers": 7,
+				"Flat Screens": 2,
+				"Keyboards": 4,
+				"Laptops": 11,
+				"Printers": 9,
+				"Smartphones and Tablets": 9,
+				"Mice": 7,
+				"Computer System Accessories": 8,
+				"Graphics Card": 4,
+				"Scanners": 4,
+				"Speakers": 3,
+				"Software": 8,
+				"Telekommunikation": 3,
+				"Servers": 3,
+				"Flat Screen TVs": 3
+			},
+			"SupplierName": {
+				"Titanium": 21,
+				"Technocom": 22,
+				"Red Point Stores": 7,
+				"Very Best Screens": 14,
+				"Smartcards": 2,
+				"Alpha Printers": 5,
+				"Printer for All": 8,
+				"Oxynum": 8,
+				"Fasttech": 15,
+				"Ultrasonic United": 15,
+				"Speaker Experts": 3,
+				"Brainsoft": 3
+			}
+		},
+		"Filters": [{
+			"type": "Category",
+			"values": [{
+				"text": "Accessories",
+				"data": 34
+			}, {
+				"text": "Desktop Computers",
+				"data": 7
+			}, {
+				"text": "Flat Screens",
+				"data": 2
+			}, {
+				"text": "Keyboards",
+				"data": 4
+			}, {
+				"text": "Laptops",
+				"data": 11
+			}, {
+				"text": "Printers",
+				"data": 9
+			}, {
+				"text": "Smartphones and Tablets",
+				"data": 9
+			}, {
+				"text": "Mice",
+				"data": 7
+			}, {
+				"text": "Computer System Accessories",
+				"data": 8
+			}, {
+				"text": "Graphics Card",
+				"data": 4
+			}, {
+				"text": "Scanners",
+				"data": 4
+			}, {
+				"text": "Speakers",
+				"data": 3
+			}, {
+				"text": "Software",
+				"data": 8
+			}, {
+				"text": "Telekommunikation",
+				"data": 3
+			}, {
+				"text": "Servers",
+				"data": 3
+			}, {
+				"text": "Flat Screen TVs",
+				"data": 3
+			}]
+		}, {
+			"type": "SupplierName",
+			"values": [{
+				"text": "Titanium",
+				"data": 21
+			}, {
+				"text": "Technocom",
+				"data": 22
+			}, {
+				"text": "Red Point Stores",
+				"data": 7
+			}, {
+				"text": "Very Best Screens",
+				"data": 14
+			}, {
+				"text": "Smartcards",
+				"data": 2
+			}, {
+				"text": "Alpha Printers",
+				"data": 5
+			}, {
+				"text": "Printer for All",
+				"data": 8
+			}, {
+				"text": "Oxynum",
+				"data": 8
+			}, {
+				"text": "Fasttech",
+				"data": 15
+			}, {
+				"text": "Ultrasonic United",
+				"data": 15
+			}, {
+				"text": "Speaker Experts",
+				"data": 3
+			}, {
+				"text": "Brainsoft",
+				"data": 3
+			}]
+		}]
+	}
+}

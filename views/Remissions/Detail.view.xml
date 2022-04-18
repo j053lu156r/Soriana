@@ -1,0 +1,237 @@
+<mvc:View displayBlock="true" 
+    controllerName="demo.controllers.Remissions.Detail" 
+    height="100%"
+    xmlns="sap.uxap"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:m="sap.m"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core" 
+    xmlns:form="sap.ui.layout.form">
+
+	<ObjectPageLayout 
+        id="ObjectPageLayout"
+        showTitleInHeaderContent="true"
+        alwaysShowContentHeader="false"
+        preserveHeaderStateOnScroll="false"
+        headerContentPinnable="true"
+        isChildPage="true"
+        upperCaseAnchorBar="false">
+				<headerTitle>
+					<ObjectPageDynamicHeaderTitle>
+						<expandedHeading>
+                            <m:Title text="{appTxts>/rem.folio}: {tableRemissionDetail>/Eremh/Zremision} " wrapping="true" class="sapUiSmallMarginEnd"/>
+						</expandedHeading>
+
+						<snappedHeading>
+							<m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Center">
+								<m:FlexBox wrap="NoWrap" fitContainer="true" alignItems="Center" class="sapUiTinyMarginEnd">
+									<f:Avatar src="../../../../../../../{products>ProductPicUrl}" displaySize="S" displayShape="Square"/>
+									<m:Title text="{products>Name}" wrapping="true" class="sapUiTinyMarginEnd"/>
+								</m:FlexBox>
+							</m:FlexBox>
+						</snappedHeading>
+
+						<navigationActions>
+							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
+							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
+							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }" />
+						</navigationActions>
+
+                        <actions>
+                            <m:Button
+                                    text="{appTxts>/rem.cancel}"
+                                    type="Transparent"
+                                    press=".hancleCandel(${tableRemissionDetail>/Eremh/Remfolio})"
+                                    visible="{= ${tableRemissionDetail>/Eremh/NstatusCan} === '' }"
+                                     />
+                            <m:Button 
+                                    text="{appTxts>/rem.labels}"
+                                    type="Transparent"
+                                    visible="{= ${tableRemissionDetail>/Eremh/Ztipoentreg} !== 'Reverse'}"
+                                    press=".printLabels"/>
+                            <m:Button 
+                                    text="{appTxts>/rem.consolidatedDetail}"
+                                    type="Transparent"
+                                    visible="{= ${tableRemissionDetail>/Eremh/Ztipoentreg} !== 'Reverse'}"
+                                    press=".printConsolidated"/>
+                        </actions>
+
+					</ObjectPageDynamicHeaderTitle>
+				</headerTitle>
+
+				<headerContent>
+					<m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Stretch">
+						<f:Avatar src="sap-icon://monitor-payments"
+								  displaySize="L"
+								  displayShape="Square"
+								  class="sapUiTinyMarginEnd">
+						</f:Avatar>
+						<m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
+							<m:Label text="{appTxts>/rem.createDate}"/>
+							<m:Text text="{path : 'tableRemissionDetail>/Eremh/Zfechrem' , formatter: '.ReverseDate'}"/>
+                            <m:Label text="{appTxts>/rem.destination}"/>
+							<m:ObjectNumber number="{tableRemissionDetail>/Eremh/Werks} - {tableRemissionDetail>/Eremh/Nwerks}" emphasized="false"/>
+							<m:Label text="{appTxts>/rem.typeRemission}"/>
+							<m:ObjectNumber number="{tableRemissionDetail>/Eremh/Ztipoaviso}" emphasized="false"/>
+							<m:Label text="{appTxts>/rem.statusRemission}"/>
+							<m:ObjectNumber number="{tableRemissionDetail>/Eremh/Zstatus}" emphasized="false"/>
+
+                        <m:layoutData>
+						    <m:FlexItemData growFactor="1" />
+					    </m:layoutData>
+						</m:VBox>
+                        <m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
+                            <m:Label text="{appTxts>/rem.delivdate}"/>
+							<m:Text text="{path : 'tableRemissionDetail>/Eremh/Zfechem' , formatter: '.ReverseDate'}"/> 
+                            <m:Label text="{appTxts>/rem.appointment}"/>
+							<m:Text text="{tableRemissionDetail>/Eremh/Zcita}"/>
+                            <m:Label text="{appTxts>/rem.typedeliv}" />
+                            <m:Text text="{tableRemissionDetail>/Eremh/Ztipoentreg}"/>
+                        <m:layoutData>
+						    <m:FlexItemData growFactor="1" />
+					    </m:layoutData>
+                        </m:VBox>
+                        <m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
+                            <m:Label text="{appTxts>/rem.countorders}"/>
+							<m:Text text="{tableRemissionDetail>/Eremh/Zcantped}"/>
+							<m:Label text="{appTxts>/rem.packagenumber}"/>
+							<m:Text text="{tableRemissionDetail>/Eremh/Zcantbul}"/>
+                            <m:Label text="{appTxts>/rem.cancelStatus}"/>
+                            <m:Text text="{tableRemissionDetail>/Eremh/ZstatusCan}"/>
+                        <m:layoutData>
+						    <m:FlexItemData growFactor="1" />
+					    </m:layoutData>
+                        </m:VBox>
+					</m:FlexBox>
+				</headerContent>
+
+		<sections>
+			<ObjectPageSection title="{appTxts>/global.positions}">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+                            <m:VBox>
+							<m:Table id="suppliersTable"
+                                    visible="{= ${tableRemissionDetail>/Eremh/Ztipoentreg} === 'Reverse'}"
+									 items="{path : 'tableRemissionDetail>/ETREMDNAV/Paginated/results'}">
+                                     <m:headerToolbar>
+                                        <m:OverflowToolbar>
+                                             <m:ToolbarSpacer/>
+                                            <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExcel" visible="{= ${tableDetailMoves>/EDOCDTLNAV/results/length} > 0}" />
+                                            <m:Select 
+                                                visible="{= ${tableRemissionDetail>/ETREMDNAV/Paginated/results/length} > 0 }"
+                                                change=".paginateValue(${$parameters>/selectedItem}, 'tableRemissionDetail', '/ETREMDNAV')">
+                                                <m:items>
+                                                    <core:Item key="10" text="10"/>
+                                                    <core:Item key="20" text="20"/>
+                                                    <core:Item key="50" text="50"/>
+                                                    <core:Item key="100" text="100"/>
+                                                </m:items>
+                                            </m:Select>
+                                        </m:OverflowToolbar>
+                                    </m:headerToolbar>
+								<m:columns>
+									<m:Column><m:Text text="{appTxts>/rem.order}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/rem.codebar}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/rem.description}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/rem.quantity}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/rem.netcost}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/rem.totalcost}" /></m:Column>
+								</m:columns>
+								<m:items>
+									<m:ColumnListItem press="handleItemPress">
+										<m:cells>
+                                            <m:ObjectIdentifier text="{tableRemissionDetail>Ebeln}" />
+                                            <m:ObjectIdentifier text="{tableRemissionDetail>Ean11}" />
+                                            <m:ObjectIdentifier text="{tableRemissionDetail>Maktx}" />
+                                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" 
+                                            xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'tableRemissionDetail>Menge'}, {path: 'tableRemissionDetail>Bstme'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{tableRemissionDetail>Bstme}" emphasized="false" state="None"/>                                          
+                                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" 
+                                            xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'tableRemissionDetail>Bprei'}, {path: 'tableRemissionDetail>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{tableRemissionDetail>Waers}" emphasized="false" state="None"/>
+                                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" 
+                                            xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'tableRemissionDetail>Bwert'}, {path: 'tableRemissionDetail>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{tableRemissionDetail>Waers}" emphasized="false" state="None"/>   
+										</m:cells>
+									</m:ColumnListItem>
+								</m:items>
+							</m:Table>
+
+                            <m:Table visible="{= ${tableRemissionDetail>/Eremh/Ztipoentreg} !== 'Reverse'}"
+									 items="{path : 'tableRemissionDetail>/ETREMDNAV/Paginated/results'}">
+                                     <m:headerToolbar>
+                                        <m:OverflowToolbar>
+                                             <m:ToolbarSpacer/>
+                                            <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExcel" visible="{= ${tableDetailMoves>/EDOCDTLNAV/results/length} > 0}" />
+                                            <m:Select 
+                                                visible="{= ${tableRemissionDetail>/ETREMDNAV/Paginated/results/length} > 0 }"
+                                                change=".paginateValue(${$parameters>/selectedItem}, 'tableRemissionDetail', '/ETREMDNAV')">
+                                                <m:items>
+                                                    <core:Item key="10" text="10"/>
+                                                    <core:Item key="20" text="20"/>
+                                                    <core:Item key="50" text="50"/>
+                                                    <core:Item key="100" text="100"/>
+                                                </m:items>
+                                            </m:Select>
+                                        </m:OverflowToolbar>
+                                    </m:headerToolbar>
+								<m:columns>
+									<m:Column><m:Text text="{appTxts>/rem.order}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/rem.palletbox}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/rem.destination}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/rem.codebar}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/rem.description}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/rem.quantity}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/rem.netcost}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/rem.totalcost}" /></m:Column>
+								</m:columns>
+								<m:items>
+									<m:ColumnListItem press="handleItemPress">
+										<m:cells>
+                                            <m:ObjectIdentifier text="{tableRemissionDetail>Ebeln}" />
+                                            <m:ObjectIdentifier text="{tableRemissionDetail>Cajtar}" />
+                                            <m:ObjectIdentifier text="{tableRemissionDetail>Werks} - {tableRemissionDetail>Name1}" />
+                                            <m:ObjectIdentifier text="{tableRemissionDetail>Ean11}" />
+                                            <m:ObjectIdentifier text="{tableRemissionDetail>Maktx}" />
+                                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" 
+                                            xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'tableRemissionDetail>Menge'}, {path: 'tableRemissionDetail>Bstme'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{tableRemissionDetail>Bstme}" emphasized="false" state="None"/>                                          
+                                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" 
+                                            xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'tableRemissionDetail>Bprei'}, {path: 'tableRemissionDetail>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{tableRemissionDetail>Waers}" emphasized="false" state="None"/>
+                                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" 
+                                            xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'tableRemissionDetail>Bwert'}, {path: 'tableRemissionDetail>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{tableRemissionDetail>Waers}" emphasized="false" state="None"/>   
+										</m:cells>
+									</m:ColumnListItem>
+								</m:items>
+							</m:Table>
+
+
+                            <m:OverflowToolbar visible="{= ${tableRemissionDetail>/ETREMDNAV/Paginated/results/length} > 0 }">
+                                <m:Text text="{tableRemissionDetail>/ETREMDNAV/Paginated/initRow} - {tableRemissionDetail>/ETREMDNAV/Paginated/endRow} {appTxts>/pagination.of} {tableRemissionDetail>/ETREMDNAV/results/length}" />
+                                <m:ToolbarSpacer/>
+                                <m:Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableRemissionDetail>/ETREMDNAV/Paginated/iterator}, ${tableRemissionDetail>/ETREMDNAV/Paginated/initRow}, 'tableRemissionDetail', '/ETREMDNAV')" enabled="{= ${tableRemissionDetail>/ETREMDNAV/Paginated/iterator} !== 1}" />
+                                <m:Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableRemissionDetail>/ETREMDNAV/Paginated/iterator}, ${tableRemissionDetail>/ETREMDNAV/Paginated/endRow}, 'tableRemissionDetail', '/ETREMDNAV')" enabled="{= ${tableRemissionDetail>/ETREMDNAV/Paginated/endRow} !== ${tableRemissionDetail>/ETREMDNAV/results/length}}" />
+                            </m:OverflowToolbar>
+                            </m:VBox>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>
+	</ObjectPageLayout>
+</mvc:View>

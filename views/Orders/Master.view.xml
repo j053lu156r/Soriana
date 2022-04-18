@@ -1,0 +1,207 @@
+<mvc:View 
+displayBlock="true" 
+xmlns:f="sap.f" 
+xmlns:mvc="sap.ui.core.mvc"
+xmlns:fb="sap.ui.comp.filterbar" 
+xmlns:vm="sap.ui.comp.variants" 
+xmlns="sap.m"
+xmlns:t="sap.ui.table"
+xmlns:core="sap.ui.core" 
+	 controllerName="demo.controllers.Orders.Master" height="100%">
+	<f:DynamicPage  
+		class="sapUiContentPadding">
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle backgroundDesign="Transparent">
+                <f:heading>
+                    <vm:VariantManagement standardItemText="{appTxts>/order.title}">
+                    </vm:VariantManagement>
+                </f:heading>
+                <f:actions>
+                    <ToolbarSpacer/>
+                    <Button text="{appTxts>/order.uploadFile}" type="Emphasized" press="openUploadDialog"/>
+                </f:actions>                
+            </f:DynamicPageTitle>
+        </f:title>
+        <!-- DynamicPage Header -->
+        <f:header>
+            <f:DynamicPageHeader pinnable="true" >
+                <f:content>
+                    <fb:FilterBar id="filterBar"  header="Header"
+		                reset="onReset" search="searchData" clear="onClear" cancel="onCancel" 
+		                filtersDialogClosed = "onFiltersDialogClosed"
+		                showRestoreButton="false" showClearButton="false" useToolbar="false"
+                        >
+			
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="F1" name="Feha Pedido" label="{appTxts>/order.date}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <DateRangeSelection id="dateOrder" change="onChange" required="false"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab" label="{appTxts>/order.supplier}" mandatory="true" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        id="supplierInput"
+                                        placeholder="Proveedor"
+                                        showSuggestion="true"
+                                        valueHelpOnly="true"
+                                        showValueHelp="true"
+                                        valueHelpRequest=".onValueHelpRequest"
+                                        value="{configSite>/supplierInput}"
+                                        >
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            
+<!-- Inicio Cambio BORTA - 27.07.2021  , Solicitan quitar el filtro de "cliente" -->
+                     <!--     <fb:FilterGroupItem groupName="__$INTERNAL$" name="Cliente" label="{appTxts>/detail.client}" labelTooltip="Tooltip Example" partOfCurrentVariant="false" visibleInFilterBar="false">
+                                <fb:control>
+                                    <ComboBox id="client" items="{
+                                                path : 'userdata>/ETSUPPSNAV/results'
+                                            }">  
+                                        <items> -->
+                                            <!--core:Item key="001" text="EMEA"/-->
+                    <!--                        <core:Item key="{userdata>Bukrs}" text="{userdata>Butxt}"/>
+                                        </items>
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>-->
+ <!-- Fin Cambio BORTA - 27.07.2021  , Solicitan quitar el filtro de "cliente" -->
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="A1" label="{appTxts>/order.title}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input type="Text" id="order" autocomplete="false"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            
+                            <fb:FilterGroupItem groupName="F1" groupTitle="Fechas" name="Fecha de entrega" label="{appTxts>/order.dateE}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="false">
+                                <fb:control>
+                                    <DateRangeSelection id="dateRange" required="false"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="F1" name="Fin de embarque" label="{appTxts>/order.shipmentend}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="false">
+                                <fb:control>
+                                    <DateRangeSelection id="deliveryDate" change="onChange" required="false"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Pedidos Cerrados" label="{appTxts>/order.closed}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="false">
+                                <fb:control>
+                                    <CheckBox id="closedOrders"  visible="true" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                        </fb:filterGroupItems>
+
+	                </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+		<f:content>
+            <VBox>
+			<Table sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
+                noDataText="{appTxts>/pay.merchandise}"
+                id="complPagoList"
+                alternateRowColors="true"
+                mode="SingleSelectLeft"
+                items="{path: 'tableItemsOrders>/OEKKONAV/Paginated/results', sorter : { path : 'Belnr', descending : true }}">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title text="{appTxts>/order.title} ({tableItemsOrders>/OEKKONAV/results/length})" />
+                        <ToolbarSpacer/>
+                        <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
+                        press=".buildExportTable"
+                        visible="{= ${tableItemsOrders>/OEKKONAV/results/length} > 0}"
+                        />
+                        <Select 
+                            visible="{= ${tableItemsOrders>/OEKKONAV/Paginated/results/length} > 0 }"
+                            change=".paginateValue(${$parameters>/selectedItem}, 'tableItemsOrders', '/OEKKONAV')">
+                            <items>
+                                <core:Item key="10" text="10"/>
+                                <core:Item key="20" text="20"/>
+                                <core:Item key="50" text="50"/>
+                                <core:Item key="100" text="100"/>
+                            </items>
+                        </Select>
+                    </OverflowToolbar>
+                </headerToolbar>
+				<columns>
+					<Column width="auto" hAlign="Left">
+						<header>
+							<Text text="{appTxts>/order.title}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+					<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/iupload.client}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+					</Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                        <Text text="{appTxts>/order.amount}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </header>
+                        <footer/>
+                    </Column>                    
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/order.dateE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/order.shipmentend}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/order.ocompra}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/order.assorment}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press="onListItemPress">
+						<cells>
+                            <ObjectIdentifier title="{tableItemsOrders>Ebeln}" text="" titleActive="false" visible="true" />
+                            <Text text="{tableItemsOrders>Bukrs} - {tableItemsOrders>Butxt}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                                xmlns="sap.m"
+                                number="{parts: [{path: 'tableItemsOrders>Netwr'}, {path: 'tableItemsOrders>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                unit="{tableItemsOrders>Waers}" emphasized="false" state="None"/>							
+  <!--Inicia cambio BORTA 27.07.2021 Se Cambia la fecha a formato correcto -->
+  <!--                            <Text text="{path: 'tableItemsOrders>Bedat', formatter: '.formatDate'}" width="auto" maxLines="1" wrapping="false" textAlign="Begin"
+								textDirection="Inherit"/> -->
+                            <Text xmlns="sap.m" text="{path: 'tableItemsOrders>Eindt', formatter: '.ReverseDate'}" width="auto" maxLines="1" wrapping="false" textAlign="Begin"
+                                textDirection="Inherit"/>
+                            <Text xmlns="sap.m" text="{path: 'tableItemsOrders>Kdate', formatter: '.ReverseDate'}" width="auto" maxLines="1" wrapping="false" textAlign="Begin"
+                                textDirection="Inherit"/>
+                            <Text xmlns="sap.m" text="{path: 'tableItemsOrders>Ekorg'}" width="auto" maxLines="1" wrapping="false" textAlign="Begin"
+                                textDirection="Inherit"/>
+                            <Text text="{tableItemsOrders>Telf1}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>                                         
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+            <OverflowToolbar visible="{= ${tableItemsOrders>/OEKKONAV/Paginated/results/length} > 0 }">
+                <Text text="{tableItemsOrders>/OEKKONAV/Paginated/initRow} - {tableItemsOrders>/OEKKONAV/Paginated/endRow} {appTxts>/pagination.of} {tableItemsOrders>/OEKKONAV/results/length}" />
+                <ToolbarSpacer/>
+                <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableItemsOrders>/OEKKONAV/Paginated/iterator}, ${tableItemsOrders>/OEKKONAV/Paginated/initRow}, 'tableItemsOrders', '/OEKKONAV')" enabled="{= ${tableItemsOrders>/OEKKONAV/Paginated/iterator} !== 1}" />
+                <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableItemsOrders>/OEKKONAV/Paginated/iterator}, ${tableItemsOrders>/OEKKONAV/Paginated/endRow}, 'tableItemsOrders', '/OEKKONAV')" enabled="{= ${tableItemsOrders>/OEKKONAV/Paginated/endRow} !== ${tableItemsOrders>/OEKKONAV/results/length}}" />
+            </OverflowToolbar>
+            </VBox>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

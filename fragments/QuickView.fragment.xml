@@ -1,0 +1,29 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<Popover
+		id="myPopover"
+		class="sapUiResponsivePadding--header sapUiResponsivePadding--footer sapUiContentPadding"
+		placement="Bottom"
+		initialFocus="email"
+        showHeader="false"
+        >
+        <content>
+            <VBox>
+                <Label text="{appTxts>/global.user}" textAlign="Center" width="100%" />
+                <Text text="{userdata>/IMail}" textAlign="Center" width="100%" />
+                <Button text="{appTxts>/global.inbox}" type="Transparent" width="100%" press="getMailbox">
+                    <customData>
+                            <BadgeCustomData
+                                class="testBadge"
+                                key="badge"
+                                value="{configSite>/inboxMetric}"
+                                visible="true"
+                                />
+                        </customData>
+                </Button>                
+                <Button text="{appTxts>/global.logout}" icon="sap-icon://visits" type="Transparent" width="100%" press="logout" />
+            </VBox>
+        </content>
+	</Popover>
+</core:FragmentDefinition>

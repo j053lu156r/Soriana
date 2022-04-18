@@ -1,0 +1,58 @@
+<core:FragmentDefinition
+  xmlns:m="sap.m"
+  xmlns:core="sap.ui.core"
+>
+<m:VBox>
+    <m:Table id="publicServTable"
+                items="{path : 'payPlanDetail>/EDETNAV/Paginated/results'}">
+        <m:headerToolbar>
+            <m:OverflowToolbar>
+                <m:Title text="{appTxts>/plan.documents}" />
+                <m:ToolbarSpacer/>
+                <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExcel" visible="{= ${payPlanDetail>/EDETNAV/results/length} > 0}" />
+                <m:Select 
+                    visible="{= ${payPlanDetail>/EDETNAV/Paginated/results/length} > 0 }"
+                    change=".paginateValue(${$parameters>/selectedItem}, 'payPlanDetail', '/EDETNAV')">
+                    <m:items>
+                        <core:Item key="10" text="10"/>
+                        <core:Item key="20" text="20"/>
+                        <core:Item key="50" text="50"/>
+                        <core:Item key="100" text="100"/>
+                    </m:items>
+                </m:Select>
+            </m:OverflowToolbar>
+        </m:headerToolbar>
+        <m:columns>
+            <m:Column><m:Text text="{appTxts>/plan.document}" /></m:Column>
+            <m:Column><m:Text text="{appTxts>/plan.desc}" /></m:Column>
+            <m:Column><m:Text text="{appTxts>/plan.reference}" /></m:Column>
+            <m:Column><m:Text text="{appTxts>/plan.amountDoc}" /></m:Column>
+            <m:Column><m:Text text="{appTxts>/plan.invoiceNum}" /></m:Column>
+            <m:Column><m:Text text="{appTxts>/plan.dateDoc}" /></m:Column>
+            <m:Column><m:Text text="" /></m:Column>
+        </m:columns>
+        <m:items>
+            <m:ColumnListItem>
+                <m:cells>
+                    <m:ObjectIdentifier text="{payPlanDetail>Blnr}" />
+                    <m:ObjectIdentifier text="{payPlanDetail>Ltext}" />
+                    <m:ObjectIdentifier text="{payPlanDetail>Xref3}" />
+                    <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                        xmlns="sap.m"
+                        number="{parts: [{path: 'payPlanDetail>Wrbtr'}, {path: 'payPlanDetail>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                        unit="{payPlanDetail>Waers}" emphasized="false" state="None"/>
+                    <m:ObjectIdentifier text="{payPlanDetail>Xblnr}" />
+                    <m:ObjectIdentifier text="{path: 'payPlanDetail>Budat', formatter: '.ReverseDate'}" />
+                    <m:Button icon="sap-icon://document-text" visible="{= ${payPlanDetail>Xfile} === 'X' }" type="Transparent" press=".generateFile" ></m:Button>
+                </m:cells>
+            </m:ColumnListItem>
+        </m:items>
+    </m:Table>
+    <m:OverflowToolbar>
+        <m:Text text="{payPlanDetail>/EDETNAV/Paginated/initRow} - {payPlanDetail>/EDETNAV/Paginated/endRow} {appTxts>/pagination.of} {payPlanDetail>/EDETNAV/results/length}" />
+        <m:ToolbarSpacer/>
+        <m:Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${payPlanDetail>/EDETNAV/Paginated/iterator}, ${payPlanDetail>/EDETNAV/Paginated/initRow}, 'payPlanDetail', '/EDETNAV')" enabled="{= ${payPlanDetail>/EDETNAV/Paginated/iterator} !== 1}" />
+        <m:Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${payPlanDetail>/EDETNAV/Paginated/iterator}, ${payPlanDetail>/EDETNAV/Paginated/endRow}, 'payPlanDetail', '/EDETNAV')" enabled="{= ${payPlanDetail>/EDETNAV/Paginated/endRow} !== ${payPlanDetail>/EDETNAV/results/length}}" />
+    </m:OverflowToolbar>
+</m:VBox>
+</core:FragmentDefinition>

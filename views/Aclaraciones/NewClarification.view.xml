@@ -1,0 +1,64 @@
+<mvc:View controllerName="demo.controllers.Aclaraciones.NewClarification"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:c="sap.ui.core.Control"
+    xmlns:f1="sap.f"
+    xmlns="sap.m">
+    <f1:DynamicPage class="sapUiContentPadding" showFooter="true">
+        <f1:content>
+            <VBox class="sapUiSmallMargin">
+                <f:SimpleForm id="SimpleFormToolbar" editable="false" layout="ResponsiveGridLayout" title="{appTxts>/clarifications.new}" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false" ariaLabelledBy="Title1">
+                    <f:toolbar>
+                        <Toolbar id="TB1">
+                            <Title id="Title1" text=""/>
+                            <ToolbarSpacer />
+                            <Button type="Reject" text="Cancelar" press="onCancel" />
+                            <Button type="Accept" text="Guardar" press="createClarification" />
+                        </Toolbar>
+                    </f:toolbar>
+                    <f:content>
+                        <l:Grid defaultSpan="XL6 L6 M12 S12">
+                            
+                                <Label text="{appTxts>/clarifications.dateCreation}" />
+                                <Input id="dateCreation" maxLength="35"/>
+                                <Label text="{appTxts>/clarifications.expirationDate}" />
+                                <Input id="expirationDate" maxLength="35"/>
+                                <!--Label text="{appTxts>/clarifications.sourceDocument}" />
+                                <Input id="sourceDocument" maxLength="35"/>
+                                <Label text="{appTxts>/clarifications.status}" />
+                                <Text id="status" />
+                                <Label text="{appTxts>/clarifications.distributionCenter}" />
+                                <Input id="distributionCenter" type="Tel" change="hasChangePhone" maxLength="20" />
+                                <Label text="{appTxts>/clarifications.clarificationType}" />
+                                <Select id="clarificationType" items=""></Select-->
+
+                            <!--l:content>
+                                <Label text="{appTxts>/clarifications.supplier}" />
+                                <Input id="supplier" placeholder="Proveedor" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="">
+
+                                </Input>
+                                <Label text="{appTxts>/clarifications.reclaimedImport}" />
+                                <Input id="reclaimedImport" maxLength="35"/>
+                                <Label text="{appTxts>/clarifications.reclaimedTax}" />
+                                <Input id="reclaimedTax" maxLength="35"/>
+                                <Label text="{appTxts>/clarifications.clarifiedAmount}" />
+                                <Input id="clarifiedAmount" maxLength="35"/>
+                                <Label text="{appTxts>/clarifications.clarifiedTax}" />
+                                <Input id="clarifiedTax" maxLength="40"/>
+
+
+                                <Title text="{appTxts>/clarifications.attachmentsDocuments}" />
+                                <Label text="{appTxts>/clarifications.document}" />
+                                <Input id="document" type="Text" change="hasChangeMail" />
+                                <Label text="{appTxts>/clarifications.commentsAttachment}" />
+                                <TextArea id="commentsAttachment"></TextArea>
+                            </l:content-->
+                        </l:Grid>
+                    </f:content>
+                </f:SimpleForm>
+            </VBox>
+        </f1:content>
+    </f1:DynamicPage>
+</mvc:View>

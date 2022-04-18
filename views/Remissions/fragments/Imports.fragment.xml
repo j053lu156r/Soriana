@@ -1,0 +1,31 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:f="sap.f"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:u="sap.ui.unified"
+	xmlns:layout="sap.ui.layout">
+    <Title text="Datos de importacion" titleStyle="H3" width="100%" textAlign="Center" visible="{= ${configSite>/supplierInportation} === 'X' }" class="sapUiMediumMarginTop" />
+    <HBox width="100%" visible="{= ${configSite>/supplierInportation} === 'X' }">
+        <VBox width="33%" alignItems="Center">
+            <Label text="Pedimento:" />
+            <Input id="petition" width="auto" change=".remissionValidate" />
+            <Label text="Aduana:" />
+            <Input id="customs" width="auto" change=".remissionValidate" />
+        </VBox>
+        <VBox width="33%">
+            <Label text="Tipo de pedimento:" />
+            <Input id="petitionType" width="auto" change=".remissionValidate" maxLength="20" />
+            <Label text="Agente aduanal:" />
+            <Input id="customsBrokert" width="auto" change=".remissionValidate" />
+        </VBox>
+        <VBox width="33%">
+            <Label text="Fecha pedimento:" />
+            <DatePicker id="petitionDate" width="auto" valueFormat="MM/dd/yy" />
+            <Label text="Fecha recibo laredo:" />
+            <DatePicker id="laredoDate" width="auto" valueFormat="MM/dd/yy" />
+            <Label text="Fecha bill of landing:" />
+            <DatePicker id="bLandingDate" width="auto" valueFormat="MM/dd/yy" />
+        </VBox>
+    </HBox>
+</core:FragmentDefinition>
