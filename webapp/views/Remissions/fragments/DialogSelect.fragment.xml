@@ -1,0 +1,37 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:f="sap.f"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:u="sap.ui.unified"
+	xmlns:layout="sap.ui.layout">
+	<Dialog
+		id="selectTypeDialog"
+		showHeader="true"
+		verticalScrolling="false"
+        title="Tipo de aviso"
+        class="sapUiContentPadding"
+		>
+        <Text class="sapUiSmallMarginBottom"
+                text="El tipo de aviso anticipado, determina el tipo de entrega que será realizado."/>
+        <HBox
+            alignItems="Center"
+            justifyContent="Center"
+            width="100%">
+            <SegmentedButton
+                id="paymentMethodSelection"
+                width="320px"
+                selectedKey="{/selectedPayment}"
+                >
+                <items>
+                    <SegmentedButtonItem key="reverse" text="Reverse"/>
+                    <SegmentedButtonItem key="packing" text="Consolidado"/>
+                </items>
+            </SegmentedButton>
+        </HBox>
+        <buttons>
+            <Button text="{appTxts>/rem.cancel}" press="onCancelSelect"/>
+            <Button text="{appTxts>/rem.continue}" press="onContinueSelect"/>
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,208 @@
+<mvc:View
+    displayBlock   = "true"
+    xmlns:f        = "sap.f" 
+    xmlns:mvc      = "sap.ui.core.mvc"
+    xmlns:fb       = "sap.ui.comp.filterbar"
+    xmlns:vm       = "sap.ui.comp.variants"
+    xmlns          = "sap.m" 
+    xmlns:core     = "sap.ui.core"
+    xmlns:t        ="sap.ui.table"
+    controllerName ="demo.controllers.Products.Master">
+    
+    <f:DynamicPage class="sapUiContentPadding">
+        <!-- DynamicPage Title -->
+        
+        <f:title>
+            <f:DynamicPageTitle backgroundDesign="Transparent">
+                <f:heading>
+                    <vm:VariantManagement standardItemText="{appTxts>/products.title}"></vm:VariantManagement>
+                </f:heading>
+                <f:actions>
+                    <ToolbarSpacer/>
+                    <Button
+                            text="{appTxts>/products.newProduct}"
+                            type="Emphasized"
+                            press="newProduct"/>
+                    <Button
+                            text="Cambio de precio"
+                            type="Emphasized"
+                            press="changePriceProduct"/>
+                    <Button
+                            text="Eliminar productos"
+                            type="Emphasized"
+                            press="deleteProducts"/>
+                </f:actions>
+            </f:DynamicPageTitle>
+        </f:title>
+
+        <!-- DynamicPage Header -->
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <fb:FilterBar 
+                        id                  = "filterBar"
+                        header              = "Header"
+		                reset               = "onReset" 
+                        search              = "searchData" 
+                        clear               = "onClear" 
+                        cancel              = "onCancel" 
+		                filtersDialogClosed = "onFiltersDialogClosed"
+		                showRestoreButton   = "false" 
+                        showClearButton     = "false" 
+                        useToolbar          = "false">
+
+                        <fb:filterGroupItems>
+
+                            <fb:FilterGroupItem 
+                                groupName            = "__$INTERNAL$"
+                                name                 = "C"
+                                label                = "{appTxts>/products.folio}" 
+                                partOfCurrentVariant = "true" 
+                                visibleInFilterBar   = "true">
+                                <fb:control>
+                                    <Input
+                                        id="inputFolioTxt"
+                                        placeholder="{appTxts>/products.folio}"
+                                        class="sapUiSmallMarginBottom" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem 
+                                groupName            = "__$INTERNAL$"
+                                name                 = "A"
+                                label                = "{appTxts>/products.date}" 
+                                mandatory            = "true" 
+                                partOfCurrentVariant = "true" 
+                                visibleInFilterBar   = "true">
+                                <fb:control>
+                                    <DateRangeSelection id="dateRange" change="onChange" required="false"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <!--fb:FilterGroupItem 
+                                groupName            = "__$INTERNAL$"
+                                name                 = "D"
+                                label                = "{appTxts>/products.status}" 
+                                partOfCurrentVariant = "true" 
+                                visibleInFilterBar   = "true">
+                                <fb:control>
+                                    <ComboBox id="comboStatus" items="{
+                                                path : 'catalogos>/Estatus/results'
+                                            }">
+                                        <items>
+                                            <core:Item key="{catalogos>Status}" text="{catalogos>Descripcion}"/>
+                                        </items>
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem-->
+
+                            <fb:FilterGroupItem 
+                                groupName            = "__$INTERNAL$" 
+                                name                 = "B" 
+                                mandatory            = "true"
+                                label                = "{appTxts>/products.supplier}" 
+                                labelTooltip         = "Tooltip Example" 
+                                partOfCurrentVariant = "true" 
+                                visibleInFilterBar   = "true">
+                                <fb:control>
+                                    <Input id="supplierInput" placeholder="{appTxts>/products.supplier}" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}">
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                        </fb:filterGroupItems>
+
+                    </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+
+        <f:content>
+            <VBox>
+                <t:Table 
+                    noData                  ="{appTxts>/pay.merchandise}" 
+                    id                      ="foliosList"
+                    alternateRowColors      ="true" 
+                    rows                    ="{Folios>/ETPRICNAV/Paginated/results}"
+                    enableColumnReordering  = "false"
+                    enableSelectAll         ="false"
+                    visibleRowCount="10"
+                    selectionMode           ="None">  
+                    <t:extension>
+                        <OverflowToolbar style="Clear">
+                            <Title id="title" text="{appTxts>/state.detail} ({Folios>/ETPRICNAV/results/length})"/>
+                            <ToolbarSpacer/>
+                            <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${Folios>/ETPRICNAV/Paginated/results/length} > 0}" />
+                            <Select visible="{= ${Folios>/ETPRICNAV/Paginated/results/length} > 0 }" change=".paginar( ${$parameters>/selectedItem}, 'Folios', 'ETPRICNAV', 'foliosList' )">
+                                <items>
+                                    <core:Item key="10" text="10"/>
+                                    <core:Item key="20" text="20"/>
+                                    <core:Item key="50" text="50"/>
+                                    <core:Item key="100" text="100"/>
+                                </items>
+                            </Select>
+                        </OverflowToolbar>
+                    </t:extension>
+                    <t:columns>
+                        <t:Column width="auto">
+                            <Label text="{appTxts>/products.folio}" />
+                            <t:template>
+                                <Text text="{Folios>UniqueReference}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="auto">
+                            <Label text="{appTxts>/products.product}" />
+                            <t:template>
+                                <Text text="{Folios>EanUpcBase}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="auto">
+                            <Label text="{appTxts>/products.description}" />
+                            <t:template>
+                                <Text text="{Folios>HazardDescript}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="auto">
+                            <Label text="{appTxts>/products.type}" />
+                            <t:template>
+                                <Text text="{Folios>Zzstatus}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="auto">
+                            <Label text="{appTxts>/products.date}" />
+                            <t:template>
+                                <Text text="{Folios>ValidityBase}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="auto">
+                            <Label text="{appTxts>/products.dateStatus}" />
+                            <t:template>
+                                <Text text="{Folios>TakeOverDate}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="auto">
+                            <Label text="{appTxts>/products.status}" />
+                            <t:template>
+                                <Text text="{Folios>ProcStatus}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="auto">
+                            <Label text="{appTxts>/products.descriptionStatus}" />
+                            <t:template>
+                                <Text text="{Folios>Pristate}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                    </t:columns>
+                    
+                </t:Table>
+
+                <OverflowToolbar visible="{= ${Folios>/ETPRICNAV/Paginated/results/length} > 0 }">
+                    <Text text="{Folios>/ETPRICNAV/Paginated/initRow} - {Folios>/ETPRICNAV/Paginated/endRow} {appTxts>/pagination.of} {Folios>/ETPRICNAV/results/length}" />
+                    <ToolbarSpacer/>
+                    <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${Folios>/ETPRICNAV/Paginated/iterator}, ${Folios>/ETPRICNAV/Paginated/initRow}, 'Folios', '/ETPRICNAV')" enabled="{= ${Folios>/ETPRICNAV/Paginated/iterator} !== 1}" />
+                    <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${Folios>/ETPRICNAV/Paginated/iterator}, ${Folios>/ETPRICNAV/Paginated/endRow}, 'Folios', '/ETPRICNAV')" enabled="{= ${Folios>/ETPRICNAV/Paginated/endRow} !== ${Folios>/ETPRICNAV/results/length}}" />
+                </OverflowToolbar>
+            </VBox>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

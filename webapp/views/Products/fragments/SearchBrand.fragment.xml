@@ -1,0 +1,14 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog
+		id="selectBrandDialog"
+		title="{appTxts>/products.brand}"
+		items="{Brands>/results}"
+		search=".onBrandSearch"
+		confirm=".onBrandClose"
+		cancel=".onBrandClose"
+        >
+		<StandardListItem
+			title="{Brands>Brand}"
+            description="{Brands>BrandId}" />
+	</SelectDialog>
+</core:FragmentDefinition>

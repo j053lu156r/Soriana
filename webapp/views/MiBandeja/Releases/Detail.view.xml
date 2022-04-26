@@ -1,0 +1,97 @@
+<mvc:View displayBlock="true" controllerName="demo.controllers.MiBandeja.Releases.Detail" height="100%"
+		xmlns="sap.uxap"
+		xmlns:mvc="sap.ui.core.mvc"
+		xmlns:m="sap.m"
+		xmlns:f="sap.f"
+        xmlns:card="sap.f.cards"
+        xmlns:core="sap.ui.core" 
+		xmlns:form="sap.ui.layout.form">
+
+	<ObjectPageLayout id="releaseDetail" showTitleInHeaderContent="true" upperCaseAnchorBar="false">
+        <headerTitle>
+            <ObjectPageDynamicHeaderTitle>
+                <expandedHeading>
+                    <m:Title text="{release>/ESdmens/Ztext}" wrapping="true"/>
+                </expandedHeading>
+
+                <snappedHeading>
+                    <m:FlexBox fitContainer="true" alignItems="Center">
+                        <m:Title text="{release>/ESdmens/Ztext}" wrapping="true" />
+                    </m:FlexBox>
+                </snappedHeading>
+
+                <expandedContent>
+                    <m:HBox>
+                        <m:Label text="{appTxts>/realese.sender}:" class="sapUiTinyMarginEnd" />
+                        <m:Text text="{release>/ESdmens/Zremi}"/>
+                    </m:HBox>
+                    <m:HBox>
+                        <m:Label text="{appTxts>/release.publishdate}:" class="sapUiTinyMarginEnd" />
+                        <m:Text text="{release>/ESdmens/Zfechaenvio}"/>
+                    </m:HBox>
+                </expandedContent>
+
+                <snappedContent>
+                    <m:HBox>
+                        <m:Label text="Remitente:" class="sapUiTinyMarginEnd" />
+                        <m:Text text="{path: 'release>/ESdmens/Zfechaenvio', formatter: '.formatDate'}"/>
+                    </m:HBox>
+                    <m:HBox>
+                        <m:Label text="Fecha:" class="sapUiTinyMarginEnd" />
+                        <m:Text text="{path: 'release>/ESdmens/Zfechaenvio', formatter: '.formatDate'}"/>
+                    </m:HBox>
+                </snappedContent>
+
+                <snappedTitleOnMobile>
+                    <m:Title text="{release>/ESdmens/Ztext}"/>
+                </snappedTitleOnMobile>
+
+            <navigationActions>
+                        <m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
+                        <m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
+                        <m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }" />
+                    </navigationActions>
+            </ObjectPageDynamicHeaderTitle>
+        </headerTitle>
+
+        <sections>
+            <ObjectPageSection showTitle="false">
+                <subSections>
+                    <ObjectPageSubSection>
+                        <blocks>
+                            <m:FormattedText htmlText="{release>/IText}" width="100%" />
+                        </blocks>
+                    </ObjectPageSubSection>
+                    <ObjectPageSubSection>
+                        <blocks>
+                            <f:GridList
+                                id="gridList"
+                                headerText="{appTxts>/release.attachments}"
+                                items="{release>/ETATTACHNAV/results}"
+                            >
+                                <f:GridListItem>
+                                    <m:VBox class="sapUiSmallMargin">
+                                        <m:layoutData>
+                                            <m:FlexItemData growFactor="1"  />
+                                        </m:layoutData>
+                                        <f:Card >
+                                            <f:header>
+                                                <card:Header
+                                                    title="{release>Zatname}"
+                                                    subtitle=""
+                                                    iconSrc="{path: 'release>Zdoctype', formatter: '.setIconAttach'}" />
+                                            </f:header>
+                                            <f:content>
+                                                <m:Button icon="sap-icon://download" text="{appTxts>/global.download}" press=".downloadAttach(${release>Zdocvalue64}, ${release>Zdoctype})" />
+                                            </f:content>
+                                        </f:Card>
+                                    </m:VBox>
+                            </f:GridListItem>
+                        </f:GridList>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+        </sections>
+    </ObjectPageLayout>
+</mvc:View>
