@@ -1,0 +1,168 @@
+<mvc:View displayBlock="true" 
+    xmlns:f="sap.f" 
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar" 
+    xmlns:vm="sap.ui.comp.variants" 
+    xmlns="sap.m" 
+    xmlns:core="sap.ui.core"
+	 controllerName="demo.controllers.Aportaciones.Master" height="100%">
+	<f:DynamicPage  
+		class="sapUiContentPadding">
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle backgroundDesign="Transparent">
+                <f:heading>
+                    <vm:VariantManagement standardItemText="{appTxts>/aportaciones.title}">
+                    </vm:VariantManagement>
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>
+        <!-- DynamicPage Header -->
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <fb:FilterBar id="filterBar"  header="Header"
+		                reset="onReset" search="searchData" clear="clearFilters" cancel="onCancel" 
+		                filtersDialogClosed = "onFiltersDialogClosed"
+		                showRestoreButton="false" showClearButton="false" useToolbar="false"> 
+			
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab" label="Proveedor" mandatory="true" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        id="supplierInput"
+                                        placeholder="Proveedor"
+                                        showSuggestion="true"
+                                        valueHelpOnly="true"
+                                        showValueHelp="true"
+                                        valueHelpRequest=".onValueHelpRequest"
+                                        value="{configSite>/supplierInput}"
+                                        >
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="{appTxts>/aportaciones.aportacion}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        id="aportacionInput"
+                                        placeholder="{appTxts>/aportaciones.aportacion}"
+                                        showSuggestion="true"
+                                        >
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="F1" name="Fecha Factura" label="{appTxts>/aportaciones.fecha}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <DateRangeSelection id="aportaDay" change="onChange" required="false"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+
+	                </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+		<f:content>
+            <VBox>
+			<Table sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
+                noDataText="{appTxts>/aportaciones.noData}" 
+                id="tableAportaciones"
+                alternateRowColors="true" 
+                items="{path: 'AportacionesHdr>/AportaDet/Paginated/results', sorter : { path : 'Belnr', descending : true }}"                
+				>
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title text="{appTxts>/aportaciones.title} ({AportacionesHdr>/AportaDet/results/length})" />
+                        <ToolbarSpacer/>
+                        <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
+                        press=".buildExportTable"
+                        visible="{= ${AportacionesHdr>/AportaDet/results/length} > 0}"
+                        />
+                        <Select 
+                            visible="{= ${AportacionesHdr>/AportaDet/Paginated/results/length} > 0 }"
+                            change=".paginateValue(${$parameters>/selectedItem}, 'AportacionesHdr', '/AportaDet')">
+                            <items>
+                                <core:Item key="10" text="10"/>
+                                <core:Item key="20" text="20"/>
+                                <core:Item key="50" text="50"/>
+                                <core:Item key="100" text="100"/>
+                            </items>
+                        </Select>
+                    </OverflowToolbar>
+                </headerToolbar>
+				<columns>
+                	<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/aportaciones.folio}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/aportaciones.concepto}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+					<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/aportaciones.gerencia}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+					<Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/aportaciones.facptura}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+					<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/aportaciones.fpago}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/aportaciones.importe}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>   
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/aportaciones.estatus}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>                
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/aportaciones.accion}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>  
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press="onListItemPress">                    
+						<cells>
+                            <Text xmlns="sap.m" text="{AportacionesHdr>Folio}"/>
+                            <Text xmlns="sap.m" text="{AportacionesHdr>Concepto}"/>
+							<Text xmlns="sap.m" text="{AportacionesHdr>GciaCateg}"/>
+							<Text xmlns="sap.m" text="{path: 'AportacionesHdr>FecCaptura', formatter: '.ReverseDate'}"/>
+                            <Text xmlns="sap.m" text="{path: 'AportacionesHdr>FecAport', formatter: '.ReverseDate'}"/>
+                            <Text xmlns="sap.m" text="{AportacionesHdr>ImpAport}"/>
+                            <Text xmlns="sap.m" text="{AportacionesHdr>Observ}"/>                            
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+            <OverflowToolbar visible="{= ${AportacionesHdr>/AportaDet/Paginated/results/length} > 0 }">
+                <Text text="{AportacionesHdr>/AportaDet/Paginated/initRow} - {AportacionesHdr>/AportaDet/Paginated/endRow} {appTxts>/pagination.of} {AportacionesHdr>/AportaDet/results/length}" />
+                <ToolbarSpacer/>
+                <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${AportacionesHdr>/AportaDet/Paginated/iterator}, ${AportacionesHdr>/AportaDet/Paginated/initRow}, 'AportacionesHdr', '/AportaDet')" enabled="{= ${AportacionesHdr>/AportaDet/Paginated/iterator} !== 1}" />
+                <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${AportacionesHdr>/AportaDet/Paginated/iterator}, ${AportacionesHdr>/AportaDet/Paginated/endRow}, 'AportacionesHdr', '/AportaDet')" enabled="{= ${AportacionesHdr>/AportaDet/Paginated/endRow} !== ${AportacionesHdr>/AportaDet/results/length}}" />
+            </OverflowToolbar>
+            </VBox>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

@@ -1,0 +1,228 @@
+<mvc:View 
+    displayBlock   = "true" 
+    xmlns:f        = "sap.f" 
+    xmlns:mvc      = "sap.ui.core.mvc"
+    xmlns:fb       = "sap.ui.comp.filterbar" 
+    xmlns:vm       = "sap.ui.comp.variants" 
+    xmlns          = "sap.m" 
+    xmlns:core     = "sap.ui.core"
+    xmlns:t="sap.ui.table"
+	controllerName = "demo.controllers.ComplPago.Master" 
+    height         = "100%">
+
+	<f:DynamicPage class="sapUiContentPadding">
+
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle backgroundDesign="Transparent">
+                <f:heading>
+                    <vm:VariantManagement standardItemText="{appTxts>/pay.title}"></vm:VariantManagement>
+                </f:heading>
+                <f:actions>
+                    <ToolbarSpacer/>
+                    <Button
+                        text  = "{appTxts>/pay.cfdi}"
+                        type  = "Emphasized"
+                        press = "openUploadDialog"
+                    />
+                </f:actions>
+            </f:DynamicPageTitle>
+        </f:title>
+
+        <!-- DynamicPage Header -->
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <fb:FilterBar 
+                        id                  = "filterBar"
+                        header              = "Header"
+		                reset               = "onReset" 
+                        search              = "searchData" 
+                        clear               = "onClear" 
+                        cancel              = "onCancel" 
+		                filtersDialogClosed = "onFiltersDialogClosed"
+		                showRestoreButton   = "false" 
+                        showClearButton     = "false" 
+                        useToolbar          = "false">
+
+                        <fb:filterGroupItems>
+
+                            <fb:FilterGroupItem 
+                                groupName    = "__$INTERNAL$" 
+                                groupTitle   = "Group1" 
+                                name         = "C" 
+                                label        = "{appTxts>/pay.doc}" 
+                                labelTooltip = "{appTxts>/pay.doc}"
+                                visibleInFilterBar   = "true">
+                                <fb:control>
+                                    <Input id="documentTxt" placeholder="{appTxts>/pay.doc}"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem 
+                                groupName            = "__$INTERNAL$"
+                                name                 = "A"
+                                label                = "{appTxts>/pay.date}" 
+                                mandatory            = "true" 
+                                partOfCurrentVariant = "true" 
+                                visibleInFilterBar   = "true">
+                                <fb:control>
+                                    <DateRangeSelection id="dateRange" change="onChange" required="false"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            
+                            <fb:FilterGroupItem 
+                                groupName            = "__$INTERNAL$" 
+                                name                 = "B" 
+                                mandatory            = "true"
+                                label                = "{appTxts>/pay.supplier}" 
+                                labelTooltip         = "Tooltip Example" 
+                                partOfCurrentVariant = "true" 
+                                visibleInFilterBar   = "true">
+                                <fb:control>
+                                    <Input id="supplierInput" placeholder="{appTxts>/pay.supplier}" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}">
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+
+	                </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+
+        <!-- DynamicPage Content -->
+		<f:content>
+            <VBox>
+                <t:Table 
+                    noData         ="{appTxts>/pay.merchandise}" 
+                    id                 ="complPagoList"
+                    alternateRowColors ="true" 
+                    rows              ="{Documentos>/Detalles/Paginated/results}"
+                    enableColumnReordering = "false"
+                    enableSelectAll="false"
+                    selectionMode="Single"
+                    >
+                    <t:extension>
+                        <OverflowToolbar style="Clear">
+                            <Title id="title" text="{appTxts>/pay.paylist}"/>
+                            <ToolbarSpacer/>
+                            <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${Documentos>/Detalles/Paginated/results/length} > 0}" />
+                            <Select visible="{= ${Documentos>/Detalles/Paginated/results/length} > 0 }" change=".paginateValue(${$parameters>/selectedItem}, 'Documentos', '/Detalles')">
+                                <items>
+                                    <core:Item key="10" text="10"/>
+                                    <core:Item key="20" text="20"/>
+                                    <core:Item key="50" text="50"/>
+                                    <core:Item key="100" text="100"/>
+                                </items>
+                            </Select>
+                        </OverflowToolbar>
+                    </t:extension>
+                    <t:columns>
+                        <t:Column 
+                            width           = "13%" 
+                            hAlign          = "Left">
+                            <Label text="{appTxts>/pay.headerCompany}" />
+                            <t:template>
+                                <Text text="{Documentos>Butxt}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column 
+                            width           = "auto" >
+                            <Label text="{appTxts>/pay.headerPaymentType}" />
+                            <t:template>
+                                <Text text="{Documentos>Text2}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column 
+                            width           = "15%" 
+                            hAlign          = "Left" >
+                            <Label text="{appTxts>/pay.headerDocument}" />
+                            <t:template>
+                                <Text text="{Documentos>Vblnr}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column 
+                            width           = "5%" 
+                            hAlign          = "Center" >
+                            <Label text="{appTxts>/pay.headerFile}" />
+                            <t:template>
+                                <Button icon="sap-icon://document-text" type="Transparent" press="generateFile" ></Button>
+                            </t:template>
+                        </t:Column>
+                        <t:Column 
+                            width           = "7%" 
+                            hAlign          = "Center"  
+                            id              = "column5">
+                            <Label text="{appTxts>/pay.headerLimitDate}" />
+                            <t:template>
+                                <Text text="{Documentos>Zaldt}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column
+                            width           = "12%" 
+                            hAlign          = "Center" 
+                            id              = "column6">
+                            <Label text="{appTxts>/pay.headerAmount}" />
+                            <t:template>
+                                <ObjectNumber
+                                        number="{parts: [{path: 'Documentos>Rbetr'}, {path: 'Documentos>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{Documentos>Waers}" emphasized="false" state="None" textAlign="Right"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column 
+                            width           = "5%" 
+                            hAlign          = "Center" 
+                            id              = "column7">
+                            <Label text="{appTxts>/pay.headerNC}" />
+                            <t:template>
+                                <Text text="{Documentos>Nc}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column 
+                            width           = "5%" 
+                            hAlign          = "Center" 
+                            id              = "column8">
+                            <Label text="{appTxts>/pay.headerCP} 03" />
+                            <t:template>
+                                <Text text="{Documentos>Cp03}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column 
+                            width           = "5%" 
+                            hAlign          = "Center" 
+                            id              = "column9">
+                            <Label text="{appTxts>/pay.headerCP} 17S" />
+                            <t:template>
+                                <Text text="{Documentos>Cp17s}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column 
+                            width           = "5%" 
+                            hAlign          = "Center" 
+                            id              = "column10">
+                            <Label text="{appTxts>/pay.headerCP} 17R" />
+                            <t:template>
+                                <Text text="{Documentos>Cp17r}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column 
+                            width           = "5%" 
+                            hAlign          = "Center" 
+                            id              = "column11">
+                            <Label text="{appTxts>/pay.headerEstatus}" />
+                            <t:template>
+                                <Text text="{Documentos>Rzawe}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                    </t:columns>
+                </t:Table>
+                <OverflowToolbar visible="{= ${Documentos>/Detalles/Paginated/results/length} > 0 }">
+                    <Text text="{Documentos>/Detalles/Paginated/initRow} - {Documentos>/Detalles/Paginated/endRow} {appTxts>/pagination.of} {Documentos>/Detalles/results/length}" />
+                    <ToolbarSpacer/>
+                    <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${Documentos>/Detalles/Paginated/iterator}, ${Documentos>/Detalles/Paginated/initRow}, 'Documentos', '/Detalles')" enabled="{= ${Documentos>/Detalles/Paginated/iterator} !== 1}" />
+                    <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${Documentos>/Detalles/Paginated/iterator}, ${Documentos>/Detalles/Paginated/endRow}, 'Documentos', '/Detalles')" enabled="{= ${Documentos>/Detalles/Paginated/endRow} !== ${Documentos>/Detalles/results/length}}" />
+                </OverflowToolbar>
+            </VBox>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

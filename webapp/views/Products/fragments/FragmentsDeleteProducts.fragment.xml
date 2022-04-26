@@ -1,0 +1,135 @@
+<core:FragmentDefinition  controllerName="demo.controllers.Products.Master"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:f="sap.f"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:u="sap.ui.unified"
+    xmlns:l="sap.ui.layout"
+	xmlns:layout="sap.ui.layout">
+	<Dialog
+		id="deleteProductsDialog"
+		showHeader="false"
+		verticalScrolling="false"
+        
+		contentHeight="95%"
+		contentWidth="96%">
+		<f:DynamicPage
+			toggleHeaderOnTitleClick="false"
+			showFooter="true">
+			<f:title>
+				<f:DynamicPageTitle>
+					<f:heading>
+						<Title text="{appTxts>/products.titleDeleteProduct}"/>
+					</f:heading>
+				</f:DynamicPageTitle>
+			</f:title>
+
+			<f:content>
+						
+                <VBox>
+                    <MessageStrip class="sapUiSmallMarginBottom"
+								text="{appTxts>/products.messageStripDelete}"
+								showIcon="true"/>
+                    <!--Text 
+                        text="" 
+                        /-->
+                    <HBox class="sapUiResponsiveContentPadding" >
+                        <l:VerticalLayout>
+                            <u:FileUploader
+                                id="fileUploaderDelete"
+                                name="myFileUpload"
+                                change="addAttachDelete"
+                                fileType="txt"
+                                placeholder="{appTxts>/products.placeholderFileUploader}"
+                                tooltip="{appTxts>/products.tooltipFileUploader}"/>
+                            <Button
+                                text="{appTxts>/products.uploadFileDelete}"
+                                press="handleUploadPressDelete"/>
+                        </l:VerticalLayout>
+                    </HBox>
+                    <Table  mode="MultiSelect" id="tableItemsDelete"
+                        items="{ path : 'ETDELETE>/Paginated/results'}" >
+                        <headerToolbar>
+                            <OverflowToolbar>
+                                <Button text="{appTxts>/products.deleteRow}" id="btnDeleteRows" press=".deleteRow('tableItemsDelete','ETDELETE')" type="Emphasized" />
+                                <ToolbarSpacer/>
+                                <core:Icon src="sap-icon://complete" visible="{= ${ETDELETE>/Paginated/results/length} > 0 }" tooltip="Replicar el valor inicial a todos los registros" press=".duplicarValorInicial" />
+                                <Select 
+                                    id="paginatedDeleteProducts"
+                                    visible="{= ${ETDELETE>/Paginated/results/length} > 0 }"
+                                    change=".paginar(${$parameters>/selectedItem}, 'ETDELETE', '', 'tableItemsDelete')">
+                                    <items>
+                                        <core:Item key="10" text="10"/>
+                                        <core:Item key="20" text="20"/>
+                                        <core:Item key="50" text="50"/>
+                                        <core:Item key="100" text="100"/>
+                                    </items>
+                                </Select>
+                                <!--Button text="Agregar" id="newVariant" press="addOptionalInfo" type="Emphasized" /-->
+                            </OverflowToolbar>
+                        </headerToolbar>
+                        <columns>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <header>
+                                    <Text text="{appTxts>/products.codeDelete}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                </header>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <header>
+                                <Text text="{appTxts>/products.descriptionDelete}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                </header>
+                                <footer/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <header>
+                                <Text text="{appTxts>/products.expirationDateDelete}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                </header>
+                                <footer/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <header>
+                                <Text text="{appTxts>/products.reasonDelete}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                </header>
+                                <footer/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <header>
+                                <Text text="{appTxts>/products.comentsDelete}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                </header>
+                                <footer/>
+                            </Column>
+                                            
+                        </columns>
+                        <items>
+                            <ColumnListItem>
+                                <cells>
+                                    <ObjectIdentifier text="{ETDELETE>EanUpcBase}" />
+                                    <ObjectIdentifier text="{ETDELETE>HazardDescript}" />
+                                    <DatePicker value="{ETDELETE>FechSumhasta}"  />
+                                    <Input value="{ETDELETE>MotBaja}" type="Text" ></Input>
+                                    <Input value="{ETDELETE>Comet}" type="Text" ></Input>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                    <OverflowToolbar visible="{= ${ETDELETE>/Paginated/results/length} > 0 }">
+                        <Text text="{ETDELETE>/Paginated/initRow} - {ETDELETE>/Paginated/endRow} {appTxts>/pagination.of} {ETDELETE>/results/length}" />
+                        <ToolbarSpacer/>
+                        <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${ETDELETE>/Paginated/iterator}, ${ETDELETE>/Paginated/initRow}, 'ETDELETE', '')" enabled="{= ${ETDELETE>/Paginated/iterator} !== 1}" />
+                        <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${ETDELETE>/Paginated/iterator}, ${ETDELETE>/Paginated/endRow}, 'ETDELETE', '')" enabled="{= ${ETDELETE>/Paginated/endRow} !== ${ETDELETE>/results/length}}" />
+                    </OverflowToolbar>
+                    
+                </VBox>
+					
+			</f:content>
+
+			<f:footer>
+				<OverflowToolbar>
+                    <Button text="{appTxts>/products.sendCasualtiesDelete}" id="btnSaveDelete" press="saveDelete" type="Emphasized" />
+                    <ToolbarSpacer/>
+                    <Button	text="{appTxts>/products.cancel}" type="Emphasized" press=".closeDialog('deleteProductsDialog')"/>
+                </OverflowToolbar>
+			</f:footer>
+		</f:DynamicPage>
+	</Dialog>
+</core:FragmentDefinition>

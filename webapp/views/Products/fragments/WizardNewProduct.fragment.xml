@@ -1,0 +1,826 @@
+<core:FragmentDefinition  controllerName="demo.controllers.Products.Master"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:f="sap.f"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:u="sap.ui.unified"
+    xmlns:l="sap.ui.layout"
+    xmlns:upload="sap.m.upload"
+	xmlns:layout="sap.ui.layout">
+	<Dialog
+		id="wizardDialog"
+		showHeader="false"
+		verticalScrolling="false"
+		contentHeight="95%"
+		contentWidth="96%">
+		<f:DynamicPage
+			stickySubheaderProvider="CreateProductWizard"
+			toggleHeaderOnTitleClick="false"
+			class="sapUiNoContentPadding"
+			showFooter="true">
+			<f:title>
+				<f:DynamicPageTitle>
+					<f:heading>
+						<Title text="{appTxts>/products.newProduct}"/>
+					</f:heading>
+				</f:DynamicPageTitle>
+			</f:title>
+
+			<f:content>
+				<Wizard id="CreateProductWizard"
+						class="sapUiResponsivePadding--header sapUiResponsivePadding--content"
+						showNextButton="false"
+                        stepActivate=".onStepActivate"
+						renderMode="Page">
+					<WizardStep id="ProductTypeStep"
+								title="{appTxts>/products.titleTabGeneralData}"
+								validated="true"
+                                
+                                complete="productTypeComplete"
+								>
+						<MessageStrip class="sapUiSmallMarginBottom"
+								text="{appTxts>/products.msgTabGeneralData}"
+								showIcon="true"/>
+						<VBox class="sapUiSmallMargin"
+								alignItems="Center"
+								justifyContent="Center"
+								width="100%">
+                                <form:Form id="FormChangeColumn_oneGroup234"
+                                    editable="true">
+                                    <form:layout>
+                                        <form:ColumnLayout
+                                            columnsM="2"
+                                            columnsL="3"
+                                            columnsXL="3"
+                                        />
+                                    </form:layout>
+                                    <form:formContainers>
+                                        <form:FormContainer>
+                                            <form:formElements>
+                                                <!--form:FormElement label="{appTxts>/products.folio}">
+                                                    <form:fields>
+                                                        <Input id="folioSolicitud" editable="false" value="" />
+                                                    </form:fields>
+                                                </form:FormElement-->
+                                                <form:FormElement  label="{appTxts>/products.code}">
+                                                    <form:fields>
+                                                        <Input editable="false" value="" id="codeGS1" />
+                                                        <!--Input value="{HouseNumber}">
+                                                            <layoutData>
+                                                                <form:ColumnElementData cellsSmall="2" cellsLarge="1" />
+                                                            </layoutData>
+                                                        </Input-->
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="{appTxts>/products.barCode}">
+                                                    <form:fields>
+                                                        <Input required="true" id="barCode" value="{Folio>/CodEan}" />
+                                                        <Button id="btnValidateDataSupplierGS1" press=".validateBarCode" icon="sap-icon://check-availability" text="">
+                                                            <layoutData>
+                                                                <form:ColumnElementData cellsSmall="1" cellsLarge="1" />
+                                                            </layoutData>
+                                                        </Button>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="{appTxts>/products.baseProduct}">
+                                                    <form:fields>
+                                                        <Input required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onBaseProductRequest" id="baseProduct" value="{Folio>/ProdBase}" />
+                                                        <!--Select id="country" selectedKey="{Country}">
+                                                            <items>
+                                                                <core:Item text="England" key="England"/>
+                                                                <core:Item text="Germany" key="Germany"/>
+                                                                <core:Item text="USA" key="USA"/>
+                                                            </items>
+                                                        </Select-->
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="{appTxts>/products.productType}">
+                                                    <form:fields>
+                                                        <ComboBox selectedKey="{Folio>/TipArt}" value="{Folio>/TipArt}" required="true" id="productType" items="{
+                                                                    path : 'Catalogos>/TiposProducto/results'
+                                                                }">
+                                                            <items>
+                                                                <core:Item key="{Catalogos>Mtart}" text="{Catalogos>Mtbez}"/>
+                                                            </items>
+                                                        </ComboBox>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="{appTxts>/products.shoppingGroup}">
+                                                    <form:fields>
+                                                        <Input required="true" value="" id="shoppingGroup" editable="false"/>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="{appTxts>/products.productGroup}">
+                                                    <form:fields>
+                                                        <ComboBox selectedKey="{Folio>/GrupArt}"  id="productGroup" items="{
+                                                                    path : 'Catalogos>/GrupoArticulos/results'
+                                                                }">
+                                                            <items>
+                                                                <core:Item key="{Catalogos>GrupoArt}" text="{Catalogos>DescGart}"/>
+                                                            </items>
+                                                        </ComboBox>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="{appTxts>/products.supplier}">
+                                                    <form:fields>
+                                                        <Input required="true"  id="supplierInputFolio"  valueHelpOnly="true" editable="false" enabled="true"  value="{configSite>/supplierInput}" />
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="{appTxts>/products.brand}">
+                                                    <form:fields>
+                                                        <Input required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onBrandRequest" value="{Folio>/Marca}" id="brand"/>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="{appTxts>/products.codeType}">
+                                                    <form:fields>
+                                                        <ComboBox required="true" value="{Folio>/EanUpcType}" id="codeType" items="{
+                                                                    path : 'Catalogos>/TipoCodigo/results'
+                                                                }">
+                                                            <items>
+                                                                <core:Item key="{Catalogos>Numtp}" text="{Catalogos>Ntbez}"/>
+                                                            </items>
+                                                        </ComboBox>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="{appTxts>/products.country}">
+                                                    <form:fields>
+                                                        <Input
+                                                            id="country"
+                                                            textFormatMode="Value"
+                                                            showSuggestion="true"
+                                                            showValueHelp="true"
+                                                            value="{Folio>/txtPais}"
+                                                            valueHelpRequest=".onValueCountryRequest"
+                                                            suggestionItems="{Paises>/results}"
+                                                            selectedKey="{Folio>/Pais}"
+                                                            suggestionItemSelected=".onSuggestionCountryItemSelected">
+                                                            <suggestionItems>
+                                                                <core:ListItem
+                                                                    key="{Paises>Land1}" text="{Paises>Landx50}"
+                                                                    additionalText="{Paises>Landx50}" />
+                                                            </suggestionItems>
+                                                        </Input>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="{appTxts>/products.model}">
+                                                    <form:fields>
+                                                        <Input value="{Folio>/Modelo}" id="model"/>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="{appTxts>/products.description}">
+                                                    <form:fields>
+                                                        <Input required="true" value="{Folio>/DescrArt}" id="description"/>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="{appTxts>/products.feature2}">
+                                                    <form:fields>
+                                                        <Input value="{Folio>/Carac2}" id="feature2"/>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="{appTxts>/products.feature3}">
+                                                    <form:fields>
+                                                        <Input value="{Folio>/Carac3}" id="feature3"/>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="{appTxts>/products.labelType}">
+                                                    <form:fields>
+                                                        <ComboBox selectedKey="{Folio>/TipEtq}" id="labelType" items="{
+                                                                    path : 'Catalogos>/TiposEtiqueta/results'
+                                                                }">
+                                                            <items>
+                                                                <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
+                                                            </items>
+                                                        </ComboBox>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="{appTxts>/products.exitStrategy}">
+                                                    <form:fields>
+                                                        <ComboBox selectedKey="{Folio>/EstSalida}" required="true" id="exitStrategy" items="{
+                                                                    path : 'Catalogos>/EstrategiaSalida/results'
+                                                                }">
+                                                            <items>
+                                                                <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
+                                                            </items>
+                                                        </ComboBox>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <!--form:FormElement label="{appTxts>/products.endOfValidity}">
+                                                    <form:fields>
+                                                        <Input required="true" type="Text" value="{Folio>/FechFinv}" id="endOfValidity"/>
+                                                    </form:fields>
+                                                </form:FormElement-->
+                                                <form:FormElement label="{appTxts>/products.negotiatedFormat}">
+                                                    <form:fields>
+                                                        <RadioButtonGroup select=".onSelectNegotiatedFormat" id="negotiatedFormat">
+                                                            <RadioButton id="negotiatedFormat-super-hipermercado" text="{appTxts>/products.hyperSuperOption}" selected="true" />
+                                                            <RadioButton id="negotiatedFormat-mercado-express" text="{appTxts>/products.expressOption}" />
+                                                            <RadioButton visible="false" id="negotiatedFormat-mega" text="{appTxts>/products.megaOption}" />
+                                                        </RadioButtonGroup>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                            </form:formElements>
+                                        </form:FormContainer>
+                                    </form:formContainers>
+                                </form:Form>
+						</VBox>
+					</WizardStep>
+					<WizardStep id="ProductPresentation"
+								validated="true"
+								title="Presentación"
+								complete="activateProductPresentation">
+						<!--MessageStrip class="sapUiSmallMarginBottom"
+								text="Validation in the wizard is controlled by calling the validateStep(Step) and invalidateStep(Step) methods "
+								showIcon="true"/-->
+						<Text text="Complete los datos de presentación y dimensiones para la propuesta de alta."/>
+						<VBox class="sapUiSmallMargin"
+								alignItems="Center"
+								justifyContent="Center"
+								width="100%">
+                                <form:Form id="formPresentation"
+                                    editable="true">
+                                    <form:layout>
+                                        <form:ColumnLayout
+                                            columnsM="2"
+                                            columnsL="3"
+                                            columnsXL="3"
+                                        />
+                                    </form:layout>
+                                    <form:formContainers>
+                                        <form:FormContainer>
+                                            <form:formElements>
+                                                <form:FormElement  label="Presentación">
+                                                    <form:fields>
+                                                        <ComboBox required="true" selectedKey="{Folio>/Present}" id="presentation" items="{
+                                                                    path : 'Catalogos>/Presentaciones/results'
+                                                                }">
+                                                            <items>
+                                                                <core:Item key="{Catalogos>AbrPres}" text="{Catalogos>Descpres}"/>
+                                                            </items>
+                                                        </ComboBox>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="Contenido">
+                                                    <form:fields>
+                                                        <Input required="true" id="content" value="{Folio>/Contenido}"  />
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="Unidad de medida de contenido">
+                                                    <form:fields>
+                                                        <ComboBox required="true" selectedKey="{Folio>/UndCont}" id="contentUnit" items="{
+                                                                    path : 'Catalogos>/UnidadMedida/results'
+                                                                }">
+                                                            <items>
+                                                                <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
+                                                            </items>
+                                                        </ComboBox>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="Código de venta">
+                                                    <form:fields>
+                                                        <Input required="true" id="salesCode" value="{Folio>/CodVent}" />
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="Unidad de medida de venta">
+                                                    <form:fields>
+                                                        <ComboBox required="true" selectedKey="{Folio>/UndMventa}" id="salesUnit" items="{
+                                                                    path : 'Catalogos>/UnidadMedida/results'
+                                                                }">
+                                                            <items>
+                                                                <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
+                                                            </items>
+                                                        </ComboBox>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="Código de unidad de compra">
+                                                    <form:fields>
+                                                        <Input required="true" value="{Folio>/CodCompra}" id="purchaseUnitCode"/>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="Unidad de compra">
+                                                    <form:fields>
+                                                        <ComboBox selectedKey="{Folio>/UndCompra}" required="true" id="purchaseUnit" items="{
+                                                                    path : 'Catalogos>/UnidadMedida/results'
+                                                                }">
+                                                            <items>
+                                                                <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
+                                                            </items>
+                                                        </ComboBox>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="Capacidad de embarque">
+                                                    <form:fields>
+                                                        <Input required="true" value="{Folio>/CapEmpaq}" id="boardingCapacity"/>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="Color / Sabor / Aroma">
+                                                    <form:fields>
+                                                        <Input value="" id="qualities"/>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="Talla / Tamaño">
+                                                    <form:fields>
+                                                        <Input value="{Folio>/Taltam}" id="size"/>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="Artículo con variantes">
+                                                    <form:fields>
+                                                        <CheckBox id="variants" select=".changeVariants" />
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement visible="false" id="characteristicFormElement" label="Artículo con variantes">
+                                                    <form:fields>
+                                                        <ComboBox selectedKey="{Folio>/VariantArt}" id="characteristic" items="{
+                                                                    path : 'Catalogos>/Caracteristicas/results'
+                                                                }"> 
+                                                            <items>
+                                                                <core:Item key="{Catalogos>Caracteristica}" text="{Catalogos>Caracteristica}"/>
+                                                            </items>
+                                                        </ComboBox>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                            </form:formElements>
+                                        </form:FormContainer>
+                                    </form:formContainers>
+                                </form:Form>
+						</VBox>
+					</WizardStep>
+					<WizardStep id="VariantStep"
+								validated="true"
+								complete="completeValidateVariantStep"
+								title="Variantes">
+						<!--MessageStrip class="sapUiSmallMarginBottom"
+								text="You can validate steps by default with the validated='true' property of the step. The next button is always enabled."
+								showIcon="true"/-->
+						<VBox>
+                            <Table mode="MultiSelect" id="tableWizardVariants"
+                                items="{ path : 'ITARTVAR>/results'}">
+                                <headerToolbar>
+                                    <OverflowToolbar>
+                                        <ToolbarSpacer/>
+                                        
+                                        <Select 
+                                            id="paginatedWizardVariants"
+                                            visible="{= ${ITARTVAR>/Paginated/results/length} > 0 }"
+                                            change=".paginar(${$parameters>/selectedItem}, 'ITARTVAR', '', 'tableWizardVariants')">
+                                            <items>
+                                                <core:Item key="10" text="10"/>
+                                                <core:Item key="20" text="20"/>
+                                                <core:Item key="50" text="50"/>
+                                                <core:Item key="100" text="100"/>
+                                            </items>
+                                        </Select>
+                                        <Button text="Agregar" id="newVariant" press="addOptionalInfo" type="Emphasized" />
+                                    </OverflowToolbar>
+                                </headerToolbar>
+                                <columns>
+                                    <Column width="auto" hAlign="Left">
+                                        <header>
+                                            <Text text="No" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </header>
+                                        <footer/>
+                                    </Column>
+                                    <Column width="auto" hAlign="Left">
+                                        <header>
+                                            <Text text="Talla/Tamaño" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </header>
+                                        <footer/>
+                                    </Column>
+                                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <header>
+                                            <Text text="Color/Sabor/Aroma" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </header>
+                                    </Column>
+                                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <header>
+                                        <Text text="EAN/UPC" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </header>
+                                        <footer/>
+                                    </Column>
+                                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <header>
+                                        <Text text="Código de empaque" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </header>
+                                        <footer/>
+                                    </Column>
+                                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <header>
+                                        <Text text="Proporción" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </header>
+                                        <footer/>
+                                    </Column>
+                                                    
+                                </columns>
+                                <items>
+                                    <ColumnListItem press="onListItemPress">
+                                        <cells>
+                                            <ObjectIdentifier text="{ITARTVAR>index}" />
+                                            <ComboBox selectedKey="{ITARTVAR>CaracTalla}" items="{path : 'Catalogos>/TallaSize/results'}">
+                                                <items>
+                                                    <core:Item key="{Catalogos>Valorcarac}" text="{Catalogos>Valorcarac}"/>
+                                                </items>
+                                            </ComboBox>
+                                            <ComboBox selectedKey="{ITARTVAR>Colsabaro}" items="{path : 'Catalogos>/ColorSaborAroma/results'}">
+                                                <items>
+                                                    <core:Item key="{Catalogos>Valorcarac}" text="{Catalogos>Valorcarac}"/>
+                                                </items>
+                                            </ComboBox>
+                                            <Input value="{ITARTVAR>CodVent}" change=".changeQty"></Input>
+                                            
+                                            <Input value="{ITARTVAR>CodCompra}" change=".changeQty"></Input>
+                                            <Input value="{ITARTVAR>Proporcion}" change=".changeQty"></Input>
+                                            
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                            <OverflowToolbar visible="{= ${ITARTVAR>/Paginated/results/length} > 0 }">
+                                <Text text="{ITARTVAR>/Paginated/initRow} - {ITARTVAR>/Paginated/endRow} {appTxts>/pagination.of} {ITARTVAR>/results/length}" />
+                                <ToolbarSpacer/>
+                                <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${ITARTVAR>/Paginated/iterator}, ${ITARTVAR>/Paginated/initRow}, 'ITARTVAR', '/selecteds')" enabled="{= ${ITARTVAR>/Paginated/iterator} !== 1}" />
+                                <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${ITARTVAR>/Paginated/iterator}, ${ITARTVAR>/Paginated/endRow}, 'ITARTVAR', '/selecteds')" enabled="{= ${ITARTVAR>/Paginated/endRow} !== ${ITARTVAR>/results/length}}" />
+                            </OverflowToolbar>
+                            <Button text="Eliminar" id="newVariantDelete" press=".deleteRow('tableWizardVariants', 'ITARTVAR')" type="Emphasized" />
+                        </VBox>
+					</WizardStep>
+					<WizardStep id="DimensionsStep"
+								complete="validateCompleteStepDimensions"
+								validated="true"
+								title="Dimensiones">
+						<!--MessageStrip class="sapUiSmallMarginBottom"
+								text="You can use the wizard previousStep() and nextStep() methods to navigate from step to step without validation. Also you can use the GoToStep(step) method to scroll programmatically to previously visited steps."
+								showIcon="true"/-->
+                        <VBox class="sapUiSmallMargin">
+                            <form:SimpleForm
+                                    editable="true"
+                                    layout="ResponsiveGridLayout"
+                                    columnsXL="3"
+                                    columnsL="2"
+                                    columnsM="2"
+                                    singleContainerFullSize="false">
+                                <form:content>
+
+                                    <core:Title text="Embarque por compra" />
+                                    <Label text="Alto" />
+                                    <Input value="{Folio>/EcAlto}" />
+                                    <Label text="Ancho" />
+                                    <Input value="{Folio>/EcAncho}" />
+                                    <Label text="Profundo" />
+                                    <Input value="{Folio>/EcProfundo}" />
+                                    <Label text="Expresado en" />
+                                    <Input value="{Folio>/EcUndaap}"  />
+                                    <Label text="Volumen" />
+                                    <Input value="{{Folio>/EcVolumen}" />
+                                    <Label text="Unidad de volumen" />
+                                    <ComboBox selectedKey="{Folio>/EcUndvol}" items="{path : 'Catalogos>/UnidadVolumen/results'}">
+                                        <items>
+                                            <core:Item key="{Catalogos>Valorcarac}" text="{Catalogos>Valorcarac}"/>
+                                        </items>
+                                    </ComboBox>
+                                    <Label text="Peso bruto" />
+                                    <Input value="{Folio>/EcPbruto}"  />
+                                    <Label text="Peso neto" />
+                                    <Input value="{Folio>/EcPneto}"  />
+                                    <Label text="Unidad de peso" />
+                                    <Input value="{Folio>/EcUndp}" />
+
+                                    <core:Title text="Presentación de venta" />
+                                    <Label text="Alto" />
+                                    <Input value="{Folio>/PvAlto}" />
+                                    <Label text="Ancho" />
+                                    <Input value="{Folio>/PvAncho}" />
+                                    <Label text="Profundo" />
+                                    <Input value="{Folio>/PvProfundo}" />
+                                    <Label text="Expresado en" />
+                                    <Input value="{Folio>/PvUndaap}"  />
+                                    <Label text="Volumen" />
+                                    <Input value="{Folio>/PvVolumen}" />
+                                    <Label text="Unidad de volumen" />
+                                    <ComboBox selectedKey="{Folio>/PvUndvol}" items="{path : 'Catalogos>/UnidadVolumen/results'}">
+                                        <items>
+                                            <core:Item key="{Catalogos>Valorcarac}" text="{Catalogos>Valorcarac}"/>
+                                        </items>
+                                    </ComboBox>
+                                    <Label text="Peso bruto" />
+                                    <Input value="{Folio>/PvPbruto}"  />
+                                    <Label text="Peso neto" />
+                                    <Input value="{Folio>/PvPneto}"  />
+                                    <Label text="Unidad de peso" />
+                                    <Input value="{Folio>/PvUndp}" />
+
+                                    <core:Title text="Capacidad por tarima" />
+                                    <Label text="Código de tarima" />
+                                    <Input value="{Folio>/CodTarima}" />
+                                    <Label text="Cajas por contenido" />
+                                    <Input value="{Folio>/CajasTend}">
+                                    </Input>
+                                    <!--Input value="{HouseNumber}">
+                                        <layoutData>
+                                            <l:GridData span="XL2 L3 M3 S4" />
+                                        </layoutData>
+                                    </Input-->
+                                    <Label text="Tendidos por tarima" />
+                                    <Input value="{Folio>/TendTarima}" />
+                                    <Label text="Cajas por tarima" />
+                                    <Input value="{Folio>/CajasTarima}" />
+                                </form:content>
+                            </form:SimpleForm>
+                        </VBox>
+					</WizardStep>
+                    <WizardStep id="Discounts"
+								activate="pricingActivate"
+								complete="pricingComplete"
+								validated="true"
+								title="Descuentos, Bonificación y costos">
+						<!--MessageStrip class="sapUiSmallMarginBottom"
+								text="You can use the wizard previousStep() and nextStep() methods to navigate from step to step without validation. Also you can use the GoToStep(step) method to scroll programmatically to previously visited steps."
+								showIcon="true"/-->
+                        <VBox class="sapUiSmallMargin">
+                            <form:SimpleForm
+                                    editable="true"
+                                    layout="ResponsiveGridLayout"
+                                    title="Address"
+                                    labelSpanXL="4"
+                                    labelSpanL="4"
+                                    labelSpanM="4"
+                                    labelSpanS="12"
+                                    adjustLabelSpan="false"
+                                    emptySpanXL="0"
+                                    emptySpanL="0"
+                                    emptySpanM="0"
+                                    emptySpanS="0"
+                                    columnsXL="3"
+                                    columnsL="2"
+                                    columnsM="2"
+                                    singleContainerFullSize="false">
+                                <form:content>
+
+                                    <core:Title text="Descuentos" />
+                                    <Label text="Descuento normal" />
+                                    <Input value="{Folio>/DscNormal}" />
+                                    <Label text="Descuento normal 2" />
+                                    <Input value="{Street}">
+                                    </Input>
+                                    <!--Input value="{HouseNumber}">
+                                        <layoutData>
+                                            <l:GridData span="XL2 L3 M3 S4" />
+                                        </layoutData>
+                                    </Input-->
+                                    <Label text="Descuento normal 3" />
+                                    <Input value="" />
+                                    
+                                    <Label text="Descuento adicional" />
+                                    <Input value="{Folio>/DscAdicional}" />
+                                    <Label text="Descuento pronto pago" />
+                                    <Input value="{Folio>/DscPpago}" />
+
+                                    <core:Title text="Bonificación" />
+                                    <Label text="Tipo de bonificación" />
+                                    <Input value="{Url}" />
+                                    <Label text="Valor de bonificación" />
+                                    <Input value="{Folio>/ValBoni}" />
+                                    <Label text="Unidades de bonificación" />
+                                    <Input value="{Folio>/UndBon}" />
+                                    
+
+                                    <core:Title text="Costos de compra" />
+                                    <!--Label text="Costos" />
+                                    <RadioButtonGroup id="radioCostos" >
+                                        <RadioButton id="radioCompra" text="Un compra" />
+                                        <RadioButton id="radioVenta" text="Un venta" />
+                                    </RadioButtonGroup-->
+                                    <Label text="Costo bruto" />
+                                    <Input value="{Folio>/CostoB}" />
+                                    <Label text="Capacidad de embarque" />
+                                    <Input value="{Email}" />
+                                    <Label text="Costo Neto Unidad de compra" />
+                                    <Input value="{Tel}"  />
+                                    <Label text="Costo neto unidad de venta" />
+                                    <Input value="{Sms}" />
+                                    <Label text="Precio sugerido" />
+                                    <Input value="{Folio>/PSug}" />
+                                    
+                                </form:content>
+                            </form:SimpleForm>
+                        </VBox>
+					</WizardStep>
+                    <WizardStep 
+                        id="ImagesStep"
+						complete="onImageStepComplete"
+						validated="true"
+						title="Imágenes">
+                        <Text text="En esta pantalla se muestran las imágenes que se tienen registradas en GS1 y podrá agregar nuevas imágenes."/>
+
+                         <Table mode="MultiSelect" id="imagesList"
+                                items="{ path : 'ITARTVAR>/results'}">
+                                <headerToolbar>
+                                    <OverflowToolbar>
+                                        <ToolbarSpacer/>
+                                        
+                                        <Select 
+                                            id="paginatedImagesList"
+                                            visible="{= ${ITARTVAR>/Paginated/results/length} > 0 }"
+                                            change=".paginar(${$parameters>/selectedItem}, 'ITARTVAR', '', 'tableWizardVariants')">
+                                            <items>
+                                                <core:Item key="10" text="10"/>
+                                                <core:Item key="20" text="20"/>
+                                                <core:Item key="50" text="50"/>
+                                                <core:Item key="100" text="100"/>
+                                            </items>
+                                        </Select>
+                                    </OverflowToolbar>
+                                </headerToolbar>
+                                <columns>
+                                    <Column width="auto" hAlign="Left">
+                                        <header>
+                                            <Text text="No" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </header>
+                                        <footer/>
+                                    </Column>
+                                    <Column width="auto" hAlign="Left">
+                                        <header>
+                                            <Text text="Talla/Tamaño" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </header>
+                                        <footer/>
+                                    </Column>
+                                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <header>
+                                            <Text text="Color/Sabor/Aroma" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </header>
+                                    </Column>
+                                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <header>
+                                        <Text text="EAN/UPC" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </header>
+                                        <footer/>
+                                    </Column>
+                                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <header>
+                                        <Text text="Código de empaque" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </header>
+                                        <footer/>
+                                    </Column>
+                                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <header>
+                                        <Text text="Proporción" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </header>
+                                        <footer/>
+                                    </Column>
+                                                    
+                                </columns>
+                                <items>
+                                    <ColumnListItem press="onListItemPress">
+                                        <cells>
+                                            <ObjectIdentifier text="{ITARTVAR>index}" />
+                                            <ComboBox selectedKey="{ITARTVAR>CaracTalla}" items="{path : 'Catalogos>/TallaSize/results'}">
+                                                <items>
+                                                    <core:Item key="{Catalogos>Valorcarac}" text="{Catalogos>Valorcarac}"/>
+                                                </items>
+                                            </ComboBox>
+                                            <ComboBox selectedKey="{ITARTVAR>Colsabaro}" items="{path : 'Catalogos>/ColorSaborAroma/results'}">
+                                                <items>
+                                                    <core:Item key="{Catalogos>Valorcarac}" text="{Catalogos>Valorcarac}"/>
+                                                </items>
+                                            </ComboBox>
+                                            <Input value="{ITARTVAR>CodVent}" change=".changeQty"></Input>
+                                            
+                                            <Input value="{ITARTVAR>CodCompra}" change=".changeQty"></Input>
+                                            <Input value="{ITARTVAR>Proporcion}" change=".changeQty"></Input>
+                                            
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+
+                        <upload:UploadSet 
+                            id="attachmentDocuments" 
+                            instantUpload="false" 
+                            showIcons="true" 
+                            uploadEnabled="true" 
+                            terminationEnabled="false" 
+                            fileTypes="xml,pdf,zip,rar,xls,xlsx" 
+                            maxFileNameLength="15" 
+                            maxFileSize="5" 
+                            selectionChanged="onChangeUpload" 
+                            fieldGroupIds="aclaracion"
+                            items="{path: '/attachItems', templateShareable: false}" 
+                            mediaTypes="application/pdf,text/xml,application/xml,application/zip,application/x-rar-compressed,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                            <upload:toolbar>
+                                <OverflowToolbar>
+                                </OverflowToolbar>
+                            </upload:toolbar>
+                            <upload:items>
+                                <upload:UploadSetItem 
+                                    fileName="{fileName}" 
+                                    mediaType="{mediaType}" 
+                                    url="{url}" 
+                                    thumbnailUrl="{thumbnailUrl}" 
+                                    attributes="{path: 'attributes', templateShareable: false}" 
+                                    markers="{path: 'markers', templateShareable: false}" 
+                                    statuses="{path: 'statuses', templateShareable: false}" 
+                                    uploadState="{uploadState}">
+                                    <upload:attributes>
+                                        <ObjectAttribute 
+                                            title="{title}" 
+                                            text="{text}" 
+                                            active="{active}"/>
+                                    </upload:attributes>
+                                    <upload:markers>
+                                        <ObjectMarker type="{type}" visibility="{visibility}"/>
+                                    </upload:markers>
+                                    <upload:statuses>
+                                        <ObjectStatus title="{title}" text="{text}" state="{state}" icon="{icon}" active="{active}"/>
+                                    </upload:statuses>
+                                </upload:UploadSetItem>
+                            </upload:items>
+                        </upload:UploadSet>
+								
+					</WizardStep>
+					<!--WizardStep id="ReviewPage"
+							activate="reviewActivate"
+							complete="reviewComplete"
+							validated="true"
+							title="Review page">
+								<form:SimpleForm
+										title="1. Product Type"
+										minWidth="1024"
+										editable="false"
+										layout="ResponsiveGridLayout">
+									<form:content>
+										<Label text="Type"/>
+										<Text id="ProductTypeChosen" text="{/productType}"/>
+										<Link press="editStepOne" text="Edit" />
+									</form:content>
+								</form:SimpleForm>
+
+								<form:SimpleForm
+										title="2. Product Information"
+										minWidth="1024"
+										editable="false"
+										layout="ResponsiveGridLayout">
+									<form:content>
+										<Label text="Name"/>
+										<Text id="ProductNameChosen" text="{/productName}"/>
+										<Label text="Weight"/>
+										<Text id="ProductWeightChosen" text="{/productWeight}"/>
+										<Label text="Manufacturer"/>
+										<Text id="ProductManufacturerChosen" text="{/productManufacturer}"/>
+										<Label text="Description"/>
+										<Text id="ProductDescriptionChosen" text="{/productDescription}"/>
+										<Link press="editStepTwo" text="Edit" />
+									</form:content>
+								</form:SimpleForm>
+
+								<form:SimpleForm
+										title="3. Optional Information"
+										minWidth="1024"
+										editable="false"
+										layout="ResponsiveGridLayout">
+									<form:content>
+										<Label text="Some text"/>
+										<Text text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+										tempor incididunt ut labore et dolore magna aliqua. "/>
+										<Label text="Manufacturing Date"/>
+										<Text id="ManufacturingDate" text="{/manufacturingDate}"/>
+										<Label text="Availability"/>
+										<Text id="AvailabilityChosen" text="{/availabilityType}"/>
+										<Label text="Size"/>
+										<HBox>
+											<Text id="Size" text="{/size}"/>
+											<Text id="Size2" class="sapUiTinyMarginBegin" text="{/measurement}"/>
+										</HBox>
+										<Link press="editStepThree" text="Edit" />
+									</form:content>
+								</form:SimpleForm>
+
+								<form:SimpleForm
+										title="4. Pricing"
+										minWidth="1024"
+										editable="false"
+										layout="ResponsiveGridLayout">
+									<form:content>
+										<Label text="Price"/>
+										<Text id="ProductPriceChosen" text="{/productPrice}"/>
+										<Label text="Discount Group"/>
+										<Text id="DiscountGroupChosen" text="{/discountGroup}"/>
+										<Label text="VAT Included"/>
+										<Text id="ProductVATChosen" text="{/productVAT}"/>
+										<Link press="editStepFour" text="Edit" />
+									</form:content>
+								</form:SimpleForm>
+					</WizardStep-->
+				</Wizard>
+			</f:content>
+
+			<f:footer>
+				<OverflowToolbar>
+					<ToolbarSpacer/>
+					<Button text="{appTxts>/products.previous}" visible="{/backButtonVisible}" press="onDialogBackButton" />
+					<Button text="{appTxts>/products.nextStep}" type="Emphasized" enabled="{/nextButtonEnabled}" visible="{/nextButtonVisible}" press="onDialogNextButton" />
+					<Button text="Review" type="Emphasized" visible="{/reviewButtonVisible}" press="onDialogNextButton" />
+					<Button text="{appTxts>/products.finish}" type="Emphasized" visible="{/finishButtonVisible}" press="handleWizardSubmit" />
+					<Button	text="{appTxts>/products.cancel}" type="Transparent" press="handleWizardCancel"/>
+				</OverflowToolbar>
+			</f:footer>
+		</f:DynamicPage>
+	</Dialog>
+</core:FragmentDefinition>
