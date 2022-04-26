@@ -1,0 +1,178 @@
+<mvc:View 
+displayBlock="true" 
+xmlns:f="sap.f" 
+xmlns:mvc="sap.ui.core.mvc"
+xmlns:fb="sap.ui.comp.filterbar" 
+xmlns:vm="sap.ui.comp.variants" 
+xmlns="sap.m"
+xmlns:t="sap.ui.table"
+xmlns:core="sap.ui.core" 
+	 controllerName="demo.controllers.Remissions.Master" height="100%">
+	<f:DynamicPage  
+		class="sapUiContentPadding">
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle backgroundDesign="Transparent">
+                <f:heading>
+                    <vm:VariantManagement standardItemText="{appTxts>/rem.title}">
+                    </vm:VariantManagement>
+                </f:heading>
+
+                <f:actions>
+                    <ToolbarSpacer/>
+                    <Button text="{appTxts>/rem.uploadRemission}" type="Emphasized" press="openUploadDialog"/>
+                </f:actions>
+
+                <f:actions>
+                    <ToolbarSpacer/>
+                    <Button text="{appTxts>/rem.createRemission}" type="Transparent" press="openSelectRemission"/>
+                </f:actions>
+                
+            </f:DynamicPageTitle>
+        </f:title>
+        <!-- DynamicPage Header -->
+        <f:header>
+            <f:DynamicPageHeader pinnable="true" >
+                <f:content>
+                    <fb:FilterBar id="filterBar"  header="Header"
+		                reset="onReset" search="searchData" clear="onClear" cancel="onCancel" 
+		                filtersDialogClosed = "onFiltersDialogClosed"
+		                showRestoreButton="false" showClearButton="false" useToolbar="false"
+                        >
+			
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="F1" name="Feha aviso" label="{appTxts>/rem.remDate}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <DateRangeSelection id="dateOrder" change="onChange" required="false"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab" label="{appTxts>/order.supplier}" mandatory="true" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        id="supplierInput"
+                                        placeholder="Proveedor"
+                                        showSuggestion="true"
+                                        valueHelpOnly="true"
+                                        showValueHelp="true"
+                                        valueHelpRequest=".onValueHelpRequest"
+                                        value="{configSite>/supplierInput}"
+                                        >
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="Folio" label="{appTxts>/rem.folio}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input type="Text" id="folio"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="A1" label="{appTxts>/order.title}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input type="Text" id="order"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                        </fb:filterGroupItems>
+
+	                </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+		<f:content>
+            <VBox>
+			<Table sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
+                noDataText="{appTxts>/pay.merchandise}"
+                id="complPagoList"
+                alternateRowColors="true"
+                items="{path: 'tableRemissions>/EFREMNAV/Paginated/results', sorter : { path : 'Belnr', descending : true }}">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title text="{appTxts>/order.title} ({tableRemissions>/EFREMNAV/results/length})" />
+                        <ToolbarSpacer/>
+                        <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
+                        press=".buildExportTable"
+                        visible="{= ${tableRemissions>/EFREMNAV/results/length} > 0}"
+                        />
+                        <Select 
+                            visible="{= ${tableRemissions>/EFREMNAV/Paginated/results/length} > 0 }"
+                            change=".paginateValue(${$parameters>/selectedItem}, 'tableRemissions', '/EFREMNAV')">
+                            <items>
+                                <core:Item key="10" text="10"/>
+                                <core:Item key="20" text="20"/>
+                                <core:Item key="50" text="50"/>
+                                <core:Item key="100" text="100"/>
+                            </items>
+                        </Select>
+                    </OverflowToolbar>
+                </headerToolbar>
+				<columns>
+					<Column width="auto" hAlign="Left">
+						<header>
+							<Text text="{appTxts>/rem.document}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+					<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/rem.addressee}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+					</Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                        <Text text="{appTxts>/rem.createDate}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </header>
+                        <footer/>
+                    </Column>       
+
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                        <Text text="{appTxts>/rem.typeRemission}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </header>
+                        <footer/>
+                    </Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                        <Text text="{appTxts>/rem.statusRemission}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </header>
+                        <footer/>
+                    </Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                        <Text text="{appTxts>/rem.typedeliv}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </header>
+                        <footer/>
+                    </Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                        <Text text="{appTxts>/rem.cancelStatus}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </header>
+                        <footer/>
+                    </Column>             
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press="onListItemPress">
+						<cells>
+                            <ObjectIdentifier title="{tableRemissions>Zremision}" text="" titleActive="false" visible="true" />
+                            <Text text="{tableRemissions>Werks} - {tableRemissions>Nwerks}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text xmlns="sap.m" text="{path: 'tableRemissions>Zfechrem', formatter: '.ReverseDate'}" width="auto" maxLines="1" wrapping="false" textAlign="Begin"
+                                textDirection="Inherit"/>
+                            <Text text="{tableRemissions>Ztipoaviso}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{tableRemissions>Zstatus}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{tableRemissions>Ztipoentreg}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{tableRemissions>ZstatusCan}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+            <OverflowToolbar visible="{= ${tableRemissions>/EFREMNAV/Paginated/results/length} > 0 }">
+                <Text text="{tableRemissions>/EFREMNAV/Paginated/initRow} - {tableRemissions>/EFREMNAV/Paginated/endRow} {appTxts>/pagination.of} {tableRemissions>/EFREMNAV/results/length}" />
+                <ToolbarSpacer/>
+                <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableRemissions>/EFREMNAV/Paginated/iterator}, ${tableRemissions>/EFREMNAV/Paginated/initRow}, 'tableRemissions', '/EFREMNAV')" enabled="{= ${tableRemissions>/EFREMNAV/Paginated/iterator} !== 1}" />
+                <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableRemissions>/EFREMNAV/Paginated/iterator}, ${tableRemissions>/EFREMNAV/Paginated/endRow}, 'tableRemissions', '/EFREMNAV')" enabled="{= ${tableRemissions>/EFREMNAV/Paginated/endRow} !== ${tableRemissions>/EFREMNAV/results/length}}" />
+            </OverflowToolbar>
+            </VBox>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

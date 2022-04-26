@@ -1,0 +1,265 @@
+<mvc:View displayBlock="true" controllerName="demo.controllers.Aclaraciones.Detail" height="100%"
+    xmlns="sap.uxap"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:m="sap.m"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:upload="sap.m.upload"
+    xmlns:u="sap.ui.unified">
+
+    <ObjectPageLayout 
+        id                          = "ObjectPageLayout" 
+        showTitleInHeaderContent    = "true" 
+        alwaysShowContentHeader     = "false" 
+        preserveHeaderStateOnScroll = "false" 
+        headerContentPinnable       = "true" 
+        isChildPage                 = "true" 
+        upperCaseAnchorBar          = "false">
+        <headerTitle>
+            <ObjectPageDynamicHeaderTitle>
+                <expandedHeading>
+                    <m:Title text="{appTxts>/clarifications.headerFolio} {Aclaracion>/Folio}" wrapping="true" class="sapUiSmallMarginEnd"/>
+                </expandedHeading>
+
+                <!--snappedHeading>
+							<m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Center">
+								<m:FlexBox wrap="NoWrap" fitContainer="true" alignItems="Center" class="sapUiTinyMarginEnd">
+									<f:Avatar src="../../../../../../../{products>ProductPicUrl}" displaySize="S" displayShape="Square"/>
+									<m:Title text="{products>Name}" wrapping="true" class="sapUiTinyMarginEnd"/>
+                                    
+								</m:FlexBox>
+							</m:FlexBox>
+						</snappedHeading-->
+
+                <navigationActions>
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose" tooltip="Close column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }" />
+                </navigationActions>
+
+                <!--actions>
+                            <m:Button text="{appTxts>/user.extend}" type="Transparent" press="handleExtendDialog" />
+                            <m:Button text="{appTxts>/user.history}" type="Transparent" press="handleHistory" />
+                            <m:Button text="{appTxts>/user.resendInv}" type="Transparent" visible="{= ${detailUserModel>/Esusdata/Zactivo} !== 'Registrado' }" press="sendInv" />
+                            <m:Button text="Volver administrador" type="Transparent" visible="{= ${userdata>/ERol} === '0001' ? ${detailUserModel>/Esusdata/Idrol} !== '0001' || ${detailUserModel>/Esusdata/Idrol} !== '0002' ? TRUE : FALSE : FALSE }" press="handleChangeToAdmin" />
+                            <m:Button text="{appTxts>/user.unlink}" type="Transparent" press="handleUnlink" visible="{= ${userdata>/ERol} === '0001' || ${userdata>/ERol} === '0002' ? ${detailUserModel>/Esusdata/Zusuasor} !== 'X' : false }" />
+                            <m:Button text="{= ${detailUserModel>/Esusdata/Zactivo} !== 'B' ? 'Baja' : 'Reactivar' }" type="Transparent" press="handleDropUser" visible="{= ${userdata>/ERol} === '0001' || ${userdata>/ERol} === '0002' }" />
+						</actions-->
+
+            </ObjectPageDynamicHeaderTitle>
+        </headerTitle>
+
+        <sections>
+            <ObjectPageSection>
+                <subSections>
+                    <ObjectPageSubSection>
+                        <blocks>
+                            <form:SimpleForm maxContainerCols="2" editable="true" layout="ResponsiveGridLayout" labelSpanL="12" labelSpanM="12" emptySpanL="0" emptySpanM="0" columnsL="3" columnsM="3">
+                                <form:toolbar>
+                                    <m:Toolbar>
+                                        <m:Title text="{appTxts>/state.detail}"/>
+                                        <m:ToolbarSpacer />
+                                        <m:Button id="btnGuardar" text="Guardar" type="Emphasized" press="guardaAclara"/>
+                                    </m:Toolbar>
+                                </form:toolbar>
+                                <form:content>
+                                    <core:Title text="Datos principales" />
+
+                                    <!--Fecha de alta/Creation Date-->
+                                    <m:Label text="{appTxts>/clarifications.dateCreation}"/>
+                                    <m:DatePicker fieldGroupIds="aclaracion" id="dateCreation" placeholder="" enabled="true" editable="false"/>
+
+                                    <!--Proveedor/Supplier-->
+                                    <m:Label text="{appTxts>/clarifications.supplier}"/>
+                                    <m:Input fieldGroupIds="aclaracion" id="supplierInput" placeholder="{appTxts>/clarifications.supplier}" showSuggestion="true" valueHelpOnly="true" editable="false" enabled="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}">
+                                    </m:Input>
+
+                                    <!--Tipo de Aclaracipon/Clarification type-->
+                                    <m:Label text="{appTxts>/clarifications.clarificationType}"/>
+                                    <m:ComboBox fieldGroupIds="aclaracion" id="clarificationType" items="{
+                                                path : 'catalogos>/Tipos/results'
+                                            }" selectedKey="{Aclaracion>/TipAcla}" selectionChange=".loadAnalyst">
+                                        <m:items>
+                                            <core:Item key="{catalogos>TipAcla}" text="{catalogos>DesAcla}"/>
+                                        </m:items>
+                                    </m:ComboBox>
+
+                                    <!--Sucursal/Distribution center-->
+                                    <m:Label text="{appTxts>/clarifications.distributionCenter}"/>
+                                    <m:Input fieldGroupIds="aclaracion" id="distributionCenter" editable="false" value="{Aclaracion>/Tienda}" maxLength="35"/>
+                                    <m:Input fieldGroupIds="aclaracion" id="distributionCenterDescription" editable="false" value="{Aclaracion>/Butxt}"/>
+
+                                    <!--Estatus/Status-->
+                                    <m:Label text="{appTxts>/clarifications.status}"/>
+                                    <m:ComboBox fieldGroupIds="aclaracion" id="status" items="{
+                                                path : 'catalogos>/Estatus/results'
+                                            }" selectedKey="{Aclaracion>/Estatus}" editable="{= ${Aclaracion>/Folio} > 0 }">
+                                        <m:items>
+                                            <core:Item key="{catalogos>Status}" text="{catalogos>Descripcion}"/>
+                                        </m:items>
+                                    </m:ComboBox>
+
+                                    <!--Analista/Analyst-->
+                                    <m:Label text="{appTxts>/clarifications.analyst}"/>
+                                    <m:ComboBox fieldGroupIds="aclaracion" id="analyst" visible="{= ${Aclaracion>/Folio} > 0 }" items="{
+                                                path : 'catalogos>/Analistas/results'
+                                            }" selectedKey="{Aclaracion>/Analista}" editable="{= ${Aclaracion>/Folio} > 0 }">
+                                        <m:items>
+                                            <core:Item key="{catalogos>Analista}" text="{catalogos>Analista}"/>
+                                        </m:items>
+                                    </m:ComboBox>
+                                    <!--m:Input fieldGroupIds="aclaracion"  id="analyst" value="{Aclaracion>/Analista}" enabled="true" /-->
+
+
+                                    <core:Title text="Importes" />
+
+                                    <!--Documento origen/Source document-->
+                                    <m:Label text="{appTxts>/clarifications.sourceDocument}"/>
+                                    <m:Input fieldGroupIds="aclaracion" id="sourceDocument" value="{Aclaracion>/DocOrig}" maxLength="35"/>
+                                    <m:Button fieldGroupIds="aclaracion" width="10%" icon="sap-icon://validate" id="validateSourceDocument" press=".validateSourceDocument">
+                                    </m:Button>
+
+                                    <!--Factura/Invoice-->
+                                    <m:Label text="{appTxts>/clarifications.Invoice}"/>
+                                    <m:Input fieldGroupIds="aclaracion" id="invoice" value="{Aclaracion>/Factura}" maxLength="35"/>
+                                    <m:Button fieldGroupIds="aclaracion" width="10%" icon="sap-icon://validate" id="validateInvoice" press=".validateInvoice">
+                                    </m:Button>
+
+                                    <!--Recibo/Receipt-->
+                                    <m:Label text="{appTxts>/clarifications.Receipt}"/>
+                                    <m:Input fieldGroupIds="aclaracion" id="receipt" value="{Aclaracion>/Recibo}"/>
+
+                                    <!--Importe reclamado/Reclaimed import-->
+                                    <m:Label text="{appTxts>/clarifications.reclaimedImport}"/>
+                                    <m:Input fieldGroupIds="aclaracion" id="reclaimedImport" value="{Aclaracion>/MonRec}" enabled="true" editable="false" maxLength="20"/>
+
+                                    <!--IVA reclamado/Reclaimed tax-->
+                                    <m:Label text="{appTxts>/clarifications.reclaimedTax}"/>
+                                    <m:Input fieldGroupIds="aclaracion" enabled="true" editable="false" id="reclaimedTax" value="{Aclaracion>/IvaRec}" maxLength="20"/>
+
+                                    <!--Documento de pago/Payment document-->
+                                    <m:Label visible="{= ${Aclaracion>/Folio} > 0 }" text="{appTxts>/clarifications.paymentDocument}"/>
+                                    <m:Input fieldGroupIds="aclaracion" visible="{= ${Aclaracion>/Folio} > 0 }" id="paymentDocument" value="{Aclaracion>/NoDoc}" enabled="true" />
+                                    <m:Button fieldGroupIds="aclaracion" visible="{= ${Aclaracion>/Folio} > 0 }" width="10%" icon="sap-icon://validate" id="validatePaymentDocument" press=".validatePaymentDocument">
+                                    </m:Button>
+
+                                    <!--Importe aclarado/Clarified import-->
+                                    <m:Label visible="{= ${Aclaracion>/Folio} > 0 }" text="{appTxts>/clarifications.clarifiedAmount}"/>
+                                    <m:Input fieldGroupIds="aclaracion" visible="{= ${Aclaracion>/Folio} > 0 }" enabled="true" editable="false" id="clarifiedAmount" value="{Aclaracion>/MonAcla}" maxLength="40"/>
+
+                                    <!--Importe aclarado/Clarified import-->
+                                    <m:Label visible="{= ${Aclaracion>/Folio} > 0 }" text="{appTxts>/clarifications.clarifiedTax}"/>
+                                    <m:Input fieldGroupIds="aclaracion" visible="{= ${Aclaracion>/Folio} > 0 }" enabled="true" editable="false" id="clarifiedTax" value="{Aclaracion>/IvaAcla}" maxLength="30s"/>
+
+                                    <!--Fecha de vencimiento/Expiration date-->
+                                    <m:Label visible="{= ${Aclaracion>/Folio} > 0 }" text="{appTxts>/clarifications.expirationDate}"/>
+                                    <m:DatePicker fieldGroupIds="aclaracion" id="expirationDate" editable="false" placeholder="" visible="{= ${Aclaracion>/Folio} > 0 }" class="sapUiSmallMarginBottom"/>
+
+                                    
+
+                                    <core:Title text="{appTxts>/clarifications.attachmentsDocuments}" />
+                                    <m:VBox>
+                                        <upload:UploadSet 
+                                            id="attachmentDocuments" 
+                                            instantUpload="false" 
+                                            showIcons="true" 
+                                            uploadEnabled="true" 
+                                            terminationEnabled="false" 
+                                            fileTypes="xml,pdf,zip,rar,xls,xlsx" 
+                                            maxFileNameLength="15" 
+                                            maxFileSize="5" 
+                                            selectionChanged="onChangeUpload" 
+                                            fieldGroupIds="aclaracion"
+                                            items="{path: '/attachItems', templateShareable: false}" 
+                                            mediaTypes="application/pdf,text/xml,application/xml,application/zip,application/x-rar-compressed,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                                            <upload:toolbar>
+                                                <m:OverflowToolbar>
+                                                </m:OverflowToolbar>
+                                            </upload:toolbar>
+                                            <upload:items>
+                                                <upload:UploadSetItem 
+                                                    fileName="{fileName}" 
+                                                    mediaType="{mediaType}" 
+                                                    url="{url}" 
+                                                    thumbnailUrl="{thumbnailUrl}" 
+                                                    attributes="{path: 'attributes', templateShareable: false}" 
+                                                    markers="{path: 'markers', templateShareable: false}" 
+                                                    statuses="{path: 'statuses', templateShareable: false}" 
+                                                    uploadState="{uploadState}">
+                                                    <upload:attributes>
+                                                        <m:ObjectAttribute 
+                                                            title="{title}" 
+                                                            text="{text}" 
+                                                            active="{active}"/>
+                                                    </upload:attributes>
+                                                    <upload:markers>
+                                                        <m:ObjectMarker type="{type}" visibility="{visibility}"/>
+                                                    </upload:markers>
+                                                    <upload:statuses>
+                                                        <m:ObjectStatus title="{title}" text="{text}" state="{state}" icon="{icon}" active="{active}"/>
+                                                    </upload:statuses>
+                                                </upload:UploadSetItem>
+                                            </upload:items>
+                                        </upload:UploadSet>
+                                    
+                                            <m:OverflowToolbar>
+                                            </m:OverflowToolbar>
+                                        
+                                        <m:VBox>
+                                            <m:List id="helpDocsList" mode="None" items="{path: 'Documentos>/ZtaclaraDo/Paginated/results'}">
+                                                <m:headerToolbar>
+                                                    <m:OverflowToolbar style="Clear">
+                                                        <m:Title text="{appTxts>/clarifications.savedDocuments} ({Documentos>/ZtaclaraDo/results/length})"/>
+                                                        <m:ToolbarSpacer />
+                                                        <!--m:Button icon="sap-icon://add-document" id="btnUploadFiles" press=".attachmentFiles" text="Add files"></m:Button-->
+                                                        <m:Select visible="{= ${Documentos>/ZtaclaraDo/Paginated/results/length} > 0 }" change=".paginateValue(${$parameters>/selectedItem}, 'Documentos', '/ZtaclaraDo')">
+                                                            <m:items>
+                                                                <core:Item key="10" text="10"/>
+                                                                <core:Item key="20" text="20"/>
+                                                                <core:Item key="50" text="50"/>
+                                                                <core:Item key="100" text="100"/>
+                                                            </m:items>
+                                                        </m:Select>
+                                                        <m:ToolbarSeparator/>
+                                                    </m:OverflowToolbar>
+                                                </m:headerToolbar>
+                                                <m:CustomListItem>
+                                                    <m:HBox>
+                                                        <core:Icon size="2rem" src="{path: 'Documentos>Zdoctype', formatter: '.setIconAttach'}" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" />
+                                                        <m:VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" width="100%">
+                                                            <!--m:Link text="{Documentos>Zdoctype}" press=".selectHelpDoc(${Documentos>Folio})"/-->
+                                                            <m:Label text="{Documentos>Zdoctype}"/>
+                                                        </m:VBox>
+                                                        <m:Button visible="{= ${Documentos>Folio} > 0 }" icon="sap-icon://download" tooltip="{appTxts>/global.download}" class="sapUiSmallMarginBegin sapUiSmallMarginEnd sapUiSmallMarginTopBottom" press=".downloadDocument(${Documentos>Folio}, ${Documentos>Zdoctype})"></m:Button>
+                                                        <!--m:Button enabled="{= ${Aclaracion>/modo} === 'edit' }" icon="sap-icon://delete" tooltip="{appTxts>/global.delete}" class="sapUiSmallMarginBegin sapUiSmallMarginEnd sapUiSmallMarginTopBottom" press=".deleteDocument(${Documentos>Folio}, ${Documentos>Zdoctype})"></m:Button-->
+                                                    </m:HBox>
+                                                </m:CustomListItem>
+                                            </m:List>
+                                            <m:OverflowToolbar visible="{= ${Documentos>/ZtaclaraDo/Paginated/results/length} > 0 }">
+                                                <m:Text text="{Documentos>/ZtaclaraDo/Paginated/initRow} - {Documentos>/ZtaclaraDo/Paginated/endRow} {appTxts>/pagination.of} {Documentos>/ZtaclaraDo/results/length}" />
+                                                <m:ToolbarSpacer/>
+                                                <m:Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${Documentos>/ZtaclaraDo/Paginated/iterator}, ${Documentos>/ZtaclaraDo/Paginated/initRow}, 'Documentos', '/ZtaclaraDo')" enabled="{= ${Documentos>/ZtaclaraDo/Paginated/iterator} !== 1}" />
+                                                <m:Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${Documentos>/ZtaclaraDo/Paginated/iterator}, ${Documentos>/ZtaclaraDo/Paginated/endRow}, 'Documentos', '/ZtaclaraDo')" enabled="{= ${Documentos>/ZtaclaraDo/Paginated/endRow} !== ${Documentos>/ZtaclaraDo/results/length}}" />
+                                            </m:OverflowToolbar>
+                                        </m:VBox>
+                                    </m:VBox>
+                                    
+                                    <m:Label text="{appTxts>/clarifications.comments}"/>
+                                    <m:TextArea fieldGroupIds="aclaracion" cols="40" value="{Aclaracion>/Obsgen}" width="100%" rows="8" id="comments" />
+
+                                    <!-- Ejercicio/Gjahr-->
+                                    <m:Input  visible="false" enabled="true" editable="false" id="Gjahr" value="{Aclaracion>/Gjahr}"/>                                
+
+                                </form:content>
+                            </form:SimpleForm>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+
+
+        </sections>
+    </ObjectPageLayout>
+</mvc:View>

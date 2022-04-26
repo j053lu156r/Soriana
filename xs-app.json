@@ -1,0 +1,99 @@
+{
+  "welcomeFile": "/index.html",
+  "authenticationMethod": "route",
+  "csrfProtection": false,
+  "routes": [
+    {
+      "source": "^/resources/(.*)$",
+      "target": "/resources/$1",
+      "authenticationType": "none",
+      "destination": "ui5"
+    },
+    {
+      "source": "^/test-resources/(.*)$",
+      "target": "/test-resources/$1",
+      "authenticationType": "none",
+      "destination": "ui5"
+    },
+    {
+      "source": "^(.*)$",
+      "target": "$1",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa"
+    },
+    {
+      "path": "/webapp/resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/resources",
+        "version": "1.38.31"
+      },
+      "description": "SAPUI5 Resources"
+    },
+    {
+      "path": "/webapp/test-resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/test-resources",
+        "version": "1.38.31"
+      },
+      "description": "SAPUI5 Test Resources"
+    },
+    {
+      "path": "/resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/resources",
+        "version": "1.38.31"
+      },
+      "description": "SAPUI5 Resources"
+    },
+    {
+      "path": "/test-resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/test-resources",
+        "version": "1.38.31"
+      },
+      "description": "SAPUI5 Test Resources"
+    },
+    {
+      "path": "/sap/opu/odata",
+      "target": {
+        "type": "destination",
+        "name": "FP_ICF_DATA_DEV",
+        "entryPath": "/sap/opu/odata"
+      },
+      "description": "On Premise Gateway"
+    },
+    {
+      "path": "/sap/opu/odata/sap",
+      "target": {
+        "type": "destination",
+        "name": "FP_ICF_DATA_DEV",
+        "entryPath": "/sap/opu/odata/sap"
+      },
+      "description": "SAP On Premise"
+    },
+    {
+      "path": "/FP_ICF_DATA_DEV",
+      "target": {
+        "type": "destination",
+        "name": "FP_ICF_DATA_DEV"
+      },
+      "description": "Conexion Netweaver"
+    },
+    {
+      "path": "/FP_ICF_DATA_DEV",
+      "target": {
+        "type": "destination",
+        "name": "FP_ICF_DATA_DEV"
+      },
+      "description": "Conexion Netweaver"
+    }
+  ]
+}

@@ -1,0 +1,1207 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+	xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+	<edmx:DataServices xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="2.0">
+		<Schema Namespace="NavigationModel" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices"
+			xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="Employee">
+				<Key>
+					<PropertyRef Name="EmployeeID"/>
+				</Key>
+				<Property Name="EmployeeID" Type="Edm.Int32" Nullable="false" p8:StoreGeneratedPattern="Identity"
+					xmlns:p8="http://schemas.microsoft.com/ado/2009/02/edm/annotation"/>
+				<Property Name="LastName" Type="Edm.String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false"/>
+				<Property Name="FirstName" Type="Edm.String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false"/>
+				<Property Name="Address" Type="Edm.String" Nullable="true" MaxLength="60" Unicode="true" FixedLength="false"/>
+				<Property Name="City" Type="Edm.String" Nullable="true" MaxLength="15" Unicode="true" FixedLength="false"/>
+				<Property Name="Region" Type="Edm.String" Nullable="true" MaxLength="15" Unicode="true" FixedLength="false"/>
+				<Property Name="PostalCode" Type="Edm.String" Nullable="true" MaxLength="10" Unicode="true" FixedLength="false"/>
+				<Property Name="Country" Type="Edm.String" Nullable="true" MaxLength="15" Unicode="true" FixedLength="false"/>
+				<Property Name="HomePhone" Type="Edm.String" Nullable="true" MaxLength="24" Unicode="true" FixedLength="false"/>
+				<Property Name="ResumeID" Type="Edm.Int32" Nullable="true"/>
+				<NavigationProperty Name="Resume" Relationship="NavigationModel.FK_Employees_Resumes" FromRole="Employees" ToRole="Resumes"/>
+			</EntityType>
+			<EntityType Name="Resume">
+				<Key>
+					<PropertyRef Name="ResumeID"/>
+				</Key>
+				<Property Name="ResumeID" Type="Edm.Int32" Nullable="false" p8:StoreGeneratedPattern="Identity"
+					xmlns:p8="http://schemas.microsoft.com/ado/2009/02/edm/annotation"/>
+				<Property Name="Information" Type="Edm.String" Nullable="true" Unicode="true"/>
+				<Property Name="Projects" Type="Edm.String" Nullable="true" Unicode="true"/>
+				<Property Name="Hobbies" Type="Edm.String" Nullable="true" Unicode="true"/>
+				<Property Name="Notes" Type="Edm.String" Nullable="true" Unicode="true"/>
+			</EntityType>
+			<Association Name="NavigationModel.FK_Employees_Resumes">
+				<End Role="Resumes" Type="NavigationModel.Resume" Multiplicity="0..1"/>
+				<End Role="Employees" Type="NavigationModel.Employee" Multiplicity="1"/>
+				<ReferentialConstraint>
+					<Dependent Role="Resumes">
+						<PropertyRef Name="ResumeID"/>
+					</Dependent>
+					<Principal Role="Employees">
+						<PropertyRef Name="ResumeID"/>
+					</Principal>
+				</ReferentialConstraint>
+			</Association>
+			<EntityContainer Name="NavigationEntities" p7:LazyLoadingEnabled="true" m:IsDefaultEntityContainer="true"
+				xmlns:p7="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+				<EntitySet Name="Employees" EntityType="NavigationModel.Employee"/>
+				<EntitySet Name="Resumes" EntityType="NavigationModel.Resume"/>
+				<AssociationSet Name="FK_Employees_Resumes" Association="NavigationModel.FK_Employees_Resumes">
+					<End EntitySet="Employees" Role="Employees"/>
+					<End EntitySet="Resumes" Role="Resumes"/>
+				</AssociationSet>
+			</EntityContainer>
+			<EntityType Name="ZPORTAL_USERS" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="UserPortal"/>
+					<PropertyRef Name="Pass"/>
+				</Key>
+				<Property Name="UserPortal" Type="Edm.String" Nullable="false" MaxLength="241" sap:unicode="false" sap:label="Dir.cor.elec."
+					sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+				<Property Name="Pass" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Campo de texto, longitud 10"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Rol" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Campo con longitud de 3 byte"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="FlagActive" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Car⤴er 1" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Acreedor" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Parnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Pers.contacto" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Contador" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Pers.contacto"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Nombre" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nombre" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Departamento" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nombre 2"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Puesto" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nombre 3" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Teleono" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:label="Telꧯno 1" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Celular" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:label="Telꧯno 1" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Hashcode" Type="Edm.String" Nullable="false" MaxLength="255" sap:unicode="false" sap:label="Hashcode" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false"/>
+				<Property Name="NewPassCode" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="NewPassCode"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+				<Property Name="FlagBlock" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="FlagBlock" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
+			<EntityType Name="activeUser" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="IHash"/>
+					<PropertyRef Name="IPass"/>
+				</Key>
+				<Property Name="IHash" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="I_HASH" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="IPass" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="I_PASS" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="OStatus" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Car⤴er 1" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
+			<EntityType Name="sendRecoverPass" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="IUserportal"/>
+				</Key>
+				<Property Name="IUserportal" Type="Edm.String" Nullable="false" MaxLength="255" sap:unicode="false" sap:label="char255"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+				<Property Name="IOk" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Car⤴er 1" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
+			<EntityType Name="changePass" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="IHash"/>
+					<PropertyRef Name="INewpass"/>
+					<PropertyRef Name="IUserportal"/>
+				</Key>
+				<Property Name="IHash" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="Reserva" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="INewpass" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Campo de texto, longitud 10"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="IUserportal" Type="Edm.String" Nullable="false" MaxLength="255" sap:unicode="false" sap:label="char255"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="OOk" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Car⤴er 1" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
+			<EntityContainer Name="ZSPORTAL_USERS_SRV_02_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+				<EntitySet Name="ZPORTAL_USERSSet" EntityType="ZSPORTAL_USERS_SRV_02.ZPORTAL_USERS" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="activeUserSet" EntityType="ZSPORTAL_USERS_SRV_02.activeUser" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="sendRecoverPassSet" EntityType="ZSPORTAL_USERS_SRV_02.sendRecoverPass" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="changePassSet" EntityType="ZSPORTAL_USERS_SRV_02.changePass" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+			</EntityContainer>
+			<atom:link rel="self" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_USERS_SRV_02/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<atom:link rel="latest-version" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_USERS_SRV_02/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<EntityType Name="tileAuth" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Rol"/>
+					<PropertyRef Name="Tileid"/>
+				</Key>
+				<Property Name="Rol" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="3-Byte field" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Tileid" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false"
+					sap:label="Not More Closely Defined Area, Possibly Used for Patchlevels" sap:creatable="false" sap:updatable="false" sap:sortable="false"
+					sap:filterable="false"/>
+			</EntityType>
+			<EntityType Name="columns" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Rol"/>
+					<PropertyRef Name="Description"/>
+				</Key>
+				<Property Name="Rol" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="3-Byte field" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Char" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
+			<EntityContainer Name="ZSPORTAL_ROLSADM_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+				<EntitySet Name="tileAuthSet" EntityType="ZSPORTAL_ROLSADM_SRV.tileAuth" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+					sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="columnsSet" EntityType="ZSPORTAL_ROLSADM_SRV.columns" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+					sap:pageable="false" sap:content-version="1"/>
+			</EntityContainer>
+			<atom:link rel="self" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_ROLSADM_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<atom:link rel="latest-version" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_ROLSADM_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+		</Schema>
+		<Schema Namespace="ZSPORTAL_RSSADMIN_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="rssFeed" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Shortname"/>
+				</Key>
+				<Property Name="Shortname" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Char"/>
+				<Property Name="Url" Type="Edm.String" Nullable="false" MaxLength="255" sap:unicode="false" sap:label="Char255"/>
+				<Property Name="Status" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Single-Character Flag"/>
+			</EntityType>
+			<EntityContainer Name="ZSPORTAL_RSSADMIN_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+				<EntitySet Name="rssFeedSet" EntityType="ZSPORTAL_RSSADMIN_SRV.rssFeed" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+					sap:pageable="false" sap:content-version="1"/>
+			</EntityContainer>
+			<atom:link rel="self" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_RSSADMIN_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<atom:link rel="latest-version" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_RSSADMIN_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+		</Schema>
+		<Schema Namespace="ZSPORTAL_MYORDERS_SRV" xml:lang="es" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="OSupporders" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Lifnr"/>
+				</Key>
+				<Property Name="Mandt" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Mandante" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Retpo" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Car⤴er 1" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Ebeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Doc.compras" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Ebelp" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Posición" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Bedat" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Fecha documento"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Waers" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Moneda" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="currency-code"/>
+				<Property Name="Netwr" Type="Edm.Decimal" Nullable="false" Precision="14" Scale="3" sap:unicode="false" sap:label="Valor neto"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Webre" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="VerFactEM" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Repos" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Recepci󮠦act." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Proveedor" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Lifre" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Emisor factura"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
+			<EntityType Name="ordersProvider" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="IoProvider"/>
+				</Key>
+				<Property Name="IoProvider" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Acreedor" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<NavigationProperty Name="NavOrdersTable" Relationship="ZSPORTAL_MYORDERS_SRV.AssOrderList" FromRole="FromRole_AssOrderList"
+					ToRole="ToRole_AssOrderList"/>
+			</EntityType>
+			<EntityType Name="oHeader" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="PoNumber"/>
+				</Key>
+				<Property Name="PoNumber" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Doc.compras"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Vendor" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Proveedor" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Currency" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Moneda" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="currency-code"/>
+				<Property Name="ExchRate" Type="Edm.Decimal" Nullable="false" Precision="9" Scale="5" sap:unicode="false" sap:label="T/C cotizado dir."
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="PurGroup" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Grupo-compras"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Pmnttrms" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Cond.pago" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="DocDate" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Fecha documento"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<NavigationProperty Name="NavItems" Relationship="ZSPORTAL_MYORDERS_SRV.AssItemList" FromRole="FromRole_AssItemList"
+					ToRole="ToRole_AssItemList"/>
+				<NavigationProperty Name="NavScheduler" Relationship="ZSPORTAL_MYORDERS_SRV.AssSchedItem" FromRole="FromRole_AssSchedItem"
+					ToRole="ToRole_AssSchedItem"/>
+				<NavigationProperty Name="NavHistory" Relationship="ZSPORTAL_MYORDERS_SRV.AssHistory" FromRole="FromRole_AssHistory"
+					ToRole="ToRole_AssHistory"/>
+			</EntityType>
+			<EntityType Name="oItems" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="PoNumber"/>
+				</Key>
+				<Property Name="PoNumber" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Doc.compras"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="PoItem" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Posición" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="DeleteInd" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Ind.borrado"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Material" Type="Edm.String" Nullable="false" MaxLength="18" sap:unicode="false" sap:label="Material" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="ShortText" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Txt.brv." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="TargetQty" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:unicode="false" sap:label="Ctd.prevista"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Quantity" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:unicode="false" sap:label="Cantidad pedido"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Unit" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="UM de pedido" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="unit-of-measure"/>
+				<Property Name="NetPrice" Type="Edm.Decimal" Nullable="false" Precision="23" Scale="4" sap:unicode="false" sap:label="Precio neto"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="TaxCode" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Ind.impuestos"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="NetValue" Type="Edm.Decimal" Nullable="false" Precision="23" Scale="4" sap:unicode="false" sap:label="Valor neto"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="PriceUnit" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="0" sap:unicode="false" sap:label="Cantidad base"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
+			<EntityType Name="contactGroup" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Ekgrp"/>
+				</Key>
+				<Property Name="Ekgrp" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Grupo compras" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Eknam" Type="Edm.String" Nullable="false" MaxLength="18" sap:unicode="false" sap:label="Denominación" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Ektel" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Telꧯno GrpCmp" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="SmtpAddr" Type="Edm.String" Nullable="false" MaxLength="241" sap:unicode="false" sap:label="Dir.cor.elec."
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
+			<EntityType Name="payCondition" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Spras"/>
+					<PropertyRef Name="Zterm"/>
+				</Key>
+				<Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Idioma" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Zterm" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Cond.pago" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Vtext" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Denominación" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
+			<EntityType Name="scheduleItem" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="PoNumber"/>
+				</Key>
+				<Property Name="PoNumber" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Doc.compras"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="PoItem" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Posición" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="DelivDate" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Fecha entrega"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
+			<EntityType Name="historyItems" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="PoNumber"/>
+				</Key>
+				<Property Name="PoNumber" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Doc.compras"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="PoItem" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Posición" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="DocYear" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Ejerc.doc.mat."
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="MatDoc" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Doc.material" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="HistType" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="TipoHistor-ped"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="MoveType" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Cl.movimiento"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="RefDocNo" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:label="Referencia" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Quantity" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:unicode="false" sap:label="Cantidad"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
+			<EntityType Name="TTaxes" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Spras"/>
+				</Key>
+				<Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Idioma" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Mwskz" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Ind.impuestos" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Text1" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Texto" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
+			<EntityType Name="taxes" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="ISpras"/>
+				</Key>
+				<Property Name="ISpras" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Idioma" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="OSpras" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Idioma" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<NavigationProperty Name="NavTaxes" Relationship="ZSPORTAL_MYORDERS_SRV.AssTaxes" FromRole="FromRole_AssTaxes" ToRole="ToRole_AssTaxes"/>
+			</EntityType>
+			<Association Name="AssOrderList" sap:content-version="1">
+				<End Type="ZSPORTAL_MYORDERS_SRV.ordersProvider" Multiplicity="1" Role="FromRole_AssOrderList"/>
+				<End Type="ZSPORTAL_MYORDERS_SRV.OSupporders" Multiplicity="*" Role="ToRole_AssOrderList"/>
+				<ReferentialConstraint>
+					<Principal Role="FromRole_AssOrderList">
+						<PropertyRef Name="IoProvider"/>
+					</Principal>
+					<Dependent Role="ToRole_AssOrderList">
+						<PropertyRef Name="Lifnr"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="AssTaxes" sap:content-version="1">
+				<End Type="ZSPORTAL_MYORDERS_SRV.taxes" Multiplicity="0..1" Role="FromRole_AssTaxes"/>
+				<End Type="ZSPORTAL_MYORDERS_SRV.TTaxes" Multiplicity="*" Role="ToRole_AssTaxes"/>
+				<ReferentialConstraint>
+					<Principal Role="FromRole_AssTaxes">
+						<PropertyRef Name="ISpras"/>
+					</Principal>
+					<Dependent Role="ToRole_AssTaxes">
+						<PropertyRef Name="Spras"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="AssItemList" sap:content-version="1">
+				<End Type="ZSPORTAL_MYORDERS_SRV.oHeader" Multiplicity="1" Role="FromRole_AssItemList"/>
+				<End Type="ZSPORTAL_MYORDERS_SRV.oItems" Multiplicity="*" Role="ToRole_AssItemList"/>
+				<ReferentialConstraint>
+					<Principal Role="FromRole_AssItemList">
+						<PropertyRef Name="PoNumber"/>
+					</Principal>
+					<Dependent Role="ToRole_AssItemList">
+						<PropertyRef Name="PoNumber"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="AssSchedItem" sap:content-version="1">
+				<End Type="ZSPORTAL_MYORDERS_SRV.oHeader" Multiplicity="0..1" Role="FromRole_AssSchedItem"/>
+				<End Type="ZSPORTAL_MYORDERS_SRV.scheduleItem" Multiplicity="*" Role="ToRole_AssSchedItem"/>
+				<ReferentialConstraint>
+					<Principal Role="FromRole_AssSchedItem">
+						<PropertyRef Name="PoNumber"/>
+					</Principal>
+					<Dependent Role="ToRole_AssSchedItem">
+						<PropertyRef Name="PoNumber"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="AssHistory" sap:content-version="1">
+				<End Type="ZSPORTAL_MYORDERS_SRV.oHeader" Multiplicity="0..1" Role="FromRole_AssHistory"/>
+				<End Type="ZSPORTAL_MYORDERS_SRV.historyItems" Multiplicity="*" Role="ToRole_AssHistory"/>
+				<ReferentialConstraint>
+					<Principal Role="FromRole_AssHistory">
+						<PropertyRef Name="PoNumber"/>
+					</Principal>
+					<Dependent Role="ToRole_AssHistory">
+						<PropertyRef Name="PoNumber"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<EntityContainer Name="ZSPORTAL_MYORDERS_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+				<EntitySet Name="OSuppordersSet" EntityType="ZSPORTAL_MYORDERS_SRV.OSupporders" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="ordersProviderSet" EntityType="ZSPORTAL_MYORDERS_SRV.ordersProvider" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="oHeaderSet" EntityType="ZSPORTAL_MYORDERS_SRV.oHeader" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+					sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="oItemsSet" EntityType="ZSPORTAL_MYORDERS_SRV.oItems" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+					sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="contactGroupSet" EntityType="ZSPORTAL_MYORDERS_SRV.contactGroup" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="payConditionSet" EntityType="ZSPORTAL_MYORDERS_SRV.payCondition" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="scheduleItemSet" EntityType="ZSPORTAL_MYORDERS_SRV.scheduleItem" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="historyItemsSet" EntityType="ZSPORTAL_MYORDERS_SRV.historyItems" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="TTaxesSet" EntityType="ZSPORTAL_MYORDERS_SRV.TTaxes" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+					sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="taxesSet" EntityType="ZSPORTAL_MYORDERS_SRV.taxes" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+					sap:pageable="false" sap:content-version="1"/>
+				<AssociationSet Name="AssOrderListSet" Association="ZSPORTAL_MYORDERS_SRV.AssOrderList" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:content-version="1">
+					<End EntitySet="ordersProviderSet" Role="FromRole_AssOrderList"/>
+					<End EntitySet="OSuppordersSet" Role="ToRole_AssOrderList"/>
+				</AssociationSet>
+				<AssociationSet Name="AssSchedItemSet" Association="ZSPORTAL_MYORDERS_SRV.AssSchedItem" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:content-version="1">
+					<End EntitySet="oHeaderSet" Role="FromRole_AssSchedItem"/>
+					<End EntitySet="scheduleItemSet" Role="ToRole_AssSchedItem"/>
+				</AssociationSet>
+				<AssociationSet Name="AssTaxesSet" Association="ZSPORTAL_MYORDERS_SRV.AssTaxes" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:content-version="1">
+					<End EntitySet="taxesSet" Role="FromRole_AssTaxes"/>
+					<End EntitySet="TTaxesSet" Role="ToRole_AssTaxes"/>
+				</AssociationSet>
+				<AssociationSet Name="AssHistorySet" Association="ZSPORTAL_MYORDERS_SRV.AssHistory" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:content-version="1">
+					<End EntitySet="oHeaderSet" Role="FromRole_AssHistory"/>
+					<End EntitySet="historyItemsSet" Role="ToRole_AssHistory"/>
+				</AssociationSet>
+				<AssociationSet Name="AssItemListSet" Association="ZSPORTAL_MYORDERS_SRV.AssItemList" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:content-version="1">
+					<End EntitySet="oHeaderSet" Role="FromRole_AssItemList"/>
+					<End EntitySet="oItemsSet" Role="ToRole_AssItemList"/>
+				</AssociationSet>
+			</EntityContainer>
+			<atom:link rel="self" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_MYORDERS_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<atom:link rel="latest-version" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_MYORDERS_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+		</Schema>
+		<Schema Namespace="ZSPORTAL_DUECOMPLEMENT_SRV" xml:lang="es" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="zbsak" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Lifnr"/>
+				</Key>
+				<Property Name="Dmbtr" Type="Edm.Decimal" Nullable="false" Precision="14" Scale="3" sap:unicode="false" sap:label="Importe ML"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Budat" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Fecha contab."
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Bukrs" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Sociedad" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false"/>
+				<Property Name="Waers" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Moneda" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="currency-code"/>
+				<Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Acreedor" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false"/>
+				<Property Name="Xblnr" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:label="Referencia" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Gjahr" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Ejercicio" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Wrbtr" Type="Edm.Decimal" Nullable="false" Precision="14" Scale="3" sap:unicode="false" sap:unit="Waers" sap:label="Importe"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Belnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Nº documento" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Zlsch" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Vía de pago" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Blart" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Clase doc." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false"/>
+			</EntityType>
+			<EntityContainer Name="ZSPORTAL_DUECOMPLEMENT_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+				<EntitySet Name="zbsakSet" EntityType="ZSPORTAL_DUECOMPLEMENT_SRV.zbsak" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+					sap:pageable="false" sap:content-version="1"/>
+			</EntityContainer>
+			<atom:link rel="self" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_DUECOMPLEMENT_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<atom:link rel="latest-version" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_DUECOMPLEMENT_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+		</Schema>
+		<Schema Namespace="ZSPORTAL_VNDMATDOCLIST_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="TZmatdoclistvendor" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Lifnr"/>
+				</Key>
+				<Property Name="Belnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Material Doc." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Gjahr" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Mat. Doc. Year" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Budat" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Date" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Ebeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Purchasing Doc."
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Ebelp" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Item" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Xblnr" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:label="Reference" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Frbnr" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:label="Bill of Lading"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Waers" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Currency" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="currency-code"/>
+				<Property Name="Dmbtr" Type="Edm.Decimal" Nullable="false" Precision="14" Scale="3" sap:unicode="false" sap:label="Amount in LC"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Mwskz" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Tax Code" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Text1" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Description" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Bwart" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Movement type" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Bukrs" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Company Code" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Vendor" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Butxt" Type="Edm.String" Nullable="false" MaxLength="25" sap:unicode="false" sap:label="Company Name" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
+			<EntityType Name="matdosc" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="IvLifnr"/>
+				</Key>
+				<Property Name="IvLifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Vendor" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="OvOk" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<NavigationProperty Name="NavDocs" Relationship="ZSPORTAL_VNDMATDOCLIST_SRV.AssDocs" FromRole="FromRole_AssDocs" ToRole="ToRole_AssDocs"/>
+			</EntityType>
+			<Association Name="AssDocs" sap:content-version="1">
+				<End Type="ZSPORTAL_VNDMATDOCLIST_SRV.matdosc" Multiplicity="1" Role="FromRole_AssDocs"/>
+				<End Type="ZSPORTAL_VNDMATDOCLIST_SRV.TZmatdoclistvendor" Multiplicity="*" Role="ToRole_AssDocs"/>
+				<ReferentialConstraint>
+					<Principal Role="FromRole_AssDocs">
+						<PropertyRef Name="IvLifnr"/>
+					</Principal>
+					<Dependent Role="ToRole_AssDocs">
+						<PropertyRef Name="Lifnr"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<EntityContainer Name="ZSPORTAL_VNDMATDOCLIST_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+				<EntitySet Name="TZmatdoclistvendorSet" EntityType="ZSPORTAL_VNDMATDOCLIST_SRV.TZmatdoclistvendor" sap:creatable="false"
+					sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="matdoscSet" EntityType="ZSPORTAL_VNDMATDOCLIST_SRV.matdosc" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+				<AssociationSet Name="AssDocsSet" Association="ZSPORTAL_VNDMATDOCLIST_SRV.AssDocs" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:content-version="1">
+					<End EntitySet="matdoscSet" Role="FromRole_AssDocs"/>
+					<End EntitySet="TZmatdoclistvendorSet" Role="ToRole_AssDocs"/>
+				</AssociationSet>
+			</EntityContainer>
+			<atom:link rel="self" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_VNDMATDOCLIST_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<atom:link rel="latest-version" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_VNDMATDOCLIST_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+		</Schema>
+		<Schema Namespace="ZSPORTAL_INVOICEREJECT_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="invoices" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Lifnr"/>
+				</Key>
+				<Property Name="Belnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Inv. Doc. No." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Waers" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Currency" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="currency-code"/>
+				<Property Name="Gjahr" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Fiscal Year" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Bldat" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Document Date"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Budat" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Posting Date" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Cpudt" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Entered on" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Cputm" Type="Edm.Time" Nullable="false" Precision="0" sap:unicode="false" sap:label="Entered at" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Bukrs" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Company Code" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Invoicing Pty" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false"/>
+				<Property Name="Rmwwr" Type="Edm.Decimal" Nullable="false" Precision="14" Scale="3" sap:unicode="false" sap:unit="Waers"
+					sap:label="Gross inv. amnt" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Rbstat" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Inv. status" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false"/>
+			</EntityType>
+			<EntityContainer Name="ZSPORTAL_INVOICEREJECT_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+				<EntitySet Name="invoicesSet" EntityType="ZSPORTAL_INVOICEREJECT_SRV.invoices" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+			</EntityContainer>
+			<atom:link rel="self" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_INVOICEREJECT_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<atom:link rel="latest-version" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_INVOICEREJECT_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+		</Schema>
+		<Schema Namespace="ZSPORTAL_MATDOCDETAIL_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="TZmatdocdetail1" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Belnr"/>
+				</Key>
+				<Property Name="Belnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Material Doc." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Ebelp" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Item" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Txz01" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Short Text" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Bpmng" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:unicode="false" sap:label="Qty. in OPUn"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Bprme" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Order Price Un."
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="unit-of-measure"/>
+				<Property Name="Budat" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Posting Date" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Dmbtr" Type="Edm.Decimal" Nullable="false" Precision="14" Scale="3" sap:unicode="false" sap:label="Amount in LC"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Waers" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Currency" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="currency-code"/>
+				<Property Name="Xblnr" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:label="Reference" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Frbnr" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:label="Bill of Lading"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Gjahr" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Fiscal Year" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Ebeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Purchasing Doc."
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
+			<EntityType Name="matdoc" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="IvGjahr"/>
+					<PropertyRef Name="IvMblnr"/>
+				</Key>
+				<Property Name="IvGjahr" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Fiscal Year" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="IvMblnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Material Doc."
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="OvOk" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Single-Character Flag"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<NavigationProperty Name="NavDetails" Relationship="ZSPORTAL_MATDOCDETAIL_SRV.AssMatdoc" FromRole="FromRole_AssMatdoc"
+					ToRole="ToRole_AssMatdoc"/>
+			</EntityType>
+			<Association Name="AssMatdoc" sap:content-version="1">
+				<End Type="ZSPORTAL_MATDOCDETAIL_SRV.matdoc" Multiplicity="1" Role="FromRole_AssMatdoc"/>
+				<End Type="ZSPORTAL_MATDOCDETAIL_SRV.TZmatdocdetail1" Multiplicity="*" Role="ToRole_AssMatdoc"/>
+				<ReferentialConstraint>
+					<Principal Role="FromRole_AssMatdoc">
+						<PropertyRef Name="IvGjahr"/>
+						<PropertyRef Name="IvMblnr"/>
+					</Principal>
+					<Dependent Role="ToRole_AssMatdoc">
+						<PropertyRef Name="Gjahr"/>
+						<PropertyRef Name="Belnr"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<EntityContainer Name="ZSPORTAL_MATDOCDETAIL_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+				<EntitySet Name="TZmatdocdetail1Set" EntityType="ZSPORTAL_MATDOCDETAIL_SRV.TZmatdocdetail1" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="matdocSet" EntityType="ZSPORTAL_MATDOCDETAIL_SRV.matdoc" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+					sap:pageable="false" sap:content-version="1"/>
+				<AssociationSet Name="AssMatdocSet" Association="ZSPORTAL_MATDOCDETAIL_SRV.AssMatdoc" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:content-version="1">
+					<End EntitySet="matdocSet" Role="FromRole_AssMatdoc"/>
+					<End EntitySet="TZmatdocdetail1Set" Role="ToRole_AssMatdoc"/>
+				</AssociationSet>
+			</EntityContainer>
+			<atom:link rel="self" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_MATDOCDETAIL_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<atom:link rel="latest-version" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_MATDOCDETAIL_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+		</Schema>
+		<Schema Namespace="ZSPORTAL_DUECOMPLEMENT_SRV" xml:lang="es" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="zbsak" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Lifnr"/>
+				</Key>
+				<Property Name="Dmbtr" Type="Edm.Decimal" Nullable="false" Precision="14" Scale="3" sap:unicode="false" sap:label="Importe ML"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Budat" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Fecha contab."
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Bukrs" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Sociedad" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false"/>
+				<Property Name="Waers" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Moneda" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="currency-code"/>
+				<Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Acreedor" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false"/>
+				<Property Name="Xblnr" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:label="Referencia" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Gjahr" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Ejercicio" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Wrbtr" Type="Edm.Decimal" Nullable="false" Precision="14" Scale="3" sap:unicode="false" sap:unit="Waers" sap:label="Importe"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Belnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Nº documento" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Zlsch" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Vía de pago" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Blart" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Clase doc." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false"/>
+			</EntityType>
+			<EntityContainer Name="ZSPORTAL_DUECOMPLEMENT_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+				<EntitySet Name="zbsakSet" EntityType="ZSPORTAL_DUECOMPLEMENT_SRV.zbsak" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+					sap:pageable="false" sap:content-version="1"/>
+			</EntityContainer>
+			<atom:link rel="self" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_DUECOMPLEMENT_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<atom:link rel="latest-version" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_DUECOMPLEMENT_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+		</Schema>
+		<Schema Namespace="ZSPORTAL_DUEDATE_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="duedate" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="ILifnr"/>
+				</Key>
+				<Property Name="ILifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="OLifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<NavigationProperty Name="documentsSet" Relationship="ZSPORTAL_DUEDATE_SRV.NavDocs" FromRole="FromRole_NavDocs" ToRole="ToRole_NavDocs"/>
+			</EntityType>
+			<EntityType Name="documents" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="ILifnr"/>
+				</Key>
+				<Property Name="ILifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Belnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Budat" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Bukrs" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Faedt" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Wrshb" Type="Edm.Decimal" Nullable="false" Precision="16" Scale="3" sap:unicode="false" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Waers" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false" sap:semantics="currency-code"/>
+				<Property Name="Xblnr" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
+			<Association Name="NavDocs" sap:content-version="1">
+				<End Type="ZSPORTAL_DUEDATE_SRV.duedate" Multiplicity="1" Role="FromRole_NavDocs"/>
+				<End Type="ZSPORTAL_DUEDATE_SRV.documents" Multiplicity="*" Role="ToRole_NavDocs"/>
+				<ReferentialConstraint>
+					<Principal Role="FromRole_NavDocs">
+						<PropertyRef Name="ILifnr"/>
+					</Principal>
+					<Dependent Role="ToRole_NavDocs">
+						<PropertyRef Name="ILifnr"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<EntityContainer Name="ZSPORTAL_DUEDATE_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+				<EntitySet Name="duedateSet" EntityType="ZSPORTAL_DUEDATE_SRV.duedate" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+					sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="documentsSet" EntityType="ZSPORTAL_DUEDATE_SRV.documents" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+					sap:pageable="false" sap:content-version="1"/>
+				<AssociationSet Name="NavDocsSet" Association="ZSPORTAL_DUEDATE_SRV.NavDocs" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:content-version="1">
+					<End EntitySet="duedateSet" Role="FromRole_NavDocs"/>
+					<End EntitySet="documentsSet" Role="ToRole_NavDocs"/>
+				</AssociationSet>
+			</EntityContainer>
+			<atom:link rel="self" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_DUEDATE_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<atom:link rel="latest-version" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_DUEDATE_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+		</Schema>
+		<Schema Namespace="ZSPORTAL_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="Subscription" sap:semantics="subscriptions" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="ID"/>
+				</Key>
+				<Property Name="ID" Type="Edm.String" Nullable="false" MaxLength="32" sap:label="Sub. ID" sap:creatable="false" sap:updatable="false"
+					sap:filterable="false"/>
+				<Property Name="user" Type="Edm.String" MaxLength="12" m:FC_TargetPath="SyndicationAuthorName" m:FC_KeepInContent="false"
+					sap:label="User Name" sap:creatable="false" sap:filterable="false"/>
+				<Property Name="updated" Type="Edm.DateTime" Precision="0" m:FC_TargetPath="SyndicationUpdated" m:FC_KeepInContent="false"
+					sap:label="Time Stamp" sap:creatable="false" sap:filterable="false"/>
+				<Property Name="title" Type="Edm.String" MaxLength="255" m:FC_TargetPath="SyndicationTitle" m:FC_KeepInContent="false" sap:label="Title"
+					sap:filterable="false"/>
+				<Property Name="deliveryAddress" Type="Edm.String" sap:label="Delivery Address" sap:filterable="false"/>
+				<Property Name="persistNotifications" Type="Edm.Boolean" sap:label="Persist Notification" sap:filterable="false"/>
+				<Property Name="collection" Type="Edm.String" MaxLength="40" sap:label="Collection" sap:filterable="false"/>
+				<Property Name="filter" Type="Edm.String" sap:label="Filter" sap:filterable="false"/>
+				<Property Name="select" Type="Edm.String" MaxLength="255" sap:label="Select" sap:filterable="false"/>
+				<Property Name="changeType" Type="Edm.String" MaxLength="30" sap:label="Change Type"/>
+			</EntityType>
+			<EntityType Name="Notification" sap:semantics="notifications" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="ID"/>
+				</Key>
+				<Property Name="ID" Type="Edm.String" Nullable="false" MaxLength="32" sap:label="Notification ID"/>
+				<Property Name="collection" Type="Edm.String" MaxLength="40" sap:label="Collection"/>
+				<Property Name="title" Type="Edm.String" m:FC_TargetPath="SyndicationTitle" m:FC_KeepInContent="false" sap:label="Notif. Text"/>
+				<Property Name="updated" Type="Edm.DateTime" Precision="0" m:FC_TargetPath="SyndicationUpdated" m:FC_KeepInContent="false"
+					sap:label="Time Stamp"/>
+				<Property Name="changeType" Type="Edm.String" MaxLength="30" sap:label="Change Type"/>
+				<Property Name="entriesOfInterest" Type="Edm.Int32" sap:label="No. of Entries"/>
+				<Property Name="recipient" Type="Edm.String" MaxLength="112" sap:label="Recipient" sap:creatable="false" sap:updatable="false"/>
+			</EntityType>
+			<EntityType Name="TLfb1" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Lifnr"/>
+				</Key>
+				<Property Name="Mandt" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Client" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Vendor" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false"/>
+				<Property Name="Bukrs" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Company Code" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
+			<EntityType Name="vendorHeader" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="IProvider"/>
+				</Key>
+				<Property Name="OLfa1" Type="ZSPORTAL_SRV.OLfa1" Nullable="false"/>
+				<Property Name="IProvider" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Vendor" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false"/>
+				<NavigationProperty Name="NavTLfb1" Relationship="ZSPORTAL_SRV.AssVendor" FromRole="FromRole_AssVendor" ToRole="ToRole_AssVendor"/>
+			</EntityType>
+			<ComplexType Name="OLfa1">
+				<Property Name="Mandt" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Client" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="Vendor" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Land1" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Country" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Name1" Type="Edm.String" Nullable="false" MaxLength="35" sap:label="Name" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Name2" Type="Edm.String" Nullable="false" MaxLength="35" sap:label="Name 2" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Name3" Type="Edm.String" Nullable="false" MaxLength="35" sap:label="Name 3" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Name4" Type="Edm.String" Nullable="false" MaxLength="35" sap:label="Name 4" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Ort01" Type="Edm.String" Nullable="false" MaxLength="35" sap:label="City" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Ort02" Type="Edm.String" Nullable="false" MaxLength="35" sap:label="District" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Pfach" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="PO Box" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Pstl2" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="PO Box PCode" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Pstlz" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="Postal Code" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Regio" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Region" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Sortl" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="Search term" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Stras" Type="Edm.String" Nullable="false" MaxLength="35" sap:label="Street" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Adrnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="Address" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Mcod1" Type="Edm.String" Nullable="false" MaxLength="25" sap:label="Name" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Mcod2" Type="Edm.String" Nullable="false" MaxLength="25" sap:label="Name 2" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Mcod3" Type="Edm.String" Nullable="false" MaxLength="25" sap:label="City" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Anred" Type="Edm.String" Nullable="false" MaxLength="15" sap:label="Title" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+			</ComplexType>
+			<Association Name="AssVendor" sap:content-version="1">
+				<End Type="ZSPORTAL_SRV.vendorHeader" Multiplicity="1" Role="FromRole_AssVendor"/>
+				<End Type="ZSPORTAL_SRV.TLfb1" Multiplicity="*" Role="ToRole_AssVendor"/>
+				<ReferentialConstraint>
+					<Principal Role="FromRole_AssVendor">
+						<PropertyRef Name="IProvider"/>
+					</Principal>
+					<Dependent Role="ToRole_AssVendor">
+						<PropertyRef Name="Lifnr"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<EntityContainer Name="ZSPORTAL_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+				<EntitySet Name="vendorHeaderSet" EntityType="ZSPORTAL_SRV.vendorHeader" sap:searchable="true" sap:requires-filter="true"
+					sap:content-version="1"/>
+				<EntitySet Name="SubscriptionCollection" EntityType="ZSPORTAL_SRV.Subscription" sap:content-version="1"/>
+				<EntitySet Name="NotificationCollection" EntityType="ZSPORTAL_SRV.Notification" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:addressable="false" sap:content-version="1"/>
+				<EntitySet Name="TLfb1Set" EntityType="ZSPORTAL_SRV.TLfb1" sap:searchable="true" sap:requires-filter="true" sap:content-version="1"/>
+				<AssociationSet Name="AssVendorSet" Association="ZSPORTAL_SRV.AssVendor" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+					sap:content-version="1">
+					<End EntitySet="vendorHeaderSet" Role="FromRole_AssVendor"/>
+					<End EntitySet="TLfb1Set" Role="ToRole_AssVendor"/>
+				</AssociationSet>
+			</EntityContainer>
+			<atom:link rel="self" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<atom:link rel="latest-version" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+		</Schema>
+		<Schema Namespace="ZSPORTAL_PROVEEDORES_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="List_provrs" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Lifnr"/>
+				</Key>
+				<Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Vendor" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Land1" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Country" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Name1" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Name" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Name2" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Name 2" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Name3" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Name 3" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Name4" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Name 4" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Ort01" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="City" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Ort02" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="District" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Pfach" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="PO Box" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Pstl2" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="PO Box PCode" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Pstlz" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Postal Code" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Regio" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Region" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Sortl" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Search term" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Stras" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Street" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Adrnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Address" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Mcod1" Type="Edm.String" Nullable="false" MaxLength="25" sap:unicode="false" sap:label="Name" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Mcod2" Type="Edm.String" Nullable="false" MaxLength="25" sap:unicode="false" sap:label="Name 2" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Mcod3" Type="Edm.String" Nullable="false" MaxLength="25" sap:unicode="false" sap:label="City" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Anred" Type="Edm.String" Nullable="false" MaxLength="15" sap:unicode="false" sap:label="Title" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Bahns" Type="Edm.String" Nullable="false" MaxLength="25" sap:unicode="false" sap:label="Train station" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Bbbnr" Type="Edm.String" Nullable="false" MaxLength="7" sap:unicode="false" sap:label="Location no. 1" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Bbsnr" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Location no. 2" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Begru" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Authorization" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Brsch" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Industry" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Bubkz" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Check digit" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Datlt" Type="Edm.String" Nullable="false" MaxLength="14" sap:unicode="false" sap:label="Data line" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Dtams" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="DME indicator" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Dtaws" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Instruction key"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Erdat" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Created on" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Ernam" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Created by" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Esrnr" Type="Edm.String" Nullable="false" MaxLength="11" sap:unicode="false" sap:label="POR number" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Konzs" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Group" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Ktokk" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Account group" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Kunnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Customer" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Lnrza" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Alternat. payee"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Loevm" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Deletion flag" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Sperr" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Posting Block" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Sperm" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Purch. block" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Language" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Stcd1" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:label="Tax Number 1" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Stcd2" Type="Edm.String" Nullable="false" MaxLength="11" sap:unicode="false" sap:label="Tax Number 2" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Stkza" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Equalizatn tax" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Stkzu" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Liable for VAT" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Telbx" Type="Edm.String" Nullable="false" MaxLength="15" sap:unicode="false" sap:label="Telebox" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Telf1" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:label="Telephone 1" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Telf2" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:label="Telephone 2" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Telfx" Type="Edm.String" Nullable="false" MaxLength="31" sap:unicode="false" sap:label="Fax Number" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Teltx" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Teletex" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Telx1" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Telex" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Xcpdk" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="One-time acct" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Xzemp" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Payee in doc." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Vbund" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="Trading partner"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Fiskn" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Fiscal address"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Stceg" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="VAT Reg. No." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Stkzn" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Natural person" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Sperq" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Block function" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Gbort" Type="Edm.String" Nullable="false" MaxLength="25" sap:unicode="false" sap:label="Place of birth"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Gbdat" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Date of birth"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Sexkz" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Sex" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Kraus" Type="Edm.String" Nullable="false" MaxLength="11" sap:unicode="false" sap:label="Cred.info no." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Revdb" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Last ext.review"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Qssys" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Actual QM sys." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Ktock" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Ref.acct group" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Pfort" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="P.O.Box city" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Werks" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Plant" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Ltsna" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="VSR relevant" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Werkr" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Plant relevant" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Plkal" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Factory calend."
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Duefl" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Data Transfer Status"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Txjcd" Type="Edm.String" Nullable="false" MaxLength="15" sap:unicode="false" sap:label="Tax Jur." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Sperz" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Payment block" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Scacd" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="SCAC" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Sfrgr" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Car.freight grp"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Lzone" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Transport Zone"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Xlfza" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Alt.payee(doc.)" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Dlgrp" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="ServAgntProcGrp"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Fityp" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Tax type" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Stcdt" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Tax number type"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Regss" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Social Ins." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Actss" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Soc. Ins. Code" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Stcd3" Type="Edm.String" Nullable="false" MaxLength="18" sap:unicode="false" sap:label="Tax Number 3" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Stcd4" Type="Edm.String" Nullable="false" MaxLength="18" sap:unicode="false" sap:label="Tax Number 4" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Stcd5" Type="Edm.String" Nullable="false" MaxLength="60" sap:unicode="false" sap:label="Tax Number 5" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Ipisp" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Tax split" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Taxbs" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Tax base" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Profs" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Profession" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Stgdl" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Stat.grp, agent"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Emnfr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="External manuf."
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Lfurl" Type="Edm.String" Nullable="false" MaxLength="132" sap:unicode="false" sap:label="URL" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="J1kfrepre" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Rep's Name"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="J1kftbus" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Type of Business"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="J1kftind" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Type of Industry"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Confs" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Confirm.status" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Updat" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Confirm.date" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Uptim" Type="Edm.Time" Nullable="false" Precision="0" sap:unicode="false" sap:label="Confirm.time" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Nodel" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Deletion block" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Qssysdat" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="QM system to"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Podkzb" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="POD-relevant" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Fisku" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Tax office" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Stenr" Type="Edm.String" Nullable="false" MaxLength="18" sap:unicode="false" sap:label="Tax Number" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="CarrierConf" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Carrier confirmation"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="MinComp" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Micro Comp." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="TermLi" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Terms Liab." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="CrcNum" Type="Edm.String" Nullable="false" MaxLength="25" sap:unicode="false" sap:label="CRC number" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="CvpXblck" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="PurposeComplete Flag"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Rg" Type="Edm.String" Nullable="false" MaxLength="11" sap:unicode="false" sap:label="RG Number" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Exp" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Issued by" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Uf" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="State" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Rgdate" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="RG Issuing Date"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Ric" Type="Edm.String" Nullable="false" MaxLength="11" sap:unicode="false" sap:label="RIC Number" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Rne" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Foreign National Reg"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Rnedate" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="RNE Issuing Date"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Cnae" Type="Edm.String" Nullable="false" MaxLength="7" sap:unicode="false" sap:label="CNAE" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Legalnat" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Legal Nature"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Crtn" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="CRT Number" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Icmstaxpay" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="ICMS Taxpayer"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Indtyp" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Industry Main Type"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Tdt" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Tax Declaration Type"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Comsize" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Company Size" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Decregpc" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Decl. Reg. PIS/COFI"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="JScCapital" Type="Edm.Decimal" Nullable="false" Precision="16" Scale="3" sap:unicode="false" sap:unit="JScCurrency"
+					sap:label="Capital Amount" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="JScCurrency" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Currency" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="currency-code"/>
+				<Property Name="Alc" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Agency Loc Cd" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="PmtOffice" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Payment Office"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Psofg" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Processor group"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Psois" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="SLAPrepr.Proced"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Pson1" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Name" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Pson2" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Name 2" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Pson3" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Name 3" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Psovn" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="First Name" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Psotl" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Title" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Psohs" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="House number" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Psost" Type="Edm.String" Nullable="false" MaxLength="28" sap:unicode="false" sap:label="Street" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="TransportChain" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Transportation Chain"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="StagingTime" Type="Edm.Decimal" Nullable="false" Precision="3" Scale="0" sap:unicode="false" sap:label="Staging Time"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="SchedulingType" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Scheduling Procedure"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<Property Name="SubmiRelevant" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Rel. for Coll. No." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
+			<EntityContainer Name="ZSPORTAL_PROVEEDORES_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+				<EntitySet Name="List_provrsSet" EntityType="ZSPORTAL_PROVEEDORES_SRV.List_provrs" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+			</EntityContainer>
+			<atom:link rel="self" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_PROVEEDORES_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<atom:link rel="latest-version" href="http://GTWDEV.prisma.local:8000/sap/opu/odata/sap/ZSPORTAL_PROVEEDORES_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
+		</Schema>
+	</edmx:DataServices>
+</edmx:Edmx>

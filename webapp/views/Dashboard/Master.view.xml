@@ -1,0 +1,225 @@
+<mvc:View
+	controllerName="demo.controllers.Dashboard.Master"
+	xmlns="sap.m"
+    xmlns:x="sap.uxap"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:f="sap.f"
+	xmlns:card="sap.f.cards"
+	xmlns:core="sap.ui.core"
+	xmlns:w="sap.ui.integration.widgets"
+    xmlns:smartchart="sap.ui.comp.smartchart"
+    xmlns:mc="sap.suite.ui.microchart"
+    xmlns:data="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns:sl="sap.ui.comp.navpopover"
+	displayBlock="true"
+	height="100%">
+	<x:ObjectPageLayout id="ObjectPageLayout" upperCaseAnchorBar="false">
+		<x:headerTitle>
+			<x:ObjectPageDynamicHeaderTitle>
+                <x:navigationActions>
+                    <DateRangeSelection change=".reloadData" id="dateRange"  required="false"/>
+                </x:navigationActions>
+			</x:ObjectPageDynamicHeaderTitle>
+            
+		</x:headerTitle>
+
+		<x:sections>
+			<x:ObjectPageSection titleUppercase="false" showTitle="false" title="Tipos de aclaraciones">
+                <x:subSections>
+					<x:ObjectPageSubSection titleUppercase="false">
+						<x:blocks>
+                        <VBox>
+                        <OverflowToolbar id="otb1">
+                            <Label text="{appTxts>/dashboard.comparativo}"/>
+                            <ToolbarSpacer/>
+                            <RadioButtonGroup id="rbg1" columns="3">
+                                <RadioButton select="getData" id="RB1-1" text="{appTxts>/dashboard.types}" />
+                                <RadioButton select="getData" id="RB1-2" text="{appTxts>/dashboard.area}" />
+                                <RadioButton select="getData" id="RB1-3" text="{appTxts>/dashboard.analyst}" />
+                            </RadioButtonGroup>
+                            <ToolbarSpacer/>
+                            <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".exportExcel" visible="{= ${Totales>/ETDBTACNAV/results/length} > 0}" />
+                            <Select selectedKey="0" id="selectAgrupamiento" change=".changeDataModel" items="{path:'Totales>/Grupos'}">
+                                <items><core:Item key="{Totales>posicion}" text="{Totales>descripcion}"></core:Item></items>
+                            </Select>
+                        </OverflowToolbar>
+							<f:GridContainer id="demoGrid" 
+                        class="sapUiSmallMargin" 
+                        snapToRow="true"
+                        allowDenseFill="true">
+                            <f:layout>
+                                <f:GridContainerSettings rowSize="84px" columnSize="84px" gap="8px" />
+                            </f:layout>
+                            <f:layoutS>
+                                <f:GridContainerSettings rowSize="70px" columnSize="90vw" gap="8px" />
+                            </f:layoutS>
+
+                            <f:Card>
+                                <f:layoutData>
+                                    <f:GridContainerItemLayoutData minRows="2" columns="3" />
+                                </f:layoutData>
+                                <f:header>
+                                    <card:Header
+                                        title="{appTxts>/dashboard.received}"
+                                        />
+                                </f:header>
+                                <f:content>
+                                        <NumericContent icon="sap-icon://batch-payments" value="{Totales>/ValoresActivos/TotalAc}" withMargin="false" class="sapUiLargeMarginBegin" />
+                                </f:content>
+                            </f:Card>
+
+                            <f:Card>
+                                <f:layoutData>
+                                    <f:GridContainerItemLayoutData minRows="2" columns="3" />
+                                </f:layoutData>
+                                <f:header>
+                                    <card:Header
+                                        title="{appTxts>/dashboard.reclaimed}"
+                                        />
+                                </f:header>
+                                <f:content>
+                                        <NumericContent icon="sap-icon://batch-payments" value="{parts: [{path: 'Totales>/ValoresActivos/ImporComp'}, {path: 'Totales>/ValoresActivos/Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" scale="$" formatterValue="false" withMargin="false"  class="sapUiLargeMarginBegin" />
+                                </f:content>
+                            </f:Card>
+
+                            <f:Card>
+                                <f:layoutData>
+                                    <f:GridContainerItemLayoutData minRows="2" columns="3" />
+                                </f:layoutData>
+                                <f:header>
+                                    <card:Header
+                                        title="{appTxts>/dashboard.completed}"
+                                        />
+                                </f:header>
+                                <f:content>
+                                    <NumericContent icon="sap-icon://batch-payments" value="{Totales>/Estotales/TotalComp}" withMargin="false" class="sapUiLargeMarginBegin" />
+                                </f:content>
+                            </f:Card>
+
+                            <f:Card>
+                                <f:layoutData>
+                                    <f:GridContainerItemLayoutData minRows="2" columns="3" />
+                                </f:layoutData>
+                                <f:header>
+                                    <card:Header
+                                        title="{appTxts>/dashboard.paid}"
+                                        />
+                                </f:header>
+                                <f:content>
+                                    <NumericContent icon="sap-icon://batch-payments" value="{parts: [{path: 'Totales>/ValoresActivos/ImporTpagado'}, {path: 'Totales>/ValoresActivos/Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" withMargin="false" class="sapUiLargeMarginBegin" />
+                                </f:content>
+                            </f:Card>
+
+                            <f:Card>
+                                <f:layoutData>
+                                    <f:GridContainerItemLayoutData minRows="2" columns="3" />
+                                </f:layoutData>
+                                <f:header>
+                                    <card:Header
+                                        title="{appTxts>/dashboard.pending}"
+                                        />
+                                </f:header>
+                                <f:content>
+                                    <NumericContent icon="sap-icon://batch-payments" value="{Totales>/ValoresActivos/TotalPend}" withMargin="false" class="sapUiLargeMarginBegin" />
+                                </f:content>
+                            </f:Card>
+
+                            <f:Card>
+                                <f:layoutData>
+                                    <f:GridContainerItemLayoutData minRows="4" columns="6" />
+                                </f:layoutData>
+                                <f:header>
+                                    <card:Header
+                                        title="{appTxts>/dashboard.topTitle}"
+                                        />
+                                </f:header>
+                                <f:content>
+                                    <VBox width="100%">
+                                        <OverflowToolbar id="otb3">
+                                            <Select selectedKey="0" id="selectTipoAclaracion" change=".changeTipoTopTen" items="{path:'Totales>/Tipos'}">
+                                                <items><core:Item key="{Totales>posicion}" text="{Totales>descripcion}"></core:Item></items>
+                                            </Select>
+                                            <ToolbarSpacer/>
+                                            <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".exportTopTen" visible="{= ${Totales>/Tipos/length} > 0}" />
+                                        </OverflowToolbar>
+                                        
+                                        <List items="{path:'Totales>/TopTen'}" showSeparators="None" >
+                                            <CustomListItem>
+                                                <HBox alignItems="Center" justifyContent="SpaceBetween" class="sapUiSmallMargin">
+                                                    <VBox >
+                                                        <Title level="H2" text="{Totales>Nlifnr}" />
+                                                        <Text text="{Totales>Lifnr}" />
+                                                    </VBox>
+                                                    <ObjectNumber number="{Totales>ImporComp}" unit="{Totales>Waers}" emphasized="true" state="Success"/>
+                                                </HBox>
+                                            </CustomListItem>
+                                        </List>
+                                    </VBox>
+                                    
+                                </f:content>
+                            </f:Card>
+
+                            <f:Card>
+                                <f:layoutData>
+                                    <f:GridContainerItemLayoutData minRows="4" columns="9" />
+                                </f:layoutData>
+                                <f:header>
+                                    <card:Header
+                                        title="{appTxts>/dashboard.percentTitle}"
+                                        />
+                                </f:header>
+                                <f:content>
+                                    <VBox width="100%">
+                                        <OverflowToolbar id="otb2">
+                                            <RadioButtonGroup id="pieChart" columns="3">
+                                                <RadioButton select="changePieChart" id="radioCantidad-0" text="{appTxts>/dashboard.quantity}" />
+                                                <RadioButton select="changePieChart" id="radioTiempo-1" text="{appTxts>/dashboard.time}" />
+                                                <RadioButton select="changePieChart" id="radioImporte-2" text="{appTxts>/dashboard.import}" />
+                                            </RadioButtonGroup>
+                                            <ToolbarSpacer/>
+                                            <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".exportPieChart" visible="{= ${Totales>/ETPIECHARTNAV/results/length} > 0}" />
+                                            <Select selectedKey="0" id="selectTipoPieChart" change="changePieChart" >
+                                                <items>
+                                                    <core:Item key="r" text="{appTxts>/dashboard.received}"></core:Item>
+                                                    <core:Item key="c" text="{appTxts>/dashboard.completed}"></core:Item>
+                                                    <core:Item key="p" text="{appTxts>/dashboard.pending}"></core:Item>
+                                                </items>
+                                            </Select>
+                                        </OverflowToolbar>
+                                        <FlexBox width="100%" height="20rem" alignItems="Center" justifyContent="SpaceBetween">
+                                            <items>
+                                                <mc:InteractiveDonutChart segments="{path:'Totales>/PieChart'}" selectionChanged="onSelectionChanged" displayedSegments="{Totales>/Segmentos}" press="press">
+                                                    <mc:segments>
+                                                        <mc:InteractiveDonutChartSegment label="{Totales>DesAcla}" value="{Totales>valor}" displayedValue="{Totales>valor}%"/>
+                                                    </mc:segments>
+                                                </mc:InteractiveDonutChart>
+                                            </items>
+                                        </FlexBox>
+                                    	<!--smartchart:SmartChart id ="smartChartGeneral" enableAutoBinding="true"
+                                            entitySet="ProductCollection" useVariantManagement="false"
+                                            persistencyKey="PKeyChartExample9" useChartPersonalisation="false"
+                                            header="" showFullScreenButton="false" selectionMode="Multi"
+                                            showChartTooltip="false" showDrillBreadcrumbs="false"
+                                            showDetailsButton="false" showDrillButtons="false"
+                                            showSemanticNavigationButton="false"
+                                            height="100%" width="100%"
+                                            data:dateFormatSettings='\{"pattern":"y MMMM d"\}'>
+                                            <smartchart:semanticObjectController>
+                                                <sl:SemanticObjectController
+                                                    navigationTargetsObtained="onNavigationTargetsObtained" navigate="onNavigate" />
+                                            </smartchart:semanticObjectController>
+                                        </smartchart:SmartChart-->
+                                    </VBox>
+                                </f:content>
+                            </f:Card>
+
+                        </f:GridContainer>
+                        </VBox>
+						</x:blocks>
+					</x:ObjectPageSubSection>
+				</x:subSections>
+			</x:ObjectPageSection>
+    </x:sections>
+
+	</x:ObjectPageLayout>
+</mvc:View>
