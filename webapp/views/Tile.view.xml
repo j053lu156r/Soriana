@@ -1,0 +1,66 @@
+<!DOCTYPE XML>
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:layout="sap.ui.layout" xmlns:custm="demo.controllers"
+    xmlns:card="sap.f.cards" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" displayBlock="true"
+	controllerName="demo.controllers.Tile" xmlns:html="http://www.w3.org/1999/xhtml">
+    <ScrollContainer
+		height="100%"
+		width="100%"
+		vertical="true">
+        <core:HTML content='&lt;div class="headerMenu" &gt; &lt;img height="100%" style="max-width:100%;" src="{resourcesPaths>/images}/PortalTituloConSombra.svg" &gt; &lt;/div&gt;'>
+		</core:HTML>
+            <Text
+                textAlign="Begin" class="sapUiLargeMarginBeginEnd sapUiSmallMarginTopBottom messageMenu"
+                text="{appTxts>/tiles.message}" />
+        <OverflowToolbar style="Clear" class="datePickerTiles">
+            <ToolbarSpacer />
+            <Button
+                ariaHasPopup="Dialog"
+                tooltip="Open Date Range Selection"
+                icon="sap-icon://appointment-2"
+                type="Transparent"
+                press=".openDateRangeSelection" />
+            <DateRangeSelection
+                id="HiddenDRS"
+                hideInput="true"
+                change=".changeDateHandler" />
+        </OverflowToolbar>
+		<f:GridContainer 
+            id="demoGrid"
+            snapToRow="false"
+            allowDenseFill="true"
+            class="sapUiTinyMargin"
+            items="{tilesModel>/sections}">
+			<f:layoutXL>
+				<f:GridContainerSettings rowSize="5px" columnSize="32vw" gap="10px" />
+			</f:layoutXL>
+            <f:layoutL>
+				<f:GridContainerSettings rowSize="5px" columnSize="46vw" gap="10px" />
+			</f:layoutL>
+            <f:layoutM>
+				<f:GridContainerSettings rowSize="5px" columnSize="46vw" gap="10px" />
+			</f:layoutM>
+			<f:layoutS>
+				<f:GridContainerSettings rowSize="5px" columnSize="96vw" gap="3px" />
+			</f:layoutS>
+
+			<f:Card visible="{path: 'tilesModel>title', formatter: '.hasSectionVisible'}">
+				<f:layoutData>
+					<f:GridContainerItemLayoutData columns="1" />
+				</f:layoutData>
+				<f:header>
+					<card:Header title="{path: 'tilesModel>title', formatter: '.formatTranslate' }" class="sectionsTilesHeader" />
+				</f:header>
+				<f:content>
+					<List showSeparators="None" items="{path: 'tilesModel>tiles', templateShareable:false}" >
+						<CustomListItem type="Navigation" press="onTilePress" class="sapUiSmallMargin menuTile" visible="{path: 'tilesModel>id', formatter: '.hasTileVisible' }">
+							<HBox alignItems="Center" justifyContent="SpaceBetween">
+								<Title level="H3" text="{parts: ['tilesModel>title', 'tilesModel>id'], formatter: '.formatTranslate'}" class="sapUiMediumMarginBegin sapUiTinyMarginTopBottom itemListMenu" />
+                                <custm:TileNumeric icon="{tilesModel>icon}" metric="{ path: 'tilesModel>numeric' }" class="sapUiSmallMarginBottom" visible="{path: 'tilesModel>id', formatter: '.hasTileVisible' }" />
+							</HBox>
+						</CustomListItem>
+					</List>
+				</f:content>
+			</f:Card>
+		</f:GridContainer>
+	</ScrollContainer>
+</mvc:View>

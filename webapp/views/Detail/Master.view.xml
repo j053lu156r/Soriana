@@ -1,0 +1,160 @@
+<mvc:View displayBlock="true"
+    xmlns:f="sap.f"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core" controllerName="demo.controllers.Detail.Master" height="100%">
+    <f:DynamicPage class="sapUiContentPadding">
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle backgroundDesign="Transparent">
+                <f:heading>
+                    <vm:VariantManagement standardItemText="{appTxts>/detail.title}">
+                    </vm:VariantManagement>
+                </f:heading>
+                <f:actions>
+                    <ToolbarSpacer/>
+                    <Button text="{appTxts>/sendInv.load}" type="Emphasized" press="openUploadDialog"/>
+                </f:actions>
+            </f:DynamicPageTitle>
+        </f:title>
+        <!-- DynamicPage Header -->
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <fb:FilterBar id="filterBar" header="Header" reset="onReset" search="searchData" clear="onClear" cancel="onCancel" 
+		                filtersDialogClosed = "onFiltersDialogClosed" showRestoreButton="false" showClearButton="false" useToolbar="false">
+
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="{appTxts>/sendInv.date}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <DateRangeSelection id="dateRange" required="false"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab" label="{appTxts>/global.vendor}" mandatory="true" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="supplierInput" placeholder="Proveedor" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}">
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="A1" label="{appTxts>/sendInv.recepNumber}" labelTooltip="Tooltip GroupItem Example" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input type="Text" id="folio" change="onChange"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                        </fb:filterGroupItems>
+
+                    </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
+            <VBox>
+                <Table sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
+                noDataText="{appTxts>/pay.merchandise}" 
+                id="complPagoList" 
+                mode="SingleSelectLeft" 
+                alternateRowColors="true" 
+                items="{path: 'tableItemsCfdi>/EMTDCNAV/Paginated/results', sorter : { path : 'Belnr', descending : true }}" 
+                selectionChange="validateSociety">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <Title text="{appTxts>/sendInv.merchandise} ({tableItemsCfdi>/EMTDCNAV/results/length})" />
+                            <ToolbarSpacer/>
+                            <Select visible="{= ${tableItemsCfdi>/EMTDCNAV/Paginated/results/length} > 0 }" change=".paginateValue(${$parameters>/selectedItem}, 'tableItemsCfdi', '/EMTDCNAV')">
+                                <items>
+                                    <core:Item key="10" text="10"/>
+                                    <core:Item key="20" text="20"/>
+                                    <core:Item key="50" text="50"/>
+                                    <core:Item key="100" text="100"/>
+                                </items>
+                            </Select>
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="{appTxts>/sendInv.recepNumber}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="{appTxts>/sendInv.order}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="{appTxts>/detail.client}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="{appTxts>/sendInv.date}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column xmlns:mvc="sap.ui.core.mvc"
+                            xmlns:unified="sap.ui.unified"
+                            xmlns:core="sap.ui.core"
+                            xmlns:layout="sap.ui.commons.layout"
+                            xmlns="sap.m" width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false" id="column5">
+                            <header>
+                                <Text text="{appTxts>/state.amount}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" id="text11"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column xmlns:mvc="sap.ui.core.mvc"
+                            xmlns:unified="sap.ui.unified"
+                            xmlns:core="sap.ui.core"
+                            xmlns:layout="sap.ui.commons.layout"
+                            xmlns="sap.m" width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false" id="column6">
+                            <header>
+                                <Text text="{appTxts>/sendInv.TotWImp}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" />
+                            </header>
+                            <footer/>
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem type="Active" press="onListItemPress" selected="{tableItemsCfdi>Selected}">
+                            <cells>
+                                <Text text="{tableItemsCfdi>Doref}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                <Text xmlns="sap.m" text="{tableItemsCfdi>Ebeln}"/>
+                                <!--                           <ObjectIdentifier title="{tableItemsCfdi>Mblnr}" text="" titleActive="false" visible="true">
+								<customData>
+									<core:CustomData key="docno" value="{tableItemsCfdi>Ebeln}"/>
+									<core:CustomData key="year" value="{tableItemsCfdi>Gjahr}"/>
+									<core:CustomData key="society" value="{tableItemsCfdi>Bukrs}"/>
+								</customData>
+							    </ObjectIdentifier> -->
+                                <Text text="{tableItemsCfdi>Butxt}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                <Text text="{path: 'tableItemsCfdi>Budat', formatter: '.ReverseDate'}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                <ObjectNumber xmlns:mvc="sap.ui.core.mvc"
+                                    xmlns:unified="sap.ui.unified"
+                                    xmlns:core="sap.ui.core"
+                                    xmlns:layout="sap.ui.commons.layout"
+                                    xmlns="sap.m" number="{parts: [{path: 'tableItemsCfdi>Total'}, {path: 'tableItemsCfdi>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{tableItemsCfdi>Waers}" emphasized="false" state="None"/>
+                                <ObjectNumber xmlns:mvc="sap.ui.core.mvc"
+                                    xmlns:unified="sap.ui.unified"
+                                    xmlns:core="sap.ui.core"
+                                    xmlns:layout="sap.ui.commons.layout"
+                                    xmlns="sap.m" number="{parts: [{path: 'tableItemsCfdi>Total_imp'}, {path: 'tableItemsCfdi>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{tableItemsCfdi>Waers}" emphasized="false" state="None"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+                <OverflowToolbar visible="{= ${tableItemsCfdi>/EMTDCNAV/Paginated/results/length} > 0 }">
+                    <Text text="{tableItemsCfdi>/EMTDCNAV/Paginated/initRow} - {tableItemsCfdi>/EMTDCNAV/Paginated/endRow} {appTxts>/pagination.of} {tableItemsCfdi>/EMTDCNAV/results/length}" />
+                    <ToolbarSpacer/>
+                    <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableItemsCfdi>/EMTDCNAV/Paginated/iterator}, ${tableItemsCfdi>/EMTDCNAV/Paginated/initRow}, 'tableItemsCfdi', '/EMTDCNAV')" enabled="{= ${tableItemsCfdi>/EMTDCNAV/Paginated/iterator} !== 1}" />
+                    <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableItemsCfdi>/EMTDCNAV/Paginated/iterator}, ${tableItemsCfdi>/EMTDCNAV/Paginated/endRow}, 'tableItemsCfdi', '/EMTDCNAV')" enabled="{= ${tableItemsCfdi>/EMTDCNAV/Paginated/endRow} !== ${tableItemsCfdi>/EMTDCNAV/results/length}}" />
+                </OverflowToolbar>
+            </VBox>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

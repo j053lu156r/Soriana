@@ -1,0 +1,364 @@
+<mvc:View xmlns:form="sap.ui.layout.form"
+	controllerName="demo.controllers.MiBandeja.Master"
+	xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:x="sap.uxap"
+    xmlns:vbm="sap.ui.vbm"
+    xmlns:core="sap.ui.core"
+    xmlns:card="sap.f.cards"
+	xmlns:mvc="sap.ui.core.mvc"
+    xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	>
+	<SplitContainer
+		id="SplitContDemo"
+		initialDetail="detail"
+		initialMaster="master"
+        >
+		<detailPages>
+			<Page
+				id="inbox"
+				title="{appTxts>/release.title}"
+                showHeader="true"
+				backgroundDesign= "Solid"
+				showNavButton="false"
+				navButtonPress=".onPressMasterBack">
+				<subHeader >
+                    <Toolbar>
+                        <SearchField id="releaseSearch" placeholder="{appTxts>/global.search}" width="100%" change=".searchRelease" />
+                    </Toolbar>
+                </subHeader>
+                <content>
+                    <VBox>
+                        <Table sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
+                            noDataText="{appTxts>/release.nodata}" 
+                            id="complPagoList"
+                            alternateRowColors="true" 
+                            items="{path: 'tableInbox>/ETINBOXUNAV/Paginated/results', sorter : { path : 'Idmensaje', descending : true }}"
+                            >
+                                <headerToolbar>
+                                    <OverflowToolbar style="Clear">
+                                        <Title id="title" text="{appTxts>/release.title} ({tableInbox>/ETINBOXUNAV/results/length})"/>
+                                        <Button
+                                            icon="sap-icon://synchronize"
+                                            tooltip="Actualizar"
+                                            press="getInbox"/>
+                                        <ToolbarSpacer />
+                                        <Select 
+                                            visible="{= ${tableInbox>/ETINBOXUNAV/Paginated/results/length} > 0 }"
+                                            change=".paginateValue(${$parameters>/selectedItem}, 'tableInbox', '/ETINBOXUNAV')">
+                                            <items>
+                                                <core:Item key="10" text="10"/>
+                                                <core:Item key="20" text="20"/>
+                                                <core:Item key="50" text="50"/>
+                                                <core:Item key="100" text="100"/>
+                                            </items>
+                                        </Select>
+                                        <ToolbarSeparator/>
+                                    </OverflowToolbar>
+                                </headerToolbar>
+                            <columns>
+                                <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                    <header>
+                                        <Text text="{appTxts>/realese.sender}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                    </header>
+                                    <footer/>
+                                </Column>
+                                <Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                    <header>
+                                        <Text text="{appTxts>/release.subject}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                    </header>
+                                    <footer/>
+                                </Column>
+                                <Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                    <header>
+                                        <Text text="{appTxts>/release.publishdate}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                    </header>
+                                    <footer/>
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem type="Navigation" press="selectRelease">
+                                    <cells>
+                                        <Label text="{tableInbox>Name}" design="{= ${tableInbox>Zleido} === 'X' ? 'Standard' : 'Bold'}"/>
+                                        <Label text="{tableInbox>Ztext}" design="{= ${tableInbox>Zleido} === 'X' ? 'Standard' : 'Bold'}"/>
+                                        <Text text="{tableInbox>Zfechaenvio}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                        <OverflowToolbar visible="{= ${tableInbox>/ETINBOXUNAV/Paginated/results/length} > 0 }">
+                            <Text text="{tableInbox>/ETINBOXUNAV/Paginated/initRow} - {tableInbox>/ETINBOXUNAV/Paginated/endRow} {appTxts>/pagination.of} {tableInbox>/ETINBOXUNAV/results/length}" />
+                            <ToolbarSpacer/>
+                            <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableInbox>/ETINBOXUNAV/Paginated/iterator}, ${tableInbox>/ETINBOXUNAV/Paginated/initRow}, 'tableInbox', '/ETINBOXUNAV')" enabled="{= ${tableInbox>/ETINBOXUNAV/Paginated/iterator} !== 1}" />
+                            <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableInbox>/ETINBOXUNAV/Paginated/iterator}, ${tableInbox>/ETINBOXUNAV/Paginated/endRow}, 'tableInbox', '/ETINBOXUNAV')" enabled="{= ${tableInbox>/ETINBOXUNAV/Paginated/endRow} !== ${tableInbox>/ETINBOXUNAV/results/length}}" />
+                        </OverflowToolbar>
+                    </VBox>
+                </content>
+			</Page>
+			<Page
+				id="detailDetail"
+				title="{appTxts>/helpDocs.title}"
+				backgroundDesign= "Solid"
+				showNavButton="false"
+				navButtonPress=".onPressDetailBack">
+                <subHeader >
+                    <Toolbar>
+                        <SearchField id="helpDocSearch" placeholder="{appTxts>/global.search}" width="100%" search="getHelpDocs" />
+                    </Toolbar>
+                </subHeader>
+                <VBox>
+                    <List
+                        id="helpDocsList"
+                        mode="None"
+                        items="{
+                                path: 'tableHelpDocs>/ETDOCANAV/Paginated/results'
+                            }"
+                        >
+                         <headerToolbar>
+                            <OverflowToolbar style="Clear">
+                                <Title text="{appTxts>/helpDocs.title} ({tableHelpDocs>/ETDOCANAV/results/length})"/>
+                                <ToolbarSpacer />
+                                <Select 
+                                    visible="{= ${tableHelpDocs>/ETDOCANAV/Paginated/results/length} > 0 }"
+                                    change=".paginateValue(${$parameters>/selectedItem}, 'tableHelpDocs', '/ETDOCANAV')">
+                                    <items>
+                                        <core:Item key="10" text="10"/>
+                                        <core:Item key="20" text="20"/>
+                                        <core:Item key="50" text="50"/>
+                                        <core:Item key="100" text="100"/>
+                                    </items>
+                                </Select>
+                                <ToolbarSeparator/>
+                            </OverflowToolbar>
+                        </headerToolbar>
+                        <CustomListItem>
+                        <HBox>
+                            <core:Icon size="2rem" src="{path: 'tableHelpDocs>Zdoctype', formatter: '.setIconAttach'}" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" />
+                            <VBox  class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" width="100%" >
+                                <Link text="{tableHelpDocs>Zdescrip}" press=".selectHelpDoc(${tableHelpDocs>Idarchivo})"/>
+                                <Label text="{tableHelpDocs>Zarchivo}"/>
+                            </VBox>
+                            <Button icon="sap-icon://download" tooltip="{appTxts>/global.download}" class="sapUiSmallMarginBegin sapUiSmallMarginEnd sapUiSmallMarginTopBottom" press=".selectHelpDoc(${tableHelpDocs>Idarchivo})" ></Button>
+                        </HBox>
+                    </CustomListItem>
+                    </List>
+                     <OverflowToolbar visible="{= ${tableHelpDocs>/ETDOCANAV/Paginated/results/length} > 0 }">
+                            <Text text="{tableHelpDocs>/ETDOCANAV/Paginated/initRow} - {tableHelpDocs>/ETDOCANAV/Paginated/endRow} {appTxts>/pagination.of} {tableHelpDocs>/ETDOCANAV/results/length}" />
+                            <ToolbarSpacer/>
+                            <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableHelpDocs>/ETDOCANAV/Paginated/iterator}, ${tableHelpDocs>/ETDOCANAV/Paginated/initRow}, 'tableHelpDocs', '/ETDOCANAV')" enabled="{= ${tableHelpDocs>/ETDOCANAV/Paginated/iterator} !== 1}" />
+                            <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableHelpDocs>/ETDOCANAV/Paginated/iterator}, ${tableHelpDocs>/ETDOCANAV/Paginated/endRow}, 'tableHelpDocs', '/ETDOCANAV')" enabled="{= ${tableHelpDocs>/ETDOCANAV/Paginated/endRow} !== ${tableHelpDocs>/ETDOCANAV/results/length}}" />
+                        </OverflowToolbar>
+                </VBox>
+			</Page>
+			<Page
+				id="locations"
+				title="{appTxts>/locations.storesDirectory}"
+				backgroundDesign= "Solid"
+				showNavButton="false"
+				>
+                <subHeader >
+                    <Toolbar>
+                        <SearchField id="searchLocation" placeholder="{appTxts>/global.search}" width="100%" search=".searchLocation" />
+                    </Toolbar>
+                </subHeader>
+                <content>
+                    <VBox>
+                        <Table sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
+                            noDataText="{appTxts>/locations.noData}" 
+                            id="locationList"
+                            alternateRowColors="true" 
+                            items="{path: 'tableLocations>/ETSTORENAV/Paginated/results', sorter : { path : 'Idmensaje', descending : true }}"
+                            >
+                            <headerToolbar>
+                                <OverflowToolbar style="Clear">
+                                    <Title text="{appTxts>/locations.stores} ({tableLocations>/ETSTORENAV/results/length})"/>
+                                    <ToolbarSpacer />
+                                    <Select 
+                                        visible="{= ${tableLocations>/ETSTORENAV/Paginated/results/length} > 0 }"
+                                        change=".paginateValue(${$parameters>/selectedItem}, 'tableLocations', '/ETSTORENAV')">
+                                        <items>
+                                            <core:Item key="10" text="10"/>
+                                            <core:Item key="20" text="20"/>
+                                            <core:Item key="50" text="50"/>
+                                            <core:Item key="100" text="100"/>
+                                        </items>
+                                    </Select>
+                                    <ToolbarSeparator/>
+                                </OverflowToolbar>
+                            </headerToolbar>
+                            <columns>
+                                <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                    <header>
+                                        <Text text="{appTxts>/locations.storeCode}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                    </header>
+                                    <footer/>
+                                </Column>
+                                <Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                    <header>
+                                        <Text text="{appTxts>/locations.name}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                    </header>
+                                    <footer/>
+                                </Column>
+                                <Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                    <header>
+                                        <Text text="{appTxts>/locations.population}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                    </header>
+                                    <footer/>
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem type="Navigation" press="onPressLocation">
+                                    <cells>
+                                        <Text text="{tableLocations>Werks}" />
+                                        <Text text="{tableLocations>Name1}" />
+                                        <Text text="{tableLocations>Ort01}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                        <OverflowToolbar visible="{= ${tableLocations>/ETSTORENAV/Paginated/results/length} > 0 }">
+                            <Text text="{tableLocations>/ETSTORENAV/Paginated/initRow} - {tableLocations>/ETSTORENAV/Paginated/endRow} {appTxts>/pagination.of} {tableLocations>/ETSTORENAV/results/length}" />
+                            <ToolbarSpacer/>
+                            <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableLocations>/ETSTORENAV/Paginated/iterator}, ${tableLocations>/ETSTORENAV/Paginated/initRow}, 'tableLocations', '/ETSTORENAV')" enabled="{= ${tableLocations>/ETSTORENAV/Paginated/iterator} !== 1}" />
+                            <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableLocations>/ETSTORENAV/Paginated/iterator}, ${tableLocations>/ETSTORENAV/Paginated/endRow}, 'tableLocations', '/ETSTORENAV')" enabled="{= ${tableLocations>/ETSTORENAV/Paginated/endRow} !== ${tableLocations>/ETSTORENAV/results/length}}" />
+                        </OverflowToolbar>
+                    </VBox>
+                </content>
+			</Page>
+            <Page 
+                id="locantionsDetail"
+                showNavButton="true"
+                showHeader="true"
+                title="{appTxts>/locations.detailTitle}"
+                navButtonPress="onPressGoToMasterLocations"
+                navButtonTooltip="{appTxts>/locations.return}"
+                >
+                <content>
+                    <ObjectHeader
+                        title="{detailLocation>/Name1}"
+                        class="sapUiResponsivePadding--header" >
+                        <statuses>
+                            <ObjectStatus
+                                text="{appTxts>/locations.phone}: {detailLocation>/TelNumber}"
+                                state="Information" />
+                            <ObjectStatus
+                                text="{appTxts>/locations.mail}: "
+                                state="Information" />
+                        </statuses>
+                        <ObjectAttribute text="{detailLocation>/Stras}, {detailLocation>/StrSuppl2}" />
+                        <ObjectAttribute text="{detailLocation>/Ort01}, {detailLocation>/Region}, {appTxts>/global.zip} {detailLocation>/PostCode1}" />
+                        <ObjectAttribute
+                            text="{appTxts>/locations.seeMaps}"
+                            active="true"
+                            visible="{parts:['detailLocation>/Zlongitud', 'detailLocation>/Zlatitud'], formatter: '.hasMap'}"
+                            press=".handleUrlMap(${detailLocation>/Zlongitud}, ${detailLocation>/Zlatitud})" />
+                        <ObjectAttribute
+                            text="{appTxts>/locations.editMap}"
+                            active="true"
+                            visible="{= ${userdata>/ERol} === '0001' }"
+                            press="defineCoordinates" />
+                    </ObjectHeader>
+                    <vbm:GeoMap id="GeoMap" width="100%" xmlns:l="sap.ui.layout" height="72%"/>
+                </content>
+            </Page>
+            <x:ObjectPageLayout id="releaseDetail" showTitleInHeaderContent="true" upperCaseAnchorBar="false">
+                <x:headerTitle>
+                    <x:ObjectPageDynamicHeaderTitle>
+                        <x:expandedHeading>
+                            <Title text="{release>/ESdmens/Ztext}" wrapping="true"/>
+                        </x:expandedHeading>
+
+                        <x:snappedHeading>
+                            <FlexBox fitContainer="true" alignItems="Center">
+                                <Title text="{release>/ESdmens/Ztext}" wrapping="true" />
+                            </FlexBox>
+                        </x:snappedHeading>
+
+                        <x:expandedContent>
+                            <HBox>
+                                <Label text="{appTxts>/realese.sender}:" class="sapUiTinyMarginEnd" />
+                                <Text text="{release>/ESdmens/Zremi}"/>
+                            </HBox>
+                            <HBox>
+                                <Label text="{appTxts>/release.publishdate}:" class="sapUiTinyMarginEnd" />
+                                <Text text="{release>/ESdmens/Zfechaenvio}"/>
+                            </HBox>
+                        </x:expandedContent>
+
+                        <x:snappedContent>
+                            <HBox>
+                                <Label text="Remitente:" class="sapUiTinyMarginEnd" />
+                                <Text text="{path: 'release>/ESdmens/Zfechaenvio', formatter: '.formatDate'}"/>
+                            </HBox>
+                            <HBox>
+                                <Label text="Fecha:" class="sapUiTinyMarginEnd" />
+                                <Text text="{path: 'release>/ESdmens/Zfechaenvio', formatter: '.formatDate'}"/>
+                            </HBox>
+                        </x:snappedContent>
+
+                        <x:snappedTitleOnMobile>
+                            <Title text="{release>/ESdmens/Ztext}"/>
+                        </x:snappedTitleOnMobile>
+
+                        <x:actions>
+                            <Button icon="sap-icon://nav-back" text="{appTxts>/locations.return}" press="onPressGoToMaster"></Button>
+                        </x:actions>
+                    </x:ObjectPageDynamicHeaderTitle>
+                </x:headerTitle>
+
+                <x:sections>
+                    <x:ObjectPageSection showTitle="false">
+                        <x:subSections>
+                            <x:ObjectPageSubSection>
+                                <x:blocks>
+                                    <FormattedText htmlText="{release>/IText}" width="100%" />
+                                </x:blocks>
+                            </x:ObjectPageSubSection>
+                            <x:ObjectPageSubSection>
+                                <x:blocks>
+                                    <f:GridList
+                                        id="gridList"
+                                        headerText="{appTxts>/release.attachments}"
+                                        items="{release>/ETATTACHNAV/results}"
+                                    >
+                                        <f:GridListItem>
+                                            <VBox class="sapUiSmallMargin">
+                                                <layoutData>
+                                                    <FlexItemData growFactor="1"  />
+                                                </layoutData>
+                                                <f:Card >
+                                                    <f:header>
+                                                        <card:Header
+                                                            title="{release>Zatname}"
+                                                            subtitle=""
+                                                            iconSrc="{path: 'release>Zdoctype', formatter: '.setIconAttach'}" />
+                                                    </f:header>
+                                                    <f:content>
+                                                        <Button icon="sap-icon://download" text="{appTxts>/global.download}" press=".downloadAttach(${release>Zdocvalue64}, ${release>Zdoctype})" />
+                                                    </f:content>
+                                                </f:Card>
+                                            </VBox>
+                                    </f:GridListItem>
+                                </f:GridList>
+                                </x:blocks>
+                            </x:ObjectPageSubSection>
+                        </x:subSections>
+                    </x:ObjectPageSection>
+                </x:sections>
+            </x:ObjectPageLayout>
+		</detailPages>
+		<masterPages>
+			<Page
+				id="master"
+				title="Mi Bandeja"
+                showNavButton="false"
+				backgroundDesign= "List">
+				<List  itemPress=".onListItemPress">
+					<StandardListItem title="{appTxts>/release.title}" type="Navigation" custom:to="inbox" />
+                    <StandardListItem title="{appTxts>/tiles.helpDocs}" type="Navigation" custom:to="detailDetail" />
+                    <StandardListItem title="{appTxts>/locations.storeFinder}" type="Navigation" custom:to="locations" />
+				</List>
+			</Page>
+		</masterPages>
+	</SplitContainer>
+</mvc:View>
