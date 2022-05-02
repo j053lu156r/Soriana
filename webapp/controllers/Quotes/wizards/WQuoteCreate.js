@@ -148,23 +148,27 @@ sap.ui.define([
             this._document = this.byId("searchOrder").getValue();
             this._document.trim();
 
-            var url = `/notCreditSet?$expand=OEKKONAV&$filter=IOption eq '4' and ILifnr eq '${this.getConfigModel().getProperty("/supplierInputKey")}'`;
-            url += ` and IEbeln eq '${this._document}'`;
+            if(this._document != "") {
+                var url = `/notCreditSet?$expand=OEKKONAV&$filter=IOption eq '4' and ILifnr eq '${this.getConfigModel().getProperty("/supplierInputKey")}'`;
+                url += ` and IEbeln eq '${this._document}'`;
 
-            var dueModel = ordersModel.getJsonModel(url);
+                var dueModel = ordersModel.getJsonModel(url);
 
-            if (dueModel != null) {
-                var ojbResponse = dueModel.getProperty("/results/0");
-                if (ojbResponse != null) {
-                    if (ojbResponse.ESuccess == "X") {
-                        this.getDetailOrder();
-                    } else {
-                        sap.m.MessageBox.error(ojbResponse.EReturn);
+                if (dueModel != null) {
+                    var ojbResponse = dueModel.getProperty("/results/0");
+                    if (ojbResponse != null) {
+                        if (ojbResponse.ESuccess == "X") {
+                            this.getDetailOrder();
+                        } else {
+                            sap.m.MessageBox.error(ojbResponse.EReturn);
+                        }
                     }
                 }
-            }
 
-            this.byId("searchOrder").setValue("");
+                this.byId("searchOrder").setValue("");
+            } else {
+                sap.m.MessageBox.error(this.getView().getModel("appTxts").getProperty("/quotes.messageEmptyOrder"));
+            }
         },
         getDetailOrder: function () {
             var urlPositions = `/Valida_citasSet?$expand=Po_validas&$filter=IOption eq '1' and IEbeln eq '${this._document}'`;
