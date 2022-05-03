@@ -735,7 +735,7 @@
                         </upload:UploadSet>
 								
 					</WizardStep>
-					<!--WizardStep id="ReviewPage"
+					<WizardStep id="ReviewPage"
 							activate="reviewActivate"
 							complete="reviewComplete"
 							validated="true"
@@ -807,7 +807,7 @@
 										<Link press="editStepFour" text="Edit" />
 									</form:content>
 								</form:SimpleForm>
-					</WizardStep-->
+					</WizardStep>
 				</Wizard>
 			</f:content>
 
