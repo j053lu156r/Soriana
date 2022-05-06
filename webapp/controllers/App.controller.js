@@ -18,6 +18,7 @@ sap.ui.define([
             this.oRouter = this.oOwnerComponent.getRouter();
             this.oRouter.attachRouteMatched(this.onRouteMatched, this);
             this.oRouter.attachBeforeRouteMatched(this.onBeforeRouteMatched, this);
+            this.oRouter.fireBeforeRouteMatched();
         },
 
         onBeforeRouteMatched: function (oEvent) {
@@ -42,7 +43,7 @@ sap.ui.define([
                 }
             } else {
                 if(sRouteName != "appHome"){
-                    this.getOwnerComponent().getRouter().navTo("appHome", {}, true /*no history*/ );
+                    this.getOwnerComponent().getRouter().navTo("appHome" /*, {}, true /*no history*/ );
                 }
             }
         },
