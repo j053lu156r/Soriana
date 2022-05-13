@@ -10,14 +10,17 @@
     ],
     "main": "webapp/index.html",
     "scripts": {
+        "run": "ui5 serve",
         "start": "fiori run --open 'index.html'",
         "start-local": "fiori run --config ./ui5-local.yaml --open 'index.html'",
         "build": "ui5 build -a --clean-dest --include-task=generateManifestBundle generateCachebusterInfo",
-        "deploy": "fiori verify",
+        "deploy": "npm run build && fiori deploy --config ui5-deploy.yaml && rimraf archive.zip",
         "deploy-config": "fiori add deploy-config",
         "unit-tests": "fiori run --open test/unit/unitTests.qunit.html",
         "int-tests": "fiori run --open test/integration/opaTests.qunit.html",
-        "build:cf": "ui5 build preload --clean-dest --config ui5-deploy.yaml --include-task=generateManifestBundle generateCachebusterInfo"
+        "build:cf": "ui5 build preload --clean-dest --config ui5-deploy.yaml --include-task=generateManifestBundle generateCachebusterInfo",
+        "undeploy": "fiori undeploy --config ui5-deploy.yaml",
+        "deploy-test": "npm run build && fiori deploy --config ui5-deploy.yaml --testMode true"
     },
     "devDependencies": {
         "@ui5/cli": "^2.10.1",
@@ -36,5 +39,8 @@
             "ui5-task-zipper",
             "mbt"
         ]
+    },
+    "dependencies": {
+        "@sap/abap-deploy": "^0.10.27"
     }
 }

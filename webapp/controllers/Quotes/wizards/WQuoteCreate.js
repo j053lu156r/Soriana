@@ -148,39 +148,64 @@ sap.ui.define([
             this._document = this.byId("searchOrder").getValue();
             this._document.trim();
 
-            var url = `/notCreditSet?$expand=OEKKONAV&$filter=IOption eq '4' and ILifnr eq '${this.getConfigModel().getProperty("/supplierInputKey")}'`;
-            url += ` and IEbeln eq '${this._document}'`;
+            if(this._document != "") {
+                var url = `/notCreditSet?$expand=OEKKONAV&$filter=IOption eq '4' and ILifnr eq '${this.getConfigModel().getProperty("/supplierInputKey")}'`;
+                url += ` and IEbeln eq '${this._document}'`;
 
-            var dueModel = ordersModel.getJsonModel(url);
+                var dueModel = ordersModel.getJsonModel(url);
 
+                if (dueModel != null) {
+                    var ojbResponse = dueModel.getProperty("/results/0");
+                    if (ojbResponse != null) {
+                        if (ojbResponse.ESuccess == "X") {
+                            this.getDetailOrder();
+                        } else {
+                            sap.m.MessageBox.error(ojbResponse.EReturn);
+                        }
+                    }
+                }
+
+                this.byId("searchOrder").setValue("");
+            } else {
+                sap.m.MessageBox.error(this.getView().getModel("appTxts").getProperty("/quotes.messageEmptyOrder"));
+            }
+        },
+        getDetailOrder: function () {
+            var me = this;
+            var urlPositions = `/Valida_citasSet?$expand=Po_validas&$filter=IOption eq '1' and IEbeln eq '${this._document}'`;
+            this.getView().setModel(new JSONModel(), "tableWizardPo_validas");
+
+            citas1Model.getJsonModelAsync(urlPositions, function(response){
+                console.log(response)
+                var ojbResponse = response.getProperty('/results/0');
+                console.log(ojbResponse)
+                if (ojbResponse.ESuccess == "X") {
+                    var Po_validas = me.getView().getModel("tableWizardPo_validas");
+                    Po_validas.setProperty('/Oekponav', ojbResponse.Po_validas);
+                } else {
+                    sap.m.MessageBox.error(ojbResponse.EMessage);
+                }
+            },function(){
+                sap.m.MessageBox.error("");
+            }, this);
+
+            /*
+           var dueModel = citas1Model.getJsonModel(urlPositions);
             if (dueModel != null) {
                 var ojbResponse = dueModel.getProperty("/results/0");
                 if (ojbResponse != null) {
                     if (ojbResponse.ESuccess == "X") {
-                        this.getDetailOrder();
+                        console.log(ojbResponse);
+                        console.log(dueModel);
+                        var Po_validas = this.getView().getModel("tableWizardPo_validas");
+                        console.log(Po_validas);
+                        Po_validas.setProperty("/Oekponav", ojbResponse.results[0].Po_validas);
                     } else {
-                        sap.m.MessageBox.error(ojbResponse.EReturn);
+                        sap.m.MessageBox.error(ojbResponse.EMessage);
                     }
                 }
             }
-
-            this.byId("searchOrder").setValue("");
-        },
-        getDetailOrder: function () {
-            var urlPositions = `/Valida_citasSet?$expand=Po_validas&$filter=IOption eq '1' and IEbeln eq '${this._document}'`;
-
-            var dueModel = citas1Model.getJsonModel(urlPositions);
-
-            if (dueModel != null) {
-                var ojbResponse = dueModel.getProperty("/results/0");
-                if (ojbResponse != null) {
-                    if (ojbResponse.ESuccess == "") {
-
-                    } else {
-                        sap.m.MessageBox.error(ojbResponse.EReturn);
-                    }
-                }
-            }
+            */
         }
     });
 });
