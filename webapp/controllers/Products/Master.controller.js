@@ -86,11 +86,24 @@ sap.ui.define([
                             text: 'Devolución'
                         }
                     ]
-                }
+                };
+
+                let UnidadVolumen = {
+                    results: [
+                        {
+                            value: 1,
+                            text: 'Milimetros'
+                        },
+                        {
+                            value: 2,
+                            text: 'Centimetros'
+                        }
+                    ]
+                };
 
                 this.getOwnerComponent().getModel("Catalogos").setProperty('/TiposEtiqueta', CatTiposEtiqueta);
                 this.getOwnerComponent().getModel("Catalogos").setProperty('/EstrategiaSalida', CatEstrategiaSalida);
-
+                this.getOwnerComponent().getModel("Catalogos").setProperty('/UnidadVolumen', UnidadVolumen);
 
                 var url = `/HdrcatproSet?$expand=ETTART,ETCOUNTRYNAV,ETCODENAV,ETBRANDSNAV,ETTCARCV,ETUWEIG,ETULONG,ETUVOL,ETUNM,ETGPOART&$filter=IOption eq '4'`;
                 Model.getJsonModelAsync(url, function (response, that) {
@@ -713,9 +726,11 @@ sap.ui.define([
                 }.bind(this)
             });
         },
+
         onStepActivate: function (oControlEvent) {
             //console.log(oControlEvent.getSource());
         },
+
         productTypeComplete: function (event) {
 
             // if (this.getView().byId('ProductTypeStep').getValidated()) {
@@ -731,7 +746,6 @@ sap.ui.define([
             if (ModelFolio.getProperty('/CodEan') == undefined || ModelFolio.getProperty('/CodEan').trim() == '') {
                 validated = false;
                 this.getView().byId('barCode').setValueState(sap.ui.core.ValueState.Error);
-                console.log(">>>>>>>> EAN IF 1 <<<<<<<<<<<<<");
             }
             // }else if (this.getView().byId('barCode').getValueState() !== sap.ui.core.ValueState.Success && swProveedorEnGS1) {
             //     validated = false;
@@ -797,11 +811,7 @@ sap.ui.define([
             else
                 this.getView().byId('exitStrategy').setValueState(sap.ui.core.ValueState.None);
 
-
-
             this.getView().byId('ProductTypeStep').setValidated(validated);
-
-
 
         },
 
@@ -899,6 +909,7 @@ sap.ui.define([
             this.getView().byId('newVariant').setVisible(selectedVariantes).setEnabled(selectedVariantes);
             this.getView().byId('ProductPresentation').setValidated(validated);
         },
+
         completeValidateVariantStep: function () {
 
             this.getView().byId('VariantStep').setValidated(!this.getView().byId('variants').getSelected());
@@ -938,57 +949,130 @@ sap.ui.define([
 
             this.getView().byId('VariantStep').setValidated(validated);
         },
+
         validateCompleteStepDimensions: function () {
             //if (this.getView().byId('DimensionsStep').getValidated()) return true;
+            console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-");
+            console.log(">>>>>>>>>>>>>>> VALIDACION DIMESIONES <<<<<<<<<<<<<<<<<<<<");
 
             let validated = true;
 
             //obtenemos el modelo 
-            const Folio = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
-            Folio.EcVolumen = (Folio.EcAlto * Folio.EcAncho * Folio.EcProfundo) +"";
+            let Folio = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
+            Folio.EcVolumen = (Folio.EcAlto * Folio.EcAncho * Folio.EcProfundo) + "";
             Folio.PvVolumen = (Folio.PvAlto * Folio.PvAncho * Folio.PvProfundo) + "";
+            // console.log(">>>>>>>>>>>>>>> LOGS |||");
+            // console.log(">>>>>>>>>>>>>>> VOLUMEN EC",Folio.EcVolumen);
+            // console.log(">>>>>>>>>>>>>>> VOLUMEN Pv",Folio.PvVolumen);
             console.log(">>>>>>>>>>>>>>> LOGS |||");
-            console.log(">>>>>>>>>>>>>>> VOLUMEN EC",Folio.EcVolumen);
-            console.log(">>>>>>>>>>>>>>> VOLUMEN Pv",Folio.PvVolumen);
-            console.log(">>>>>>>>>>>>>>> LOGS |||");
+            console.log(">>>>>>>>>>>>>>> FOLIO: ", Folio);
             
 
-            if (Folio.EcAlto == undefined || Folio.EcAlto.trim() == '') validated = false;
-            if (Folio.EcAncho == undefined || Folio.EcAncho.trim() == '') validated = false;
-            if (Folio.EcProfundo == undefined || Folio.EcProfundo.trim() == '') validated = false;
-            if (Folio.EcUndaap == undefined || Folio.EcUndaap.trim() == '') validated = false;
-            if (Folio.EcVolumen == undefined || Folio.EcVolumen.trim() == '') validated = false;
-            if (Folio.EcUndvol == undefined || Folio.EcUndvol.trim() == '') validated = false;
-            if (Folio.EcPbruto == undefined || Folio.EcPbruto.trim() == '') validated = false;
-            if (Folio.EcPneto == undefined || Folio.EcPneto.trim() == '') validated = false;
-            if (Folio.EcUndp == undefined || Folio.EcUndp.trim() == '') validated = false;
+            if (Folio.EcAlto == undefined || Folio.EcAlto.trim() == '') {
+                console.log("Folio.EcAlto: ", Folio.EcAlto);
+                validated = false;
+            }
+            
+            if (Folio.EcAncho == undefined || Folio.EcAncho.trim() == '') {
+                console.log("Folio.EcAncho: ", Folio.EcAncho);
+                validated = false;
+            }
+            if (Folio.EcProfundo == undefined || Folio.EcProfundo.trim() == '') {
+                console.log("Folio.EcProfundo: ", Folio.EcProfundo);
+                validated = false;
+            }
+            if (Folio.EcUndaap == undefined || Folio.EcUndaap.trim() == ''){
+                console.log("Folio.EcUndaap: ", Folio.EcUndaap);
+                validated = false;
+            }
+            if (Folio.EcVolumen == undefined || Folio.EcVolumen.trim() == '') {
+                console.log("Folio.EcVolumen: ", Folio.EcVolumen);
+                validated = false;
+            }
+            if (Folio.EcUndvol == undefined || Folio.EcUndvol.trim() == '') {
+                console.log("Folio.EcUndvol: ", Folio.EcUndvol); // -- FALLA
+                validated = false;
+            }
+            if (Folio.EcPbruto == undefined || Folio.EcPbruto.trim() == '') {
+                console.log("Folio.EcPbruto: ", Folio.EcPbruto);
+                validated = false;
+            }
+            if (Folio.EcPneto == undefined || Folio.EcPneto.trim() == '') {
+                console.log("Folio.EcPneto: ", Folio.EcPneto);
+                validated = false;
+            }
+            if (Folio.EcUndp == undefined || Folio.EcUndp.trim() == '') {
+                console.log("Folio.EcUndp: ", Folio.EcUndp);
+                validated = false;
+            }
 
-            if (Folio.PvAlto == undefined || Folio.PvAlto.trim() == '') validated = false;
-            if (Folio.PvAncho == undefined || Folio.PvAncho.trim() == '') validated = false;
-            if (Folio.PvProfundo == undefined || Folio.PvProfundo.trim() == '') validated = false;
-            if (Folio.PvUndaap == undefined || Folio.PvUndaap.trim() == '') validated = false;
-            if (Folio.PvVolumen == undefined || Folio.PvVolumen.trim() == '') validated = false;
-            if (Folio.PvUndvol == undefined || Folio.PvUndvol.trim() == '') validated = false;
-            if (Folio.PvPbruto == undefined || Folio.PvPbruto.trim() == '') validated = false;
-            if (Folio.PvPneto == undefined || Folio.PvPneto.trim() == '') validated = false;
-            if (Folio.PvUndp == undefined || Folio.PvUndp.trim() == '') validated = false;
+            if (Folio.PvAlto == undefined || Folio.PvAlto.trim() == '') {
+                console.log("Folio.PvAlto: ", Folio.PvAlto);
+                validated = false;
+            }
+            if (Folio.PvAncho == undefined || Folio.PvAncho.trim() == '') {
+                console.log("Folio.PvAncho: ", Folio.PvAncho);
+                validated = false;
+            }
+            if (Folio.PvProfundo == undefined || Folio.PvProfundo.trim() == '') {
+                console.log("Folio.PvProfundo: ", Folio.PvProfundo);
+                validated = false;
+            }
+            if (Folio.PvUndaap == undefined || Folio.PvUndaap.trim() == '') {
+                console.log("Folio.EcAncho: ", Folio.EcAncho);
+                validated = false;
+            }
+            if (Folio.PvVolumen == undefined || Folio.PvVolumen.trim() == '') {
+                console.log("Folio.PvVolumen: ", Folio.PvVolumen);
+                validated = false;
+            }
+            if (Folio.PvUndvol == undefined || Folio.PvUndvol.trim() == '') {
+                console.log("Folio.PvUndvol: ", Folio.PvUndvol); // -- FALLA
+                validated = false;
+            }
+            if (Folio.PvPbruto == undefined || Folio.PvPbruto.trim() == '') {
+                console.log("Folio.PvPbruto: ", Folio.PvPbruto);
+                validated = false;
+            }
+            if (Folio.PvPneto == undefined || Folio.PvPneto.trim() == '') {
+                console.log("Folio.PvPneto: ", Folio.PvPneto);
+                validated = false;
+            }
+            if (Folio.PvUndp == undefined || Folio.PvUndp.trim() == '') {
+                console.log("Folio.PvUndp: ", Folio.PvUndp);
+                validated = false;
+            }
 
-            if (Folio.CodTarima == undefined || Folio.CodTarima.trim() == '') validated = false;
-            if (Folio.CajasTend == undefined || Folio.CajasTend.trim() == '') validated = false;
-            if (Folio.TendTarima == undefined || Folio.TendTarima.trim() == '') validated = false;
-            if (Folio.CajasTarima == undefined || Folio.CajasTarima.trim() == '') validated = false;
+            if (Folio.CodTarima == undefined || Folio.CodTarima.trim() == '') {
+                console.log("Folio.CodTarima: ", Folio.CodTarima);
+                validated = false;
+            }
+            if (Folio.CajasTend == undefined || Folio.CajasTend.trim() == '') {
+                console.log("Folio.CajasTend: ", Folio.CajasTend);
+                validated = false;
+            }
+            if (Folio.TendTarima == undefined || Folio.TendTarima.trim() == '') {
+                console.log("Folio.TendTarima: ", Folio.TendTarima);
+                validated = false;
+            }
+            if (Folio.CajasTarima == undefined || Folio.CajasTarima.trim() == '') {
+                console.log("Folio.CajasTarima: ", Folio.CajasTarima);
+                validated = false;
+            }
 
             if (!validated) {
                 sap.m.MessageBox.warning("Existen datos faltantes de captura.");
             }
 
-
             //Validaciones PAso Dimensiones
 
-
-
             this.getView().byId('DimensionsStep').setValidated(validated);
+
+            console.log(">>>>>>>>>>>>>>> TERMINO VALIDACION DIMESIONES <<<<<<<<<<<<<<<<<<<<");
+            console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-");
+
         },
+
         validateDiscounts: function () {
             let validated = true;
 
@@ -1004,7 +1088,7 @@ sap.ui.define([
             if (Folio.PSug == undefined || Folio.PSug.trim() == '') validated = false;
 
             if (!validated) {
-                sap.m.MessageBox.warning("Existen d.");
+                sap.m.MessageBox.warning("Faltan datos por capturar");
             }
 
 

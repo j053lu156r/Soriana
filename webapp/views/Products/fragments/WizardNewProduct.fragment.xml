@@ -468,11 +468,11 @@
                                     <Label text="Expresado en" />
                                     <Input value="{Folio>/EcUndaap}"  />
                                     <Label text="Volumen" />
-                                    <Input value="{Folio>/EcVolumen}" type="Number" />
+                                    <Input value="{Folio>/EcVolumen}" type="Number" editable="false" enabled="true"/>
                                     <Label text="Unidad de volumen" />
                                     <ComboBox selectedKey="{Folio>/EcUndvol}" items="{path : 'Catalogos>/UnidadVolumen/results'}">
                                         <items>
-                                            <core:Item key="{Catalogos>Valorcarac}" text="{Catalogos>Valorcarac}"/>
+                                            <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
                                         </items>
                                     </ComboBox>
                                     <Label text="Peso bruto" />
@@ -492,11 +492,11 @@
                                     <Label text="Expresado en" />
                                     <Input value="{Folio>/PvUndaap}"  />
                                     <Label text="Volumen" />
-                                    <Input value="{Folio>/PvVolumen}" type="Number" />
+                                    <Input value="{Folio>/PvVolumen}" type="Number" editable="false" enabled="true" />
                                     <Label text="Unidad de volumen" />
                                     <ComboBox selectedKey="{Folio>/PvUndvol}" items="{path : 'Catalogos>/UnidadVolumen/results'}">
                                         <items>
-                                            <core:Item key="{Catalogos>Valorcarac}" text="{Catalogos>Valorcarac}"/>
+                                            <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
                                         </items>
                                     </ComboBox>
                                     <Label text="Peso bruto" />
@@ -526,8 +526,8 @@
 					</WizardStep>
                     <WizardStep id="Discounts"
 								activate="pricingActivate"
-								complete="pricingComplete"
-								validated="true"
+								complete="validateDiscounts"
+								validated="false"
 								title="Descuentos, Bonificación y costos">
 						<!--MessageStrip class="sapUiSmallMarginBottom"
 								text="You can use the wizard previousStep() and nextStep() methods to navigate from step to step without validation. Also you can use the GoToStep(step) method to scroll programmatically to previously visited steps."
@@ -536,7 +536,7 @@
                             <form:SimpleForm
                                     editable="true"
                                     layout="ResponsiveGridLayout"
-                                    title="Address"
+                                    title="Datos"
                                     labelSpanXL="4"
                                     labelSpanL="4"
                                     labelSpanM="4"
@@ -554,30 +554,29 @@
 
                                     <core:Title text="Descuentos" />
                                     <Label text="Descuento normal" />
-                                    <Input value="{Folio>/DscNormal}" />
+                                    <Input value="{Folio>/DscNormal}" type="Number" />
                                     <Label text="Descuento normal 2" />
-                                    <Input value="{Street}">
-                                    </Input>
+                                    <Input value="{Street}"  type="Number"/>
                                     <!--Input value="{HouseNumber}">
                                         <layoutData>
                                             <l:GridData span="XL2 L3 M3 S4" />
                                         </layoutData>
                                     </Input-->
                                     <Label text="Descuento normal 3" />
-                                    <Input value="" />
+                                    <Input value="" type="Number" />
                                     
                                     <Label text="Descuento adicional" />
-                                    <Input value="{Folio>/DscAdicional}" />
+                                    <Input value="{Folio>/DscAdicional}" type="Number" />
                                     <Label text="Descuento pronto pago" />
-                                    <Input value="{Folio>/DscPpago}" />
+                                    <Input value="{Folio>/DscPpago}" type="Number"/>
 
                                     <core:Title text="Bonificación" />
                                     <Label text="Tipo de bonificación" />
-                                    <Input value="{Url}" />
+                                    <Input value="{Url}" type="Number"/>
                                     <Label text="Valor de bonificación" />
-                                    <Input value="{Folio>/ValBoni}" />
+                                    <Input value="{Folio>/ValBoni}" type="Number" />
                                     <Label text="Unidades de bonificación" />
-                                    <Input value="{Folio>/UndBon}" />
+                                    <Input value="{Folio>/UndBon}" type="Number"/>
                                     
 
                                     <core:Title text="Costos de compra" />
@@ -587,15 +586,15 @@
                                         <RadioButton id="radioVenta" text="Un venta" />
                                     </RadioButtonGroup-->
                                     <Label text="Costo bruto" />
-                                    <Input value="{Folio>/CostoB}" />
+                                    <Input value="{Folio>/CostoB}" type="Number"/>
                                     <Label text="Capacidad de embarque" />
-                                    <Input value="{Email}" />
+                                    <Input value="{Email}" type="Number"/>
                                     <Label text="Costo Neto Unidad de compra" />
-                                    <Input value="{Tel}"  />
+                                    <Input value="{Tel}"  type="Number"/>
                                     <Label text="Costo neto unidad de venta" />
-                                    <Input value="{Sms}" />
+                                    <Input value="{Sms}" type="Number"/>
                                     <Label text="Precio sugerido" />
-                                    <Input value="{Folio>/PSug}" />
+                                    <Input value="{Folio>/PSug}" type="Number"/>
                                     
                                 </form:content>
                             </form:SimpleForm>
