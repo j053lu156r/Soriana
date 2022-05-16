@@ -106,7 +106,7 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.shoppingGroup}">
                                                     <form:fields>
-                                                        <Input required="true" value="" id="shoppingGroup" editable="false"/>
+                                                        <Input required="true" value="{Folio>/GrupCom}" id="shoppingGroup" editable="false"/>
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.productGroup}">

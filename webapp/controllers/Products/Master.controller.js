@@ -138,9 +138,10 @@ sap.ui.define([
                 }, this);
 
             } catch (error) {
-
+                console.error(" Get Catalogos Error ", error);
             }
         },
+
         addAttach: function (oEvt) {
             var aFiles = oEvt.getParameters().files;
             var currentFile = aFiles[0];
@@ -1133,9 +1134,9 @@ sap.ui.define([
                 oDialog.open();
             });
         },
+
         onBaseProductSearch: function (oEvent) {
             var sValue = oEvent.getParameter("value");
-
 
             var response = Model.getJsonModel(`/HdrcatproSet?$expand=ETPBASE&$filter=IOption eq '14' and IName eq '${sValue}'`);
 
@@ -1144,19 +1145,27 @@ sap.ui.define([
                 this.getOwnerComponent().setModel(new JSONModel(tablas), 'ProductosBase');
             }
         },
+
         onBaseProductClose: function (oEvent) {
-            var oSelectedItem = oEvent.getParameter("selectedItem");
-            oEvent.getSource().getBinding("items").filter([]);
+            let oSelectedContexts = oEvent.getParameter("selectedContexts");
+            let oSelectedItem = oEvent.getParameter("selectedItem");
+
+            oSelectedItem = oSelectedContexts.find(element => element.getObject().NumLinea == oSelectedItem.getDescription());
+
+            //oEvent.getSource().getBinding("items").filter([]);
+
+            console.log(">>>>>>>> Producto Base Selected: ", oSelectedItem.getObject());
 
             if (!oSelectedItem) {
                 return;
             }
 
-
-            this.getOwnerComponent().getModel('Folio').setProperty("/ProdBase", oSelectedItem.getTitle());
+            this.getOwnerComponent().getModel('Folio').setProperty("/ProdBase", oSelectedItem.getObject().DescLinea);
+            this.getOwnerComponent().getModel('Folio').setProperty("/GrupCom", oSelectedItem.getObject().NumLinea);
             //this.setActiveLifnr(oSelectedItem.getTitle(), oSelectedItem.getDescription());
 
         },
+        
         onBrandRequest: function () {
             var oView = this.getView();
 

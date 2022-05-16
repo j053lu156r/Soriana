@@ -8,6 +8,7 @@
 		cancel=".onBaseProductClose"
         >
 		<StandardListItem
-			title="{ProductosBase>DescLinea}" />
+			title="{ProductosBase>DescLinea}"
+			description="{ProductosBase>NumLinea}" />
 	</SelectDialog>
 </core:FragmentDefinition>
