@@ -75,7 +75,7 @@
                                 partOfCurrentVariant = "true" 
                                 visibleInFilterBar   = "true">
                                 <fb:control>
-                                    <DateRangeSelection id="dateRange" change="onChange" required="false"/>
+                                    <DateRangeSelection id="dateRange" change="onChange" required="true"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
 
