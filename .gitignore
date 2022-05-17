@@ -7,5 +7,5 @@ mta_archives
 mta-*
 resources
 archive.zip
-abap-deploy.log
+.abap-deploy
 .ABAPDeployResources/

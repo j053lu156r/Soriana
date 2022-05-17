@@ -45,8 +45,7 @@ sap.ui.define([
         },
         onRoutePatternMatched: function (event) {
             var vView = event.getParameter("name");
-
-            if (!oUser.getModel() || oUser.getModel() === undefined && vView != 'ConfirmUser') {
+            if ((!oUser.getModel() || oUser.getModel() === undefined) && vView != 'ConfirmUser') {
                 this.getOwnerComponent().getRouter().navTo("appHome", {}, true);
             }
         },
