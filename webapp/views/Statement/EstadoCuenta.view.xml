@@ -330,6 +330,7 @@
                         <m:OverflowToolbar style="Clear">
                             <m:Title id="title" text="{appTxts>/state.detail} ({totales>/Detalles/results/length})"/>
                             <m:ToolbarSpacer/>
+                            <m:CheckBox id="checkPartidas" text="Partidas pendientes de pago" select="onTableGrouping" visible="{= ${totales>/Detalles/results/length} > 0}"/>
                             <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${totales>/Detalles/results/length} > 0}" />
                             <m:Select visible="{= ${totales>/Detalles/Paginated/results/length} > 0 }" change="paginar( ${$parameters>/selectedItem} )">
                                 <m:items>
