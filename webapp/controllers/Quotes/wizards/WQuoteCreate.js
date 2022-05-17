@@ -10,6 +10,7 @@ sap.ui.define([
     return Controller.extend("demo.controllers.Quotes.wizards.WQuoteCreate", {
 
         createQuote: function (selectedKey) {
+            console.log(selectedKey)
             if (this.getConfigModel().getProperty("/supplierInputKey") != null) {
                 var oView = this.getView();
 
