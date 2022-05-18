@@ -8,6 +8,7 @@
 							<VBox width="100%" direction="Column" id="activeForm" alignContent="Center" alignItems="Inherit" visible="false">
 								<items>
 									<Text text="{appTxts>/confirm.active}" class="sapUiContentPadding"/>
+                                    <Input width="100%" id="user_confirm" placeholder="{appTxts>/logon.mail}" textAlign="Initial" type="Email" change="hasChangeMail"   />
                                     <Input width="100%" id="hCode" placeholder="{appTxts>/confirm.code}" maxLength="6" required="true" textFormatMode="Key"/>
 									<Input width="100%" id="pass1" placeholder="{appTxts>/confirm.pass}" maxLength="10" required="true" textFormatMode="Key" type="Password"/>
 									<Input width="100%" id="pass2" placeholder="{appTxts>/confirm.confPass}" maxLength="10" required="true" textFormatMode="Key" type="Password"/>

@@ -126,6 +126,9 @@ sap.ui.define([
                 this.getRouter().navTo("tile");
             }
         },
+        onPressCON: function(){
+            this.getRouter().navTo("ConfirmUser",{mail:"correo@correo.com"});
+        },
         onPressRC: function (oEvent) {
 
             function validateEmail(email) {

@@ -49,7 +49,7 @@
                                 groupName            = "__$INTERNAL$"
                                 name                 = "C"
                                 label                = "{appTxts>/clarifications.folioNumber}" 
-                                partOfCurrentVariant = "true" 
+                                 partOfCurrentVariant = "true"
                                 visibleInFilterBar   = "true">
                                 <fb:control>
                                     <Input
