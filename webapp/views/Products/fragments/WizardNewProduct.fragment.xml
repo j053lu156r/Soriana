@@ -460,66 +460,66 @@
 
                                     <core:Title text="Embarque por compra" />
                                     <Label text="Alto" />
-                                    <Input value="{Folio>/EcAlto}" type="Number"/>
+                                    <Input id="EcAlto" value="{Folio>/EcAlto}" type="Number" required="true" liveChange="calcularECVolumen" />
                                     <Label text="Ancho" />
-                                    <Input value="{Folio>/EcAncho}" type="Number"/>
+                                    <Input id="EcAncho" value="{Folio>/EcAncho}" type="Number" required="true" liveChange="calcularECVolumen" />
                                     <Label text="Profundo" />
-                                    <Input value="{Folio>/EcProfundo}" type="Number"/>
+                                    <Input id="EcProfundo" value="{Folio>/EcProfundo}" type="Number" required="true" liveChange="calcularECVolumen" />
                                     <Label text="Expresado en" />
-                                    <Input value="{Folio>/EcUndaap}"  />
+                                    <Input value="{Folio>/EcUndaap}" required="true" />
                                     <Label text="Volumen" />
-                                    <Input value="{Folio>/EcVolumen}" type="Number" editable="false" enabled="true"/>
+                                    <Input id="EcVolumen" value="{Folio>/EcVolumen}" type="Number" editable="false" enabled="true" />
                                     <Label text="Unidad de volumen" />
-                                    <ComboBox selectedKey="{Folio>/EcUndvol}" items="{path : 'Catalogos>/UnidadVolumen/results'}">
+                                    <ComboBox selectedKey="{Folio>/EcUndvol}" items="{path : 'Catalogos>/UnidadVolumen/results'}" required="true">
                                         <items>
                                             <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
                                         </items>
                                     </ComboBox>
                                     <Label text="Peso bruto" />
-                                    <Input value="{Folio>/EcPbruto}"  type="Number"/>
+                                    <Input value="{Folio>/EcPbruto}"  type="Number" required="true"/>
                                     <Label text="Peso neto" />
-                                    <Input value="{Folio>/EcPneto}" type="Number" />
+                                    <Input value="{Folio>/EcPneto}" type="Number" required="true" />
                                     <Label text="Unidad de peso" />
-                                    <Input value="{Folio>/EcUndp}" />
+                                    <Input value="{Folio>/EcUndp}" required="true"/>
 
                                     <core:Title text="Presentación de venta" />
                                     <Label text="Alto" />
-                                    <Input value="{Folio>/PvAlto}" type="Number"/>
+                                    <Input id="PvAlto" value="{Folio>/PvAlto}" type="Number" required="true" liveChange="calcularPvVolumen" />
                                     <Label text="Ancho" />
-                                    <Input value="{Folio>/PvAncho}" type="Number" />
+                                    <Input id="PvAncho" value="{Folio>/PvAncho}" type="Number" required="true" liveChange="calcularPvVolumen"/>
                                     <Label text="Profundo" />
-                                    <Input value="{Folio>/PvProfundo}" type="Number" />
+                                    <Input id="PvProfundo" value="{Folio>/PvProfundo}" type="Number" required="true" liveChange="calcularPvVolumen"/>
                                     <Label text="Expresado en" />
-                                    <Input value="{Folio>/PvUndaap}"  />
+                                    <Input value="{Folio>/PvUndaap}" required="true" />
                                     <Label text="Volumen" />
-                                    <Input value="{Folio>/PvVolumen}" type="Number" editable="false" enabled="true" />
+                                    <Input id="PvVolumen" value="{Folio>/PvVolumen}" type="Number" editable="false" enabled="true" required="true"/>
                                     <Label text="Unidad de volumen" />
-                                    <ComboBox selectedKey="{Folio>/PvUndvol}" items="{path : 'Catalogos>/UnidadVolumen/results'}">
+                                    <ComboBox selectedKey="{Folio>/PvUndvol}" items="{path : 'Catalogos>/UnidadVolumen/results'}" required="true">
                                         <items>
                                             <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
                                         </items>
                                     </ComboBox>
                                     <Label text="Peso bruto" />
-                                    <Input value="{Folio>/PvPbruto}" type="Number" />
+                                    <Input value="{Folio>/PvPbruto}" type="Number" required="true"/>
                                     <Label text="Peso neto" />
-                                    <Input value="{Folio>/PvPneto}" type="Number" />
+                                    <Input value="{Folio>/PvPneto}" type="Number" required="true"/>
                                     <Label text="Unidad de peso" />
-                                    <Input value="{Folio>/PvUndp}" />
+                                    <Input value="{Folio>/PvUndp}" required="true"/>
 
                                     <core:Title text="Capacidad por tarima" />
                                     <Label text="Código de tarima" />
-                                    <Input value="{Folio>/CodTarima}" type="Number" />
+                                    <Input value="{Folio>/CodTarima}" type="Number" required="true"/>
                                     <Label text="Cajas por contenido" />
-                                    <Input value="{Folio>/CajasTend}" type="Number" />
+                                    <Input value="{Folio>/CajasTend}" type="Number" required="true"/>
                                     <!--Input value="{HouseNumber}">
                                         <layoutData>
                                             <l:GridData span="XL2 L3 M3 S4" />
                                         </layoutData>
                                     </Input-->
                                     <Label text="Tendidos por tarima" />
-                                    <Input value="{Folio>/TendTarima}" type="Number"/>
+                                    <Input value="{Folio>/TendTarima}" type="Number" required="true" />
                                     <Label text="Cajas por tarima" />
-                                    <Input value="{Folio>/CajasTarima}" type="Number"/>
+                                    <Input value="{Folio>/CajasTarima}" type="Number" required="true" />
                                 </form:content>
                             </form:SimpleForm>
                         </VBox>
@@ -553,17 +553,20 @@
                                 <form:content>
 
                                     <core:Title text="Descuentos" />
+
                                     <Label text="Descuento normal" />
                                     <Input value="{Folio>/DscNormal}" type="Number" />
+
                                     <Label text="Descuento normal 2" />
-                                    <Input value="{Street}"  type="Number"/>
+                                    <Input value="{Folio>/DscNormal2}"  type="Number"/>
+
                                     <!--Input value="{HouseNumber}">
                                         <layoutData>
                                             <l:GridData span="XL2 L3 M3 S4" />
                                         </layoutData>
                                     </Input-->
                                     <Label text="Descuento normal 3" />
-                                    <Input value="" type="Number" />
+                                    <Input value="{Folio>/DscNormal3}" type="Number" />
                                     
                                     <Label text="Descuento adicional" />
                                     <Input value="{Folio>/DscAdicional}" type="Number" />
@@ -572,7 +575,7 @@
 
                                     <core:Title text="Bonificación" />
                                     <Label text="Tipo de bonificación" />
-                                    <Input value="{Url}" type="Number"/>
+                                    <Input value="{Folio>/Bonif}" type="Number"/>
                                     <Label text="Valor de bonificación" />
                                     <Input value="{Folio>/ValBoni}" type="Number" />
                                     <Label text="Unidades de bonificación" />
@@ -588,11 +591,11 @@
                                     <Label text="Costo bruto" />
                                     <Input value="{Folio>/CostoB}" type="Number"/>
                                     <Label text="Capacidad de embarque" />
-                                    <Input value="{Email}" type="Number"/>
+                                    <Input value="{Folio>/CapEmbar}" type="Number"/>
                                     <Label text="Costo Neto Unidad de compra" />
-                                    <Input value="{Tel}"  type="Number"/>
-                                    <Label text="Costo neto unidad de venta" />
-                                    <Input value="{Sms}" type="Number"/>
+                                    <Input value="{Folio>/CostNetComp}"  type="Number"/>
+                                    <Label text="Costo Neto Unidad de venta" />
+                                    <Input value="{Folio>/CostNetVen}" type="Number"/>
                                     <Label text="Precio sugerido" />
                                     <Input value="{Folio>/PSug}" type="Number"/>
                                     

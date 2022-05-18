@@ -14,6 +14,7 @@ sap.ui.define([
     const CatNegotiatedFormat = ['1A', '1B'];
     var swProveedorEnGS1 = false;
     var swProveedorExcluido = false;
+    var _testingSteps = true;
 
     return BaseController.extend("demo.controllers.Products.Master", {
         onInit: function () {
@@ -739,6 +740,11 @@ sap.ui.define([
             //     return true;
             // }
 
+            if (_testingSteps){
+                this.getView().byId('ProductTypeStep').setValidated(_testingSteps);
+                return;
+            }
+
             let validated = true;
 
             const ModelFolio = this.getOwnerComponent().getModel("Folio");
@@ -818,6 +824,12 @@ sap.ui.define([
 
         activateProductPresentation: function () {
             //if (this.getView().byId('ProductPresentation').getValidated()) return true;
+
+
+            if (_testingSteps){
+                this.getView().byId('ProductPresentation').setValidated(_testingSteps);
+                return;
+            }
 
             let validated = true;
 
@@ -913,6 +925,11 @@ sap.ui.define([
 
         completeValidateVariantStep: function () {
 
+            if (_testingSteps){
+                this.getView().byId('ProductPresentation').setValidated(_testingSteps);
+                return;
+            }
+
             this.getView().byId('VariantStep').setValidated(!this.getView().byId('variants').getSelected());
             if (this.getView().byId('VariantStep').getValidated()) return true;
 
@@ -951,7 +968,49 @@ sap.ui.define([
             this.getView().byId('VariantStep').setValidated(validated);
         },
 
+        calcularECVolumen: function (oControlEvent) {
+            
+            let ecalto = this.byId("EcAlto").getValue();
+            let ecancho = this.byId("EcAncho").getValue();
+            let ecprofundo = this.byId("EcProfundo").getValue();
+
+            let volumen = parseFloat(ecalto) * parseFloat(ecancho) * parseFloat(ecprofundo);
+
+            console.log(" >>>>>>> ALTO : ", ecalto);
+            console.log(" >>>>>>> Ancho : ", ecancho);
+            console.log(" >>>>>>> profundo : ", ecprofundo);
+            console.log(" >>>>>>>>>>>>> ECVolumen: ",volumen);
+
+            this.byId("EcVolumen").setValue(volumen);
+            
+            
+        },
+
+        calcularPvVolumen: function (oControlEvent) { 
+
+            let pvalto = this.byId("PvAlto").getValue();
+            let pvancho = this.byId("PvAncho").getValue();
+            let pvprofundo = this.byId("PvProfundo").getValue();
+
+            let volumen = parseFloat(pvalto) * parseFloat(pvancho) * parseFloat(pvprofundo);
+
+            console.log(" >>>>>>> ALTO : ", pvalto);
+            console.log(" >>>>>>> Ancho : ", pvancho);
+            console.log(" >>>>>>> profundo : ", pvprofundo);
+
+            console.log(" >>>>>>>>>>>>> PVVolumen: ",volumen);
+
+            this.byId("PvVolumen").setValue(volumen);            
+            
+        },
+
         validateCompleteStepDimensions: function () {
+
+            if (_testingSteps){
+                this.getView().byId('DimensionsStep').setValidated(_testingSteps);
+                return;
+            }
+            
             //if (this.getView().byId('DimensionsStep').getValidated()) return true;
             console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-");
             console.log(">>>>>>>>>>>>>>> VALIDACION DIMESIONES <<<<<<<<<<<<<<<<<<<<");
@@ -960,8 +1019,7 @@ sap.ui.define([
 
             //obtenemos el modelo 
             let Folio = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
-            Folio.EcVolumen = (Folio.EcAlto * Folio.EcAncho * Folio.EcProfundo) + "";
-            Folio.PvVolumen = (Folio.PvAlto * Folio.PvAncho * Folio.PvProfundo) + "";
+
             // console.log(">>>>>>>>>>>>>>> LOGS |||");
             // console.log(">>>>>>>>>>>>>>> VOLUMEN EC",Folio.EcVolumen);
             // console.log(">>>>>>>>>>>>>>> VOLUMEN Pv",Folio.PvVolumen);
@@ -1002,7 +1060,7 @@ sap.ui.define([
                 console.log("Folio.EcPneto: ", Folio.EcPneto);
                 validated = false;
             }
-            if (Folio.EcUndp == undefined || Folio.EcUndp.trim() == '') {
+            if (Folio.EcUndp == undefined || Folio.EcUndp.trim() == '')  {
                 console.log("Folio.EcUndp: ", Folio.EcUndp);
                 validated = false;
             }
