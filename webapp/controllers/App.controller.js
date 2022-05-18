@@ -19,6 +19,7 @@ sap.ui.define([
             this.oRouter.attachRouteMatched(this.onRouteMatched, this);
             this.oRouter.attachBeforeRouteMatched(this.onBeforeRouteMatched, this);
             this.oRouter.fireBeforeRouteMatched();
+             this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
         },
 
         onBeforeRouteMatched: function (oEvent) {
@@ -71,7 +72,7 @@ sap.ui.define([
             var oUIState = this.oOwnerComponent.getHelper().getCurrentUIState();
             oModel.setData(oUIState);
         },
-
+      
         onStateChanged: function (oEvent) {
             var bIsNavigationArrow = oEvent.getParameter("isNavigationArrow"),
                 sLayout = oEvent.getParameter("layout");

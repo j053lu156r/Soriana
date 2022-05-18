@@ -277,7 +277,8 @@ sap.ui.define([
         },
         onValueHelpRequest: function () {
             var oView = this.getView();
-
+            oUser
+            this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({}), "tableItemsUsers");            
             if (!this._pValueHelpDialog) {
                 this._pValueHelpDialog = sap.ui.core.Fragment.load({
                     id: oView.getId(),
@@ -295,7 +296,27 @@ sap.ui.define([
                 oDialog.open();
             });
         },
-
+        onValueHelpRequestquitar: function () {
+            var oView = this.getView();            
+            //this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({}), "tableItemsUsers");            
+            this.getConfigModel().setProperty("/supplierInput",null);     
+            this.getConfigModel().setProperty("/supplierInputKey",null);       
+            this.getConfigModel().setProperty("/supplierTitle",null);
+        /*    if (!this._pValueHelpDialog) {
+                this._pValueHelpDialog = sap.ui.core.Fragment.load({
+                    id: oView.getId(),
+                    name: "demo.fragments.SupplierSelect",
+                    controller: this
+                }).then(function (oDialog) {
+                    oView.addDependent(oDialog);
+                    return oDialog;
+                });
+            }
+            this._pValueHelpDialog.then(function (oDialog) {
+               
+                oDialog.open();
+            });*/
+        },
         onValueHelpSearch: function (oEvent) {
             var sValue = oEvent.getParameter("value");
             var usrModel = this.getOwnerComponent().getModel("userdata");
@@ -555,6 +576,16 @@ sap.ui.define([
             }
 
             return bAccess;
+        },
+        frmBtnDesvVisible: function (esvisible, usr1) {
+            //var confiSite = this.getOwnerComponent().getModel("configSite");
+           // var disp = confiSite.getProperty("/barVisible");
+           if (esvisible && usr1 != "" && usr1 != undefined && usr1 !== null){
+            var seve = true;
+           }
+           
+            return ((esvisible && usr1 !== null && usr1 !== "" && usr1 !== undefined));
+            // return ((chgUsrRol == '0001' || chgUsrRol == '0005') && usrRol != '0005');
         },
         setConfigModel: function () {
             if (!this.getOwnerComponent().getModel("configSite")) {

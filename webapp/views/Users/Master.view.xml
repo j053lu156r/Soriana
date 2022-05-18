@@ -25,13 +25,13 @@ xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants" xmlns="sap.m" x
                 <f:content>
                     <fb:FilterBar id="filterBar"  header="Header"
 		                reset="onReset" search="searchData" clear="onClear" cancel="onCancel" 
-		                filtersDialogClosed = "onFiltersDialogClosed"
-		                showRestoreButton="false" showClearButton="false" useToolbar="false">
+		                filtersDialogClosed = "onFiltersDialogClosed" 
+		                showRestoreButton="false" showClearButton="false" useToolbar="false" >
 			
                         <fb:filterGroupItems>
                             
-                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="{appTxts>/user.vendor}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
-                                <fb:control>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="{appTxts>/user.vendor}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true" >
+                                <fb:control >
                                     <Input
                                         id="supplierInput"
                                         placeholder="{appTxts>/user.vendor}"
@@ -39,9 +39,9 @@ xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants" xmlns="sap.m" x
                                         showSuggestion="true"
                                         valueHelpOnly="true"
                                         showValueHelp="true"
-                                        valueHelpRequest=".onValueHelpRequest"
-                                        value="{configSite>/supplierInput}"                                    
-                                        >
+                                        valueHelpRequest=".onValueHelpRequest"                                                                               
+                                        value="{configSite>/supplierInput}"                                                                                                                                                                                                                                                                      
+                                         >
                                         
                                     </Input>
                                 </fb:control>
