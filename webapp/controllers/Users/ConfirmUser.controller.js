@@ -15,14 +15,17 @@ sap.ui.define([
         onInit: function () {
             this.getView().addEventDelegate({
                 onBeforeShow: function (oEvent) {
-                    
+                   // iMail = oEvent.getParameter("arguments").mail;
+                    this.getView().byId("user_confirm").setValue(iMail);
                     this.getView().byId("pass1").setValue("");
                     this.getView().byId("pass2").setValue("");
                     this.getView().byId("hCode").setValue("");
                 },
                 onAfterShow: function() {
+                    //gpg comentarie las sig 2 lineas
                     var barModel = this.getOwnerComponent().getModel("configSite");
                     barModel.setProperty("/barVisible", false);
+                    
                 }
             }, this);
 
@@ -32,10 +35,13 @@ sap.ui.define([
             //this.getOwnerComponent().getRouter().navTo("appHome", {}, true /*no history*/);
         },
         activateAccount: function (oEvent) {
+
             var pass1 = this.getView().byId("pass1").getValue();
             var pass2 = this.getView().byId("pass2").getValue();
             var verfc = this.getView().byId("hCode").getValue();
-
+            iMail = this.getView().byId("user_confirm").getValue();
+            iMail = iMail.toUpperCase();
+            this.checarConfirmado();
             if (pass1 === pass2) {
                 if (pass1.length >= 8) {
 
@@ -79,7 +85,17 @@ sap.ui.define([
         },
         _onObjectMatched: function (oEvent) {
             iMail = oEvent.getParameter("arguments").mail;
+           
+            var activForm = this.getView().byId("activeForm");
+            var errorBox = this.getView().byId("errorBox");
+            var errorField = this.getView().byId("errorField");
 
+            activForm.setVisible(true);
+            errorBox.setVisible(false);
+        
+        },
+        checarConfirmado: function (){
+            
             var objRequest = {
                 "IOption": "20",
                 "IMail": iMail

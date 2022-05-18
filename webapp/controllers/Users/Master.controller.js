@@ -109,6 +109,37 @@ sap.ui.define([
             this.paginate("tableItemsUsers", "/ETNOMPROVNAV", 1, 0);
             }
         },
+        cambioValor: function () {
+            this.getOwnerComponent().setModel(new JSONModel({}),
+            "tableItemsUsers");
+        },
+        onValueHelpRequest1: function () {
+       
+            //gpg
+            
+            this.getOwnerComponent().setModel(new JSONModel({}),
+                "tableItemsUsers");
+                
+                //gpg
+            var oView = this.getView();
+
+            if (!this._pValueHelpDialog) {
+                this._pValueHelpDialog = sap.ui.core.Fragment.load({
+                    id: oView.getId(),
+                    name: "demo.fragments.SupplierSelect",
+                    controller: this
+                }).then(function (oDialog) {
+                    oView.addDependent(oDialog);
+                    return oDialog;
+                });
+            }
+            this._pValueHelpDialog.then(function (oDialog) {
+                // Create a filter for the binding
+                //oDialog.getBinding("items").filter([new Filter("Name", FilterOperator.Contains, sInputValue)]);
+                // Open ValueHelpDialog filtered by the input's value
+                oDialog.open();
+            });
+        },
         onSelectColaborator: function () {
             if (this.getView().byId("colSor").getSelected() || this.getView().byId("callUser").getSelected()) {
                 this.getView().byId("supplierInput").setEnabled(false);
@@ -156,6 +187,7 @@ sap.ui.define([
 
             this.getOwnerComponent().getRouter().navTo("detailUsers", { layout: sap.f.LayoutType.TwoColumnsMidExpanded, user: result.Idusua, supplier: result.Lifnr }, true);
         },
+       
         createUser: function () {
             if(!this.hasAccess(13)){
                 return

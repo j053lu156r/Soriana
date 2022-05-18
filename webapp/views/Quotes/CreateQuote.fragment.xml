@@ -1,0 +1,74 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+	<Dialog
+      id="frgCreateQuote"
+      showHeader="true"
+      title="{appTxts>/quotes.createNewQuote}"
+      stretch="true">
+		<content>
+			<VBox class="sapUiSmallMargin">
+                <HBox
+                    alignItems="Center"
+                    justifyContent="Center"
+                    width="100%">
+                    <VBox width="33%" class="sapUiTinyMargins">
+                        <Label text="{appTxts>/quotes.quoteType}" labelFor="currency"/>
+                        <Select
+                            items="{
+                                    path: 'appoinmentsCatalogs>/ETIPOCITANAV/results',
+                                    sorter: { path: 'Name' }
+                                }"
+                            >
+                            <items>
+                                <core:Item key="{appoinmentsCatalogs>ZNumcita}" text="{appoinmentsCatalogs>ZTipocita}" />
+                            </items>
+                        </Select>
+                        <Label text="{appTxts>/quotes.totalpackages}" labelFor="currency"/>
+                        <Input width="auto" />
+                        <Label text="{appTxts>/quotes.platforms}"/>
+                        <Input width="auto" />
+                    </VBox>
+                    <VBox width="33%"  class="sapUiTinyMargins">
+                        <Label text="{appTxts>/quotes.unitType}" />
+                        <Select
+                            items="{
+                                    path: 'appoinmentsCatalogs>/ETIPOUNIDADNAV/results'
+                                }"
+                            >
+                            <items>
+                                <core:Item key="{appoinmentsCatalogs>ZNumunidad}" text="{appoinmentsCatalogs>ZTipounidad}" />
+                            </items>
+                        </Select>
+                        <Label text="{appTxts>/quotes.productType}" />
+                            <Input
+                                id="productTypeC"
+                                placeholder="{appTxts>/quotes.productType}"
+                                showSuggestion="true"
+                                valueHelpOnly="false"
+                                showValueHelp="true"
+                                width="auto"
+                                valueHelpRequest="helpProductType(true)"
+                                />
+                        <Label text="{appTxts>/quotes.carrier}" />
+                        <Input id="packagesNo" width="auto" change=".hasOnlyNumbers" />
+                        
+                    </VBox>
+                </HBox>
+			</VBox>
+		</content>
+		<beginButton>
+			<Button
+			text="{appTxts>/quotes.createQuote}"
+			press=""
+			type="Emphasized"/>
+		</beginButton>
+		<endButton>
+			<Button
+			text="{appTxts>/nuser.cancel}"
+			press="onCloseFragment"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

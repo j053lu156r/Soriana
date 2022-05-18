@@ -66,6 +66,7 @@ BaseModel.prototype.create = function (url, object) {
 
     var oSucces = null;
     var model = this.getModel();
+    console.log(model)    
     model.setHeaders({
         "X-CSRF-Token": "fetch",
         "X-Requested-With": "XMLHttpRequest"
@@ -75,8 +76,9 @@ BaseModel.prototype.create = function (url, object) {
     console.log("***************** After refreshSecurityToken");
 
     model.read("");
-
+    console.log(model)
     var gToken = model.getSecurityToken();
+    console.log(gToken)
 
     model.setHeaders({
         "X-CSRF-Token": gToken,
