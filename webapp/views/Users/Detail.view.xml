@@ -131,11 +131,11 @@
 								<form:content>
                                     <core:Title text="Datos personales" />
                                     <m:Label text="Nombre(s)"/>
-									<m:Input id="Name1" value="{detailUserModel>/Esusdata/Name1}" maxLength="35"/>
+									<m:Input id="Name1" value="{detailUserModel>/Esusdata/Name1}" enabled="false" maxLength="35"/>
                                     <m:Label text="Apellido paterno"/>
-									<m:Input id="Name2" value="{detailUserModel>/Esusdata/Name2}" maxLength="35"/>
+									<m:Input id="Name2" value="{detailUserModel>/Esusdata/Name2}" enabled="false" maxLength="35"/>
                                     <m:Label text="Apellido materno"/>
-									<m:Input id="Name3" value="{detailUserModel>/Esusdata/Name3}" maxLength="35"/>
+									<m:Input id="Name3" value="{detailUserModel>/Esusdata/Name3}" enabled="false" maxLength="35"/>
 
                                     <core:Title text="Datos de contacto" />
 									<m:Label text="Teléfono"/>
