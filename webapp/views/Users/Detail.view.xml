@@ -68,7 +68,7 @@
                                     text="{= ${detailUserModel>/Esusdata/Zactivo} !== 'B' ? ${appTxts>/user.disable} : ${appTxts>/user.enable} }"
                                     type="Transparent"
                                     press="handleDropUser"
-                                    visible="{= ${userdata>/ERol} === '0001' || ${userdata>/ERol} === '0002' }"
+                                    visible="{parts: [ {path: 'userdata>/ERol'}, {path: 'detailUserModel>/Esusdata/Idrol'}], formatter: '.frmBtnChgRolVisible2'}"
                                      />
 						</actions>
 

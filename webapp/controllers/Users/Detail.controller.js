@@ -423,7 +423,12 @@ sap.ui.define([
                 `${this.getOwnerComponent().getModel('appTxts').getProperty('/user.btnChgRol2Col')}`;
         },
         frmBtnChgRolVisible: function (chgUsrRol, usrRol) {
-            return ((chgUsrRol == '0001' || chgUsrRol == '0005') && usrRol != '0005');
+            return ((chgUsrRol == '0001' ||  chgUsrRol == '0005') && (usrRol != '0005' && usrRol != '0002' && usrRol != '0001'));
+            // return ((chgUsrRol == '0001' || chgUsrRol == '0005') && usrRol != '0005');
+        },
+        frmBtnChgRolVisible2: function (chgUsrRol, usrRol) {
+            return ((usrRol != '0005' && usrRol != '0002' && usrRol != '0001'));
+            // return ((chgUsrRol == '0001' || chgUsrRol == '0005') && usrRol != '0005');
         },
         validateIfExist: function () {
             var response = oLogon.getJsonModel();

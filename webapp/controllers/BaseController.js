@@ -278,7 +278,8 @@ sap.ui.define([
         },
         onValueHelpRequest: function () {
             var oView = this.getView();
-
+            oUser
+            this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({}), "tableItemsUsers");            
             if (!this._pValueHelpDialog) {
                 this._pValueHelpDialog = sap.ui.core.Fragment.load({
                     id: oView.getId(),
@@ -296,7 +297,27 @@ sap.ui.define([
                 oDialog.open();
             });
         },
-
+        onValueHelpRequestquitar: function () {
+            var oView = this.getView();            
+            //this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({}), "tableItemsUsers");            
+            this.getConfigModel().setProperty("/supplierInput",null);     
+            this.getConfigModel().setProperty("/supplierInputKey",null);       
+            this.getConfigModel().setProperty("/supplierTitle",null);
+        /*    if (!this._pValueHelpDialog) {
+                this._pValueHelpDialog = sap.ui.core.Fragment.load({
+                    id: oView.getId(),
+                    name: "demo.fragments.SupplierSelect",
+                    controller: this
+                }).then(function (oDialog) {
+                    oView.addDependent(oDialog);
+                    return oDialog;
+                });
+            }
+            this._pValueHelpDialog.then(function (oDialog) {
+               
+                oDialog.open();
+            });*/
+        },
         onValueHelpSearch: function (oEvent) {
             var sValue = oEvent.getParameter("value");
             var usrModel = this.getOwnerComponent().getModel("userdata");
