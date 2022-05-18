@@ -19,8 +19,9 @@
                 id="provLink2"
 				text="{appTxts>/global.suppHeader2} "
 				press=".onValueHelpRequestquitar"
-                class="sapUiTinyMarginTop"
-                visible="{configSite>/barVisible}" />
+                class="sapUiTinyMarginTop"  
+                visible="{parts: [ {path: 'configSite>/barVisible'}, {path: 'configSite>/supplierInput'}], formatter: '.frmBtnDesvVisible'}"
+                 />
             <MenuButton 
             xmlns:sap.ui.commons="sap.ui.commons" 
             textDirection="RTL" icon="sap-icon://globe"

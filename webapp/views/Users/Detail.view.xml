@@ -86,11 +86,11 @@
 						</m:VBox>
 						<m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
 							<m:Label text="No. de proveedor"/>
-							<m:Text text="{detailUserModel>/ILifnr}"/>
+							<m:Text text="{detailUserModel>/ILifnr}" />
 						</m:VBox>
 						<m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
 							<m:Label text="Nombre de Proveedor"/>
-							<m:Text text="{detailUserModel>/ENameprov}"/>
+							<m:Text  text="{detailUserModel>/ENameprov}"  />
 						</m:VBox>
                         <m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
 							<m:Label text="Tipo de usuario"/>

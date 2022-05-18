@@ -578,6 +578,16 @@ sap.ui.define([
 
             return bAccess;
         },
+        frmBtnDesvVisible: function (esvisible, usr1) {
+            //var confiSite = this.getOwnerComponent().getModel("configSite");
+           // var disp = confiSite.getProperty("/barVisible");
+           if (esvisible && usr1 != "" && usr1 != undefined && usr1 !== null){
+            var seve = true;
+           }
+           
+            return ((esvisible && usr1 !== null && usr1 !== "" && usr1 !== undefined));
+            // return ((chgUsrRol == '0001' || chgUsrRol == '0005') && usrRol != '0005');
+        },
         setConfigModel: function () {
             if (!this.getOwnerComponent().getModel("configSite")) {
                 var obj = {

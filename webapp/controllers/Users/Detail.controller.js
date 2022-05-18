@@ -28,6 +28,7 @@ sap.ui.define([
                             this.bFocusFullScreenButton = false;
                             oButton.focus();
                         }
+                        //sap.ui.getCore().byId("__xmlview2--Name1-inner").$().find("input").attr("readonly", true);
                     }.bind(this)
                 });
             }, this);

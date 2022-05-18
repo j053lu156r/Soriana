@@ -70,7 +70,7 @@ sap.ui.define([
             var oUIState = this.oOwnerComponent.getHelper().getCurrentUIState();
             oModel.setData(oUIState);
         },
-
+      
         onStateChanged: function (oEvent) {
             var bIsNavigationArrow = oEvent.getParameter("isNavigationArrow"),
                 sLayout = oEvent.getParameter("layout");
