@@ -21,6 +21,7 @@ sap.ui.define([
 
             this.oRouter.getRoute("detailUsers").attachPatternMatched(this._onUserMatched, this);
 
+            
             [oExitButton, oEnterButton].forEach(function (oButton) {
                 oButton.addEventDelegate({
                     onAfterRendering: function () {
