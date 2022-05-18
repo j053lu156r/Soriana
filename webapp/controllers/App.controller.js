@@ -19,6 +19,7 @@ sap.ui.define([
             this.oRouter.attachRouteMatched(this.onRouteMatched, this);
             this.oRouter.attachBeforeRouteMatched(this.onBeforeRouteMatched, this);
             this.oRouter.fireBeforeRouteMatched();
+             this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
         },
 
         onBeforeRouteMatched: function (oEvent) {
