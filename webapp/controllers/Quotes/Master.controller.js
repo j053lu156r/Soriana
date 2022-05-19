@@ -27,6 +27,7 @@ sap.ui.define([
                     this.clearFilds();
                 }
             }, this);
+            this.configFilterLanguage(this.getView().byId("filterBar"));
         },
         searchData: function () {
             this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(),

@@ -55,7 +55,7 @@
                             <m:Button
                                     text="{path: 'detailUserModel>/Esusdata/Idrol', formatter: '.btnChgRolGetName'}"
                                     type="Transparent"
-                                    visible="{parts: [ {path: 'userdata>/ERol'}, {path: 'detailUserModel>/Esusdata/Idrol'}], formatter: '.frmBtnChgRolVisible'}"
+                                    visible="{parts: [ {path: 'userdata>/ERol'}, {path: 'detailUserModel>/Esusdata/Idrol'},{path: 'userdata>/EIdusua'},{path: 'detailUserModel>/IIdusua'}], formatter: '.frmBtnChgRolVisible'}"
                                     press="handleChangeToAdmin"
                                      />
                             <m:Button
@@ -68,7 +68,7 @@
                                     text="{= ${detailUserModel>/Esusdata/Zactivo} !== 'B' ? ${appTxts>/user.disable} : ${appTxts>/user.enable} }"
                                     type="Transparent"
                                     press="handleDropUser"
-                                    visible="{parts: [ {path: 'userdata>/ERol'}, {path: 'detailUserModel>/Esusdata/Idrol'}], formatter: '.frmBtnChgRolVisible2'}"
+                                    visible="{parts: [ {path: 'userdata>/ERol'}, {path: 'detailUserModel>/Esusdata/Idrol'},{path: 'userdata>/EIdusua'},{path: 'detailUserModel>/IIdusua'}], formatter: '.frmBtnChgRolVisible2'}"
                                      />
 						</actions>
 
