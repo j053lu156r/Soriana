@@ -2,12 +2,28 @@ sap.ui.define([
     "demo/controllers/BaseController",
     "sap/ui/core/Fragment",
     "sap/ui/model/json/JSONModel",
-], function (Controller, Fragment, JSONModel) {
+    "demo/models/formatter"
+], function (Controller, Fragment, JSONModel, formatter) {
     "use strict";
 
     var ordersModel = new this.Pedidostemp();
     var citas1Model = new this.Citas1();
+    var dataTempModel = null;
+    var dataTemp = {
+        generalData: {
+            cedisType: "",
+            tipoCita: "",
+            totalBultos: "",
+            tarimas: "",
+            tipoUnidad: "",
+            tipoProducto: "",
+            transportista: ""
+        },
+        pedidos: []
+    };
     return Controller.extend("demo.controllers.Quotes.wizards.WQuoteCreate", {
+
+        formatter: formatter,
 
         createQuote: function (selectedKey) {
             if (this.getConfigModel().getProperty("/supplierInputKey") != null) {
@@ -40,6 +56,11 @@ sap.ui.define([
             this._oWizard = this.byId("QuoteCedisWizard");
             this._oWizard._getProgressNavigator().ontap = function(){};
             this.handleButtonsVisibility();
+            dataTempModel = new JSONModel(dataTemp);
+            this.getView().setModel(dataTempModel, "TemporalModel");
+            dataTempModel.setProperty("/generalData/cedisType", this.getView().byId("rbgOpciones").getSelectedIndex());
+            dataTempModel.setProperty("/generalData/tipoCita", this.getView().byId("sTipoCita").getSelectedKey());
+            dataTempModel.setProperty("/generalData/tipoUnidad", this.getView().byId("sTipoUnidad").getSelectedKey());
         },
         handleButtonsVisibility: function () {
             var oModel = this.getView().getModel();
@@ -119,7 +140,6 @@ sap.ui.define([
             if (this._oWizard.getProgressStep().getValidated()) {
                 var steps = this._oWizard.getSteps();
                 this._oWizard.nextStep();
-                console.log("<<<<<<<<<<<<<<<<<<<<    Next...>>>>>>>>>>>>>>>>>>>>>>><")
             }
 
             this.handleButtonsVisibility();
@@ -207,6 +227,24 @@ sap.ui.define([
                 }
             }
             */
+        },
+        onSelectRBOption: function(oEvent){
+            dataTempModel.setProperty("/generalData/cedisType", oEvent.getParameters().selectedIndex);
+        },
+        onChangeSelectTipoCita: function(oEvent){
+            dataTempModel.setProperty("/generalData/tipoCita", oEvent.getParameters().selectedItem.getKey());
+            console.info(dataTempModel)
+        },
+        onChangeSelectTipoUnidad: function(oEvent){
+            dataTempModel.setProperty("/generalData/tipoUnidad", oEvent.getParameters().selectedItem.getKey());
+            console.info(dataTempModel)
+        },
+        onSelectProductType: function(oEvent){
+            dataTempModel.setProperty("/generalData/tipoProducto", oEvent.getParameters().selectedItem.getKey());
+            console.info(dataTempModel)
+        },
+        selectChange: function(oEvent){
+            console.log(oEvent)
         }
     });
 });
