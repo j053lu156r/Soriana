@@ -8,7 +8,7 @@
 	<Dialog
 		id="wizardDialog"
 		showHeader="true"
-        title="Creación manual aviso reverse"
+        title="{appTxts>/quotes.createNewQuote}"
 		verticalScrolling="false"
         stretch="true"
 		>
@@ -21,15 +21,15 @@
 				<Wizard id="QuoteCedisWizard"
                     class="sapUiResponsivePadding--header sapUiResponsivePadding--content"
                     showNextButton="false"
-                    renderMode="Page">
+                    >
                     <WizardStep id="RemissionDetail"
-                        title="Datos generales"
+                        title="{appTxts>/quotes.generalData}"
                         validated="true">
                         <core:Fragment fragmentName="demo.views.Quotes.wizards.fragments.FirstStepCedis" type="XML" />
                     </WizardStep>
                     <WizardStep id="ProductInfoStep"
                         validated="false"
-                        title="Pedidos/Articulos">
+                        title="{appTxts>/quotes.orders}">
                         <core:Fragment fragmentName="demo.views.Quotes.wizards.fragments.SecondStepCedis" type="XML" />
 					</WizardStep>
 					<WizardStep 

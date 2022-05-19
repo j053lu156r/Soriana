@@ -128,7 +128,7 @@ sap.ui.define([
             this.handleButtonsVisibility();
         },
         onCloseWizard: function () {
-            this._handleMessageBoxOpen(this.getView().getModel("appTxts").getProperty("/quote.discardButton"), "warning");
+            this._handleMessageBoxOpen(this.getView().getModel("appTxts").getProperty("/quotes.discardButton"), "warning");
         },
         _handleMessageBoxOpen: function (sMessage, sMessageBoxType) {
             sap.m.MessageBox[sMessageBoxType](sMessage, {
