@@ -372,6 +372,15 @@ sap.ui.define([
             var dataModel = this.getOwnerComponent().getModel("detailUserModel").getProperty("/Esusdata/Zactivo");
             var msg = `${this.getOwnerComponent().getModel('appTxts').getProperty("/nuser.confToAdmin")}`;
 
+            var detUsrModel1 = this.getOwnerComponent().getModel('detailUserModel');
+            if (detUsrModel1 != null) {
+                var rol = detUsrModel1.getProperty("/Esusdata/Idrol");
+                if (rol == '0001' || rol == '0002'){
+                    msg = `${this.getOwnerComponent().getModel('appTxts').getProperty("/nuser.confToColaborador")}`;
+                }
+    
+            }
+
 
             sap.m.MessageBox.confirm(msg, {
                 actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
@@ -423,13 +432,16 @@ sap.ui.define([
                 `${this.getOwnerComponent().getModel('appTxts').getProperty('/user.btnChgRol2Adm')}` :
                 `${this.getOwnerComponent().getModel('appTxts').getProperty('/user.btnChgRol2Col')}`;
         },
-        frmBtnChgRolVisible: function (chgUsrRol, usrRol) {
-            return ((chgUsrRol == '0001' ||  chgUsrRol == '0005') && (usrRol != '0005' && usrRol != '0002' && usrRol != '0001'));
-            // return ((chgUsrRol == '0001' || chgUsrRol == '0005') && usrRol != '0005');
+        frmBtnChgRolVisible: function (chgUsrRol, usrRol, usuarioentro, usuarioconsultado) {
+           // var usrModel1 = this.getOwnerComponent().getModel("userdata");
+           // var detUsrModel1 = this.getOwnerComponent().getModel('detailUserModel');
+            return ((usuarioconsultado != usuarioentro));
+            //return ((chgUsrRol == '0001' ||  chgUsrRol == '0005') && (usrRol != '0005' && usrRol != '0002' && usrRol != '0001') && (usuarioconsultado != usuarioentro));
+            
         },
-        frmBtnChgRolVisible2: function (chgUsrRol, usrRol) {
-            return ((usrRol != '0005' && usrRol != '0002' && usrRol != '0001'));
-            // return ((chgUsrRol == '0001' || chgUsrRol == '0005') && usrRol != '0005');
+        frmBtnChgRolVisible2: function (chgUsrRol, usrRol,usuarioentro, usuarioconsultado) {
+            return ( (usuarioconsultado != usuarioentro));
+            //return ((usrRol != '0005' && usrRol != '0002' && usrRol != '0001')&& (usuarioconsultado != usuarioentro));
         },
         validateIfExist: function () {
             var response = oLogon.getJsonModel();
