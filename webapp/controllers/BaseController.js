@@ -720,8 +720,8 @@ sap.ui.define([
                         filterButton.bindProperty("text", "appTxts>/fbar.adapt");
 
                         var fRb = oEvent.srcControl._oRb.aPropertyFiles[0];
-                        fRb.setProperty("FILTER_BAR_ADAPT_FILTERS_ZERO", this.getOwnerComponent().getModel('appTxts').getProperty("/fbar.adapt"));
-                        fRb.setProperty("FILTER_BAR_ADAPT_FILTERS_DIALOG", this.getOwnerComponent().getModel('appTxts').getProperty("/fbar.adapt"));
+                        //fRb.setProperty("FILTER_BAR_ADAPT_FILTERS_ZERO", this.getOwnerComponent().getModel('appTxts').getProperty("/fbar.adapt"));
+                        //fRb.setProperty("FILTER_BAR_ADAPT_FILTERS_DIALOG", this.getOwnerComponent().getModel('appTxts').getProperty("/fbar.adapt"));
                     }
                 }, this);
             }
