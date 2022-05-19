@@ -119,6 +119,7 @@ sap.ui.define([
             if (this._oWizard.getProgressStep().getValidated()) {
                 var steps = this._oWizard.getSteps();
                 this._oWizard.nextStep();
+                console.log("<<<<<<<<<<<<<<<<<<<<    Next...>>>>>>>>>>>>>>>>>>>>>>><")
             }
 
             this.handleButtonsVisibility();

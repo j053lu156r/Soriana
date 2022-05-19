@@ -10,8 +10,7 @@
 		showHeader="true"
         title="{appTxts>/quotes.createNewQuote}"
 		verticalScrolling="false"
-        stretch="true"
-		>
+        stretch="true">
 		<f:DynamicPage
 			stickySubheaderProvider="QuoteCedisWizard"
 			toggleHeaderOnTitleClick="false"
