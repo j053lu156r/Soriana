@@ -31,13 +31,14 @@ sap.ui.define([
             }, this);
 
             this.setInitialDates();
+            this.getGS1ProductData();
 
         },
 
         getGS1ProductData() {
             // Probando Consulta API externa
             let gs1Product = new JSONModel();
-            fetch("https://pokeapi.co/api/v2/pokemon/ditto").then(async data => {
+            fetch("https://compuarte.serv.net.mx:4000/searchbygtin?codigo_barras=7501006584035").then(async data => {
                 gs1Product.setData(await data.json());
             }).catch(error => {
                 console.log(error);
@@ -1010,7 +1011,7 @@ sap.ui.define([
                 this.getView().byId('DimensionsStep').setValidated(_testingSteps);
                 return;
             }
-            
+
             //if (this.getView().byId('DimensionsStep').getValidated()) return true;
             console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-");
             console.log(">>>>>>>>>>>>>>> VALIDACION DIMESIONES <<<<<<<<<<<<<<<<<<<<");
