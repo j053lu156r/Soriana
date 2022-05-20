@@ -76,8 +76,7 @@ sap.ui.define([
 
             if(bContinue){
             var url = "/headerAdmSet?$expand=ETNOMPROVNAV&$filter=IOption eq '10' and IRol eq '" + vRol + "'"
-            + " and  IIdusua eq '" + vIuser + "'";
-
+            + " and  IIdusua eq '" + vIuser + "'";            
             if(vLifnr != null && vLifnr != ""){
                 url += " and ILifnr eq '" + vLifnr + "'";
                 bContinue = true;

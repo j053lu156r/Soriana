@@ -104,6 +104,9 @@ sap.ui.define([
             }
         },
         newRelease: function () {
+            if(!this.hasAccess(17)){
+                return
+            }
             this.getOwnerComponent().getRouter().navTo("NewRelease");
         },
         openUploadDialog: function (tipoUploadIn) {
