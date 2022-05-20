@@ -65,6 +65,9 @@ sap.ui.define([
             );
         },
         newHelpDoc: function () {
+            if(!this.hasAccess(22)){
+                return
+            }
             if (!this._uploadDialog2) {
                 this._uploadDialog2 = sap.ui.xmlfragment("newHelpDocFragment", "demo.views.HelpDocs.NewHelpDocs", this);
                 this.getView().addDependent(this._uploadDialog2);
