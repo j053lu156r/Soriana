@@ -293,6 +293,8 @@ sap.ui.define([
                 // Create a filter for the binding
                 //oDialog.getBinding("items").filter([new Filter("Name", FilterOperator.Contains, sInputValue)]);
                 // Open ValueHelpDialog filtered by the input's value
+                //.getProperty('/results/0')
+                oDialog._oCancelButton.setProperty('text', oView.getModel("appTxts").getProperty("/global.btnCancel"));
                 oDialog.open();
             });
         },

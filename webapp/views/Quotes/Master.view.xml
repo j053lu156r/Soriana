@@ -41,8 +41,7 @@
                                         valueHelpOnly="true"
                                         showValueHelp="true"
                                         valueHelpRequest=".onValueHelpRequest"
-                                        value="{configSite>/supplierInput}"
-                                        >
+                                        value="{configSite>/supplierInput}">
                                     </Input>
                                 </fb:control>
                             </fb:FilterGroupItem>
