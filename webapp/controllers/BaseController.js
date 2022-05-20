@@ -290,17 +290,12 @@ sap.ui.define([
                 });
             }
             this._pValueHelpDialog.then(function (oDialog) {
-                // Create a filter for the binding
-                //oDialog.getBinding("items").filter([new Filter("Name", FilterOperator.Contains, sInputValue)]);
-                // Open ValueHelpDialog filtered by the input's value
-                //.getProperty('/results/0')
                 oDialog._oCancelButton.setProperty('text', oView.getModel("appTxts").getProperty("/global.btnCancel"));
                 oDialog.open();
             });
         },
         onValueHelpRequestquitar: function () {
-            var oView = this.getView();            
-            //this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({}), "tableItemsUsers");            
+            var oView = this.getView();
             this.getConfigModel().setProperty("/supplierInput",null);     
             this.getConfigModel().setProperty("/supplierInputKey",null);       
             this.getConfigModel().setProperty("/supplierTitle",null);
@@ -722,8 +717,8 @@ sap.ui.define([
                         filterButton.bindProperty("text", "appTxts>/fbar.adapt");
 
                         var fRb = oEvent.srcControl._oRb.aPropertyFiles[0];
-                        //fRb.setProperty("FILTER_BAR_ADAPT_FILTERS_ZERO", this.getOwnerComponent().getModel('appTxts').getProperty("/fbar.adapt"));
-                        //fRb.setProperty("FILTER_BAR_ADAPT_FILTERS_DIALOG", this.getOwnerComponent().getModel('appTxts').getProperty("/fbar.adapt"));
+                        fRb.setProperty("FILTER_BAR_ADAPT_FILTERS_ZERO", this.getOwnerComponent().getModel('appTxts').getProperty("/fbar.adapt"));
+                        fRb.setProperty("FILTER_BAR_ADAPT_FILTERS_DIALOG", this.getOwnerComponent().getModel('appTxts').getProperty("/fbar.adapt"));
                     }
                 }, this);
             }
