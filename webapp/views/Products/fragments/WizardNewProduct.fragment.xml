@@ -311,21 +311,13 @@
                                                         <Input required="true" value="{Folio>/CapEmpaq}" id="boardingCapacity" type="Number"/>
                                                     </form:fields>
                                                 </form:FormElement>
-                                                <form:FormElement label="Color / Sabor / Aroma">
-                                                    <form:fields>
-                                                        <Input value="" id="qualities"/>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="Talla / Tamaño">
-                                                    <form:fields>
-                                                        <Input value="{Folio>/Taltam}" id="size"/>
-                                                    </form:fields>
-                                                </form:FormElement>
+
                                                 <form:FormElement label="Artículo con variantes">
                                                     <form:fields>
                                                         <CheckBox id="variants" select=".changeVariants" />
                                                     </form:fields>
                                                 </form:FormElement>
+                                                
                                                 <form:FormElement visible="false" id="characteristicFormElement" label="Artículo con variantes">
                                                     <form:fields>
                                                         <ComboBox selectedKey="{Folio>/VariantArt}" id="characteristic" items="{
@@ -511,11 +503,7 @@
                                     <Input value="{Folio>/CodTarima}" type="Number" required="true"/>
                                     <Label text="Cajas por contenido" />
                                     <Input value="{Folio>/CajasTend}" type="Number" required="true"/>
-                                    <!--Input value="{HouseNumber}">
-                                        <layoutData>
-                                            <l:GridData span="XL2 L3 M3 S4" />
-                                        </layoutData>
-                                    </Input-->
+
                                     <Label text="Tendidos por tarima" />
                                     <Input value="{Folio>/TendTarima}" type="Number" required="true" />
                                     <Label text="Cajas por tarima" />
@@ -554,30 +542,25 @@
 
                                     <core:Title text="Descuentos" />
 
-                                    <Label text="Descuento normal" />
-                                    <Input value="{Folio>/DscNormal}" type="Number" />
+                                    <Label text="Descuento normal (%)" />
+                                    <Input id="DscNormal" value="{Folio>/DscNormal}" type="Number" placeholder="{appTxts>/products.porcentajetxt}" liveChange="calcularCostNetCom" />
 
-                                    <Label text="Descuento normal 2" />
-                                    <Input value="{Folio>/DscNormal2}"  type="Number"/>
+                                    <Label text="Descuento normal 2  (%)" />
+                                    <Input id="DscNormal2" value="{Folio>/DscNormal2}"  type="Number" placeholder="{appTxts>/products.porcentajetxt}" liveChange="calcularCostNetCom" />
 
-                                    <!--Input value="{HouseNumber}">
-                                        <layoutData>
-                                            <l:GridData span="XL2 L3 M3 S4" />
-                                        </layoutData>
-                                    </Input-->
-                                    <Label text="Descuento normal 3" />
-                                    <Input value="{Folio>/DscNormal3}" type="Number" />
+                                    <Label text="Descuento normal 3  (%)" />
+                                    <Input id="DscNormal3" value="{Folio>/DscNormal3}" type="Number" placeholder="{appTxts>/products.porcentajetxt}" liveChange="calcularCostNetCom" />
                                     
-                                    <Label text="Descuento adicional" />
-                                    <Input value="{Folio>/DscAdicional}" type="Number" />
-                                    <Label text="Descuento pronto pago" />
-                                    <Input value="{Folio>/DscPpago}" type="Number"/>
+                                    <Label text="Descuento adicional  (%)" />
+                                    <Input id="DscAdicional" value="{Folio>/DscAdicional}" type="Number" placeholder="{appTxts>/products.porcentajetxt}" liveChange="calcularCostNetCom" />
+                                    <Label text="Descuento pronto pago  (%)" />
+                                    <Input id="DscPpago" value="{Folio>/DscPpago}" type="Number" placeholder="{appTxts>/products.porcentajetxt}" liveChange="calcularCostNetCom" />
 
                                     <core:Title text="Bonificación" />
-                                    <Label text="Tipo de bonificación" />
-                                    <Input value="{Folio>/Bonif}" type="Number"/>
-                                    <Label text="Valor de bonificación" />
-                                    <Input value="{Folio>/ValBoni}" type="Number" />
+                                    <Label text="Tipo de bonificación " />
+                                    <Input value="{Folio>/Bonif}" />
+                                    <Label text="Valor de bonificación (%)" />
+                                    <Input id="ValBoni" value="{Folio>/ValBoni}" type="Number" placeholder="{appTxts>/products.porcentajetxt}"  liveChange="calcularCostNetCom"/>
                                     <Label text="Unidades de bonificación" />
                                     <Input value="{Folio>/UndBon}" type="Number"/>
                                     
@@ -589,15 +572,15 @@
                                         <RadioButton id="radioVenta" text="Un venta" />
                                     </RadioButtonGroup-->
                                     <Label text="Costo bruto" />
-                                    <Input value="{Folio>/CostoB}" type="Number"/>
+                                    <Input id="CostoB" value="{Folio>/CostoB}" type="Number" required="true" liveChange="calcularCostNetVen"/>
                                     <Label text="Capacidad de embarque" />
-                                    <Input value="{Folio>/CapEmbar}" type="Number"/>
+                                    <Input id="CapEmbar" value="{Folio>/CapEmbar}" type="Number" required="true" liveChange="calcularCostNetVen"/>
                                     <Label text="Costo Neto Unidad de compra" />
-                                    <Input value="{Folio>/CostNetComp}"  type="Number"/>
+                                    <Input id="CostNetComp" value="{Folio>/CostNetComp}"  type="Number" required="true" editable="false"/>
                                     <Label text="Costo Neto Unidad de venta" />
-                                    <Input value="{Folio>/CostNetVen}" type="Number"/>
+                                    <Input id="CostNetVen" value="{Folio>/CostNetVen}" type="Number" required="true" editable="false"/>
                                     <Label text="Precio sugerido" />
-                                    <Input value="{Folio>/PSug}" type="Number"/>
+                                    <Input id="PSug" value="{Folio>/PSug}" type="Number" required="true"/>
                                     
                                 </form:content>
                             </form:SimpleForm>
