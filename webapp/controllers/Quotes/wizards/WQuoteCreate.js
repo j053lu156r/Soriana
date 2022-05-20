@@ -141,7 +141,6 @@ sap.ui.define([
         },
         onDialogNextButton: function () {
             if (this._oWizard.getProgressStep().getValidated()) {
-                var steps = this._oWizard.getSteps();
                 this._oWizard.nextStep();
             }
 
