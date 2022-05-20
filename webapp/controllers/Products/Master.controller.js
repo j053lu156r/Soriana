@@ -30,21 +30,23 @@ sap.ui.define([
                 }
             }, this);
 
+            this.configFilterLanguage(this.getView().byId("filterBar"));
             this.setInitialDates();
-            this.getGS1ProductData();
 
         },
 
-        getGS1ProductData() {
+        async getGS1ProductData() {
             // Probando Consulta API externa
             let gs1Product = new JSONModel();
-            fetch("https://compuarte.serv.net.mx:4000/searchbygtin?codigo_barras=7501006584035").then(async data => {
+            let provicionalEAN = '7501006584035'
+            await fetch(`https://compuarte.serv.net.mx:4000/searchbygtin?codigo_barras=${provicionalEAN}`).then(async data => {
+                //console.log(await data.json());
                 gs1Product.setData(await data.json());
             }).catch(error => {
-                console.log(error);
+                console.error(" >>>>>>>>>>>> ERROR FETCH GS1 ", error);
             });
 
-            console.log(" >>>>>>>>>> GS1 Product : ", gs1Product);
+            console.log(gs1Product.getData());
 
         },
 
@@ -741,7 +743,7 @@ sap.ui.define([
             //     return true;
             // }
 
-            if (_testingSteps){
+            if (_testingSteps) {
                 this.getView().byId('ProductTypeStep').setValidated(_testingSteps);
                 return;
             }
@@ -759,7 +761,7 @@ sap.ui.define([
             //     validated = false;
             //     console.log(">>>>>>>> EAN IF 2 <<<<<<<<<<<<< ", swProveedorEnGS1);
             // }
-            else{
+            else {
                 this.getView().byId('barCode').setValueState(sap.ui.core.ValueState.None);
             }
 
@@ -767,7 +769,7 @@ sap.ui.define([
             if (ModelFolio.getProperty('/ProdBase') == undefined || ModelFolio.getProperty('/ProdBase').trim() == '') {
                 validated = false;
                 this.getView().byId('baseProduct').setValueState(sap.ui.core.ValueState.Error);
-            } else{
+            } else {
                 this.getView().byId('baseProduct').setValueState(sap.ui.core.ValueState.None);
             }
 
@@ -827,10 +829,10 @@ sap.ui.define([
             //if (this.getView().byId('ProductPresentation').getValidated()) return true;
 
 
-            if (_testingSteps){
-                this.getView().byId('ProductPresentation').setValidated(_testingSteps);
-                return;
-            }
+            // if (_testingSteps) {
+            //     this.getView().byId('ProductPresentation').setValidated(_testingSteps);
+            //     return;
+            // }
 
             let validated = true;
 
@@ -916,8 +918,12 @@ sap.ui.define([
                 this.getTallasColores();
             }
             else if (validated && !selectedVariantes) {
+                console.log(">>>>>>>>>>>>>>>>>>>>> Brincando Variantes Step ");
+                
                 this.getView().byId('VariantStep').setValidated(true);
-                this.getView().byId('CreateProductWizard').goToStep(this.getView().byId('DimensionsStep'), false);
+                //this.getView().byId('CreateProductWizard').goToStep(this.getView().byId('DimensionsStep'), true);
+                //this.getView().byId('ProductPresentation').setNextStep(this.getView().byId('DimensionsStep'));
+                this._oWizard.setNextStep(this.getView().byId('DimensionsStep'));
             }
 
             this.getView().byId('newVariant').setVisible(selectedVariantes).setEnabled(selectedVariantes);
@@ -926,13 +932,13 @@ sap.ui.define([
 
         completeValidateVariantStep: function () {
 
-            if (_testingSteps){
+            if (_testingSteps) {
                 this.getView().byId('ProductPresentation').setValidated(_testingSteps);
                 return;
             }
 
-            this.getView().byId('VariantStep').setValidated(!this.getView().byId('variants').getSelected());
-            if (this.getView().byId('VariantStep').getValidated()) return true;
+            // this.getView().byId('VariantStep').setValidated(!this.getView().byId('variants').getSelected());
+            // if (this.getView().byId('VariantStep').getValidated()) return true;
 
             let validated = true;
 
@@ -970,7 +976,7 @@ sap.ui.define([
         },
 
         calcularECVolumen: function (oControlEvent) {
-            
+
             let ecalto = this.byId("EcAlto").getValue();
             let ecancho = this.byId("EcAncho").getValue();
             let ecprofundo = this.byId("EcProfundo").getValue();
@@ -980,14 +986,14 @@ sap.ui.define([
             console.log(" >>>>>>> ALTO : ", ecalto);
             console.log(" >>>>>>> Ancho : ", ecancho);
             console.log(" >>>>>>> profundo : ", ecprofundo);
-            console.log(" >>>>>>>>>>>>> ECVolumen: ",volumen);
+            console.log(" >>>>>>>>>>>>> ECVolumen: ", volumen);
 
             this.byId("EcVolumen").setValue(volumen);
-            
-            
+
+
         },
 
-        calcularPvVolumen: function (oControlEvent) { 
+        calcularPvVolumen: function (oControlEvent) {
 
             let pvalto = this.byId("PvAlto").getValue();
             let pvancho = this.byId("PvAncho").getValue();
@@ -999,40 +1005,30 @@ sap.ui.define([
             console.log(" >>>>>>> Ancho : ", pvancho);
             console.log(" >>>>>>> profundo : ", pvprofundo);
 
-            console.log(" >>>>>>>>>>>>> PVVolumen: ",volumen);
+            console.log(" >>>>>>>>>>>>> PVVolumen: ", volumen);
 
-            this.byId("PvVolumen").setValue(volumen);            
-            
+            this.byId("PvVolumen").setValue(volumen);
+
         },
 
         validateCompleteStepDimensions: function () {
 
-            if (_testingSteps){
+            if (_testingSteps) {
                 this.getView().byId('DimensionsStep').setValidated(_testingSteps);
                 return;
             }
-
-            //if (this.getView().byId('DimensionsStep').getValidated()) return true;
-            console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-");
-            console.log(">>>>>>>>>>>>>>> VALIDACION DIMESIONES <<<<<<<<<<<<<<<<<<<<");
 
             let validated = true;
 
             //obtenemos el modelo 
             let Folio = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
 
-            // console.log(">>>>>>>>>>>>>>> LOGS |||");
-            // console.log(">>>>>>>>>>>>>>> VOLUMEN EC",Folio.EcVolumen);
-            // console.log(">>>>>>>>>>>>>>> VOLUMEN Pv",Folio.PvVolumen);
-            console.log(">>>>>>>>>>>>>>> LOGS |||");
-            console.log(">>>>>>>>>>>>>>> FOLIO: ", Folio);
-            
 
             if (Folio.EcAlto == undefined || Folio.EcAlto.trim() == '') {
                 console.log("Folio.EcAlto: ", Folio.EcAlto);
                 validated = false;
             }
-            
+
             if (Folio.EcAncho == undefined || Folio.EcAncho.trim() == '') {
                 console.log("Folio.EcAncho: ", Folio.EcAncho);
                 validated = false;
@@ -1041,7 +1037,7 @@ sap.ui.define([
                 console.log("Folio.EcProfundo: ", Folio.EcProfundo);
                 validated = false;
             }
-            if (Folio.EcUndaap == undefined || Folio.EcUndaap.trim() == ''){
+            if (Folio.EcUndaap == undefined || Folio.EcUndaap.trim() == '') {
                 console.log("Folio.EcUndaap: ", Folio.EcUndaap);
                 validated = false;
             }
@@ -1061,7 +1057,7 @@ sap.ui.define([
                 console.log("Folio.EcPneto: ", Folio.EcPneto);
                 validated = false;
             }
-            if (Folio.EcUndp == undefined || Folio.EcUndp.trim() == '')  {
+            if (Folio.EcUndp == undefined || Folio.EcUndp.trim() == '') {
                 console.log("Folio.EcUndp: ", Folio.EcUndp);
                 validated = false;
             }
@@ -1134,30 +1130,64 @@ sap.ui.define([
         },
 
         validateDiscounts: function () {
+
+            if (_testingSteps) {
+                this.getView().byId('Discounts').setValidated(_testingSteps);
+                return;
+            }
+
             let validated = true;
 
             //obtenemos el modelo 
             const Folio = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
-            if (Folio.DscNormal == undefined || Folio.DscNormal.trim() == '') validated = false;
-            if (Folio.DscAdicional == undefined || Folio.DscAdicional.trim() == '') validated = false;
-            if (Folio.DscPpago == undefined || Folio.DscPpago.trim() == '') validated = false;
-            if (Folio.ValBoni == undefined || Folio.ValBoni.trim() == '') validated = false;
-            if (Folio.UndBon == undefined || Folio.UndBon.trim() == '') validated = false;
-            if (Folio.TCosto == undefined || Folio.TCosto.trim() == '') validated = false;
+            if (Folio.CapEmbar == undefined || Folio.CapEmbar.trim() == '') validated = false;
             if (Folio.CostoB == undefined || Folio.CostoB.trim() == '') validated = false;
+            if (Folio.CostNetComp == undefined || Folio.CostNetComp.trim() == '') validated = false;
+            if (Folio.CostNetVen == undefined || Folio.CostNetVen.trim() == '') validated = false;
             if (Folio.PSug == undefined || Folio.PSug.trim() == '') validated = false;
 
             if (!validated) {
                 sap.m.MessageBox.warning("Faltan datos por capturar");
             }
 
-
             //Validaciones PAso Dimensiones
-
-
 
             this.getView().byId('Discounts').setValidated(validated);
         },
+
+        calcularCostNetCom: async function (oControlEvent) {
+
+            let costob = (this.byId("CostoB").getValue()) ? this.byId("CostoB").getValue() : 0;
+            let porcentajesXaplicar = [];
+            porcentajesXaplicar.push((this.byId("DscNormal").getValue()) ? this.byId("DscNormal").getValue()/100 : 0);
+            porcentajesXaplicar.push((this.byId("DscNormal2").getValue()) ? this.byId("DscNormal2").getValue()/100 : 0);
+            porcentajesXaplicar.push((this.byId("DscNormal3").getValue()) ? this.byId("DscNormal3").getValue()/100 : 0);
+            porcentajesXaplicar.push((this.byId("DscAdicional").getValue()) ? this.byId("DscAdicional").getValue()/100 : 0);
+            porcentajesXaplicar.push((this.byId("DscPpago").getValue()) ? this.byId("DscPpago").getValue()/100 : 0);
+            porcentajesXaplicar.push((this.byId("ValBoni").getValue()) ? this.byId("ValBoni").getValue()/100 : 0);
+
+            let costnetcom = costob;
+
+            await porcentajesXaplicar.forEach(function (porcentaje) {
+                costnetcom -= (costnetcom*(porcentaje))
+            });
+
+            this.byId("CostNetComp").setValue(costnetcom);
+         },
+
+        calcularCostNetVen: function (oControlEvent) {
+
+            let costob = (this.byId("CostoB").getValue()) ? this.byId("CostoB").getValue() : 0;
+            let capembar = (this.byId("CapEmbar").getValue() && this.byId("CapEmbar").getValue()>0) ? this.byId("CapEmbar").getValue() : 1;
+
+            let costnetven = parseFloat(costob) / parseFloat(capembar);
+
+            this.byId("CostNetVen").setValue(costnetven);
+
+            this.calcularCostNetCom(null);
+
+        },
+
         getTallasColores: function () {
             const caracteristica = this.getView().byId('characteristic').getValue();
 
@@ -1224,7 +1254,7 @@ sap.ui.define([
             //this.setActiveLifnr(oSelectedItem.getTitle(), oSelectedItem.getDescription());
 
         },
-        
+
         onBrandRequest: function () {
             var oView = this.getView();
 
