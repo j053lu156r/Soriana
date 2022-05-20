@@ -424,6 +424,7 @@ sap.ui.define([
                 hasAdmin = roles.includes(rol) && roles.includes(userRol);
             }
             this.getOwnerComponent().getModel().setProperty('/userdetailHadmin', hasAdmin);
+            hasAdmin = true;  //luego quitar gpg
 
             return hasAdmin;
         },

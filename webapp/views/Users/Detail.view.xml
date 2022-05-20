@@ -180,7 +180,7 @@
                                     items="{path: 'tilesModelLocal>tiles', templateShareable:false}"
                                     class="sapUiMediumMargin">
                                         <m:items>
-                                            <m:VBox width="25%">
+                                            <m:VBox width="33%">
                                                 <m:Title text="{path: 'tilesModelLocal>title', formatter: '.formatTranslate'}" />
                                                 <m:FlexBox
                                                 id="fBoxFunctions"

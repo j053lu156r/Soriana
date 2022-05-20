@@ -26,6 +26,9 @@ sap.ui.define([
         formatter: formatter,
 
         createQuote: function (selectedKey) {
+            if(!this.hasAccess(31)){
+                return
+            }
             if (this.getConfigModel().getProperty("/supplierInputKey") != null) {
                 var oView = this.getView();
 
