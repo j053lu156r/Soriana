@@ -180,6 +180,9 @@ sap.ui.define([
             jQuery.sap.addUrlWhitelist("blob"); // register blob url as whitelist
         },
         deleteHelpDoc: function (docId, docDescript) {
+            if(!this.hasAccess(23)){
+                return
+            }
             var that = this;
             var msg = this.getOwnerComponent().getModel("appTxts").getProperty("/helpDocs.deleteConfirm");
             sap.m.MessageBox.confirm(msg, {

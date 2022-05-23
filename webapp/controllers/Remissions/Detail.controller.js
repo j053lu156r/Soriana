@@ -234,6 +234,7 @@ sap.ui.define([
             }
         },
         printLabels: function () {
+            
             if (!this._uploadDialog2) {
                 this._uploadDialog2 = sap.ui.xmlfragment("printBoxesLabels", "demo.views.Remissions.fragments.LabelsRemission", this);
                 this.getView().addDependent(this._uploadDialog2);

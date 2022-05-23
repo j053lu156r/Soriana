@@ -75,7 +75,7 @@ xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants" xmlns="sap.m" x
                             <Link text="{tableHelpDocs>Zdescrip}" press=".selectHelpDoc(${tableHelpDocs>Idarchivo})"/>
                             <Label text="{tableHelpDocs>Zarchivo}"/>
                         </VBox>
-                        <Button icon="sap-icon://delete" tooltip="{appTxts>/global.download}" class="sapUiSmallMarginBegin sapUiSmallMarginEnd sapUiSmallMarginTopBottom" press=".deleteHelpDoc(${tableHelpDocs>Idarchivo}, ${tableHelpDocs>Zdescrip})" ></Button>
+                        <Button icon="sap-icon://delete" tooltip="{appTxts>/products.deleteRow}" class="sapUiSmallMarginBegin sapUiSmallMarginEnd sapUiSmallMarginTopBottom" press=".deleteHelpDoc(${tableHelpDocs>Idarchivo}, ${tableHelpDocs>Zdescrip})" ></Button>
                     </HBox>
                 </CustomListItem>
                 </List>

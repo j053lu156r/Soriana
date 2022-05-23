@@ -95,6 +95,9 @@ sap.ui.define([
             datarange.setDateValue(minConsultDate);
         },
         onListItemPress: function (oEvent) {
+            if (!this.hasAccess(27)) {
+                return false;
+            }
             var resource = oEvent.getSource().getBindingContext("RepartidoresHdr").getPath(),
                 line = resource.split("/").slice(-1).pop();
 
