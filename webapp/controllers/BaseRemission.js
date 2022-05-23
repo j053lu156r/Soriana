@@ -16,6 +16,10 @@ sap.ui.define([
 
     return Controller.extend("demo.controllers.BaseRemission", {
         openSelectRemission: function () {
+            if (!this.hasAccess(6)) {
+                return false;
+            }
+
             if (this.getConfigModel().getProperty("/supplierInputKey") != null && this.getConfigModel().getProperty("/supplierInputKey") != "") {
                 var oView = this.getView();
 
