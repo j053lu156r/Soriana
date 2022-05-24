@@ -365,9 +365,15 @@ sap.ui.define([
             switch (iOpt) {
                 case 2:
                     strQuestion = this.getView().getModel("appTxts").getProperty("/quotes.cancelQuote");
+                    if (!this.hasAccess(34)) {
+                        return false;
+                    }
                     break;
                 case 3:
                     strQuestion = this.getView().getModel("appTxts").getProperty("/quotes.rejectQuote");
+                    if (!this.hasAccess(33)) {
+                        return false;
+                    }
                     break;
             }
 
