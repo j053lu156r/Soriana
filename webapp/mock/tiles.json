@@ -16,6 +16,9 @@
                     "functions": [
                         {
                             "idFunction": 1
+                        }, 
+                        {
+                            "idFunction": 4
                         }
                     ]
                 },
@@ -32,6 +35,12 @@
                     "functions": [
                         {
                             "idFunction": 25
+                        },
+                        {
+                            "idFunction": 35
+                        },
+                        {
+                            "idFunction": 36
                         }
                     ]
                 },
@@ -48,6 +57,15 @@
                     "functions": [
                         {
                             "idFunction": 27
+                        },
+                        {
+                            "idFunction": 37
+                        },
+                        {
+                            "idFunction": 38
+                        },
+                        {
+                            "idFunction": 39
                         }
                     ]
                 }
@@ -72,10 +90,8 @@
                         },
                         {
                             "idFunction": 3
-                        },
-                        {
-                            "idFunction": 4
                         }
+                       
                     ]
                 },
                 {
@@ -93,6 +109,8 @@
                         },
                         {
                             "idFunction": 6
+                        }, {
+                            "idFunction": 40
                         }
                     ]
                 },
@@ -123,6 +141,9 @@
                     "functions": [
                         {
                             "idFunction": 21
+                        },
+                        {
+                            "idFunction": 41
                         }
                     ]
                 }
@@ -235,7 +256,7 @@
             "title": "/tiles.titleCm",
             "tiles": [
                 {
-                    "id": "0016",
+                    "id": "0042",
                     "title": "/tiles.titleCm.release",
                     "subHeader": "",
                     "icon": "sap-icon://email",
@@ -271,10 +292,18 @@
                     "binding": "masterHelpDocs",
                     "functions": [
                         {
-                            "idFunction": 22
+                            "idFunction": 22,
+                            "roles": [
+                                "0001",
+                                "0002"
+                            ]
                         },
                         {
-                            "idFunction": 23
+                            "idFunction": 23,
+                            "roles": [
+                                "0001",
+                                "0002"
+                            ]
                         }
                     ]
                 }
