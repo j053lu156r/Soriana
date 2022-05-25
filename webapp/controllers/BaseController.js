@@ -373,19 +373,32 @@ sap.ui.define([
             var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
             var userFunctions = this.getOwnerComponent().getModel('userdata').getProperty("/ETROLUSUANAV/results");
             var hasCollab = this.getOwnerComponent().getModel('userdata').getProperty("/Esusdata/Zusuasor");
+            var roluser = this.getOwnerComponent().getModel('userdata').getProperty("/ERol");
+            
+            
+
 
             sectionsModel.forEach(function (section) {
                 section.tiles.forEach(function (t) {
                     t.functions.forEach(function (f) {
                         var strFunction = f.idFunction;
-                        if (hasCollab) {
-                            if (strFunction != null) {
-                                var funcValue = userFunctions.find(element => element.Idfuncion == strFunction.toString().padStart(6, "000000"));
+                        var rolesPermitidos = f.roles;
+                        var continuar = true;
+                        if (rolesPermitidos != null){
+                             continuar = rolesPermitidos.includes(roluser);
+                        }
+                        if (continuar){
+                            if (hasCollab) {
+                                if (strFunction != null) {
+                                    var funcValue = userFunctions.find(element => element.Idfuncion == strFunction.toString().padStart(6, "000000"));
+                                    
+                                }
+                            } else {
+                                if (strFunction != null) {
+                                    var funcValue = userFunctions.find(element => element.Idfuncion == strFunction.toString().padStart(6, "000000") && element.Lifnr == vLifnr);
+                                }
                             }
-                        } else {
-                            if (strFunction != null) {
-                                var funcValue = userFunctions.find(element => element.Idfuncion == strFunction.toString().padStart(6, "000000") && element.Lifnr == vLifnr);
-                            }
+    
                         }
 
                         if (funcValue != null) {
@@ -471,7 +484,7 @@ sap.ui.define([
 
             if (userTileAuth != null) {
                 var tiles = userTileAuth.getProperty("/tiles");
-                if (tiles != null) {
+                if (tiles != null) {                    
                     return tiles.includes(tileID);
                 } else {
                     return false;

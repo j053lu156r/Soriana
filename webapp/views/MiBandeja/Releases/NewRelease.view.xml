@@ -77,7 +77,8 @@
                                     </VBox>
                                     <VBox width="25%">
                                         <Label text="{appTxts>/release.publishdate}" />
-                                        <DateRangeSelection id="dateRange" required="false" />
+                                       
+                                        <DateRangeSelection id="dateRange" required="false" change="handleChange" />
                                     </VBox>
                                 </HBox>
                                 <Label text="{appTxts>/release.message}" />
