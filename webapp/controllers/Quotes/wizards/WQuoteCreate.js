@@ -71,80 +71,27 @@ sap.ui.define([
             switch (this._oWizard.getProgress()) {
                 case 1:
                     oModel.setProperty("/nextButtonVisible", true);
-                    oModel.setProperty("/backButtonVisible", false);
-                    oModel.setProperty("/reviewButtonVisible", false);
+                    oModel.setProperty("/backButtonVisible", true);
                     oModel.setProperty("/finishButtonVisible", false);
-                    //this.remissionValidate();
                     break;
                 case 2:
                     oModel.setProperty("/nextButtonVisible", true);
-                    //oModel.setProperty("/nextButtonEnabled", false);
                     oModel.setProperty("/backButtonVisible", true);
-                    oModel.setProperty("/reviewButtonVisible", false);
                     oModel.setProperty("/finishButtonVisible", false);
-                    //this.positionValidation();
                     break;
                 case 3:
-                    switch (remissionType) {
-                        case "reverse":
-                            oModel.setProperty("/backButtonVisible", true);
-                            oModel.setProperty("/nextButtonVisible", false);
-                            oModel.setProperty("/reviewButtonVisible", true);
-                            oModel.setProperty("/finishButtonVisible", false);
-                            break;
-                        case "packing":
-                            oModel.setProperty("/backButtonVisible", true);
-                            oModel.setProperty("/reviewButtonVisible", true);
-                            oModel.setProperty("/nextButtonVisible", false);
-                            oModel.setProperty("/finishButtonVisible", false);
-                            break;
-                    }
-                    break;
-                case 4:
-                    switch (remissionType) {
-                        case "reverse":
-                            oModel.setProperty("/backButtonVisible", true);
-                            oModel.setProperty("/nextButtonVisible", false);
-                            oModel.setProperty("/reviewButtonVisible", false);
-                            oModel.setProperty("/finishButtonVisible", true);
-                            break;
-                        case "packing":
-                            oModel.setProperty("/backButtonVisible", true);
-                            oModel.setProperty("/nextButtonVisible", false);
-                            oModel.setProperty("/reviewButtonVisible", false);
-                            oModel.setProperty("/finishButtonVisible", true);
-                            break;
-                    }
+                    oModel.setProperty("/nextButtonVisible", false);
+                    oModel.setProperty("/backButtonVisible", true);
+                    oModel.setProperty("/finishButtonVisible", true);
                     break;
                 default: break;
             }
 
         },
-        setDiscardableProperty: function (params) {
-            var step = this._oWizard.getProgressStep();
-            if (step !== params.discardStep) {
-                sap.m.MessageBox.warning(params.message, {
-                    actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
-                    onClose: function (oAction) {
-                        if (oAction === sap.m.MessageBox.Action.YES) {
-                            this._oWizard.discardProgress(params.discardStep);
-                            history[params.historyPath] = this.getView().getModel().getProperty(params.modelPath);
-                            this.getView().getModel().setProperty("/nextButtonEnabled", true);
-                        } else {
-                            this.model.setProperty(params.modelPath, history[params.historyPath]);
-                        }
-                    }.bind(this)
-                });
-            } else {
-                history[params.historyPath] = this.getView().getModel().getProperty(params.modelPath);
-            }
-        },
         onDialogNextButton: function () {
             if (this._oWizard.getProgressStep().getValidated()) {
-                var steps = this._oWizard.getSteps();
                 this._oWizard.nextStep();
             }
-
             this.handleButtonsVisibility();
         },
         onDialogBackButton: function () {

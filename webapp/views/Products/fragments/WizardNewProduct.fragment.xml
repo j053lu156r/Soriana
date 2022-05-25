@@ -56,19 +56,9 @@
                                     <form:formContainers>
                                         <form:FormContainer>
                                             <form:formElements>
-                                                <!--form:FormElement label="{appTxts>/products.folio}">
-                                                    <form:fields>
-                                                        <Input id="folioSolicitud" editable="false" value="" />
-                                                    </form:fields>
-                                                </form:FormElement-->
                                                 <form:FormElement  label="{appTxts>/products.code}">
                                                     <form:fields>
                                                         <Input editable="false" value="" id="codeGS1" />
-                                                        <!--Input value="{HouseNumber}">
-                                                            <layoutData>
-                                                                <form:ColumnElementData cellsSmall="2" cellsLarge="1" />
-                                                            </layoutData>
-                                                        </Input-->
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.barCode}">
@@ -83,19 +73,12 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.baseProduct}">
                                                     <form:fields>
-                                                        <Input required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onBaseProductRequest" id="baseProduct" value="{Folio>/ProdBase}" />
-                                                        <!--Select id="country" selectedKey="{Country}">
-                                                            <items>
-                                                                <core:Item text="England" key="England"/>
-                                                                <core:Item text="Germany" key="Germany"/>
-                                                                <core:Item text="USA" key="USA"/>
-                                                            </items>
-                                                        </Select-->
+                                                        <Input required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onBaseProductRequest" id="baseProduct" value="{FolioToShow>/ProdBase}" />
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.productType}">
                                                     <form:fields>
-                                                        <ComboBox selectedKey="{Folio>/TipArt}" value="{Folio>/TipArt}" required="true" id="productType" items="{
+                                                        <ComboBox selectedKey="{Folio>/TipArt}" required="true" id="productType" items="{
                                                                     path : 'Catalogos>/TiposProducto/results'
                                                                 }">
                                                             <items>
@@ -106,14 +89,15 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.shoppingGroup}">
                                                     <form:fields>
-                                                        <Input required="true" value="{Folio>/GrupCom}" id="shoppingGroup" editable="false"/>
+                                                        <Input required="true" value="{Folio>/PurGroup}" id="shoppingGroup" editable="false"/>
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.productGroup}">
                                                     <form:fields>
-                                                        <ComboBox selectedKey="{Folio>/GrupArt}"  id="productGroup" items="{
+                                                        <ComboBox selectedKey="{Folio>/GrupArt}" id="productGroup" items="{
                                                                     path : 'Catalogos>/GrupoArticulos/results'
-                                                                }">
+                                                                }"
+                                                                selectionChange="changeGrupArt">
                                                             <items>
                                                                 <core:Item key="{Catalogos>GrupoArt}" text="{Catalogos>DescGart}"/>
                                                             </items>
@@ -127,14 +111,14 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.brand}">
                                                     <form:fields>
-                                                        <Input required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onBrandRequest" value="{Folio>/Marca}" id="brand"/>
+                                                        <Input required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onBrandRequest" value="{FolioToShow>/Marca}"  id="brand"/>
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.codeType}">
                                                     <form:fields>
-                                                        <ComboBox required="true" value="{Folio>/EanUpcType}" id="codeType" items="{
+                                                        <ComboBox required="true" selectedKey="{Folio>/EanUpcType}" id="codeType" items="{
                                                                     path : 'Catalogos>/TipoCodigo/results'
-                                                                }">
+                                                                }" >
                                                             <items>
                                                                 <core:Item key="{Catalogos>Numtp}" text="{Catalogos>Ntbez}"/>
                                                             </items>
@@ -143,12 +127,12 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.country}">
                                                     <form:fields>
+                                                    <!-- value="{Folio>/txtPais}" -->
                                                         <Input
                                                             id="country"
                                                             textFormatMode="Value"
                                                             showSuggestion="true"
                                                             showValueHelp="true"
-                                                            value="{Folio>/txtPais}"
                                                             valueHelpRequest=".onValueCountryRequest"
                                                             suggestionItems="{Paises>/results}"
                                                             selectedKey="{Folio>/Pais}"
@@ -163,7 +147,7 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.model}">
                                                     <form:fields>
-                                                        <Input value="{Folio>/Modelo}" id="model"/>
+                                                        <Input value="{Folio>/Modelo}" id="model" />
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.description}">
@@ -260,7 +244,7 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="Contenido">
                                                     <form:fields>
-                                                        <Input required="true" id="content" value="{Folio>/Contenido}"  />
+                                                        <Input required="true" id="content" value="{Folio>/Contenido}"  type="Number"/>
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="Unidad de medida de contenido">
@@ -306,9 +290,20 @@
                                                         </ComboBox>
                                                     </form:fields>
                                                 </form:FormElement>
-                                                <form:FormElement label="Capacidad de embarque">
+                                                <form:FormElement label="Capacidad de empaque">
                                                     <form:fields>
                                                         <Input required="true" value="{Folio>/CapEmpaq}" id="boardingCapacity" type="Number"/>
+                                                    </form:fields>
+                                                </form:FormElement>
+
+                                                <form:FormElement label="Color / Sabor / Aroma">
+                                                    <form:fields>
+                                                        <Input value="" id="qualities"/>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="Talla / Tamaño">
+                                                    <form:fields>
+                                                        <Input value="{Folio>/Taltam}" id="size"/>
                                                     </form:fields>
                                                 </form:FormElement>
 
@@ -405,7 +400,7 @@
                                     <ColumnListItem press="onListItemPress">
                                         <cells>
                                             <ObjectIdentifier text="{ITARTVAR>index}" />
-                                            <ComboBox selectedKey="{ITARTVAR>CaracTalla}" items="{path : 'Catalogos>/TallaSize/results'}">
+                                            <ComboBox selectedKey="{ITARTVAR>CaracTalla}" value="{ITARTVAR>CaracTalla}" items="{path : 'Catalogos>/TallaSize/results'}">
                                                 <items>
                                                     <core:Item key="{Catalogos>Valorcarac}" text="{Catalogos>Valorcarac}"/>
                                                 </items>
@@ -472,7 +467,12 @@
                                     <Label text="Peso neto" />
                                     <Input value="{Folio>/EcPneto}" type="Number" required="true" />
                                     <Label text="Unidad de peso" />
-                                    <Input value="{Folio>/EcUndp}" required="true"/>
+                                    <ComboBox selectedKey="{Folio>/EcUndp}" items="{path : 'Catalogos>/UnidadPeso/results'}" required="true">
+                                        <items>
+                                            <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
+                                        </items>
+                                    </ComboBox>
+                                    <!-- <Input value="{Folio>/EcUndp}" required="true"/> -->
 
                                     <core:Title text="Presentación de venta" />
                                     <Label text="Alto" />
@@ -496,7 +496,12 @@
                                     <Label text="Peso neto" />
                                     <Input value="{Folio>/PvPneto}" type="Number" required="true"/>
                                     <Label text="Unidad de peso" />
-                                    <Input value="{Folio>/PvUndp}" required="true"/>
+                                    <ComboBox selectedKey="{Folio>/PvUndp}" items="{path : 'Catalogos>/UnidadPeso/results'}" required="true">
+                                        <items>
+                                            <core:Item key="{Catalogos>value}" text="{Catalogos>text}" />
+                                        </items>
+                                    </ComboBox>
+                                    <!-- <Input value="{Folio>/PvUndp}" required="true"/> -->
 
                                     <core:Title text="Capacidad por tarima" />
                                     <Label text="Código de tarima" />
@@ -553,6 +558,7 @@
                                     
                                     <Label text="Descuento adicional  (%)" />
                                     <Input id="DscAdicional" value="{Folio>/DscAdicional}" type="Number" placeholder="{appTxts>/products.porcentajetxt}" liveChange="calcularCostNetCom" />
+
                                     <Label text="Descuento pronto pago  (%)" />
                                     <Input id="DscPpago" value="{Folio>/DscPpago}" type="Number" placeholder="{appTxts>/products.porcentajetxt}" liveChange="calcularCostNetCom" />
 
@@ -574,11 +580,11 @@
                                     <Label text="Costo bruto" />
                                     <Input id="CostoB" value="{Folio>/CostoB}" type="Number" required="true" liveChange="calcularCostNetVen"/>
                                     <Label text="Capacidad de embarque" />
-                                    <Input id="CapEmbar" value="{Folio>/CapEmbar}" type="Number" required="true" liveChange="calcularCostNetVen"/>
+                                    <!-- <Input id="CapEmbar" value="{Folio>/CapEmbar}" type="Number" required="true" liveChange="calcularCostNetVen"/> -->
                                     <Label text="Costo Neto Unidad de compra" />
-                                    <Input id="CostNetComp" value="{Folio>/CostNetComp}"  type="Number" required="true" editable="false"/>
+                                    <!-- <Input id="CostNetComp" value="{Folio>/CostNetComp}"  type="Number" required="true" editable="false"/> -->
                                     <Label text="Costo Neto Unidad de venta" />
-                                    <Input id="CostNetVen" value="{Folio>/CostNetVen}" type="Number" required="true" editable="false"/>
+                                    <!-- <Input id="CostNetVen" value="{Folio>/CostNetVen}" type="Number" required="true" editable="false"/> -->
                                     <Label text="Precio sugerido" />
                                     <Input id="PSug" value="{Folio>/PSug}" type="Number" required="true"/>
                                     
@@ -592,7 +598,7 @@
 						validated="true"
 						title="Imágenes">
                         <Text text="En esta pantalla se muestran las imágenes que se tienen registradas en GS1 y podrá agregar nuevas imágenes."/>
-
+<!-- 
                          <Table mode="MultiSelect" id="imagesList"
                                 items="{ path : 'ITARTVAR>/results'}">
                                 <headerToolbar>
@@ -672,7 +678,7 @@
                                         </cells>
                                     </ColumnListItem>
                                 </items>
-                            </Table>
+                            </Table> -->
 
                         <upload:UploadSet 
                             id="attachmentDocuments" 
@@ -724,70 +730,245 @@
 							validated="true"
 							title="Review page">
 								<form:SimpleForm
-										title="1. Product Type"
+										title="1. Datos Generales"
 										minWidth="1024"
 										editable="false"
 										layout="ResponsiveGridLayout">
 									<form:content>
-										<Label text="Type"/>
-										<Text id="ProductTypeChosen" text="{/productType}"/>
-										<Link press="editStepOne" text="Edit" />
+										<Label text="Código de barras"/>
+										<Text text="{Folio>/CodEan}" />
+                                        
+                                        <Label text="Producto Base"/>
+                                        <Text text="{FolioToShow>/ProdBase}" />
+
+                                        <Label text="Tipo de articulo"/>
+                                        <Text text="{FolioToShow>/TipArt}" />
+
+                                        <Label text="Grupo de Compras"/>
+                                        <Text text="{FolioToShow>/PurGroup}" />
+
+                                        <Label text="Grupo de Articulo"/>
+                                        <Text text="{FolioToShow>/GrupArt}" />
+
+                                        <Label text="Proveedor"/>
+                                        <Text text="{configSite>/supplierInput}" />
+
+                                        <Label text="Marca"/>
+                                        <Text text="{FolioToShow>/Marca}" />
+
+                                        <Label text="{appTxts>/products.codeType}"/>
+                                        <Text text="{FolioToShow>/EanUpcType}" />
+
+                                        <Label text="{appTxts>/products.country}"/>
+                                        <Text text="{FolioToShow>/Pais}" />
+
+                                        <Label text="{appTxts>/products.model}"/>
+                                        <Text text="{FolioToShow>/Modelo}" />
+
+                                        <Label text="{appTxts>/products.description}"/>
+                                        <Text text="{FolioToShow>/DescrArt}" />
+
+                                        <Label text="{appTxts>/products.feature2}"/>
+                                        <Text text="{FolioToShow>/Carac2}" />
+
+                                        <Label text="{appTxts>/products.feature3}"/>
+                                        <Text text="{FolioToShow>/Carac3}" />
+
+                                        <Label text="{appTxts>/products.labelType}"/>
+                                        <Text text="{FolioToShow>/TipEtq}" />
+
+                                        <Label text="{appTxts>/products.exitStrategy}"/>
+                                        <Text text="{FolioToShow>/EstSalida}" />
+
+                                        <Label text="{appTxts>/products.negotiatedFormat}"/>
+                                        <Text text="{FolioToShow>/ForNegoc}" />										
+
+                                        <!-- TERMINA REVIEWE 1 -->
+										
 									</form:content>
 								</form:SimpleForm>
 
 								<form:SimpleForm
-										title="2. Product Information"
+										title="2. Presentación "
 										minWidth="1024"
 										editable="false"
 										layout="ResponsiveGridLayout">
 									<form:content>
-										<Label text="Name"/>
-										<Text id="ProductNameChosen" text="{/productName}"/>
-										<Label text="Weight"/>
-										<Text id="ProductWeightChosen" text="{/productWeight}"/>
-										<Label text="Manufacturer"/>
-										<Text id="ProductManufacturerChosen" text="{/productManufacturer}"/>
-										<Label text="Description"/>
-										<Text id="ProductDescriptionChosen" text="{/productDescription}"/>
-										<Link press="editStepTwo" text="Edit" />
+
+										<Label text="Presentación"/>
+										<Text text="{FolioToShow>/Present}"/>
+
+										<Label text="Contenido"/>
+										<Text text="{FolioToShow>/Contenido}"/>
+
+										<Label text="Unidad de medida de contenido"/>
+										<Text text="{FolioToShow>/UndCont}"/>
+
+										<Label text="Código de venta"/>
+										<Text text="{FolioToShow>/CodVent}"/>
+
+										<Label text="Unidad de medida de venta"/>
+										<Text text="{FolioToShow>/UndMventa}"/>
+
+										<Label text="Código de unidad de compra"/>
+										<Text text="{FolioToShow>/CodCompra}"/>
+
+										<Label text="Unidad de compra"/>
+										<Text text="{FolioToShow>/UndCompra}"/>
+
+										<Label text="Capacidad de empaque"/>
+										<Text text="{FolioToShow>/CapEmpaq}"/>
+
+										<Label text="Artículo con variantes"/>
+										<Text text="{FolioToShow>/VariantArt}"/>
+
+										<Label text="Color / Sabor / Aroma"/>
+										<Text text="{FolioToShow>/Taltam}"/>
+
+										<Label text="Talla / Tamaño"/>
+										<Text text="{FolioToShow>/Taltam}"/>
+
+										<Label text="Caracteristica Variante"/>
+										<Text text="{FolioToShow>/VariantArt}"/>
+
+                                         <!-- TERMINA SEGUNOD REVIEWE -->
 									</form:content>
 								</form:SimpleForm>
 
 								<form:SimpleForm
-										title="3. Optional Information"
+										title="3. Dimenciones"
 										minWidth="1024"
 										editable="false"
 										layout="ResponsiveGridLayout">
 									<form:content>
-										<Label text="Some text"/>
-										<Text text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-										tempor incididunt ut labore et dolore magna aliqua. "/>
-										<Label text="Manufacturing Date"/>
-										<Text id="ManufacturingDate" text="{/manufacturingDate}"/>
-										<Label text="Availability"/>
-										<Text id="AvailabilityChosen" text="{/availabilityType}"/>
-										<Label text="Size"/>
-										<HBox>
-											<Text id="Size" text="{/size}"/>
-											<Text id="Size2" class="sapUiTinyMarginBegin" text="{/measurement}"/>
-										</HBox>
-										<Link press="editStepThree" text="Edit" />
+
+                                    <core:Title text="Presentación de Compra" />
+
+                                    <Label text="Alto" />
+                                    <Text text="{FolioToShow>/EcAlto}"/>
+
+                                    <Label text="Ancho" />
+                                    <Text text="{FolioToShow>/EcAncho}" />
+
+                                    <Label text="Profundo" />
+                                    <Text text="{FolioToShow>/EcProfundo}" />
+
+                                    <Label text="Expresado en" />
+                                    <Text text="{FolioToShow>/EcUndaap}"  />
+
+                                    <Label text="Volumen" />
+                                    <Text text="{FolioToShow>/EcVolumen}" />
+
+                                    <Label text="Unidad de volumen" />
+                                    <Text text="{FolioToShow>/EcUndvol}" />
+
+                                    <Label text="Peso bruto" />
+                                    <Text text="{FolioToShow>/EcPbruto}"  />
+
+                                    <Label text="Peso neto" />
+                                    <Text text="{FolioToShow>/EcPneto}" />
+
+                                    <Label text="Unidad de peso" />
+                                    <Text text="{FolioToShow>/EcUndp}" />
+
+                                    <core:Title text="Presentación de venta" />
+                                    <Label text="Alto" />
+                                    <Text text="{FolioToShow>/PvAlto}" />
+
+                                    <Label text="Ancho" />
+                                    <Text text="{FolioToShow>/PvAncho}" />
+
+                                    <Label text="Profundo" />
+                                    <Text text="{FolioToShow>/PvProfundo}" />
+
+                                    <Label text="Expresado en" />
+                                    <Text text="{FolioToShow>/PvUndaap}"  />
+
+                                    <Label text="Volumen" />
+                                    <Text text="{FolioToShow>/PvVolumen}"/>
+
+                                    <Label text="Unidad de volumen" />
+                                    <Text text="{FolioToShow>/PvUndvol}"/>
+
+                                    <Label text="Peso bruto" />
+                                    <Text text="{FolioToShow>/PvPbruto}" />
+
+                                    <Label text="Peso neto" />
+                                    <Text text="{FolioToShow>/PvPneto}"/>
+
+                                    <Label text="Unidad de peso" />
+                                    <Text text="{FolioToShow>/PvUndp}"/>
+
+                                    <core:Title text="Capacidad por tarima" />
+
+                                    <Label text="Código de tarima" />
+                                    <Text text="{FolioToShow>/CodTarima}" />
+
+                                    <Label text="Cajas por contenido" />
+                                    <Text text="{FolioToShow>/CajasTend}" />
+
+                                    <Label text="Tendidos por tarima" />
+                                    <Text text="{FolioToShow>/TendTarima}" />
+
+                                    <Label text="Cajas por tarima" />
+                                    <Text text="{FolioToShow>/CajasTarima}" />
+
 									</form:content>
+
 								</form:SimpleForm>
 
 								<form:SimpleForm
-										title="4. Pricing"
+										title="4. Descuentos, Bonificación y costos"
 										minWidth="1024"
 										editable="false"
 										layout="ResponsiveGridLayout">
 									<form:content>
-										<Label text="Price"/>
-										<Text id="ProductPriceChosen" text="{/productPrice}"/>
-										<Label text="Discount Group"/>
-										<Text id="DiscountGroupChosen" text="{/discountGroup}"/>
-										<Label text="VAT Included"/>
-										<Text id="ProductVATChosen" text="{/productVAT}"/>
-										<Link press="editStepFour" text="Edit" />
+
+                                    <core:Title text="Descuentos" />
+
+                                    <Label text="Descuento normal (%)" />
+                                    <Text text="{FolioToShow>/DscNormal}" />
+
+                                    <Label text="Descuento normal 2  (%)" />
+                                    <Text text="{FolioToShow>/DscNormal2}"  />
+
+                                    <Label text="Descuento normal 3  (%)" />
+                                    <Text text="{FolioToShow>/DscNormal3}"  />
+                                    
+                                    <Label text="Descuento adicional  (%)" />
+                                    <Text text="{FolioToShow>/DscAdicional}" />
+
+                                    <Label text="Descuento pronto pago  (%)" />
+                                    <Text text="{FolioToShow>/DscPpago}"  />
+
+                                    <core:Title text="Bonificación" />
+
+                                    <Label text="Tipo de bonificación " />
+                                    <Text text="{FolioToShow>/Bonif}" />
+
+                                    <Label text="Valor de bonificación (%)" />
+                                    <Text text="{FolioToShow>/ValBoni}" />
+
+                                    <Label text="Unidades de bonificación" />
+                                    <Text text="{FolioToShow>/UndBon}" />
+                                    
+                                    <core:Title text="Costos de compra" />
+
+                                    <Label text="Costo bruto" />
+                                    <Text text="{FolioToShow>/CostoB}" />
+
+                                    <Label text="Capacidad de embarque" />
+                                    <Text text="{FolioToShow>/CapEmbar}" />
+
+                                    <Label text="Costo Neto Unidad de compra" />
+                                    <Text text="{FolioToShow>/CostNetComp}" />
+
+                                    <Label text="Costo Neto Unidad de venta" />
+                                    <Text text="{FolioToShow>/CostNetVen}" />
+
+                                    <Label text="Precio sugerido" />
+                                    <Text text="{FolioToShow>/PSug}" />
+                                    
 									</form:content>
 								</form:SimpleForm>
 					</WizardStep>
