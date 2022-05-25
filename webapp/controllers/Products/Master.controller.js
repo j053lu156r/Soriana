@@ -348,6 +348,9 @@ sap.ui.define([
             })
         },
         searchData: function () {
+           /* falto dar de alta este codigo, lo dejo preparado if (!this.hasAccess()) {
+                return false;
+            }*/
             var dateRange = this.getView().byId("dateRange");
             //var comboStatus = this.getView().byId("comboStatus");
             var inputFolioTxt = this.getView().byId("inputFolioTxt");
@@ -482,6 +485,9 @@ sap.ui.define([
             this.exportxls('Folios', '/ETPRICNAV/results', columns);
         },
         newProduct: function () {
+            if (!this.hasAccess(42)) {
+                return false;
+            }
             try {
                 var oView = this.getView();
 
@@ -525,6 +531,10 @@ sap.ui.define([
             }
         },
         changePriceProduct: function () {
+           
+            if (!this.hasAccess(43)) {
+                return false;
+            }
             try {
                 var oView = this.getView();
 
@@ -563,6 +573,9 @@ sap.ui.define([
             }
         },
         deleteProducts: function () {
+            if (!this.hasAccess(44)) {
+                return false;
+            }
             try {
                 var oView = this.getView();
 
