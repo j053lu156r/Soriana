@@ -68,6 +68,23 @@
                             "idFunction": 39
                         }
                     ]
+                },
+                {
+                    "id": "0043",
+                    "title": "/tiles.visor",
+                    "subHeader": "",
+                    "icon": "sap-icon://group",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "",
+                    "bind2": "",
+                    "functions": [
+                        {
+                            "idFunction": 1
+                        }
+                      
+                    ]
                 }
             ]
         },
@@ -401,9 +418,7 @@
                     "type": "standard",
                     "binding": "Products",
                     "functions": [
-                        {
-                            "idFunction": 22
-                        },
+                      
                         {
                             "idFunction": 42
                         },
