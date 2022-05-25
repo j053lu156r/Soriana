@@ -194,11 +194,18 @@
                                                 </form:FormElement-->
                                                 <form:FormElement label="{appTxts>/products.negotiatedFormat}">
                                                     <form:fields>
-                                                        <RadioButtonGroup select=".onSelectNegotiatedFormat" id="negotiatedFormat">
+                                                        <ComboBox selectedKey="{Folio>/ForNegoc}" required="true" id="negotiatedFormat" items="{
+                                                                    path : 'Catalogos>/NegotiatedFormat/results'
+                                                                }">
+                                                            <items>
+                                                                <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
+                                                            </items>
+                                                        </ComboBox>
+                                                        <!-- <RadioButtonGroup select=".onSelectNegotiatedFormat" id="negotiatedFormat">
                                                             <RadioButton id="negotiatedFormat-super-hipermercado" text="{appTxts>/products.hyperSuperOption}" selected="true" />
                                                             <RadioButton id="negotiatedFormat-mercado-express" text="{appTxts>/products.expressOption}" />
                                                             <RadioButton visible="false" id="negotiatedFormat-mega" text="{appTxts>/products.megaOption}" />
-                                                        </RadioButtonGroup>
+                                                        </RadioButtonGroup> -->
                                                     </form:fields>
                                                 </form:FormElement>
                                             </form:formElements>
@@ -563,10 +570,13 @@
                                     <Input id="DscPpago" value="{Folio>/DscPpago}" type="Number" placeholder="{appTxts>/products.porcentajetxt}" liveChange="calcularCostNetCom" />
 
                                     <core:Title text="Bonificación" />
+
                                     <Label text="Tipo de bonificación " />
-                                    <Input value="{Folio>/Bonif}" />
+                                    <!-- <Input value="{Folio>/Bonif}" /> -->
+
                                     <Label text="Valor de bonificación (%)" />
                                     <Input id="ValBoni" value="{Folio>/ValBoni}" type="Number" placeholder="{appTxts>/products.porcentajetxt}"  liveChange="calcularCostNetCom"/>
+
                                     <Label text="Unidades de bonificación" />
                                     <Input value="{Folio>/UndBon}" type="Number"/>
                                     
@@ -582,9 +592,9 @@
                                     <Label text="Capacidad de embarque" />
                                     <!-- <Input id="CapEmbar" value="{Folio>/CapEmbar}" type="Number" required="true" liveChange="calcularCostNetVen"/> -->
                                     <Label text="Costo Neto Unidad de compra" />
-                                    <!-- <Input id="CostNetComp" value="{Folio>/CostNetComp}"  type="Number" required="true" editable="false"/> -->
+                                    <Input id="CostNetComp" value="{Folio>/CostNetComp}"  type="Number" required="true" editable="false"/>
                                     <Label text="Costo Neto Unidad de venta" />
-                                    <!-- <Input id="CostNetVen" value="{Folio>/CostNetVen}" type="Number" required="true" editable="false"/> -->
+                                    <Input id="CostNetVen" value="{Folio>/CostNetVen}" type="Number" required="true" editable="false"/>
                                     <Label text="Precio sugerido" />
                                     <Input id="PSug" value="{Folio>/PSug}" type="Number" required="true"/>
                                     
