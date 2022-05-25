@@ -773,9 +773,9 @@ sap.ui.define([
 
                             console.log("Respuesta Create: ", resp);
 
-                            if (resp.correcto) {
+                            if (resp.ESuccess) {
 
-                                MessageBox.success(resp.mensaje);
+                                MessageBox.success(resp.EMessage);
 
                                 setTimeout(function () {
                                     this._oWizard.discardProgress(this._oWizard.getSteps()[0]);
