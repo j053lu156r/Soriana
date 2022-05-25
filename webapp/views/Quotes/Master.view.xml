@@ -16,6 +16,10 @@
                     <vm:VariantManagement standardItemText="{appTxts>/quotes.quotes}">
                     </vm:VariantManagement>
                 </f:heading>
+                <f:actions>
+                    <ToolbarSpacer/>
+                    <Button text="{appTxts>/quotes.uploadQuote}" type="Emphasized" press="openUploadDialog"/>
+                </f:actions>
                <f:actions>
                     <ToolbarSpacer/>
                     <Button text="{appTxts>/quotes.createQuote}" type="Emphasized" press=".createQuote"/>
