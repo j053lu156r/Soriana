@@ -40,6 +40,9 @@ sap.ui.define([
             this.getView().byId("documentTxt").setValue('');
         },
         searchData: function () {
+            if(!this.hasAccess(9)){
+                return
+            }
             //if ( !oModel.getModel() )  oModel.initModel();
 
             

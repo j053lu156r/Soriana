@@ -38,6 +38,10 @@ sap.ui.define([
             this.configFilterLanguage(this.getView().byId("filterBar"));
         },
         searchData: function () {
+            if (!this.hasAccess(1)) {
+                return false;
+            }
+
             var bContinue = false;
 
             if (!oModel.getModel()) {

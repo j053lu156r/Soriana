@@ -30,6 +30,9 @@ sap.ui.define([
             this.configFilterLanguage(this.getView().byId("filterBar"));
         },
         searchData: function () {
+            if(!this.hasAccess(30)){
+                return
+            }
             this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(),
                 "tableQuotesModel");
 

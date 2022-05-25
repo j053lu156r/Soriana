@@ -57,7 +57,9 @@ sap.ui.define([
         },
         searchData: function () {
 
-
+            if (!this.hasAccess(18)) {
+                return false;
+            }
             var dateRange = this.getView().byId("dateRange");
             var comboStatus = this.getView().byId("comboStatus");
             var inputFolioTxt = this.getView().byId("inputFolioTxt");
@@ -177,9 +179,7 @@ sap.ui.define([
         },
         viewClarification: function (oEvent) {
 
-            if (!this.hasAccess(18)) {
-                return false;
-            }
+            
 
             let resource = oEvent.getSource().getBindingContext("Aclaraciones").getPath();
             let line = resource.split("/").slice(-1).pop();
