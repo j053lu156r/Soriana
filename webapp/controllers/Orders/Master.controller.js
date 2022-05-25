@@ -38,6 +38,10 @@ sap.ui.define([
             this.configFilterLanguage(this.getView().byId("filterBar"));
         },
         searchData: function () {
+            if (!this.hasAccess(1)) {
+                return false;
+            }
+
             var bContinue = false;
 
             if (!oModel.getModel()) {
@@ -134,6 +138,9 @@ sap.ui.define([
             }
         },
         openUploadDialog: function () {
+            if (!this.hasAccess(4)) {
+                return false;
+            }
             if (!this._uploadDialog2) {
                 this._uploadDialog2 = sap.ui.xmlfragment("uploadInvoice", "demo.fragments.UploadInvoice", this);
                 this.getView().addDependent(this._uploadDialog2);
