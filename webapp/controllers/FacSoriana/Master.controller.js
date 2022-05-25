@@ -28,6 +28,9 @@ sap.ui.define([
             }, this);
         },
         searchData: function () {
+            if (!this.hasAccess(21)) {
+                return false;
+            }
             var bContinue = false;
 
             if (!oModel.getModel()) {
@@ -92,6 +95,9 @@ sap.ui.define([
 
         },
         downloadButton: function(){
+            if (!this.hasAccess(41)) {
+                return false;
+            }
             var oItem = this.byId("facSorianaTable").getSelectedItems();
             var texts = this.getOwnerComponent().getModel("appTxts");
 

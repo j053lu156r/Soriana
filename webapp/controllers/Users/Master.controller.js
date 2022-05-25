@@ -171,9 +171,7 @@ sap.ui.define([
             this.getOwnerComponent().getModel("tableItemsUsers").destroy();
         },
         onListItemPress: function (oEvent) {
-            if(!this.hasAccess(14)){
-                return
-            }
+           
             var userPath = oEvent.getSource().getBindingContext("tableItemsUsers").getPath(),
                 line = userPath.split("/").slice(-1).pop();
 

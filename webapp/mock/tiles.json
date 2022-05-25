@@ -126,6 +126,9 @@
                     "functions": [
                         {
                             "idFunction": 7
+                        },
+                        {
+                            "idFunction": 45
                         }
                     ]
                 },
@@ -400,7 +403,17 @@
                     "functions": [
                         {
                             "idFunction": 22
+                        },
+                        {
+                            "idFunction": 42
+                        },
+                        {
+                            "idFunction": 43
+                        },
+                        {
+                            "idFunction": 44
                         }
+
                     ]
                 }
             ]
