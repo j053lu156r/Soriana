@@ -28,6 +28,11 @@ sap.ui.define([
                     this.getView().byId("allSupp").setSelected(false);
                     this.getView().byId("btnAdd").setEnabled(true);
                     this.getView().byId("btnRemove").setEnabled(true);
+                    //this.getView().byId("dateRange").dateRange
+                   var oDRS2 = this.byId("dateRange");
+                    oDRS2.setMinDate(new Date());
+                    oDRS2.setDateValue(new Date());
+                    oDRS2.setSecondDateValue(new Date());
                 }
             }, this);
             this.configUploadSet(this.getView().byId("attacheds"));
@@ -39,6 +44,20 @@ sap.ui.define([
         onCancel: function () {
             this.goToMainRelease();
         },
+        handleChange: function (oEvent) {
+			var sFrom = oEvent.getParameter("from"),
+				//sTo = oEvent.getParameter("to"),
+				bValid = oEvent.getParameter("valid"),
+				oEventSource = oEvent.getSource();
+				//oText = this.byId("TextEvent");
+			   //oText.setText("Id: " + oEventSource.getId() + "\nFrom: " + sFrom + "\nTo: " + sTo);
+
+			if (bValid) {
+				//oEventSource.setValueState(ValueState.None);
+			} else {
+				oEventSource.setValueState(ValueState.Error);
+			}
+		},
         goToMainRelease: function () {
             this.oRouter.navTo("masterRelease");
             this.clearFields();
