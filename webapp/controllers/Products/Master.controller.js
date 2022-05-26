@@ -4,8 +4,9 @@ sap.ui.define([
     "sap/ui/core/Fragment",
     "sap/m/MessageBox",
     "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator"
-], function (BaseController, JSONModel, Fragment, MessageBox, Filter, FilterOperator) {
+    "sap/ui/model/FilterOperator",
+    "demo/models/formatterCatPrd"
+], function (BaseController, JSONModel, Fragment, MessageBox, Filter, FilterOperator, formatterCatPrd) {
     "use strict";
 
     var sUri = "/sap/opu/odata/sap/ZOSP_CATPRO_SRV/";
@@ -17,6 +18,7 @@ sap.ui.define([
     var _testingSteps = false; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
 
     return BaseController.extend("demo.controllers.Products.Master", {
+        formatterCatPrd: formatterCatPrd,
         onInit: function () {
 
             this.getView().addEventDelegate({
@@ -27,7 +29,7 @@ sap.ui.define([
                     this.getOwnerComponent().setModel(new JSONModel(), "Folio");
                     this.getOwnerComponent().setModel(new JSONModel(), "FolioToShow");
                     this.getOwnerComponent().setModel(new JSONModel(), "ITARTVAR");
-                    this.getOwnerComponent().getModel("ITARTVAR").setProperty("/results",[]);
+                    this.getOwnerComponent().getModel("ITARTVAR").setProperty("/results", []);
                     this.getCatalogos();
                     this.clearFilters();
                 }
@@ -66,62 +68,42 @@ sap.ui.define([
         getCatalogos: function () {
             try {
 
+                let CatNegotiatedFormat = {
+                    results: [
+                        { value:'1A', text: this.getOwnerComponent().getModel("appTxts").getProperty('/products.hyperSuperOption') },
+                        { value:'1B', text: this.getOwnerComponent().getModel("appTxts").getProperty('/products.expressOption') }
+                    ]
+                };
                 let CatTiposEtiqueta = {
                     results: [
-                        {
-                            value: 1,
-                            text: 'Colgar'
-                        },
-                        {
-                            value: 2,
-                            text: 'Adhesiva'
-                        },
-                        {
-                            value: 3,
-                            text: 'Sin Etiqueta'
-                        }
+                        { value: 1, text: 'Colgar' },
+                        { value: 2, text: 'Adhesiva' },
+                        { value: 3, text: 'Sin Etiqueta' }
                     ]
                 };
 
                 let CatEstrategiaSalida = {
                     results: [
-                        {
-                            value: 1,
-                            text: 'Liquidación'
-                        },
-                        {
-                            value: 2,
-                            text: 'Devolución'
-                        }
+                        { value: 1, text: 'Liquidación' },
+                        { value: 2, text: 'Devolución' }
                     ]
                 };
 
                 let UnidadVolumen = {
                     results: [
-                        {
-                            value: "MM",
-                            text: 'Milimetros'
-                        },
-                        {
-                            value: "CM",
-                            text: 'Centimetros'
-                        }
+                        { value: "MM", text: 'Milimetros' },
+                        { value: "CM", text: 'Centimetros' }
                     ]
                 };
 
                 let UnidadPeso = {
                     results: [
-                        {
-                            value: "KGM",
-                            text: 'Gramo'
-                        },
-                        {
-                            value: "GM",
-                            text: 'Kilogramo'
-                        }
+                        { value: "KGM", text: 'Gramo' },
+                        { value: "GM", text: 'Kilogramo' }
                     ]
                 };
 
+                this.getOwnerComponent().getModel("Catalogos").setProperty('/NegotiatedFormat', CatNegotiatedFormat);
                 this.getOwnerComponent().getModel("Catalogos").setProperty('/TiposEtiqueta', CatTiposEtiqueta);
                 this.getOwnerComponent().getModel("Catalogos").setProperty('/EstrategiaSalida', CatEstrategiaSalida);
                 this.getOwnerComponent().getModel("Catalogos").setProperty('/UnidadVolumen', UnidadVolumen);
@@ -145,6 +127,7 @@ sap.ui.define([
                         "results": Paises
                     }
                     that.getOwnerComponent().setModel(new JSONModel(pModel), "Paises");
+
                     that.getOwnerComponent().getModel("Paises").setSizeLimit(parseInt(Paises.length, 10));
 
                 }, function () {
@@ -514,7 +497,7 @@ sap.ui.define([
                         }.bind(this));
                     }
                     this._pDialog.then(function (oDialog) {
-                        oView.byId("negotiatedFormat").setSelectedIndex(0).fireSelect();
+                        //oView.byId("negotiatedFormat").setSelectedIndex(0).fireSelect();
                         oDialog.open();
 
                     });
@@ -711,7 +694,7 @@ sap.ui.define([
             this.handleButtonsVisibility();
         },
 
-        handleWizardSubmit: function () {            
+        handleWizardSubmit: function () {
             this._handleMessageBoxOpen(this.getOwnerComponent().getModel("appTxts").getProperty('/products.msgSubmitNewProduct'), "confirm");
         },
 
@@ -767,14 +750,13 @@ sap.ui.define([
 
                 onClose: function (oAction) {
                     if (oAction === MessageBox.Action.YES) {
-                        this._oWizard.discardProgress(this._oWizard.getSteps()[0]);
-                        this.byId("wizardDialog").close();
 
                         if (sMessageBoxType == "confirm") {
 
                             let folioModel = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
                             folioModel.TMoneda = "MXN";
                             folioModel.Lifnr = this.getConfigModel().getProperty("/supplierInputKey");
+                            folioModel.EanUpcBase = folioModel.CodEan;
                             let createObjReq = {
                                 "IOption": "5",
                                 "ITREC": [
@@ -783,11 +765,29 @@ sap.ui.define([
                                 "ITARTVAR": [
                                 ]
                             };
-                            console.log(" >>>>>>> CREATING PRDUCT: ", createObjReq);
 
+                            console.log(" >>>>>>> CREATING PRDUCT: ", createObjReq);
+                            console.log(" >>>>>>> CREATING PRDUCT String: ", JSON.stringify(createObjReq));
+                            // ** Nota Model.create(endpoint,data) No trabaja ni con callback ni con promesa Solo recepcion syncrona
                             let resp = Model.create("/HdrcatproSet", createObjReq);
 
                             console.log("Respuesta Create: ", resp);
+
+                            if (resp.ESuccess) {
+
+                                MessageBox.success(resp.EMessage);
+
+                                setTimeout(function () {
+                                    this._oWizard.discardProgress(this._oWizard.getSteps()[0]);
+                                    this.byId("wizardDialog").close();
+                                    this.getOwnerComponent().getModel("Folio").setData({});
+                                }, 3000);
+
+                            } else {
+
+                                MessageBox.error(resp.mensaje);
+
+                            }
 
                         }
 
@@ -797,10 +797,63 @@ sap.ui.define([
             });
         },
 
-        cloneFolioModel(){
-            let Folio = JSON.parse( this.getOwnerComponent().getModel("Folio").getJSON());
-            this.getOwnerComponent().getModel("FolioToShow").setData({...Folio});
-            console.log( this.getOwnerComponent().getModel("FolioToShow").getData());
+        cloneFolioModel() {
+            let Folio = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
+
+            Folio.TipEtq = formatterCatPrd.findPropertieValue("value", "text", Folio.TipEtq,
+                this.getOwnerComponent().getModel("Catalogos").getProperty('/TiposEtiqueta'));
+
+            Folio.EstSalida = formatterCatPrd.findPropertieValue("value", "text", Folio.EstSalida,
+                this.getOwnerComponent().getModel("Catalogos").getProperty('/EstrategiaSalida'));
+
+            Folio.ForNegoc = formatterCatPrd.findPropertieValue("value", "text", Folio.ForNegoc,
+            this.getOwnerComponent().getModel("Catalogos").getProperty('/NegotiatedFormat'));
+
+            Folio.EcUndvol = formatterCatPrd.findPropertieValue("value", "text", Folio.EcUndvol,
+                this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadVolumen'));
+
+            Folio.EcUndp = formatterCatPrd.findPropertieValue("value", "text", Folio.EcUndp,
+                this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadPeso'));
+
+            Folio.PvUndvol = formatterCatPrd.findPropertieValue("value", "text", Folio.PvUndvol,
+                this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadVolumen'));
+
+            Folio.PvUndp = formatterCatPrd.findPropertieValue("value", "text", Folio.PvUndp,
+                this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadPeso'));
+
+            Folio.Pais = formatterCatPrd.findPropertieValue("Land1", "Landx50", Folio.Pais,
+                JSON.parse(this.getOwnerComponent().getModel("Paises").getJSON()));
+
+            Folio.Marca = formatterCatPrd.findPropertieValue("BrandId", "Brand", Folio.Marca,
+                JSON.parse(this.getOwnerComponent().getModel("Brands").getJSON()));
+
+            Folio.TipArt = formatterCatPrd.findPropertieValue("Mtart", "Mtbez", Folio.TipArt,
+                this.getOwnerComponent().getModel("Catalogos").getProperty('/TiposProducto'));
+
+            // Folio.ProdBase = formatterCatPrd.findPrdBaseDesc(Folio.ProdBase,
+            //                 JSON.parse(this.getOwnerComponent().getModel("ProductosBase").getJSON()));
+
+            Folio.EanUpcType = formatterCatPrd.findPropertieValue("Numtp", "Ntbez", Folio.EanUpcType,
+            this.getOwnerComponent().getModel("Catalogos").getProperty('/TipoCodigo'));
+
+            Folio.GrupArt = formatterCatPrd.findPropertieValue("GrupoArt", "DescGart", Folio.GrupArt,
+            this.getOwnerComponent().getModel("Catalogos").getProperty('/GrupoArticulos'));
+
+            Folio.Present = formatterCatPrd.findPropertieValue("AbrPres", "Descpres", Folio.Present,
+            this.getOwnerComponent().getModel("Catalogos").getProperty('/Presentaciones'));
+
+            Folio.UndCont = formatterCatPrd.findPropertieValue("IsoCode", "Unidad", Folio.UndCont,
+            this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadMedida'));
+
+            Folio.UndMventa = formatterCatPrd.findPropertieValue("IsoCode", "Unidad", Folio.UndMventa,
+            this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadMedida'));
+
+            Folio.UndCompra = formatterCatPrd.findPropertieValue("IsoCode", "Unidad", Folio.UndCompra,
+            this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadMedida'));
+
+            this.getOwnerComponent().getModel("FolioToShow").setData({ ...Folio });
+
+            console.log(this.getOwnerComponent().getModel("FolioToShow").getData());
         },
 
         productTypeComplete: function (oControlEvent) {
@@ -1228,7 +1281,7 @@ sap.ui.define([
                 costnetcom -= (costnetcom * (porcentaje))
             });
 
-            this.byId("CostNetComp").setValue(costnetcom);
+            // this.byId("CostNetComp").setValue(costnetcom);
         },
 
         calcularCostNetVen: function (oControlEvent) {
@@ -1238,7 +1291,7 @@ sap.ui.define([
 
             let costnetven = parseFloat(costob) / parseFloat(capembar);
 
-            this.byId("CostNetVen").setValue(costnetven);
+            // this.byId("CostNetVen").setValue(costnetven);
 
             this.calcularCostNetCom(null);
 
@@ -1248,7 +1301,7 @@ sap.ui.define([
             let oselectedItem = oControlEvent.getParameter("selectedItem");
             if (!oselectedItem)
                 return;
-            this.getOwnerComponent().getModel("FolioToShow").setProperty("/GrupoArt", oselectedItem.getText());     
+            this.getOwnerComponent().getModel("FolioToShow").setProperty("/GrupoArt", oselectedItem.getText());
         },
 
         getTallasColores: function () {
@@ -1269,7 +1322,6 @@ sap.ui.define([
         onSelectNegotiatedFormat: function (oEvent) {
             let selectedIndex = oEvent.getParameters().selectedIndex || 0;
             this.getOwnerComponent().getModel("Folio").setProperty('/ForNegoc', CatNegotiatedFormat[selectedIndex]);
-            //this.getOwnerComponent().getModel("FolioToShow").setProperty('/ForNegoc', CatNegotiatedFormat[selectedIndex]);
         },
 
         onBaseProductRequest: function () {
@@ -1316,7 +1368,7 @@ sap.ui.define([
             }
 
             this.getOwnerComponent().getModel('Folio').setProperty("/ProdBase", oSelectedItem.getObject().DescLinea);
-            this.getOwnerComponent().getModel('Folio').setProperty("/EanUpcBase", oSelectedItem.getObject().NumLinea);
+            //this.getOwnerComponent().getModel('Folio').setProperty("/EanUpcBase", oSelectedItem.getObject().NumLinea);
             this.getOwnerComponent().getModel('Folio').setProperty("/PurGroup", oSelectedItem.getObject().GrupoCompras);
             this.getOwnerComponent().getModel('FolioToShow').setProperty("/ProdBase", oSelectedItem.getObject().DescLinea);
             // this.getOwnerComponent().getModel('FolioToShow').setProperty("/PurGroup", oSelectedItem.getObject().DescGcom);
