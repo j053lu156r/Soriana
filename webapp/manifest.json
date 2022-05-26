@@ -509,6 +509,29 @@
                         "masterQuotes",
                         "detailQuotes"
                     ]
+                },
+                {
+                    "pattern": "masterVisorNotas",
+                    "name": "masterVisorNotas",
+                    "target": [
+                        "masterVisorNotas"
+                    ]
+                },
+                {
+                    "name": "masterVisorNotas",
+                    "pattern": "masterVisorNotas",
+                    "target": [
+                        "masterVisorNotas",
+                        "detailVisorNotas"
+                    ]
+                },
+                {
+                    "name": "detailVisorNotas",
+                    "pattern": "detailVisorNotas/{document}",
+                    "target": [
+                        "masterVisorNotas",
+                        "detailVisorNotas"
+                    ]
                 }
             ],
             "targets": {
@@ -728,6 +751,16 @@
                 "detailQuotes" : {
                     "viewName": "Detail",
                     "viewPath": "demo.views.Quotes" , 
+                    "controlAggregation": "midColumnPages"
+                },
+                "masterVisorNotas":{
+                    "viewName": "Master",
+                    "viewPath": "demo.views.VisorNotasEntrada",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailVisorNotas" : {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.VisorNotasEntrada" , 
                     "controlAggregation": "midColumnPages"
                 }
             }
