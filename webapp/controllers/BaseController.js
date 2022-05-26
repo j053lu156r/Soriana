@@ -328,15 +328,33 @@ sap.ui.define([
 
         onValueHelpClose: function (oEvent) {
             var oSelectedItem = oEvent.getParameter("selectedItem");
+                        console.log(oEvent.getSource().getBinding("items"));
+            var descBloqueo = ""
+
+            var oList = oEvent.getSource().getBinding("items").oList
+            var oReg  = oList[0]
+
+            var bloqueo = oReg ? oReg.BloqueoFlag : ""
+
+        if(bloqueo == "X"){
+
+            descBloqueo="[Bloqueo de pago]"
+
+        }
+
             oEvent.getSource().getBinding("items").filter([]);
 
             if (!oSelectedItem) {
                 return;
             }
 
+
+             this.getConfigModel().setProperty("/supplierStatus", descBloqueo);
+
+
             var detSupp = this.detailSupplier(oSelectedItem.getTitle());
 
-            this.setActiveLifnr(oSelectedItem.getTitle(), oSelectedItem.getDescription(), detSupp.Impflag);
+            this.setActiveLifnr(oSelectedItem.getTitle(), oSelectedItem.getDescription() + descBloqueo, detSupp.Impflag);
 
         },
         setActiveLifnr: function (key, description, importation) {
