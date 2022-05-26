@@ -1,36 +1,3 @@
-<!--
-<mvc:View displayBlock="true" 
-        controllerName="demo.controllers.VisorNotasEntrada.Detail" 
-        height="100%"
-		xmlns="sap.uxap"
-		xmlns:mvc="sap.ui.core.mvc"
-		xmlns:m="sap.m"
-		xmlns:f="sap.f"
-        xmlns:core="sap.ui.core" 
-		xmlns:form="sap.ui.layout.form">
-        <ObjectPageLayout
-            id="ObjectPageLayout"
-            showTitleInHeaderContent="true"
-            alwaysShowContentHeader="false"
-            preserveHeaderStateOnScroll="false"
-            headerContentPinnable="true"
-            isChildPage="true"
-            upperCaseAnchorBar="false">
-            <sections>
-                <ObjectPageSection>
-                    <subSections>
-                        <ObjectPageSubSection>
-                            <blocks>
-                                <Button text="Back" press="onPress" />
-                            </blocks>
-                        </ObjectPageSubSection>
-                    </subSections>
-                </ObjectPageSection>
-            </sections>
-        </ObjectPageLayout>
-</mvc:View>
--->
-
 <mvc:View displayBlock="true" 
         controllerName="demo.controllers.VisorNotasEntrada.Detail" 
         height="100%"
@@ -66,7 +33,7 @@
 						<navigationActions>
 							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
 							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
-							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }" />
+							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="onPress"  tooltip="Close column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }" />
 						</navigationActions>
 
                         <actions>

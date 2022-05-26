@@ -511,13 +511,6 @@
                     ]
                 },
                 {
-                    "pattern": "masterVisorNotas",
-                    "name": "masterVisorNotas",
-                    "target": [
-                        "masterVisorNotas"
-                    ]
-                },
-                {
                     "name": "masterVisorNotas",
                     "pattern": "masterVisorNotas",
                     "target": [
@@ -527,7 +520,7 @@
                 },
                 {
                     "name": "detailVisorNotas",
-                    "pattern": "detailVisorNotas/{document}",
+                    "pattern": "detailVisorNotas/{layout}",
                     "target": [
                         "masterVisorNotas",
                         "detailVisorNotas"
