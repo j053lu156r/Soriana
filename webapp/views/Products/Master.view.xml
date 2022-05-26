@@ -31,10 +31,10 @@
                             text="Eliminar productos"
                             type="Emphasized"
                             press="deleteProducts"/>
-                    <Button
+                    <!-- <Button
                             text=" FETCH GS1 "
                             type="Emphasized"
-                            press="getGS1ProductData"/>
+                            press="getGS1ProductData"/> -->
                 </f:actions>
             </f:DynamicPageTitle>
         </f:title>
