@@ -16,7 +16,12 @@ sap.ui.define([
             this.getView().addEventDelegate({
                 onBeforeShow: function (oEvent) {
                    // iMail = oEvent.getParameter("arguments").mail;
+                   if(iMail== "correo@correo.com"){
+                    this.getView().byId("user_confirm").setValue("");
+                   }else{
                     this.getView().byId("user_confirm").setValue(iMail);
+                   }
+                    
                     this.getView().byId("pass1").setValue("");
                     this.getView().byId("pass2").setValue("");
                     this.getView().byId("hCode").setValue("");

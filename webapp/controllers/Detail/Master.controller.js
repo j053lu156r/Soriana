@@ -38,6 +38,9 @@ sap.ui.define([
             }, this);
         },
         searchData: function () {
+            if (!this.hasAccess(2)) {
+                return false;
+            }
             var bContinue = false;
             if (!oModel.getModel()) {
                 oModel.initModel();

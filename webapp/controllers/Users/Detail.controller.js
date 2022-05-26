@@ -146,6 +146,10 @@ sap.ui.define([
             return selectedFunctions.has(key);
         },
         editUser: function () {
+            if (!this.hasAccess(14)) {
+                return false;
+            }
+
             var bContinue = true;
 
             var email = this.getOwnerComponent().getModel("userdata").getProperty("/IMail");
@@ -315,6 +319,9 @@ sap.ui.define([
             }
         },
         handleDropUser: function () {
+            if (!this.hasAccess(15)) {
+                return false;
+            }
             var that = this;
 
             var dataModel = this.getOwnerComponent().getModel("detailUserModel").getProperty("/Esusdata/Zactivo");

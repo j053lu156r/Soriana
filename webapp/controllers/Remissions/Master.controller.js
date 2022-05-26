@@ -38,6 +38,9 @@ sap.ui.define([
             }, this);
         },
         openUploadDialog: function () {
+            if (!this.hasAccess(40)) {
+                return false;
+            }
             if (!this._uploadDialog2) {
                 this._uploadDialog2 = sap.ui.xmlfragment("uploadInvoice", "demo.fragments.UploadInvoice", this);
                 this.getView().addDependent(this._uploadDialog2);
@@ -127,6 +130,10 @@ sap.ui.define([
             }
         },
         searchData: function () {
+
+            if (!this.hasAccess(5)) {
+                return false;
+            }
             var formater = sap.ui.core.format.DateFormat.getDateTimeInstance({ parent: "yyyyMMdd" });
             var dateRange = this.getView().byId("dateOrder");
 

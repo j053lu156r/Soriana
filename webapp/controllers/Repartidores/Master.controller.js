@@ -31,6 +31,9 @@ sap.ui.define([
             this.configFilterLanguage(this.getView().byId("filterBar"));
         },
         searchData: function () {
+            if (!this.hasAccess(27)) {
+                return false;
+            }
             var bContinue = true;
 
             if (!oModel.getModel()) {
@@ -95,9 +98,7 @@ sap.ui.define([
             datarange.setDateValue(minConsultDate);
         },
         onListItemPress: function (oEvent) {
-            if (!this.hasAccess(27)) {
-                return false;
-            }
+         
             var resource = oEvent.getSource().getBindingContext("RepartidoresHdr").getPath(),
                 line = resource.split("/").slice(-1).pop();
 
@@ -108,9 +109,70 @@ sap.ui.define([
 
             this.getOwnerComponent().setModel(new JSONModel(status), "catalogStatus");
 
-            this.createButton(docResult, true);
+            this.modifyButton(docResult, true);
+        },
+        modifyButton: function (Results , selected) {
+            if (!this.hasAccess(39)) {
+                return false;
+            }
+
+            var texts = this.getOwnerComponent().getModel("appTxts");
+            var that = this;
+
+            this._createDialog = sap.ui.xmlfragment("CreateDealersFragment", "demo.views.Repartidores.fragments.CreateDealersFragment", this);
+            this.getView().addDependent(this._createDialog);
+
+            var status = {
+                "Status": [
+                    {
+                        "description": "Activo"
+                    },
+                    {
+                        "description": "Baja"
+                    }
+                ]
+            };
+
+            this.getOwnerComponent().setModel(new JSONModel(status), "catalogStatus");
+            
+
+            var UserModel = this.getOwnerComponent().getModel("userdata");
+            var userRol = UserModel.getProperty("/ERol");
+            var editable = false;
+
+            if (userRol != null && userRol == "0001" || userRol == "0002" || userRol == "0005"){
+                editable =  true;
+            }
+            //Solo Determinados usuarios pueden modificar estos campos
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "supplier").setValue(Results.Lifnr).setEditable(editable).setVisible(editable);
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "lblSupplier").setVisible(editable);
+                
+            if (selected){
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "name").setValue(Results.Repartidor).setEditable(editable);
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "key").setValue(Results.Clave).setEditable(editable);
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "fcad").setValue(Results.Endda).setEditable(editable);
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "status").setValue(Results.Zactivo); 
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "Id").setValue(Results.Usua);               
+
+                if(editable){
+                    sap.ui.core.Fragment.byId("CreateDealersFragment", "modifyDialog").setVisible(true);
+                    sap.ui.core.Fragment.byId("CreateDealersFragment", "saveDialog").setVisible(false);
+                }
+                
+            }
+            else{
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "status").setValue("Activo").setEditable(false);
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "modifyDialog").setVisible(false);
+            }
+            this._createDialog.setTitle(texts.getProperty("/rep.modifydealer"));
+            
+            this._createDialog.open();
         },
         createButton: function (Results , selected) {
+            if (!this.hasAccess(37)) {
+                return false;
+            }
+
             var texts = this.getOwnerComponent().getModel("appTxts");
             var that = this;
 
@@ -158,10 +220,14 @@ sap.ui.define([
                 sap.ui.core.Fragment.byId("CreateDealersFragment", "status").setValue("Activo").setEditable(false);
                 sap.ui.core.Fragment.byId("CreateDealersFragment", "modifyDialog").setVisible(false);
             }
-            
+            this._createDialog.setTitle(texts.getProperty("/rep.create"));
             this._createDialog.open();
         },
         deleteButton: function () {
+            if (!this.hasAccess(38)) {
+                return false;
+            }
+
             var oItems = this.byId("tableRepartidores").getSelectedItems();
             var texts = this.getOwnerComponent().getModel("appTxts");
 
