@@ -348,9 +348,9 @@ sap.ui.define([
             })
         },
         searchData: function () {
-           /* falto dar de alta este codigo, lo dejo preparado if (!this.hasAccess()) {
+            if (!this.hasAccess(46)) {
                 return false;
-            }*/
+            }
             var dateRange = this.getView().byId("dateRange");
             //var comboStatus = this.getView().byId("comboStatus");
             var inputFolioTxt = this.getView().byId("inputFolioTxt");
