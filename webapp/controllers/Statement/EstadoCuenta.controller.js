@@ -34,11 +34,16 @@ sap.ui.define([
             
             let dateRange = this.getView().byId("dateRange");
 
+            //ciltro documento 
+            let documentoInput = this.getView().byId("Belnr");
+
             let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
             // format[AAAAMMDD] (2020101)
             let desde_LV_ZDESDE = this.buildSapDate( dateRange.getDateValue()       ); 
             // format[AAAAMMDD] (2020101)
             let desde_LV_ZHASTA = this.buildSapDate( dateRange.getSecondDateValue() );
+
+            let doc_BELNR = documentoInput.getValue();
 
             //checbox
 
@@ -60,7 +65,7 @@ sap.ui.define([
 
             
             var oODataJSONModel = this.getOdata(sUri);
-            let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}'&$format=json`;
+            let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}' and belnr eq '${doc_BELNR}'  &$format=json`;
 
 			var odTJSONModel = this.getOdataJsonModel( urlParams, oODataJSONModel );
 			dTJSON = odTJSONModel.getJSON();

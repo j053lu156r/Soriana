@@ -72,6 +72,19 @@
                                     </Input>
                                 </fb:control>
                             </fb:FilterGroupItem>
+                            <fb:FilterGroupItem 
+                                groupName            = "__$INTERNAL$" 
+                                name                 = "C" 
+                                mandatory            = "false"
+                                label                = "Doc" 
+                                labelTooltip         = "Tooltip Example" 
+                                partOfCurrentVariant = "true" 
+                                visibleInFilterBar   = "true">
+                                <fb:control>
+                                    <Input id="Belnr" placeholder="Documento" >
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
 
                         </fb:filterGroupItems>
 
@@ -236,12 +249,12 @@
                                                 xmlns="sap.m"
                                                 xmlns:unified="sap.ui.unified"
                                                 xmlns:core="sap.ui.core"
-                                                xmlns:layout="sap.ui.commons.layout" id="lBancoNom" text="" design="Bold"/>
+                                                xmlns:layout="sap.ui.commons.layout" id="lBancoNom" text="Estatus" design="Bold"/>
                                             <Label xmlns:mvc="sap.ui.core.mvc"
                                                 xmlns="sap.m"
                                                 xmlns:unified="sap.ui.unified"
                                                 xmlns:core="sap.ui.core"
-                                                xmlns:layout="sap.ui.commons.layout" id="tBancoNom" text=""/>
+                                                xmlns:layout="sap.ui.commons.layout" id="tBancoNom" text="{configSite>/supplierStatus}"/>
                                             <Label xmlns:html="http://www.w3.org/1999/xhtml"
                                                 xmlns:sap.ui.layout="sap.ui.layout"
                                                 xmlns:mvc="sap.ui.core.mvc"
@@ -377,6 +390,18 @@
                             <m:Label text="{appTxts>/state.amount}" />
                             <template>
                                 <m:Text text="{totales>Wrbtr}" wrapping="false" />
+                            </template>
+                        </Column>
+                                <Column width="20%">
+                            <m:Label text="Mejor Condición" />
+                            <template>
+                                <m:Text text="{totales>MCondicion}" wrapping="false" />
+                            </template>
+                        </Column>
+                         <Column width="10%">
+                            <m:Label text="Bloqueado" />
+                            <template>
+                                <m:Text text="{totales>BloqueoFlag}" wrapping="false" />
                             </template>
                         </Column>
                         <Column width="15%">
