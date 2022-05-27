@@ -29,6 +29,7 @@ sap.ui.define([
                 });
             }, this);
         },
+        
         handleItemPress: function (oEvent) {
             var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(2),
                 orderPath = oEvent.getSource().getBindingContext("tableQuotesDetail").getPath(),
