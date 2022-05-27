@@ -72,6 +72,19 @@
                                     </Input>
                                 </fb:control>
                             </fb:FilterGroupItem>
+                            <fb:FilterGroupItem 
+                                groupName            = "__$INTERNAL$" 
+                                name                 = "C" 
+                                mandatory            = "false"
+                                label                = "Doc" 
+                                labelTooltip         = "Tooltip Example" 
+                                partOfCurrentVariant = "true" 
+                                visibleInFilterBar   = "true">
+                                <fb:control>
+                                    <Input id="Belnr" placeholder="Documento" >
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
 
                         </fb:filterGroupItems>
 

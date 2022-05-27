@@ -73,12 +73,12 @@
                     "id": "0043",
                     "title": "/tiles.visor",
                     "subHeader": "",
-                    "icon": "sap-icon://group",
+                    "icon": "sap-icon://notes",
                     "numeric": " ",
                     "footer": "",
                     "type": "standard",
-                    "binding": "",
-                    "bind2": "",
+                    "binding": "masterVisorNotas",
+                    "bind2": "Visor",
                     "functions": [
                         {
                             "idFunction": 48
