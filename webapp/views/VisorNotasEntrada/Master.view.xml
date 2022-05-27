@@ -1,0 +1,136 @@
+<mvc:View displayBlock="true" 
+    xmlns:f="sap.f" 
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar" 
+    xmlns:vm="sap.ui.comp.variants" 
+    xmlns:unified="sap.ui.unified"
+    xmlns="sap.m" 
+    xmlns:core="sap.ui.core"
+    controllerName="demo.controllers.VisorNotasEntrada.Master"
+    height="100%">
+    <f:DynamicPage class="sapUiContentPadding">
+        <f:title>
+            <f:DynamicPageTitle backgroundDesign="Transparent">
+                <f:heading>
+                    <vm:VariantManagement standardItemText="{appTxts>/visor.title}"/>
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>
+        
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <fb:FilterBar id="filterBar"  header="Header" reset="onReset" search="searchData" 
+                        clear="clearFilters" cancel="onCancel" filtersDialogClosed = "onFiltersDialogClosed" 
+                        showRestoreButton="false" showClearButton="false" useToolbar="false">
+
+                            <fb:filterGroupItems>
+                                <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab" 
+                                    label="{appTxts>/visor.supplier}" mandatory="true" 
+                                    partOfCurrentVariant="true" visibleInFilterBar="true">
+                                    <fb:control>
+                                        <Input
+                                            id="supplierInput" placeholder="{appTxts>/visor.supplier}" 
+                                            showSuggestion="true" valueHelpOnly="true"
+                                            showValueHelp="true" valueHelpRequest=".onValueHelpRequest" 
+                                            value="{configSite>/supplierInput}">
+                                        </Input>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+
+                                <fb:FilterGroupItem groupName="F1" label="{appTxts>/visor.dates}" 
+                                    groupTitle="Fechas" name="Fecha de entrega" mandatory="false" 
+                                    partOfCurrentVariant="true" visibleInFilterBar="true">
+                                    <fb:control>
+                                        <DateRangeSelection id="dateRange" required="false"/>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+
+                                <fb:FilterGroupItem groupName="__$INTERNAL$" name="Invoice" 
+                                    label="{appTxts>/visor.invoice}" mandatory="false" 
+                                    partOfCurrentVariant="true" visibleInFilterBar="true">
+                                    <fb:control>
+                                        <Input
+                                            id="inpInvoice" placeholder="{appTxts>/visor.invoice}"/>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                            </fb:filterGroupItems>
+                    </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+
+        </f:header>
+        <f:content>
+            <Table
+                sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
+                noDataText="{appTxts>/visor.noData}" 
+                fixedLayout="false"
+                growing="true"
+                id="tableVisor"
+                mode="None" 
+                alternateRowColors="true">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title text="{appTxts>/visor.tableTitle} ({properties>/rowsCount})"/>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column width="auto" hAlign="Left" vAlign="Top">
+                        <header>
+                            <Text text="{appTxts>/visor.folio}" width="auto" textAlign="Begin"/>
+                        </header>
+                    </Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top">
+                        <header>
+                            <Text text="{appTxts>/visor.order}" width="auto" textAlign="Begin"/>
+                        </header>
+                    </Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top">
+                        <header>
+                            <Text text="{appTxts>/visor.supplier}" width="auto" textAlign="Begin"/>
+                        </header>
+                    </Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top">
+                        <header>
+                            <Text text="{appTxts>/visor.receivedDate}" width="auto" textAlign="Begin"/>
+                        </header>
+                    </Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top">
+                        <header>
+                            <Text text="{appTxts>/visor.branchOffice}" width="auto" textAlign="Begin"/>
+                        </header>
+                    </Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top">
+                        <header>
+                            <Text text="{appTxts>/visor.invoice}" width="auto" textAlign="Begin"/>
+                        </header>
+                    </Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top">
+                        <header>
+                            <Text text="{appTxts>/visor.SerieFolio}" width="auto" textAlign="Begin"/>
+                        </header>
+                    </Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" mergeDuplicates="true">
+                        <header>
+                            <Text text="{appTxts>/visor.uuid}" width="auto" textAlign="Begin"/>
+                        </header>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation" press="onListItemPress">                    
+                        <cells>
+                            <Text text=""/>
+                            <Text text=""/>
+                            <Text text=""/>
+                            <Text text=""/>
+                            <Text text=""/>
+                            <Text text=""/>   
+                            <Text text=""/>  
+                            <Text text=""/>  
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>
