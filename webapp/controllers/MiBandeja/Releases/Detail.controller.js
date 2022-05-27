@@ -16,7 +16,7 @@ sap.ui.define([
 			this.oModel = this.getOwnerComponent().getModel();
 
 			this.oRouter.getRoute("detailRelease").attachPatternMatched(this._onDocumentMatched, this);
-
+            var oDRS2 = this.byId("dateRange");
 			[oExitButton, oEnterButton].forEach(function (oButton) {
 				oButton.addEventDelegate({
 					onAfterRendering: function () {
@@ -45,7 +45,7 @@ sap.ui.define([
 		_onDocumentMatched: function (oEvent) {
             this._release = oEvent.getParameter("arguments").releaseId || this._release || "0";
             var vMail = this.getOwnerComponent().getModel("userdata").getProperty("/IMail"); 
-
+            
             var response = inboxModel
                 .getJsonModel("/headInboxSet?$expand=ETATTACHNAV&$filter=IOption eq '4'"
                     + " and IMail eq '" + vMail + "'"
@@ -55,7 +55,8 @@ sap.ui.define([
                 var objResponse = response.getProperty("/results/0");
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(objResponse), "release");
             }
-
+            //var oDRS2 = this.byId("dateRange");
+            oDRS2.setDateValue(new Date(objResponse.getProperty("ESdmens/Zfechaenvio")));
             this.getSplitContObj().toDetail(this.createId("releaseDetail"));
         },
         downloadAttach: function (url, type) {

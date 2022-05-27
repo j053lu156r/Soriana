@@ -5,6 +5,7 @@
 		xmlns:f="sap.f"
         xmlns:card="sap.f.cards"
         xmlns:core="sap.ui.core" 
+        xmlns:rte="sap.ui.richtexteditor"
 		xmlns:form="sap.ui.layout.form">
 
 	<ObjectPageLayout id="releaseDetail" showTitleInHeaderContent="true" upperCaseAnchorBar="false">
@@ -34,7 +35,7 @@
                 <snappedContent>
                     <m:HBox>
                         <m:Label text="Remitente:" class="sapUiTinyMarginEnd" />
-                        <m:Text text="{path: 'release>/ESdmens/Zfechaenvio', formatter: '.formatDate'}"/>
+                        <m:Text text="{path: 'release>/ESdmens/Zremi'}"/>
                     </m:HBox>
                     <m:HBox>
                         <m:Label text="Fecha:" class="sapUiTinyMarginEnd" />
@@ -43,18 +44,82 @@
                 </snappedContent>
 
                 <snappedTitleOnMobile>
-                    <m:Title text="{release>/ESdmens/Ztext}"/>
+                    <m:Title text="{release>/IText}"/>
                 </snappedTitleOnMobile>
 
-            <navigationActions>
-                        <m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
-                        <m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
-                        <m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }" />
-                    </navigationActions>
+                            <navigationActions>
+                                <m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
+                                <m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
+                                <m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }" />
+                            </navigationActions>
+                    			<actions>
+                           
+                          
+                         
+                            
+                           
+						</actions>
             </ObjectPageDynamicHeaderTitle>
         </headerTitle>
 
         <sections>
+		<ObjectPageSection title="Información General">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<form:SimpleForm
+								maxContainerCols="2"
+								editable="true"
+								layout="ResponsiveGridLayout"
+								labelSpanL="12"
+								labelSpanM="12"
+								emptySpanL="0"
+								emptySpanM="0"
+								columnsL="3"
+								columnsM="3">
+                                <form:toolbar>
+                                    <m:Toolbar>
+                                    <m:Title text=""/>
+					                <m:ToolbarSpacer />
+                                          <m:Button
+                                                text="{appTxts>/realese.guardar}"
+                                                type="Emphasized"
+                                                visible="{= ${userdata>/ERol} === '0001' || ${userdata>/ERol} === '0002' ? true : false }"
+                                                press="editRealese"
+                                            />                           
+                                    </m:Toolbar>
+                                </form:toolbar>
+								<form:content>
+                                   
+                                    
+                                    <m:Label text="{appTxts>/release.publishdate}"/>
+                                    <m:DateRangeSelection id="dateRange" required="false" change="handleChange" />
+									
+                                   <m:Label text="{appTxts>/release.subject}"/>                                     
+									<m:Input id="Name1" value="{release>/ESdmens/Ztext}" maxLength="35"/>
+                                    
+                                    <rte:RichTextEditor id="message" editorType="TinyMCE5" customToolbar="false" 
+                                showGroupFont="true" showGroupLink="true" showGroupInsert="false" showGroupStructure="true"
+                                width="100%" value="{release>/IText}" ready="readyEditor" beforeEditorInit="befInit" height="350px"  />
+								</form:content>
+							</form:SimpleForm>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+
+
+
+
+
+
+
+
+
+
+
+
+
             <ObjectPageSection showTitle="false">
                 <subSections>
                     <ObjectPageSubSection>
@@ -94,4 +159,5 @@
             </ObjectPageSection>
         </sections>
     </ObjectPageLayout>
+    
 </mvc:View>
