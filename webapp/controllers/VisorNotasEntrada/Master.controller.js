@@ -19,8 +19,8 @@ sap.ui.define([
         },
 
         onPress: function(oEvent){
-            //this.getOwnerComponent().getRouter().navTo("detailVisorNotas", { layout: sap.f.LayoutType.MidColumnFullScreen}, true);
-            //this._oPropertiesModel.setProperty("/rowsCount", 10);
+            this.getOwnerComponent().getRouter().navTo("detailVisorNotas", { layout: sap.f.LayoutType.MidColumnFullScreen}, true);
+            this._oPropertiesModel.setProperty("/rowsCount", 10);
         }
     });
 });
