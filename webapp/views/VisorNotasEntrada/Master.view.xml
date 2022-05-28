@@ -63,7 +63,8 @@
         <f:content>
             <Table
                 sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
-                noDataText="{appTxts>/visor.noData}" 
+                noDataText="{appTxts>/visor.noData}"
+                autoPopinMode="true"
                 fixedLayout="false"
                 growing="true"
                 id="tableVisor"
@@ -72,47 +73,48 @@
                 <headerToolbar>
                     <OverflowToolbar>
                         <Title text="{appTxts>/visor.tableTitle} ({properties>/rowsCount})"/>
+                        <!-- <Button text="Holiiiiiiiiii" press="onPress"/> -->
                     </OverflowToolbar>
                 </headerToolbar>
                 <columns>
-                    <Column width="auto" hAlign="Left" vAlign="Top">
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" mergeDuplicates="true">
                         <header>
-                            <Text text="{appTxts>/visor.folio}" width="auto" textAlign="Begin"/>
+                            <Text text="{appTxts>/visor.uuid}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                         </header>
                     </Column>
-                    <Column width="auto" hAlign="Left" vAlign="Top">
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone">
                         <header>
-                            <Text text="{appTxts>/visor.order}" width="auto" textAlign="Begin"/>
+                            <Text text="{appTxts>/visor.folio}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                         </header>
                     </Column>
-                    <Column width="auto" hAlign="Left" vAlign="Top">
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone">
                         <header>
-                            <Text text="{appTxts>/visor.supplier}" width="auto" textAlign="Begin"/>
+                            <Text text="{appTxts>/visor.order}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                         </header>
                     </Column>
-                    <Column width="auto" hAlign="Left" vAlign="Top">
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone">
                         <header>
-                            <Text text="{appTxts>/visor.receivedDate}" width="auto" textAlign="Begin"/>
+                            <Text text="{appTxts>/visor.supplier}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                         </header>
                     </Column>
-                    <Column width="auto" hAlign="Left" vAlign="Top">
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone">
                         <header>
-                            <Text text="{appTxts>/visor.branchOffice}" width="auto" textAlign="Begin"/>
+                            <Text text="{appTxts>/visor.receivedDate}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                         </header>
                     </Column>
-                    <Column width="auto" hAlign="Left" vAlign="Top">
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone">
                         <header>
-                            <Text text="{appTxts>/visor.invoice}" width="auto" textAlign="Begin"/>
+                            <Text text="{appTxts>/visor.branchOffice}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                         </header>
                     </Column>
-                    <Column width="auto" hAlign="Left" vAlign="Top">
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone">
                         <header>
-                            <Text text="{appTxts>/visor.SerieFolio}" width="auto" textAlign="Begin"/>
+                            <Text text="{appTxts>/visor.invoice}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                         </header>
                     </Column>
-                    <Column width="auto" hAlign="Left" vAlign="Top" mergeDuplicates="true">
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone">
                         <header>
-                            <Text text="{appTxts>/visor.uuid}" width="auto" textAlign="Begin"/>
+                            <Text text="{appTxts>/visor.SerieFolio}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                         </header>
                     </Column>
                 </columns>
