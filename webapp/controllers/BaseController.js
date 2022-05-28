@@ -805,6 +805,16 @@ sap.ui.define([
             var blob = new Blob([byteArray.buffer], { type: type });
             return URL.createObjectURL(blob);
         },
+        buildBlob: function (url, type) {
+            var parts = url.split(",");
+            var decodedPdfContent = atob(parts[1]);
+            var byteArray = new Uint8Array(decodedPdfContent.length)
+            for (var i = 0; i < decodedPdfContent.length; i++) {
+                byteArray[i] = decodedPdfContent.charCodeAt(i);
+            }
+            var blob = new Blob([byteArray.buffer], { type: type });
+            return (blob);
+        },
         findFunName: function (funct) {
             var fNames = this.getOwnerComponent().getModel("funNames").getProperty("/results");
             var changeI = funct.toString();

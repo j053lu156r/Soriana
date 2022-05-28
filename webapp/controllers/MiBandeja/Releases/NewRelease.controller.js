@@ -259,6 +259,67 @@ sap.ui.define([
 
             fileList;
         },
+        onUpload: function (e) {
+			this._import(e.getParameter("files") && e.getParameter("files")[0]);
+		},
+
+		_import: function (file) {
+			var that = this;
+			var excelData = {};
+			if (file && window.FileReader) {
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					var data = e.target.result;
+					var workbook = XLSX.read(data, {
+						type: 'binary'
+					});
+					workbook.SheetNames.forEach(function (sheetName) {
+						// Here is your object for every sheet in workbook
+						excelData = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        if (excelData != null && excelData.length > 0) {
+
+                            var newRelease = {
+                                "suppList": []
+                            };
+                            excelData.forEach(elementexcel => {
+                    
+                                if (that.getOwnerComponent().getModel("newRelease")) {
+                                    newRelease.suppList = that.getOwnerComponent().getModel("newRelease").getProperty("/suppList");
+                                    if (newRelease.suppList != null && !newRelease.suppList.find(element => element.title == elementexcel.title)) {
+                                        newRelease.suppList.push(elementexcel);
+                                    }
+                                } else {
+                                    newRelease.suppList.push(elementexcel);
+                                }
+                    
+                                var model = new sap.ui.model.json.JSONModel(newRelease);
+                                that.getOwnerComponent().setModel(model, "newRelease");
+                    
+
+
+
+                            });
+                        }
+
+
+
+					});
+
+                   
+        
+
+					// Setting the data to the local model 
+					//that.localModel.setData({
+					//	items: excelData
+					//});
+					//that.localModel.refresh(true);
+				};
+				reader.onerror = function (ex) {
+					console.log(ex);
+				};
+				reader.readAsBinaryString(file);
+			}
+		},
         addAttach: function (oEvent) {
             var pItem = oEvent.getParameter("item");
             var oItem = pItem.getFileObject();

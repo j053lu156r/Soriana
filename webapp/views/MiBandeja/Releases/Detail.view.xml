@@ -63,7 +63,7 @@
         </headerTitle>
 
         <sections>
-		<ObjectPageSection title="Información General">
+		<ObjectPageSection title="{appTxts>/release.message}">
 				<subSections>
 					<ObjectPageSubSection>
 						<blocks>
@@ -75,17 +75,17 @@
 								labelSpanM="12"
 								emptySpanL="0"
 								emptySpanM="0"
-								columnsL="3"
-								columnsM="3">
+								columnsL="2"
+								columnsM="2">
                                 <form:toolbar>
                                     <m:Toolbar>
                                     <m:Title text=""/>
 					                <m:ToolbarSpacer />
                                           <m:Button
-                                                text="{appTxts>/realese.guardar}"
+                                                text="{appTxts>/release.guardar}"
                                                 type="Emphasized"
                                                 visible="{= ${userdata>/ERol} === '0001' || ${userdata>/ERol} === '0002' ? true : false }"
-                                                press="editRealese"
+                                                press="editRelease"
                                             />                           
                                     </m:Toolbar>
                                 </form:toolbar>
@@ -93,10 +93,10 @@
                                    
                                     
                                     <m:Label text="{appTxts>/release.publishdate}"/>
-                                    <m:DateRangeSelection id="dateRange" required="false" change="handleChange" />
+                                    <m:DateRangeSelection id="dateRange" required="false" change="handleChange"  />
 									
                                    <m:Label text="{appTxts>/release.subject}"/>                                     
-									<m:Input id="Name1" value="{release>/ESdmens/Ztext}" maxLength="35"/>
+									<m:Input id="subject" value="{release>/ESdmens/Ztext}" maxLength="35"/>
                                     
                                     <rte:RichTextEditor id="message" editorType="TinyMCE5" customToolbar="false" 
                                 showGroupFont="true" showGroupLink="true" showGroupInsert="false" showGroupStructure="true"
@@ -120,13 +120,9 @@
 
 
 
-            <ObjectPageSection showTitle="false">
+            <ObjectPageSection title="{appTxts>/release.attachments}" showTitle="false">
                 <subSections>
-                    <ObjectPageSubSection>
-                        <blocks>
-                            <m:FormattedText htmlText="{release>/IText}" width="100%" />
-                        </blocks>
-                    </ObjectPageSubSection>
+                  
                     <ObjectPageSubSection>
                         <blocks>
                             <f:GridList
@@ -147,7 +143,7 @@
                                                     iconSrc="{path: 'release>Zdoctype', formatter: '.setIconAttach'}" />
                                             </f:header>
                                             <f:content>
-                                                <m:Button icon="sap-icon://download" text="{appTxts>/global.download}" press=".downloadAttach(${release>Zdocvalue64}, ${release>Zdoctype})" />
+                                                <m:Button icon="sap-icon://download" text="{appTxts>/global.download}" press=".downloadAttach(${release>Zdocvalue64}, ${release>Zdoctype}, ${release>Zatname})" />
                                             </f:content>
                                         </f:Card>
                                     </m:VBox>
