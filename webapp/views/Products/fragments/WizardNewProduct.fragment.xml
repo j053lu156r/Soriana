@@ -150,16 +150,25 @@
                                                         <Input value="{Folio>/Modelo}" id="model" />
                                                     </form:fields>
                                                 </form:FormElement>
+
                                                 <form:FormElement label="{appTxts>/products.description}">
                                                     <form:fields>
                                                         <Input required="true" value="{Folio>/DescrArt}" id="description"/>
                                                     </form:fields>
                                                 </form:FormElement>
+
+                                                <form:FormElement label="Caracteristica Principal">
+                                                    <form:fields>
+                                                        <Input value="{Folio>/CaracPrin}" id="featureMain"/>
+                                                    </form:fields>
+                                                </form:FormElement>
+
                                                 <form:FormElement label="{appTxts>/products.feature2}">
                                                     <form:fields>
                                                         <Input value="{Folio>/Carac2}" id="feature2"/>
                                                     </form:fields>
                                                 </form:FormElement>
+
                                                 <form:FormElement label="{appTxts>/products.feature3}">
                                                     <form:fields>
                                                         <Input value="{Folio>/Carac3}" id="feature3"/>
@@ -573,12 +582,17 @@
 
                                     <Label text="Tipo de bonificación " />
                                     <!-- <Input value="{Folio>/Bonif}" /> -->
+                                    <ComboBox selectedKey="{Folio>/TipoBonif}" items="{path : 'Catalogos>/TiposBonificacion/results'}" required="true" change="changeTipoBonif">
+                                        <items>
+                                            <core:Item key="{Catalogos>text}" text="{Catalogos>text}" />
+                                        </items>
+                                    </ComboBox>
 
                                     <Label text="Valor de bonificación (%)" />
-                                    <Input id="ValBoni" value="{Folio>/ValBoni}" type="Number" placeholder="{appTxts>/products.porcentajetxt}"  liveChange="calcularCostNetCom"/>
+                                    <Input id="ValBoni" value="{Folio>/ValBoni}" type="Number" placeholder="{appTxts>/products.porcentajetxt}"  liveChange="calcularCostNetCom" editable="false"/>
 
                                     <Label text="Unidades de bonificación" />
-                                    <Input value="{Folio>/UndBon}" type="Number"/>
+                                    <Input id="UnisBonif"  value="{Folio>/UndBon}" type="Number"  editable="false"/>
                                     
 
                                     <core:Title text="Costos de compra" />
@@ -590,11 +604,11 @@
                                     <Label text="Costo bruto" />
                                     <Input id="CostoB" value="{Folio>/CostoB}" type="Number" required="true" liveChange="calcularCostNetVen"/>
                                     <Label text="Capacidad de embarque" />
-                                    <!-- <Input id="CapEmbar" value="{Folio>/CapEmbar}" type="Number" required="true" liveChange="calcularCostNetVen"/> -->
+                                    <Input id="CapEmpaq2" value="{Folio>/CapEmpaq}" type="Number" required="true" editable="false" liveChange="calcularCostNetVen"/>
                                     <Label text="Costo Neto Unidad de compra" />
-                                    <Input id="CostNetComp" value="{Folio>/CostNetComp}"  type="Number" required="true" editable="false"/>
+                                    <Input id="CostNetComp" value="{Folio>/CostNUCompra}"  type="Number" required="true" editable="false"/>
                                     <Label text="Costo Neto Unidad de venta" />
-                                    <Input id="CostNetVen" value="{Folio>/CostNetVen}" type="Number" required="true" editable="false"/>
+                                    <Input id="CostNetVen" value="{Folio>/CostNUVenta}" type="Number" required="true" editable="false"/>
                                     <Label text="Precio sugerido" />
                                     <Input id="PSug" value="{Folio>/PSug}" type="Number" required="true"/>
                                     
@@ -602,138 +616,55 @@
                             </form:SimpleForm>
                         </VBox>
 					</WizardStep>
+
+                    <!-- Upload Images Step -->
                     <WizardStep 
                         id="ImagesStep"
 						complete="onImageStepComplete"
 						validated="true"
 						title="Imágenes">
+
                         <Text text="En esta pantalla se muestran las imágenes que se tienen registradas en GS1 y podrá agregar nuevas imágenes."/>
-<!-- 
-                         <Table mode="MultiSelect" id="imagesList"
-                                items="{ path : 'ITARTVAR>/results'}">
-                                <headerToolbar>
-                                    <OverflowToolbar>
-                                        <ToolbarSpacer/>
-                                        
-                                        <Select 
-                                            id="paginatedImagesList"
-                                            visible="{= ${ITARTVAR>/Paginated/results/length} > 0 }"
-                                            change=".paginar(${$parameters>/selectedItem}, 'ITARTVAR', '', 'tableWizardVariants')">
-                                            <items>
-                                                <core:Item key="10" text="10"/>
-                                                <core:Item key="20" text="20"/>
-                                                <core:Item key="50" text="50"/>
-                                                <core:Item key="100" text="100"/>
-                                            </items>
-                                        </Select>
-                                    </OverflowToolbar>
-                                </headerToolbar>
-                                <columns>
-                                    <Column width="auto" hAlign="Left">
-                                        <header>
-                                            <Text text="No" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                        </header>
-                                        <footer/>
-                                    </Column>
-                                    <Column width="auto" hAlign="Left">
-                                        <header>
-                                            <Text text="Talla/Tamaño" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                        </header>
-                                        <footer/>
-                                    </Column>
-                                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-                                        <header>
-                                            <Text text="Color/Sabor/Aroma" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                        </header>
-                                    </Column>
-                                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-                                        <header>
-                                        <Text text="EAN/UPC" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                        </header>
-                                        <footer/>
-                                    </Column>
-                                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-                                        <header>
-                                        <Text text="Código de empaque" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                        </header>
-                                        <footer/>
-                                    </Column>
-                                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-                                        <header>
-                                        <Text text="Proporción" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                        </header>
-                                        <footer/>
-                                    </Column>
-                                                    
-                                </columns>
-                                <items>
-                                    <ColumnListItem press="onListItemPress">
-                                        <cells>
-                                            <ObjectIdentifier text="{ITARTVAR>index}" />
-                                            <ComboBox selectedKey="{ITARTVAR>CaracTalla}" items="{path : 'Catalogos>/TallaSize/results'}">
-                                                <items>
-                                                    <core:Item key="{Catalogos>Valorcarac}" text="{Catalogos>Valorcarac}"/>
-                                                </items>
-                                            </ComboBox>
-                                            <ComboBox selectedKey="{ITARTVAR>Colsabaro}" items="{path : 'Catalogos>/ColorSaborAroma/results'}">
-                                                <items>
-                                                    <core:Item key="{Catalogos>Valorcarac}" text="{Catalogos>Valorcarac}"/>
-                                                </items>
-                                            </ComboBox>
-                                            <Input value="{ITARTVAR>CodVent}" change=".changeQty"></Input>
-                                            
-                                            <Input value="{ITARTVAR>CodCompra}" change=".changeQty"></Input>
-                                            <Input value="{ITARTVAR>Proporcion}" change=".changeQty"></Input>
-                                            
-                                        </cells>
-                                    </ColumnListItem>
-                                </items>
-                            </Table> -->
 
                         <upload:UploadSet 
-                            id="attachmentDocuments" 
+                            id="ImageUploadSet" 
                             instantUpload="false" 
-                            showIcons="true" 
+                            showIcons="false"
                             uploadEnabled="true" 
-                            terminationEnabled="false" 
-                            fileTypes="xml,pdf,zip,rar,xls,xlsx" 
-                            maxFileNameLength="15" 
-                            maxFileSize="5" 
-                            selectionChanged="onChangeUpload" 
-                            fieldGroupIds="aclaracion"
-                            items="{path: '/attachItems', templateShareable: false}" 
-                            mediaTypes="application/pdf,text/xml,application/xml,application/zip,application/x-rar-compressed,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                            terminationEnabled="true" 
+                            fileTypes="png,jpg,jpeg" 
+                            maxFileNameLength="20" 
+                            maxFileSize="4" 
+                            items="{path:'FolioImages>/items', templateShareable: false}" 
+                            multiple="true"
+                            mode="MultiSelect"
+                            afterItemAdded="imageAfterAddedTriggered"
+                            afterItemRemoved="imageRemovedTriggered"
+                        >
+
                             <upload:toolbar>
-                                <OverflowToolbar>
-                                </OverflowToolbar>
+                                        <OverflowToolbar>
+                                             <Label text="Cantidad de imagenes: "/>
+                                             <Text id="imagesCounter" text="0"/> 
+                                             <ToolbarSpacer/>            
+                                        </OverflowToolbar>
                             </upload:toolbar>
+
                             <upload:items>
                                 <upload:UploadSetItem 
-                                    fileName="{fileName}" 
-                                    mediaType="{mediaType}" 
-                                    url="{url}" 
-                                    thumbnailUrl="{thumbnailUrl}" 
-                                    attributes="{path: 'attributes', templateShareable: false}" 
-                                    markers="{path: 'markers', templateShareable: false}" 
-                                    statuses="{path: 'statuses', templateShareable: false}" 
-                                    uploadState="{uploadState}">
-                                    <upload:attributes>
-                                        <ObjectAttribute 
-                                            title="{title}" 
-                                            text="{text}" 
-                                            active="{active}"/>
-                                    </upload:attributes>
-                                    <upload:markers>
-                                        <ObjectMarker type="{type}" visibility="{visibility}"/>
-                                    </upload:markers>
-                                    <upload:statuses>
-                                        <ObjectStatus title="{title}" text="{text}" state="{state}" icon="{icon}" active="{active}"/>
-                                    </upload:statuses>
+                                    fileName="{FolioImages>fileName}" 
+                                    mediaType="{FolioImages>mediaType}" 
+                                    url="{FolioImages>url}" 
+                                    thumbnailUrl="{FolioImages>thumbnailUrl}" 
+                                    uploadState="{FolioImages>uploadState}">
+                                    
                                 </upload:UploadSetItem>
                             </upload:items>
                         </upload:UploadSet>
 								
 					</WizardStep>
+
+                    <!-- Review Step -->
 					<WizardStep id="ReviewPage"
 							activate="reviewActivate"
 							complete="reviewComplete"
@@ -777,6 +708,9 @@
 
                                         <Label text="{appTxts>/products.description}"/>
                                         <Text text="{FolioToShow>/DescrArt}" />
+
+                                        <Label text="Caracteristica Principal"/>
+                                        <Text text="{FolioToShow>/CaracPrin}" />
 
                                         <Label text="{appTxts>/products.feature2}"/>
                                         <Text text="{FolioToShow>/Carac2}" />
@@ -964,23 +898,55 @@
                                     
                                     <core:Title text="Costos de compra" />
 
-                                    <Label text="Costo bruto" />
+                                    <Label text="Costo Bruto" />
                                     <Text text="{FolioToShow>/CostoB}" />
 
-                                    <Label text="Capacidad de embarque" />
-                                    <Text text="{FolioToShow>/CapEmbar}" />
+                                    <Label text="Capacidad de Empaque" />
+                                    <Text text="{FolioToShow>/CapEmpaq}" />
 
-                                    <Label text="Costo Neto Unidad de compra" />
-                                    <Text text="{FolioToShow>/CostNetComp}" />
+                                    <Label text="Costo Neto Unidad de Compra" />
+                                    <Text text="{FolioToShow>/CostNUCompra}" />
 
-                                    <Label text="Costo Neto Unidad de venta" />
-                                    <Text text="{FolioToShow>/CostNetVen}" />
+                                    <Label text="Costo Neto Unidad de Venta" />
+                                    <Text text="{FolioToShow>/CostNUVenta}" />
 
-                                    <Label text="Precio sugerido" />
+                                    <Label text="Precio Sugerido" />
                                     <Text text="{FolioToShow>/PSug}" />
                                     
 									</form:content>
 								</form:SimpleForm>
+
+                                <form:SimpleForm
+										title="4. Imagenes "
+										minWidth="1024"
+										editable="false"
+										layout="ResponsiveGridLayout">
+                                        <form:content>
+
+                                            <f:GridList
+                                                id="gridList"
+                                                items="{FolioImages>/items}">
+                                                <f:GridListItem>
+                                                    <VBox class="sapUiSmallMargin">
+                                                        <layoutData>
+                                                            <FlexItemData growFactor="1" shrinkFactor="0" /> <!-- Don't shrink below minimum size. Fill space if available. -->
+                                                        </layoutData>
+
+                                                        <Title text="{FolioImages>mProperties/fileName}" wrapping="true" />
+                                                        <Image
+                                                            src="{
+                                                                path: 'FolioImages>mProperties/url'
+                                                            }"
+                                                            width="100%"
+                                                            height="100%"
+                                                            alt="{FolioImages>mProperties/fileName}"
+                                                            class="sapUiTinyMarginTop"/>
+                                                    </VBox>
+                                                </f:GridListItem>
+                                            </f:GridList>
+                                        
+                                        </form:content>
+                                </form:SimpleForm>
 					</WizardStep>
 				</Wizard>
 			</f:content>
