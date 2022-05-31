@@ -68,6 +68,7 @@ sap.ui.define([
         },
         editRelease: function () {
             //var subject = this.getView().byId("subject").getValue();
+            var subject = this.getOwnerComponent().getModel("release").getProperty("/ESdmens/Ztext"); 
             var message = this.getView().byId("message").getValue();
             var dateRange = this.getView().byId("dateRange");
            // var suppList = this.getView().byId("suppList");
@@ -108,10 +109,10 @@ sap.ui.define([
                 "IEdate": "", // endDate,
                 "IIdmen" :this._release ,
                 "IFmail": "",
-                "ISubject": "",// subject, no se modifica
+                "ISubject":  subject,
                 "IText": message, //-TEXTO DEL MENSAJE -
                 "ITPROVNAV": [],
-                "ITATTACNAV": [],
+                "ITATTACNAV": []
             }
 
             var response = inboxModel.create("/headInboxSet", objRelease);
@@ -127,11 +128,20 @@ sap.ui.define([
                         }.bind(this)
                     });
                 } else {
-                    sap.m.MessageBox.error(response.EMessage);
+                    if(response.mensaje != null){
+                        sap.m.MessageBox.error(response.mensaje);
+                    }else{
+                        sap.m.MessageBox.error("Ocurrio un error");
+                    }
+                    
                 }
             } else {
                 sap.m.MessageBox.error("No se pudo conectar con el servidor, intente nuevamente.");
             }
+        },
+        goToMainRelease: function () {
+            this.oRouter.navTo("masterRelease");
+            this.clearFields();
         },
         formatDateQuote: function (v) {
             if (v) {

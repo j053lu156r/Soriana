@@ -622,9 +622,14 @@ sap.ui.define([
                     "barVisible": false
                 };
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(obj), "configSite");
+                var countmails = this.getInboxCount();            
+                this.getOwnerComponent().getModel("configSite").setProperty("/inboxMetric", countmails);
             }
+            var countmails = this.getInboxCount();            
+            this.getOwnerComponent().getModel("configSite").setProperty("/inboxMetric", countmails);
         },
         getConfigModel: function () {
+           
             return this.getOwnerComponent().getModel("configSite");
         },
         paginate: function (modelName, pTable, iterator, startRow) {
@@ -871,6 +876,26 @@ sap.ui.define([
             };
             reader.readAsDataURL(file);
         },
+        getInboxCount:  function () {
+            
+            
+            var countMails = 0;
+            
+            if (this.getOwnerComponent().getModel("userdata") != null) {
+                var vMail = this.getOwnerComponent().getModel("userdata").getProperty("/IMail");
+            var response = inboxModel.getJsonModel(
+                `/headInboxSet?$expand=ETINBOXUNAV&$filter=IOption eq '2' and IMail eq '${vMail}'`);
+                if (response != null) {
+                    var objResponse = response.getProperty("/results/0/ETINBOXUNAV/results");
+                    //countMails= objResponse.getData().length;
+                     countMails =  parseInt(response.getProperty("/results/0/ENmes"),10);
+                    }
+                
+                    
+            }
+        return countMails;
+        },
+
         getStatus: function () {
             var oView = this.getView();
 
