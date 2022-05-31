@@ -75,6 +75,15 @@ sap.ui.define([
                         { value: '1B', text: this.getOwnerComponent().getModel("appTxts").getProperty('/products.expressOption') }
                     ]
                 };
+                
+                let CatTipoBonif = {
+                    results: [
+                        { value: 1, text: 'Por Porcentajes' },
+                        { value: 2, text: 'Por Unidades' },
+                        { value: 3, text: 'Ninguna' }
+                    ]
+                };
+
                 let CatTiposEtiqueta = {
                     results: [
                         { value: 1, text: 'Colgar' },
@@ -109,6 +118,7 @@ sap.ui.define([
                 this.getOwnerComponent().getModel("Catalogos").setProperty('/EstrategiaSalida', CatEstrategiaSalida);
                 this.getOwnerComponent().getModel("Catalogos").setProperty('/UnidadVolumen', UnidadVolumen);
                 this.getOwnerComponent().getModel("Catalogos").setProperty('/UnidadPeso', UnidadPeso);
+                this.getOwnerComponent().getModel("Catalogos").setProperty('/TiposBonificacion', CatTipoBonif);
 
                 var url = `/HdrcatproSet?$expand=ETTART,ETCOUNTRYNAV,ETCODENAV,ETBRANDSNAV,ETTCARCV,ETUWEIG,ETULONG,ETUVOL,ETUNM,ETGPOART&$filter=IOption eq '4'`;
                 Model.getJsonModelAsync(url, function (response, that) {
@@ -749,10 +759,14 @@ sap.ui.define([
 
                 actions: [MessageBox.Action.YES, MessageBox.Action.NO],
 
-                onClose: function (oAction) {
+                onClose: async function (oAction) {
                     if (oAction === MessageBox.Action.YES) {
 
                         if (sMessageBoxType == "confirm") {
+                            this.attachImagesToModel();
+
+                            let imagesToAttach = JSON.parse(this.getOwnerComponent().getModel("images64").getJSON()).attachArray;
+                            console.log("imagesToAttach: ", imagesToAttach);
 
                             let folioModel = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
                             folioModel.TMoneda = "MXN";
@@ -763,8 +777,8 @@ sap.ui.define([
                                 "ITREC": [
                                     folioModel
                                 ],
-                                "ITARTVAR": [
-                                ]
+                                "ITARTVAR": [],
+                                "ITIMGART": [...imagesToAttach]
                             };
 
                             console.log(" >>>>>>> CREATING PRDUCT: ", createObjReq);
@@ -790,6 +804,12 @@ sap.ui.define([
 
                             }
 
+                        }else{
+                            this._oWizard.discardProgress(this._oWizard.getSteps()[0]);
+                            this.byId("wizardDialog").close();
+                            this.getOwnerComponent().getModel("Folio").setData({});
+                            this.getOwnerComponent().getModel("FolioToShow").setData({});
+                            this.getOwnerComponent().getModel("FolioImages").setData({});
                         }
 
                     }
@@ -854,7 +874,7 @@ sap.ui.define([
 
             this.getOwnerComponent().getModel("FolioToShow").setData({ ...Folio });
 
-            console.log(this.getOwnerComponent().getModel("FolioToShow").getData());
+            // console.log(this.getOwnerComponent().getModel("FolioToShow").getData());
         },
 
         productTypeComplete: function (oControlEvent) {
@@ -951,6 +971,17 @@ sap.ui.define([
                 // let stra = this.getView().byId("exitStrategy").getValue();
                 // this.getOwnerComponent().getModel("FolioToShow").setProperty("/EstSalida", stra);
                 this.getView().byId('exitStrategy').setValueState(sap.ui.core.ValueState.None);
+            }
+
+            // Estrategia de salida - exit strategy
+            if (ModelFolio.getProperty('/ForNegoc') == undefined || ModelFolio.getProperty('/ForNegoc').trim() == '') {
+                validated = false;
+                this.getView().byId('negotiatedFormat').setValueState(sap.ui.core.ValueState.Error);
+            }
+            else {
+                // let stra = this.getView().byId("exitStrategy").getValue();
+                // this.getOwnerComponent().getModel("FolioToShow").setProperty("/EstSalida", stra);
+                this.getView().byId('negotiatedFormat').setValueState(sap.ui.core.ValueState.None);
             }
 
             this.getView().byId('ProductTypeStep').setValidated(validated || _testingSteps);
@@ -1238,8 +1269,8 @@ sap.ui.define([
 
             this.getView().byId('DimensionsStep').setValidated(validated || _testingSteps);
 
-            console.log(">>>>>>>>>>>>>>> TERMINO VALIDACION DIMESIONES <<<<<<<<<<<<<<<<<<<<");
-            console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-");
+            // console.log(">>>>>>>>>>>>>>> TERMINO VALIDACION DIMESIONES <<<<<<<<<<<<<<<<<<<<");
+            // console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-");
 
         },
 
@@ -1252,8 +1283,8 @@ sap.ui.define([
 
             // if (Folio.CapEmbar == undefined || Folio.CapEmbar.trim() == '') validated = false;
             if (Folio.CostoB == undefined || Folio.CostoB.trim() == '') validated = false;
-            // if (Folio.CostNetComp == undefined || Folio.CostNetComp.trim() == '') validated = false;
-            // if (Folio.CostNetVen == undefined || Folio.CostNetVen.trim() == '') validated = false;
+            if (Folio.CostNUCompra == undefined || Folio.CostNUCompra.trim() == '') validated = false;
+            if (Folio.CostNUVenta == undefined || Folio.CostNUVenta.trim() == '') validated = false;
             if (Folio.PSug == undefined || Folio.PSug.trim() == '') validated = false;
 
             if (!validated) {
@@ -1274,7 +1305,7 @@ sap.ui.define([
             porcentajesXaplicar.push((this.byId("DscNormal3").getValue()) ? this.byId("DscNormal3").getValue() / 100 : 0);
             porcentajesXaplicar.push((this.byId("DscAdicional").getValue()) ? this.byId("DscAdicional").getValue() / 100 : 0);
             porcentajesXaplicar.push((this.byId("DscPpago").getValue()) ? this.byId("DscPpago").getValue() / 100 : 0);
-            porcentajesXaplicar.push((this.byId("ValBoni").getValue()) ? this.byId("ValBoni").getValue() / 100 : 0);
+            //porcentajesXaplicar.push((this.byId("ValBoni").getValue()) ? this.byId("ValBoni").getValue() / 100 : 0);
 
             let costnetcom = costob;
 
@@ -1282,17 +1313,17 @@ sap.ui.define([
                 costnetcom -= (costnetcom * (porcentaje))
             });
 
-            // this.byId("CostNetComp").setValue(costnetcom);
+             this.byId("CostNetComp").setValue(costnetcom);
         },
 
         calcularCostNetVen: function (oControlEvent) {
 
             let costob = (this.byId("CostoB").getValue()) ? this.byId("CostoB").getValue() : 0;
-            let capembar = (this.byId("CapEmbar").getValue() && this.byId("CapEmbar").getValue() > 0) ? this.byId("CapEmbar").getValue() : 1;
+            let capembar = (this.byId("CapEmpaq2").getValue() && this.byId("CapEmpaq2").getValue() > 0) ? this.byId("CapEmpaq2").getValue() : 1;
 
             let costnetven = parseFloat(costob) / parseFloat(capembar);
 
-            // this.byId("CostNetVen").setValue(costnetven);
+             this.byId("CostNetVen").setValue(costnetven);
 
             this.calcularCostNetCom(null);
 
@@ -1362,7 +1393,7 @@ sap.ui.define([
 
             //oEvent.getSource().getBinding("items").filter([]);
 
-            console.log(">>>>>>>> Producto Base Selected: ", oSelectedItem.getObject());
+            // console.log(">>>>>>>> Producto Base Selected: ", oSelectedItem.getObject());
 
             if (!oSelectedItem) {
                 return;
@@ -1687,7 +1718,7 @@ sap.ui.define([
         },
         onSuggestionCountryItemSelected: function (oEvent) {
             var oItem = oEvent.getParameter("selectedItem");
-            console.log(oItem);
+            // console.log(oItem);
             var oText = oItem ? oItem.getKey() : "";
             //this.byId("selectedKeyIndicator").setText(oText);
         },
@@ -1696,8 +1727,7 @@ sap.ui.define([
             if (oEvent.getParameters().selected) {
                 this.getView().byId('size').setEditable(false).setValue('');
                 this.getView().byId('qualities').setEditable(false).setValue('');
-            }
-            else {
+            } else {
                 this.getView().byId('size').setEditable(true);
                 this.getView().byId('qualities').setEditable(true);
             }
@@ -1707,13 +1737,13 @@ sap.ui.define([
             let numberItemsAdded = this.byId("ImageUploadSet").getItems().length;
 
             if (numberItemsAdded <= 11 ) {
-                let incommingUploadSetItem = oControlEvent.getParameter("item").setUploadState(sap.m.UploadState.Complete);
+                let incommingUploadSetItem = oControlEvent.getParameter("item");
+                incommingUploadSetItem.setUploadState(sap.m.UploadState.Complete);
                 let path = URL.createObjectURL(incommingUploadSetItem.getFileObject());
                 incommingUploadSetItem.setUrl(path);
                 incommingUploadSetItem.setThumbnailUrl(path);
-                //this.byId("ImageUploadSet").addItem(oControlEvent.getParameter("item").setUploadState(sap.m.UploadState.Complete));
                 this.byId("ImageUploadSet").addItem(incommingUploadSetItem);
-                console.log("incommingUploadSetItem: ", incommingUploadSetItem); 
+                this.getOwnerComponent().getModel("FolioImages").setProperty("/items",this.byId("ImageUploadSet").getItems());
             } 
 
             if(numberItemsAdded >= 11) {
@@ -1723,18 +1753,71 @@ sap.ui.define([
 
             this.byId("imagesCounter").setText(this.byId("ImageUploadSet").getItems().length);
 
-            console.log("UploadSet Items: ", this.byId("ImageUploadSet").getItems());
+            // console.log("Upload SET Items  : ", this.byId("ImageUploadSet").getItems());
+
+            // console.log("FolioImages Items: ", this.getOwnerComponent().getModel("FolioImages").getProperty("/items"));
 
         },
 
         imageRemovedTriggered(oControlEvent){
             let numberItemsAdded = this.byId("ImageUploadSet").getItems().length;
             this.byId("imagesCounter").setText(numberItemsAdded);
+            this.getOwnerComponent().getModel("FolioImages").setProperty("/items",this.byId("ImageUploadSet").getItems());
             if (numberItemsAdded <= 11) {
                 this.byId("ImageUploadSet").setUploadEnabled(true);
             }
+        },
 
-            console.log("UploadSet Items: ", this.byId("ImageUploadSet").getItems());
+         attachImagesToModel(){
+
+            let folioImages = this.getOwnerComponent().getModel("FolioImages").getProperty("/items");
+            
+            let base64imgArray =  folioImages.map( (imageFolio)=>{
+
+                let reader = new FileReader();
+                let oItem = imageFolio.getFileObject();
+                let oFile = {};
+                oFile.Zatname = oItem.name;
+                oFile.Zdoctype = oItem.type;
+                oFile.Zdocvalue64 = "base64";
+
+                reader.onload = function (evn) {
+                    oFile.Zdocvalue64 = evn.target.result;
+                };
+
+                reader.readAsDataURL(oItem);
+
+                return oFile;
+            });
+
+            this.getOwnerComponent().setModel(new JSONModel(), "images64");
+            this.getOwnerComponent().getModel("images64").setProperty("/attachArray", base64imgArray );
+
+            console.log("DATA IAMGES BASE64 : ", this.getOwnerComponent().getModel("images64").getData());
+            
+        },
+
+        changeTipoBonif(oControlEvent){
+            let selected = oControlEvent.getParameter("value");
+
+            this.byId("ValBoni").setValue("");
+            this.byId("UnisBonif").setValue("");
+
+            switch (selected) {
+                case "Ninguna":
+                    this.byId("ValBoni").setEditable(false);
+                    this.byId("UnisBonif").setEditable(false);
+                    break;
+                case "Por Porcentajes":
+                        this.byId("ValBoni").setEditable(true);
+                        this.byId("UnisBonif").setEditable(false);
+                        break;
+                case "Por Unidades":
+                        this.byId("ValBoni").setEditable(true);
+                        this.byId("UnisBonif").setEditable(true);
+                        break;
+            }
+            
         }
     })
 });
