@@ -344,7 +344,9 @@ sap.ui.define([
             }
         },
         handleEditBtn: function () {
-            
+            if (!this.hasAccess(47)) {
+                return false;
+            }
             if (!this._EditQuoteDialog) {
                 this._EditQuoteDialog = sap.ui.xmlfragment("editValuesQuote", "demo.views.Quotes.EditDates", this);
                 this.getView().addDependent(this._EditQuoteDialog);
