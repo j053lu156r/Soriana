@@ -45,7 +45,7 @@ sap.ui.define([
 
             let doc_BELNR = documentoInput.getValue();
 
-            //checbox
+            //checbox validaciones
 
              let partidasFiltro = this.getView().byId("checkPartidas");
 
