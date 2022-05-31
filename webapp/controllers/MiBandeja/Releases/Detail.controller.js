@@ -6,6 +6,7 @@ sap.ui.define([
     "use strict";
     
     var inboxModel = new this.MyInbox();
+   
 
 	return Controller.extend("demo.controllers.MiBandeja.Releases.Detail", {
 		onInit: function () {
@@ -63,10 +64,10 @@ sap.ui.define([
             }
                       
            
-            this.getSplitContObj().toDetail(this.createId("releaseDetail"));
+            //this.getSplitContObj().toDetail(this.createId("releaseDetail"));  no se para que pusieron esta funcion
         },
         editRelease: function () {
-            var subject = this.getView().byId("subject").getValue();
+            //var subject = this.getView().byId("subject").getValue();
             var message = this.getView().byId("message").getValue();
             var dateRange = this.getView().byId("dateRange");
            // var suppList = this.getView().byId("suppList");
@@ -79,21 +80,22 @@ sap.ui.define([
             var itemsAttach = this.getView().getModel();
 
             //Fechas de entrega
+            /*
             var startDate = this.buildSapDate(dateRange.getDateValue());
             var endDate = this.buildSapDate(dateRange.getSecondDateValue());
 
             if (!this.validateData(dateRange, subject, message, suppList, allSupp)) {
                 return;
-            }
+            }*/
 
             var arrSupplier = [];
 
-            suppList.getItems().forEach(function (f) {
+/*            suppList.getItems().forEach(function (f) {
                 var sObj = {
                     "Lifnr": f.getProperty("title")
                 }
                 arrSupplier.push(sObj);
-            });
+            });*/
 
             var files = this.getOwnerComponent().getModel("release").getProperty("/ETATTACHNAV");
 
@@ -101,21 +103,22 @@ sap.ui.define([
             var objRelease = {
                 "IOption": "6",
                 "IIdusua": idUser, //quien manda
-                "IAllpro": this.booleanToAbapTrue(allSupp.getSelected()), // - TODOS LOS PROVEEDORES-
-                "ISdate": startDate, //fecha de valides
-                "IEdate": endDate,
-                "IFmail": this.booleanToAbapTrue(sendMail.getSelected()), //Flag si quieres mandarlo por email
-                "ISubject": subject,
+                "IAllpro":"",
+                "ISdate": "", //startDate, fecha de valides
+                "IEdate": "", // endDate,
+                "IIdmen" :this._release ,
+                "IFmail": "",
+                "ISubject": "",// subject, no se modifica
                 "IText": message, //-TEXTO DEL MENSAJE -
-                "ITPROVNAV": arrSupplier, //si no esta marcada IAllpro mandas tabla con prov
-                "ITATTACNAV": files
+                "ITPROVNAV": [],
+                "ITATTACNAV": [],
             }
 
-            /*var response = oModel.create("/headInboxSet", objRelease);
+            var response = inboxModel.create("/headInboxSet", objRelease);
 
             if (response != null) {
                 if (response.ESuccess == "X") {
-                    sap.m.MessageBox.success("Se ha enviado el comunicado.", {
+                    sap.m.MessageBox.success("Se ha modificado el comunicado.", {
                         actions: [sap.m.MessageBox.Action.CLOSE],
                         emphasizedAction: sap.m.MessageBox.Action.CLOSE,
                         onClose: function (sAction) {
@@ -124,11 +127,11 @@ sap.ui.define([
                         }.bind(this)
                     });
                 } else {
-                    sap.m.MessageBox.success(response.EMessage);
+                    sap.m.MessageBox.error(response.EMessage);
                 }
             } else {
                 sap.m.MessageBox.error("No se pudo conectar con el servidor, intente nuevamente.");
-            }*/
+            }
         },
         formatDateQuote: function (v) {
             if (v) {

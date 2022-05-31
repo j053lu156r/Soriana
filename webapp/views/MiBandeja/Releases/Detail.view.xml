@@ -12,7 +12,8 @@
         <headerTitle>
             <ObjectPageDynamicHeaderTitle>
                 <expandedHeading>
-                    <m:Title text="{release>/ESdmens/Ztext}" wrapping="true"/>
+                    
+                    <m:Title text="{appTxts>/release.subject} : {release>/ESdmens/Ztext}" wrapping="true"/>
                 </expandedHeading>
 
                 <snappedHeading>
@@ -68,18 +69,29 @@
 					<ObjectPageSubSection>
 						<blocks>
 							<form:SimpleForm
-								maxContainerCols="2"
-								editable="true"
-								layout="ResponsiveGridLayout"
-								labelSpanL="12"
-								labelSpanM="12"
-								emptySpanL="0"
-								emptySpanM="0"
-								columnsL="2"
-								columnsM="2">
+								
+							  editable="false"
+                layout="ResponsiveGridLayout"
+                
+                labelSpanXL="2"
+                labelSpanL="2"
+                labelSpanM="2"
+                labelSpanS="2"
+                adjustLabelSpan="true"
+                emptySpanXL="0"
+                emptySpanL="0"
+                emptySpanM="0"
+                emptySpanS="0"
+                columnsXL="1"
+                columnsL="1"
+                columnsM="1"
+                singleContainerFullSize="false">
                                 <form:toolbar>
                                     <m:Toolbar>
-                                    <m:Title text=""/>
+                                    
+                                                                             
+									 
+                                    
 					                <m:ToolbarSpacer />
                                           <m:Button
                                                 text="{appTxts>/release.guardar}"
@@ -90,17 +102,15 @@
                                     </m:Toolbar>
                                 </form:toolbar>
 								<form:content>
-                                   
-                                    
-                                    <m:Label text="{appTxts>/release.publishdate}"/>
-                                    <m:DateRangeSelection id="dateRange" required="false" change="handleChange"  />
-									
-                                   <m:Label text="{appTxts>/release.subject}"/>                                     
-									<m:Input id="subject" value="{release>/ESdmens/Ztext}" maxLength="35"/>
-                                    
+                                  
+                                                               
                                     <rte:RichTextEditor id="message" editorType="TinyMCE5" customToolbar="false" 
                                 showGroupFont="true" showGroupLink="true" showGroupInsert="false" showGroupStructure="true"
                                 width="100%" value="{release>/IText}" ready="readyEditor" beforeEditorInit="befInit" height="350px"  />
+
+                                  
+
+                                
 								</form:content>
 							</form:SimpleForm>
 						</blocks>

@@ -225,7 +225,7 @@ sap.ui.define([
                         }.bind(this)
                     });
                 } else {
-                    sap.m.MessageBox.success(response.EMessage);
+                    sap.m.MessageBox.error(response.EMessage);
                 }
             } else {
                 sap.m.MessageBox.error("No se pudo conectar con el servidor, intente nuevamente.");
