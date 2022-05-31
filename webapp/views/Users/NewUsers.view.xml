@@ -63,7 +63,7 @@
                             
                     </Input>
                     <RadioButtonGroup >
-                        <RadioButton id="provUser" visible="{= ${userdata>/ERol} === '0001'}" select="onSelectColaborator" text="{appTxts>/rol.supplier}" />
+                        <RadioButton id="provUser" visible="{= ${userdata>/ERol} === '0001' || ${userdata>/ERol} === '0005' || ${userdata>/ERol} === '0002'}" select="onSelectColaborator" text="{appTxts>/rol.supplier}" />
                         <RadioButton id="bussUser" visible="{= ${userdata>/ERol} === '0001'}" select="onSelectColaborator" text="{appTxts>/rol.collabSoriana}" />
                         <RadioButton id="callUser" visible="{= ${userdata>/ERol} === '0001'}" select="onSelectColaborator" text="{appTxts>/rol.callCenter}" />
                     </RadioButtonGroup>

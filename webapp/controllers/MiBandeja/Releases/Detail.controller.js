@@ -6,6 +6,7 @@ sap.ui.define([
     "use strict";
     
     var inboxModel = new this.MyInbox();
+   
 
 	return Controller.extend("demo.controllers.MiBandeja.Releases.Detail", {
 		onInit: function () {
@@ -16,7 +17,7 @@ sap.ui.define([
 			this.oModel = this.getOwnerComponent().getModel();
 
 			this.oRouter.getRoute("detailRelease").attachPatternMatched(this._onDocumentMatched, this);
-
+            var oDRS2 = this.byId("dateRange");
 			[oExitButton, oEnterButton].forEach(function (oButton) {
 				oButton.addEventDelegate({
 					onAfterRendering: function () {
@@ -45,7 +46,7 @@ sap.ui.define([
 		_onDocumentMatched: function (oEvent) {
             this._release = oEvent.getParameter("arguments").releaseId || this._release || "0";
             var vMail = this.getOwnerComponent().getModel("userdata").getProperty("/IMail"); 
-
+            
             var response = inboxModel
                 .getJsonModel("/headInboxSet?$expand=ETATTACHNAV&$filter=IOption eq '4'"
                     + " and IMail eq '" + vMail + "'"
@@ -54,18 +55,112 @@ sap.ui.define([
             if (response != null) {
                 var objResponse = response.getProperty("/results/0");
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(objResponse), "release");
+                //var  jsDateObject = this.formatDateQuote(objResponse.getProperty("ESdmens/Zfechaenvio")); 
+                var  jsDateObject = this.formatDateQuote(this.getOwnerComponent().getModel("release").getProperty("/ESdmens/Zfechaenvio")); 
+                var oDRS2 = this.byId("dateRange");
+                oDRS2.setDateValue(jsDateObject);
+                oDRS2.setMinDate(jsDateObject);
+                oDRS2.setSecondDateValue(jsDateObject);
+            }
+                      
+           
+            //this.getSplitContObj().toDetail(this.createId("releaseDetail"));  no se para que pusieron esta funcion
+        },
+        editRelease: function () {
+            //var subject = this.getView().byId("subject").getValue();
+            var message = this.getView().byId("message").getValue();
+            var dateRange = this.getView().byId("dateRange");
+           // var suppList = this.getView().byId("suppList");
+           // var allSupp = this.getView().byId("allSupp");
+            
+            var userData = this.getOwnerComponent().getModel("userdata");
+            var sendMail = userData.getProperty("/IMail");// this.getView().byId("sendMail"); //userData.getProperty("/EIdusua")
+            var idUser = userData.getProperty("/EIdusua");
+            var attachControl = this.getView().byId("attacheds");
+            var itemsAttach = this.getView().getModel();
+
+            //Fechas de entrega
+            /*
+            var startDate = this.buildSapDate(dateRange.getDateValue());
+            var endDate = this.buildSapDate(dateRange.getSecondDateValue());
+
+            if (!this.validateData(dateRange, subject, message, suppList, allSupp)) {
+                return;
+            }*/
+
+            var arrSupplier = [];
+
+/*            suppList.getItems().forEach(function (f) {
+                var sObj = {
+                    "Lifnr": f.getProperty("title")
+                }
+                arrSupplier.push(sObj);
+            });*/
+
+            var files = this.getOwnerComponent().getModel("release").getProperty("/ETATTACHNAV");
+
+
+            var objRelease = {
+                "IOption": "6",
+                "IIdusua": idUser, //quien manda
+                "IAllpro":"",
+                "ISdate": "", //startDate, fecha de valides
+                "IEdate": "", // endDate,
+                "IIdmen" :this._release ,
+                "IFmail": "",
+                "ISubject": "",// subject, no se modifica
+                "IText": message, //-TEXTO DEL MENSAJE -
+                "ITPROVNAV": [],
+                "ITATTACNAV": [],
             }
 
-            this.getSplitContObj().toDetail(this.createId("releaseDetail"));
+            var response = inboxModel.create("/headInboxSet", objRelease);
+
+            if (response != null) {
+                if (response.ESuccess == "X") {
+                    sap.m.MessageBox.success("Se ha modificado el comunicado.", {
+                        actions: [sap.m.MessageBox.Action.CLOSE],
+                        emphasizedAction: sap.m.MessageBox.Action.CLOSE,
+                        onClose: function (sAction) {
+                            this.goToMainReleases();
+                            this.clearFields();
+                        }.bind(this)
+                    });
+                } else {
+                    sap.m.MessageBox.error(response.EMessage);
+                }
+            } else {
+                sap.m.MessageBox.error("No se pudo conectar con el servidor, intente nuevamente.");
+            }
         },
-        downloadAttach: function (url, type) {
+        formatDateQuote: function (v) {
+            if (v) {
+                jQuery.sap.require("sap.ui.core.format.DateFormat");
+                var oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({
+                    pattern: "yyyy-MM-dd"
+                });
+
+                var tmpDate = new Date(v);
+                tmpDate.setDate(tmpDate.getDate() + 1);
+                return tmpDate;
+            } else {
+                return null;
+            }
+        },
+        downloadAttach: function (url, type, filename) {
+            
+            
             switch (type) {
-                case 'application/pdf':
-                    this.pdfView(url, type);
-                    break;
+                //case 'application/pdf':
+                //    this.pdfView(url, type);
+                //    break;
                 default:
-                    var _fileurl = this.buildBlobUrl(url, type);
-                    sap.m.URLHelper.redirect(_fileurl, true);
+                    var _fileurl = this.buildBlob(url, type);
+                    var parts = filename.split(".");
+                    var lenparts = parts.length;
+                    var fileextension = parts[lenparts-1];
+                    sap.ui.core.util.File.save(_fileurl,parts[0], fileextension, type);
+                    //sap.m.URLHelper.redirect(_fileurl, true);
                     break;
             }
         },
