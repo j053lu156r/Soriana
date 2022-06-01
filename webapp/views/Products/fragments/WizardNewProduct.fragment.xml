@@ -157,7 +157,7 @@
                                                     </form:fields>
                                                 </form:FormElement>
 
-                                                <form:FormElement label="Caracteristica Principal">
+                                                <form:FormElement label="{appTxts>/products.mainFeatureTxt}">
                                                     <form:fields>
                                                         <Input value="{Folio>/CaracPrin}" id="featureMain"/>
                                                     </form:fields>
@@ -225,12 +225,12 @@
 					</WizardStep>
 					<WizardStep id="ProductPresentation"
 								validated="true"
-								title="Presentación"
+								title="{appTxts>/products.titleTabPresentation}"
 								complete="activateProductPresentation">
 						<!--MessageStrip class="sapUiSmallMarginBottom"
 								text="Validation in the wizard is controlled by calling the validateStep(Step) and invalidateStep(Step) methods "
 								showIcon="true"/-->
-						<Text text="Complete los datos de presentación y dimensiones para la propuesta de alta."/>
+						<Text text="{appTxts>/products.msgComptData}"/>
 						<VBox class="sapUiSmallMargin"
 								alignItems="Center"
 								justifyContent="Center"
@@ -247,7 +247,7 @@
                                     <form:formContainers>
                                         <form:FormContainer>
                                             <form:formElements>
-                                                <form:FormElement  label="Presentación">
+                                                <form:FormElement  label="{appTxts>/products.labelPresentation}">
                                                     <form:fields>
                                                         <ComboBox required="true" selectedKey="{Folio>/Present}" id="presentation" items="{
                                                                     path : 'Catalogos>/Presentaciones/results'
@@ -258,12 +258,12 @@
                                                         </ComboBox>
                                                     </form:fields>
                                                 </form:FormElement>
-                                                <form:FormElement label="Contenido">
+                                                <form:FormElement label="{appTxts>/products.labelContent}">
                                                     <form:fields>
                                                         <Input required="true" id="content" value="{Folio>/Contenido}"  type="Number"/>
                                                     </form:fields>
                                                 </form:FormElement>
-                                                <form:FormElement label="Unidad de medida de contenido">
+                                                <form:FormElement label="{appTxts>/products.labelUnitMeasure}">
                                                     <form:fields>
                                                         <ComboBox required="true" selectedKey="{Folio>/UndCont}" id="contentUnit" items="{
                                                                     path : 'Catalogos>/UnidadMedida/results'
@@ -274,12 +274,12 @@
                                                         </ComboBox>
                                                     </form:fields>
                                                 </form:FormElement>
-                                                <form:FormElement label="Código de venta">
+                                                <form:FormElement label="{appTxts>/products.salesCode}">
                                                     <form:fields>
                                                         <Input required="true" id="salesCode" value="{Folio>/CodVent}" type="Number"/>
                                                     </form:fields>
                                                 </form:FormElement>
-                                                <form:FormElement label="Unidad de medida de venta">
+                                                <form:FormElement label="{appTxts>/products.salesUnitMeasure}">
                                                     <form:fields>
                                                         <ComboBox required="true" selectedKey="{Folio>/UndMventa}" id="salesUnit" items="{
                                                                     path : 'Catalogos>/UnidadMedida/results'
@@ -290,12 +290,12 @@
                                                         </ComboBox>
                                                     </form:fields>
                                                 </form:FormElement>
-                                                <form:FormElement label="Código de unidad de compra">
+                                                <form:FormElement label="{appTxts>/products.purchaseUnitCode}">
                                                     <form:fields>
                                                         <Input required="true" value="{Folio>/CodCompra}" id="purchaseUnitCode" type="Number"/>
                                                     </form:fields>
                                                 </form:FormElement>
-                                                <form:FormElement label="Unidad de compra">
+                                                <form:FormElement label="{appTxts>/products.purchaseUnit}">
                                                     <form:fields>
                                                         <ComboBox selectedKey="{Folio>/UndCompra}" required="true" id="purchaseUnit" items="{
                                                                     path : 'Catalogos>/UnidadMedida/results'
@@ -306,30 +306,30 @@
                                                         </ComboBox>
                                                     </form:fields>
                                                 </form:FormElement>
-                                                <form:FormElement label="Capacidad de empaque">
+                                                <form:FormElement label="{appTxts>/products.packingCapacity}">
                                                     <form:fields>
                                                         <Input required="true" value="{Folio>/CapEmpaq}" id="boardingCapacity" type="Number"/>
                                                     </form:fields>
                                                 </form:FormElement>
 
-                                                <form:FormElement label="Color / Sabor / Aroma">
+                                                <form:FormElement label="{appTxts>/products.colorFlavArom}">
                                                     <form:fields>
                                                         <Input value="" id="qualities"/>
                                                     </form:fields>
                                                 </form:FormElement>
-                                                <form:FormElement label="Talla / Tamaño">
+                                                <form:FormElement label="{appTxts>/products.size}">
                                                     <form:fields>
                                                         <Input value="{Folio>/Taltam}" id="size"/>
                                                     </form:fields>
                                                 </form:FormElement>
 
-                                                <form:FormElement label="Artículo con variantes">
+                                                <form:FormElement label="{appTxts>/products.artWithVarients}">
                                                     <form:fields>
                                                         <CheckBox id="variants" select=".changeVariants" />
                                                     </form:fields>
                                                 </form:FormElement>
                                                 
-                                                <form:FormElement visible="false" id="characteristicFormElement" label="Artículo con variantes">
+                                                <form:FormElement visible="false" id="characteristicFormElement" label="{appTxts>/products.artWithVarients}">
                                                     <form:fields>
                                                         <ComboBox selectedKey="{Folio>/VariantArt}" id="characteristic" items="{
                                                                     path : 'Catalogos>/Caracteristicas/results'
@@ -349,7 +349,7 @@
 					<WizardStep id="VariantStep"
 								validated="true"
 								complete="completeValidateVariantStep"
-								title="Variantes">
+								title="{appTxts>/products.titleTabVariants}">
 						<!--MessageStrip class="sapUiSmallMarginBottom"
 								text="You can validate steps by default with the validated='true' property of the step. The next button is always enabled."
 								showIcon="true"/-->
@@ -371,7 +371,7 @@
                                                 <core:Item key="100" text="100"/>
                                             </items>
                                         </Select>
-                                        <Button text="Agregar" id="newVariant" press="addOptionalInfo" type="Emphasized" />
+                                        <Button text="{appTxts>/products.addButton}" id="newVariant" press="addOptionalInfo" type="Emphasized" />
                                     </OverflowToolbar>
                                 </headerToolbar>
                                 <columns>
@@ -383,13 +383,13 @@
                                     </Column>
                                     <Column width="auto" hAlign="Left">
                                         <header>
-                                            <Text text="Talla/Tamaño" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                            <Text text="{appTxts>/products.size}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </header>
                                         <footer/>
                                     </Column>
                                     <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <header>
-                                            <Text text="Color/Sabor/Aroma" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                            <Text text="{appTxts>/products.colorFlavArom}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </header>
                                     </Column>
                                     <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
@@ -400,13 +400,13 @@
                                     </Column>
                                     <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <header>
-                                        <Text text="Código de empaque" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        <Text text="{appTxts>/products.packagingCode}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </header>
                                         <footer/>
                                     </Column>
                                     <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <header>
-                                        <Text text="Proporción" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        <Text text="{appTxts>/products.proportion}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </header>
                                         <footer/>
                                     </Column>
@@ -441,13 +441,13 @@
                                 <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${ITARTVAR>/Paginated/iterator}, ${ITARTVAR>/Paginated/initRow}, 'ITARTVAR', '/selecteds')" enabled="{= ${ITARTVAR>/Paginated/iterator} !== 1}" />
                                 <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${ITARTVAR>/Paginated/iterator}, ${ITARTVAR>/Paginated/endRow}, 'ITARTVAR', '/selecteds')" enabled="{= ${ITARTVAR>/Paginated/endRow} !== ${ITARTVAR>/results/length}}" />
                             </OverflowToolbar>
-                            <Button text="Eliminar" id="newVariantDelete" press=".deleteRow('tableWizardVariants', 'ITARTVAR')" type="Emphasized" />
+                            <Button text="{appTxts>/products.deleteButton}" id="newVariantDelete" press=".deleteRow('tableWizardVariants', 'ITARTVAR')" type="Emphasized" />
                         </VBox>
 					</WizardStep>
 					<WizardStep id="DimensionsStep"
 								complete="validateCompleteStepDimensions"
 								validated="true"
-								title="Dimensiones">
+								title="{appTxts>/products.titleTabDimensions}">
 						<!--MessageStrip class="sapUiSmallMarginBottom"
 								text="You can use the wizard previousStep() and nextStep() methods to navigate from step to step without validation. Also you can use the GoToStep(step) method to scroll programmatically to previously visited steps."
 								showIcon="true"/-->
@@ -461,28 +461,28 @@
                                     singleContainerFullSize="false">
                                 <form:content>
 
-                                    <core:Title text="Embarque por compra" />
-                                    <Label text="Alto" />
+                                    <core:Title text="{app>/products.subTitleBoardingPerPurchase}" />
+                                    <Label text="{appTxts>/products.tall}" />
                                     <Input id="EcAlto" value="{Folio>/EcAlto}" type="Number" required="true" liveChange="calcularECVolumen" />
-                                    <Label text="Ancho" />
+                                    <Label text="{appTxts>/products.width}" />
                                     <Input id="EcAncho" value="{Folio>/EcAncho}" type="Number" required="true" liveChange="calcularECVolumen" />
-                                    <Label text="Profundo" />
+                                    <Label text="{appTxts>/products.deep}" />
                                     <Input id="EcProfundo" value="{Folio>/EcProfundo}" type="Number" required="true" liveChange="calcularECVolumen" />
-                                    <Label text="Expresado en" />
+                                    <Label text="{appTxts>/products.msgExpressedIn}" />
                                     <Input value="{Folio>/EcUndaap}" required="true" />
-                                    <Label text="Volumen" />
+                                    <Label text="{appTxts>/products.volume}" />
                                     <Input id="EcVolumen" value="{Folio>/EcVolumen}" type="Number" editable="false" enabled="true" />
-                                    <Label text="Unidad de volumen" />
+                                    <Label text="{appTxts>/products.volumeUnit}" />
                                     <ComboBox selectedKey="{Folio>/EcUndvol}" items="{path : 'Catalogos>/UnidadVolumen/results'}" required="true">
                                         <items>
                                             <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
                                         </items>
                                     </ComboBox>
-                                    <Label text="Peso bruto" />
+                                    <Label text="{appTxts>/products.grossWeight}" />
                                     <Input value="{Folio>/EcPbruto}"  type="Number" required="true"/>
-                                    <Label text="Peso neto" />
+                                    <Label text="{appTxts>/products.netWeight }" />
                                     <Input value="{Folio>/EcPneto}" type="Number" required="true" />
-                                    <Label text="Unidad de peso" />
+                                    <Label text="{appTxts>/products.weightUnit }" />
                                     <ComboBox selectedKey="{Folio>/EcUndp}" items="{path : 'Catalogos>/UnidadPeso/results'}" required="true">
                                         <items>
                                             <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
@@ -490,28 +490,28 @@
                                     </ComboBox>
                                     <!-- <Input value="{Folio>/EcUndp}" required="true"/> -->
 
-                                    <core:Title text="Presentación de venta" />
-                                    <Label text="Alto" />
+                                    <core:Title text="{appTxts>/products.subtitlesalesPresen}" />
+                                    <Label text="{appTxts>/products.tall}" />
                                     <Input id="PvAlto" value="{Folio>/PvAlto}" type="Number" required="true" liveChange="calcularPvVolumen" />
-                                    <Label text="Ancho" />
+                                    <Label text="{appTxts>/products.width}" />
                                     <Input id="PvAncho" value="{Folio>/PvAncho}" type="Number" required="true" liveChange="calcularPvVolumen"/>
-                                    <Label text="Profundo" />
+                                    <Label text="{appTxts>/products.deep}" />
                                     <Input id="PvProfundo" value="{Folio>/PvProfundo}" type="Number" required="true" liveChange="calcularPvVolumen"/>
-                                    <Label text="Expresado en" />
+                                    <Label text="{appTxts>/products.msgExpressedIn}" />
                                     <Input value="{Folio>/PvUndaap}" required="true" />
-                                    <Label text="Volumen" />
+                                    <Label text="{appTxts>/products.volume}" />
                                     <Input id="PvVolumen" value="{Folio>/PvVolumen}" type="Number" editable="false" enabled="true" required="true"/>
-                                    <Label text="Unidad de volumen" />
+                                    <Label text="{appTxts>/products.volumeUnit}" />
                                     <ComboBox selectedKey="{Folio>/PvUndvol}" items="{path : 'Catalogos>/UnidadVolumen/results'}" required="true">
                                         <items>
                                             <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
                                         </items>
                                     </ComboBox>
-                                    <Label text="Peso bruto" />
+                                    <Label text="{appTxts>/products.grossWeight}" />
                                     <Input value="{Folio>/PvPbruto}" type="Number" required="true"/>
-                                    <Label text="Peso neto" />
+                                    <Label text="{appTxts>/products.netWeight}" />
                                     <Input value="{Folio>/PvPneto}" type="Number" required="true"/>
-                                    <Label text="Unidad de peso" />
+                                    <Label text="{appTxts>/products.weightUnit}" />
                                     <ComboBox selectedKey="{Folio>/PvUndp}" items="{path : 'Catalogos>/UnidadPeso/results'}" required="true">
                                         <items>
                                             <core:Item key="{Catalogos>value}" text="{Catalogos>text}" />
@@ -519,15 +519,15 @@
                                     </ComboBox>
                                     <!-- <Input value="{Folio>/PvUndp}" required="true"/> -->
 
-                                    <core:Title text="Capacidad por tarima" />
-                                    <Label text="Código de tarima" />
+                                    <core:Title text="{appTxts>/products.capPerPallet}" />
+                                    <Label text="{appTxts>/products.palletCode}" />
                                     <Input value="{Folio>/CodTarima}" type="Number" required="true"/>
-                                    <Label text="Cajas por contenido" />
+                                    <Label text="{appTxts>/products.boxesByContent}" />
                                     <Input value="{Folio>/CajasTend}" type="Number" required="true"/>
 
-                                    <Label text="Tendidos por tarima" />
+                                    <Label text="{appTxts>/products.stretchedByPlatform}" />
                                     <Input value="{Folio>/TendTarima}" type="Number" required="true" />
-                                    <Label text="Cajas por tarima" />
+                                    <Label text="{appTxts>/products.boxesPerPallet}" />
                                     <Input value="{Folio>/CajasTarima}" type="Number" required="true" />
                                 </form:content>
                             </form:SimpleForm>
@@ -537,7 +537,7 @@
 								activate="pricingActivate"
 								complete="validateDiscounts"
 								validated="false"
-								title="Descuentos, Bonificación y costos">
+								title="{appTxts>/products.titleTabDiscounts}">
 						<!--MessageStrip class="sapUiSmallMarginBottom"
 								text="You can use the wizard previousStep() and nextStep() methods to navigate from step to step without validation. Also you can use the GoToStep(step) method to scroll programmatically to previously visited steps."
 								showIcon="true"/-->
@@ -622,7 +622,7 @@
                         id="ImagesStep"
 						complete="onImageStepComplete"
 						validated="true"
-						title="Imágenes">
+						title="{appTxts>/products.titleTabImages}">
 
                         <Text text="En esta pantalla se muestran las imágenes que se tienen registradas en GS1 y podrá agregar nuevas imágenes."/>
 

@@ -24,11 +24,11 @@
                             type="Emphasized"
                             press="newProduct"/>
                     <Button
-                            text="Cambio de precio"
+                            text="{appTxts>/products.changePriceTxt}"
                             type="Emphasized"
                             press="changePriceProduct"/>
                     <Button
-                            text="Eliminar productos"
+                            text="{appTxts>/products.deleteProductsTxt}"
                             type="Emphasized"
                             press="deleteProducts"/>
                     <!-- <Button
