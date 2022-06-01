@@ -350,7 +350,7 @@
 		<masterPages>
 			<Page
 				id="master"
-				title="Mi Bandeja"
+				title="{appTxts>/global.inbox}"
                 showNavButton="false"
 				backgroundDesign= "List">
 				<List  itemPress=".onListItemPress">

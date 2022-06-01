@@ -622,9 +622,14 @@ sap.ui.define([
                     "barVisible": false
                 };
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(obj), "configSite");
+                var countmails = this.getInboxCount();            
+                this.getOwnerComponent().getModel("configSite").setProperty("/inboxMetric", countmails);
             }
+            var countmails = this.getInboxCount();            
+            this.getOwnerComponent().getModel("configSite").setProperty("/inboxMetric", countmails);
         },
         getConfigModel: function () {
+           
             return this.getOwnerComponent().getModel("configSite");
         },
         paginate: function (modelName, pTable, iterator, startRow) {
@@ -805,6 +810,16 @@ sap.ui.define([
             var blob = new Blob([byteArray.buffer], { type: type });
             return URL.createObjectURL(blob);
         },
+        buildBlob: function (url, type) {
+            var parts = url.split(",");
+            var decodedPdfContent = atob(parts[1]);
+            var byteArray = new Uint8Array(decodedPdfContent.length)
+            for (var i = 0; i < decodedPdfContent.length; i++) {
+                byteArray[i] = decodedPdfContent.charCodeAt(i);
+            }
+            var blob = new Blob([byteArray.buffer], { type: type });
+            return (blob);
+        },
         findFunName: function (funct) {
             var fNames = this.getOwnerComponent().getModel("funNames").getProperty("/results");
             var changeI = funct.toString();
@@ -861,6 +876,26 @@ sap.ui.define([
             };
             reader.readAsDataURL(file);
         },
+        getInboxCount:  function () {
+            
+            
+            var countMails = 0;
+            
+            if (this.getOwnerComponent().getModel("userdata") != null) {
+                var vMail = this.getOwnerComponent().getModel("userdata").getProperty("/IMail");
+            var response = inboxModel.getJsonModel(
+                `/headInboxSet?$expand=ETINBOXUNAV&$filter=IOption eq '2' and IMail eq '${vMail}'`);
+                if (response != null) {
+                    var objResponse = response.getProperty("/results/0/ETINBOXUNAV/results");
+                    //countMails= objResponse.getData().length;
+                     countMails =  parseInt(response.getProperty("/results/0/ENmes"),10);
+                    }
+                
+                    
+            }
+        return countMails;
+        },
+
         getStatus: function () {
             var oView = this.getView();
 
