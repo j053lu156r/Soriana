@@ -314,7 +314,7 @@
 
                                                 <form:FormElement label="{appTxts>/products.colorFlavArom}">
                                                     <form:fields>
-                                                        <Input value="" id="qualities"/>
+                                                        <Input value="{Folio>/CaracCsa}" id="qualities"/>
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.size}">
@@ -854,7 +854,7 @@
                                     <Label text="{appTxts>/products.stretchedByPlatform}" />
                                     <Text text="{FolioToShow>/TendTarima}" />
 
-                                    <Label text="{appTxts>/products.boxesPerPallet }" />
+                                    <Label text="{appTxts>/products.boxesPerPallet}" />
                                     <Text text="{FolioToShow>/CajasTarima}" />
 
 									</form:content>
@@ -888,17 +888,17 @@
                                     <core:Title text="{appTxts>/products.titleBonus}" />
 
                                     <Label text="{appTxts>/products.subtitleBonusType}" />
-                                    <Text text="{FolioToShow>/Bonif}" />
+                                    <Text text="{FolioToShow>/UndBon}" />
 
                                     <Label text="{appTxts>/products.bonusValue}" />
                                     <Text text="{FolioToShow>/ValBoni}" />
 
                                     <Label text="{appTxts>/products.bonusUnits}" />
-                                    <Text text="{FolioToShow>/UndBon}" />
+                                    <Text text="{FolioToShow>/ValBoni}" />
                                     
                                     <core:Title text="{appTxts>/products.titlePurchaseCosts}" />
 
-                                    <Label text="{appTxts>/products.grossCost }" />
+                                    <Label text="{appTxts>/products.grossCost}" />
                                     <Text text="{FolioToShow>/CostoB}" />
 
                                     <Label text="{appTxts>/products.packingCapacity}" />
