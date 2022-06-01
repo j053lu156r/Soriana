@@ -1287,6 +1287,7 @@ sap.ui.define([
             const Folio = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
 
             // if (Folio.CapEmbar == undefined || Folio.CapEmbar.trim() == '') validated = false;
+            if (Folio.UndBon == undefined || Folio.UndBon.trim() == '') validated = false;
             if (Folio.CostoB == undefined || Folio.CostoB.trim() == '') validated = false;
             if (Folio.CostNUCompra == undefined || Folio.CostNUCompra.trim() == '') validated = false;
             if (Folio.CostNUVenta == undefined || Folio.CostNUVenta.trim() == '') validated = false;
@@ -1807,8 +1808,8 @@ sap.ui.define([
         changeTipoBonif(oControlEvent){
             let selected = oControlEvent.getParameter("value");
 
-            this.byId("ValBoni").setValue("");
-            this.byId("UnisBonif").setValue("");
+            this.byId("ValBoni").setValue("0");
+            this.byId("UnisBonif").setValue("0");
 
             switch (selected) {
                 case "Ninguna":
