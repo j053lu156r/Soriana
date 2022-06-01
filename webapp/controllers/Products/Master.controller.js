@@ -763,7 +763,6 @@ sap.ui.define([
                     if (oAction === MessageBox.Action.YES) {
 
                         if (sMessageBoxType == "confirm") {
-                            this.attachImagesToModel();
 
                             let imagesToAttach = JSON.parse(this.getOwnerComponent().getModel("images64").getJSON()).attachArray;
                             console.log("imagesToAttach: ", imagesToAttach);
@@ -1744,6 +1743,7 @@ sap.ui.define([
                 incommingUploadSetItem.setThumbnailUrl(path);
                 this.byId("ImageUploadSet").addItem(incommingUploadSetItem);
                 this.getOwnerComponent().getModel("FolioImages").setProperty("/items",this.byId("ImageUploadSet").getItems());
+                this.attachImagesToModel();
             } 
 
             if(numberItemsAdded >= 11) {
@@ -1763,6 +1763,7 @@ sap.ui.define([
             let numberItemsAdded = this.byId("ImageUploadSet").getItems().length;
             this.byId("imagesCounter").setText(numberItemsAdded);
             this.getOwnerComponent().getModel("FolioImages").setProperty("/items",this.byId("ImageUploadSet").getItems());
+            this.attachImagesToModel();
             if (numberItemsAdded <= 11) {
                 this.byId("ImageUploadSet").setUploadEnabled(true);
             }
@@ -1777,7 +1778,7 @@ sap.ui.define([
                 let reader = new FileReader();
                 let oItem = imageFolio.getFileObject();
                 let oFile = {};
-                oFile.Zatname = oItem.name;
+                oFile.Zdescrip = oItem.name;
                 oFile.Zdoctype = oItem.type;
                 oFile.Zdocvalue64 = "base64";
 
