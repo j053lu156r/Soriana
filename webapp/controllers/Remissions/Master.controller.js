@@ -27,15 +27,13 @@ sap.ui.define([
                 onAfterShow: function (oEvent) {
                     var barModel = this.getConfigModel();
                     barModel.setProperty("/barVisible", true);
-                    this.getView().byId("dateOrder").setValue("");
-                    this.getView().byId("folio").setValue("");
                     this.getOwnerComponent().setModel(new JSONModel(),
                         "tableRemissions");
-
                     this.getConfigModel().setProperty("/updateFormatsSingle", "xml,xls,xlsx");
-
+                    this.setCurrentWeek();
                 }
             }, this);
+            this.configFilterLanguage(this.getView().byId("filterBar"));
         },
         openUploadDialog: function () {
             if (!this.hasAccess(40)) {
@@ -148,16 +146,16 @@ sap.ui.define([
 
             var url = `/HdrAvisoSet?$expand=EFREMNAV,ETREMDNAV&$filter=IOption eq '1' and ILifnr eq '${vLifnr}' `;
 
-            if (startDate != null && endDate != null) {
-                url += ` and ISfechrem eq '${startDate}' and IFfechrem eq '${endDate}'`;
+            if (vFolio != null && vFolio != "") {
+                url += ` and IZremision eq '${vFolio}' `;
+            } else {
+                if (startDate != null && endDate != null) {
+                    url += ` and ISfechrem eq '${startDate}' and IFfechrem eq '${endDate}'`;
+                }
             }
 
             if (vEbeln != null && vEbeln != "") {
                 url += ` and IEbeln eq '${vEbeln}'`;
-            }
-
-            if (vFolio != null && vFolio != "") {
-                url += ` and IZremision eq '${vFolio}' `;
             }
 
             var dueModel = oRemisions.getJsonModel(url);
@@ -231,6 +229,18 @@ sap.ui.define([
             ];
 
             this.exportxls('tableRemissions', '/EFREMNAV/results', columns);
+        },
+
+        setCurrentWeek: function(){
+            var now = new Date;
+            var startDay = 0; //0=sunday, 1=monday etc.
+            var d = now.getDay(); //get the current day
+            var weekStart = new Date(now.valueOf() - (d<=0 ? 7-startDay:d-startDay)*86400000); //rewind to start day
+            var weekEnd = new Date(weekStart.valueOf() + 6*86400000); //add 6 days to get last day
+
+            var oDateRange = this.getView().byId("dateOrder");
+            oDateRange.setDateValue(weekStart);
+            oDateRange.setSecondDateValue(weekEnd);
         }
 
     });
