@@ -717,6 +717,9 @@ sap.ui.define([
 
         handleButtonsVisibility: function () {
             var oModel = this.getView().getModel();
+
+            oModel.setProperty("/checkConfirmation", false);
+            
             switch (this._oWizard.getProgress()) {
                 case 1:
                     oModel.setProperty("/nextButtonVisible", true);
@@ -747,6 +750,7 @@ sap.ui.define([
                     break;
                 case 7:
                     this.cloneFolioModel();
+                    oModel.setProperty("/checkConfirmation", true);
                     oModel.setProperty("/finishButtonVisible", true);
                     oModel.setProperty("/backButtonVisible", true);
                     oModel.setProperty("/reviewButtonVisible", false);
@@ -824,6 +828,11 @@ sap.ui.define([
                 }.bind(this)
 
             });
+        },
+
+        selectAgree(oControlEvent){
+            let valueCheck = oControlEvent.getParameter("selected");
+            this.byId("FinishBtn").setEnabled(valueCheck);
         },
 
         cloneFolioModel() {
@@ -1746,10 +1755,14 @@ sap.ui.define([
         },
 
         imageAfterAddedTriggered(oControlEvent) {
+
             let numberItemsAdded = this.byId("ImageUploadSet").getItems().length;
 
-            if (numberItemsAdded <= 11 ) {
-                let incommingUploadSetItem = oControlEvent.getParameter("item");
+            let incommingUploadSetItem = oControlEvent.getParameter("item");
+
+            let fileSize = (incommingUploadSetItem.getFileObject().size / 1024) / 1024; //getting MBs for validation
+
+            if (numberItemsAdded <= 11 && fileSize < 4) {
                 incommingUploadSetItem.setUploadState(sap.m.UploadState.Complete);
                 let path = URL.createObjectURL(incommingUploadSetItem.getFileObject());
                 incommingUploadSetItem.setUrl(path);
@@ -1757,16 +1770,17 @@ sap.ui.define([
                 this.byId("ImageUploadSet").addItem(incommingUploadSetItem);
                 this.getOwnerComponent().getModel("FolioImages").setProperty("/items",this.byId("ImageUploadSet").getItems());
                 this.attachImagesToModel();
-            } 
-
-            if(numberItemsAdded >= 11) {
+            } else if (fileSize > 4) {
+                sap.m.MessageBox.warning("Max size is 4MB");
+                this.byId("ImageUploadSet").removeItem(incommingUploadSetItem);
+            }else if(numberItemsAdded >= 11) {
                 sap.m.MessageBox.warning("Max 12 imgs");
                 this.byId("ImageUploadSet").setUploadEnabled(false);
             }
 
             this.byId("imagesCounter").setText(this.byId("ImageUploadSet").getItems().length);
 
-            // console.log("Upload SET Items  : ", this.byId("ImageUploadSet").getItems());
+             //console.log("Upload SET Item added  : ", oControlEvent.getParameter("item"));
 
             // console.log("FolioImages Items: ", this.getOwnerComponent().getModel("FolioImages").getProperty("/items"));
 
@@ -1801,13 +1815,15 @@ sap.ui.define([
 
                 reader.readAsDataURL(oItem);
 
+                //console.log("oItem", oItem);
+
                 return oFile;
             });
 
             this.getOwnerComponent().setModel(new JSONModel(), "images64");
             this.getOwnerComponent().getModel("images64").setProperty("/attachArray", base64imgArray );
 
-            console.log("DATA IAMGES BASE64 : ", this.getOwnerComponent().getModel("images64").getData());
+            //console.log("DATA IAMGES BASE64 : ", this.getOwnerComponent().getModel("images64").getData());
             
         },
 

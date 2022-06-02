@@ -7,6 +7,7 @@
     xmlns:l="sap.ui.layout"
     xmlns:upload="sap.m.upload"
 	xmlns:layout="sap.ui.layout">
+
 	<Dialog
 		id="wizardDialog"
 		showHeader="false"
@@ -953,14 +954,18 @@
 
 			<f:footer>
 				<OverflowToolbar>
+                    <CheckBox text="{appTxts>/products.confirmationMssg}"  class="" selected="false" select="selectAgree" visible="{/checkConfirmation}"/>
 					<ToolbarSpacer/>
 					<Button text="{appTxts>/products.previous}" visible="{/backButtonVisible}" press="onDialogBackButton" />
 					<Button text="{appTxts>/products.nextStep}" type="Emphasized" enabled="{/nextButtonEnabled}" visible="{/nextButtonVisible}" press="onDialogNextButton" />
 					<Button text="{appTxts>/products.buttonReview}" type="Emphasized" visible="{/reviewButtonVisible}" press="onDialogNextButton" />
-					<Button text="{appTxts>/products.finish}" type="Emphasized" visible="{/finishButtonVisible}" press="handleWizardSubmit" />
+					<Button id="FinishBtn" text="{appTxts>/products.finish}" type="Emphasized" visible="{/finishButtonVisible}" press="handleWizardSubmit" enabled="false"/>
 					<Button	text="{appTxts>/products.cancel}" type="Transparent" press="handleWizardCancel"/>
 				</OverflowToolbar>
+                
 			</f:footer>
 		</f:DynamicPage>
+
 	</Dialog>
+            
 </core:FragmentDefinition>
