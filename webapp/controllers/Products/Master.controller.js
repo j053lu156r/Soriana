@@ -1209,16 +1209,37 @@ sap.ui.define([
         },
 
         calcularPvVolumen: function (oControlEvent) {
+            let idComponent = oControlEvent.getSource().getId().split("--")[1];
+            let valueComponent = parseFloat(oControlEvent.getSource().getValue());
 
-            let pvalto = this.byId("PvAlto").getValue();
-            let pvancho = this.byId("PvAncho").getValue();
-            let pvprofundo = this.byId("PvProfundo").getValue();
+            if (valueComponent < 10000) {
 
-            let volumen = parseFloat(pvalto) * parseFloat(pvancho) * parseFloat(pvprofundo);
+                this.getView().byId(idComponent).setValueState(sap.ui.core.ValueState.Success);
 
-            this.byId("PvVolumen").setValue(volumen);
+                let pvalto = (this.byId("PvAlto").getValue())? parseFloat(this.byId("PvAlto").getValue()) : 0;
+                let pvancho = (this.byId("PvAncho").getValue())? parseFloat(this.byId("PvAncho").getValue()) : 0;
+                let pvprofundo = (this.byId("PvProfundo").getValue())? parseFloat(this.byId("PvProfundo").getValue()) : 0;
+
+                let volumen = pvalto * pvancho * pvprofundo;
+
+                if (volumen < 10000){
+
+                    this.byId("PvVolumen").setValue(volumen);
+                    this.getView().byId("PvVolumen").setValueState(sap.ui.core.ValueState.Success);
+
+                }else{
+                    this.byId("PvVolumen").setValue(9999.99);
+                    sap.m.MessageBox.warning("El valor del volumen ser menor a 10000 tu resultado es : " + volumen);
+
+                }
+                
+                }else{
+                   
+                    this.getView().byId(idComponent).setValueState(sap.ui.core.ValueState.Error);
+                    this.getView().byId(idComponent).setValueStateText("El valor debe ser menor a 10000");
+                } 
+            
             // this.getOwnerComponent().getModel("FolioToShow").setProperty("/PvVolumen", Folio.PvVolumen);
-
         },
 
         validateCompleteStepDimensions: function () {
@@ -1232,18 +1253,18 @@ sap.ui.define([
                 validated = false;
             }
 
-            if (Folio.EcAncho == undefined || Folio.EcAncho.trim() == '') {
+            if (Folio.EcAncho == undefined || Folio.EcAncho.trim() == '' || parseFloat(Folio.EcAncho.trim()) >= 10000) {
                 validated = false;
             }
 
-            if (Folio.EcProfundo == undefined || Folio.EcProfundo.trim() == '') {
+            if (Folio.EcProfundo == undefined || Folio.EcProfundo.trim() == '' || parseFloat(Folio.EcProfundo.trim()) >= 10000) {
                 validated = false;
             }
 
             if (Folio.EcUndaap == undefined || Folio.EcUndaap.trim() == '') {
                 validated = false;
             }
-            if (Folio.EcVolumen == undefined || Folio.EcVolumen.trim() == '') {
+            if (Folio.EcVolumen == undefined || Folio.EcVolumen.trim() == '' || parseFloat(Folio.EcVolumen.trim()) >= 10000) {
                 validated = false;
             }
 
@@ -1260,20 +1281,20 @@ sap.ui.define([
                 validated = false;
             }
 
-            if (Folio.PvAlto == undefined || Folio.PvAlto.trim() == '') {
+            if (Folio.PvAlto == undefined || Folio.PvAlto.trim() == '' || parseFloat(Folio.EcAlto.trim()) >= 10000) {
                 validated = false;
             }
-            if (Folio.PvAncho == undefined || Folio.PvAncho.trim() == '') {
+            if (Folio.PvAncho == undefined || Folio.PvAncho.trim() == '' || parseFloat(Folio.EcAncho.trim()) >= 10000) {
                 validated = false;
             }
-            if (Folio.PvProfundo == undefined || Folio.PvProfundo.trim() == '') {
+            if (Folio.PvProfundo == undefined || Folio.PvProfundo.trim() == '' || parseFloat(Folio.EcProfundo.trim()) >= 10000) {
                 validated = false;
             }
             if (Folio.PvUndaap == undefined || Folio.PvUndaap.trim() == '') {
                 validated = false;
             }
 
-            if (Folio.PvVolumen == undefined || Folio.PvVolumen.trim() == '') {
+            if (Folio.PvVolumen == undefined || Folio.PvVolumen.trim() == '' || parseFloat(Folio.EcVolumen.trim()) >= 10000) {
                 validated = false;
             }
 
