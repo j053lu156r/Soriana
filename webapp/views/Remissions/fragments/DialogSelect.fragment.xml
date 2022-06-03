@@ -9,11 +9,11 @@
 		id="selectTypeDialog"
 		showHeader="true"
 		verticalScrolling="false"
-        title="Tipo de aviso"
+        title="{appTxts>/rem.typeRemission}"
         class="sapUiContentPadding"
 		>
         <Text class="sapUiSmallMarginBottom"
-                text="El tipo de aviso anticipado, determina el tipo de entrega que será realizado."/>
+                text="{appTxts>/rem.descriptionText}"/>
         <HBox
             alignItems="Center"
             justifyContent="Center"
@@ -24,8 +24,8 @@
                 selectedKey="{/selectedPayment}"
                 >
                 <items>
-                    <SegmentedButtonItem key="reverse" text="Reverse"/>
-                    <SegmentedButtonItem key="packing" text="Consolidado"/>
+                    <SegmentedButtonItem key="reverse" text="{appTxts>/rem.reverse}"/>
+                    <SegmentedButtonItem key="packing" text="{appTxts>/rem.consolidated}"/>
                 </items>
             </SegmentedButton>
         </HBox>
