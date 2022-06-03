@@ -9,11 +9,11 @@
 		id="selectTypeDialog"
 		showHeader="true"
 		verticalScrolling="false"
-        title="Seleccionar caja/tarima"
+        title="{appTxts>/rem.selectionCT}"
         class="sapUiContentPadding"
 		>
         <Text class="sapUiSmallMarginBottom"
-                text="Selecciona o crea la caja/tarima para este registro."/>
+                text="{appTxts>/rem.descriptionText2}"/>
         <VBox
             alignItems="Center"
             justifyContent="Center"
@@ -24,12 +24,12 @@
                     visible="{= ${selectedPositionsQty>/packages/pallets/length} > 0}"
                         >
                     <items>
-                        <core:Item key="{selectedPositionsQty>id}" text="Caja/Tarima {selectedPositionsQty>id} ({selectedPositionsQty>Werks} - {selectedPositionsQty>Name1})" />
+                        <core:Item key="{selectedPositionsQty>id}" text="{appTxts>/rem.BoxPal} {selectedPositionsQty>id} ({selectedPositionsQty>Werks} - {selectedPositionsQty>Name1})" />
                     </items>
                 </Select>
                 <Button icon="sap-icon://add" visible="{= ${selectedPositionsQty>/packages/pallets/length} > 0}" press="addToPackage(${/itemPath})" />
             </HBox>
-            <Button text="Nueva caja/tarima" icon="sap-icon://add-product" press="newPackage(${/itemPath})" />
+            <Button text="{appTxts>/rem.NewBoxPal}" icon="sap-icon://add-product" press="newPackage(${/itemPath})" />
         </VBox>
         <buttons>
             <Button text="{appTxts>/rem.cancel}" press="onCloseNewPackage"/>
