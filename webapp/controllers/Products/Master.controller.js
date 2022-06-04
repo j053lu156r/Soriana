@@ -15,7 +15,7 @@ sap.ui.define([
     const CatNegotiatedFormat = ['1A', '1B'];
     var swProveedorEnGS1 = false;
     var swProveedorExcluido = false;
-    var _testingSteps = true; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
+    var _testingSteps = false; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
 
     return BaseController.extend("demo.controllers.Products.Master", {
         formatterCatPrd: formatterCatPrd,
@@ -23,6 +23,7 @@ sap.ui.define([
 
             this.getView().addEventDelegate({
                 onBeforeShow: function (oEvent) {
+                    this.getOwnerComponent().setModel(new JSONModel({value:_testingSteps}), "ValidBarCode");
                     this.getOwnerComponent().setModel(new JSONModel(), "Paises");
                     this.getOwnerComponent().setModel(new JSONModel(), "Catalogos");
                     this.getOwnerComponent().setModel(new JSONModel(), "Folios");
@@ -39,14 +40,14 @@ sap.ui.define([
             this.configFilterLanguage(this.getView().byId("filterBar"));
             this.setInitialDates();
 
-
         },
 
         async getGS1ProductData() {
             // Probando Consulta API externa
             let gs1Product = new JSONModel();
-            let provicionalEAN = '7501006584035'
-            await fetch(`https://compuarte.serv.net.mx:4000/searchbygtin?codigo_barras=${provicionalEAN}`).then(async data => {
+            let proviconalGLN = '7504001437009'
+            let provicionalEAN = '7501024513413'
+            await fetch(`https://compuarte.serv.net.mx:4000/searchbygtin?codigo_barras=${provicionalEAN}&gln=${proviconalGLN}`).then(async data => {
                 //console.log(await data.json());
                 gs1Product.setData(await data.json());
             }).catch(error => {
@@ -667,6 +668,7 @@ sap.ui.define([
                 MessageBox.success("Artículo apto para registro.", {
                     onClose: () => {
                         this.getView().byId('barCode').setValueState(sap.ui.core.ValueState.Success);
+                        this.getOwnerComponent().getModel("ValidBarCode").setProperty("/value",true);
                     }
                 });
             }
@@ -715,18 +717,21 @@ sap.ui.define([
             this._handleMessageBoxOpen(this.getOwnerComponent().getModel("appTxts").getProperty('/products.msgSubmitNewProduct'), "confirm");
         },
 
-        handleButtonsVisibility: function () {
+        handleButtonsVisibility: function (prgressStep) {
+
+            let step = (prgressStep)? prgressStep : this._oWizard.getProgress();
+
             var oModel = this.getView().getModel();
 
             oModel.setProperty("/checkConfirmation", false);
+            oModel.setProperty("/finishButtonVisible", false);
 
-            switch (this._oWizard.getProgress()) {
+            switch (step) {
                 case 1:
                     oModel.setProperty("/nextButtonVisible", true);
                     oModel.setProperty("/nextButtonEnabled", true);
                     oModel.setProperty("/backButtonVisible", false);
                     oModel.setProperty("/reviewButtonVisible", false);
-                    oModel.setProperty("/finishButtonVisible", false);
                     break;
                 case 2:
                     oModel.setProperty("/backButtonVisible", true);
@@ -746,7 +751,6 @@ sap.ui.define([
                 case 6:
                     oModel.setProperty("/nextButtonVisible", false);
                     oModel.setProperty("/reviewButtonVisible", true);
-                    oModel.setProperty("/finishButtonVisible", false);
                     break;
                 case 7:
                     this.cloneFolioModel();
@@ -754,6 +758,8 @@ sap.ui.define([
                     oModel.setProperty("/finishButtonVisible", true);
                     oModel.setProperty("/backButtonVisible", true);
                     oModel.setProperty("/reviewButtonVisible", false);
+                    let step = this._oWizard.getProgressStep();
+                    this._oWizard.goToStep(step);
                     break;
                 default: break;
             }
@@ -1188,14 +1194,14 @@ sap.ui.define([
 
                 let volumen = ecalto * ecancho * ecprofundo;
 
+                this.byId("EcVolumen").setValue(volumen);
+
                 if (volumen < 10000) {
 
-                    this.byId("EcVolumen").setValue(volumen);
                     this.getView().byId("EcVolumen").setValueState(sap.ui.core.ValueState.Success);
 
                 } else {
 
-                    this.byId("EcVolumen").setValue(9999.99);
                     sap.m.MessageBox.warning("El valor del volumen ser menor a 10000 tu resultado es : " + volumen);
                 }
 
@@ -1222,13 +1228,13 @@ sap.ui.define([
 
                 let volumen = pvalto * pvancho * pvprofundo;
 
+                this.byId("PvVolumen").setValue(volumen);
+
                 if (volumen < 10000){
 
-                    this.byId("PvVolumen").setValue(volumen);
                     this.getView().byId("PvVolumen").setValueState(sap.ui.core.ValueState.Success);
 
                 }else{
-                    this.byId("PvVolumen").setValue(9999.99);
                     sap.m.MessageBox.warning("El valor del volumen ser menor a 10000 tu resultado es : " + volumen);
 
                 }
@@ -1249,7 +1255,7 @@ sap.ui.define([
             //obtenemos el modelo 
             let Folio = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
 
-            if (Folio.EcAlto == undefined || Folio.EcAlto.trim() == '' || parseFloat(Folio.EcAlto.trim()) >= 10000) {
+            if (Folio.EcAlto == undefined || Folio.EcAlto.trim() == '' || parseFloat(Folio.EcAlto.trim()) >= 10000) {                
                 validated = false;
             }
 
@@ -1281,20 +1287,20 @@ sap.ui.define([
                 validated = false;
             }
 
-            if (Folio.PvAlto == undefined || Folio.PvAlto.trim() == '' || parseFloat(Folio.EcAlto.trim()) >= 10000) {
+            if (Folio.PvAlto == undefined || Folio.PvAlto.trim() == '' || parseFloat(Folio.PvAlto.trim()) >= 10000) {
                 validated = false;
             }
-            if (Folio.PvAncho == undefined || Folio.PvAncho.trim() == '' || parseFloat(Folio.EcAncho.trim()) >= 10000) {
+            if (Folio.PvAncho == undefined || Folio.PvAncho.trim() == '' || parseFloat(Folio.PvAncho.trim()) >= 10000) {
                 validated = false;
             }
-            if (Folio.PvProfundo == undefined || Folio.PvProfundo.trim() == '' || parseFloat(Folio.EcProfundo.trim()) >= 10000) {
+            if (Folio.PvProfundo == undefined || Folio.PvProfundo.trim() == '' || parseFloat(Folio.PvProfundo.trim()) >= 10000) {
                 validated = false;
             }
             if (Folio.PvUndaap == undefined || Folio.PvUndaap.trim() == '') {
                 validated = false;
             }
 
-            if (Folio.PvVolumen == undefined || Folio.PvVolumen.trim() == '' || parseFloat(Folio.EcVolumen.trim()) >= 10000) {
+            if (Folio.PvVolumen == undefined || Folio.PvVolumen.trim() == '' || parseFloat(Folio.PvVolumen.trim()) >= 10000) {
                 validated = false;
             }
 
@@ -1325,7 +1331,7 @@ sap.ui.define([
             }
 
             if (!validated) {
-                sap.m.MessageBox.warning("Existen datos faltantes de captura.");
+                sap.m.MessageBox.warning("Capture correctamente todos los campos.");
             }
 
             //Validaciones PAso Dimensiones
@@ -1891,6 +1897,13 @@ sap.ui.define([
                     break;
             }
 
+        },
+
+        hardStepChange(oControlEvent){
+            let indexStep = this._oWizard.indexOfStep(oControlEvent.getParameter("step"));
+            
+            this.cloneFolioModel();
+            this.handleButtonsVisibility((indexStep+1));
         }
     })
 });
