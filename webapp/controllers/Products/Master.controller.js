@@ -770,8 +770,8 @@ sap.ui.define([
 
                         if (sMessageBoxType == "confirm") {
 
-                            let imagesToAttach = JSON.parse(this.getOwnerComponent().getModel("images64").getJSON()).attachArray;
-                            console.log("imagesToAttach: ", imagesToAttach);
+                            let imagesToAttach = [];
+                            //JSON.parse(this.getOwnerComponent().getModel("images64").getJSON()).attachArray;
 
                             let folioModel = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
                             folioModel.TMoneda = "MXN";
@@ -788,7 +788,9 @@ sap.ui.define([
 
                             console.log(" >>>>>>> CREATING PRDUCT: ", createObjReq);
                             console.log(" >>>>>>> CREATING PRDUCT String: ", JSON.stringify(createObjReq));
+
                             // ** Nota Model.create(endpoint,data) No trabaja ni con callback ni con promesa Solo recepcion syncrona
+
                             let resp = Model.create("/HdrcatproSet", createObjReq);
 
                             console.log("Respuesta Create: ", resp);
@@ -796,11 +798,12 @@ sap.ui.define([
                             if (resp.ESuccess) {
 
                                 MessageBox.success(resp.EMessage);
+                                let that = this;
 
                                 setTimeout(function () {
-                                    this._oWizard.discardProgress(this._oWizard.getSteps()[0]);
-                                    this.byId("wizardDialog").close();
-                                    this.getOwnerComponent().getModel("Folio").setData({});
+                                    that._oWizard.discardProgress(that._oWizard.getSteps()[0]);
+                                    that.byId("wizardDialog").close();
+                                    that.getOwnerComponent().getModel("Folio").setData({});
                                 }, 3000);
 
                             } else {
@@ -876,6 +879,9 @@ sap.ui.define([
 
             Folio.UndCompra = formatterCatPrd.findPropertieValue("IsoCode", "Unidad", Folio.UndCompra,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadMedida'));
+
+            Folio.UndBon = formatterCatPrd.findPropertieValue("value", "text", Folio.UndBon,
+                this.getOwnerComponent().getModel("Catalogos").getProperty('/TiposBonificacion'));
 
             this.getOwnerComponent().getModel("FolioToShow").setData({ ...Folio });
 
@@ -1086,7 +1092,7 @@ sap.ui.define([
                 this.getView().byId('boardingCapacity').setValueState(sap.ui.core.ValueState.Error);
 
                 if (ModelFolio.getProperty('/CapEmpaq').trim().length > 5)
-                    this.getView().byId('boardingCapacity').setValueStateText("Este camo es obligatorio y deben ser maximo 5 caracteres");
+                    this.getView().byId('boardingCapacity').setValueStateText("Este campo es obligatorio y deben ser maximo 5 caracteres");
             }
             else {
 
@@ -1191,7 +1197,7 @@ sap.ui.define([
             //obtenemos el modelo 
             let Folio = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
 
-            if (Folio.EcAlto == undefined || Folio.EcAlto.trim() == '') {
+            if (Folio.EcAlto == undefined || Folio.EcAlto.trim() == '' ) {
                 validated = false;
             }
 
@@ -1287,6 +1293,7 @@ sap.ui.define([
             const Folio = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
 
             // if (Folio.CapEmbar == undefined || Folio.CapEmbar.trim() == '') validated = false;
+            if (Folio.UndBon == undefined || Folio.UndBon.trim() == '') validated = false;
             if (Folio.CostoB == undefined || Folio.CostoB.trim() == '') validated = false;
             if (Folio.CostNUCompra == undefined || Folio.CostNUCompra.trim() == '') validated = false;
             if (Folio.CostNUVenta == undefined || Folio.CostNUVenta.trim() == '') validated = false;
@@ -1807,8 +1814,8 @@ sap.ui.define([
         changeTipoBonif(oControlEvent){
             let selected = oControlEvent.getParameter("value");
 
-            this.byId("ValBoni").setValue("");
-            this.byId("UnisBonif").setValue("");
+            this.byId("ValBoni").setValue("0");
+            this.byId("UnisBonif").setValue("0");
 
             switch (selected) {
                 case "Ninguna":

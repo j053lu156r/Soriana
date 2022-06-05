@@ -159,7 +159,7 @@
 
                                                 <form:FormElement label="{appTxts>/products.mainFeatureTxt}">
                                                     <form:fields>
-                                                        <Input value="{Folio>/CaracPrin}" id="featureMain"/>
+                                                        <Input value="{Folio>/Descripcion}" id="featureMain"/>
                                                     </form:fields>
                                                 </form:FormElement>
 
@@ -314,7 +314,7 @@
 
                                                 <form:FormElement label="{appTxts>/products.colorFlavArom}">
                                                     <form:fields>
-                                                        <Input value="" id="qualities"/>
+                                                        <Input value="{Folio>/CaracCsa}" id="qualities"/>
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.size}">
@@ -461,7 +461,7 @@
                                     singleContainerFullSize="false">
                                 <form:content>
 
-                                    <core:Title text="{app>/products.subTitleBoardingPerPurchase}" />
+                                    <core:Title text="{appTxts>/products.subTitleBoardingPerPurchase}" />
                                     <Label text="{appTxts>/products.tall}" />
                                     <Input id="EcAlto" value="{Folio>/EcAlto}" type="Number" required="true" liveChange="calcularECVolumen" />
                                     <Label text="{appTxts>/products.width}" />
@@ -480,9 +480,9 @@
                                     </ComboBox>
                                     <Label text="{appTxts>/products.grossWeight}" />
                                     <Input value="{Folio>/EcPbruto}"  type="Number" required="true"/>
-                                    <Label text="{appTxts>/products.netWeight }" />
+                                    <Label text="{appTxts>/products.netWeight}" />
                                     <Input value="{Folio>/EcPneto}" type="Number" required="true" />
-                                    <Label text="{appTxts>/products.weightUnit }" />
+                                    <Label text="{appTxts>/products.weightUnit}" />
                                     <ComboBox selectedKey="{Folio>/EcUndp}" items="{path : 'Catalogos>/UnidadPeso/results'}" required="true">
                                         <items>
                                             <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
@@ -545,7 +545,7 @@
                             <form:SimpleForm
                                     editable="true"
                                     layout="ResponsiveGridLayout"
-                                    title="Datos"
+                                    title="{appTxts>/products.subtitleData}"
                                     labelSpanXL="4"
                                     labelSpanL="4"
                                     labelSpanM="4"
@@ -561,55 +561,55 @@
                                     singleContainerFullSize="false">
                                 <form:content>
 
-                                    <core:Title text="Descuentos" />
+                                    <core:Title text="{appTxts>/products.subtitleDiscounts}" />
 
-                                    <Label text="Descuento normal (%)" />
+                                    <Label text="{appTxts>/products.normalDiscount}" />
                                     <Input id="DscNormal" value="{Folio>/DscNormal}" type="Number" placeholder="{appTxts>/products.porcentajetxt}" liveChange="calcularCostNetCom" />
 
-                                    <Label text="Descuento normal 2  (%)" />
+                                    <Label text="{appTxts>/products.normalDiscount2}" />
                                     <Input id="DscNormal2" value="{Folio>/DscNormal2}"  type="Number" placeholder="{appTxts>/products.porcentajetxt}" liveChange="calcularCostNetCom" />
 
-                                    <Label text="Descuento normal 3  (%)" />
+                                    <Label text="{appTxts>/products.normalDiscount3}" />
                                     <Input id="DscNormal3" value="{Folio>/DscNormal3}" type="Number" placeholder="{appTxts>/products.porcentajetxt}" liveChange="calcularCostNetCom" />
                                     
-                                    <Label text="Descuento adicional  (%)" />
+                                    <Label text="{appTxts>/products.additionalDiscount}" />
                                     <Input id="DscAdicional" value="{Folio>/DscAdicional}" type="Number" placeholder="{appTxts>/products.porcentajetxt}" liveChange="calcularCostNetCom" />
 
-                                    <Label text="Descuento pronto pago  (%)" />
+                                    <Label text="{appTxts>/products.discountEarlyPay}" />
                                     <Input id="DscPpago" value="{Folio>/DscPpago}" type="Number" placeholder="{appTxts>/products.porcentajetxt}" liveChange="calcularCostNetCom" />
 
-                                    <core:Title text="Bonificación" />
+                                    <core:Title text="{appTxts>/products.titleBonus}" />
 
-                                    <Label text="Tipo de bonificación " />
+                                    <Label text="{appTxts>/products.subtitleBonusType}" />
                                     <!-- <Input value="{Folio>/Bonif}" /> -->
-                                    <ComboBox selectedKey="{Folio>/TipoBonif}" items="{path : 'Catalogos>/TiposBonificacion/results'}" required="true" change="changeTipoBonif">
+                                    <ComboBox selectedKey="{Folio>/UndBon}" items="{path : 'Catalogos>/TiposBonificacion/results'}" required="true" change="changeTipoBonif">
                                         <items>
-                                            <core:Item key="{Catalogos>text}" text="{Catalogos>text}" />
+                                            <core:Item key="{Catalogos>value}" text="{Catalogos>text}" />
                                         </items>
                                     </ComboBox>
 
-                                    <Label text="Valor de bonificación (%)" />
+                                    <Label text="{appTxts>/products.bonusValue}" />
                                     <Input id="ValBoni" value="{Folio>/ValBoni}" type="Number" placeholder="{appTxts>/products.porcentajetxt}"  liveChange="calcularCostNetCom" editable="false"/>
 
-                                    <Label text="Unidades de bonificación" />
-                                    <Input id="UnisBonif"  value="{Folio>/UndBon}" type="Number"  editable="false"/>
+                                    <Label text="{appTxts>/products.bonusUnits}" />
+                                    <Input id="UnisBonif"  value="{Folio>/ValBoni}" type="Number"  editable="false"/>
                                     
 
-                                    <core:Title text="Costos de compra" />
+                                    <core:Title text="{appTxts>/products.titlePurchaseCosts}" />
                                     <!--Label text="Costos" />
                                     <RadioButtonGroup id="radioCostos" >
                                         <RadioButton id="radioCompra" text="Un compra" />
                                         <RadioButton id="radioVenta" text="Un venta" />
                                     </RadioButtonGroup-->
-                                    <Label text="Costo bruto" />
+                                    <Label text="{appTxts>/products.grossCost}" />
                                     <Input id="CostoB" value="{Folio>/CostoB}" type="Number" required="true" liveChange="calcularCostNetVen"/>
-                                    <Label text="Capacidad de embarque" />
+                                    <Label text="{appTxts>/products.packingCapacity}" />
                                     <Input id="CapEmpaq2" value="{Folio>/CapEmpaq}" type="Number" required="true" editable="false" liveChange="calcularCostNetVen"/>
-                                    <Label text="Costo Neto Unidad de compra" />
+                                    <Label text="{appTxts>/products.netCostPurchaseUnit}" />
                                     <Input id="CostNetComp" value="{Folio>/CostNUCompra}"  type="Number" required="true" editable="false"/>
-                                    <Label text="Costo Neto Unidad de venta" />
+                                    <Label text="{appTxts>/products.netCostUnitOfSale}" />
                                     <Input id="CostNetVen" value="{Folio>/CostNUVenta}" type="Number" required="true" editable="false"/>
-                                    <Label text="Precio sugerido" />
+                                    <Label text="{appTxts>/products.suggestedPrice}" />
                                     <Input id="PSug" value="{Folio>/PSug}" type="Number" required="true"/>
                                     
                                 </form:content>
@@ -624,7 +624,7 @@
 						validated="true"
 						title="{appTxts>/products.titleTabImages}">
 
-                        <Text text="En esta pantalla se muestran las imágenes que se tienen registradas en GS1 y podrá agregar nuevas imágenes."/>
+                        <Text text="{appTxts>/products.msgImgs}"/>
 
                         <upload:UploadSet 
                             id="ImageUploadSet" 
@@ -644,7 +644,7 @@
 
                             <upload:toolbar>
                                         <OverflowToolbar>
-                                             <Label text="Cantidad de imagenes: "/>
+                                             <Label text="{appTxts>/products.numImages}"/>
                                              <Text id="imagesCounter" text="0"/> 
                                              <ToolbarSpacer/>            
                                         </OverflowToolbar>
@@ -669,32 +669,32 @@
 							activate="reviewActivate"
 							complete="reviewComplete"
 							validated="true"
-							title="Review page">
+							title="{appTxts>/products.titleReviewPage}">
 								<form:SimpleForm
-										title="1. Datos Generales"
+										title="{appTxts>/products.titleGeneralDta }"
 										minWidth="1024"
 										editable="false"
 										layout="ResponsiveGridLayout">
 									<form:content>
-										<Label text="Código de barras"/>
+										<Label text="{appTxts>/products.barCode}"/>
 										<Text text="{Folio>/CodEan}" />
                                         
-                                        <Label text="Producto Base"/>
+                                        <Label text="{appTxts>/products.baseProduct}"/>
                                         <Text text="{FolioToShow>/ProdBase}" />
 
-                                        <Label text="Tipo de articulo"/>
+                                        <Label text="{appTxts>/products.productType}"/>
                                         <Text text="{FolioToShow>/TipArt}" />
 
-                                        <Label text="Grupo de Compras"/>
+                                        <Label text="{appTxts>/products.shoppingGroup}"/>
                                         <Text text="{FolioToShow>/PurGroup}" />
 
-                                        <Label text="Grupo de Articulo"/>
+                                        <Label text="{appTxts>/products.productGroup}"/>
                                         <Text text="{FolioToShow>/GrupArt}" />
 
-                                        <Label text="Proveedor"/>
+                                        <Label text="{appTxts>/products.supplier}"/>
                                         <Text text="{configSite>/supplierInput}" />
 
-                                        <Label text="Marca"/>
+                                        <Label text="{appTxts>/products.brand}"/>
                                         <Text text="{FolioToShow>/Marca}" />
 
                                         <Label text="{appTxts>/products.codeType}"/>
@@ -709,8 +709,8 @@
                                         <Label text="{appTxts>/products.description}"/>
                                         <Text text="{FolioToShow>/DescrArt}" />
 
-                                        <Label text="Caracteristica Principal"/>
-                                        <Text text="{FolioToShow>/CaracPrin}" />
+                                        <Label text="{appTxts>/products.mainFeatureTxt}"/>
+                                        <Text text="{FolioToShow>/Descripcion}" />
 
                                         <Label text="{appTxts>/products.feature2}"/>
                                         <Text text="{FolioToShow>/Carac2}" />
@@ -727,134 +727,134 @@
                                         <Label text="{appTxts>/products.negotiatedFormat}"/>
                                         <Text text="{FolioToShow>/ForNegoc}" />										
 
-                                        <!-- TERMINA REVIEWE 1 -->
+                                        <!-- TERMINA REVIEW 1 -->
 										
 									</form:content>
 								</form:SimpleForm>
 
 								<form:SimpleForm
-										title="2. Presentación "
+										title="{appTxts>/products.titleProductPresen}"
 										minWidth="1024"
 										editable="false"
 										layout="ResponsiveGridLayout">
 									<form:content>
 
-										<Label text="Presentación"/>
+										<Label text="{appTxts>/products.labelPresentation}"/>
 										<Text text="{FolioToShow>/Present}"/>
 
-										<Label text="Contenido"/>
+										<Label text="{appTxts>/products.labelContent}"/>
 										<Text text="{FolioToShow>/Contenido}"/>
 
-										<Label text="Unidad de medida de contenido"/>
+										<Label text="{appTxts>/products.labelUnitMeasure}"/>
 										<Text text="{FolioToShow>/UndCont}"/>
 
-										<Label text="Código de venta"/>
+										<Label text="{appTxts>/products.salesCode}"/>
 										<Text text="{FolioToShow>/CodVent}"/>
 
-										<Label text="Unidad de medida de venta"/>
+										<Label text="{appTxts>/products.salesUnitMeasure}"/>
 										<Text text="{FolioToShow>/UndMventa}"/>
 
-										<Label text="Código de unidad de compra"/>
+										<Label text="{appTxts>/products.purchaseUnitCode}"/>
 										<Text text="{FolioToShow>/CodCompra}"/>
 
-										<Label text="Unidad de compra"/>
+										<Label text="{appTxts>/products.purchaseUnit}"/>
 										<Text text="{FolioToShow>/UndCompra}"/>
 
-										<Label text="Capacidad de empaque"/>
+										<Label text="{appTxts>/products.packingCapacity}"/>
 										<Text text="{FolioToShow>/CapEmpaq}"/>
 
-										<Label text="Artículo con variantes"/>
+										<Label text="{appTxts>/products.artWithVarients}"/>
 										<Text text="{FolioToShow>/VariantArt}"/>
 
-										<Label text="Color / Sabor / Aroma"/>
+										<Label text="{appTxts>/products.colorFlavArom}"/>
 										<Text text="{FolioToShow>/Taltam}"/>
 
-										<Label text="Talla / Tamaño"/>
+										<Label text="{appTxts>/products.size}"/>
 										<Text text="{FolioToShow>/Taltam}"/>
 
-										<Label text="Caracteristica Variante"/>
+										<Label text="{appTxts>/products.characteristicVariant}"/>
 										<Text text="{FolioToShow>/VariantArt}"/>
 
-                                         <!-- TERMINA SEGUNOD REVIEWE -->
+                                         <!-- TERMINA SEGUNDO REVIEW -->
 									</form:content>
 								</form:SimpleForm>
 
 								<form:SimpleForm
-										title="3. Dimenciones"
+										title="{appTxts>/products.titleDimensions}"
 										minWidth="1024"
 										editable="false"
 										layout="ResponsiveGridLayout">
 									<form:content>
 
-                                    <core:Title text="Presentación de Compra" />
+                                    <core:Title text="{appTxts>/products.subtitlePurchasePresen}" />
 
-                                    <Label text="Alto" />
+                                    <Label text="{appTxts>/products.tall}" />
                                     <Text text="{FolioToShow>/EcAlto}"/>
 
-                                    <Label text="Ancho" />
+                                    <Label text="{appTxts>/products.width}" />
                                     <Text text="{FolioToShow>/EcAncho}" />
 
-                                    <Label text="Profundo" />
+                                    <Label text="{appTxts>/products.deep}" />
                                     <Text text="{FolioToShow>/EcProfundo}" />
 
-                                    <Label text="Expresado en" />
+                                    <Label text="{appTxts>/products.msgExpressedIn}" />
                                     <Text text="{FolioToShow>/EcUndaap}"  />
 
-                                    <Label text="Volumen" />
+                                    <Label text="{appTxts>/products.volume}" />
                                     <Text text="{FolioToShow>/EcVolumen}" />
 
-                                    <Label text="Unidad de volumen" />
+                                    <Label text="{appTxts>/products.volumeUnit}" />
                                     <Text text="{FolioToShow>/EcUndvol}" />
 
-                                    <Label text="Peso bruto" />
+                                    <Label text="{appTxts>/products.grossWeight}" />
                                     <Text text="{FolioToShow>/EcPbruto}"  />
 
-                                    <Label text="Peso neto" />
+                                    <Label text="{appTxts>/products.netWeight}" />
                                     <Text text="{FolioToShow>/EcPneto}" />
 
-                                    <Label text="Unidad de peso" />
+                                    <Label text="{appTxts>/products.weightUnit}" />
                                     <Text text="{FolioToShow>/EcUndp}" />
 
-                                    <core:Title text="Presentación de venta" />
-                                    <Label text="Alto" />
+                                    <core:Title text="{appTxts>/products.subtitlesalesPresen}" />
+                                    <Label text="{appTxts>/products.tall}" />
                                     <Text text="{FolioToShow>/PvAlto}" />
 
-                                    <Label text="Ancho" />
+                                    <Label text="{appTxts>/products.width}" />
                                     <Text text="{FolioToShow>/PvAncho}" />
 
-                                    <Label text="Profundo" />
+                                    <Label text="{appTxts>/products.deep}" />
                                     <Text text="{FolioToShow>/PvProfundo}" />
 
-                                    <Label text="Expresado en" />
+                                    <Label text="{appTxts>/products.msgExpressedIn}" />
                                     <Text text="{FolioToShow>/PvUndaap}"  />
 
-                                    <Label text="Volumen" />
+                                    <Label text="{appTxts>/products.volume}" />
                                     <Text text="{FolioToShow>/PvVolumen}"/>
 
-                                    <Label text="Unidad de volumen" />
+                                    <Label text="{appTxts>/products.volumeUnit}" />
                                     <Text text="{FolioToShow>/PvUndvol}"/>
 
-                                    <Label text="Peso bruto" />
+                                    <Label text="{appTxts>/products.grossWeight}" />
                                     <Text text="{FolioToShow>/PvPbruto}" />
 
-                                    <Label text="Peso neto" />
+                                    <Label text="{appTxts>/products.netWeight}" />
                                     <Text text="{FolioToShow>/PvPneto}"/>
 
-                                    <Label text="Unidad de peso" />
+                                    <Label text="{appTxts>/products.weightUnit}" />
                                     <Text text="{FolioToShow>/PvUndp}"/>
 
-                                    <core:Title text="Capacidad por tarima" />
+                                    <core:Title text="{appTxts>/products.capPerPallet}" />
 
-                                    <Label text="Código de tarima" />
+                                    <Label text="{appTxts>/products.palletCode}" />
                                     <Text text="{FolioToShow>/CodTarima}" />
 
-                                    <Label text="Cajas por contenido" />
+                                    <Label text="{appTxts>/products.boxesByContent}" />
                                     <Text text="{FolioToShow>/CajasTend}" />
 
-                                    <Label text="Tendidos por tarima" />
+                                    <Label text="{appTxts>/products.stretchedByPlatform}" />
                                     <Text text="{FolioToShow>/TendTarima}" />
 
-                                    <Label text="Cajas por tarima" />
+                                    <Label text="{appTxts>/products.boxesPerPallet}" />
                                     <Text text="{FolioToShow>/CajasTarima}" />
 
 									</form:content>
@@ -862,62 +862,62 @@
 								</form:SimpleForm>
 
 								<form:SimpleForm
-										title="4. Descuentos, Bonificación y costos"
+										title="{appTxts>/products.titleDisBonusCosts}"
 										minWidth="1024"
 										editable="false"
 										layout="ResponsiveGridLayout">
 									<form:content>
 
-                                    <core:Title text="Descuentos" />
+                                    <core:Title text="{appTxts>/products.subtitleDiscounts}" />
 
-                                    <Label text="Descuento normal (%)" />
+                                    <Label text="{appTxts>/products.normalDiscount}" />
                                     <Text text="{FolioToShow>/DscNormal}" />
 
-                                    <Label text="Descuento normal 2  (%)" />
+                                    <Label text="{appTxts>/products.normalDiscount2}" />
                                     <Text text="{FolioToShow>/DscNormal2}"  />
 
-                                    <Label text="Descuento normal 3  (%)" />
+                                    <Label text="{appTxts>/products.normalDiscount3}" />
                                     <Text text="{FolioToShow>/DscNormal3}"  />
                                     
-                                    <Label text="Descuento adicional  (%)" />
+                                    <Label text="{appTxts>/products.additionalDiscount}" />
                                     <Text text="{FolioToShow>/DscAdicional}" />
 
-                                    <Label text="Descuento pronto pago  (%)" />
+                                    <Label text="{appTxts>/products.discountEarlyPay}" />
                                     <Text text="{FolioToShow>/DscPpago}"  />
 
-                                    <core:Title text="Bonificación" />
+                                    <core:Title text="{appTxts>/products.titleBonus}" />
 
-                                    <Label text="Tipo de bonificación " />
-                                    <Text text="{FolioToShow>/Bonif}" />
+                                    <Label text="{appTxts>/products.subtitleBonusType}" />
+                                    <Text text="{FolioToShow>/UndBon}" />
 
-                                    <Label text="Valor de bonificación (%)" />
+                                    <Label text="{appTxts>/products.bonusValue}" />
                                     <Text text="{FolioToShow>/ValBoni}" />
 
-                                    <Label text="Unidades de bonificación" />
-                                    <Text text="{FolioToShow>/UndBon}" />
+                                    <Label text="{appTxts>/products.bonusUnits}" />
+                                    <Text text="{FolioToShow>/ValBoni}" />
                                     
-                                    <core:Title text="Costos de compra" />
+                                    <core:Title text="{appTxts>/products.titlePurchaseCosts}" />
 
-                                    <Label text="Costo Bruto" />
+                                    <Label text="{appTxts>/products.grossCost}" />
                                     <Text text="{FolioToShow>/CostoB}" />
 
-                                    <Label text="Capacidad de Empaque" />
+                                    <Label text="{appTxts>/products.packingCapacity}" />
                                     <Text text="{FolioToShow>/CapEmpaq}" />
 
-                                    <Label text="Costo Neto Unidad de Compra" />
+                                    <Label text="{appTxts>/products.netCostPurchaseUnit}" />
                                     <Text text="{FolioToShow>/CostNUCompra}" />
 
-                                    <Label text="Costo Neto Unidad de Venta" />
+                                    <Label text="{appTxts>/products.netCostUnitOfSale}" />
                                     <Text text="{FolioToShow>/CostNUVenta}" />
 
-                                    <Label text="Precio Sugerido" />
+                                    <Label text="{appTxts>/products.suggestedPrice}" />
                                     <Text text="{FolioToShow>/PSug}" />
                                     
 									</form:content>
 								</form:SimpleForm>
 
                                 <form:SimpleForm
-										title="4. Imagenes "
+										title="{appTxts>/products.titleImages}"
 										minWidth="1024"
 										editable="false"
 										layout="ResponsiveGridLayout">
@@ -956,7 +956,7 @@
 					<ToolbarSpacer/>
 					<Button text="{appTxts>/products.previous}" visible="{/backButtonVisible}" press="onDialogBackButton" />
 					<Button text="{appTxts>/products.nextStep}" type="Emphasized" enabled="{/nextButtonEnabled}" visible="{/nextButtonVisible}" press="onDialogNextButton" />
-					<Button text="Review" type="Emphasized" visible="{/reviewButtonVisible}" press="onDialogNextButton" />
+					<Button text="{appTxts>/products.buttonReview}" type="Emphasized" visible="{/reviewButtonVisible}" press="onDialogNextButton" />
 					<Button text="{appTxts>/products.finish}" type="Emphasized" visible="{/finishButtonVisible}" press="handleWizardSubmit" />
 					<Button	text="{appTxts>/products.cancel}" type="Transparent" press="handleWizardCancel"/>
 				</OverflowToolbar>

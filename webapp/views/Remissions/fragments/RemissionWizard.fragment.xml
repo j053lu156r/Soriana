@@ -294,7 +294,7 @@
 							validated="true"
 							title="Verificación">
 								<form:SimpleForm
-										title="1. Remisión"
+										title="1. {appTxts>/rem.title}"
 										minWidth="1024"
 										editable="false"
                                         layout="ColumnLayout"
