@@ -62,9 +62,7 @@ sap.ui.define([
             this.oRouter.navTo("masterRelease");
             this.clearFields();
         },
-        clearFields: function () {
-
-        },
+      
         openSupplierSlect: function () {
             if (!this._uploadDialog2) {
                 this._uploadDialog2 = sap.ui.xmlfragment("demo.views.MiBandeja.Releases.SupplierSelect", this);

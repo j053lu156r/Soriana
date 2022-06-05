@@ -84,12 +84,19 @@ xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants" xmlns="sap.m" x
 						</header>
 						<footer/>
 					</Column>
+                    <Column >
+                       <header>
+                       
+                       </header>
+                       <footer/>
+                    </Column>
 				</columns>
 				<items>
 					<ColumnListItem type="Navigation" press="onListItemPress">
 						<cells>
 							<Text text="{masterReleaseModel>Ztext}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 							<Text xmlns="sap.m" text="{masterReleaseModel>Zfechaenvio}"/>
+                            <Button icon="sap-icon://delete" tooltip="{appTxts>/products.deleteRow}"  press=".deleteRelease(${masterReleaseModel>Idmensaje})" ></Button>
 						</cells>
 					</ColumnListItem>
 				</items>

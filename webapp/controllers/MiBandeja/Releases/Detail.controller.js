@@ -66,53 +66,12 @@ sap.ui.define([
            
             //this.getSplitContObj().toDetail(this.createId("releaseDetail"));  no se para que pusieron esta funcion
         },
-        deleteRelease: function () {
-            var userData = this.getOwnerComponent().getModel("userdata");
-            var sendMail = userData.getProperty("/IMail");// this.getView().byId("sendMail"); //userData.getProperty("/EIdusua")
-            var idUser = userData.getProperty("/EIdusua");
-            var objRelease = {
-                "IOption": "17",
-                "IIdusua": idUser, //quien manda
-                "IAllpro":"",
-                "ISdate": "", //startDate, fecha de valides
-                "IEdate": "", // endDate,
-                "IIdmen" :this._release ,
-                "IFmail": "",
-                "ISubject":  "",
-                "IText": "", //-TEXTO DEL MENSAJE -
-                "ITPROVNAV": [],
-                "ITATTACNAV": []
-            }
-
-            var response = inboxModel.create("/headInboxSet", objRelease);
-
-            if (response != null) {
-                if (response.ESuccess == "X") {
-                    sap.m.MessageBox.success("Se ha eliminado el comunicado.", {
-                        actions: [sap.m.MessageBox.Action.CLOSE],
-                        emphasizedAction: sap.m.MessageBox.Action.CLOSE,
-                        onClose: function (sAction) {
-                            this.goToMainReleases();
-                            this.clearFields();
-                        }.bind(this)
-                    });
-                } else {
-                    if(response.mensaje != null){
-                        sap.m.MessageBox.error(response.mensaje);
-                    }else{
-                        sap.m.MessageBox.error("Ocurrio un error");
-                    }
-                    
-                }
-            } else {
-                sap.m.MessageBox.error("No se pudo conectar con el servidor, intente nuevamente.");
-            }
-
-
-
-
-		},
+        
+       
         editRelease: function () {
+            if(!this.hasAccess(49)){
+                return
+            }
             //var subject = this.getView().byId("subject").getValue();
             var subject = this.getOwnerComponent().getModel("release").getProperty("/ESdmens/Ztext"); 
             var message = this.getView().byId("message").getValue();
@@ -151,7 +110,7 @@ sap.ui.define([
                         actions: [sap.m.MessageBox.Action.CLOSE],
                         emphasizedAction: sap.m.MessageBox.Action.CLOSE,
                         onClose: function (sAction) {
-                            this.goToMainReleases();
+                            this.goToMainRelease();
                             this.clearFields();
                         }.bind(this)
                     });
@@ -168,8 +127,9 @@ sap.ui.define([
             }
         },
         goToMainRelease: function () {
+           
             this.oRouter.navTo("masterRelease");
-            this.clearFields();
+           // this.clearFields();
         },
         formatDateQuote: function (v) {
             if (v) {
