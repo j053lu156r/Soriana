@@ -98,7 +98,13 @@
                                                 type="Emphasized"
                                                 visible="{= ${userdata>/ERol} === '0001' || ${userdata>/ERol} === '0002' ? true : false }"
                                                 press="editRelease"
-                                            />                           
+                                            />         
+                                             <m:Button
+                                                text="{appTxts>/products.deleteRow}"
+                                                type="Emphasized"
+                                                visible="{= ${userdata>/ERol} === '0001' || ${userdata>/ERol} === '0002' ? true : false }"
+                                                press="deleteRelease"
+                                            />                   
                                     </m:Toolbar>
                                 </form:toolbar>
 								<form:content>

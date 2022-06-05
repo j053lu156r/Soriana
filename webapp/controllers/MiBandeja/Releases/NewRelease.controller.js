@@ -321,9 +321,10 @@ sap.ui.define([
 			}
 		},
         addAttach: function (oEvent) {
+            var that = this;
             var pItem = oEvent.getParameter("item");
             var oItem = pItem.getFileObject();
-
+            
 
             var nReleaseModel = this.getOwnerComponent().getModel("nRelease");
 
@@ -336,6 +337,18 @@ sap.ui.define([
                     var oAttach = nReleaseModel.getData();
                         oAttach.attach.push(oFile);
                     pItem.setUploadState(sap.m.UploadState.Complete);
+                    // cambio
+                   // oattacheds.getBinding("items").refresh();
+                   var oUploadSet = that.getView().byId("attacheds");
+                   var oUploadSetItem = new sap.m.upload.UploadSetItem({
+                    fileName:oItem.name,
+                    mediaType: oItem.type,
+                    uploadState: sap.m.UploadState.Complete,
+                    thumbnailUrl: null
+                    });
+                    oUploadSet.addItem(oUploadSetItem);
+                    oUploadSet.getBinding("items").refresh();                    
+                    //cambio
                 };
                 reader.readAsDataURL(oItem);
         },
