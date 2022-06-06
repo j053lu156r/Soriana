@@ -58,7 +58,7 @@
                                     <form:formContainers>
                                         <form:FormContainer>
                                             <form:formElements>
-                                                <form:FormElement  label="{appTxts>/products.code}">
+                                                <form:FormElement label="{appTxts>/products.code}">
                                                     <form:fields>
                                                         <Input editable="false" value="" id="codeGS1" />
                                                     </form:fields>

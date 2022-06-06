@@ -53,9 +53,7 @@ sap.ui.define([
             }).catch(error => {
                 console.error(" >>>>>>>>>>>> ERROR FETCH GS1 ", error);
             });
-
             console.log(gs1Product.getData());
-
         },
 
         setInitialDates() {
@@ -223,7 +221,6 @@ sap.ui.define([
 
                 if (response != null) {
                     if (response.ESuccess == "X") {
-                        //let msg = this.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.msgUpdated') ;
                         if (response.ETMODIFY.results.length > 0) {
                             const registrosCargados = parseInt(response.ETMODIFY.results.length, 10);
                             const registrosCorrectos = [];
@@ -240,13 +237,6 @@ sap.ui.define([
                             this.paginate("ETMODIFY", "", 1, 0);
                         } else
                             MessageBox.warning("No se encontraron folios en el archivo cargado");
-                        /*sap.m.MessageBox.success( msg, {
-                            actions: [sap.m.MessageBox.Action.CLOSE],
-                            emphasizedAction: sap.m.MessageBox.Action.CLOSE,
-                            onClose: function (sAction) {
-                                
-                            }.bind(this)
-                        });*/
                     } else {
                         let message = response.error.message.value;
                         sap.m.MessageBox.error(message);
@@ -1210,7 +1200,6 @@ sap.ui.define([
                 this.getView().byId(idComponent).setValueState(sap.ui.core.ValueState.Error);
                 this.getView().byId(idComponent).setValueStateText("El valor debe ser menor a 10000");
             }
-            // this.getOwnerComponent().getModel("FolioToShow").setProperty("/EcVolumen", Folio.PvVolumen);
 
         },
 
@@ -1245,14 +1234,12 @@ sap.ui.define([
                     this.getView().byId(idComponent).setValueStateText("El valor debe ser menor a 10000");
                 } 
             
-            // this.getOwnerComponent().getModel("FolioToShow").setProperty("/PvVolumen", Folio.PvVolumen);
         },
 
         validateCompleteStepDimensions: function () {
 
             let validated = true;
 
-            //obtenemos el modelo 
             let Folio = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
 
             if (Folio.EcAlto == undefined || Folio.EcAlto.trim() == '' || parseFloat(Folio.EcAlto.trim()) >= 10000) {                
@@ -1334,12 +1321,7 @@ sap.ui.define([
                 sap.m.MessageBox.warning("Capture correctamente todos los campos.");
             }
 
-            //Validaciones PAso Dimensiones
-
             this.getView().byId('DimensionsStep').setValidated(validated || _testingSteps);
-
-            // console.log(">>>>>>>>>>>>>>> TERMINO VALIDACION DIMESIONES <<<<<<<<<<<<<<<<<<<<");
-            // console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-");
 
         },
 
@@ -1347,7 +1329,6 @@ sap.ui.define([
 
             let validated = true;
 
-            //obtenemos el modelo 
             const Folio = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
 
             // if (Folio.CapEmbar == undefined || Folio.CapEmbar.trim() == '') validated = false;
@@ -1360,8 +1341,6 @@ sap.ui.define([
             if (!validated) {
                 sap.m.MessageBox.warning("Faltan datos por capturar");
             }
-
-            //Validaciones PAso Dimensiones
 
             this.getView().byId('Discounts').setValidated(validated || _testingSteps);
         },
