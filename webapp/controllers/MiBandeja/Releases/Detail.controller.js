@@ -47,20 +47,21 @@ sap.ui.define([
             this._release = oEvent.getParameter("arguments").releaseId || this._release || "0";
             var vMail = this.getOwnerComponent().getModel("userdata").getProperty("/IMail"); 
             
-            var response = inboxModel
+           /* var response = inboxModel
                 .getJsonModel("/headInboxSet?$expand=ETATTACHNAV&$filter=IOption eq '4'"
                     + " and IMail eq '" + vMail + "'"
-                    + " and IIdmen eq '" + this._release + "'");
+                    + " and IIdmen eq '" + this._release + "'");*/
 
+            var response = inboxModel
+            .getJsonModel("/headInboxSet?$expand=ETATTACHNAV,ZTTSP_MENSPROVSet&$filter=IOption eq '4'"
+              + " and IMail eq '" + vMail + "'"
+              + " and IIdmen eq '" + this._release + "'");
             if (response != null) {
                 var objResponse = response.getProperty("/results/0");
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(objResponse), "release");
-                //var  jsDateObject = this.formatDateQuote(objResponse.getProperty("ESdmens/Zfechaenvio")); 
-                var  jsDateObject = this.formatDateQuote(this.getOwnerComponent().getModel("release").getProperty("/ESdmens/Zfechaenvio")); 
-                var oDRS2 = this.byId("dateRange");
-                oDRS2.setDateValue(jsDateObject);
-                oDRS2.setMinDate(jsDateObject);
-                oDRS2.setSecondDateValue(jsDateObject);
+                this.paginate('release', '/ZTTSP_MENSPROVSet', 1, 0);
+             
+                
             }
                       
            

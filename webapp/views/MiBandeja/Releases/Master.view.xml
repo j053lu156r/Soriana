@@ -80,6 +80,12 @@ xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants" xmlns="sap.m" x
 					</Column>
 					<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
 						<header>
+							<Text text="{appTxts>/release.message}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
 							<Text text="{appTxts>/release.publishdate}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 						</header>
 						<footer/>
@@ -95,6 +101,7 @@ xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants" xmlns="sap.m" x
 					<ColumnListItem type="Navigation" press="onListItemPress">
 						<cells>
 							<Text text="{masterReleaseModel>Ztext}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{masterReleaseModel>Zresumen}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 							<Text xmlns="sap.m" text="{masterReleaseModel>Zfechaenvio}"/>
                             <Button icon="sap-icon://delete" tooltip="{appTxts>/products.deleteRow}"  press=".deleteRelease(${masterReleaseModel>Idmensaje})" ></Button>
 						</cells>
