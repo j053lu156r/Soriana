@@ -338,6 +338,52 @@ sap.ui.define([
             });
             jQuery.sap.addUrlWhitelist("blob"); // register blob url as whitelist
         },
+        searchDataUser: function () {
+            var vMail = sap.ui.getCore().getModel("userdata").getProperty("/IMail");
+            var bContinue = false;
+          
+
+            var formater = sap.ui.core.format.DateFormat.getDateTimeInstance({ parent: "yyyyMMdd" });
+            var dateRange = this.getView().byId("dateRange");
+
+            var startDate = this.buildSapDate(dateRange.getDateValue());
+            var endDate = this.buildSapDate(dateRange.getSecondDateValue());
+            var vSubject = this.getView().byId("subject").getValue();
+            var vUser = this.getOwnerComponent().getModel("userdata").getProperty("/EIdusua");
+
+            if (vSubject != null && vSubject == "") {
+                if (startDate != "" && endDate != "") {
+                    bContinue = true;
+                } else {
+                    bContinue = false;
+                    sap.m.MessageBox.error("Debe ingresar al menos un criterio de busqueda.");
+                }
+            } else {
+                bContinue = true;
+            }
+///headInboxSet?$expand=ETINBOXUNAV&$filter=IOption eq '2' and IMail eq '${vMail}'  and IName eq '${sQuery}'`
+            if (bContinue) {
+                //var url = "/headInboxSet?$expand=ETDATAMESNAV&$filter=IOption eq '12' and IIdusua eq '" + vUser + "'";
+                var url = "/headInboxSet?$expand=ETINBOXUNAV&$filter=IOption eq '2' and IMail eq '" + vMail + "'";
+
+                if (vSubject != "") {
+                    url += "  and IName eq '" + vSubject +"'";
+                }
+
+                if (startDate != "" && endDate != "") {
+                    url += " and ISdate eq '" + startDate + "'" + " and IEdate eq '" + endDate + "'";
+                }
+                var dueModel = inboxModel.getJsonModel(url);
+                var objResponse = dueModel.getProperty("/results/0");
+                if (objResponse != null){
+                    this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(objResponse), "tableInbox");
+                    this.paginated("tableInbox", "/ETINBOXUNAV", 1, 0);
+    
+                }
+
+            }
+
+        },
         searchRelease: function (oEvent) {
             var sQuery = oEvent.getSource().getValue();
             this.doSearchRelease(sQuery);
@@ -371,7 +417,7 @@ sap.ui.define([
         },
         clearFilters: function(){
             this.getView().byId("helpDocSearch").setValue("");
-            this.getView().byId("releaseSearch").setValue("");
+            //this.getView().byId("releaseSearch").setValue("");
             this.getView().byId("searchLocation").setValue("");
         }
     });
