@@ -7,7 +7,17 @@
     xmlns          = "sap.m" 
     xmlns:core     = "sap.ui.core"
     xmlns:t        ="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
     controllerName ="demo.controllers.Products.Master">
+
+     <html:style>
+      .sapContrast.sapMCbBg, .sapContrast .sapMCbBg {
+         background-color: white !important;
+      }
+      .sapContrast.sapMLabel, .sapContrast .sapMLabel{
+          color: black !important;
+      }
+   </html:style>
     
     <f:DynamicPage class="sapUiContentPadding">
         <!-- DynamicPage Title -->
@@ -31,10 +41,10 @@
                             text="{appTxts>/products.deleteProductsTxt}"
                             type="Emphasized"
                             press="deleteProducts"/>
-                    <!-- <Button
+                    <Button
                             text=" FETCH GS1 "
                             type="Emphasized"
-                            press="getGS1ProductData"/> -->
+                            press="getGS1ProductData"/>
                 </f:actions>
             </f:DynamicPageTitle>
         </f:title>

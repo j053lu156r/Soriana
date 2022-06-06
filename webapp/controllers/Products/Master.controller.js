@@ -15,7 +15,7 @@ sap.ui.define([
     const CatNegotiatedFormat = ['1A', '1B'];
     var swProveedorEnGS1 = false;
     var swProveedorExcluido = false;
-    var _testingSteps = true; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
+    var _testingSteps = false; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
 
     return BaseController.extend("demo.controllers.Products.Master", {
         formatterCatPrd: formatterCatPrd,
@@ -23,11 +23,12 @@ sap.ui.define([
 
             this.getView().addEventDelegate({
                 onBeforeShow: function (oEvent) {
+                    this.getOwnerComponent().setModel(new JSONModel({value:_testingSteps}), "ValidBarCode");
                     this.getOwnerComponent().setModel(new JSONModel(), "Paises");
                     this.getOwnerComponent().setModel(new JSONModel(), "Catalogos");
                     this.getOwnerComponent().setModel(new JSONModel(), "Folios");
                     this.getOwnerComponent().setModel(new JSONModel(), "Folio");
-                    this.getOwnerComponent().setModel(new JSONModel({'items': []}), "FolioImages");
+                    this.getOwnerComponent().setModel(new JSONModel({ 'items': [] }), "FolioImages");
                     this.getOwnerComponent().setModel(new JSONModel(), "FolioToShow");
                     this.getOwnerComponent().setModel(new JSONModel(), "ITARTVAR");
                     this.getOwnerComponent().getModel("ITARTVAR").setProperty("/results", []);
@@ -39,22 +40,20 @@ sap.ui.define([
             this.configFilterLanguage(this.getView().byId("filterBar"));
             this.setInitialDates();
 
-
         },
 
         async getGS1ProductData() {
             // Probando Consulta API externa
             let gs1Product = new JSONModel();
-            let provicionalEAN = '7501006584035'
-            await fetch(`https://compuarte.serv.net.mx:4000/searchbygtin?codigo_barras=${provicionalEAN}`).then(async data => {
+            let proviconalGLN = '7504001437009'
+            let provicionalEAN = '7501024513413'
+            await fetch(`https://compuarte.serv.net.mx:4000/searchbygtin?codigo_barras=${provicionalEAN}&gln=${proviconalGLN}`).then(async data => {
                 //console.log(await data.json());
                 gs1Product.setData(await data.json());
             }).catch(error => {
                 console.error(" >>>>>>>>>>>> ERROR FETCH GS1 ", error);
             });
-
             console.log(gs1Product.getData());
-
         },
 
         setInitialDates() {
@@ -75,7 +74,7 @@ sap.ui.define([
                         { value: '1B', text: this.getOwnerComponent().getModel("appTxts").getProperty('/products.expressOption') }
                     ]
                 };
-                
+
                 let CatTipoBonif = {
                     results: [
                         { value: 1, text: 'Por Porcentajes' },
@@ -222,7 +221,6 @@ sap.ui.define([
 
                 if (response != null) {
                     if (response.ESuccess == "X") {
-                        //let msg = this.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.msgUpdated') ;
                         if (response.ETMODIFY.results.length > 0) {
                             const registrosCargados = parseInt(response.ETMODIFY.results.length, 10);
                             const registrosCorrectos = [];
@@ -239,13 +237,6 @@ sap.ui.define([
                             this.paginate("ETMODIFY", "", 1, 0);
                         } else
                             MessageBox.warning("No se encontraron folios en el archivo cargado");
-                        /*sap.m.MessageBox.success( msg, {
-                            actions: [sap.m.MessageBox.Action.CLOSE],
-                            emphasizedAction: sap.m.MessageBox.Action.CLOSE,
-                            onClose: function (sAction) {
-                                
-                            }.bind(this)
-                        });*/
                     } else {
                         let message = response.error.message.value;
                         sap.m.MessageBox.error(message);
@@ -342,7 +333,7 @@ sap.ui.define([
             })
         },
         searchData: function () {
-            
+
             /* falto dar de alta este codigo, lo dejo preparado if (!this.hasAccess()) {
                  return false;
              }*/
@@ -667,6 +658,7 @@ sap.ui.define([
                 MessageBox.success("Artículo apto para registro.", {
                     onClose: () => {
                         this.getView().byId('barCode').setValueState(sap.ui.core.ValueState.Success);
+                        this.getOwnerComponent().getModel("ValidBarCode").setProperty("/value",true);
                     }
                 });
             }
@@ -715,15 +707,21 @@ sap.ui.define([
             this._handleMessageBoxOpen(this.getOwnerComponent().getModel("appTxts").getProperty('/products.msgSubmitNewProduct'), "confirm");
         },
 
-        handleButtonsVisibility: function () {
+        handleButtonsVisibility: function (prgressStep) {
+
+            let step = (prgressStep)? prgressStep : this._oWizard.getProgress();
+
             var oModel = this.getView().getModel();
-            switch (this._oWizard.getProgress()) {
+
+            oModel.setProperty("/checkConfirmation", false);
+            oModel.setProperty("/finishButtonVisible", false);
+
+            switch (step) {
                 case 1:
                     oModel.setProperty("/nextButtonVisible", true);
                     oModel.setProperty("/nextButtonEnabled", true);
                     oModel.setProperty("/backButtonVisible", false);
                     oModel.setProperty("/reviewButtonVisible", false);
-                    oModel.setProperty("/finishButtonVisible", false);
                     break;
                 case 2:
                     oModel.setProperty("/backButtonVisible", true);
@@ -743,13 +741,15 @@ sap.ui.define([
                 case 6:
                     oModel.setProperty("/nextButtonVisible", false);
                     oModel.setProperty("/reviewButtonVisible", true);
-                    oModel.setProperty("/finishButtonVisible", false);
                     break;
                 case 7:
                     this.cloneFolioModel();
+                    oModel.setProperty("/checkConfirmation", true);
                     oModel.setProperty("/finishButtonVisible", true);
                     oModel.setProperty("/backButtonVisible", true);
                     oModel.setProperty("/reviewButtonVisible", false);
+                    let step = this._oWizard.getProgressStep();
+                    this._oWizard.goToStep(step);
                     break;
                 default: break;
             }
@@ -812,7 +812,7 @@ sap.ui.define([
 
                             }
 
-                        }else{
+                        } else {
                             this._oWizard.discardProgress(this._oWizard.getSteps()[0]);
                             this.byId("wizardDialog").close();
                             this.getOwnerComponent().getModel("Folio").setData({});
@@ -824,6 +824,11 @@ sap.ui.define([
                 }.bind(this)
 
             });
+        },
+
+        selectAgree(oControlEvent) {
+            let valueCheck = oControlEvent.getParameter("selected");
+            this.byId("FinishBtn").setEnabled(valueCheck);
         },
 
         cloneFolioModel() {
@@ -1166,53 +1171,93 @@ sap.ui.define([
 
         calcularECVolumen: function (oControlEvent) {
 
-            let ecalto = this.byId("EcAlto").getValue();
-            let ecancho = this.byId("EcAncho").getValue();
-            let ecprofundo = this.byId("EcProfundo").getValue();
+            let idComponent = oControlEvent.getSource().getId().split("--")[1];
+            let valueComponent = parseFloat(oControlEvent.getSource().getValue());
 
-            let volumen = parseFloat(ecalto) * parseFloat(ecancho) * parseFloat(ecprofundo);
+            if (valueComponent < 10000) {
 
-            this.byId("EcVolumen").setValue(volumen);
-            // this.getOwnerComponent().getModel("FolioToShow").setProperty("/EcVolumen", Folio.PvVolumen);
+                this.getView().byId(idComponent).setValueState(sap.ui.core.ValueState.Success);
+
+                let ecalto = (this.byId("EcAlto").getValue())? parseFloat(this.byId("EcAlto").getValue()) : 0;
+                let ecancho = (this.byId("EcAncho").getValue())? parseFloat(this.byId("EcAncho").getValue()) : 0;
+                let ecprofundo = (this.byId("EcProfundo").getValue())? parseFloat(this.byId("EcProfundo").getValue()) : 0;
+
+                let volumen = ecalto * ecancho * ecprofundo;
+
+                this.byId("EcVolumen").setValue(volumen);
+
+                if (volumen < 10000) {
+
+                    this.getView().byId("EcVolumen").setValueState(sap.ui.core.ValueState.Success);
+
+                } else {
+
+                    sap.m.MessageBox.warning("El valor del volumen ser menor a 10000 tu resultado es : " + volumen);
+                }
+
+            } else {
+
+                this.getView().byId(idComponent).setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId(idComponent).setValueStateText("El valor debe ser menor a 10000");
+            }
 
         },
 
         calcularPvVolumen: function (oControlEvent) {
+            let idComponent = oControlEvent.getSource().getId().split("--")[1];
+            let valueComponent = parseFloat(oControlEvent.getSource().getValue());
 
-            let pvalto = this.byId("PvAlto").getValue();
-            let pvancho = this.byId("PvAncho").getValue();
-            let pvprofundo = this.byId("PvProfundo").getValue();
+            if (valueComponent < 10000) {
 
-            let volumen = parseFloat(pvalto) * parseFloat(pvancho) * parseFloat(pvprofundo);
+                this.getView().byId(idComponent).setValueState(sap.ui.core.ValueState.Success);
 
-            this.byId("PvVolumen").setValue(volumen);
-            // this.getOwnerComponent().getModel("FolioToShow").setProperty("/PvVolumen", Folio.PvVolumen);
+                let pvalto = (this.byId("PvAlto").getValue())? parseFloat(this.byId("PvAlto").getValue()) : 0;
+                let pvancho = (this.byId("PvAncho").getValue())? parseFloat(this.byId("PvAncho").getValue()) : 0;
+                let pvprofundo = (this.byId("PvProfundo").getValue())? parseFloat(this.byId("PvProfundo").getValue()) : 0;
 
+                let volumen = pvalto * pvancho * pvprofundo;
+
+                this.byId("PvVolumen").setValue(volumen);
+
+                if (volumen < 10000){
+
+                    this.getView().byId("PvVolumen").setValueState(sap.ui.core.ValueState.Success);
+
+                }else{
+                    sap.m.MessageBox.warning("El valor del volumen ser menor a 10000 tu resultado es : " + volumen);
+
+                }
+                
+                }else{
+                   
+                    this.getView().byId(idComponent).setValueState(sap.ui.core.ValueState.Error);
+                    this.getView().byId(idComponent).setValueStateText("El valor debe ser menor a 10000");
+                } 
+            
         },
 
         validateCompleteStepDimensions: function () {
 
             let validated = true;
 
-            //obtenemos el modelo 
             let Folio = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
 
-            if (Folio.EcAlto == undefined || Folio.EcAlto.trim() == '' ) {
+            if (Folio.EcAlto == undefined || Folio.EcAlto.trim() == '' || parseFloat(Folio.EcAlto.trim()) >= 10000) {                
                 validated = false;
             }
 
-            if (Folio.EcAncho == undefined || Folio.EcAncho.trim() == '') {
+            if (Folio.EcAncho == undefined || Folio.EcAncho.trim() == '' || parseFloat(Folio.EcAncho.trim()) >= 10000) {
                 validated = false;
             }
 
-            if (Folio.EcProfundo == undefined || Folio.EcProfundo.trim() == '') {
+            if (Folio.EcProfundo == undefined || Folio.EcProfundo.trim() == '' || parseFloat(Folio.EcProfundo.trim()) >= 10000) {
                 validated = false;
             }
 
             if (Folio.EcUndaap == undefined || Folio.EcUndaap.trim() == '') {
                 validated = false;
             }
-            if (Folio.EcVolumen == undefined || Folio.EcVolumen.trim() == '') {
+            if (Folio.EcVolumen == undefined || Folio.EcVolumen.trim() == '' || parseFloat(Folio.EcVolumen.trim()) >= 10000) {
                 validated = false;
             }
 
@@ -1229,20 +1274,20 @@ sap.ui.define([
                 validated = false;
             }
 
-            if (Folio.PvAlto == undefined || Folio.PvAlto.trim() == '') {
+            if (Folio.PvAlto == undefined || Folio.PvAlto.trim() == '' || parseFloat(Folio.PvAlto.trim()) >= 10000) {
                 validated = false;
             }
-            if (Folio.PvAncho == undefined || Folio.PvAncho.trim() == '') {
+            if (Folio.PvAncho == undefined || Folio.PvAncho.trim() == '' || parseFloat(Folio.PvAncho.trim()) >= 10000) {
                 validated = false;
             }
-            if (Folio.PvProfundo == undefined || Folio.PvProfundo.trim() == '') {
+            if (Folio.PvProfundo == undefined || Folio.PvProfundo.trim() == '' || parseFloat(Folio.PvProfundo.trim()) >= 10000) {
                 validated = false;
             }
             if (Folio.PvUndaap == undefined || Folio.PvUndaap.trim() == '') {
                 validated = false;
             }
 
-            if (Folio.PvVolumen == undefined || Folio.PvVolumen.trim() == '') {
+            if (Folio.PvVolumen == undefined || Folio.PvVolumen.trim() == '' || parseFloat(Folio.PvVolumen.trim()) >= 10000) {
                 validated = false;
             }
 
@@ -1273,15 +1318,10 @@ sap.ui.define([
             }
 
             if (!validated) {
-                sap.m.MessageBox.warning("Existen datos faltantes de captura.");
+                sap.m.MessageBox.warning("Capture correctamente todos los campos.");
             }
 
-            //Validaciones PAso Dimensiones
-
             this.getView().byId('DimensionsStep').setValidated(validated || _testingSteps);
-
-            // console.log(">>>>>>>>>>>>>>> TERMINO VALIDACION DIMESIONES <<<<<<<<<<<<<<<<<<<<");
-            // console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-");
 
         },
 
@@ -1289,7 +1329,6 @@ sap.ui.define([
 
             let validated = true;
 
-            //obtenemos el modelo 
             const Folio = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
 
             // if (Folio.CapEmbar == undefined || Folio.CapEmbar.trim() == '') validated = false;
@@ -1302,8 +1341,6 @@ sap.ui.define([
             if (!validated) {
                 sap.m.MessageBox.warning("Faltan datos por capturar");
             }
-
-            //Validaciones PAso Dimensiones
 
             this.getView().byId('Discounts').setValidated(validated || _testingSteps);
         },
@@ -1325,7 +1362,7 @@ sap.ui.define([
                 costnetcom -= (costnetcom * (porcentaje))
             });
 
-             this.byId("CostNetComp").setValue(costnetcom);
+            this.byId("CostNetComp").setValue(costnetcom);
         },
 
         calcularCostNetVen: function (oControlEvent) {
@@ -1335,7 +1372,7 @@ sap.ui.define([
 
             let costnetven = parseFloat(costob) / parseFloat(capembar);
 
-             this.byId("CostNetVen").setValue(costnetven);
+            this.byId("CostNetVen").setValue(costnetven);
 
             this.calcularCostNetCom(null);
 
@@ -1746,47 +1783,52 @@ sap.ui.define([
         },
 
         imageAfterAddedTriggered(oControlEvent) {
+
             let numberItemsAdded = this.byId("ImageUploadSet").getItems().length;
 
-            if (numberItemsAdded <= 11 ) {
-                let incommingUploadSetItem = oControlEvent.getParameter("item");
+            let incommingUploadSetItem = oControlEvent.getParameter("item");
+
+            let fileSize = (incommingUploadSetItem.getFileObject().size / 1024) / 1024; //getting MBs for validation
+
+            if (numberItemsAdded <= 11 && fileSize < 4) {
                 incommingUploadSetItem.setUploadState(sap.m.UploadState.Complete);
                 let path = URL.createObjectURL(incommingUploadSetItem.getFileObject());
                 incommingUploadSetItem.setUrl(path);
                 incommingUploadSetItem.setThumbnailUrl(path);
                 this.byId("ImageUploadSet").addItem(incommingUploadSetItem);
-                this.getOwnerComponent().getModel("FolioImages").setProperty("/items",this.byId("ImageUploadSet").getItems());
+                this.getOwnerComponent().getModel("FolioImages").setProperty("/items", this.byId("ImageUploadSet").getItems());
                 this.attachImagesToModel();
-            } 
-
-            if(numberItemsAdded >= 11) {
+            } else if (fileSize > 4) {
+                sap.m.MessageBox.warning("Max size is 4MB");
+                this.byId("ImageUploadSet").removeItem(incommingUploadSetItem);
+            } else if (numberItemsAdded >= 11) {
                 sap.m.MessageBox.warning("Max 12 imgs");
                 this.byId("ImageUploadSet").setUploadEnabled(false);
             }
 
             this.byId("imagesCounter").setText(this.byId("ImageUploadSet").getItems().length);
 
-            // console.log("Upload SET Items  : ", this.byId("ImageUploadSet").getItems());
+            //console.log("Upload SET Item added  : ", oControlEvent.getParameter("item"));
 
             // console.log("FolioImages Items: ", this.getOwnerComponent().getModel("FolioImages").getProperty("/items"));
 
         },
 
-        imageRemovedTriggered(oControlEvent){
+        imageRemovedTriggered(oControlEvent) {
             let numberItemsAdded = this.byId("ImageUploadSet").getItems().length;
             this.byId("imagesCounter").setText(numberItemsAdded);
-            this.getOwnerComponent().getModel("FolioImages").setProperty("/items",this.byId("ImageUploadSet").getItems());
+            this.getOwnerComponent().getModel("FolioImages").setProperty("/items", this.byId("ImageUploadSet").getItems());
             this.attachImagesToModel();
             if (numberItemsAdded <= 11) {
                 this.byId("ImageUploadSet").setUploadEnabled(true);
             }
         },
 
-         attachImagesToModel(){
+        attachImagesToModel() {
 
             let folioImages = this.getOwnerComponent().getModel("FolioImages").getProperty("/items");
-            
-            let base64imgArray =  folioImages.map( (imageFolio)=>{
+
+            let base64imgArray = folioImages.map((imageFolio) => {
 
                 let reader = new FileReader();
                 let oItem = imageFolio.getFileObject();
@@ -1801,17 +1843,19 @@ sap.ui.define([
 
                 reader.readAsDataURL(oItem);
 
+                //console.log("oItem", oItem);
+
                 return oFile;
             });
 
             this.getOwnerComponent().setModel(new JSONModel(), "images64");
-            this.getOwnerComponent().getModel("images64").setProperty("/attachArray", base64imgArray );
+            this.getOwnerComponent().getModel("images64").setProperty("/attachArray", base64imgArray);
 
-            console.log("DATA IAMGES BASE64 : ", this.getOwnerComponent().getModel("images64").getData());
-            
+            //console.log("DATA IAMGES BASE64 : ", this.getOwnerComponent().getModel("images64").getData());
+
         },
 
-        changeTipoBonif(oControlEvent){
+        changeTipoBonif(oControlEvent) {
             let selected = oControlEvent.getParameter("value");
 
             this.byId("ValBoni").setValue("0");
@@ -1823,15 +1867,22 @@ sap.ui.define([
                     this.byId("UnisBonif").setEditable(false);
                     break;
                 case "Por Porcentajes":
-                        this.byId("ValBoni").setEditable(true);
-                        this.byId("UnisBonif").setEditable(false);
-                        break;
+                    this.byId("ValBoni").setEditable(true);
+                    this.byId("UnisBonif").setEditable(false);
+                    break;
                 case "Por Unidades":
-                        this.byId("ValBoni").setEditable(true);
-                        this.byId("UnisBonif").setEditable(true);
-                        break;
+                    this.byId("ValBoni").setEditable(true);
+                    this.byId("UnisBonif").setEditable(true);
+                    break;
             }
+
+        },
+
+        hardStepChange(oControlEvent){
+            let indexStep = this._oWizard.indexOfStep(oControlEvent.getParameter("step"));
             
+            this.cloneFolioModel();
+            this.handleButtonsVisibility((indexStep+1));
         }
     })
 });

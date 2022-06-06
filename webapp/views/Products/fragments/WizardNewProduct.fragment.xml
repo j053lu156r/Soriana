@@ -7,6 +7,7 @@
     xmlns:l="sap.ui.layout"
     xmlns:upload="sap.m.upload"
 	xmlns:layout="sap.ui.layout">
+
 	<Dialog
 		id="wizardDialog"
 		showHeader="false"
@@ -31,6 +32,7 @@
 						class="sapUiResponsivePadding--header sapUiResponsivePadding--content"
 						showNextButton="false"
                         stepActivate=".onStepActivate"
+                        navigationChange="hardStepChange"
 						renderMode="Page">
 					<WizardStep id="ProductTypeStep"
 								title="{appTxts>/products.titleTabGeneralData}"
@@ -56,7 +58,7 @@
                                     <form:formContainers>
                                         <form:FormContainer>
                                             <form:formElements>
-                                                <form:FormElement  label="{appTxts>/products.code}">
+                                                <form:FormElement label="{appTxts>/products.code}">
                                                     <form:fields>
                                                         <Input editable="false" value="" id="codeGS1" />
                                                     </form:fields>
@@ -73,14 +75,14 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.baseProduct}">
                                                     <form:fields>
-                                                        <Input required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onBaseProductRequest" id="baseProduct" value="{FolioToShow>/ProdBase}" />
+                                                        <Input required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onBaseProductRequest" id="baseProduct" value="{FolioToShow>/ProdBase}" editable="{ValidBarCode>/value}"/>
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.productType}">
                                                     <form:fields>
                                                         <ComboBox selectedKey="{Folio>/TipArt}" required="true" id="productType" items="{
                                                                     path : 'Catalogos>/TiposProducto/results'
-                                                                }">
+                                                                }" editable="{ValidBarCode>/value}">
                                                             <items>
                                                                 <core:Item key="{Catalogos>Mtart}" text="{Catalogos>Mtbez}"/>
                                                             </items>
@@ -89,7 +91,7 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.shoppingGroup}">
                                                     <form:fields>
-                                                        <Input required="true" value="{Folio>/PurGroup}" id="shoppingGroup" editable="false"/>
+                                                        <Input required="true" value="{Folio>/PurGroup}" id="shoppingGroup" editable="false" />
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.productGroup}">
@@ -97,7 +99,7 @@
                                                         <ComboBox selectedKey="{Folio>/GrupArt}" id="productGroup" items="{
                                                                     path : 'Catalogos>/GrupoArticulos/results'
                                                                 }"
-                                                                selectionChange="changeGrupArt">
+                                                                selectionChange="changeGrupArt" editable="{ValidBarCode>/value}">
                                                             <items>
                                                                 <core:Item key="{Catalogos>GrupoArt}" text="{Catalogos>DescGart}"/>
                                                             </items>
@@ -111,14 +113,14 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.brand}">
                                                     <form:fields>
-                                                        <Input required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onBrandRequest" value="{FolioToShow>/Marca}"  id="brand"/>
+                                                        <Input required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onBrandRequest" value="{FolioToShow>/Marca}"  id="brand" editable="{ValidBarCode>/value}"/>
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.codeType}">
                                                     <form:fields>
                                                         <ComboBox required="true" selectedKey="{Folio>/EanUpcType}" id="codeType" items="{
                                                                     path : 'Catalogos>/TipoCodigo/results'
-                                                                }" >
+                                                                }" editable="{ValidBarCode>/value}">
                                                             <items>
                                                                 <core:Item key="{Catalogos>Numtp}" text="{Catalogos>Ntbez}"/>
                                                             </items>
@@ -136,7 +138,8 @@
                                                             valueHelpRequest=".onValueCountryRequest"
                                                             suggestionItems="{Paises>/results}"
                                                             selectedKey="{Folio>/Pais}"
-                                                            suggestionItemSelected=".onSuggestionCountryItemSelected">
+                                                            suggestionItemSelected=".onSuggestionCountryItemSelected"
+                                                            editable="{ValidBarCode>/value}">
                                                             <suggestionItems>
                                                                 <core:ListItem
                                                                     key="{Paises>Land1}" text="{Paises>Landx50}"
@@ -147,38 +150,38 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.model}">
                                                     <form:fields>
-                                                        <Input value="{Folio>/Modelo}" id="model" />
+                                                        <Input value="{Folio>/Modelo}" id="model" editable="{ValidBarCode>/value}" />
                                                     </form:fields>
                                                 </form:FormElement>
 
                                                 <form:FormElement label="{appTxts>/products.description}">
                                                     <form:fields>
-                                                        <Input required="true" value="{Folio>/DescrArt}" id="description"/>
+                                                        <Input required="true" value="{Folio>/DescrArt}" id="description" editable="{ValidBarCode>/value}"/>
                                                     </form:fields>
                                                 </form:FormElement>
 
                                                 <form:FormElement label="{appTxts>/products.mainFeatureTxt}">
                                                     <form:fields>
-                                                        <Input value="{Folio>/Descripcion}" id="featureMain"/>
+                                                        <Input value="{Folio>/Descripcion}" id="featureMain" editable="{ValidBarCode>/value}"/>
                                                     </form:fields>
                                                 </form:FormElement>
 
                                                 <form:FormElement label="{appTxts>/products.feature2}">
                                                     <form:fields>
-                                                        <Input value="{Folio>/Carac2}" id="feature2"/>
+                                                        <Input value="{Folio>/Carac2}" id="feature2" editable="{ValidBarCode>/value}"/>
                                                     </form:fields>
                                                 </form:FormElement>
 
                                                 <form:FormElement label="{appTxts>/products.feature3}">
                                                     <form:fields>
-                                                        <Input value="{Folio>/Carac3}" id="feature3"/>
+                                                        <Input value="{Folio>/Carac3}" id="feature3" editable="{ValidBarCode>/value}"/>
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.labelType}">
                                                     <form:fields>
                                                         <ComboBox selectedKey="{Folio>/TipEtq}" id="labelType" items="{
                                                                     path : 'Catalogos>/TiposEtiqueta/results'
-                                                                }">
+                                                                }" editable="{ValidBarCode>/value}">
                                                             <items>
                                                                 <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
                                                             </items>
@@ -189,7 +192,7 @@
                                                     <form:fields>
                                                         <ComboBox selectedKey="{Folio>/EstSalida}" required="true" id="exitStrategy" items="{
                                                                     path : 'Catalogos>/EstrategiaSalida/results'
-                                                                }">
+                                                                }" editable="{ValidBarCode>/value}">
                                                             <items>
                                                                 <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
                                                             </items>
@@ -205,7 +208,7 @@
                                                     <form:fields>
                                                         <ComboBox selectedKey="{Folio>/ForNegoc}" required="true" id="negotiatedFormat" items="{
                                                                     path : 'Catalogos>/NegotiatedFormat/results'
-                                                                }">
+                                                                }" editable="{ValidBarCode>/value}">
                                                             <items>
                                                                 <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
                                                             </items>
@@ -953,14 +956,18 @@
 
 			<f:footer>
 				<OverflowToolbar>
+                    <CheckBox text="{appTxts>/products.confirmationMssg}"  class="" selected="false" select="selectAgree" visible="{/checkConfirmation}"/>
 					<ToolbarSpacer/>
 					<Button text="{appTxts>/products.previous}" visible="{/backButtonVisible}" press="onDialogBackButton" />
 					<Button text="{appTxts>/products.nextStep}" type="Emphasized" enabled="{/nextButtonEnabled}" visible="{/nextButtonVisible}" press="onDialogNextButton" />
 					<Button text="{appTxts>/products.buttonReview}" type="Emphasized" visible="{/reviewButtonVisible}" press="onDialogNextButton" />
-					<Button text="{appTxts>/products.finish}" type="Emphasized" visible="{/finishButtonVisible}" press="handleWizardSubmit" />
+					<Button id="FinishBtn" text="{appTxts>/products.finish}" type="Emphasized" visible="{/finishButtonVisible}" press="handleWizardSubmit" enabled="false"/>
 					<Button	text="{appTxts>/products.cancel}" type="Transparent" press="handleWizardCancel"/>
 				</OverflowToolbar>
+                
 			</f:footer>
 		</f:DynamicPage>
+
 	</Dialog>
+            
 </core:FragmentDefinition>
