@@ -98,7 +98,8 @@
                                                 type="Emphasized"
                                                 visible="{= ${userdata>/ERol} === '0001' || ${userdata>/ERol} === '0002' ? true : false }"
                                                 press="editRelease"
-                                            />                           
+                                            />         
+                                                              
                                     </m:Toolbar>
                                 </form:toolbar>
 								<form:content>
@@ -119,6 +120,97 @@
 			</ObjectPageSection>
 
 
+
+
+        <ObjectPageSection title="{appTxts>/release.receiver}" showTitle="false">
+                <subSections>
+                  
+                    <ObjectPageSubSection>
+                        <blocks>
+                        
+                          <m:VBox>
+			<m:Table sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
+                noDataText="{appTxts>/release.nodata}" 
+                id="complPagoList1"
+                alternateRowColors="true"                 
+                items="{path: 'release>/ZTTSP_MENSPROVSet/Paginated/results', sorter : { path : 'Nombreprov', descending : true }}"
+                	fixedLayout="true"	
+		        contextualWidth="Auto"
+				growing="true" >
+                <m:headerToolbar>
+                    <m:OverflowToolbar>
+                        <m:Title text="{appTxts>/release.receiver} ({release>/ZTTSP_MENSPROVSet/results/length})" />
+                        <m:ToolbarSpacer/>
+                        <m:Select 
+                            visible="{= ${release>/ZTTSP_MENSPROVSet/Paginated/results/length} > 0 }"
+                            change=".paginateValue(${$parameters>/selectedItem}, 'release', '/ZTTSP_MENSPROVSet')">
+                            <m:items>
+                                <core:Item key="10" text="10"/>
+                                <core:Item key="20" text="20"/>
+                                <core:Item key="50" text="50"/>
+                                <core:Item key="100" text="100"/>
+                            </m:items>
+                        </m:Select>
+                    </m:OverflowToolbar>
+                </m:headerToolbar>
+                
+				<m:columns>
+					<m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<m:header>
+							<m:Text text="{appTxts>/release.subject}" maxLines="2" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</m:header>
+						<m:footer/>
+					</m:Column>
+					<m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<m:header>
+							<m:Text text="{appTxts>/user.email}"  maxLines="2" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</m:header>
+						<m:footer/>
+					</m:Column>
+                    <m:Column  hAlign="Right"  width="6rem" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<m:header>
+							<m:Text text="{appTxts>/release.read}" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</m:header>
+						<m:footer/>
+					</m:Column>
+                     <m:Column  width="10rem" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<m:header>
+							<m:Text text="{appTxts>/release.readdate}"  maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</m:header>
+						<m:footer/>
+					</m:Column>
+                     <m:Column width="10rem" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<m:header>
+							<m:Text text="{appTxts>/release.readhr}"  maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</m:header>
+						<m:footer/>
+					</m:Column>
+                   
+				</m:columns>
+				<m:items>
+					<m:ColumnListItem type="Active">
+						<m:cells>
+							<m:Text text="{release>Nombreprov}"  maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <m:Text text="{release>Zemail}"  maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <m:Text text="{release>Zleido}"  maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+							<m:Text xmlns="sap.m" text="{release>Zfechaleido}"/>
+                            <m:Text xmlns="sap.m" text="{release>Zhoraleido}"/>
+						</m:cells>
+					</m:ColumnListItem>
+				</m:items>
+			</m:Table>
+            <m:OverflowToolbar visible="{= ${release>/ZTTSP_MENSPROVSet/Paginated/results/length} > 0 }">
+                <m:Text text="{release>/ZTTSP_MENSPROVSet/Paginated/initRow} - {release>/ZTTSP_MENSPROVSet/Paginated/endRow} {appTxts>/pagination.of} {release>/ZTTSP_MENSPROVSet/results/length}" />
+                <m:ToolbarSpacer/>
+                <m:Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${release>/ZTTSP_MENSPROVSet/Paginated/iterator}, ${release>/ZTTSP_MENSPROVSet/Paginated/initRow}, 'release', '/ZTTSP_MENSPROVSet')" enabled="{= ${release>/ZTTSP_MENSPROVSet/Paginated/iterator} !== 1}" />
+                <m:Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${release>/ZTTSP_MENSPROVSet/Paginated/iterator}, ${release>/ZTTSP_MENSPROVSet/Paginated/endRow}, 'release', '/ZTTSP_MENSPROVSet')" enabled="{= ${release>/ZTTSP_MENSPROVSet/Paginated/endRow} !== ${release>/ZTTSP_MENSPROVSet/results/length}}" />
+            </m:OverflowToolbar>
+            </m:VBox>
+                           
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+        </ObjectPageSection>
 
 
 

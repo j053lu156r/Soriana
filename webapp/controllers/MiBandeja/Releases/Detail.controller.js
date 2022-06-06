@@ -47,26 +47,32 @@ sap.ui.define([
             this._release = oEvent.getParameter("arguments").releaseId || this._release || "0";
             var vMail = this.getOwnerComponent().getModel("userdata").getProperty("/IMail"); 
             
-            var response = inboxModel
+           /* var response = inboxModel
                 .getJsonModel("/headInboxSet?$expand=ETATTACHNAV&$filter=IOption eq '4'"
                     + " and IMail eq '" + vMail + "'"
-                    + " and IIdmen eq '" + this._release + "'");
+                    + " and IIdmen eq '" + this._release + "'");*/
 
+            var response = inboxModel
+            .getJsonModel("/headInboxSet?$expand=ETATTACHNAV,ZTTSP_MENSPROVSet&$filter=IOption eq '4'"
+              + " and IMail eq '" + vMail + "'"
+              + " and IIdmen eq '" + this._release + "'");
             if (response != null) {
                 var objResponse = response.getProperty("/results/0");
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(objResponse), "release");
-                //var  jsDateObject = this.formatDateQuote(objResponse.getProperty("ESdmens/Zfechaenvio")); 
-                var  jsDateObject = this.formatDateQuote(this.getOwnerComponent().getModel("release").getProperty("/ESdmens/Zfechaenvio")); 
-                var oDRS2 = this.byId("dateRange");
-                oDRS2.setDateValue(jsDateObject);
-                oDRS2.setMinDate(jsDateObject);
-                oDRS2.setSecondDateValue(jsDateObject);
+                this.paginate('release', '/ZTTSP_MENSPROVSet', 1, 0);
+             
+                
             }
                       
            
             //this.getSplitContObj().toDetail(this.createId("releaseDetail"));  no se para que pusieron esta funcion
         },
+        
+       
         editRelease: function () {
+            if(!this.hasAccess(49)){
+                return
+            }
             //var subject = this.getView().byId("subject").getValue();
             var subject = this.getOwnerComponent().getModel("release").getProperty("/ESdmens/Ztext"); 
             var message = this.getView().byId("message").getValue();
@@ -79,25 +85,7 @@ sap.ui.define([
             var idUser = userData.getProperty("/EIdusua");
             var attachControl = this.getView().byId("attacheds");
             var itemsAttach = this.getView().getModel();
-
-            //Fechas de entrega
-            /*
-            var startDate = this.buildSapDate(dateRange.getDateValue());
-            var endDate = this.buildSapDate(dateRange.getSecondDateValue());
-
-            if (!this.validateData(dateRange, subject, message, suppList, allSupp)) {
-                return;
-            }*/
-
             var arrSupplier = [];
-
-/*            suppList.getItems().forEach(function (f) {
-                var sObj = {
-                    "Lifnr": f.getProperty("title")
-                }
-                arrSupplier.push(sObj);
-            });*/
-
             var files = this.getOwnerComponent().getModel("release").getProperty("/ETATTACHNAV");
 
 
@@ -123,7 +111,7 @@ sap.ui.define([
                         actions: [sap.m.MessageBox.Action.CLOSE],
                         emphasizedAction: sap.m.MessageBox.Action.CLOSE,
                         onClose: function (sAction) {
-                            this.goToMainReleases();
+                            this.goToMainRelease();
                             this.clearFields();
                         }.bind(this)
                     });
@@ -140,8 +128,9 @@ sap.ui.define([
             }
         },
         goToMainRelease: function () {
+           
             this.oRouter.navTo("masterRelease");
-            this.clearFields();
+           // this.clearFields();
         },
         formatDateQuote: function (v) {
             if (v) {

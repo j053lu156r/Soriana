@@ -82,6 +82,70 @@ sap.ui.define([
             }
 
         },
+        deleteRelease: function (relId) {
+            if(!this.hasAccess(50)){
+                return
+            }
+            var that = this;
+            
+            var msg = this.getOwnerComponent().getModel("appTxts").getProperty("/helpDocs.deleteConfirm");
+            sap.m.MessageBox.confirm(msg, {
+                actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+                emphasizedAction: sap.m.MessageBox.Action.YES,
+                onClose: function (sAction) {
+                    if (sAction == sap.m.MessageBox.Action.YES) {
+                        that.deleteRel(relId);
+                    }
+                }
+            });
+        },
+        deleteRel: function (relId) {
+            if(!this.hasAccess(50)){
+                return
+            }
+           
+            var userData = this.getOwnerComponent().getModel("userdata");
+            var sendMail = userData.getProperty("/IMail");// this.getView().byId("sendMail"); //userData.getProperty("/EIdusua")
+            var idUser = userData.getProperty("/EIdusua");
+            var objRelease = {
+                "IOption": "17",
+                "IIdusua": idUser, //quien manda
+                "IAllpro":"",
+                "ISdate": "", //startDate, fecha de valides
+                "IEdate": "", // endDate,
+                "IIdmen" : relId,//this._release ,
+                "IFmail": "",
+                "ISubject":  "",
+                "IText": "", //-TEXTO DEL MENSAJE -
+                "ITPROVNAV": [],
+                "ITATTACNAV": []
+            }
+
+            var response = oModel.create("/headInboxSet", objRelease);
+
+            if (response != null) {
+                if (response.ESuccess == "X") {
+                    sap.m.MessageBox.success(response.EMessage, {
+                        actions: [sap.m.MessageBox.Action.CLOSE],
+                        emphasizedAction: sap.m.MessageBox.Action.CLOSE,
+                        onClose: function (sAction) {
+                            this.searchData();
+                           // this.goToMainRelease();
+                           // this.clearFields();
+                        }.bind(this)
+                    });
+                } else {
+                    if(response.mensaje != null){
+                        sap.m.MessageBox.error(response.mensaje);
+                    }else{
+                        sap.m.MessageBox.error("Ocurrio un error");
+                    }
+                    
+                }
+            } else {
+                sap.m.MessageBox.error("No se pudo conectar con el servidor, intente nuevamente.");
+            }
+		},
         onExit: function () {
             if (this._oDialog) {
                 this._oDialog.destroy();
