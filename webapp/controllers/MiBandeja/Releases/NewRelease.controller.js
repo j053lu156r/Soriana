@@ -337,7 +337,7 @@ sap.ui.define([
                     pItem.setUploadState(sap.m.UploadState.Complete);
                     // cambio
                    // oattacheds.getBinding("items").refresh();
-                   var oUploadSet = that.getView().byId("attacheds");
+                   /*var oUploadSet = that.getView().byId("attacheds");
                    var oUploadSetItem = new sap.m.upload.UploadSetItem({
                     fileName:oItem.name,
                     mediaType: oItem.type,
@@ -345,7 +345,7 @@ sap.ui.define([
                     thumbnailUrl: null
                     });
                     oUploadSet.addItem(oUploadSetItem);
-                    oUploadSet.getBinding("items").refresh();                    
+                    oUploadSet.getBinding("items").refresh();                    */
                     //cambio
                 };
                 reader.readAsDataURL(oItem);
