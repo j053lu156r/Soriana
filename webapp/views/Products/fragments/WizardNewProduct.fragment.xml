@@ -226,6 +226,71 @@
                                 </form:Form>
 						</VBox>
 					</WizardStep>
+
+                    <WizardStep 
+                        id="SalesHierarchy"
+                        validated="true"
+                        title="{appTxts>/products.titleTabSalesHierarchy}"
+                        complete="Pendiete">
+						<VBox class="sapUiSmallMargin"
+								alignItems="Center"
+								justifyContent="Center"
+								width="100%">
+                                <form:Form id="formSaleHierarchy"
+                                    editable="true">
+                                    <form:layout>
+                                        <form:ColumnLayout
+                                            columnsM="2"
+                                            columnsL="3"
+                                            columnsXL="3"
+                                        />
+                                    </form:layout>
+                                    <form:formContainers>
+                                        <form:FormContainer>
+                                            <form:formElements>
+                                                <form:FormElement  label="{appTxts>/products.labelDivision}">
+                                                    <form:fields>
+                                                        <ComboBox required="true" id="ComboDivision" items="{
+                                                                    path : 'Catalogos>/Divisiones/results'
+                                                                }" selectionChange="onDivisionChange">
+                                                            <items>
+                                                                <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
+                                                            </items>
+                                                        </ComboBox>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement  label="{appTxts>/products.labelCatMgmt}">
+                                                    <form:fields>
+                                                        <ComboBox required="true" id="ComboCatMgmt" items="{
+                                                                    path : 'Catalogos>/GerenCategoria/results'
+                                                                }" selectionChange="onCatMgmtChange" editable="false">
+                                                            <items>
+                                                                <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
+                                                            </items>
+                                                        </ComboBox>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement  label="{appTxts>/products.labelCategory}">
+                                                    <form:fields>
+                                                        <ComboBox required="true" id="ComboCategory" items="{
+                                                                    path : 'Catalogos>/Categoria/results'
+                                                                }" editable="false">
+                                                            <items>
+                                                                <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
+                                                            </items>
+                                                        </ComboBox>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                            </form:formElements>
+                                        </form:FormContainer>
+                                    </form:formContainers>
+
+                                </form:Form>
+
+                        </VBox>
+
+                        </WizardStep>
+                    
 					<WizardStep id="ProductPresentation"
 								validated="true"
 								title="{appTxts>/products.titleTabPresentation}"
@@ -674,7 +739,7 @@
 							validated="true"
 							title="{appTxts>/products.titleReviewPage}">
 								<form:SimpleForm
-										title="{appTxts>/products.titleGeneralDta }"
+										title="{appTxts>/products.titleGeneralDta}"
 										minWidth="1024"
 										editable="false"
 										layout="ResponsiveGridLayout">
