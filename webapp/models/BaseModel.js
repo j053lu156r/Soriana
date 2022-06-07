@@ -38,14 +38,14 @@ BaseModel.prototype.getJsonModel = function (string) {
     return jsonModel;
 };
 
-BaseModel.prototype.getJsonModelAsync = function (string, successFunction, errorFunction, parent) {
+BaseModel.prototype.getJsonModelAsync = function (string, successFunction, errorFunction, parent, async = true) {
     if (!this.getModel()) {
         this.initModel();
     }
 
     this.getModel().read(string,
         {
-            async: true,
+            async: async,
             success: function (oData, response) {
                 var jsonModel = new sap.ui.model.json.JSONModel();
                 jsonModel.setData(oData);

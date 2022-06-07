@@ -23,11 +23,11 @@ sap.ui.define([
 
             this.getView().addEventDelegate({
                 onBeforeShow: function (oEvent) {
-                    this.getOwnerComponent().setModel(new JSONModel({value:_testingSteps}), "ValidBarCode");
                     this.getOwnerComponent().setModel(new JSONModel(), "Paises");
                     this.getOwnerComponent().setModel(new JSONModel(), "Catalogos");
                     this.getOwnerComponent().setModel(new JSONModel(), "Folios");
                     this.getOwnerComponent().setModel(new JSONModel(), "Folio");
+                    this.getOwnerComponent().setModel(new JSONModel({ value: _testingSteps }), "ValidBarCode");
                     this.getOwnerComponent().setModel(new JSONModel({ 'items': [] }), "FolioImages");
                     this.getOwnerComponent().setModel(new JSONModel(), "FolioToShow");
                     this.getOwnerComponent().setModel(new JSONModel(), "ITARTVAR");
@@ -151,6 +151,15 @@ sap.ui.define([
                 }, function () {
                     sap.m.MessageBox.error("No se lograron obtener los datos del proveedor registrado en GS1.");
                 }, this);
+
+
+                let urlDivision = `HdrcatproSet?$expand=ETJERARQUIANAV&$filter=IOption eq '21'`;
+                Model.getJsonModelAsync(urlDivision, function (response, that) {
+                    that.getOwnerComponent().getModel("Catalogos").setProperty('/Divisiones', response.getProperty('/results/0/ETJERARQUIANAV'));
+                }, function () {
+                    sap.m.MessageBox.error("No se lograron obtener las divisiones");
+                }, this);
+
 
             } catch (error) {
                 console.error(" Get Catalogos Error ", error);
@@ -658,7 +667,7 @@ sap.ui.define([
                 MessageBox.success("Artículo apto para registro.", {
                     onClose: () => {
                         this.getView().byId('barCode').setValueState(sap.ui.core.ValueState.Success);
-                        this.getOwnerComponent().getModel("ValidBarCode").setProperty("/value",true);
+                        this.getOwnerComponent().getModel("ValidBarCode").setProperty("/value", true);
                     }
                 });
             }
@@ -709,45 +718,38 @@ sap.ui.define([
 
         handleButtonsVisibility: function (prgressStep) {
 
-            let step = (prgressStep)? prgressStep : this._oWizard.getProgress();
+            let step = (prgressStep) ? prgressStep : this._oWizard.getProgress();
 
             var oModel = this.getView().getModel();
 
             oModel.setProperty("/checkConfirmation", false);
             oModel.setProperty("/finishButtonVisible", false);
+            oModel.setProperty("/nextButtonVisible", true);
+            oModel.setProperty("/reviewButtonVisible", false);
 
             switch (step) {
                 case 1:
-                    oModel.setProperty("/nextButtonVisible", true);
                     oModel.setProperty("/nextButtonEnabled", true);
                     oModel.setProperty("/backButtonVisible", false);
-                    oModel.setProperty("/reviewButtonVisible", false);
                     break;
                 case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
                     oModel.setProperty("/backButtonVisible", true);
                     break;
-                case 3:
-                    oModel.setProperty("/nextButtonVisible", true);
-                    oModel.setProperty("/reviewButtonVisible", false);
-                    break;
-                case 4:
-                    oModel.setProperty("/nextButtonVisible", true);
-                    oModel.setProperty("/reviewButtonVisible", false);
-                    break;
-                case 5:
-                    oModel.setProperty("/nextButtonVisible", true);
-                    oModel.setProperty("/reviewButtonVisible", false);
-                    break;
-                case 6:
+                case 7:
                     oModel.setProperty("/nextButtonVisible", false);
                     oModel.setProperty("/reviewButtonVisible", true);
                     break;
-                case 7:
-                    this.cloneFolioModel();
+                case 8:
+                    oModel.setProperty("/nextButtonVisible", false);
                     oModel.setProperty("/checkConfirmation", true);
                     oModel.setProperty("/finishButtonVisible", true);
                     oModel.setProperty("/backButtonVisible", true);
                     oModel.setProperty("/reviewButtonVisible", false);
+                    this.cloneFolioModel();
                     let step = this._oWizard.getProgressStep();
                     this._oWizard.goToStep(step);
                     break;
@@ -771,7 +773,6 @@ sap.ui.define([
                         if (sMessageBoxType == "confirm") {
 
                             let imagesToAttach = [];
-                            //JSON.parse(this.getOwnerComponent().getModel("images64").getJSON()).attachArray;
 
                             let folioModel = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
                             folioModel.TMoneda = "MXN";
@@ -888,6 +889,9 @@ sap.ui.define([
             Folio.UndBon = formatterCatPrd.findPropertieValue("value", "text", Folio.UndBon,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/TiposBonificacion'));
 
+            Folio.Jerarquia = formatterCatPrd.findPropertieValue("Nodo", "Denominacion", Folio.Jerarquia,
+            this.getOwnerComponent().getModel("Catalogos").getProperty('/SubSegmento'));
+
             this.getOwnerComponent().getModel("FolioToShow").setData({ ...Folio });
 
             // console.log(this.getOwnerComponent().getModel("FolioToShow").getData());
@@ -1001,6 +1005,21 @@ sap.ui.define([
             }
 
             this.getView().byId('ProductTypeStep').setValidated(validated || _testingSteps);
+
+        },
+
+        validateSalesHierarchy(){
+            let validated = true
+
+            if (this.byId("ComboSubSegmento").getValue()== undefined || this.byId("ComboSubSegmento").getValue().trim() == ''){
+                validated = false;
+            }
+
+            if (!validated) {
+                sap.m.MessageBox.warning("Capture correcatamente hasta llegar a Sub Segmento.");
+            }
+
+            this.getView().byId('SalesHierarchyStep').setValidated(validated || _testingSteps);
 
         },
 
@@ -1178,9 +1197,9 @@ sap.ui.define([
 
                 this.getView().byId(idComponent).setValueState(sap.ui.core.ValueState.Success);
 
-                let ecalto = (this.byId("EcAlto").getValue())? parseFloat(this.byId("EcAlto").getValue()) : 0;
-                let ecancho = (this.byId("EcAncho").getValue())? parseFloat(this.byId("EcAncho").getValue()) : 0;
-                let ecprofundo = (this.byId("EcProfundo").getValue())? parseFloat(this.byId("EcProfundo").getValue()) : 0;
+                let ecalto = (this.byId("EcAlto").getValue()) ? parseFloat(this.byId("EcAlto").getValue()) : 0;
+                let ecancho = (this.byId("EcAncho").getValue()) ? parseFloat(this.byId("EcAncho").getValue()) : 0;
+                let ecprofundo = (this.byId("EcProfundo").getValue()) ? parseFloat(this.byId("EcProfundo").getValue()) : 0;
 
                 let volumen = ecalto * ecancho * ecprofundo;
 
@@ -1211,29 +1230,29 @@ sap.ui.define([
 
                 this.getView().byId(idComponent).setValueState(sap.ui.core.ValueState.Success);
 
-                let pvalto = (this.byId("PvAlto").getValue())? parseFloat(this.byId("PvAlto").getValue()) : 0;
-                let pvancho = (this.byId("PvAncho").getValue())? parseFloat(this.byId("PvAncho").getValue()) : 0;
-                let pvprofundo = (this.byId("PvProfundo").getValue())? parseFloat(this.byId("PvProfundo").getValue()) : 0;
+                let pvalto = (this.byId("PvAlto").getValue()) ? parseFloat(this.byId("PvAlto").getValue()) : 0;
+                let pvancho = (this.byId("PvAncho").getValue()) ? parseFloat(this.byId("PvAncho").getValue()) : 0;
+                let pvprofundo = (this.byId("PvProfundo").getValue()) ? parseFloat(this.byId("PvProfundo").getValue()) : 0;
 
                 let volumen = pvalto * pvancho * pvprofundo;
 
                 this.byId("PvVolumen").setValue(volumen);
 
-                if (volumen < 10000){
+                if (volumen < 10000) {
 
                     this.getView().byId("PvVolumen").setValueState(sap.ui.core.ValueState.Success);
 
-                }else{
+                } else {
                     sap.m.MessageBox.warning("El valor del volumen ser menor a 10000 tu resultado es : " + volumen);
 
                 }
-                
-                }else{
-                   
-                    this.getView().byId(idComponent).setValueState(sap.ui.core.ValueState.Error);
-                    this.getView().byId(idComponent).setValueStateText("El valor debe ser menor a 10000");
-                } 
-            
+
+            } else {
+
+                this.getView().byId(idComponent).setValueState(sap.ui.core.ValueState.Error);
+                this.getView().byId(idComponent).setValueStateText("El valor debe ser menor a 10000");
+            }
+
         },
 
         validateCompleteStepDimensions: function () {
@@ -1242,7 +1261,7 @@ sap.ui.define([
 
             let Folio = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
 
-            if (Folio.EcAlto == undefined || Folio.EcAlto.trim() == '' || parseFloat(Folio.EcAlto.trim()) >= 10000) {                
+            if (Folio.EcAlto == undefined || Folio.EcAlto.trim() == '' || parseFloat(Folio.EcAlto.trim()) >= 10000) {
                 validated = false;
             }
 
@@ -1878,11 +1897,137 @@ sap.ui.define([
 
         },
 
-        hardStepChange(oControlEvent){
+        hardStepChange(oControlEvent) {
             let indexStep = this._oWizard.indexOfStep(oControlEvent.getParameter("step"));
-            
+
             this.cloneFolioModel();
-            this.handleButtonsVisibility((indexStep+1));
+            this.handleButtonsVisibility((indexStep + 1));
+        },
+
+        resetSalesHierarchy() {
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/GerenCategoria', {});
+            this.byId("ComboCatMgmt").setEditable(false);
+            this.byId("ComboCatMgmt").setValue("");
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/Categoria', {});
+            this.byId("ComboCategory").setEditable(false);
+            this.byId("ComboCategory").setValue("");
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/SubCategoria', {});
+            this.byId("ComboSubCategory").setEditable(false);
+            this.byId("ComboSubCategory").setValue("");
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/Segmento', {});
+            this.byId("ComboSegmento").setEditable(false);
+            this.byId("ComboSegmento").setValue("");
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/SubSegmento', {});
+            this.byId("ComboSubSegmento").setEditable(false);
+            this.byId("ComboSubSegmento").setValue("");
+        },
+
+        async onDivisionChange (oControlEvent) {
+            this.resetSalesHierarchy();
+
+            let divKey = oControlEvent.getParameter('selectedItem').getKey();
+            let children = await this.fetchHierarchyChildren(divKey);
+
+            if (children) {
+                this.getOwnerComponent().getModel("Catalogos").setProperty('/GerenCategoria', children);
+                this.byId("ComboCatMgmt").setEditable(true);
+            }
+        },
+
+        async onCatMgmtChange (oControlEvent) {
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/Categoria', {});
+            this.byId("ComboCategory").setEditable(false);
+            this.byId("ComboCategory").setValue("");
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/SubCategoria', {});
+            this.byId("ComboSubCategory").setEditable(false);
+            this.byId("ComboSubCategory").setValue("");
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/Segmento', {});
+            this.byId("ComboSegmento").setEditable(false);
+            this.byId("ComboSegmento").setValue("");
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/SubSegmento', {});
+            this.byId("ComboSubSegmento").setEditable(false);
+            this.byId("ComboSubSegmento").setValue("");
+
+            let divKey = oControlEvent.getParameter('selectedItem').getKey();
+            let children = await this.fetchHierarchyChildren(divKey);
+
+            if (children) {
+                this.getOwnerComponent().getModel("Catalogos").setProperty('/Categoria', children);
+                this.byId("ComboCategory").setEditable(true);
+            }
+        },
+
+        async onCatChange (oControlEvent) {
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/SubCategoria', {});
+            this.byId("ComboSubCategory").setEditable(false);
+            this.byId("ComboSubCategory").setValue("");
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/Segmento', {});
+            this.byId("ComboSegmento").setEditable(false);
+            this.byId("ComboSegmento").setValue("");
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/SubSegmento', {});
+            this.byId("ComboSubSegmento").setEditable(false);
+            this.byId("ComboSubSegmento").setValue("");
+
+            let catKey = oControlEvent.getParameter('selectedItem').getKey();
+            let children = await this.fetchHierarchyChildren(catKey);
+
+            if (children) {
+                this.getOwnerComponent().getModel("Catalogos").setProperty('/SubCategoria', children);
+                this.byId("ComboSubCategory").setEditable(true);
+            }
+        },
+
+        async onSubCatChange (oControlEvent) {
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/Segmento', {});
+            this.byId("ComboSegmento").setEditable(false);
+            this.byId("ComboSegmento").setValue("");
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/SubSegmento', {});
+            this.byId("ComboSubSegmento").setEditable(false);
+            this.byId("ComboSubSegmento").setValue("");
+
+            let catKey = oControlEvent.getParameter('selectedItem').getKey();
+            let children = await this.fetchHierarchyChildren(catKey);
+
+            if (children) {
+                this.getOwnerComponent().getModel("Catalogos").setProperty('/Segmento', children);
+                this.byId("ComboSegmento").setEditable(true);
+            }
+        },
+
+        async onSegmentCange (oControlEvent) {
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/SubSegmento', {});
+            this.byId("ComboSubSegmento").setEditable(false);
+            this.byId("ComboSubSegmento").setValue("");
+
+            let catKey = oControlEvent.getParameter('selectedItem').getKey();
+            let children = await this.fetchHierarchyChildren(catKey);
+
+            if (children) {
+                this.getOwnerComponent().getModel("Catalogos").setProperty('/SubSegmento', children);
+                this.byId("ComboSubSegmento").setEditable(true);
+            }
+        },
+
+        async fetchHierarchyChildren(key) {
+            let children = null;
+            let urlDivision = `HdrcatproSet?$expand=ETJERARQUIANODO&$filter=IOption eq '21' and IParent eq '${key}'`;
+            await Model.getJsonModelAsync(urlDivision, async function (response, that) {
+                children = await response.getProperty('/results/0/ETJERARQUIANODO');
+            }, function () {
+                sap.m.MessageBox.error("No se lograron obtener los datos");
+            }, this, false); //retirar false para volverlo asyncrono
+            return children;
         }
+
     })
 });
+/**
+
+    División
+    Gerencia de Categoría
+    Categoría
+    Sub Categoría
+    Segmento
+    Sub segmento
+
+ */
