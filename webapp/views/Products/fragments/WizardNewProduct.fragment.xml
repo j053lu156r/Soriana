@@ -228,10 +228,10 @@
 					</WizardStep>
 
                     <WizardStep 
-                        id="SalesHierarchy"
+                        id="SalesHierarchyStep"
                         validated="true"
                         title="{appTxts>/products.titleTabSalesHierarchy}"
-                        complete="Pendiete">
+                        complete="validateSalesHierarchy">
 						<VBox class="sapUiSmallMargin"
 								alignItems="Center"
 								justifyContent="Center"
@@ -252,7 +252,7 @@
                                                     <form:fields>
                                                         <ComboBox required="true" id="ComboDivision" items="{
                                                                     path : 'Catalogos>/Divisiones/results'
-                                                                }" selectionChange="onDivisionChange">
+                                                                }" selectionChange="onDivisionChange" value="{/HieDivision}">
                                                             <items>
                                                                 <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
                                                             </items>
@@ -263,7 +263,7 @@
                                                     <form:fields>
                                                         <ComboBox required="true" id="ComboCatMgmt" items="{
                                                                     path : 'Catalogos>/GerenCategoria/results'
-                                                                }" selectionChange="onCatMgmtChange" editable="false">
+                                                                }" selectionChange="onCatMgmtChange" editable="false" value="{/HieCatMgmt}">
                                                             <items>
                                                                 <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
                                                             </items>
@@ -274,6 +274,39 @@
                                                     <form:fields>
                                                         <ComboBox required="true" id="ComboCategory" items="{
                                                                     path : 'Catalogos>/Categoria/results'
+                                                                }" selectionChange="onCatChange" editable="false" value="{/HieCategory}">
+                                                            <items>
+                                                                <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
+                                                            </items>
+                                                        </ComboBox>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement  label="{appTxts>/products.labelSubCategory}">
+                                                    <form:fields>
+                                                        <ComboBox required="true" id="ComboSubCategory" items="{
+                                                                    path : 'Catalogos>/SubCategoria/results'
+                                                                }" selectionChange="onSubCatChange" editable="false" value="{/HieSubCat}">
+                                                            <items>
+                                                                <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
+                                                            </items>
+                                                        </ComboBox>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement  label="{appTxts>/products.labelSegment}">
+                                                    <form:fields>
+                                                        <ComboBox required="true" id="ComboSegmento" items="{
+                                                                    path : 'Catalogos>/Segmento/results'
+                                                                }" selectionChange="onSegmentCange" editable="false" value="{/HieSegment}">
+                                                            <items>
+                                                                <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
+                                                            </items>
+                                                        </ComboBox>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement  label="{appTxts>/products.labelSubSegment}">
+                                                    <form:fields>
+                                                        <ComboBox required="true" id="ComboSubSegmento" selectedKey="{Folio>/Jerarquia}" items="{
+                                                                    path : 'Catalogos>/SubSegmento/results'
                                                                 }" editable="false">
                                                             <items>
                                                                 <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
@@ -284,11 +317,8 @@
                                             </form:formElements>
                                         </form:FormContainer>
                                     </form:formContainers>
-
                                 </form:Form>
-
                         </VBox>
-
                         </WizardStep>
                     
 					<WizardStep id="ProductPresentation"
@@ -796,6 +826,36 @@
                                         <Text text="{FolioToShow>/ForNegoc}" />										
 
                                         <!-- TERMINA REVIEW 1 -->
+										
+									</form:content>
+								</form:SimpleForm>
+
+								<form:SimpleForm
+										title="{appTxts>/products.titleHierarchy}"
+										minWidth="1024"
+										editable="false"
+										layout="ResponsiveGridLayout">
+									<form:content>
+                                        
+                                        <Label text="{appTxts>/products.labelDivision}"/>
+                                        <Text text="{/HieDivision}" />
+                                        
+                                        <Label text="{appTxts>/products.labelCatMgmt}"/>
+                                        <Text text="{/HieCatMgmt}" />
+                                        
+                                        <Label text="{appTxts>/products.labelCategory}"/>
+                                        <Text text="{/HieCategory}" />
+                                        
+                                        <Label text="{appTxts>/products.labelSubCat}"/>
+                                        <Text text="{/HieSubCat}" />
+                                        
+                                        <Label text="{appTxts>/products.labelSegment}"/>
+                                        <Text text="{/HieSegment}" />
+                                        
+                                        <Label text="{appTxts>/products.labelSubSegment}"/>
+                                        <Text text="{FolioToShow>/Jerarquia}" />
+									
+                                        <!-- TERMINA REVIEW 2 -->
 										
 									</form:content>
 								</form:SimpleForm>

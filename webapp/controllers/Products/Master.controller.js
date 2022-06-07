@@ -889,6 +889,9 @@ sap.ui.define([
             Folio.UndBon = formatterCatPrd.findPropertieValue("value", "text", Folio.UndBon,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/TiposBonificacion'));
 
+            Folio.Jerarquia = formatterCatPrd.findPropertieValue("Nodo", "Denominacion", Folio.Jerarquia,
+            this.getOwnerComponent().getModel("Catalogos").getProperty('/SubSegmento'));
+
             this.getOwnerComponent().getModel("FolioToShow").setData({ ...Folio });
 
             // console.log(this.getOwnerComponent().getModel("FolioToShow").getData());
@@ -1002,6 +1005,21 @@ sap.ui.define([
             }
 
             this.getView().byId('ProductTypeStep').setValidated(validated || _testingSteps);
+
+        },
+
+        validateSalesHierarchy(){
+            let validated = true
+
+            if (this.byId("ComboSubSegmento").getValue()== undefined || this.byId("ComboSubSegmento").getValue().trim() == ''){
+                validated = false;
+            }
+
+            if (!validated) {
+                sap.m.MessageBox.warning("Capture correcatamente hasta llegar a Sub Segmento.");
+            }
+
+            this.getView().byId('SalesHierarchyStep').setValidated(validated || _testingSteps);
 
         },
 
@@ -1893,13 +1911,21 @@ sap.ui.define([
             this.getOwnerComponent().getModel("Catalogos").setProperty('/Categoria', {});
             this.byId("ComboCategory").setEditable(false);
             this.byId("ComboCategory").setValue("");
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/SubCategoria', {});
+            this.byId("ComboSubCategory").setEditable(false);
+            this.byId("ComboSubCategory").setValue("");
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/Segmento', {});
+            this.byId("ComboSegmento").setEditable(false);
+            this.byId("ComboSegmento").setValue("");
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/SubSegmento', {});
+            this.byId("ComboSubSegmento").setEditable(false);
+            this.byId("ComboSubSegmento").setValue("");
         },
 
         async onDivisionChange (oControlEvent) {
             this.resetSalesHierarchy();
 
             let divKey = oControlEvent.getParameter('selectedItem').getKey();
-
             let children = await this.fetchHierarchyChildren(divKey);
 
             if (children) {
@@ -1912,14 +1938,73 @@ sap.ui.define([
             this.getOwnerComponent().getModel("Catalogos").setProperty('/Categoria', {});
             this.byId("ComboCategory").setEditable(false);
             this.byId("ComboCategory").setValue("");
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/SubCategoria', {});
+            this.byId("ComboSubCategory").setEditable(false);
+            this.byId("ComboSubCategory").setValue("");
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/Segmento', {});
+            this.byId("ComboSegmento").setEditable(false);
+            this.byId("ComboSegmento").setValue("");
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/SubSegmento', {});
+            this.byId("ComboSubSegmento").setEditable(false);
+            this.byId("ComboSubSegmento").setValue("");
 
             let divKey = oControlEvent.getParameter('selectedItem').getKey();
-
             let children = await this.fetchHierarchyChildren(divKey);
 
             if (children) {
                 this.getOwnerComponent().getModel("Catalogos").setProperty('/Categoria', children);
                 this.byId("ComboCategory").setEditable(true);
+            }
+        },
+
+        async onCatChange (oControlEvent) {
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/SubCategoria', {});
+            this.byId("ComboSubCategory").setEditable(false);
+            this.byId("ComboSubCategory").setValue("");
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/Segmento', {});
+            this.byId("ComboSegmento").setEditable(false);
+            this.byId("ComboSegmento").setValue("");
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/SubSegmento', {});
+            this.byId("ComboSubSegmento").setEditable(false);
+            this.byId("ComboSubSegmento").setValue("");
+
+            let catKey = oControlEvent.getParameter('selectedItem').getKey();
+            let children = await this.fetchHierarchyChildren(catKey);
+
+            if (children) {
+                this.getOwnerComponent().getModel("Catalogos").setProperty('/SubCategoria', children);
+                this.byId("ComboSubCategory").setEditable(true);
+            }
+        },
+
+        async onSubCatChange (oControlEvent) {
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/Segmento', {});
+            this.byId("ComboSegmento").setEditable(false);
+            this.byId("ComboSegmento").setValue("");
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/SubSegmento', {});
+            this.byId("ComboSubSegmento").setEditable(false);
+            this.byId("ComboSubSegmento").setValue("");
+
+            let catKey = oControlEvent.getParameter('selectedItem').getKey();
+            let children = await this.fetchHierarchyChildren(catKey);
+
+            if (children) {
+                this.getOwnerComponent().getModel("Catalogos").setProperty('/Segmento', children);
+                this.byId("ComboSegmento").setEditable(true);
+            }
+        },
+
+        async onSegmentCange (oControlEvent) {
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/SubSegmento', {});
+            this.byId("ComboSubSegmento").setEditable(false);
+            this.byId("ComboSubSegmento").setValue("");
+
+            let catKey = oControlEvent.getParameter('selectedItem').getKey();
+            let children = await this.fetchHierarchyChildren(catKey);
+
+            if (children) {
+                this.getOwnerComponent().getModel("Catalogos").setProperty('/SubSegmento', children);
+                this.byId("ComboSubSegmento").setEditable(true);
             }
         },
 
@@ -1932,7 +2017,6 @@ sap.ui.define([
                 sap.m.MessageBox.error("No se lograron obtener los datos");
             }, this, false); //retirar false para volverlo asyncrono
             return children;
-
         }
 
     })
@@ -1945,6 +2029,5 @@ sap.ui.define([
     Sub Categoría
     Segmento
     Sub segmento
-
 
  */
