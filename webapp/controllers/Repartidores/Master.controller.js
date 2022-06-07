@@ -363,6 +363,7 @@ sap.ui.define([
                 "ITDMODIFYNAV" : []
             };
 
+            
             var obj = {};
 
                 if (Ioption == "3"){
