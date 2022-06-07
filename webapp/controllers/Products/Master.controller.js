@@ -15,7 +15,7 @@ sap.ui.define([
     const CatNegotiatedFormat = ['1A', '1B'];
     var swProveedorEnGS1 = false;
     var swProveedorExcluido = false;
-    var _testingSteps = true; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
+    var _testingSteps = false; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
 
     return BaseController.extend("demo.controllers.Products.Master", {
         formatterCatPrd: formatterCatPrd,

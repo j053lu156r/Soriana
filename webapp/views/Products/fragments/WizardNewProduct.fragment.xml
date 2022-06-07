@@ -846,7 +846,7 @@
                                         <Label text="{appTxts>/products.labelCategory}"/>
                                         <Text text="{/HieCategory}" />
                                         
-                                        <Label text="{appTxts>/products.labelSubCat}"/>
+                                        <Label text="{appTxts>/products.labelSubCategory}"/>
                                         <Text text="{/HieSubCat}" />
                                         
                                         <Label text="{appTxts>/products.labelSegment}"/>
