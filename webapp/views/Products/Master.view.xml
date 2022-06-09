@@ -41,10 +41,10 @@
                             text="{appTxts>/products.deleteProductsTxt}"
                             type="Emphasized"
                             press="deleteProducts"/>
-                    <Button
+                    <!-- <Button
                             text=" FETCH GS1 "
                             type="Emphasized"
-                            press="getGS1ProductData"/>
+                            press="getGS1ProductData"/> -->
                 </f:actions>
             </f:DynamicPageTitle>
         </f:title>
@@ -110,8 +110,8 @@
                                 </fb:control>
                             </fb:FilterGroupItem-->
 
-                            <fb:FilterGroupItem 
-                                groupName            = "__$INTERNAL$" 
+                            <fb:FilterGroupItem  
+                                groupName            = "__$INTERNAL$"
                                 name                 = "B" 
                                 mandatory            = "true"
                                 label                = "{appTxts>/products.supplier}" 
@@ -121,6 +121,18 @@
                                 <fb:control>
                                     <Input id="supplierInput" placeholder="{appTxts>/products.supplier}" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}">
                                     </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem
+                                groupName            = "__$INTERNAL$"
+                                name                 = "D" 
+                                partOfCurrentVariant = "true" 
+                                visibleInFilterBar   = "true">
+                                <fb:control>
+                                    <MessageStrip class="sapUiSmallMarginBottom"
+                                            text="{appTxts>/products.msgMyProducts}"
+                                            showIcon="true"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
 
