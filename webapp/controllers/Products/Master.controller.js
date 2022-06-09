@@ -15,7 +15,7 @@ sap.ui.define([
     const CatNegotiatedFormat = ['1A', '1B'];
     var swProveedorEnGS1 = false;
     var swProveedorExcluido = false;
-    var _testingSteps = false; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
+    var _testingSteps = true; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
 
     return BaseController.extend("demo.controllers.Products.Master", {
         formatterCatPrd: formatterCatPrd,
@@ -157,8 +157,8 @@ sap.ui.define([
 
                 let UnidadPeso = {
                     results: [
-                        { value: "GRM", text: 'Gramo' },
-                        { value: "KGRM", text: 'Kilogramo' }
+                        { value: "GM", text: 'Gramo' },
+                        { value: "KGM", text: 'Kilogramo' }
                     ]
                 };
 
@@ -714,7 +714,8 @@ sap.ui.define([
             if (response.getProperty("/results/0/ESuccess") === "X") {
                 MessageBox.success("Artículo apto para registro.", {
                     onClose: () => {
-                        this.getGS1ProductData()
+                        // inhabilitando busqueda en GS1 para tener version estable en cracion manual
+                        //this.getGS1ProductData()
                         this.getView().byId('barCode').setValueState(sap.ui.core.ValueState.Success);
                         this.getOwnerComponent().getModel("ValidBarCode").setProperty("/value", true);
                     }
@@ -851,9 +852,17 @@ sap.ui.define([
                                 let that = this;
 
                                 setTimeout(function () {
-                                    that._oWizard.discardProgress(that._oWizard.getSteps()[0]);
-                                    that.byId("wizardDialog").close();
-                                    that.getOwnerComponent().getModel("Folio").setData({});
+                                    that.clearFormFolioAlta();
+                                    // that._oWizard.discardProgress(that._oWizard.getSteps()[0]);
+                                    // that.byId("wizardDialog").close();
+                                    // that.getOwnerComponent().getModel("Folio").setData({});
+                                    // this.getOwnerComponent().getModel("ValidBarCode").setProperty("/value", false);
+                                    // this.getView().getModel().setProperty("/HieDivision", {});
+                                    // this.getView().getModel().setProperty("/HieCatMgmt", {});
+                                    // this.getView().getModel().setProperty("/HieCategory", {});
+                                    // this.getView().getModel().setProperty("/HieSubCat", {});
+                                    // this.getView().getModel().setProperty("/HieSegment", {});
+                                    // this.byId("barCode").setEditable(false || _testingSteps);
                                 }, 3000);
 
                             } else {
@@ -863,19 +872,40 @@ sap.ui.define([
                             }
 
                         } else {
-                            this._oWizard.discardProgress(this._oWizard.getSteps()[0]);
-                            this.byId("wizardDialog").close();
-                            this.getOwnerComponent().getModel("Folio").setData({});
-                            this.getOwnerComponent().getModel("FolioToShow").setData({});
-                            this.getOwnerComponent().getModel("FolioImages").setData({});
+
+                            this.clearFormFolioAlta();
+                            // this._oWizard.discardProgress(this._oWizard.getSteps()[0]);
+                            // this.byId("wizardDialog").close();
+                            // this.getOwnerComponent().getModel("Folio").setData({});
+                            // this.getOwnerComponent().getModel("FolioToShow").setData({});
+                            // this.getOwnerComponent().getModel("FolioImages").setData({});
+                            // this.getOwnerComponent().getModel("ValidBarCode").setProperty("/value", false);
+                            // this.getView().getModel().setProperty("/HieDivision", {});
+                            // this.getView().getModel().setProperty("/HieCatMgmt", {});
+                            // this.getView().getModel().setProperty("/HieCategory", {});
+                            // this.getView().getModel().setProperty("/HieSubCat", {});
+                            // this.getView().getModel().setProperty("/HieSegment", {});
+                            // this.byId("barCode").setEditable(false || _testingSteps);
                         }
 
-                        this.getOwnerComponent().getModel("ValidBarCode").setProperty("/value", false);
 
                     }
                 }.bind(this)
 
             });
+        },
+
+        clearFormFolioAlta(){
+
+            this._oWizard.discardProgress(this._oWizard.getSteps()[0]);
+            this.byId("wizardDialog").close();
+            this.getOwnerComponent().getModel("Folio").setData({});
+            this.getOwnerComponent().getModel("FolioToShow").setData({});
+            this.getOwnerComponent().getModel("FolioImages").setData({});
+            this.getOwnerComponent().getModel("ValidBarCode").setProperty("/value", false);
+            this.byId("ComboDivision").setValue("");
+            this.resetSalesHierarchy();
+            this.byId("barCode").setEditable(false);
         },
 
         selectAgree(oControlEvent) {
