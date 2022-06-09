@@ -1,14 +1,28 @@
 sap.ui.define([
 	"demo/controllers/BaseController",
     "sap/ui/model/json/JSONModel",
-    "demo/models/BaseModel"
-], function (Controller, JSONModel) {
+    "demo/models/BaseModel",
+    'sap/m/Label',
+        'sap/m/Link',
+        'sap/m/MessageToast',
+        'sap/m/Text',
+        './Formatter',
+        'sap/ui/core/Fragment'
+], function (Controller, JSONModel, BaseModel,Label, Link, MessageToast, Text, Formatter, Fragment) {
 	"use strict";
 	
 	var sUri = "/sap/opu/odata/sap/ZOSP_STATEMENT_SRV_01/";
 	var dTJSON;
     var fechaAct = new Date();
 	return Controller.extend("demo.controllers.Statement.EstadoCuenta", {
+        sCollection: "GroupedTotales>/Hierarchy",
+        aCrumbs: ["movimientos", "positions"],
+        mInitialOrderState: {
+            products: {},
+            count: 0,
+            hasCounts: false
+        },
+
 
 		onInit: function () {
             
@@ -26,9 +40,36 @@ sap.ui.define([
                     this.getView().setModel(oModel);*/
                     this.clearFilters();
                     this.getOwnerComponent().setModel(new JSONModel(), "totales");
+
+                    var oModel = new JSONModel({filtros:[
+                        {filtro:'Belnr',descripcion:'Documento SAP'},
+                        {filtro:'1',descripcion:'Factura'},
+                        {filtro:'2',descripcion:'Folio'},
+                        {filtro:'3',descripcion:'Sucursal'}
+
+                        ]
+
+                    });
+                    this.getView().setModel(oModel,'filterOptions');
+
+
+                    //configuracion tabla 
+
+
+
                     
 				}
 			}, this);
+
+
+            if (!this._pTemplate) {
+                this._pTemplate = Fragment.load({
+                    id: this.getView().getId(),
+                    name: "demo.views.Statement.Row"
+                });
+            }
+            this._oTable = this.byId("idGroupTable");
+
 		},
 		searchData: function (){
             
@@ -36,6 +77,7 @@ sap.ui.define([
 
             //ciltro documento 
             let documentoInput = this.getView().byId("Belnr");
+             let filterInput = this.getView().byId("filtroBusqueda");
 
             let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
             // format[AAAAMMDD] (2020101)
@@ -85,6 +127,46 @@ sap.ui.define([
 			var JSONT = $.extend({}, TDatos.results[0]);
 			var jsonModelT = new JSONModel();
 			jsonModelT.setData(JSONT);
+
+
+
+            //filtrar totales y crear modelo grupal 
+
+            console.info("agrupando datos",Detalles)
+            let auxArray = [...Detalles]
+
+      
+var groupedMovs=this.groupArrayOfObjects(auxArray,"DescTipomov");
+var nestedMovs= []
+
+for (let x in groupedMovs) {
+   console.log(x + ": "+ groupedMovs[x])
+
+nestedMovs.push({
+    "name":x,
+    "totalRegs":groupedMovs[x].length,
+    "totalDebit":0,
+    "totalCredit":0,
+    "positions":groupedMovs[x]
+
+})
+
+
+}
+
+
+var jsonModelG = new JSONModel({
+    "Hierarchy":{
+    "movimientos": nestedMovs
+}
+});
+
+this.getOwnerComponent().setModel(jsonModelG, "GroupedTotales");
+
+console.log(this.getOwnerComponent().getModel("GroupedTotales"))
+
+this.initTable()
+ 
 			this.getOwnerComponent().setModel(jsonModelT, "totales");
             
             this.paginate("totales", "/Detalles", 1, 0);
@@ -96,6 +178,15 @@ sap.ui.define([
 
   return date;
 },
+
+
+ groupArrayOfObjects: function(list, key) {
+  return list.reduce(function(rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, {});
+},
+
 
 
             searchPartidasAbiertas: function (){
@@ -158,6 +249,205 @@ sap.ui.define([
               }
 
           },
+
+
+
+//esta fucnion inicializa la tabla de forma gerarquica 
+initTable: function() {
+
+console.log('on init table')
+
+
+  var  sPath = this._getInitialPath();
+          
+            this._setAggregation(sPath);
+            var oBreadCrumb = this.byId("breadcrumb");
+            var oLink = new Link({
+                text: "Conceptos",
+                press:[sPath, this.onBreadcrumbPress, this]
+            });
+            oBreadCrumb.addLink(oLink);
+
+
+
+},
+
+
+
+///TABLE HELPERS 
+    // Initial path is the first crumb appended to the collection root
+        _getInitialPath: function () {
+            return [this.sCollection, this.aCrumbs[0]].join("/");
+        },
+
+
+        // Find the next crumb that follows the given crumb
+        _nextCrumb: function (sCrumb) {
+            for (var i = 0, ii = this.aCrumbs.length; i < ii; i++) {
+                if (this.aCrumbs[i] === sCrumb) {
+                    return this.aCrumbs[i + 1];
+                }
+            }
+        },
+
+
+
+        // Remove the numeric item binding from a path
+        _stripItemBinding: function (sPath) {
+            var aParts = sPath.split("/");
+            return aParts.slice(0, aParts.length - 1).join("/");
+        },
+
+
+
+            _setAggregation: function (sPath) {
+            // If we're at the leaf end, turn off navigation
+            var sPathEnd = sPath.split("/").reverse()[0];
+            if (sPathEnd === this.aCrumbs[this.aCrumbs.length - 1]) {
+                this._oTable.setMode("None");
+              //  this.byId("weightColumn").setVisible(true);
+               // this.byId("dimensionsColumn").setVisible(true);
+              
+
+                this.byId("statusColumn").setVisible(true);
+                 this.byId("folioColumn").setVisible(true);
+                 this.byId("referenceColumn").setVisible(true);
+
+                 this.byId("typeDocColumn").setVisible(true);
+
+                 this.byId("dateColumn").setVisible(true);
+                 this.byId("amountColumn").setVisible(true);
+                 this.byId("mCondicionColumn").setVisible(true);
+                 this.byId("bloqueoColumn").setVisible(true);
+                 this.byId("conciliacionColumn").setVisible(true);
+
+                 //totles 
+                this.byId("tipoColumn").setVisible(false);
+
+                this.byId("totalRegColumn").setVisible(false);
+                 this.byId("debitColumn").setVisible(false);
+                 this.byId("creditColumn").setVisible(false);
+
+
+
+
+
+
+            } else {
+                 this._oTable.setMode("SingleSelectMaster");
+                 
+                 this.byId("statusColumn").setVisible(false);
+                 this.byId("folioColumn").setVisible(false);
+                 this.byId("referenceColumn").setVisible(false);
+
+                 this.byId("typeDocColumn").setVisible(false);
+
+                 this.byId("dateColumn").setVisible(false);
+                 this.byId("amountColumn").setVisible(false);
+                 this.byId("mCondicionColumn").setVisible(false);
+
+                 this.byId("bloqueoColumn").setVisible(false);
+                 this.byId("conciliacionColumn").setVisible(false);
+
+                 //totales tipoColumn
+                 this.byId("tipoColumn").setVisible(true);
+
+                 this.byId("totalRegColumn").setVisible(true);
+                 this.byId("debitColumn").setVisible(true);
+                 this.byId("creditColumn").setVisible(true);
+
+
+
+
+
+            }
+
+            // Set the new aggregation
+           console.log('SET agregation spath',sPath)
+  
+
+            //   var tableModel = this.getOwnerComponent().getModel("GroupedTotales")
+             //    this._oTable.setModel(tableModel)
+                this._pTemplate.then(function(oTemplate){
+
+                this._oTable.bindAggregation("items", sPath, oTemplate);
+                
+            }.bind(this));
+
+
+
+ 
+
+        },
+
+
+
+
+handleSelection: function(oEvent){
+
+console.log(
+"on condepto select"
+
+    )
+var sPath = oEvent.getParameter("listItem").getBindingContextPath();
+
+console.log(sPath)
+            var aPath = sPath.split("/");
+            var sPathEnd = sPath.split("/").reverse()[1];
+            var sCurrentCrumb = aPath[aPath.length - 2];
+            console.log("current path",sCurrentCrumb)
+
+            if (sPathEnd !== this.aCrumbs[this.aCrumbs.length - 1]) {
+                var oBreadCrumb = this.byId("breadcrumb");
+                var sPrevNode = aPath[aPath.length - 2];
+                var iCurNodeIndex = this.aCrumbs.indexOf(sPrevNode) + 1;
+
+                console.log("currentNOde",iCurNodeIndex)
+
+                var oLink = new Link({
+                    text: "{GroupedTotales>name}",
+                    press:[sPath + "/" + this.aCrumbs[iCurNodeIndex], this.onBreadcrumbPress, this]
+                });
+
+                oLink.bindElement({
+                    path : "GroupedTotales>"+sPath
+                });
+                oBreadCrumb.addLink(oLink);
+            }
+
+            // If we're on a leaf, remember the selections;
+            // otherwise navigate
+            if (sCurrentCrumb === this.aCrumbs[this.aCrumbs.length - 1]) {
+                var oSelectionInfo = {};
+                var bSelected = oEvent.getParameter("selected");
+                oEvent.getParameter("listItems").forEach(function (oItem) {
+                    oSelectionInfo[oItem.getBindingContext().getPath()] = bSelected;
+                });
+                this._updateOrder(oSelectionInfo);
+            } else {
+                var modelName="GroupedTotales>"
+                var sNewPath = [sPath, this._nextCrumb(sCurrentCrumb)].join("/");
+                
+                this._setAggregation(modelName+sNewPath);
+
+                console.log("new spath",sNewPath);
+            }
+},
+
+    onBreadcrumbPress: function (oEvent, sPath) {
+            var oLink = oEvent.getSource();
+            var oBreadCrumb = this.byId("breadcrumb");
+            var iIndex = oBreadCrumb.indexOfLink(oLink);
+            var aCrumb = oBreadCrumb.getLinks().slice(iIndex + 1);
+            if (aCrumb.length) {
+                aCrumb.forEach(function(oLink) {
+                    oLink.destroy();
+                });
+                this._setAggregation(sPath);
+            }
+        },
+
+
 
 
 
@@ -300,6 +590,9 @@ sap.ui.define([
             ];
 
             this.exportxls('totales', '/Detalles/results', columns);
+        },
+            onMarkerPress: function(oEvent) {
+            MessageToast.show(oEvent.getParameter("additionalInfo") + "");
         },
         formatDateTime : (oDateTime, outputFormat, inputFormat) => {
 

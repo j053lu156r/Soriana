@@ -74,14 +74,34 @@
                             </fb:FilterGroupItem>
                             <fb:FilterGroupItem 
                                 groupName            = "__$INTERNAL$" 
+                                name                 = "D" 
+                                mandatory            = "false"
+                                label                = "Filtro" 
+                                labelTooltip         = "Filtro" 
+                                partOfCurrentVariant = "true" 
+                                visibleInFilterBar   = "true">
+                                <fb:control>
+                                   <Select
+                                    id="filtroBusqueda"
+                        forceSelection="false"
+                         items="{
+                            path: 'filterOptions>/filtros'
+                            
+                        }">
+                    <core:Item key="{filterOptions>filtro}" text="{filterOptions>descripcion}" />
+                </Select>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem 
+                                groupName            = "__$INTERNAL$" 
                                 name                 = "C" 
                                 mandatory            = "false"
-                                label                = "Doc" 
+                                label                = "" 
                                 labelTooltip         = "Tooltip Example" 
                                 partOfCurrentVariant = "true" 
                                 visibleInFilterBar   = "true">
                                 <fb:control>
-                                    <Input id="Belnr" placeholder="Documento" >
+                                    <Input id="Belnr"   >
                                     </Input>
                                 </fb:control>
                             </fb:FilterGroupItem>
@@ -333,7 +353,7 @@
                         </FlexBox>
                     </content>
                 </Panel>
-                <Table xmlns="sap.ui.table"
+                <Table visible="false" xmlns="sap.ui.table"
                     xmlns:mvc="sap.ui.core.mvc"
                     xmlns:u="sap.ui.unified"
                     xmlns:c="sap.ui.core" selectionMode="None"
@@ -412,12 +432,142 @@
                         </Column>
                     </columns>
                 </Table>
-                <OverflowToolbar visible="{= ${totales>/Detalles/Paginated/results/length} > 0 }">
+                <!--
+                <OverflowToolbar  visible="{= ${totales>/Detalles/Paginated/results/length} > 0 }">
+                -->
+                                    <OverflowToolbar  visible="false">
+
                     <Text text="{totales>/Detalles/Paginated/initRow} - {totales>/Detalles/Paginated/endRow} {appTxts>/pagination.of} {totales>/Detalles/results/length}" />
                     <ToolbarSpacer/>
                     <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${totales>/Detalles/Paginated/iterator}, ${totales>/Detalles/Paginated/initRow}, 'totales', '/Detalles')" enabled="{= ${totales>/Detalles/Paginated/iterator} !== 1}" />
                     <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${totales>/Detalles/Paginated/iterator}, ${totales>/Detalles/Paginated/endRow}, 'totales', '/Detalles')" enabled="{= ${totales>/Detalles/Paginated/endRow} !== ${totales>/Detalles/results/length}}" />
                 </OverflowToolbar>
+
+                <!-- tabla con agrupacion -->
+                <Table  selectionChange="handleSelection" growing="true" growingThreshold="10" inset="false" id="idGroupTable">
+                    <headerToolbar>
+                    <OverflowToolbar id="idCrumbToolbar" >
+                        <Breadcrumbs id="breadcrumb" />
+                    </OverflowToolbar>
+                </headerToolbar>
+
+                        <columns>
+
+                      <Column
+                        id="tipoColumn"
+                         demandPopin="false"
+                         >
+                        <Text text="{appTxts>/aportaciones.concepto}" />
+                    </Column>
+                    <Column
+                        id="statusColumn"
+                        minScreenWidth="Tablet"
+                         demandPopin="true"
+                        >
+                        <Text text="{appTxts>/state.status}"/>
+                    </Column>
+                    <Column
+                        id="folioColumn"
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                        hAlign="End"
+                        visible="true">
+                        <Text text="{appTxts>/state.folio}" />
+                    </Column>
+                    <Column
+                        id="referenceColumn"
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                        hAlign="Center"
+                        visible="true">
+                        <Text text="{appTxts>/state.reference}" />
+                    </Column>
+
+                     <Column
+                        id="typeDocColumn"
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                        hAlign="Center"
+                        visible="true">
+                        <Text text="{appTxts>/state.typeDoc}" />
+                    </Column>
+
+                        <Column
+                        id="dateColumn"
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                        hAlign="Center"
+                        visible="true">
+                        <Text  text="{appTxts>/state.date}" />
+                    </Column>
+
+                    <Column
+                         id="amountColumn"
+                         visible="true"
+                        hAlign="End">
+                        <Text text="{appTxts>/state.amount}"  />
+                    </Column>
+
+                    <Column
+                        id="mCondicionColumn"
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                        hAlign="Center"
+                        visible="true">
+                        <Text  text="Mejor Condición" />
+                    </Column>
+
+                    <Column
+                        id="bloqueoColumn"
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                        hAlign="Center"
+                        visible="true">
+                        <Text  text="Boqueo" />
+                    </Column>
+
+                    <Column
+                        id="conciliacionColumn"
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                        hAlign="Center"
+                        visible="true">
+                        <Text  text="{appTxts>/state.conciliation}" />
+                    </Column>
+
+                    <!-- totales grupo --> 
+                     <Column
+                         id="totalRegColumn"
+                         visible="End"
+                        hAlign="Center">
+                        <Text text="{appTxts>/state.totalReg}" />
+                    </Column>
+
+                       <Column
+                         id="debitColumn"
+                         visible="true"
+                         hAlign="End">
+                        <Text text="{appTxts>/state.debit}" />
+                    </Column>
+                       <Column
+                         id="creditColumn"
+                         visible="true"
+                         hAlign="End">
+                        <Text text="{appTxts>/state.credit}" />
+                    </Column>
+
+
+
+
+
+
+
+
+                    
+                </columns>
+                
+                </Table>
+
             </ScrollContainer>
         </f:content>
     </f:DynamicPage>
