@@ -30,7 +30,7 @@
 					visible="{=  ${GroupedTotales>BloqueoFlag} === '' ? false : true }"
 
 					type="LockedBy"
-					 additionalInfo="GroupedTotales>DescripcionBloqueo}"
+					 additionalInfo="{GroupedTotales>DescripcionBloqueo}"
 					press="onMarkerPress"
 					 
 					 />
@@ -47,12 +47,12 @@
 				 	
 
 				 	<ObjectNumber
-							number="{GroupedTotales>totalDebit}"
+							number="{path:'GroupedTotales>totalDebit' }"
 							  />
 				 	
 
 				 	<ObjectNumber
-							number="{GroupedTotales>totalCredit}"
+							number="{path:'GroupedTotales>totalCredit' }"
 							  />
 				 	
 				
