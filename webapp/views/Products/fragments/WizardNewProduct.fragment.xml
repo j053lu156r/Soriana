@@ -735,9 +735,9 @@
                             showIcons="false"
                             uploadEnabled="true" 
                             terminationEnabled="true" 
-                            fileTypes="png,jpg,jpeg" 
+                            fileTypes="jpg" 
                             maxFileNameLength="20" 
-                            maxFileSize="4" 
+                            maxFileSize="0.3" 
                             items="{path:'FolioImages>/items', templateShareable: false}" 
                             multiple="true"
                             mode="MultiSelect"
@@ -749,7 +749,13 @@
                                         <OverflowToolbar>
                                              <Label text="{appTxts>/products.numImages}"/>
                                              <Text id="imagesCounter" text="0"/> 
-                                             <ToolbarSpacer/>            
+                                             <ToolbarSpacer/>
+                                             
+                                            <Link
+                                                text="Descargar Guia de Imagenes"
+                                                target="_blank"
+                                                href="/public/PDFs/GUIA.pdf" />
+
                                         </OverflowToolbar>
                             </upload:toolbar>
 
