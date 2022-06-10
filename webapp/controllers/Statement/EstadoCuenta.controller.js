@@ -81,9 +81,21 @@ sap.ui.define([
 
             let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
             // format[AAAAMMDD] (2020101)
-            let desde_LV_ZDESDE = this.buildSapDate( dateRange.getDateValue()       ); 
+           // let desde_LV_ZDESDE = this.buildSapDate( dateRange.getDateValue()       ); 
             // format[AAAAMMDD] (2020101)
-            let desde_LV_ZHASTA = this.buildSapDate( dateRange.getSecondDateValue() );
+           // let desde_LV_ZHASTA = this.buildSapDate( dateRange.getSecondDateValue() );
+
+
+
+//tomar valores dummy para hacer al consulta 
+            let todayDate = new Date();
+
+ // format[AAAAMMDD] (2020101)
+            let desde_LV_ZDESDE = this.buildSapDate( todayDate ); 
+            // format[AAAAMMDD] (2020101)
+            let desde_LV_ZHASTA = this.buildSapDate( todayDate );
+
+
 
             let doc_BELNR = documentoInput.getValue();
 
@@ -102,7 +114,7 @@ sap.ui.define([
             } 
 
             if (desde_LV_ZDESDE == "" || desde_LV_ZHASTA == "") {
-                sap.m.MessageBox.error("Por favor defina el rango de fechas.");
+               // sap.m.MessageBox.error("Por favor defina el rango de fechas.");
             } 
 
             
@@ -140,13 +152,27 @@ var groupedMovs=this.groupArrayOfObjects(auxArray,"DescTipomov");
 var nestedMovs= []
 
 for (let x in groupedMovs) {
-   console.log(x + ": "+ groupedMovs[x])
+  // console.log(x + ": "+ groupedMovs[x])
+
+
+ var result = groupedMovs[x].reduce(function(_this, val) {
+         var current = val.Bschl === "21" ? parseFloat(val.Wrbtr) : 0
+          return _this +  current
+      }, 0);
+
+
+ var resultCredit = groupedMovs[x].reduce(function(_this, val) {
+    var current =  val.Bschl !== "21" ? parseFloat(val.Wrbtr) : 0
+          return _this + current
+      }, 0);
+
+console.log(result)
 
 nestedMovs.push({
     "name":x,
     "totalRegs":groupedMovs[x].length,
-    "totalDebit":0,
-    "totalCredit":0,
+    "totalDebit":result,
+    "totalCredit":resultCredit,
     "positions":groupedMovs[x]
 
 })
@@ -163,8 +189,7 @@ var jsonModelG = new JSONModel({
 
 this.getOwnerComponent().setModel(jsonModelG, "GroupedTotales");
 
-console.log(this.getOwnerComponent().getModel("GroupedTotales"))
-
+ 
 this.initTable()
  
 			this.getOwnerComponent().setModel(jsonModelT, "totales");
@@ -196,7 +221,8 @@ this.initTable()
 
             let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
             // format[AAAAMMDD] (2020101)
-            let desde_LV_ZDESDE = this.buildSapDate( this.subtractYears(1)    ); 
+           // let desde_LV_ZDESDE = this.buildSapDate( this.subtractYears(1)    ); 
+           let desde_LV_ZDESDE = this.buildSapDate( todayDate   ); 
             // format[AAAAMMDD] (2020101)
             let desde_LV_ZHASTA = this.buildSapDate( todayDate );
 
@@ -209,6 +235,8 @@ this.initTable()
 
             if (desde_LV_ZDESDE == "" || desde_LV_ZHASTA == "") {
                 sap.m.MessageBox.error("Por favor defina el rango de fechas.");
+
+
             } 
 
             
@@ -233,6 +261,64 @@ this.initTable()
             var JSONT = $.extend({}, TDatos.results[0]);
             var jsonModelT = new JSONModel();
             jsonModelT.setData(JSONT);
+
+                      //filtrar totales y crear modelo grupal 
+
+            console.info("agrupando datos",Detalles)
+            let auxArray = [...Detalles]
+
+      
+var groupedMovs=this.groupArrayOfObjects(auxArray,"DescTipomov");
+var nestedMovs= []
+
+for (let x in groupedMovs) {
+   console.log(x + ": "+ groupedMovs[x])
+
+ var result = groupedMovs[x].reduce(function(_this, val) {
+             var current = val.Bschl === "21" ? parseFloat(val.Wrbtr) : 0
+
+          return _this +  current
+      }, 0);
+
+
+ var resultCredit = groupedMovs[x].reduce(function(_this, val) {
+                 var current = val.Bschl === "21" ? parseFloat(val.Wrbtr) : 0
+
+          return _this +  current
+      }, 0);
+
+console.log(result)
+
+nestedMovs.push({
+    "name":x,
+    "totalRegs":groupedMovs[x].length,
+    "totalDebit":result,
+    "totalCredit":resultCredit,
+    "positions":groupedMovs[x]
+
+})
+
+
+}
+
+
+var jsonModelG = new JSONModel({
+    "Hierarchy":{
+    "movimientos": nestedMovs
+}
+});
+
+this.getOwnerComponent().setModel(jsonModelG, "GroupedTotales");
+
+ 
+this.initTable()
+
+
+
+
+
+
+
             this.getOwnerComponent().setModel(jsonModelT, "totales");
             
             this.paginate("totales", "/Detalles", 1, 0);
