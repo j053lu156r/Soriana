@@ -1882,27 +1882,35 @@ sap.ui.define([
             }
         },
 
-        imageAfterAddedTriggered(oControlEvent) {
+        async imageAfterAddedTriggered(oControlEvent) {
 
             let numberItemsAdded = this.byId("ImageUploadSet").getItems().length;
 
             let incommingUploadSetItem = oControlEvent.getParameter("item");
 
-            let fileSize = (incommingUploadSetItem.getFileObject().size / 1024) / 1024; //getting MBs for validation
+            let fileSize = (incommingUploadSetItem.getFileObject().size / 1024) ; //getting MBs for validation
+            let path = URL.createObjectURL(incommingUploadSetItem.getFileObject());
+            let imageObj = new Image();
 
-            if (numberItemsAdded <= 11 && fileSize < 4) {
+            imageObj.src = path;
+
+            await imageObj.decode();
+
+            if (numberItemsAdded <= 4 && fileSize < 300 && imageObj.height < 1024 && imageObj.width < 1024) {
                 incommingUploadSetItem.setUploadState(sap.m.UploadState.Complete);
-                let path = URL.createObjectURL(incommingUploadSetItem.getFileObject());
                 incommingUploadSetItem.setUrl(path);
                 incommingUploadSetItem.setThumbnailUrl(path);
                 this.byId("ImageUploadSet").addItem(incommingUploadSetItem);
                 this.getOwnerComponent().getModel("FolioImages").setProperty("/items", this.byId("ImageUploadSet").getItems());
                 this.attachImagesToModel();
-            } else if (fileSize > 4) {
-                sap.m.MessageBox.warning("Max size is 4MB");
+            } else if (fileSize > 300) {
+                sap.m.MessageBox.warning("Max size is 300 KB");
                 this.byId("ImageUploadSet").removeItem(incommingUploadSetItem);
-            } else if (numberItemsAdded >= 11) {
-                sap.m.MessageBox.warning("Max 12 imgs");
+            }else if (imageObj.height >= 1024 || imageObj.width >= 1024) {
+                sap.m.MessageBox.warning("Max img dimensions are 1024x1024 pixels");
+                this.byId("ImageUploadSet").removeItem(incommingUploadSetItem);
+            }  else if (numberItemsAdded >= 4) {
+                sap.m.MessageBox.warning("Max 5 imgs");
                 this.byId("ImageUploadSet").setUploadEnabled(false);
             }
 
@@ -1919,7 +1927,7 @@ sap.ui.define([
             this.byId("imagesCounter").setText(numberItemsAdded);
             this.getOwnerComponent().getModel("FolioImages").setProperty("/items", this.byId("ImageUploadSet").getItems());
             this.attachImagesToModel();
-            if (numberItemsAdded <= 11) {
+            if (numberItemsAdded <= 4) {
                 this.byId("ImageUploadSet").setUploadEnabled(true);
             }
         },
