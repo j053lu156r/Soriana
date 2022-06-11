@@ -314,6 +314,7 @@ sap.ui.define([
 				bValid = oEvent.getParameter("valid"),
 				oEventSource = oEvent.getSource();
 			if (bValid) {
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "status").setValue("Activo");
 				//oEventSource.setValueState(ValueState.None);
 			} else {
 				oEventSource.setValueState(ValueState.Error);
