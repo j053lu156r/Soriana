@@ -49,6 +49,7 @@
                 showValueHelp="false"
                 textAlign="Center"
                 required="true"
+                maxLength="10"
                  >
             </Input> 
         <Label text="{appTxts>/rep.fcad}" tooltip="{appTxts>/rep.fcad}"/> 
