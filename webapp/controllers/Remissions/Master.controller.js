@@ -40,7 +40,7 @@ sap.ui.define([
                 return false;
             }
             if (!this._uploadDialog2) {
-                this._uploadDialog2 = sap.ui.xmlfragment("uploadInvoice", "demo.fragments.UploadInvoice", this);
+                this._uploadDialog2 = sap.ui.xmlfragment("uploadAviso", "demo.views.Remissions.fragments.UploadAviso", this);
                 this.getView().addDependent(this._uploadDialog2);
             }
             this._uploadDialog2.open();
@@ -52,9 +52,10 @@ sap.ui.define([
             }
         },
         documentUploadPress: function () {
-            var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoice", "fileUploader");
-            var uploadList = sap.ui.core.Fragment.byId("uploadInvoice", "logUploadList");
-            var uploadBox = sap.ui.core.Fragment.byId("uploadInvoice", "uploadBox");
+            console.log("Holaaaaaa!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            var oFileUploader = sap.ui.core.Fragment.byId("uploadAviso", "fileUploaderAviso");
+            var uploadList = sap.ui.core.Fragment.byId("uploadAviso", "logUploadListAviso");
+            var uploadBox = sap.ui.core.Fragment.byId("uploadAviso", "uploadBoxAviso");
             var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
 
             if (!oFileUploader.getValue()) {
