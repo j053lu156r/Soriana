@@ -2,7 +2,7 @@
 	xmlns="sap.m"
     xmlns:u="sap.ui.unified"
 	xmlns:core="sap.ui.core">
-    <Dialog title="{appTxts>/iupload.title}" class="sapUiContentPadding">
+    <Dialog title="{appTxts>/rem.uploadRemission}" class="sapUiContentPadding">
             <HBox id="uploadBoxAviso" alignContent="Center" alignItems="Center">
                 <u:FileUploader
                 id="fileUploaderAviso"
