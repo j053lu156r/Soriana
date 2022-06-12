@@ -327,6 +327,42 @@ sap.ui.define([
                     this.inptOrder2.setValue("");
                 }
             }
-        }
+        },
+
+        handleWizardSubmitAviso: function () {
+            console.log("Andle wizard Aviso anticipado!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            sap.m.MessageBox["confirm"](this.getView().getModel("appTxts").getProperty("/rem.submitMessage"), {
+                actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+                onClose: function (oAction) {
+                    if (oAction === sap.m.MessageBox.Action.YES) {
+                        var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+                        var obj = this.getView().getModel("reviewModel").getData();
+                        var objRequest = {
+                            "Lifnr": vLifnr,
+                            "Type": "A",
+                            "Format": "X",
+                            "Log": [{ "Uuid": "", "Description": "", "Sts": "" }]
+                        };
+
+                        objRequest.Cfdi = JSON.stringify(obj);
+
+                        var response = avisoModel.create("/ECfdiSet ", objRequest);
+
+                        if (response != null) {
+                            if (response.Log != null) {
+                                this.openLogErrorDialog(response);
+                            } else {
+                                sap.m.MessageBox.error(response.EMessage);
+                            }
+                        }
+
+                        this._oWizard.discardProgress(this._oWizard.getSteps()[0]);
+                        this.byId("wizardDialog").destroy();
+                        this._pDialog = null;
+                        this._oWizard = null;
+                    }
+                }.bind(this)
+            });
+        },
     });
 });
