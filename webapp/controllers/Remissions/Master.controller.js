@@ -14,10 +14,12 @@ sap.ui.define([
 
     var tipoUpload = "";
     var oModel = new this.EnvioCfdi();
-    var cfdiModel = new this.CfdiModel();
+    //var cfdiModel = new this.CfdiModel();
+    var avisoModel = new this.AvisoModel();
 
     var oRemisions = new this.Remissions();
     return Controller.extend("demo.controllers.Remissions.Master", {
+
         onInit: function () {
             this._pdfViewer = new PDFViewer();
             this.getView().addDependent(this._pdfViewer);
@@ -34,6 +36,11 @@ sap.ui.define([
                 }
             }, this);
             this.configFilterLanguage(this.getView().byId("filterBar"));
+
+            this.inptFolio = this.getView().byId("folio");
+            this.inptFolio2 = this.getView().byId("folio2");
+            this.inptOrder = this.getView().byId("order");
+            this.inptOrder2 = this.getView().byId("order2");
         },
         openUploadDialog: function () {
             if (!this.hasAccess(40)) {
@@ -52,7 +59,6 @@ sap.ui.define([
             }
         },
         documentUploadPress: function () {
-            console.log("Holaaaaaa!!!!!!!!!!!!!!!!!!!!!!!!!!")
             var oFileUploader = sap.ui.core.Fragment.byId("uploadAviso", "fileUploaderAviso");
             var uploadList = sap.ui.core.Fragment.byId("uploadAviso", "logUploadListAviso");
             var uploadBox = sap.ui.core.Fragment.byId("uploadAviso", "uploadBoxAviso");
@@ -108,7 +114,7 @@ sap.ui.define([
                     objRequest.Cfdi = JSON.stringify(obj);
                 }
 
-                var response = cfdiModel.create("/ECfdiSet ", objRequest);
+                var response = avisoModel.create("/ECfdiSet ", objRequest);
 
                 if (response != null) {
                     uploadBox.setVisible(false);
@@ -142,34 +148,70 @@ sap.ui.define([
 
             var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
             var vEbeln = this.getView().byId('order').getValue();
+            var vEbeln2 = this.inptOrder2.getValue();
             var vFolio = this.getView().byId('folio').getValue();
+            var vFolio2 = this.inptFolio2.getValue();
+            var bFilterPriority = false;
+            var callService = true;
+
 
 
             var url = `/HdrAvisoSet?$expand=EFREMNAV,ETREMDNAV&$filter=IOption eq '1' and ILifnr eq '${vLifnr}' `;
 
-            if (vFolio != null && vFolio != "") {
+            // Validar Folios
+            // Si el folio 1 trae datos y el folio 2 trae datos
+            if (vFolio != "" && vFolio2 != ""){
+                // Validar que el folio 1 sea menor que el 2
+                if (vFolio < vFolio2){
+                    url += ` and IZremision eq '${vFolio}' and IZremision2 eq '${vFolio2}' `;
+                    bFilterPriority = true;
+                } else {
+                    sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.folioErrorValue"));
+                    callService = false;
+                }
+            } else if (vFolio == "" && vFolio2 != "") {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.folioEmpty"));
+                callService = false;
+            } else if (vFolio != "" && vFolio2 == "") {
                 url += ` and IZremision eq '${vFolio}' `;
-            } else {
+                bFilterPriority = true;
+            }
+
+            if (bFilterPriority == false) {
                 if (startDate != null && endDate != null) {
                     url += ` and ISfechrem eq '${startDate}' and IFfechrem eq '${endDate}'`;
                 }
             }
 
-            if (vEbeln != null && vEbeln != "") {
-                url += ` and IEbeln eq '${vEbeln}'`;
+            // Validar pedidios
+            // Si el pedido 1 trae datos y el pedido 2 trae datos
+            if (vEbeln != "" && vEbeln2 != ""){
+                // Validar que el folio 1 sea menor que el 2
+                if (vEbeln < vEbeln2){
+                    url += ` and IEbeln eq '${vEbeln}' and IEbeln2 eq '${vEbeln2}' `;
+                } else {
+                    sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.orderErrorValue"));
+                    callService = false;
+                }
+            } else if (vEbeln == "" && vEbeln2 != "") {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.orderEmpty"));
+                callService = false;
+            } else if (vEbeln != "" && vEbeln2 == "") {
+                url += ` and IEbeln eq '${vEbeln}' `;
             }
 
-            var dueModel = oRemisions.getJsonModel(url);
+            if (callService){
+                var dueModel = oRemisions.getJsonModel(url);
 
-            var ojbResponse = dueModel.getProperty("/results/0");
-            var dueCompModel = ojbResponse.EFREMNAV.results;
-            console.log(dueModel);
-
-            this.getOwnerComponent().setModel(new JSONModel(ojbResponse),
-                "tableRemissions");
-
-            this.paginate("tableRemissions", "/EFREMNAV", 1, 0);
-
+                var ojbResponse = dueModel.getProperty("/results/0");
+                var dueCompModel = ojbResponse.EFREMNAV.results;
+                console.log(dueModel);
+    
+                this.getOwnerComponent().setModel(new JSONModel(ojbResponse),
+                    "tableRemissions");
+    
+                this.paginate("tableRemissions", "/EFREMNAV", 1, 0);
+            }
         },
         onListItemPress: function (oEvent) {
             var resource = oEvent.getSource().getBindingContext("tableRemissions").getPath(),
@@ -242,7 +284,49 @@ sap.ui.define([
             var oDateRange = this.getView().byId("dateOrder");
             oDateRange.setDateValue(weekStart);
             oDateRange.setSecondDateValue(weekEnd);
-        }
+        },
 
+        onFolioChange: function(oEvent){
+            if (oEvent.getParameter("value") == ""){
+                var folio2 = this.inptFolio2.getValue();
+                if (folio2 != ""){
+                    sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.folioEmpty"));
+                    this.inptFolio2.setValue("");
+                }
+            }
+        },
+
+        onFolio2Change: function(oEvent){
+            if (oEvent.getParameter("value") != ""){
+                var folio = this.inptFolio.getValue();
+                // Validar que el Folio 1 no esté vacio
+                if (folio == ""){
+                    sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.folioEmpty"));
+                    this.inptFolio2.setValue("");
+                }
+            }
+        },
+
+        onOrderChange: function(oEvent){
+            if (oEvent.getParameter("value") == ""){
+                var order2 = this.inptOrder2.getValue();
+                // Validar que la orden 1 no esté vacia
+                if (order2 != ""){
+                    sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.orderEmpty"));
+                    this.inptOrder2.setValue("");
+                }
+            }
+        },
+
+        onOrder2Change: function(oEvent){
+            if (oEvent.getParameter("value") != ""){
+                var order = this.inptOrder.getValue();
+                // Validar que la orden 1 no esté vacia
+                if (order == ""){
+                    sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.orderEmpty"));
+                    this.inptOrder2.setValue("");
+                }
+            }
+        }
     });
 });
