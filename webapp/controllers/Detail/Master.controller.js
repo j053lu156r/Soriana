@@ -164,6 +164,35 @@ sap.ui.define([
             var file = oFileUploader.oFileUpload.files[0];
 
             var reader = new FileReader();
+            var reader2 = new FileReader();
+
+            reader2.onload = function (evn) {
+                var strXML = evn.target.result;
+                //var oXMLModel = new sap.ui.model.xml.XMLModel();  
+                //oXMLModel.setXML(strXML);
+                //var oXml = oXMLModel.getData();
+
+                var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' + 
+                    'xmlns:sci="http://www.sci-grupo.com.mx/">' + 
+                    '\n<soapenv:Header/>\n<soapenv:Body>\n<sci:RecibeCFD>\n<!--Optional:-->\n<sci:XMLCFD>' + 
+                    '<![CDATA[' + strXML + ']]>\n</sci:XMLCFD>\n</sci:RecibeCFD>\n</soapenv:Body>\n' + 
+                    '</soapenv:Envelope>'
+
+                const options = {
+                    method: 'POST',
+                    headers: {'Content-Type': 'text/xml'},
+                    body: body
+                  };
+                  
+                  fetch('http://192.168.190.17/RecibeCFD/wseDocRecibo.asmx', options)
+                    .then(response => {
+                        console.log(response.json())
+                    }).catch(err => {
+                        console.error(err)
+                    });
+            };
+            reader2.readAsText(file);
+
             reader.onload = function (evn) {
                 var obj = {};
                 var parts = evn.target.result.split(",");
