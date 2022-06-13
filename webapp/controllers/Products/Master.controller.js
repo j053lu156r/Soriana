@@ -48,11 +48,15 @@ sap.ui.define([
             await fetch(`https://compuarte.serv.net.mx:4000/searchbygtin?codigo_barras=${provicionalEAN}&gln=${proviconalGLN}`)
             .then(async data => {
                 let gs1Json = await data.json();
+
+                if (!data.ok)
+                    throw new Error(gs1Json.error.message);
+                
                 this.fillFolioModelData(gs1Json);
                 this.byId("barCode").setEditable(false || _testingSteps);
-            }).catch( async error => {
-                console.error(" >>>>>>>>>>>> ERROR FETCH GS1 ",  error);
-                MessageBox.warning("Este artículo no se encontró en GS1", {
+            }).catch( error => {
+                console.log(" >>>>>>>>>>>> ERROR FETCH GS1 ",  error);
+                MessageBox.warning(error.message, {
                     onClose: () => {
                         this.getView().byId('barCode').setValueState(sap.ui.core.ValueState.Warning);
                     }
@@ -68,7 +72,6 @@ sap.ui.define([
             //llenando Presentacion
             this.byId("content").setValue(gs1Json.ContenidoNeto);
             this.byId("contentUnit").setValue(gs1Json.UnidContenidoNeto);
-            this.byId("brand").setValue(gs1Json.Marca);
 
             //llenando datos de Dimensiones
                 this.byId("EcAlto").setValue(gs1Json.Alto);
@@ -702,8 +705,7 @@ sap.ui.define([
             if (response.getProperty("/results/0/ESuccess") === "X") {
                 MessageBox.success("Artículo apto para registro.", {
                     onClose: () => {
-                        // inhabilitando busqueda en GS1 para tener version estable en cracion manual
-                        //this.getGS1ProductData()
+                        //this.getGS1ProductData();
                         this.getView().byId('barCode').setValueState(sap.ui.core.ValueState.Success);
                         this.getOwnerComponent().getModel("ValidBarCode").setProperty("/value", true);
                     }
@@ -1367,24 +1369,57 @@ sap.ui.define([
             this.getView().byId('Discounts').setValidated(validated || _testingSteps);
         },
 
+        validarDescuentosDif(){
+            let valid = false;
+            let dscNor = (this.byId("DscNormal").getValue()) ? this.byId("DscNormal").getValue() / 100 : 0;
+            let dscNor2 = (this.byId("DscNormal2").getValue()) ? this.byId("DscNormal2").getValue() / 100 : 0;
+            let dscNor3 = (this.byId("DscNormal3").getValue()) ? this.byId("DscNormal3").getValue() / 100 : 0;
+
+            valid = ( 
+                (dscNor == 0 && dscNor2 == 0 && dscNor3 == 0) ||
+                    (
+                        (dscNor!=dscNor2 || (dscNor == 0 || dscNor2 ==0))  
+                        && 
+                        (dscNor!=dscNor3 || (dscNor == 0 || dscNor3 == 0)) 
+                        && 
+                        (dscNor2!=dscNor3 || (dscNor3 == 0 || dscNor2==0))
+                    )
+                 );
+
+            return valid;
+        },
+
         calcularCostNetCom: async function (oControlEvent) {
 
-            let costob = (this.byId("CostoB").getValue()) ? this.byId("CostoB").getValue() : 0;
-            let porcentajesXaplicar = [];
-            porcentajesXaplicar.push((this.byId("DscNormal").getValue()) ? this.byId("DscNormal").getValue() / 100 : 0);
-            porcentajesXaplicar.push((this.byId("DscNormal2").getValue()) ? this.byId("DscNormal2").getValue() / 100 : 0);
-            porcentajesXaplicar.push((this.byId("DscNormal3").getValue()) ? this.byId("DscNormal3").getValue() / 100 : 0);
-            porcentajesXaplicar.push((this.byId("DscAdicional").getValue()) ? this.byId("DscAdicional").getValue() / 100 : 0);
-            porcentajesXaplicar.push((this.byId("DscPpago").getValue()) ? this.byId("DscPpago").getValue() / 100 : 0);
-            //porcentajesXaplicar.push((this.byId("ValBoni").getValue()) ? this.byId("ValBoni").getValue() / 100 : 0);
+            let ValueState = sap.ui.core.ValueState.None;
 
-            let costnetcom = costob;
+            if (this.validarDescuentosDif()){    
+                let costob = (this.byId("CostoB").getValue()) ? this.byId("CostoB").getValue() : 0;
+                let porcentajesXaplicar = [];
+                porcentajesXaplicar.push((this.byId("DscNormal").getValue()) ? this.byId("DscNormal").getValue() / 100 : 0);
+                porcentajesXaplicar.push((this.byId("DscNormal2").getValue()) ? this.byId("DscNormal2").getValue() / 100 : 0);
+                porcentajesXaplicar.push((this.byId("DscNormal3").getValue()) ? this.byId("DscNormal3").getValue() / 100 : 0);
+                porcentajesXaplicar.push((this.byId("DscAdicional").getValue()) ? this.byId("DscAdicional").getValue() / 100 : 0);
+                porcentajesXaplicar.push((this.byId("DscPpago").getValue()) ? this.byId("DscPpago").getValue() / 100 : 0);
+                //porcentajesXaplicar.push((this.byId("ValBoni").getValue()) ? this.byId("ValBoni").getValue() / 100 : 0);
 
-            await porcentajesXaplicar.forEach(function (porcentaje) {
-                costnetcom -= (costnetcom * (porcentaje))
-            });
+                let costnetcom = costob;
 
-            this.byId("CostNetComp").setValue(costnetcom);
+                await porcentajesXaplicar.forEach(function (porcentaje) {
+                    costnetcom -= (costnetcom * (porcentaje))
+                });
+
+                this.byId("CostNetComp").setValue(costnetcom);
+
+            }else{
+                sap.m.MessageBox.warning("Los descuentos tienes que ser diferentes");
+                this.byId("CostNetComp").setValue(null);
+                ValueState = sap.ui.core.ValueState.Error
+            }
+
+            this.byId("DscNormal").setValueState(ValueState);
+            this.byId("DscNormal2").setValueState(ValueState);
+            this.byId("DscNormal3").setValueState(ValueState);
         },
 
         calcularCostNetVen: function (oControlEvent) {
@@ -1879,16 +1914,16 @@ sap.ui.define([
 
             switch (selected) {
                 case "Ninguna":
-                    this.byId("ValBoni").setEditable(false);
-                    this.byId("UnisBonif").setEditable(false);
+                    this.byId("ValBoni").setVisible(false);
+                    this.byId("UnisBonif").setVisible(false);
                     break;
                 case "Por Porcentajes":
-                    this.byId("ValBoni").setEditable(true);
-                    this.byId("UnisBonif").setEditable(false);
+                    this.byId("ValBoni").setVisible(true);
+                    this.byId("UnisBonif").setVisible(false);
                     break;
                 case "Por Unidades":
-                    this.byId("ValBoni").setEditable(true);
-                    this.byId("UnisBonif").setEditable(true);
+                    this.byId("ValBoni").setVisible(false);
+                    this.byId("UnisBonif").setVisible(true);
                     break;
             }
 
