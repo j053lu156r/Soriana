@@ -161,14 +161,17 @@ sap.ui.define([
             // Validar Folios
             // Si el folio 1 trae datos y el folio 2 trae datos
             if (vFolio != "" && vFolio2 != ""){
+                /*
                 // Validar que el folio 1 sea menor que el 2
                 if (vFolio < vFolio2){
-                    url += ` and IZremision eq '${vFolio}' and IZremision2 eq '${vFolio2}' `;
-                    bFilterPriority = true;
+                    
                 } else {
                     sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.folioErrorValue"));
                     callService = false;
                 }
+                */
+               url += ` and IZremision eq '${vFolio}' and IZremision2 eq '${vFolio2}' `;
+               bFilterPriority = true;
             } else if (vFolio == "" && vFolio2 != "") {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.folioEmpty"));
                 callService = false;
@@ -186,7 +189,7 @@ sap.ui.define([
             // Validar pedidios
             // Si el pedido 1 trae datos y el pedido 2 trae datos
             if (vEbeln != "" && vEbeln2 != ""){
-                // Validar que el folio 1 sea menor que el 2
+                // Validar que el pedido 1 sea menor que el 2
                 if (vEbeln < vEbeln2){
                     url += ` and IEbeln eq '${vEbeln}' and IEbeln2 eq '${vEbeln2}' `;
                 } else {

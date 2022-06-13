@@ -63,13 +63,13 @@ xmlns:core="sap.ui.core"
 
                             <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="Folio" label="{appTxts>/rem.folio}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="true">
                                 <fb:control>
-                                    <Input type="Number" id="folio" liveChange="onFolioChange"/>
+                                    <Input id="folio" liveChange="onFolioChange"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
 
                             <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="Folio2" label="{appTxts>/rem.folio2}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="true">
                                 <fb:control>
-                                    <Input type="Number" id="folio2" liveChange="onFolio2Change"/>
+                                    <Input id="folio2" liveChange="onFolio2Change"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
 
