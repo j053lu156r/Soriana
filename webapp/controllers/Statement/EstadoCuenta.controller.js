@@ -42,10 +42,10 @@ sap.ui.define([
                     this.getOwnerComponent().setModel(new JSONModel(), "totales");
 
                     var oModel = new JSONModel({filtros:[
-                        {filtro:'Belnr',descripcion:'Documento SAP'},
-                        {filtro:'1',descripcion:'Factura'},
-                        {filtro:'2',descripcion:'Folio'},
-                        {filtro:'3',descripcion:'Sucursal'}
+                        {filtro:'belnr',descripcion:'Documento'},
+                        {filtro:'xblnr',descripcion:'Factura'},
+                         {filtro:'',descripcion:''}
+                      
 
                         ]
 
@@ -117,9 +117,30 @@ sap.ui.define([
                // sap.m.MessageBox.error("Por favor defina el rango de fechas.");
             } 
 
+
+            console.log('buscar por ...',filterInput.getSelectedKey())
+
+            var filtroBusqueda = filterInput.getSelectedKey()
+            var queryFiltro = ""
+
+             if (filtroBusqueda == "") {
+
+                queryFiltro = ''
+                 
+             } else if (filtroBusqueda == "belnr"){
+                queryFiltro = `and belnr eq '${doc_BELNR}' `
+
+             }else if(filtroBusqueda == "xblnr"){
+                queryFiltro = `and xblnr eq '${doc_BELNR}' `
+
+             }
+
             
             var oODataJSONModel = this.getOdata(sUri);
-            let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}' and belnr eq '${doc_BELNR}'  &$format=json`;
+            //            let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}' and belnr eq '${doc_BELNR}'  &$format=json`;
+
+            let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}' ${queryFiltro} &$format=json`;
+            //Xblnr
 
 			var odTJSONModel = this.getOdataJsonModel( urlParams, oODataJSONModel );
 			dTJSON = odTJSONModel.getJSON();
@@ -151,22 +172,29 @@ sap.ui.define([
 var groupedMovs=this.groupArrayOfObjects(auxArray,"DescTipomov");
 var nestedMovs= []
 
+var me = this;
+
 for (let x in groupedMovs) {
-  // console.log(x + ": "+ groupedMovs[x])
+  
+
+  console.log("sumando valores");
 
 
  var result = groupedMovs[x].reduce(function(_this, val) {
-         var current = val.Bschl === "21" ? parseFloat(val.Wrbtr) : 0
-          return _this +  current
+    //console.log(val.Wrbtr)
+         var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
+          var total = _this+current
+          return  me.truncate(total,2)
       }, 0);
 
+//console.log(result)
 
  var resultCredit = groupedMovs[x].reduce(function(_this, val) {
-    var current =  val.Bschl !== "21" ? parseFloat(val.Wrbtr) : 0
-          return _this + current
+    var current =  val.Bschl !== "21" ? Number(val.Wrbtr) : 0
+          var total = _this+current
+          return  me.truncate(total,2)
       }, 0);
 
-console.log(result)
 
 nestedMovs.push({
     "name":x,
@@ -181,11 +209,38 @@ nestedMovs.push({
 }
 
 
+console.log(nestedMovs);
+
+var totalR = nestedMovs.reduce(function(_this, val) {
+    var current =   Number(val.totalRegs)  
+          var total = _this+current
+          return  me.truncate(total,2)
+      }, 0);
+
+var totalD =  nestedMovs.reduce(function(_this, val) {
+    var current =  Number(val.totalDebit)  
+          var total = _this+current
+          return  me.truncate(total,2)
+      }, 0);
+
+var totalC = nestedMovs.reduce(function(_this, val) {
+    var current =   Number(val.totalCredit)  
+          var total = _this+current
+          return  me.truncate(total,2)
+      }, 0);
+
+
+
 var jsonModelG = new JSONModel({
     "Hierarchy":{
-    "movimientos": nestedMovs
+    "movimientos": nestedMovs,
+    "totalR":totalR,
+    "totalD":totalD,
+    "totalC":totalC
 }
 });
+
+console.log(jsonModelG);
 
 this.getOwnerComponent().setModel(jsonModelG, "GroupedTotales");
 
@@ -267,25 +322,29 @@ this.initTable()
             console.info("agrupando datos",Detalles)
             let auxArray = [...Detalles]
 
+            var me = this;
+
       
 var groupedMovs=this.groupArrayOfObjects(auxArray,"DescTipomov");
 var nestedMovs= []
 
 for (let x in groupedMovs) {
-   console.log(x + ": "+ groupedMovs[x])
+  // console.log(x + ": "+ groupedMovs[x])
 
- var result = groupedMovs[x].reduce(function(_this, val) {
-             var current = val.Bschl === "21" ? parseFloat(val.Wrbtr) : 0
-
-          return _this +  current
+  var result = groupedMovs[x].reduce(function(_this, val) {
+    console.log(val.Wrbtr)
+         var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
+          var total = _this+current
+          return  me.truncate(total,2)
       }, 0);
 
 
  var resultCredit = groupedMovs[x].reduce(function(_this, val) {
-                 var current = val.Bschl === "21" ? parseFloat(val.Wrbtr) : 0
-
-          return _this +  current
+    var current =  val.Bschl !== "21" ? Number(val.Wrbtr) : 0
+          var total = _this+current
+          return  me.truncate(total,2)
       }, 0);
+
 
 console.log(result)
 
@@ -377,6 +436,9 @@ console.log('on init table')
         },
 
 
+truncate: function  (num, places) {
+  return Math.trunc(num * Math.pow(10, places)) / Math.pow(10, places);
+},
 
         // Remove the numeric item binding from a path
         _stripItemBinding: function (sPath) {

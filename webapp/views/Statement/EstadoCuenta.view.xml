@@ -450,6 +450,7 @@
                         <Breadcrumbs id="breadcrumb" />
                         <ToolbarSpacer/>
                               <CheckBox id="checkPartidas" text="Partidas pendientes de pago" select="onTableGrouping" visible="{= ${totales>/Detalles/results/length} > 0}"/>
+                              <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${totales>/Detalles/results/length} > 0}" />
                     </OverflowToolbar>
                 </headerToolbar>
 
@@ -460,6 +461,10 @@
                          demandPopin="false"
                          >
                         <Text text="{appTxts>/aportaciones.concepto}" />
+                        <footer>
+                        
+                            <Text id="idFooterText" text="Total"/>
+                        </footer>
                     </Column>
                     <Column
                         id="statusColumn"
@@ -543,6 +548,10 @@
                          visible="End"
                         hAlign="Center">
                         <Text text="{appTxts>/state.totalReg}" />
+                        <footer>
+                        
+                            <Text  text="{GroupedTotales>/Hierarchy/totalR}"/>
+                        </footer>
                     </Column>
 
                        <Column
@@ -550,12 +559,26 @@
                          visible="true"
                          hAlign="End">
                         <Text text="{appTxts>/state.debit}" />
+                        <footer>
+                        
+                                <ObjectNumber
+                            number= "{parts: [{path: 'GroupedTotales>/Hierarchy/totalD'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+                              />
+                    
+                        </footer>
                     </Column>
                        <Column
                          id="creditColumn"
                          visible="true"
                          hAlign="End">
                         <Text text="{appTxts>/state.credit}" />
+                        <footer>
+                        
+                                <ObjectNumber
+                            number= "{parts: [{path: 'GroupedTotales>/Hierarchy/totalC'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+                              />
+                    
+                        </footer>
                     </Column>
 
 

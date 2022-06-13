@@ -37,8 +37,7 @@ xmlns:core="sap.ui.core"
                     <fb:FilterBar id="filterBar"  header="Header"
 		                reset="onReset" search="searchData" clear="onClear" cancel="onCancel" 
 		                filtersDialogClosed = "onFiltersDialogClosed"
-		                showRestoreButton="false" showClearButton="false" useToolbar="false"
-                        >
+		                showRestoreButton="false" showClearButton="false" useToolbar="false">
 			
                         <fb:filterGroupItems>
                             <fb:FilterGroupItem groupName="F1" name="Feha aviso" label="{appTxts>/rem.remDate}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
@@ -64,18 +63,28 @@ xmlns:core="sap.ui.core"
 
                             <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="Folio" label="{appTxts>/rem.folio}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="true">
                                 <fb:control>
-                                    <Input type="Text" id="folio"/>
+                                    <Input id="folio" liveChange="onFolioChange"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
 
-                            <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="A1" label="{appTxts>/order.title}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="true">
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="Folio2" label="{appTxts>/rem.folio2}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="true">
                                 <fb:control>
-                                    <Input type="Text" id="order"/>
+                                    <Input id="folio2" liveChange="onFolio2Change"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
 
-                        </fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="A1" label="{appTxts>/rem.order}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input type="Number" id="order" liveChange="onOrderChange"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
 
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="A2" label="{appTxts>/rem.order2}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input type="Number" id="order2" liveChange="onOrder2Change"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
 	                </fb:FilterBar>
                 </f:content>
             </f:DynamicPageHeader>

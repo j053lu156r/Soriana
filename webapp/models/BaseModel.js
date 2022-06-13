@@ -334,6 +334,17 @@ function CfdiModel() {
 CfdiModel.prototype = Object.create(BaseModel.prototype);
 CfdiModel.prototype.constructor = CfdiModel;
 
+//Model Aviso anticipado
+function AvisoModel() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_CFDI_BTNSND2_22_SRV/";
+    params.sModel = "avisoModel";
+    BaseModel.call(this, params);
+}
+
+AvisoModel.prototype = Object.create(BaseModel.prototype);
+AvisoModel.prototype.constructor = AvisoModel;
+
 //Model para Descarga ZIP Devoluciones Detecno
 function DevoZipModel() {
     var params = {};

@@ -425,6 +425,15 @@ sap.ui.define([
             minDate.setDate(date.getDate() - 30);
             datarange.setSecondDateValue(date);
             datarange.setDateValue(minConsultDate);
+        },
+        onDocumentPress: function(oEvent){
+            console.log('on documnt press',oEvent);
+            let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
+            let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
+
+            let registro = results[posicion];
+            console.log(registro)
+
         }
     });
 });
