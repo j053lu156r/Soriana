@@ -644,6 +644,10 @@
 						<MessageStrip class="sapUiSmallMarginBottom"
 								text="{appTxts>/products.msgTapDiscounts}"
 								showIcon="true"/>
+
+						<MessageStrip class="sapUiSmallMarginBottom"
+								text="{appTxts>/products.msgTapDiscountsWarning}"
+								showIcon="true"/>
                         <VBox class="sapUiSmallMargin">
                             <form:SimpleForm
                                     editable="true"
@@ -692,10 +696,10 @@
                                     </ComboBox>
 
                                     <Label text="{appTxts>/products.bonusValue}" />
-                                    <Input id="ValBoni" value="{Folio>/ValBoni}" type="Number" placeholder="{appTxts>/products.porcentajetxt}"  liveChange="calcularCostNetCom" editable="false"/>
+                                    <Input id="ValBoni" value="{Folio>/ValBoni}" type="Number" placeholder="{appTxts>/products.porcentajetxt}"  liveChange="calcularCostNetCom" visible="false"/>
 
                                     <Label text="{appTxts>/products.bonusUnits}" />
-                                    <Input id="UnisBonif"  value="{Folio>/ValBoni}" type="Number"  editable="false"/>
+                                    <Input id="UnisBonif"  value="{Folio>/ValBoni}" type="Number"  visible="false"/>
                                     
 
                                     <core:Title text="{appTxts>/products.titlePurchaseCosts}" />
@@ -744,7 +748,6 @@
                             afterItemAdded="imageAfterAddedTriggered"
                             afterItemRemoved="imageRemovedTriggered"
                         >
-
                             <upload:toolbar>
                                         <OverflowToolbar>
                                              <Label text="{appTxts>/products.numImages}"/>
@@ -754,7 +757,7 @@
                                             <Link
                                                 text="Descargar Guia de Imagenes"
                                                 target="_blank"
-                                                href="/public/PDFs/GUIA.pdf" />
+                                                href="/index/public/PDFs/GUIA.pdf" />
 
                                         </OverflowToolbar>
                             </upload:toolbar>
