@@ -119,7 +119,6 @@ sap.ui.define([
             let Ancho = gs1Json.Ancho;
             let Profundo = gs1Json.Profundo;
             let volumen = Alto * Ancho * Profundo;
-            let UnidadesMedida = this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadVolumen');
 
             while (Alto > 9999.99 || Ancho > 9999.99 || Profundo > 9999.99 || volumen > 9999.99) {
                 console.log(" Volumen invalido: ", volumen);
@@ -127,11 +126,26 @@ sap.ui.define([
                 Ancho /= 10;
                 Profundo /= 10;
                 volumen = Alto * Ancho * Profundo;
-                let indexUnidad = UnidadesMedida.results.findIndex(unidad => unidad.value == Unidad);
-                Unidad = UnidadesMedida.results[(indexUnidad+1)].value;
+                Unidad = this.getUnidadDimensiones(Unidad);
             }
 
             return { Alto, Ancho, Profundo, Unidad };
+        },
+
+        getUnidadDimensiones(Unidad){
+
+            // let UnidadesMedida = this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadVolumen');
+            // let indexUnidad = UnidadesMedida.results.findIndex(unidad => unidad.value == Unidad);
+            // Unidad = UnidadesMedida.results[(indexUnidad+1)].value;
+
+            switch (Unidad) {
+                case 'MMT':
+                    return 'CMT'
+                case 'CMT':
+                    return 'MT'
+                case 'MT':
+                    return 'KMT'
+            }
         },
 
         setInitialDates() {
