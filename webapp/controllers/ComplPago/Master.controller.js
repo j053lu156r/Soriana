@@ -434,6 +434,18 @@ sap.ui.define([
             let registro = results[posicion];
             console.log(registro)
 
+             this.getOwnerComponent().getRouter().navTo("detailComplPagos",
+                {
+                    layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+                    document: registro.Vblnr
+                   // laufd: docResult.Laufd,
+                   // laufi: docResult.Laufi,
+                   // zbukr: docResult.Zbukr,
+                   // lifnr: docResult.Lifnr
+                }, true);
+
+
+
         }
     });
 });

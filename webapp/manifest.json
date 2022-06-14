@@ -386,6 +386,14 @@
 					]
 				},
                 {
+                    "pattern": "detailComplPagos/{document}/{layout}",
+                    "name": "detailComplPagos",
+                    "target": [
+                        "masterCompl",
+                        "detailComplPagos"
+                    ]
+                },
+                {
                     "name": "EstadoCuenta",
                     "pattern": "EstadoCuenta",
                     "titleTarget": "",
@@ -614,6 +622,11 @@
 				},
 				"detailCompl": {
                     "viewName": "Detail",
+                    "viewPath": "demo.views.ComplPago",
+                    "controlAggregation": "midColumnPages"
+                },
+                "detailComplPagos": {
+                    "viewName": "DetallePago",
                     "viewPath": "demo.views.ComplPago",
                     "controlAggregation": "midColumnPages"
                 },

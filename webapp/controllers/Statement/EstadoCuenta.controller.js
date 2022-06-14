@@ -179,7 +179,7 @@ for (let x in groupedMovs) {
   console.log("sumando valores");
 
 
- var result = groupedMovs[x].reduce(function(_this, val) {
+ var resultCredit = groupedMovs[x].reduce(function(_this, val) {
     //console.log(val.Wrbtr)
          var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
           var total = _this+current
@@ -188,7 +188,7 @@ for (let x in groupedMovs) {
 
 //console.log(result)
 
- var resultCredit = groupedMovs[x].reduce(function(_this, val) {
+ var result = groupedMovs[x].reduce(function(_this, val) {
     var current =  val.Bschl !== "21" ? Number(val.Wrbtr) : 0
           var total = _this+current
           return  me.truncate(total,2)
@@ -330,7 +330,7 @@ var nestedMovs= []
 for (let x in groupedMovs) {
   // console.log(x + ": "+ groupedMovs[x])
 
-  var result = groupedMovs[x].reduce(function(_this, val) {
+  var resultCredit = groupedMovs[x].reduce(function(_this, val) {
     console.log(val.Wrbtr)
          var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
           var total = _this+current
@@ -338,7 +338,7 @@ for (let x in groupedMovs) {
       }, 0);
 
 
- var resultCredit = groupedMovs[x].reduce(function(_this, val) {
+ var result = groupedMovs[x].reduce(function(_this, val) {
     var current =  val.Bschl !== "21" ? Number(val.Wrbtr) : 0
           var total = _this+current
           return  me.truncate(total,2)
