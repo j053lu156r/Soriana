@@ -572,13 +572,9 @@ sap.ui.define([
             if (!this.hasAccess(43)) {
                 return false;
             }
+
             try {
                 var oView = this.getView();
-
-                //var that = this;
-
-                // if (this.getConfigModel().getProperty("/supplierInputKey") != null && this.getConfigModel().getProperty("/supplierInputKey") != "") {
-                // if( true ){
 
                 // create Dialog
                 if (!this._mrDialog) {
@@ -599,10 +595,6 @@ sap.ui.define([
                 this._mrDialog.then(function (oDialog) {
                     oDialog.open();
                 });
-
-                // }
-                // else
-                // sap.m.MessageBox.error("Debe selecionar un proveedor para continuar.");
 
             } catch (err) {
                 sap.m.MessageBox.error("Ocurrió una excepción.");
