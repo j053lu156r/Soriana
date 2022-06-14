@@ -30,6 +30,10 @@
                 <f:actions>
                     <ToolbarSpacer/>
                     <Button
+                            text="{appTxts>/products.massiveRegister}"
+                            type="Emphasized"
+                            press="massiveRegisterBatch"/>
+                    <Button
                             text="{appTxts>/products.newProduct}"
                             type="Emphasized"
                             press="newProduct"/>
