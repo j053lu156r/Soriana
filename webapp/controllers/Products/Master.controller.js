@@ -890,6 +890,10 @@ sap.ui.define([
 
                             let imagesToAttach = [];
 
+                            let variantes = JSON.parse(this.getView().getModel('ITARTVAR').getJSON()).results;
+
+                            console.log("Variantes : ", variantes);
+
                             let folioModel = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
                             folioModel.TMoneda = "MXN";
                             folioModel.Lifnr = this.getConfigModel().getProperty("/supplierInputKey");
@@ -1263,7 +1267,7 @@ sap.ui.define([
             }
 
             if (!validated) {
-                sap.m.MessageBox.warning("Existen datos faltantes de captura en las variantes.");
+                sap.m.MessageBox.warning("Existen datos faltantes de captura de las variantes.");
             }
 
             this.getView().byId('VariantStep').setValidated(validated || _testingSteps);
