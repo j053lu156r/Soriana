@@ -527,6 +527,51 @@ sap.ui.define([
 
             this.exportxls('Folios', '/ETPRICNAV/results', columns);
         },
+        //alta masiva
+        massiveRegisterBatch: function () {
+
+            if (!this.hasAccess(43)) {
+                return false;
+            }
+            try {
+                var oView = this.getView();
+
+                //var that = this;
+
+                // if (this.getConfigModel().getProperty("/supplierInputKey") != null && this.getConfigModel().getProperty("/supplierInputKey") != "") {
+                // if( true ){
+
+                // create Dialog
+                if (!this._mrDialog) {
+                    this._mrDialog = Fragment.load({
+                        id: oView.getId(),
+                        name: "demo.views.Products.fragments.WizardMassiveRegisterBatch",
+                        controller: this
+                    }).then(function (oDialog) {
+                        oDialog.attachAfterClose(() => {
+                            this.getOwnerComponent().setModel(new JSONModel(), 'ETMODIFY');
+                            this.byId('fileUploader').clear();
+                        }, this);
+                        this.getOwnerComponent().setModel(new JSONModel(), 'ETMODIFY');
+                        oView.addDependent(oDialog);
+                        return oDialog;
+                    }.bind(this));
+                }
+                this._mrDialog.then(function (oDialog) {
+                    oDialog.open();
+                });
+
+                // }
+                // else
+                // sap.m.MessageBox.error("Debe selecionar un proveedor para continuar.");
+
+            } catch (err) {
+                sap.m.MessageBox.error("Ocurrió una excepción.");
+                console.error(err);
+            }
+        },
+
+        //nuevo producto
         newProduct: function () {
             if (!this.hasAccess(42)) {
                 return false;
