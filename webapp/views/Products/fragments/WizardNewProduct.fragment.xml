@@ -518,18 +518,9 @@
                                     <ColumnListItem press="onListItemPress">
                                         <cells>
                                             <ObjectIdentifier text="{ITARTVAR>index}" />
-                                            <ComboBox selectedKey="{ITARTVAR>CaracTalla}" value="{ITARTVAR>CaracTalla}" items="{path : 'Catalogos>/TallaSize/results'}">
-                                                <items>
-                                                    <core:Item key="{Catalogos>Valorcarac}" text="{Catalogos>Valorcarac}"/>
-                                                </items>
-                                            </ComboBox>
-                                            <ComboBox selectedKey="{ITARTVAR>Colsabaro}" items="{path : 'Catalogos>/ColorSaborAroma/results'}">
-                                                <items>
-                                                    <core:Item key="{Catalogos>Valorcarac}" text="{Catalogos>Valorcarac}"/>
-                                                </items>
-                                            </ComboBox>
+                                            <Input value="{ITARTVAR>CaracTalla}" change=".changeQty"></Input>
+                                            <Input value="{ITARTVAR>Colsabaro}" change=".changeQty"></Input>
                                             <Input value="{ITARTVAR>CodVent}" change=".changeQty"></Input>
-                                            
                                             <Input value="{ITARTVAR>CodCompra}" change=".changeQty"></Input>
                                             <Input value="{ITARTVAR>Proporcion}" change=".changeQty"></Input>
                                             
