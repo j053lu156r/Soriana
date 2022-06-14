@@ -198,8 +198,8 @@ for (let x in groupedMovs) {
 nestedMovs.push({
     "name":x,
     "totalRegs":groupedMovs[x].length,
-    "totalDebit":result,
-    "totalCredit":resultCredit,
+    "totalDebit":Math.abs(result),
+    "totalCredit":Math.abs(resultCredit),
     "positions":groupedMovs[x]
 
 })
@@ -350,8 +350,8 @@ console.log(result)
 nestedMovs.push({
     "name":x,
     "totalRegs":groupedMovs[x].length,
-    "totalDebit":result,
-    "totalCredit":resultCredit,
+    "totalDebit":Math.abs(result),
+    "totalCredit":Math.abs(resultCredit),
     "positions":groupedMovs[x]
 
 })
