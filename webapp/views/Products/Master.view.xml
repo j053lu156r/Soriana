@@ -29,10 +29,10 @@
                 </f:heading>
                 <f:actions>
                     <ToolbarSpacer/>
-                    <Button
+                    <!-- <Button
                             text="{appTxts>/products.massiveRegister}"
                             type="Emphasized"
-                            press="massiveRegisterBatch"/>
+                            press="massiveRegisterBatch"/> -->
                     <Button
                             text="{appTxts>/products.newProduct}"
                             type="Emphasized"
