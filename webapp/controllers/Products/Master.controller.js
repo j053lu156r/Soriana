@@ -15,7 +15,7 @@ sap.ui.define([
     const CatNegotiatedFormat = ['1A', '1B'];
     var swProveedorEnGS1 = false;
     var swProveedorExcluido = false;
-    var _testingSteps = false; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
+    var _testingSteps = true; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
 
     return BaseController.extend("demo.controllers.Products.Master", {
         formatterCatPrd: formatterCatPrd,
@@ -74,39 +74,78 @@ sap.ui.define([
             this.byId("contentUnit").setValue(gs1Json.UnidContenidoNeto);
 
             //llenando datos de Dimensiones
-                this.byId("EcAlto").setValue(gs1Json.Alto);
-                this.byId("EcAlto").setEditable(false);
-                this.byId("EcAncho").setValue(gs1Json.Ancho);
-                this.byId("EcAncho").setEditable(false);
-                this.byId("EcProfundo").setValue(gs1Json.Profundo);
-                this.byId("EcProfundo").setEditable(false);
-                this.byId("PvAlto").setValue(gs1Json.Alto);
-                this.byId("PvAlto").setEditable(false);
-                this.byId("PvAncho").setValue(gs1Json.Ancho);
-                this.byId("PvAncho").setEditable(false);
-                this.byId("PvProfundo").setValue(gs1Json.Profundo);
-                this.byId("PvProfundo").setEditable(false);
-                this.byId("EcAlto").fireLiveChange();
-                this.byId("PvAlto").fireLiveChange();
-                // let unidadMed = formatterCatPrd.findPropertieValue("value", "text", gs1Json.UnidAncho,
-                // this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadVolumen'));
-                this.byId("EcUndaap").setValue(gs1Json.UnidAncho);
-                this.byId("EcUndvol").setSelectedKey(gs1Json.UnidAncho);
-                this.byId("PvUndaap").setValue(gs1Json.UnidAncho);
-                this.byId("PvUndvol").setSelectedKey(gs1Json.UnidAncho);
+            let validDimensions = this.recalcularValoresDimensiones(gs1Json);
 
-                this.byId("EcPbruto").setValue(gs1Json.PesoBruto);
-                this.byId("EcPbruto").setEditable(false);
-                this.byId("EcPneto").setValue(gs1Json.PesoNeto);
-                this.byId("EcPneto").setEditable(false);
-                this.byId("EcUndp").setSelectedKey(gs1Json.UnidPesoBruto);
+            console.log("Dimenciones Validas", validDimensions);
 
-                this.byId("PvPbruto").setValue(gs1Json.PesoBruto);
-                this.byId("PvPbruto").setEditable(false);
-                this.byId("PvPneto").setValue(gs1Json.PesoNeto);
-                this.byId("PvPneto").setEditable(false);
-                this.byId("PvUndp").setSelectedKey(gs1Json.UnidPesoBruto);
+            this.byId("EcAlto").setValue(validDimensions.Alto);
+            this.byId("EcAlto").setEditable(false);
+            this.byId("EcAncho").setValue(validDimensions.Ancho);
+            this.byId("EcAncho").setEditable(false);
+            this.byId("EcProfundo").setValue(validDimensions.Profundo);
+            this.byId("EcProfundo").setEditable(false);
+            this.byId("PvAlto").setValue(validDimensions.Alto);
+            this.byId("PvAlto").setEditable(false);
+            this.byId("PvAncho").setValue(validDimensions.Ancho);
+            this.byId("PvAncho").setEditable(false);
+            this.byId("PvProfundo").setValue(validDimensions.Profundo);
+            this.byId("PvProfundo").setEditable(false);
+            this.byId("EcAlto").fireLiveChange();
+            this.byId("PvAlto").fireLiveChange();
+            // let unidadMed = formatterCatPrd.findPropertieValue("value", "text", gs1Json.UnidAncho,
+            // this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadVolumen'));
+            this.byId("EcUndaap").setValue(validDimensions.Unidad);
+            this.byId("EcUndvol").setSelectedKey(validDimensions.Unidad);
+            this.byId("PvUndaap").setValue(validDimensions.Unidad);
+            this.byId("PvUndvol").setSelectedKey(validDimensions.Unidad);
 
+            this.byId("EcPbruto").setValue(gs1Json.PesoBruto);
+            this.byId("EcPbruto").setEditable(false);
+            this.byId("EcPneto").setValue(gs1Json.PesoNeto);
+            this.byId("EcPneto").setEditable(false);
+            this.byId("EcUndp").setSelectedKey(gs1Json.UnidPesoBruto);
+
+            this.byId("PvPbruto").setValue(gs1Json.PesoBruto);
+            this.byId("PvPbruto").setEditable(false);
+            this.byId("PvPneto").setValue(gs1Json.PesoNeto);
+            this.byId("PvPneto").setEditable(false);
+            this.byId("PvUndp").setSelectedKey(gs1Json.UnidPesoBruto);
+                
+        },
+
+        recalcularValoresDimensiones(gs1Json){
+            let Unidad = gs1Json.UnidAncho;
+            let Alto = gs1Json.Alto;
+            let Ancho = gs1Json.Ancho;
+            let Profundo = gs1Json.Profundo;
+            let volumen = Alto * Ancho * Profundo;
+
+            while (Alto > 9999.99 || Ancho > 9999.99 || Profundo > 9999.99 || volumen > 9999.99) {
+                console.log(" Volumen invalido: ", volumen);
+                Alto /= 10;
+                Ancho /= 10;
+                Profundo /= 10;
+                volumen = Alto * Ancho * Profundo;
+                Unidad = this.getUnidadDimensiones(Unidad);
+            }
+
+            return { Alto, Ancho, Profundo, Unidad };
+        },
+
+        getUnidadDimensiones(Unidad){
+
+            // let UnidadesMedida = this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadVolumen');
+            // let indexUnidad = UnidadesMedida.results.findIndex(unidad => unidad.value == Unidad);
+            // Unidad = UnidadesMedida.results[(indexUnidad+1)].value;
+
+            switch (Unidad) {
+                case 'MMT':
+                    return 'CMT'
+                case 'CMT':
+                    return 'MT'
+                case 'MT':
+                    return 'KMT'
+            }
         },
 
         setInitialDates() {
@@ -750,7 +789,7 @@ sap.ui.define([
             if (response.getProperty("/results/0/ESuccess") === "X") {
                 MessageBox.success("Artículo apto para registro.", {
                     onClose: () => {
-                        //this.getGS1ProductData();
+                        this.getGS1ProductData();
                         this.getView().byId('barCode').setValueState(sap.ui.core.ValueState.Success);
                         this.getOwnerComponent().getModel("ValidBarCode").setProperty("/value", true);
                     }

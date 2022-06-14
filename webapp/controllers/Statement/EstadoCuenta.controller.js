@@ -6,9 +6,8 @@ sap.ui.define([
         'sap/m/Link',
         'sap/m/MessageToast',
         'sap/m/Text',
-        './Formatter',
         'sap/ui/core/Fragment'
-], function (Controller, JSONModel, BaseModel,Label, Link, MessageToast, Text, Formatter, Fragment) {
+], function (Controller, JSONModel, BaseModel,Label, Link, MessageToast, Text, Fragment) {
 	"use strict";
 	
 	var sUri = "/sap/opu/odata/sap/ZOSP_STATEMENT_SRV_01/";
