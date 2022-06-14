@@ -888,22 +888,22 @@ sap.ui.define([
 
                         if (sMessageBoxType == "confirm") {
 
+                            //JSON.parse(this.getOwnerComponent().getModel("images64").getJSON).attachArray;
                             let imagesToAttach = [];
 
                             let variantes = JSON.parse(this.getView().getModel('ITARTVAR').getJSON()).results;
-
-                            console.log("Variantes : ", variantes);
 
                             let folioModel = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
                             folioModel.TMoneda = "MXN";
                             folioModel.Lifnr = this.getConfigModel().getProperty("/supplierInputKey");
                             folioModel.EanUpcBase = folioModel.CodEan;
+                            folioModel.VariantArt = "VA"; // Cambiar para crear correctamente
                             let createObjReq = {
                                 "IOption": "5",
                                 "ITREC": [
                                     folioModel
                                 ],
-                                "ITARTVAR": [],
+                                "ITARTVAR": [...variantes],
                                 "ITIMGART": [...imagesToAttach]
                             };
 
@@ -1523,18 +1523,17 @@ sap.ui.define([
         },
 
         getTallasColores: function () {
-            const caracteristica = this.getView().byId('characteristic').getValue();
+            // const caracteristica = this.getView().byId('characteristic').getValue();
 
-            let url = `HdrcatproSet?$expand=ETCSA,ETTALLA&$filter=IOption eq '9'  and IName eq '${caracteristica}'`;
+            // let url = `HdrcatproSet?$expand=ETCSA,ETTALLA&$filter=IOption eq '9'  and IName eq '${caracteristica}'`;
 
-            var response = Model.getJsonModel(url);
+            // var response = Model.getJsonModel(url);
 
+            // const CatTallas = response.getProperty("/results/0/ETTALLA");
+            // const CatColorSaborAroma = response.getProperty("/results/0/ETCSA")
 
-            const CatTallas = response.getProperty("/results/0/ETTALLA");
-            const CatColorSaborAroma = response.getProperty("/results/0/ETCSA")
-
-            this.getOwnerComponent().getModel("Catalogos").setProperty('/TallaSize', CatTallas);
-            this.getOwnerComponent().getModel("Catalogos").setProperty('/ColorSaborAroma', CatColorSaborAroma);
+            // this.getOwnerComponent().getModel("Catalogos").setProperty('/TallaSize', CatTallas);
+            // this.getOwnerComponent().getModel("Catalogos").setProperty('/ColorSaborAroma', CatColorSaborAroma);
         },
 
         onSelectNegotiatedFormat: function (oEvent) {
@@ -1632,7 +1631,7 @@ sap.ui.define([
         addOptionalInfo: function () {
 
             var presentacion = {
-                index: '',
+                //index: '',
                 Taltam: "",
                 CaracCsa: "",
                 CaracTalla: "",
@@ -1662,8 +1661,9 @@ sap.ui.define([
                 this.getView().setModel(new JSONModel(rows), "ITARTVAR")
             }
             this.paginate("ITARTVAR", "", 1, 0);
-            this.reordenarRows("ITARTVAR");
+            //this.reordenarRows("ITARTVAR");
         },
+
         deleteRow: function (idTable, modelName) {
             let that = this;
             var aIndices = this.byId(idTable).getSelectedItems();
@@ -1678,7 +1678,7 @@ sap.ui.define([
                         that.getView().setModel(new JSONModel(dataModel), modelName);
                     }
                     that.paginate(modelName, "", 1, 0);
-                    that.reordenarRows(modelName);
+                    //that.reordenarRows(modelName);
                 });
             }
 

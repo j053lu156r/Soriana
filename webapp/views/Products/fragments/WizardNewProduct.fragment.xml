@@ -477,12 +477,12 @@
                                     </OverflowToolbar>
                                 </headerToolbar>
                                 <columns>
-                                    <Column width="auto" hAlign="Left">
+                                    <!-- <Column width="auto" hAlign="Left">
                                         <header>
                                             <Text text="No" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </header>
                                         <footer/>
-                                    </Column>
+                                    </Column> -->
                                     <Column width="auto" hAlign="Left">
                                         <header>
                                             <Text text="{appTxts>/products.size}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -517,7 +517,7 @@
                                 <items>
                                     <ColumnListItem press="onListItemPress">
                                         <cells>
-                                            <ObjectIdentifier text="{ITARTVAR>index}" />
+                                            <!-- <ObjectIdentifier text="{ITARTVAR>index}" /> -->
                                             <Input value="{ITARTVAR>CaracTalla}" change=".changeQty"></Input>
                                             <Input value="{ITARTVAR>Colsabaro}" change=".changeQty"></Input>
                                             <Input value="{ITARTVAR>CodVent}" change=".changeQty"></Input>

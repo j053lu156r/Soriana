@@ -10,9 +10,8 @@
 		id="massiveRegisterDialog"
 		showHeader="false"
 		verticalScrolling="false"
-        
-		contentHeight="50%"
-		contentWidth="30%">
+ 
+        >
 		<f:DynamicPage
 			toggleHeaderOnTitleClick="false"
 			showFooter="true">
@@ -29,9 +28,9 @@
 		<u:FileUploader
 			id="fileUploader"
 			name="myFileUpload"
-			uploadUrl="upload/"
 			tooltip="{appTxts>/products.toolTipUpload}"
-			uploadComplete="handleUploadComplete"/>
+            fileType="xlsx,xls,csv,xlsb"
+            />
 		<Button
 			text="{appTxts>/products.btnUploadFile}"
 			press="handleUploadPress"/>
