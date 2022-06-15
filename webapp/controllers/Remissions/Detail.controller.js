@@ -234,6 +234,7 @@ sap.ui.define([
             }
         },
         printLabels: function () {
+            
             if (!this._uploadDialog2) {
                 this._uploadDialog2 = sap.ui.xmlfragment("printBoxesLabels", "demo.views.Remissions.fragments.LabelsRemission", this);
                 this.getView().addDependent(this._uploadDialog2);
@@ -251,19 +252,20 @@ sap.ui.define([
 
             if (positions.ETREMDNAV.results != null) {
 
-                var cajsTarimas = this.groupByAuto(positions.ETREMDNAV.results, "Cajtar");
-
+                var cajsTarimas = this.groupByAuto(positions.ETREMDNAV.results, "Cajtar")
+                console.log(cajsTarimas)
                 var cajTarIndex = 1;
                 for (const key in cajsTarimas) {
 
                     cajsTarimas[key].forEach(function (item) {
+                        console.log(item)
                         html += '<div style="padding:5px;display:inline; margin:5px;border:1px solid #999999;text-align:center;">' +
                             `<p style="width:100%;font-size: smaller;">${positions.Eremh.Zremision}</p>` +
                             `<p style="width:100%;font-size: smaller;">${this.getConfigModel().getProperty("/supplierInput")}</p>` +
                             `<p style="width:100%;font-size: smaller;">${item.Werks} - ${item.Name1}</p>` +
                             `<p style="width:100%;font-weight:bold;font-size: smaller;">${item.Maktx}</p>` +
                             '<svg class="barcode"' +
-                            `jsbarcode-value="${item.Ean11}"` +
+                            `jsbarcode-value="${item.Cajtar}"` +
                             'jsbarcode-textmargin="0"' +
                             'jsbarcode-fontoptions="bold">' +
                             '</svg>' +

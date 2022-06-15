@@ -386,6 +386,14 @@
 					]
 				},
                 {
+                    "pattern": "detailComplPagos/{document}/{layout}",
+                    "name": "detailComplPagos",
+                    "target": [
+                        "masterCompl",
+                        "detailComplPagos"
+                    ]
+                },
+                {
                     "name": "EstadoCuenta",
                     "pattern": "EstadoCuenta",
                     "titleTarget": "",
@@ -488,6 +496,13 @@
                     ]
                 },
                 {
+                    "name": "masterAcuerdos",
+                    "pattern": "masterAcuerdos",
+                    "target": [
+                        "masterAcuerdos"
+                    ]
+                },
+                {
                     "name": "Products",
                     "pattern": "Products",
                     "target": [
@@ -508,6 +523,22 @@
                     "target": [
                         "masterQuotes",
                         "detailQuotes"
+                    ]
+                },
+                {
+                    "name": "masterVisorNotas",
+                    "pattern": "masterVisorNotas",
+                    "target": [
+                        "masterVisorNotas",
+                        "detailVisorNotas"
+                    ]
+                },
+                {
+                    "name": "detailVisorNotas",
+                    "pattern": "detailVisorNotas/{layout}",
+                    "target": [
+                        "masterVisorNotas",
+                        "detailVisorNotas"
                     ]
                 }
             ],
@@ -598,6 +629,11 @@
 				},
 				"detailCompl": {
                     "viewName": "Detail",
+                    "viewPath": "demo.views.ComplPago",
+                    "controlAggregation": "midColumnPages"
+                },
+                "detailComplPagos": {
+                    "viewName": "DetallePago",
                     "viewPath": "demo.views.ComplPago",
                     "controlAggregation": "midColumnPages"
                 },
@@ -715,6 +751,11 @@
                     "viewPath": "demo.views.Aportaciones",
                     "controlAggregation": "beginColumnPages"
                 },
+                "masterAcuerdos" : {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "beginColumnPages"
+                },
                 "Products": {
                     "viewName": "Master",
                     "controlAggregation": "beginColumnPages",
@@ -728,6 +769,16 @@
                 "detailQuotes" : {
                     "viewName": "Detail",
                     "viewPath": "demo.views.Quotes" , 
+                    "controlAggregation": "midColumnPages"
+                },
+                "masterVisorNotas":{
+                    "viewName": "Master",
+                    "viewPath": "demo.views.VisorNotasEntrada",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailVisorNotas" : {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.VisorNotasEntrada" , 
                     "controlAggregation": "midColumnPages"
                 }
             }

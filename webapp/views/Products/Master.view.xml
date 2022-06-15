@@ -7,7 +7,17 @@
     xmlns          = "sap.m" 
     xmlns:core     = "sap.ui.core"
     xmlns:t        ="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
     controllerName ="demo.controllers.Products.Master">
+
+     <html:style>
+      .sapContrast.sapMCbBg, .sapContrast .sapMCbBg {
+         background-color: white !important;
+      }
+      .sapContrast.sapMLabel, .sapContrast .sapMLabel{
+          color: black !important;
+      }
+   </html:style>
     
     <f:DynamicPage class="sapUiContentPadding">
         <!-- DynamicPage Title -->
@@ -24,13 +34,17 @@
                             type="Emphasized"
                             press="newProduct"/>
                     <Button
-                            text="Cambio de precio"
+                            text="{appTxts>/products.changePriceTxt}"
                             type="Emphasized"
                             press="changePriceProduct"/>
                     <Button
-                            text="Eliminar productos"
+                            text="{appTxts>/products.deleteProductsTxt}"
                             type="Emphasized"
                             press="deleteProducts"/>
+                    <!-- <Button
+                            text=" FETCH GS1 "
+                            type="Emphasized"
+                            press="getGS1ProductData"/> -->
                 </f:actions>
             </f:DynamicPageTitle>
         </f:title>
@@ -75,7 +89,7 @@
                                 partOfCurrentVariant = "true" 
                                 visibleInFilterBar   = "true">
                                 <fb:control>
-                                    <DateRangeSelection id="dateRange" change="onChange" required="false"/>
+                                    <DateRangeSelection id="dateRange" change="onChange" required="true"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
 
@@ -96,8 +110,8 @@
                                 </fb:control>
                             </fb:FilterGroupItem-->
 
-                            <fb:FilterGroupItem 
-                                groupName            = "__$INTERNAL$" 
+                            <fb:FilterGroupItem  
+                                groupName            = "__$INTERNAL$"
                                 name                 = "B" 
                                 mandatory            = "true"
                                 label                = "{appTxts>/products.supplier}" 
@@ -107,6 +121,18 @@
                                 <fb:control>
                                     <Input id="supplierInput" placeholder="{appTxts>/products.supplier}" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}">
                                     </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem
+                                groupName            = "__$INTERNAL$"
+                                name                 = "D" 
+                                partOfCurrentVariant = "true" 
+                                visibleInFilterBar   = "true">
+                                <fb:control>
+                                    <MessageStrip class="sapUiSmallMarginBottom"
+                                            text="{appTxts>/products.msgMyProducts}"
+                                            showIcon="true"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
 
@@ -190,6 +216,18 @@
                             <Label text="{appTxts>/products.descriptionStatus}" />
                             <t:template>
                                 <Text text="{Folios>Pristate}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="auto">
+                            <Label text="{appTxts>/products.registeredStore}" />
+                            <t:template>
+                                <Text text="" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="auto">
+                            <Label text="{appTxts>/products.packagingQuantity}" />
+                            <t:template>
+                                <Text text="" wrapping="false"/>
                             </t:template>
                         </t:Column>
                     </t:columns>

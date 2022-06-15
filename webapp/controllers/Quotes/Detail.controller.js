@@ -345,6 +345,9 @@ sap.ui.define([
             }
         },
         handleEditBtn: function () {
+            if (!this.hasAccess(47)) {
+                return false;
+            }
             if (!this._EditQuoteDialog) {
                 this._EditQuoteDialog = sap.ui.xmlfragment("editValuesQuote", "demo.views.Quotes.EditDates", this);
                 this.getView().addDependent(this._EditQuoteDialog);
@@ -366,9 +369,15 @@ sap.ui.define([
             switch (iOpt) {
                 case 2:
                     strQuestion = this.getView().getModel("appTxts").getProperty("/quotes.cancelQuote");
+                    if (!this.hasAccess(34)) {
+                        return false;
+                    }
                     break;
                 case 3:
                     strQuestion = this.getView().getModel("appTxts").getProperty("/quotes.rejectQuote");
+                    if (!this.hasAccess(33)) {
+                        return false;
+                    }
                     break;
             }
 

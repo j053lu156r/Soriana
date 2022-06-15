@@ -19,15 +19,14 @@
             </Input>
     	<Label id="lblSupplier" text="{appTxts>/rep.supplier}" tooltip="{appTxts>/rep.supplier}"/> 
             <Input                
-                id="supplier"
-                placeholder="{appTxts>/rep.tooltipsupplier}"
-                showSuggestion="false"
+                id="supplier"                
+                showSuggestion="false"                
+                textAlign="Center"
+                editable="false"
                 valueHelpOnly="true"
                 showValueHelp="true"
-                valueHelpRequest=".onSupplierHelpRequest"
-                textAlign="Center"
-                required="true"
-                editable="false"
+                enabled="false"
+                value="{configSite>/supplierInput}"
                 >
             </Input>
             <Label text="{appTxts>/rep.name}" tooltip="{appTxts>/rep.name}"/>
@@ -50,12 +49,13 @@
                 showValueHelp="false"
                 textAlign="Center"
                 required="true"
+                maxLength="10"
                  >
             </Input> 
         <Label text="{appTxts>/rep.fcad}" tooltip="{appTxts>/rep.fcad}"/> 
                 <DatePicker 
                     id="fcad" 
-                    change="onChange" 
+                    change="handleChange" 
                     required="true" 
                     textAlign="Center"/>
         <Label text="{appTxts>/rep.status}" tooltip="{appTxts>/rep.status}"/> 

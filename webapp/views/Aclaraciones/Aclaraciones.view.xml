@@ -49,13 +49,13 @@
                                 groupName            = "__$INTERNAL$"
                                 name                 = "C"
                                 label                = "{appTxts>/clarifications.folioNumber}" 
-                                partOfCurrentVariant = "true" 
+                                 partOfCurrentVariant = "true"
                                 visibleInFilterBar   = "true">
                                 <fb:control>
                                     <Input
                                         id="inputFolioTxt"
                                         placeholder="{appTxts>/clarifications.folioNumber}"
-                                        class="sapUiSmallMarginBottom" />
+                                        />
                                 </fb:control>
                             </fb:FilterGroupItem>
 
@@ -82,7 +82,7 @@
                                                 path : 'catalogos>/Estatus/results'
                                             }">
                                         <items>
-                                            <core:Item key="{catalogos>Status}" text="{catalogos>Descripcion}"/>
+                                            <core:Item key="{catalogos>Status}" text="{catalogos>Status} - {catalogos>Descripcion}"/>
                                         </items>
                                     </ComboBox>
                                 </fb:control>
@@ -138,6 +138,7 @@
                             <Title id="title" text="{appTxts>/state.detail} ({Aclaraciones>/Detalles/results/length})"/>
                             <ToolbarSpacer/>
                             <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${Aclaraciones>/Detalles/Paginated/results/length} > 0}" />
+                         <Button icon="sap-icon://action-settings" press="ConfigTable" />
                             <Select visible="{= ${Aclaraciones>/Detalles/Paginated/results/length} > 0 }" change=".paginar( ${$parameters>/selectedItem} )">
                                 <items>
                                     <core:Item key="10" text="10"/>
@@ -149,95 +150,95 @@
                         </OverflowToolbar>
                     </t:extension>
                     <t:columns>
-                        <t:Column width="auto">
+                        <t:Column width="auto" id="idfolio" visible="true">
                             <Label text="{appTxts>/clarifications.headerFolio}" />
                             <t:template>
                                 <Text text="{Aclaraciones>Folio}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto">
+                        <t:Column width="auto" id="idFAlta" visible="true" >
                             <Label text="{appTxts>/clarifications.headerDate}" />
                             <t:template>
                                 <Text text="{Aclaraciones>FAlta}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto">
+                        <t:Column width="auto" id="idlifnr" visible="true">
                             <Label text="{appTxts>/clarifications.headerSupplier}" />
                             <t:template>
                                 <Text text="{Aclaraciones>Lifnr}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto">
+                        <t:Column width="auto" id="idDesAcla" visible="true">
                             <Label text="{appTxts>/clarifications.headerType}" />
                             <t:template>
                                 <Text text="{Aclaraciones>DesAcla}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto">
+                        <t:Column width="auto" id="idFactura" visible="true">
                             <Label text="{appTxts>/clarifications.headerInvoice}" />
                             <t:template>
                                 <Text text="{Aclaraciones>Factura}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto">
+                        <t:Column width="auto" id="idMonRec" visible="true">
                             <Label text="{appTxts>/clarifications.headerReclaimedAmount}" />
                             <t:template>
                                 <ObjectNumber 
                                     number="{parts: [{path: 'Aclaraciones>MonRec'}, {path: 'Aclaraciones>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{Aclaraciones>Waers}" emphasized="false" state="None"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto">
+                        <t:Column width="auto" id="idIvaRec" visible="true">
                             <Label text="{appTxts>/clarifications.headerReclaimedTaxes}" />
                             <t:template>
                                 <ObjectNumber 
                                     number="{parts: [{path: 'Aclaraciones>IvaRec'}, {path: 'Aclaraciones>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{Aclaraciones>Waers}" emphasized="false" state="None"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto">
+                        <t:Column width="auto" id="idEstatus2" >
                             <Label text="{appTxts>/clarifications.headerStatus}" />
                             <t:template>
                                 <Text text="{path: 'Aclaraciones>Estatus', formatter: '.formatStatus'}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto">
+                        <t:Column width="auto" id="idAnalista" visible="true">
                             <Label text="{appTxts>/clarifications.headerAnalyst}" />
                             <t:template>
                                 <Text text="{Aclaraciones>Analista}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto">
+                        <t:Column width="auto" id="idFAlta2" visible="true">
                             <Label text="{appTxts>/clarifications.headerAssignmentDate}" />
                             <t:template>
                                 <Text text="{Aclaraciones>FAlta}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto">
+                        <t:Column width="auto" id="idHalta" visible="true">
                             <Label text="{appTxts>/clarifications.headerAssignmentTime}" />
                             <t:template>
                                 <Text text="{Aclaraciones>HAlta}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto">
+                        <t:Column width="auto" id="idFvenc" visible="true">
                             <Label text="{appTxts>/clarifications.headerSolutionDate}" />
                             <t:template>
                                 <Text text="{Aclaraciones>FVenc}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto">
+                        <t:Column width="auto" id="idMonacla" visible="true">
                             <Label text="{appTxts>/clarifications.headerClearedAmount}" />
                             <t:template>
                                 <ObjectNumber 
                                     number="{parts: [{path: 'Aclaraciones>MonAcla'}, {path: 'Aclaraciones>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{Aclaraciones>Waers}" emphasized="false" state="None"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto">
+                        <t:Column width="auto" id="idivaacla" visible="true">
                             <Label text="{appTxts>/clarifications.headerClearedTaxes}" />
                             <t:template>
                                 <ObjectNumber 
                                     number="{parts: [{path: 'Aclaraciones>IvaAcla'}, {path: 'Aclaraciones>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{Aclaraciones>Waers}" emphasized="false" state="None"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto">
+                        <t:Column width="auto" id="idNdoc" visible="true">
                             <Label text="{appTxts>/clarifications.headerPayment}" />
                             <t:template>
                                 <Text text="{Aclaraciones>NoDoc}" wrapping="false"/>

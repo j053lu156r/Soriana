@@ -40,6 +40,9 @@ sap.ui.define([
             this.getView().byId("documentTxt").setValue('');
         },
         searchData: function () {
+            if(!this.hasAccess(9)){
+                return
+            }
             //if ( !oModel.getModel() )  oModel.initModel();
 
             
@@ -246,6 +249,9 @@ sap.ui.define([
             }
         },
         openUploadDialog: function () {
+            if(!this.hasAccess(10)){
+                return
+            }
             if (!this._uploadDialog2) {
                 this._uploadDialog2 = sap.ui.xmlfragment("uploadInvoice", "demo.fragments.UploadInvoice", this);
                 this.getView().addDependent(this._uploadDialog2);
@@ -419,6 +425,27 @@ sap.ui.define([
             minDate.setDate(date.getDate() - 30);
             datarange.setSecondDateValue(date);
             datarange.setDateValue(minConsultDate);
+        },
+        onDocumentPress: function(oEvent){
+            console.log('on documnt press',oEvent);
+            let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
+            let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
+
+            let registro = results[posicion];
+            console.log(registro)
+
+             this.getOwnerComponent().getRouter().navTo("detailComplPagos",
+                {
+                    layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+                    document: registro.Vblnr
+                   // laufd: docResult.Laufd,
+                   // laufi: docResult.Laufi,
+                   // zbukr: docResult.Zbukr,
+                   // lifnr: docResult.Lifnr
+                }, true);
+
+
+
         }
     });
 });

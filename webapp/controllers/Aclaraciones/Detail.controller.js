@@ -21,8 +21,8 @@ sap.ui.define([
             this.configUploadSet( this.getView().byId("attachmentDocuments") );
             var oUploadSet = this.getView().byId("attachmentDocuments");
 
-            oUploadSet.attachAfterItemRemoved(this.onDeleteAttach.bind(this));
-            oUploadSet.attachAfterItemAdded(this.addAttach.bind(this));
+         //   oUploadSet.attachAfterItemRemoved(this.onDeleteAttach.bind(this));
+           // oUploadSet.attachAfterItemAdded(this.addAttach.bind(this));
             
             this.clearFields();
 			this.oRouter = this.getOwnerComponent().getRouter();
@@ -232,7 +232,8 @@ sap.ui.define([
             this.handleClose();
         },
         clearFields : function(){
-            this.getView().byId("clarificationType").setEnabled(true).setEditable(true);
+            //descomentar esto
+        /*    this.getView().byId("clarificationType").setEnabled(true).setEditable(true);
             this.getView().byId("sourceDocument").setEnabled(true).setEditable(true);
             this.getView().byId("invoice").setEnabled(true).setEditable(true);
             this.getView().byId("comments").setEnabled(true).setEditable(true);
@@ -244,24 +245,21 @@ sap.ui.define([
             this.getView().byId("validateInvoice").setEnabled( true );
             this.getView().byId("distributionCenterDescription").setEnabled(true).setVisible(true);
             this.getView().byId("receipt").setEnabled(true).setVisible(true).setEditable(true);
-            //this.getView().byId("status").setEnabled(true);
+          
             
             
             this.getView().byId("btnGuardar").setEnabled(true).setVisible(true);
-            //this.getView().byId("btnUploadFiles").setEnabled(true).setVisible(true);
+          
 
             this.getView().byId("helpDocsList").destroyItems();
-            // sap.ui.core.Fragment.byId("uploadFilesFragment", "attachmentDocuments").removeAllItems();
-            // sap.ui.core.Fragment.byId("uploadFilesFragment", "attachmentDocuments").removeAllIncompleteItems();
-            // sap.ui.core.Fragment.byId("uploadFilesFragment", "attachmentDocuments").destroyItems();
-            // sap.ui.core.Fragment.byId("uploadFilesFragment", "attachmentDocuments").destroyIncompleteItems();
+         
             this.getView().byId("attachmentDocuments").setUploadEnabled( true );
             this.getView().byId("attachmentDocuments").removeAllItems();
             this.getView().byId("attachmentDocuments").removeAllIncompleteItems();
             this.getView().byId("attachmentDocuments").destroyItems();
             this.getView().byId("attachmentDocuments").destroyIncompleteItems();
 
-            
+            */
             
             this.getOwnerComponent().setModel(new JSONModel(), "nRelease");
 

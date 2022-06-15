@@ -28,6 +28,10 @@ sap.ui.define([
             }, this);
         },
         searchData: function () {
+            if (!this.hasAccess(25)) {
+                return false;
+            }
+
             var bContinue = false;
 
             if (!oModel.getModel()) {
@@ -141,6 +145,9 @@ sap.ui.define([
         onExit: function () {
         },
         codeButton: function () {
+            if (!this.hasAccess(35)) {
+                return false;
+            }
 
             var oItems = this.byId("tableHeader").getSelectedItems();
             var texts = this.getOwnerComponent().getModel("appTxts");
@@ -190,7 +197,9 @@ sap.ui.define([
             }
         },
         printButton: function () {
-
+            if (!this.hasAccess(36)) {
+                return false;
+            }
             var oItems = this.byId("tableHeader").getSelectedItems();
             //var oItems = this.this.getOwnerComponent().setModel(new JSONModel(ojbResponse),"tableHeaderDevo").getSelectedItems()         
             var texts = this.getOwnerComponent().getModel("appTxts");

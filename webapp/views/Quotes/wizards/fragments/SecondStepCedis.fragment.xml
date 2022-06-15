@@ -1,74 +1,97 @@
 <core:FragmentDefinition
   xmlns="sap.m"
-  xmlns:core="sap.ui.core"
->
-<VBox>
-    <Table mode="MultiSelect" id="tableWizardOrderPosition" 
-    items="{path : 'tableWizardOrderPosition>/Oekponav/Paginated/results'}"
-    selectionChange=".selectChange" >
-        <headerToolbar>
+  xmlns:core="sap.ui.core">
+    <VBox>
+    <Panel visible="{	path: 'TemporalModel>/generalData/cedisType',
+                        formatter: '.formatter.isSeco'
+                    }">
+        <Table mode="MultiSelect" id="tableWizardOrder" 
+        items="" selectionChange=".selectChange">
+            <headerToolbar>
             <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Input id="searchOrders" width="auto" textAlign="Initial" placeholder="{appTxts>/quotes.search}" 
+                    type="Number" showValueHelp="true" valueHelpIconSrc="sap-icon://search"/>
+                </OverflowToolbar>
+            </headerToolbar>
+            <columns>
+                <Column>
+                    <Text text="{appTxts>/quotes.order}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                </Column>
+                <Column>
+                    <Text text="{appTxts>/quotes.startShipment}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                </Column>
+                <Column>
+                    <Text text="{appTxts>/quotes.endShipment}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                </Column>
+                <Column>
+                    <Text text="{appTxts>/quotes.prevQuotes}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                </Column>
+                <Column>
+                    <Text text="{appTxts>/quotes.pendingPos}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                </Column>
+                <Column>
+                    <Text text="{appTxts>/quotes.appointPos}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem>
+                    <cells>
+                        <ObjectIdentifier text=""/>
+                        <ObjectIdentifier text=""/>
+                        <ObjectIdentifier text=""/>                                                       
+                        <ObjectIdentifier text=""/>
+                        <ObjectIdentifier text=""/>
+                        <Input enabled="false"/>
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </Panel>
+
+
+    <Panel visible="{	path: 'TemporalModel>/generalData/cedisType',
+                        formatter: '.formatter.isFresco'
+                    }">
+        <Table mode="MultiSelect" id="tableWizardOrderPosition" 
+        items="{path : 'tableWizardPo_validas>/Oekponav/results'}"
+        selectionChange=".selectChange" >
+            <headerToolbar>
+                <OverflowToolbar>
                     <Input id="searchOrder" textAlign="Initial" placeholder="{appTxts>/quotes.order}" type="Number" 
                         showValueHelp="true" valueHelpIconSrc="sap-icon://add" valueHelpRequest=".searchOrder" 
                         liveChange=".hasOnlyNumbers" width="auto" />
-                <ToolbarSpacer/>
-                <Input id="searchPosition" width="auto" textAlign="Initial" placeholder="{appTxts>/quotes.search}" 
-                    type="Number" showValueHelp="true" valueHelpIconSrc="sap-icon://search" 
-                    valueHelpRequest=".filterOrderPositions" change=".filterOrderPositions" />
-                <Select 
-                    id="paginatedWizardOrederPosition"
-                    visible="{= ${tableWizardOrderPosition>/Oekponav/Paginated/results/length} > 0 }"
-                    change=".paginateValue(${$parameters>/selectedItem}, 'tableWizardOrderPosition', '/Oekponav')">
-                    <items>
-                        <core:Item key="10" text="10"/>
-                        <core:Item key="20" text="20"/>
-                        <core:Item key="50" text="50"/>
-                        <core:Item key="100" text="100"/>
-                    </items>
-                </Select>
-            </OverflowToolbar>
-        </headerToolbar>
-        <columns>
-            <Column width="auto" hAlign="Left">
-                <header>
+                    <ToolbarSpacer/>
+                    <Input id="searchPosition" width="auto" textAlign="Initial" placeholder="{appTxts>/quotes.search}" 
+                        type="Number" showValueHelp="true" valueHelpIconSrc="sap-icon://search" 
+                        valueHelpRequest=".filterOrderPositions" change=".filterOrderPositions" />
+                </OverflowToolbar>
+            </headerToolbar>
+            <columns>
+                <Column width="auto" hAlign="Left">
                     <Text text="{appTxts>/quotes.order}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                </header>
-                <footer/>
-            </Column>
-            <Column width="auto" hAlign="Left">
-                <header>
+                </Column>
+                <Column width="auto" hAlign="Left">
                     <Text text="{appTxts>/quotes.startShipment}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                </header>
-                <footer/>
-            </Column>
-            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-                <header>
+                </Column>
+                <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                     <Text text="{appTxts>/quotes.endShipment}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                </header>
-            </Column>
-            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-                <header>
-                <Text text="{appTxts>/quotes.prevQuotes}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                </header>
-                <footer/>
-            </Column>                
-        </columns>
-        <items>
-            <ColumnListItem press="onListItemPress" selected="{tableWizardOrderPosition>Selected}" visible="{= ${tableWizardOrderPosition>Cresta} > 0}">
-                <cells>
-                    <ObjectIdentifier text="{tableWizardOrderPosition>Ebelp}" />
-                    <ObjectIdentifier text="{tableWizardOrderPosition>Ean11}" />
-                    <ObjectIdentifier text="{tableWizardOrderPosition>Txz01}" />                                                       
-                    <ObjectIdentifier text="{tableWizardOrderPosition>Cresta}"/>
-                </cells>
-            </ColumnListItem>
-        </items>
-    </Table>
-    <OverflowToolbar visible="{= ${tableWizardOrderPosition>/Oekponav/Paginated/results/length} > 0 }">
-        <Text text="{tableWizardOrderPosition>/Oekponav/Paginated/initRow} - {tableWizardOrderPosition>/Oekponav/Paginated/endRow} {appTxts>/pagination.of} {tableWizardOrderPosition>/Oekponav/results/length}" />
-        <ToolbarSpacer/>
-        <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableWizardOrderPosition>/Oekponav/Paginated/iterator}, ${tableWizardOrderPosition>/Oekponav/Paginated/initRow}, 'tableWizardOrderPosition', '/Oekponav')" enabled="{= ${tableWizardOrderPosition>/Oekponav/Paginated/iterator} !== 1}" />
-        <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableWizardOrderPosition>/Oekponav/Paginated/iterator}, ${tableWizardOrderPosition>/Oekponav/Paginated/endRow}, 'tableWizardOrderPosition', '/Oekponav')" enabled="{= ${tableWizardOrderPosition>/Oekponav/Paginated/endRow} !== ${tableWizardOrderPosition>/Oekponav/results/length}}" />
-    </OverflowToolbar>
+                </Column>
+                <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                    <Text text="{appTxts>/quotes.prevQuotes}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                </Column>                
+            </columns>
+            <items>
+                <ColumnListItem press="onListItemPress" selected="{tableWizardPo_validas>Selected}" visible="{= ${tableWizardPo_validas>Cresta} > 0}">
+                    <cells>
+                        <ObjectIdentifier text="{tableWizardPo_validas>Ebelp}" />
+                        <ObjectIdentifier text="{tableWizardPo_validas>Ean11}" />
+                        <ObjectIdentifier text="{tableWizardPo_validas>Txz01}" />                                                       
+                        <ObjectIdentifier text="{tableWizardPo_validas>Cresta}"/>
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </Panel>
 </VBox>
 </core:FragmentDefinition>

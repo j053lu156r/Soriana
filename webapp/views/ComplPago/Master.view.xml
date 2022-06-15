@@ -139,7 +139,7 @@
                             hAlign          = "Left" >
                             <Label text="{appTxts>/pay.headerDocument}" />
                             <t:template>
-                                <Text text="{Documentos>Vblnr}" wrapping="false"/>
+                                <ObjectIdentifier titlePress="onDocumentPress" titleActive="true" title="{Documentos>Vblnr}" wrapping="false"/>
                             </t:template>
                         </t:Column>
                         <t:Column 
@@ -156,7 +156,7 @@
                             id              = "column5">
                             <Label text="{appTxts>/pay.headerLimitDate}" />
                             <t:template>
-                                <Text text="{Documentos>Laufd}" wrapping="false"/>
+                                <Text text="{Documentos>Zaldt}" wrapping="false"/>
                             </t:template>
                         </t:Column>
                         <t:Column

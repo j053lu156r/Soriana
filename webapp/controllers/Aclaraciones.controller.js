@@ -6,10 +6,12 @@ sap.ui.define([
     "sap/ui/table/RowAction",
     "sap/ui/table/RowActionItem",
     "sap/ui/table/RowSettings",
-], function (BaseController, Controller, JSONModel, fioriLibrary, RowAction, RowActionItem, RowSettings) {
+    "sap/ui/export/library",
+    "sap/ui/export/Spreadsheet",
+], function (BaseController, Controller, JSONModel, fioriLibrary, RowAction, RowActionItem, RowSettings, exportLibrary, Spreadsheet) {
     "use strict";
 
-
+    var EdmType = exportLibrary.EdmType;
 
     var sUri = "/sap/opu/odata/sap/ZOSP_ACLARA_SRV/";
 
@@ -18,7 +20,7 @@ sap.ui.define([
 
         onInit: function () {
             //this.setDaterangeMaxMin();
-
+            this.ValidateDevice();
 
             let url = `EAclaHdrSet?$expand=ZtaclaraSt,ZtaclaraTa&$filter=IOption eq '7'&$format=json`;
 
@@ -36,7 +38,7 @@ sap.ui.define([
                 'Tipos': {
                     results: [...Datos.results[0].ZtaclaraTa.results]
                 },
-                'sizeFilesUpload':Datos.results[0].ITamarchivo
+                'sizeFilesUpload': Datos.results[0].ITamarchivo
             };
 
 
@@ -55,12 +57,140 @@ sap.ui.define([
             }, this);
 
         },
+
+        /*Validacion de vista **/
+        ValidateDevice: function () {
+            var that = this;
+            if (navigator.userAgent.match(/Android/i)
+                || navigator.userAgent.match(/webOS/i)
+                || navigator.userAgent.match(/iPhone/i)
+                || navigator.userAgent.match(/iPad/i)
+                || navigator.userAgent.match(/iPod/i)
+                || navigator.userAgent.match(/BlackBerry/i)
+                || navigator.userAgent.match(/Windows Phone/i)) {
+	that.oModel = new JSONModel({
+				idfolio: true,
+				idFAlta: true,
+				idlifnr: false,
+				idDesAcla: false,
+				idFactura: false,
+				idMonRec: false,
+				idIvaRec: false,
+				idEstatus2: false,
+				idAnalista: false,
+				idFAlta2: false,
+				idHalta: false,
+				idFvenc: false,
+				idMonacla: false,
+				idivaacla: false,
+				idNdoc: false,
+				
+
+			});
+            }else{
+            	that.oModel = new JSONModel({
+				idfolio: true,
+				idFAlta: true,
+				idlifnr: true,
+				idDesAcla: true,
+				idFactura: true,
+				idMonRec: false,
+				idIvaRec: false,
+				idEstatus2: false,
+				idAnalista: false,
+				idFAlta2: false,
+				idHalta: false,
+				idFvenc: false,
+				idMonacla: false,
+				idivaacla: false,
+				idNdoc: false,
+				
+
+			});
+        
+            }
+
+			that.getView().setModel(that.oModel);
+			that.TableVisible()
+
+
+
+
+        },
+
+        ConfigTable: function() {
+            var that= this;
+			var oDialog = that.getView().byId("dinamicTable");
+
+			// create dialog lazily
+			if (!oDialog) {
+				// create dialog via fragment factory
+				oDialog = sap.ui.xmlfragment(that.getView().getId(), "demo.views.Aclaraciones.fragments.option", this);
+				that.getView().addDependent(oDialog);
+				that.getView().byId("dinamicTable").addStyleClass(that.getOwnerComponent().getContentDensityClass());
+
+			}
+
+			oDialog.open();
+		},
+		ClosepopUp: function() {
+             var that= this;
+			that.TableVisible();
+			that.getView().byId("dinamicTable").close();
+		},
+		onParentClicked: function(oEvent) {
+			var bSelected = oEvent.getParameter("selected");
+			this.oModel.setData({
+				idfolio: bSelected,
+				idFAlta: bSelected,
+				idlifnr: bSelected,
+				idDesAcla: bSelected,
+				idFactura: bSelected,
+				idMonRec: bSelected,
+				idIvaRec: bSelected,
+				idEstatus2: bSelected,
+				idAnalista: bSelected,
+				idFAlta2: bSelected,
+				idHalta: bSelected,
+				idFvenc: bSelected,
+				idMonacla: bSelected,
+				idivaacla: bSelected,
+				idNdoc: bSelected
+				
+			});
+		},
+		TableVisible: function() {
+   var that= this;
+    that.getView().byId("idEstatus2").setVisible(that.getView().getModel().getProperty("idEstatus2"));
+                that.getView().byId("idfolio").setVisible(that.getView().getModel().getProperty("/idfolio"));
+                that.getView().byId("idFAlta").setVisible(that.getView().getModel().getProperty("/idFAlta"));
+                that.getView().byId("idlifnr").setVisible(that.getView().getModel().getProperty("/idlifnr"));
+                that.getView().byId("idDesAcla").setVisible(that.getView().getModel().getProperty("/idDesAcla"));
+                that.getView().byId("idFactura").setVisible(that.getView().getModel().getProperty("/idFactura"));
+                that.getView().byId("idMonRec").setVisible(that.getView().getModel().getProperty("/idMonRec"));
+                that.getView().byId("idIvaRec").setVisible(that.getView().getModel().getProperty("/idIvaRec"));
+               
+                that.getView().byId("idAnalista").setVisible(that.getView().getModel().getProperty("/idAnalista"));
+                that.getView().byId("idFAlta2").setVisible(that.getView().getModel().getProperty("/idFAlta2"));
+                that.getView().byId("idHalta").setVisible(that.getView().getModel().getProperty("/idHalta"));
+                that.getView().byId("idFvenc").setVisible(that.getView().getModel().getProperty("/idFvenc"));
+                that.getView().byId("idMonacla").setVisible(that.getView().getModel().getProperty("/idMonacla"));
+                that.getView().byId("idivaacla").setVisible(that.getView().getModel().getProperty("/idivaacla"));
+                that.getView().byId("idNdoc").setVisible(that.getView().getModel().getProperty("/idNdoc"));
+			
+
+		},
+
+
         searchData: function () {
 
-
+            if (!this.hasAccess(18)) {
+                return false;
+            }
             var dateRange = this.getView().byId("dateRange");
             var comboStatus = this.getView().byId("comboStatus");
             var inputFolioTxt = this.getView().byId("inputFolioTxt");
+
 
 
             let folio = inputFolioTxt.getValue();
@@ -78,7 +208,7 @@ sap.ui.define([
             //let IIdusua = '';
             //console.log(this.getOwnerComponent().getModel("userdata").getJSON());
 
-            if (folio === '' && status == '' && proveedor_LIFNR == '' && dateRange.getValue() == '') {
+            if (proveedor_LIFNR === '' || dateRange.getValue() == '') {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.msgNoFilter'));
                 return false;
             }
@@ -87,18 +217,18 @@ sap.ui.define([
 
             let filtros = [`IOption eq '4'`];
 
-            if( String(folio).trim() != '' ){
+            if (String(folio).trim() != '') {
                 filtros.push(`IFolio eq '${folio}'`);
             }
-            else{
+            else {
                 filtros.push(`IFechai eq '${IStartdate}' and IFechaf eq '${IEnddate}'`);
                 if (status != '') filtros.push(`IStatus eq '${status}'`);
             }
 
             if (String(IIdusua).trim() != '') filtros.push(`IIdusua eq '${IIdusua}'`);
-            
-            if (proveedor_LIFNR != '' && !this.getView().byId("colSor").getSelected() ) filtros.push(`ILifnr eq '${proveedor_LIFNR}'`);
-            
+
+            if (proveedor_LIFNR != '' && !this.getView().byId("colSor").getSelected()) filtros.push(`ILifnr eq '${proveedor_LIFNR}'`);
+
 
             filtros = filtros.join(' and ');
 
@@ -139,7 +269,7 @@ sap.ui.define([
             if (!this.hasAccess(19)) {
                 return false;
             }
-            this.getOwnerComponent().getRouter().navTo("detailAclaracion", { layout: sap.f.LayoutType.MidColumnFullScreen, document: '0', modo: 'new', tipo:'01' }, true);
+            this.getOwnerComponent().getRouter().navTo("detailAclaracion", { layout: sap.f.LayoutType.MidColumnFullScreen, document: '0', modo: 'new', tipo: '01' }, true);
         },
         setDaterangeMaxMin: function () {
             var datarange = this.getView().byId('dateRange');
@@ -177,9 +307,7 @@ sap.ui.define([
         },
         viewClarification: function (oEvent) {
 
-            if (!this.hasAccess(18)) {
-                return false;
-            }
+
 
             let resource = oEvent.getSource().getBindingContext("Aclaraciones").getPath();
             let line = resource.split("/").slice(-1).pop();
@@ -187,7 +315,7 @@ sap.ui.define([
             let odata = this.getOwnerComponent().getModel("Aclaraciones");
             let results = odata.getProperty("/Detalles/Paginated/results");
 
-            this.getOwnerComponent().getRouter().navTo("detailAclaracion", { layout: fioriLibrary.LayoutType.MidColumnFullScreen, document: results[line].Folio, modo: 'view', tipo: results[line].TipAcla}, true);
+            this.getOwnerComponent().getRouter().navTo("detailAclaracion", { layout: fioriLibrary.LayoutType.MidColumnFullScreen, document: results[line].Folio, modo: 'view', tipo: results[line].TipAcla }, true);
 
         },
         editClarification: function (oEvent) {
@@ -207,22 +335,22 @@ sap.ui.define([
             let Estatus = results[line].Estatus;
             switch (Estatus) {
                 case 'A':
-                    
+
                     break;
                 case 'B':
-                    continuar = ( Rol === '0001' || Rol === '0004' || Rol === '0005' );
+                    continuar = (Rol === '0001' || Rol === '0004' || Rol === '0005');
                     break;
                 case 'C':
-                    continuar = ( Rol === '0001' || Rol === '0004' || Rol === '0005' );
+                    continuar = (Rol === '0001' || Rol === '0004' || Rol === '0005');
                     break;
                 case 'D':
-                    continuar = ( Rol === '0002' || Rol === '0003' );
+                    continuar = (Rol === '0002' || Rol === '0003');
                     break;
                 case 'E':
-                    continuar = ( Rol === '0001' || Rol === '0004' || Rol === '0005' );
+                    continuar = (Rol === '0001' || Rol === '0004' || Rol === '0005');
                     break;
                 case 'G':
-                    continuar = ( Rol === '0001' || Rol === '0004' || Rol === '0005' );
+                    continuar = (Rol === '0001' || Rol === '0004' || Rol === '0005');
                     break;
                 case 'H':
                 default:
@@ -230,120 +358,256 @@ sap.ui.define([
                     break;
             }
 
-            if( !continuar ){
+            if (!continuar) {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.noEditMsg'));
                 return false;
             }
             this.getOwnerComponent().getRouter().navTo("detailAclaracion", { layout: fioriLibrary.LayoutType.MidColumnFullScreen, document: results[line].Folio, modo: 'edit', tipo: results[line].TipAcla }, true);
         },
-        buildExportTable: function () {
+        /*  buildExportTable: function () {
+              var texts = this.getOwnerComponent().getModel("appTxts");
+  
+              var columns = [
+                  {
+                      name: texts.getProperty("/clarifications.headerFolioUPC"),
+                      template: {
+                    1      content: "{Folio}"
+                      }
+                  },
+                  {
+                      name: texts.getProperty("/clarifications.headerDateUPC"),
+                      template: {
+                     2     content: "{FAlta}"
+                      }
+                  },
+                  {
+                      name: texts.getProperty("/clarifications.headerSupplierUPC"),
+                      template: {
+                     3     content: "{Lifnr}"
+                      }
+                  },
+                  {
+                      name: texts.getProperty("/clarifications.headerTypeUPC"),
+                      template: {
+                     4     content: "{DesAcla}"
+                      }
+                  },
+                  {
+                      name: texts.getProperty("/clarifications.headerInvoiceUPC"),
+                      template: {
+                      5    content: "{Factura}"
+                      }
+                  },
+                  {
+                      name: texts.getProperty("/clarifications.headerReclaimedAmountUPC"),
+                      template: {
+                    6      content: "{MonRec}"
+                      }
+                  },
+                  {
+                      name: texts.getProperty("/clarifications.headerReclaimedTaxesUPC"),
+                      template: {
+                     7     content: "{IvaRec}"
+                      }
+                  },
+                  {
+                      name: texts.getProperty("/clarifications.headerStatusUPC"),
+                      template: {
+                    8      content: "{DesStatus}"
+                      }
+                  },
+                  {
+                      name: texts.getProperty("/clarifications.headerAnalystUPC"),
+                      template: {
+                      9    content: "{Analista}"
+                      }
+                  },
+                  {
+                      name: texts.getProperty("/clarifications.headerAssignmentDateUPC"),
+                      template: {
+                      10    content: "{FAlta}"
+                      }
+                  },
+                  {
+                      name: texts.getProperty("/clarifications.headerAssignmentTimeUPC"),
+                      template: {
+                       11   content: "{HAlta}"
+                      }
+                  },
+                  {
+                      name: texts.getProperty("/clarifications.headerSolutionDateUPC"),
+                      template: {
+                       12   content: "{FVenc}"
+                      }
+                  },
+                  {
+                      name: texts.getProperty("/clarifications.headerClearedAmountUPC"),
+                      template: {
+                      13    content: "{MonAcla}"
+                      }
+                  },
+                  {
+                      name: texts.getProperty("/clarifications.headerClearedTaxesUPC"),
+                      template: {
+                      14    content: "{IvaAcla}"
+                      }
+                  },
+                  {
+                      name: texts.getProperty("/clarifications.headerPaymentUPC"),
+                      template: {
+                    15      content: "{NoDoc}"
+                      }
+                  }
+              ];
+  
+              this.exportxls('Aclaraciones', '/Detalles/results', columns);
+          },*/
+        createColumnConfig: function () {
+            var that = this;
+            var oModel = that.getView().getModel("Aclaraciones").getData(),
+                aCols = [];
+            console.log(oModel);
             var texts = this.getOwnerComponent().getModel("appTxts");
 
-            var columns = [
-                {
-                    name: texts.getProperty("/clarifications.headerFolioUPC"),
-                    template: {
-                        content: "{Folio}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/clarifications.headerDateUPC"),
-                    template: {
-                        content: "{FAlta}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/clarifications.headerSupplierUPC"),
-                    template: {
-                        content: "{Lifnr}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/clarifications.headerTypeUPC"),
-                    template: {
-                        content: "{DesAcla}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/clarifications.headerInvoiceUPC"),
-                    template: {
-                        content: "{Factura}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/clarifications.headerReclaimedAmountUPC"),
-                    template: {
-                        content: "{MonRec}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/clarifications.headerReclaimedTaxesUPC"),
-                    template: {
-                        content: "{IvaRec}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/clarifications.headerStatusUPC"),
-                    template: {
-                        content: "{DesStatus}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/clarifications.headerAnalystUPC"),
-                    template: {
-                        content: "{Analista}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/clarifications.headerAssignmentDateUPC"),
-                    template: {
-                        content: "{FAlta}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/clarifications.headerAssignmentTimeUPC"),
-                    template: {
-                        content: "{HAlta}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/clarifications.headerSolutionDateUPC"),
-                    template: {
-                        content: "{FVenc}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/clarifications.headerClearedAmountUPC"),
-                    template: {
-                        content: "{MonAcla}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/clarifications.headerClearedTaxesUPC"),
-                    template: {
-                        content: "{IvaAcla}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/clarifications.headerPaymentUPC"),
-                    template: {
-                        content: "{NoDoc}"
-                    }
-                }
-            ];
+            aCols.push({
+                label: texts.getProperty("/clarifications.headerFolioUPC"),
+                type: EdmType.String,
+                property: 'Folio'
+            });
 
-            this.exportxls('Aclaraciones', '/Detalles/results', columns);
+            aCols.push({
+                label: texts.getProperty("/clarifications.headerDateUPC"),
+                type: EdmType.String,
+                property: 'FAlta'
+            });
+            aCols.push({
+                label: texts.getProperty("/clarifications.headerSupplierUPC"),
+                type: EdmType.String,
+                property: 'Lifnr'
+            });
+
+            //****
+            aCols.push({
+                label: texts.getProperty("/clarifications.headerTypeUPC"),
+                type: EdmType.String,
+                property: 'DesAcla'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/clarifications.headerInvoiceUPC"),
+                type: EdmType.String,
+                property: 'Factura'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/clarifications.headerReclaimedAmountUPC"),
+                type: EdmType.String,
+                property: 'MonRec'
+
+
+            });
+
+            aCols.push({
+                label: texts.getProperty("/clarifications.headerReclaimedTaxesUPC"),
+                type: EdmType.String,
+                property: 'IvaRec'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/clarifications.headerStatusUPC"),
+                type: EdmType.String,
+                property: 'DesStatus'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/clarifications.headerAnalystUPC"),
+                type: EdmType.String,
+                property: 'Analista'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/clarifications.headerAssignmentDateUPC"),
+                type: EdmType.String,
+                property: 'FAlta'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/clarifications.headerAssignmentTimeUPC"),
+                type: EdmType.String,
+                property: 'HAlta'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/clarifications.headerSolutionDateUPC"),
+                type: EdmType.String,
+                property: 'FVenc'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/clarifications.headerClearedAmountUPC"),
+                type: EdmType.String,
+                property: 'MonAcla'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/clarifications.headerSupplierUPC"),
+                type: EdmType.String,
+                property: 'IvaAcla'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/clarifications.headerPaymentUPC"),
+                type: EdmType.String,
+                property: 'NoDoc'
+            });
+
+
+
+            console.log(aCols);
+            return aCols;
         },
-        onSelectColaborator: function(){
-            this.getView().byId("supplierInput").setEditable( !this.getView().byId("colSor").getSelected() )
+        //exporta excel
+        buildExportTable: function () {
+            var aCols, oRowBinding, oSettings, oSheet, oTable, that = this;
+
+            if (!that._oTable) {
+                that._oTable = this.byId('aclaracionesList');
+            }
+
+            oTable = that._oTable;
+            console.log(oTable);
+            //oRowBinding = oTable.getBinding('items');
+            //oRowBinding = oTable.getBinding('rows');
+            oRowBinding = oTable.getBinding().oList;
+
+            aCols = that.createColumnConfig();
+
+            oSettings = {
+                workbook: {
+                    columns: aCols,
+                    hierarchyLevel: 'Level'
+                },
+                dataSource: oRowBinding,
+                fileName: 'Aclaraciones',
+                worker: false // We need to disable worker because we are using a MockServer as OData Service
+            };
+
+            oSheet = new Spreadsheet(oSettings);
+            oSheet.build().finally(function () {
+                oSheet.destroy();
+            });
         },
-        paginar : function(selectedItem){
-                
-            let totalRegistros = parseInt( this.getOwnerComponent().getModel('Aclaraciones').getProperty('/Detalles/results/length'), 10);
-            let valorSeleccinado = parseInt( selectedItem.getKey(), 10);
-            
+
+        onSelectColaborator: function () {
+            this.getView().byId("supplierInput").setEditable(!this.getView().byId("colSor").getSelected())
+        },
+        paginar: function (selectedItem) {
+
+            let totalRegistros = parseInt(this.getOwnerComponent().getModel('Aclaraciones').getProperty('/Detalles/results/length'), 10);
+            let valorSeleccinado = parseInt(selectedItem.getKey(), 10);
+
             let tablaPrincipal = this.getView().byId("aclaracionesList");
-            tablaPrincipal.setVisibleRowCount( totalRegistros < valorSeleccinado ? totalRegistros : valorSeleccinado );
+            tablaPrincipal.setVisibleRowCount(totalRegistros < valorSeleccinado ? totalRegistros : valorSeleccinado);
             this.paginateValue(selectedItem, 'Aclaraciones', '/Detalles');
         }
         /*,

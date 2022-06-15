@@ -5,26 +5,26 @@
 	xmlns:form="sap.ui.layout.form"
 	xmlns:u="sap.ui.unified"
 	xmlns:layout="sap.ui.layout">
-    <Title text="Datos de importacion" titleStyle="H3" width="100%" textAlign="Center" visible="{= ${configSite>/supplierInportation} === 'X' }" class="sapUiMediumMarginTop" />
+    <Title text="{appTxts>/rem.importData}" titleStyle="H3" width="100%" textAlign="Center" visible="{= ${configSite>/supplierInportation} === 'X' }" class="sapUiMediumMarginTop" />
     <HBox width="100%" visible="{= ${configSite>/supplierInportation} === 'X' }">
         <VBox width="33%" alignItems="Center">
-            <Label text="Pedimento:" />
+            <Label text="{appTxts>/rem.petition}:" />
             <Input id="petition" width="auto" change=".remissionValidate" />
-            <Label text="Aduana:" />
+            <Label text="{appTxts>/rem.customs}:" />
             <Input id="customs" width="auto" change=".remissionValidate" />
         </VBox>
         <VBox width="33%">
-            <Label text="Tipo de pedimento:" />
+            <Label text="{appTxts>/rem.petitionType}:" />
             <Input id="petitionType" width="auto" change=".remissionValidate" maxLength="20" />
-            <Label text="Agente aduanal:" />
+            <Label text="{appTxts>/rem.customsAgent}:" />
             <Input id="customsBrokert" width="auto" change=".remissionValidate" />
         </VBox>
         <VBox width="33%">
-            <Label text="Fecha pedimento:" />
+            <Label text="{appTxts>/rem.petitionDate}:" />
             <DatePicker id="petitionDate" width="auto" valueFormat="MM/dd/yy" />
-            <Label text="Fecha recibo laredo:" />
+            <Label text="{appTxts>/rem.receiptDate}:" />
             <DatePicker id="laredoDate" width="auto" valueFormat="MM/dd/yy" />
-            <Label text="Fecha bill of landing:" />
+            <Label text="{appTxts>/rem.ladingDate}:" />
             <DatePicker id="bLandingDate" width="auto" valueFormat="MM/dd/yy" />
         </VBox>
     </HBox>

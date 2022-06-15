@@ -45,8 +45,7 @@ sap.ui.define([
         },
         onRoutePatternMatched: function (event) {
             var vView = event.getParameter("name");
-
-            if (!oUser.getModel() || oUser.getModel() === undefined && vView != 'ConfirmUser') {
+            if ((!oUser.getModel() || oUser.getModel() === undefined) && vView != 'ConfirmUser') {
                 this.getOwnerComponent().getRouter().navTo("appHome", {}, true);
             }
         },
@@ -278,7 +277,8 @@ sap.ui.define([
         },
         onValueHelpRequest: function () {
             var oView = this.getView();
-
+            oUser
+            this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({}), "tableItemsUsers");            
             if (!this._pValueHelpDialog) {
                 this._pValueHelpDialog = sap.ui.core.Fragment.load({
                     id: oView.getId(),
@@ -290,13 +290,30 @@ sap.ui.define([
                 });
             }
             this._pValueHelpDialog.then(function (oDialog) {
-                // Create a filter for the binding
-                //oDialog.getBinding("items").filter([new Filter("Name", FilterOperator.Contains, sInputValue)]);
-                // Open ValueHelpDialog filtered by the input's value
+                oDialog._oCancelButton.setProperty('text', oView.getModel("appTxts").getProperty("/global.btnCancel"));
                 oDialog.open();
             });
         },
-
+        onValueHelpRequestquitar: function () {
+            var oView = this.getView();
+            this.getConfigModel().setProperty("/supplierInput",null);     
+            this.getConfigModel().setProperty("/supplierInputKey",null);       
+            this.getConfigModel().setProperty("/supplierTitle",null);
+        /*    if (!this._pValueHelpDialog) {
+                this._pValueHelpDialog = sap.ui.core.Fragment.load({
+                    id: oView.getId(),
+                    name: "demo.fragments.SupplierSelect",
+                    controller: this
+                }).then(function (oDialog) {
+                    oView.addDependent(oDialog);
+                    return oDialog;
+                });
+            }
+            this._pValueHelpDialog.then(function (oDialog) {
+               
+                oDialog.open();
+            });*/
+        },
         onValueHelpSearch: function (oEvent) {
             var sValue = oEvent.getParameter("value");
             var usrModel = this.getOwnerComponent().getModel("userdata");
@@ -311,15 +328,33 @@ sap.ui.define([
 
         onValueHelpClose: function (oEvent) {
             var oSelectedItem = oEvent.getParameter("selectedItem");
+                        console.log(oEvent.getSource().getBinding("items"));
+            var descBloqueo = ""
+
+            var oList = oEvent.getSource().getBinding("items").oList
+            var oReg  = oList[0]
+
+            var bloqueo = oReg ? oReg.BloqueoFlag : ""
+
+        if(bloqueo == "X"){
+
+            descBloqueo="[Bloqueo de pago]"
+
+        }
+
             oEvent.getSource().getBinding("items").filter([]);
 
             if (!oSelectedItem) {
                 return;
             }
 
+
+             this.getConfigModel().setProperty("/supplierStatus", descBloqueo);
+
+
             var detSupp = this.detailSupplier(oSelectedItem.getTitle());
 
-            this.setActiveLifnr(oSelectedItem.getTitle(), oSelectedItem.getDescription(), detSupp.Impflag);
+            this.setActiveLifnr(oSelectedItem.getTitle(), oSelectedItem.getDescription() + descBloqueo, detSupp.Impflag);
 
         },
         setActiveLifnr: function (key, description, importation) {
@@ -356,19 +391,32 @@ sap.ui.define([
             var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
             var userFunctions = this.getOwnerComponent().getModel('userdata').getProperty("/ETROLUSUANAV/results");
             var hasCollab = this.getOwnerComponent().getModel('userdata').getProperty("/Esusdata/Zusuasor");
+            var roluser = this.getOwnerComponent().getModel('userdata').getProperty("/ERol");
+            
+            
+
 
             sectionsModel.forEach(function (section) {
                 section.tiles.forEach(function (t) {
                     t.functions.forEach(function (f) {
                         var strFunction = f.idFunction;
-                        if (hasCollab) {
-                            if (strFunction != null) {
-                                var funcValue = userFunctions.find(element => element.Idfuncion == strFunction.toString().padStart(6, "000000"));
+                        var rolesPermitidos = f.roles;
+                        var continuar = true;
+                        if (rolesPermitidos != null){
+                             continuar = rolesPermitidos.includes(roluser);
+                        }
+                        if (continuar){
+                            if (hasCollab) {
+                                if (strFunction != null) {
+                                    var funcValue = userFunctions.find(element => element.Idfuncion == strFunction.toString().padStart(6, "000000"));
+                                    
+                                }
+                            } else {
+                                if (strFunction != null) {
+                                    var funcValue = userFunctions.find(element => element.Idfuncion == strFunction.toString().padStart(6, "000000") && element.Lifnr == vLifnr);
+                                }
                             }
-                        } else {
-                            if (strFunction != null) {
-                                var funcValue = userFunctions.find(element => element.Idfuncion == strFunction.toString().padStart(6, "000000") && element.Lifnr == vLifnr);
-                            }
+    
                         }
 
                         if (funcValue != null) {
@@ -454,7 +502,7 @@ sap.ui.define([
 
             if (userTileAuth != null) {
                 var tiles = userTileAuth.getProperty("/tiles");
-                if (tiles != null) {
+                if (tiles != null) {                    
                     return tiles.includes(tileID);
                 } else {
                     return false;
@@ -557,6 +605,16 @@ sap.ui.define([
 
             return bAccess;
         },
+        frmBtnDesvVisible: function (esvisible, usr1) {
+            //var confiSite = this.getOwnerComponent().getModel("configSite");
+           // var disp = confiSite.getProperty("/barVisible");
+           if (esvisible && usr1 != "" && usr1 != undefined && usr1 !== null){
+            var seve = true;
+           }
+           
+            return ((esvisible && usr1 !== null && usr1 !== "" && usr1 !== undefined));
+            // return ((chgUsrRol == '0001' || chgUsrRol == '0005') && usrRol != '0005');
+        },
         setConfigModel: function () {
             if (!this.getOwnerComponent().getModel("configSite")) {
                 var obj = {
@@ -564,9 +622,14 @@ sap.ui.define([
                     "barVisible": false
                 };
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(obj), "configSite");
+                var countmails = this.getInboxCount();            
+                this.getOwnerComponent().getModel("configSite").setProperty("/inboxMetric", countmails);
             }
+            var countmails = this.getInboxCount();            
+            this.getOwnerComponent().getModel("configSite").setProperty("/inboxMetric", countmails);
         },
         getConfigModel: function () {
+           
             return this.getOwnerComponent().getModel("configSite");
         },
         paginate: function (modelName, pTable, iterator, startRow) {
@@ -747,6 +810,16 @@ sap.ui.define([
             var blob = new Blob([byteArray.buffer], { type: type });
             return URL.createObjectURL(blob);
         },
+        buildBlob: function (url, type) {
+            var parts = url.split(",");
+            var decodedPdfContent = atob(parts[1]);
+            var byteArray = new Uint8Array(decodedPdfContent.length)
+            for (var i = 0; i < decodedPdfContent.length; i++) {
+                byteArray[i] = decodedPdfContent.charCodeAt(i);
+            }
+            var blob = new Blob([byteArray.buffer], { type: type });
+            return (blob);
+        },
         findFunName: function (funct) {
             var fNames = this.getOwnerComponent().getModel("funNames").getProperty("/results");
             var changeI = funct.toString();
@@ -803,6 +876,26 @@ sap.ui.define([
             };
             reader.readAsDataURL(file);
         },
+        getInboxCount:  function () {
+            
+            
+            var countMails = 0;
+            
+            if (this.getOwnerComponent().getModel("userdata") != null) {
+                var vMail = this.getOwnerComponent().getModel("userdata").getProperty("/IMail");
+            var response = inboxModel.getJsonModel(
+                `/headInboxSet?$expand=ETINBOXUNAV&$filter=IOption eq '2' and IMail eq '${vMail}'`);
+                if (response != null) {
+                    var objResponse = response.getProperty("/results/0/ETINBOXUNAV/results");
+                    //countMails= objResponse.getData().length;
+                     countMails =  parseInt(response.getProperty("/results/0/ENmes"),10);
+                    }
+                
+                    
+            }
+        return countMails;
+        },
+
         getStatus: function () {
             var oView = this.getView();
 

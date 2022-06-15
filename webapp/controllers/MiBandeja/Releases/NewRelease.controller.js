@@ -28,6 +28,11 @@ sap.ui.define([
                     this.getView().byId("allSupp").setSelected(false);
                     this.getView().byId("btnAdd").setEnabled(true);
                     this.getView().byId("btnRemove").setEnabled(true);
+                    //this.getView().byId("dateRange").dateRange
+                   var oDRS2 = this.byId("dateRange");
+                    oDRS2.setMinDate(new Date());
+                    oDRS2.setDateValue(new Date());
+                    oDRS2.setSecondDateValue(new Date());
                 }
             }, this);
             this.configUploadSet(this.getView().byId("attacheds"));
@@ -39,13 +44,25 @@ sap.ui.define([
         onCancel: function () {
             this.goToMainRelease();
         },
+        handleChange: function (oEvent) {
+			var sFrom = oEvent.getParameter("from"),
+				//sTo = oEvent.getParameter("to"),
+				bValid = oEvent.getParameter("valid"),
+				oEventSource = oEvent.getSource();
+				//oText = this.byId("TextEvent");
+			   //oText.setText("Id: " + oEventSource.getId() + "\nFrom: " + sFrom + "\nTo: " + sTo);
+
+			if (bValid) {
+				//oEventSource.setValueState(ValueState.None);
+			} else {
+				oEventSource.setValueState(ValueState.Error);
+			}
+		},
         goToMainRelease: function () {
             this.oRouter.navTo("masterRelease");
             this.clearFields();
         },
-        clearFields: function () {
-
-        },
+      
         openSupplierSlect: function () {
             if (!this._uploadDialog2) {
                 this._uploadDialog2 = sap.ui.xmlfragment("demo.views.MiBandeja.Releases.SupplierSelect", this);
@@ -206,7 +223,7 @@ sap.ui.define([
                         }.bind(this)
                     });
                 } else {
-                    sap.m.MessageBox.success(response.EMessage);
+                    sap.m.MessageBox.error(response.EMessage);
                 }
             } else {
                 sap.m.MessageBox.error("No se pudo conectar con el servidor, intente nuevamente.");
@@ -240,10 +257,72 @@ sap.ui.define([
 
             fileList;
         },
+        onUpload: function (e) {
+			this._import(e.getParameter("files") && e.getParameter("files")[0]);
+		},
+
+		_import: function (file) {
+			var that = this;
+			var excelData = {};
+			if (file && window.FileReader) {
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					var data = e.target.result;
+					var workbook = XLSX.read(data, {
+						type: 'binary'
+					});
+					workbook.SheetNames.forEach(function (sheetName) {
+						// Here is your object for every sheet in workbook
+						excelData = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        if (excelData != null && excelData.length > 0) {
+
+                            var newRelease = {
+                                "suppList": []
+                            };
+                            excelData.forEach(elementexcel => {
+                    
+                                if (that.getOwnerComponent().getModel("newRelease")) {
+                                    newRelease.suppList = that.getOwnerComponent().getModel("newRelease").getProperty("/suppList");
+                                    if (newRelease.suppList != null && !newRelease.suppList.find(element => element.title == elementexcel.title)) {
+                                        newRelease.suppList.push(elementexcel);
+                                    }
+                                } else {
+                                    newRelease.suppList.push(elementexcel);
+                                }
+                    
+                                var model = new sap.ui.model.json.JSONModel(newRelease);
+                                that.getOwnerComponent().setModel(model, "newRelease");
+                    
+
+
+
+                            });
+                        }
+
+
+
+					});
+
+                   
+        
+
+					// Setting the data to the local model 
+					//that.localModel.setData({
+					//	items: excelData
+					//});
+					//that.localModel.refresh(true);
+				};
+				reader.onerror = function (ex) {
+					console.log(ex);
+				};
+				reader.readAsBinaryString(file);
+			}
+		},
         addAttach: function (oEvent) {
+            var that = this;
             var pItem = oEvent.getParameter("item");
             var oItem = pItem.getFileObject();
-
+            
 
             var nReleaseModel = this.getOwnerComponent().getModel("nRelease");
 
@@ -256,6 +335,18 @@ sap.ui.define([
                     var oAttach = nReleaseModel.getData();
                         oAttach.attach.push(oFile);
                     pItem.setUploadState(sap.m.UploadState.Complete);
+                    // cambio
+                   // oattacheds.getBinding("items").refresh();
+                   /*var oUploadSet = that.getView().byId("attacheds");
+                   var oUploadSetItem = new sap.m.upload.UploadSetItem({
+                    fileName:oItem.name,
+                    mediaType: oItem.type,
+                    uploadState: sap.m.UploadState.Complete,
+                    thumbnailUrl: null
+                    });
+                    oUploadSet.addItem(oUploadSetItem);
+                    oUploadSet.getBinding("items").refresh();                    */
+                    //cambio
                 };
                 reader.readAsDataURL(oItem);
         },

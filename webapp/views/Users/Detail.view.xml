@@ -55,7 +55,7 @@
                             <m:Button
                                     text="{path: 'detailUserModel>/Esusdata/Idrol', formatter: '.btnChgRolGetName'}"
                                     type="Transparent"
-                                    visible="{parts: [ {path: 'userdata>/ERol'}, {path: 'detailUserModel>/Esusdata/Idrol'}], formatter: '.frmBtnChgRolVisible'}"
+                                    visible="{parts: [ {path: 'userdata>/ERol'}, {path: 'detailUserModel>/Esusdata/Idrol'},{path: 'userdata>/EIdusua'},{path: 'detailUserModel>/IIdusua'}], formatter: '.frmBtnChgRolVisible'}"
                                     press="handleChangeToAdmin"
                                      />
                             <m:Button
@@ -68,7 +68,7 @@
                                     text="{= ${detailUserModel>/Esusdata/Zactivo} !== 'B' ? ${appTxts>/user.disable} : ${appTxts>/user.enable} }"
                                     type="Transparent"
                                     press="handleDropUser"
-                                    visible="{= ${userdata>/ERol} === '0001' || ${userdata>/ERol} === '0002' }"
+                                    visible="{parts: [ {path: 'userdata>/ERol'}, {path: 'detailUserModel>/Esusdata/Idrol'},{path: 'userdata>/EIdusua'},{path: 'detailUserModel>/IIdusua'}], formatter: '.frmBtnChgRolVisible2'}"
                                      />
 						</actions>
 
@@ -86,11 +86,11 @@
 						</m:VBox>
 						<m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
 							<m:Label text="No. de proveedor"/>
-							<m:Text text="{detailUserModel>/ILifnr}"/>
+							<m:Text text="{detailUserModel>/ILifnr}" />
 						</m:VBox>
 						<m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
 							<m:Label text="Nombre de Proveedor"/>
-							<m:Text text="{detailUserModel>/ENameprov}"/>
+							<m:Text  text="{detailUserModel>/ENameprov}"  />
 						</m:VBox>
                         <m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
 							<m:Label text="Tipo de usuario"/>
@@ -131,11 +131,11 @@
 								<form:content>
                                     <core:Title text="Datos personales" />
                                     <m:Label text="Nombre(s)"/>
-									<m:Input id="Name1" value="{detailUserModel>/Esusdata/Name1}" maxLength="35"/>
+									<m:Input id="Name1" value="{detailUserModel>/Esusdata/Name1}" enabled="false" maxLength="35"/>
                                     <m:Label text="Apellido paterno"/>
-									<m:Input id="Name2" value="{detailUserModel>/Esusdata/Name2}" maxLength="35"/>
+									<m:Input id="Name2" value="{detailUserModel>/Esusdata/Name2}" enabled="false" maxLength="35"/>
                                     <m:Label text="Apellido materno"/>
-									<m:Input id="Name3" value="{detailUserModel>/Esusdata/Name3}" maxLength="35"/>
+									<m:Input id="Name3" value="{detailUserModel>/Esusdata/Name3}" enabled="false" maxLength="35"/>
 
                                     <core:Title text="Datos de contacto" />
 									<m:Label text="Teléfono"/>
@@ -180,7 +180,7 @@
                                     items="{path: 'tilesModelLocal>tiles', templateShareable:false}"
                                     class="sapUiMediumMargin">
                                         <m:items>
-                                            <m:VBox width="25%">
+                                            <m:VBox width="33%">
                                                 <m:Title text="{path: 'tilesModelLocal>title', formatter: '.formatTranslate'}" />
                                                 <m:FlexBox
                                                 id="fBoxFunctions"

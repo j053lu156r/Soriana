@@ -18,6 +18,8 @@ sap.ui.define([
             this.oRouter = this.oOwnerComponent.getRouter();
             this.oRouter.attachRouteMatched(this.onRouteMatched, this);
             this.oRouter.attachBeforeRouteMatched(this.onBeforeRouteMatched, this);
+            this.oRouter.fireBeforeRouteMatched();
+             this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
         },
 
         onBeforeRouteMatched: function (oEvent) {
@@ -42,7 +44,7 @@ sap.ui.define([
                 }
             } else {
                 if(sRouteName != "appHome"){
-                    this.getOwnerComponent().getRouter().navTo("appHome", {}, true /*no history*/ );
+                    this.getOwnerComponent().getRouter().navTo("appHome" /*, {}, true /*no history*/ );
                 }
             }
         },
@@ -70,7 +72,7 @@ sap.ui.define([
             var oUIState = this.oOwnerComponent.getHelper().getCurrentUIState();
             oModel.setData(oUIState);
         },
-
+      
         onStateChanged: function (oEvent) {
             var bIsNavigationArrow = oEvent.getParameter("isNavigationArrow"),
                 sLayout = oEvent.getParameter("layout");

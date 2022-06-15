@@ -38,14 +38,14 @@ BaseModel.prototype.getJsonModel = function (string) {
     return jsonModel;
 };
 
-BaseModel.prototype.getJsonModelAsync = function (string, successFunction, errorFunction, parent) {
+BaseModel.prototype.getJsonModelAsync = function (string, successFunction, errorFunction, parent, async = true) {
     if (!this.getModel()) {
         this.initModel();
     }
 
     this.getModel().read(string,
         {
-            async: true,
+            async: async,
             success: function (oData, response) {
                 var jsonModel = new sap.ui.model.json.JSONModel();
                 jsonModel.setData(oData);
@@ -66,6 +66,7 @@ BaseModel.prototype.create = function (url, object) {
 
     var oSucces = null;
     var model = this.getModel();
+    console.log(model)    
     model.setHeaders({
         "X-CSRF-Token": "fetch",
         "X-Requested-With": "XMLHttpRequest"
@@ -75,8 +76,9 @@ BaseModel.prototype.create = function (url, object) {
     console.log("***************** After refreshSecurityToken");
 
     model.read("");
-
+    console.log(model)
     var gToken = model.getSecurityToken();
+    console.log(gToken)
 
     model.setHeaders({
         "X-CSRF-Token": gToken,
@@ -332,6 +334,17 @@ function CfdiModel() {
 CfdiModel.prototype = Object.create(BaseModel.prototype);
 CfdiModel.prototype.constructor = CfdiModel;
 
+//Model Aviso anticipado
+function AvisoModel() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_CFDI_BTNSND2_22_SRV/";
+    params.sModel = "avisoModel";
+    BaseModel.call(this, params);
+}
+
+AvisoModel.prototype = Object.create(BaseModel.prototype);
+AvisoModel.prototype.constructor = AvisoModel;
+
 //Model para Descarga ZIP Devoluciones Detecno
 function DevoZipModel() {
     var params = {};
@@ -386,6 +399,17 @@ function Aportaciones() {
 
 Aportaciones.prototype = Object.create(BaseModel.prototype);
 Aportaciones.prototype.constructor = Aportaciones;//Model Aportaciones
+
+//Model Acuerdos
+function Acuerdos() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_ACUERDOS_SRV/";
+    params.sModel = "acuerdosModel";
+    BaseModel.call(this, params);
+}
+
+Acuerdos.prototype = Object.create(BaseModel.prototype);
+Acuerdos.prototype.constructor = Acuerdos;//Model Acuerdos
 
 //Model citas 1
 function RemissionCancel() {

@@ -53,7 +53,7 @@
                                 label                = "{appTxts>/state.date}" 
                                 mandatory            = "true" 
                                 partOfCurrentVariant = "true" 
-                                visibleInFilterBar   = "true">
+                                visibleInFilterBar   = "false">
                                 <fb:control>
                                     <DateRangeSelection id="dateRange" change="onChange" required="false"/>
                                 </fb:control>
@@ -69,6 +69,39 @@
                                 visibleInFilterBar   = "true">
                                 <fb:control>
                                     <Input id="supplierInput" placeholder="{appTxts>/state.supplier}" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}">
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem 
+                                groupName            = "__$INTERNAL$" 
+                                name                 = "D" 
+                                mandatory            = "false"
+                                label                = "Filtro" 
+                                labelTooltip         = "Filtro" 
+                                partOfCurrentVariant = "true" 
+                                visibleInFilterBar   = "true">
+                                <fb:control>
+                                   <Select
+                                    id="filtroBusqueda"
+                        forceSelection="false"
+                         items="{
+                            path: 'filterOptions>/filtros'
+                            
+                        }">
+                    <core:Item key="{filterOptions>filtro}" text="{filterOptions>descripcion}" />
+                </Select>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem 
+                                groupName            = "__$INTERNAL$" 
+                                name                 = "C" 
+                                mandatory            = "false"
+                                label                = "" 
+                                labelTooltip         = "Tooltip Example" 
+                                partOfCurrentVariant = "true" 
+                                visibleInFilterBar   = "true">
+                                <fb:control>
+                                    <Input id="Belnr"   >
                                     </Input>
                                 </fb:control>
                             </fb:FilterGroupItem>
@@ -236,12 +269,12 @@
                                                 xmlns="sap.m"
                                                 xmlns:unified="sap.ui.unified"
                                                 xmlns:core="sap.ui.core"
-                                                xmlns:layout="sap.ui.commons.layout" id="lBancoNom" text="" design="Bold"/>
+                                                xmlns:layout="sap.ui.commons.layout" id="lBancoNom" text="Estatus" design="Bold"/>
                                             <Label xmlns:mvc="sap.ui.core.mvc"
                                                 xmlns="sap.m"
                                                 xmlns:unified="sap.ui.unified"
                                                 xmlns:core="sap.ui.core"
-                                                xmlns:layout="sap.ui.commons.layout" id="tBancoNom" text=""/>
+                                                xmlns:layout="sap.ui.commons.layout" id="tBancoNom" text="{configSite>/supplierStatus}"/>
                                             <Label xmlns:html="http://www.w3.org/1999/xhtml"
                                                 xmlns:sap.ui.layout="sap.ui.layout"
                                                 xmlns:mvc="sap.ui.core.mvc"
@@ -320,7 +353,7 @@
                         </FlexBox>
                     </content>
                 </Panel>
-                <Table xmlns="sap.ui.table"
+                <Table visible="false" xmlns="sap.ui.table"
                     xmlns:mvc="sap.ui.core.mvc"
                     xmlns:u="sap.ui.unified"
                     xmlns:c="sap.ui.core" selectionMode="None"
@@ -330,6 +363,7 @@
                         <m:OverflowToolbar style="Clear">
                             <m:Title id="title" text="{appTxts>/state.detail} ({totales>/Detalles/results/length})"/>
                             <m:ToolbarSpacer/>
+                              <m:CheckBox id="checkPartidas_" text="Partidas pendientes de pago" select="onTableGrouping" visible="{= ${totales>/Detalles/results/length} > 0}"/>
                             <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${totales>/Detalles/results/length} > 0}" />
                             <m:Select visible="{= ${totales>/Detalles/Paginated/results/length} > 0 }" change="paginar( ${$parameters>/selectedItem} )">
                                 <m:items>
@@ -378,6 +412,18 @@
                                 <m:Text text="{totales>Wrbtr}" wrapping="false" />
                             </template>
                         </Column>
+                                <Column width="20%">
+                            <m:Label text="Mejor Condición" />
+                            <template>
+                                <m:Text text="{totales>MCondicion}" wrapping="false" />
+                            </template>
+                        </Column>
+                         <Column width="10%">
+                            <m:Label text="Bloqueado" />
+                            <template>
+                                <m:Text text="{totales>BloqueoFlag}" wrapping="false" />
+                            </template>
+                        </Column>
                         <Column width="15%">
                             <m:Label text="{appTxts>/state.conciliation}" />
                             <template>
@@ -386,12 +432,167 @@
                         </Column>
                     </columns>
                 </Table>
-                <OverflowToolbar visible="{= ${totales>/Detalles/Paginated/results/length} > 0 }">
+                <!--
+                <OverflowToolbar  visible="{= ${totales>/Detalles/Paginated/results/length} > 0 }">
+                -->
+                                    <OverflowToolbar  visible="false">
+
                     <Text text="{totales>/Detalles/Paginated/initRow} - {totales>/Detalles/Paginated/endRow} {appTxts>/pagination.of} {totales>/Detalles/results/length}" />
                     <ToolbarSpacer/>
                     <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${totales>/Detalles/Paginated/iterator}, ${totales>/Detalles/Paginated/initRow}, 'totales', '/Detalles')" enabled="{= ${totales>/Detalles/Paginated/iterator} !== 1}" />
                     <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${totales>/Detalles/Paginated/iterator}, ${totales>/Detalles/Paginated/endRow}, 'totales', '/Detalles')" enabled="{= ${totales>/Detalles/Paginated/endRow} !== ${totales>/Detalles/results/length}}" />
                 </OverflowToolbar>
+
+                <!-- tabla con agrupacion -->
+                <Table  selectionChange="handleSelection" growing="true" growingThreshold="10" inset="false" id="idGroupTable">
+                    <headerToolbar>
+                    <OverflowToolbar id="idCrumbToolbar" >
+                        <Breadcrumbs id="breadcrumb" />
+                        <ToolbarSpacer/>
+                              <CheckBox id="checkPartidas" text="Partidas pendientes de pago" select="onTableGrouping" visible="{= ${totales>/Detalles/results/length} > 0}"/>
+                              <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${totales>/Detalles/results/length} > 0}" />
+                    </OverflowToolbar>
+                </headerToolbar>
+
+                        <columns>
+
+                      <Column
+                        id="tipoColumn"
+                         demandPopin="false"
+                         >
+                        <Text text="{appTxts>/aportaciones.concepto}" />
+                        <footer>
+                        
+                            <Text id="idFooterText" text="Total"/>
+                        </footer>
+                    </Column>
+                    <Column
+                        id="statusColumn"
+                        minScreenWidth="Tablet"
+                         demandPopin="true"
+                        >
+                        <Text text="{appTxts>/state.status}"/>
+                    </Column>
+                    <Column
+                        id="folioColumn"
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                        hAlign="End"
+                        visible="true">
+                        <Text text="{appTxts>/state.folio}" />
+                    </Column>
+                    <Column
+                        id="referenceColumn"
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                        hAlign="Center"
+                        visible="true">
+                        <Text text="{appTxts>/state.reference}" />
+                    </Column>
+
+                     <Column
+                        id="typeDocColumn"
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                        hAlign="Center"
+                        visible="true">
+                        <Text text="{appTxts>/state.typeDoc}" />
+                    </Column>
+
+                        <Column
+                        id="dateColumn"
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                        hAlign="Center"
+                        visible="true">
+                        <Text  text="{appTxts>/state.date}" />
+                    </Column>
+
+                    <Column
+                         id="amountColumn"
+                         visible="true"
+                        hAlign="End">
+                        <Text text="{appTxts>/state.amount}"  />
+                    </Column>
+
+                    <Column
+                        id="mCondicionColumn"
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                        hAlign="Center"
+                        visible="true">
+                        <Text  text="Mejor Condición" />
+                    </Column>
+
+                    <Column
+                        id="bloqueoColumn"
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                        hAlign="Center"
+                        visible="true">
+                        <Text  text="Boqueo" />
+                    </Column>
+
+                    <Column
+                        id="conciliacionColumn"
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                        hAlign="Center"
+                        visible="true">
+                        <Text  text="{appTxts>/state.conciliation}" />
+                    </Column>
+
+                    <!-- totales grupo --> 
+                     <Column
+                         id="totalRegColumn"
+                         visible="End"
+                        hAlign="Center">
+                        <Text text="{appTxts>/state.totalReg}" />
+                        <footer>
+                        
+                            <Text  text="{GroupedTotales>/Hierarchy/totalR}"/>
+                        </footer>
+                    </Column>
+
+                       <Column
+                         id="debitColumn"
+                         visible="true"
+                         hAlign="End">
+                        <Text text="{appTxts>/state.debit}" />
+                        <footer>
+                        
+                                <ObjectNumber
+                            number= "{parts: [{path: 'GroupedTotales>/Hierarchy/totalD'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+                              />
+                    
+                        </footer>
+                    </Column>
+                       <Column
+                         id="creditColumn"
+                         visible="true"
+                         hAlign="End">
+                        <Text text="{appTxts>/state.credit}" />
+                        <footer>
+                        
+                                <ObjectNumber
+                            number= "{parts: [{path: 'GroupedTotales>/Hierarchy/totalC'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+                              />
+                    
+                        </footer>
+                    </Column>
+
+
+
+
+
+
+
+
+                    
+                </columns>
+                
+                </Table>
+
             </ScrollContainer>
         </f:content>
     </f:DynamicPage>
