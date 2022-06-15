@@ -145,7 +145,7 @@
 						<Text text="Costo" />
 						<footer>
 
-							<ObjectNumber number= "{parts: [{path: 'GroupedTotales>/Hierarchy/totalC'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+							<ObjectNumber number= "{parts: [{path: 'GroupedTotales>/Hierarchy/totalCostos'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
 
 						</footer>
 					</Column>
