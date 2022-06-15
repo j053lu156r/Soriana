@@ -90,7 +90,7 @@ sap.ui.define([
             let todayDate = new Date();
 
  // format[AAAAMMDD] (2020101)
-            let desde_LV_ZDESDE = this.buildSapDate( todayDate ); 
+            let desde_LV_ZDESDE = '20160219' //this.buildSapDate( todayDate ); 
             // format[AAAAMMDD] (2020101)
             let desde_LV_ZHASTA = this.buildSapDate( todayDate );
 
@@ -276,7 +276,7 @@ this.initTable()
             let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
             // format[AAAAMMDD] (2020101)
            // let desde_LV_ZDESDE = this.buildSapDate( this.subtractYears(1)    ); 
-           let desde_LV_ZDESDE = this.buildSapDate( todayDate   ); 
+           let desde_LV_ZDESDE =   let desde_LV_ZDESDE = '20160219'//this.buildSapDate( todayDate   ); 
             // format[AAAAMMDD] (2020101)
             let desde_LV_ZHASTA = this.buildSapDate( todayDate );
 

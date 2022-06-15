@@ -496,6 +496,13 @@
                     ]
                 },
                 {
+                    "name": "masterAcuerdos",
+                    "pattern": "masterAcuerdos",
+                    "target": [
+                        "masterAcuerdos"
+                    ]
+                },
+                {
                     "name": "Products",
                     "pattern": "Products",
                     "target": [
@@ -742,6 +749,11 @@
                 "masterAportaciones" : {
                     "viewName": "Master",
                     "viewPath": "demo.views.Aportaciones",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "masterAcuerdos" : {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.Acuerdos",
                     "controlAggregation": "beginColumnPages"
                 },
                 "Products": {

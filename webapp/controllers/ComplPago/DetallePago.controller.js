@@ -1,6 +1,6 @@
 sap.ui.define([
 	"sap/ui/model/json/JSONModel",
-	"sap/ui/core/mvc/Controller",
+	"demo/controllers/BaseController",
 	"demo/models/BaseModel",
 	'sap/m/Label',
 	'sap/m/Link',
@@ -104,11 +104,10 @@ sap.ui.define([
 		/** HANDLE DATA CALL METHODS*/
 		searchData: function () {
 
-			let dateRange = this.getView().byId("dateRange");
+			//let dateRange = this.getView().byId("dateRange");
 
 			//ciltro documento 
-			let documentoInput = this.getView().byId("Belnr");
-			let filterInput = this.getView().byId("filtroBusqueda");
+			 
 
 			let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
 			// format[AAAAMMDD] (2020101)
@@ -122,21 +121,18 @@ sap.ui.define([
 			let todayDate = new Date();
 
 			// format[AAAAMMDD] (2020101)
-			let desde_LV_ZDESDE = this.buildSapDate(todayDate);
+			let desde_LV_ZDESDE =  '20160219'// this.buildSapDate(todayDate);
 			// format[AAAAMMDD] (2020101)
 			let desde_LV_ZHASTA = this.buildSapDate(todayDate);
 
 
 
-			let doc_BELNR = documentoInput.getValue();
+			let doc_BELNR = this._document// documentoInput.getValue();
 
 			//checbox validaciones
 
-			let partidasFiltro = this.getView().byId("checkPartidas");
-
-			if (partidasFiltro.getSelected()) {
-				partidasFiltro.setSelected(false);
-			}
+ 
+		 
 
 
 			if (proveedor_LIFNR == null || proveedor_LIFNR == "") {
@@ -149,22 +145,9 @@ sap.ui.define([
 			}
 
 
-			console.log('buscar por ...', filterInput.getSelectedKey())
-
-			var filtroBusqueda = filterInput.getSelectedKey()
+			 
 			var queryFiltro = ""
-
-			if (filtroBusqueda == "") {
-
-				queryFiltro = ''
-
-			} else if (filtroBusqueda == "belnr") {
-				queryFiltro = `and belnr eq '${doc_BELNR}' `
-
-			} else if (filtroBusqueda == "xblnr") {
-				queryFiltro = `and xblnr eq '${doc_BELNR}' `
-
-			}
+ 
 
 
 			var oODataJSONModel = this.getOdata(sUri);
@@ -187,7 +170,7 @@ sap.ui.define([
 			delete TDatos.results[0].Oitms;
 
 
-			TDatos.results[0].periodo = "Del " + this.formatDateTime(dateRange.getDateValue(), 'dd/MM/YYYY') + " al " + this.formatDateTime(dateRange.getSecondDateValue(), 'dd/MM/YYYY');
+			//TDatos.results[0].periodo = "Del " + this.formatDateTime(dateRange.getDateValue(), 'dd/MM/YYYY') + " al " + this.formatDateTime(dateRange.getSecondDateValue(), 'dd/MM/YYYY');
 
 
 			var JSONT = $.extend({}, TDatos.results[0]);
@@ -213,7 +196,7 @@ sap.ui.define([
 				console.log("sumando valores");
 
 
-				var result = groupedMovs[x].reduce(function (_this, val) {
+				var resultCredit = groupedMovs[x].reduce(function (_this, val) {
 					//console.log(val.Wrbtr)
 					var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
 					var total = _this + current
@@ -222,8 +205,14 @@ sap.ui.define([
 
 				//console.log(result)
 
-				var resultCredit = groupedMovs[x].reduce(function (_this, val) {
+				var result = groupedMovs[x].reduce(function (_this, val) {
 					var current = val.Bschl !== "21" ? Number(val.Wrbtr) : 0
+					var total = _this + current
+					return me.truncate(total, 2)
+				}, 0);
+
+				var cost = groupedMovs[x].reduce(function (_this, val) {
+					var current =   Number(val.Wrbtr)  
 					var total = _this + current
 					return me.truncate(total, 2)
 				}, 0);
@@ -232,8 +221,9 @@ sap.ui.define([
 				nestedMovs.push({
 					"name": x,
 					"totalRegs": groupedMovs[x].length,
-					"totalDebit": result,
-					"totalCredit": resultCredit,
+					"totalDebit": Math.abs(result),
+					"totalCredit": Math.abs(resultCredit),
+					"cost": Math.abs(cost),
 					"positions": groupedMovs[x]
 
 				})
@@ -262,6 +252,13 @@ sap.ui.define([
 				return me.truncate(total, 2)
 			}, 0);
 
+			var totalCostos = nestedMovs.reduce(function (_this, val) {
+				var current = Number(val.cost)
+				var total = _this + current
+				return me.truncate(total, 2)
+			}, 0);
+
+
 
 
 			var jsonModelG = new JSONModel({
@@ -269,7 +266,9 @@ sap.ui.define([
 					"movimientos": nestedMovs,
 					"totalR": totalR,
 					"totalD": totalD,
-					"totalC": totalC
+					"totalC": totalC,
+					"totalCostos": totalCostos
+
 				}
 			});
 
@@ -280,9 +279,9 @@ sap.ui.define([
 
 			this.initTable()
 
-			this.getOwnerComponent().setModel(jsonModelT, "totales");
+			//this.getOwnerComponent().setModel(jsonModelT, "totales");
 
-			this.paginate("totales", "/Detalles", 1, 0);
+			//this.paginate("totales", "/Detalles", 1, 0);
 
 		},
 
@@ -392,8 +391,9 @@ sap.ui.define([
 				this.byId("totalRegColumn").setVisible(false);
 				this.byId("debitColumn").setVisible(false);
 				this.byId("creditColumn").setVisible(false);
+				this.byId("costoColumn").setVisible(false);
 
-
+				
 
 
 
@@ -418,8 +418,10 @@ sap.ui.define([
 				this.byId("tipoColumn").setVisible(true);
 
 				this.byId("totalRegColumn").setVisible(true);
-				this.byId("debitColumn").setVisible(true);
-				this.byId("creditColumn").setVisible(true);
+				this.byId("debitColumn").setVisible(false);
+				this.byId("creditColumn").setVisible(false);
+				this.byId("costoColumn").setVisible(true);
+
 
 
 
@@ -559,7 +561,9 @@ sap.ui.define([
 				}),
 				"detailComplPagos");
 
+				//consume el servicio para obtener los docuemntos 
 
+				 this.searchData()
 
 
 
