@@ -42,6 +42,10 @@
 						<MessageStrip class="sapUiSmallMarginBottom"
 								text="{appTxts>/products.msgTabGeneralData}"
 								showIcon="true"/>
+
+						<MessageStrip class="sapUiSmallMarginBottom"
+								text="{appTxts>/products.msgCheckAviability}"
+								showIcon="true"/>
 						<VBox class="sapUiSmallMargin"
 								alignItems="Center"
 								justifyContent="Center"
@@ -63,9 +67,20 @@
                                                         <Input editable="false" value="" id="codeGS1" />
                                                     </form:fields>
                                                 </form:FormElement>
+                                                <form:FormElement label="{appTxts>/products.codeType}">
+                                                    <form:fields>
+                                                        <ComboBox required="true" selectedKey="{Folio>/EanUpcType}" id="codeType" items="{
+                                                                    path : 'Catalogos>/TipoCodigo/results'
+                                                                }" selectionChange="codeTypeChange">
+                                                            <items>
+                                                                <core:Item key="{Catalogos>Numtp}" text="{Catalogos>Ntbez}"/>
+                                                            </items>
+                                                        </ComboBox>
+                                                    </form:fields>
+                                                </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.barCode}">
                                                     <form:fields>
-                                                        <Input required="true" id="barCode" type="Number" value="{Folio>/CodEan}" />
+                                                        <Input required="true" id="barCode" type="Number" value="{Folio>/CodEan}" editable="false"/>
                                                         <Button id="btnValidateDataSupplierGS1" press=".validateBarCode" icon="sap-icon://check-availability" text="">
                                                             <layoutData>
                                                                 <form:ColumnElementData cellsSmall="1" cellsLarge="1" />
@@ -114,17 +129,6 @@
                                                 <form:FormElement label="{appTxts>/products.brand}">
                                                     <form:fields>
                                                         <Input required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onBrandRequest" value="{FolioToShow>/Marca}"  id="brand" editable="{ValidBarCode>/value}"/>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.codeType}">
-                                                    <form:fields>
-                                                        <ComboBox required="true" selectedKey="{Folio>/EanUpcType}" id="codeType" items="{
-                                                                    path : 'Catalogos>/TipoCodigo/results'
-                                                                }" editable="{ValidBarCode>/value}">
-                                                            <items>
-                                                                <core:Item key="{Catalogos>Numtp}" text="{Catalogos>Ntbez}"/>
-                                                            </items>
-                                                        </ComboBox>
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.country}">
@@ -374,7 +378,7 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.salesCode}">
                                                     <form:fields>
-                                                        <Input required="true" id="salesCode" value="{Folio>/CodVent}" type="Number"/>
+                                                        <Input id="salesCode" value="{Folio>/CodVent}" type="Number"/>
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.salesUnitMeasure}">
@@ -390,7 +394,7 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.purchaseUnitCode}">
                                                     <form:fields>
-                                                        <Input required="true" value="{Folio>/CodCompra}" id="purchaseUnitCode" type="Number"/>
+                                                        <Input  value="{Folio>/CodCompra}" id="purchaseUnitCode" type="Number"/>
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.purchaseUnit}">
@@ -567,21 +571,21 @@
                                     <Label text="{appTxts>/products.deep}" />
                                     <Input id="EcProfundo" value="{Folio>/EcProfundo}" type="Number" required="true" liveChange="calcularECVolumen" />
                                     <Label text="{appTxts>/products.msgExpressedIn}" />
-                                    <Input value="{Folio>/EcUndaap}" required="true" />
+                                    <Input id="EcUndaap" value="{Folio>/EcUndaap}" required="true" />
                                     <Label text="{appTxts>/products.volume}" />
                                     <Input id="EcVolumen" value="{Folio>/EcVolumen}" type="Number" editable="false" enabled="true" />
                                     <Label text="{appTxts>/products.volumeUnit}" />
-                                    <ComboBox selectedKey="{Folio>/EcUndvol}" items="{path : 'Catalogos>/UnidadVolumen/results'}" required="true">
+                                    <ComboBox id="EcUndvol" selectedKey="{Folio>/EcUndvol}" items="{path : 'Catalogos>/UnidadVolumen/results'}" required="true">
                                         <items>
                                             <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
                                         </items>
                                     </ComboBox>
                                     <Label text="{appTxts>/products.grossWeight}" />
-                                    <Input value="{Folio>/EcPbruto}"  type="Number" required="true"/>
+                                    <Input id="EcPbruto" value="{Folio>/EcPbruto}"  type="Number" required="true"/>
                                     <Label text="{appTxts>/products.netWeight}" />
-                                    <Input value="{Folio>/EcPneto}" type="Number" required="true" />
+                                    <Input id="EcPneto" value="{Folio>/EcPneto}" type="Number" required="true" />
                                     <Label text="{appTxts>/products.weightUnit}" />
-                                    <ComboBox selectedKey="{Folio>/EcUndp}" items="{path : 'Catalogos>/UnidadPeso/results'}" required="true">
+                                    <ComboBox id="EcUndp" selectedKey="{Folio>/EcUndp}" items="{path : 'Catalogos>/UnidadPeso/results'}" required="true">
                                         <items>
                                             <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
                                         </items>
@@ -596,21 +600,21 @@
                                     <Label text="{appTxts>/products.deep}" />
                                     <Input id="PvProfundo" value="{Folio>/PvProfundo}" type="Number" required="true" liveChange="calcularPvVolumen"/>
                                     <Label text="{appTxts>/products.msgExpressedIn}" />
-                                    <Input value="{Folio>/PvUndaap}" required="true" />
+                                    <Input id="PvUndaap" value="{Folio>/PvUndaap}" required="true" />
                                     <Label text="{appTxts>/products.volume}" />
                                     <Input id="PvVolumen" value="{Folio>/PvVolumen}" type="Number" editable="false" enabled="true" required="true"/>
                                     <Label text="{appTxts>/products.volumeUnit}" />
-                                    <ComboBox selectedKey="{Folio>/PvUndvol}" items="{path : 'Catalogos>/UnidadVolumen/results'}" required="true">
+                                    <ComboBox id="PvUndvol" selectedKey="{Folio>/PvUndvol}" items="{path : 'Catalogos>/UnidadVolumen/results'}" required="true">
                                         <items>
                                             <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
                                         </items>
                                     </ComboBox>
                                     <Label text="{appTxts>/products.grossWeight}" />
-                                    <Input value="{Folio>/PvPbruto}" type="Number" required="true"/>
+                                    <Input id="PvPbruto" value="{Folio>/PvPbruto}" type="Number" required="true"/>
                                     <Label text="{appTxts>/products.netWeight}" />
-                                    <Input value="{Folio>/PvPneto}" type="Number" required="true"/>
+                                    <Input id="PvPneto" value="{Folio>/PvPneto}" type="Number" required="true"/>
                                     <Label text="{appTxts>/products.weightUnit}" />
-                                    <ComboBox selectedKey="{Folio>/PvUndp}" items="{path : 'Catalogos>/UnidadPeso/results'}" required="true">
+                                    <ComboBox id="PvUndp" selectedKey="{Folio>/PvUndp}" items="{path : 'Catalogos>/UnidadPeso/results'}" required="true">
                                         <items>
                                             <core:Item key="{Catalogos>value}" text="{Catalogos>text}" />
                                         </items>
@@ -636,9 +640,14 @@
 								complete="validateDiscounts"
 								validated="false"
 								title="{appTxts>/products.titleTabDiscounts}">
-						<!--MessageStrip class="sapUiSmallMarginBottom"
-								text="You can use the wizard previousStep() and nextStep() methods to navigate from step to step without validation. Also you can use the GoToStep(step) method to scroll programmatically to previously visited steps."
-								showIcon="true"/-->
+
+						<MessageStrip class="sapUiSmallMarginBottom"
+								text="{appTxts>/products.msgTapDiscounts}"
+								showIcon="true"/>
+
+						<MessageStrip class="sapUiSmallMarginBottom"
+								text="{appTxts>/products.msgTapDiscountsWarning}"
+								showIcon="true"/>
                         <VBox class="sapUiSmallMargin">
                             <form:SimpleForm
                                     editable="true"
@@ -687,10 +696,10 @@
                                     </ComboBox>
 
                                     <Label text="{appTxts>/products.bonusValue}" />
-                                    <Input id="ValBoni" value="{Folio>/ValBoni}" type="Number" placeholder="{appTxts>/products.porcentajetxt}"  liveChange="calcularCostNetCom" editable="false"/>
+                                    <Input id="ValBoni" value="{Folio>/ValBoni}" type="Number" placeholder="{appTxts>/products.porcentajetxt}"  liveChange="calcularCostNetCom" visible="false"/>
 
                                     <Label text="{appTxts>/products.bonusUnits}" />
-                                    <Input id="UnisBonif"  value="{Folio>/ValBoni}" type="Number"  editable="false"/>
+                                    <Input id="UnisBonif"  value="{Folio>/ValBoni}" type="Number"  visible="false"/>
                                     
 
                                     <core:Title text="{appTxts>/products.titlePurchaseCosts}" />
@@ -730,21 +739,26 @@
                             showIcons="false"
                             uploadEnabled="true" 
                             terminationEnabled="true" 
-                            fileTypes="png,jpg,jpeg" 
+                            fileTypes="jpg" 
                             maxFileNameLength="20" 
-                            maxFileSize="4" 
+                            maxFileSize="0.3" 
                             items="{path:'FolioImages>/items', templateShareable: false}" 
                             multiple="true"
                             mode="MultiSelect"
                             afterItemAdded="imageAfterAddedTriggered"
                             afterItemRemoved="imageRemovedTriggered"
                         >
-
                             <upload:toolbar>
                                         <OverflowToolbar>
                                              <Label text="{appTxts>/products.numImages}"/>
                                              <Text id="imagesCounter" text="0"/> 
-                                             <ToolbarSpacer/>            
+                                             <ToolbarSpacer/>
+                                             
+                                            <Link
+                                                text="Descargar Guia de Imagenes"
+                                                target="_blank"
+                                                href="/index/public/PDFs/GUIA.pdf" />
+
                                         </OverflowToolbar>
                             </upload:toolbar>
 

@@ -55,6 +55,10 @@
 							number="{parts: [{path: 'GroupedTotales>totalCredit'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
 							  />
 				 	
+                     	<ObjectNumber
+							number="{parts: [{path: 'GroupedTotales>totalCredit'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+							  />
+				 	
 				
 
 		 

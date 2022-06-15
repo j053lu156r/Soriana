@@ -608,7 +608,7 @@
 					<Button text="{appTxts>/rem.back}" visible="{/backButtonVisible}" press="onDialogBackButton" />
 					<Button text="{appTxts>/rem.next}" type="Emphasized" enabled="{/nextButtonEnabled}" visible="{/nextButtonVisible}" press="onDialogNextButton" />
 					<Button text="{appTxts>/rem.review}" type="Emphasized" enabled="{/reviewButtonEnabled}" visible="{/reviewButtonVisible}" press="onDialogNextButton" />
-					<Button text="{appTxts>/rem.finish}" type="Emphasized" visible="{/finishButtonVisible}" press="handleWizardSubmit" />
+					<Button text="{appTxts>/rem.finish}" type="Emphasized" visible="{/finishButtonVisible}" press="handleWizardSubmitAviso" />
 					<Button	text="{appTxts>/rem.cancel}" type="Transparent" press="onCloseWizard"/>
 				</OverflowToolbar>
 			</f:footer>

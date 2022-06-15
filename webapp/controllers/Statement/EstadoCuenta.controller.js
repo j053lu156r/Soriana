@@ -6,9 +6,8 @@ sap.ui.define([
         'sap/m/Link',
         'sap/m/MessageToast',
         'sap/m/Text',
-        './Formatter',
         'sap/ui/core/Fragment'
-], function (Controller, JSONModel, BaseModel,Label, Link, MessageToast, Text, Formatter, Fragment) {
+], function (Controller, JSONModel, BaseModel,Label, Link, MessageToast, Text, Fragment) {
 	"use strict";
 	
 	var sUri = "/sap/opu/odata/sap/ZOSP_STATEMENT_SRV_01/";
@@ -42,10 +41,10 @@ sap.ui.define([
                     this.getOwnerComponent().setModel(new JSONModel(), "totales");
 
                     var oModel = new JSONModel({filtros:[
-                        {filtro:'Belnr',descripcion:'Documento SAP'},
-                        {filtro:'1',descripcion:'Factura'},
-                        {filtro:'2',descripcion:'Folio'},
-                        {filtro:'3',descripcion:'Sucursal'}
+                        {filtro:'belnr',descripcion:'Documento'},
+                        {filtro:'xblnr',descripcion:'Factura'},
+                         {filtro:'',descripcion:''}
+                      
 
                         ]
 
@@ -81,9 +80,21 @@ sap.ui.define([
 
             let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
             // format[AAAAMMDD] (2020101)
-            let desde_LV_ZDESDE = this.buildSapDate( dateRange.getDateValue()       ); 
+           // let desde_LV_ZDESDE = this.buildSapDate( dateRange.getDateValue()       ); 
             // format[AAAAMMDD] (2020101)
-            let desde_LV_ZHASTA = this.buildSapDate( dateRange.getSecondDateValue() );
+           // let desde_LV_ZHASTA = this.buildSapDate( dateRange.getSecondDateValue() );
+
+
+
+//tomar valores dummy para hacer al consulta 
+            let todayDate = new Date();
+
+ // format[AAAAMMDD] (2020101)
+            let desde_LV_ZDESDE = '20160219' //this.buildSapDate( todayDate ); 
+            // format[AAAAMMDD] (2020101)
+            let desde_LV_ZHASTA = this.buildSapDate( todayDate );
+
+
 
             let doc_BELNR = documentoInput.getValue();
 
@@ -102,12 +113,33 @@ sap.ui.define([
             } 
 
             if (desde_LV_ZDESDE == "" || desde_LV_ZHASTA == "") {
-                sap.m.MessageBox.error("Por favor defina el rango de fechas.");
+               // sap.m.MessageBox.error("Por favor defina el rango de fechas.");
             } 
+
+
+            console.log('buscar por ...',filterInput.getSelectedKey())
+
+            var filtroBusqueda = filterInput.getSelectedKey()
+            var queryFiltro = ""
+
+             if (filtroBusqueda == "") {
+
+                queryFiltro = ''
+                 
+             } else if (filtroBusqueda == "belnr"){
+                queryFiltro = `and belnr eq '${doc_BELNR}' `
+
+             }else if(filtroBusqueda == "xblnr"){
+                queryFiltro = `and xblnr eq '${doc_BELNR}' `
+
+             }
 
             
             var oODataJSONModel = this.getOdata(sUri);
-            let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}' and belnr eq '${doc_BELNR}'  &$format=json`;
+            //            let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}' and belnr eq '${doc_BELNR}'  &$format=json`;
+
+            let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}' ${queryFiltro} &$format=json`;
+            //Xblnr
 
 			var odTJSONModel = this.getOdataJsonModel( urlParams, oODataJSONModel );
 			dTJSON = odTJSONModel.getJSON();
@@ -139,14 +171,35 @@ sap.ui.define([
 var groupedMovs=this.groupArrayOfObjects(auxArray,"DescTipomov");
 var nestedMovs= []
 
+var me = this;
+
 for (let x in groupedMovs) {
-   console.log(x + ": "+ groupedMovs[x])
+  
+
+  console.log("sumando valores");
+
+
+ var resultCredit = groupedMovs[x].reduce(function(_this, val) {
+    //console.log(val.Wrbtr)
+         var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
+          var total = _this+current
+          return  me.truncate(total,2)
+      }, 0);
+
+//console.log(result)
+
+ var result = groupedMovs[x].reduce(function(_this, val) {
+    var current =  val.Bschl !== "21" ? Number(val.Wrbtr) : 0
+          var total = _this+current
+          return  me.truncate(total,2)
+      }, 0);
+
 
 nestedMovs.push({
     "name":x,
     "totalRegs":groupedMovs[x].length,
-    "totalDebit":0,
-    "totalCredit":0,
+    "totalDebit":Math.abs(result),
+    "totalCredit":Math.abs(resultCredit),
     "positions":groupedMovs[x]
 
 })
@@ -155,16 +208,42 @@ nestedMovs.push({
 }
 
 
+console.log(nestedMovs);
+
+var totalR = nestedMovs.reduce(function(_this, val) {
+    var current =   Number(val.totalRegs)  
+          var total = _this+current
+          return  me.truncate(total,2)
+      }, 0);
+
+var totalD =  nestedMovs.reduce(function(_this, val) {
+    var current =  Number(val.totalDebit)  
+          var total = _this+current
+          return  me.truncate(total,2)
+      }, 0);
+
+var totalC = nestedMovs.reduce(function(_this, val) {
+    var current =   Number(val.totalCredit)  
+          var total = _this+current
+          return  me.truncate(total,2)
+      }, 0);
+
+
+
 var jsonModelG = new JSONModel({
     "Hierarchy":{
-    "movimientos": nestedMovs
+    "movimientos": nestedMovs,
+    "totalR":totalR,
+    "totalD":totalD,
+    "totalC":totalC
 }
 });
 
+console.log(jsonModelG);
+
 this.getOwnerComponent().setModel(jsonModelG, "GroupedTotales");
 
-console.log(this.getOwnerComponent().getModel("GroupedTotales"))
-
+ 
 this.initTable()
  
 			this.getOwnerComponent().setModel(jsonModelT, "totales");
@@ -196,7 +275,8 @@ this.initTable()
 
             let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
             // format[AAAAMMDD] (2020101)
-            let desde_LV_ZDESDE = this.buildSapDate( this.subtractYears(1)    ); 
+           // let desde_LV_ZDESDE = this.buildSapDate( this.subtractYears(1)    ); 
+           let desde_LV_ZDESDE =   let desde_LV_ZDESDE = '20160219'//this.buildSapDate( todayDate   ); 
             // format[AAAAMMDD] (2020101)
             let desde_LV_ZHASTA = this.buildSapDate( todayDate );
 
@@ -209,6 +289,8 @@ this.initTable()
 
             if (desde_LV_ZDESDE == "" || desde_LV_ZHASTA == "") {
                 sap.m.MessageBox.error("Por favor defina el rango de fechas.");
+
+
             } 
 
             
@@ -233,6 +315,68 @@ this.initTable()
             var JSONT = $.extend({}, TDatos.results[0]);
             var jsonModelT = new JSONModel();
             jsonModelT.setData(JSONT);
+
+                      //filtrar totales y crear modelo grupal 
+
+            console.info("agrupando datos",Detalles)
+            let auxArray = [...Detalles]
+
+            var me = this;
+
+      
+var groupedMovs=this.groupArrayOfObjects(auxArray,"DescTipomov");
+var nestedMovs= []
+
+for (let x in groupedMovs) {
+  // console.log(x + ": "+ groupedMovs[x])
+
+  var resultCredit = groupedMovs[x].reduce(function(_this, val) {
+    console.log(val.Wrbtr)
+         var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
+          var total = _this+current
+          return  me.truncate(total,2)
+      }, 0);
+
+
+ var result = groupedMovs[x].reduce(function(_this, val) {
+    var current =  val.Bschl !== "21" ? Number(val.Wrbtr) : 0
+          var total = _this+current
+          return  me.truncate(total,2)
+      }, 0);
+
+
+console.log(result)
+
+nestedMovs.push({
+    "name":x,
+    "totalRegs":groupedMovs[x].length,
+    "totalDebit":Math.abs(result),
+    "totalCredit":Math.abs(resultCredit),
+    "positions":groupedMovs[x]
+
+})
+
+
+}
+
+
+var jsonModelG = new JSONModel({
+    "Hierarchy":{
+    "movimientos": nestedMovs
+}
+});
+
+this.getOwnerComponent().setModel(jsonModelG, "GroupedTotales");
+
+ 
+this.initTable()
+
+
+
+
+
+
+
             this.getOwnerComponent().setModel(jsonModelT, "totales");
             
             this.paginate("totales", "/Detalles", 1, 0);
@@ -291,6 +435,9 @@ console.log('on init table')
         },
 
 
+truncate: function  (num, places) {
+  return Math.trunc(num * Math.pow(10, places)) / Math.pow(10, places);
+},
 
         // Remove the numeric item binding from a path
         _stripItemBinding: function (sPath) {

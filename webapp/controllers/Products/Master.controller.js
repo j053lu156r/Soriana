@@ -43,17 +43,70 @@ sap.ui.define([
         },
 
         async getGS1ProductData() {
-            // Probando Consulta API externa
-            let gs1Product = new JSONModel();
-            let proviconalGLN = '7504001437009'
-            let provicionalEAN = '7501024513413'
-            await fetch(`https://compuarte.serv.net.mx:4000/searchbygtin?codigo_barras=${provicionalEAN}&gln=${proviconalGLN}`).then(async data => {
-                //console.log(await data.json());
-                gs1Product.setData(await data.json());
-            }).catch(error => {
-                console.error(" >>>>>>>>>>>> ERROR FETCH GS1 ", error);
+            let proviconalGLN = '7504001437009' //this.getView().byId('codeGS1').getValue();
+            let provicionalEAN = this.getView().byId('barCode').getValue();
+            await fetch(`https://compuarte.serv.net.mx:4000/searchbygtin?codigo_barras=${provicionalEAN}&gln=${proviconalGLN}`)
+            .then(async data => {
+                let gs1Json = await data.json();
+
+                if (!data.ok)
+                    throw new Error(gs1Json.error.message);
+                
+                this.fillFolioModelData(gs1Json);
+                this.byId("barCode").setEditable(false || _testingSteps);
+            }).catch( error => {
+                console.log(" >>>>>>>>>>>> ERROR FETCH GS1 ",  error);
+                MessageBox.warning(error.message, {
+                    onClose: () => {
+                        this.getView().byId('barCode').setValueState(sap.ui.core.ValueState.Warning);
+                    }
+                });
             });
-            console.log(gs1Product.getData());
+        },
+
+        fillFolioModelData(gs1Json){
+            //llenando Datos Generales
+            this.byId("description").setValue(gs1Json.DescripcionCorta);
+            this.byId("country").setValue(gs1Json.RefPaisOrigen);
+
+            //llenando Presentacion
+            this.byId("content").setValue(gs1Json.ContenidoNeto);
+            this.byId("contentUnit").setValue(gs1Json.UnidContenidoNeto);
+
+            //llenando datos de Dimensiones
+                this.byId("EcAlto").setValue(gs1Json.Alto);
+                this.byId("EcAlto").setEditable(false);
+                this.byId("EcAncho").setValue(gs1Json.Ancho);
+                this.byId("EcAncho").setEditable(false);
+                this.byId("EcProfundo").setValue(gs1Json.Profundo);
+                this.byId("EcProfundo").setEditable(false);
+                this.byId("PvAlto").setValue(gs1Json.Alto);
+                this.byId("PvAlto").setEditable(false);
+                this.byId("PvAncho").setValue(gs1Json.Ancho);
+                this.byId("PvAncho").setEditable(false);
+                this.byId("PvProfundo").setValue(gs1Json.Profundo);
+                this.byId("PvProfundo").setEditable(false);
+                this.byId("EcAlto").fireLiveChange();
+                this.byId("PvAlto").fireLiveChange();
+                // let unidadMed = formatterCatPrd.findPropertieValue("value", "text", gs1Json.UnidAncho,
+                // this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadVolumen'));
+                this.byId("EcUndaap").setValue(gs1Json.UnidAncho);
+                this.byId("EcUndvol").setSelectedKey(gs1Json.UnidAncho);
+                this.byId("PvUndaap").setValue(gs1Json.UnidAncho);
+                this.byId("PvUndvol").setSelectedKey(gs1Json.UnidAncho);
+
+                this.byId("EcPbruto").setValue(gs1Json.PesoBruto);
+                this.byId("EcPbruto").setEditable(false);
+                this.byId("EcPneto").setValue(gs1Json.PesoNeto);
+                this.byId("EcPneto").setEditable(false);
+                this.byId("EcUndp").setSelectedKey(gs1Json.UnidPesoBruto);
+
+                this.byId("PvPbruto").setValue(gs1Json.PesoBruto);
+                this.byId("PvPbruto").setEditable(false);
+                this.byId("PvPneto").setValue(gs1Json.PesoNeto);
+                this.byId("PvPneto").setEditable(false);
+                this.byId("PvUndp").setSelectedKey(gs1Json.UnidPesoBruto);
+
         },
 
         setInitialDates() {
@@ -100,15 +153,15 @@ sap.ui.define([
 
                 let UnidadVolumen = {
                     results: [
-                        { value: "MM", text: 'Milimetros' },
-                        { value: "CM", text: 'Centimetros' }
+                        { value: "MMT", text: 'Milimetros' },
+                        { value: "CMT", text: 'Centimetros' }
                     ]
                 };
 
                 let UnidadPeso = {
                     results: [
-                        { value: "KGM", text: 'Gramo' },
-                        { value: "GM", text: 'Kilogramo' }
+                        { value: "GM", text: 'Gramo' },
+                        { value: "KGM", text: 'Kilogramo' }
                     ]
                 };
 
@@ -302,13 +355,7 @@ sap.ui.define([
                             this.paginate("ETDELETE", "", 1, 0);
                         } else
                             MessageBox.warning("No se encontraron folios en el archivo cargado");
-                        /*sap.m.MessageBox.success( msg, {
-                            actions: [sap.m.MessageBox.Action.CLOSE],
-                            emphasizedAction: sap.m.MessageBox.Action.CLOSE,
-                            onClose: function (sAction) {
-                                
-                            }.bind(this)
-                        });*/
+          
                     } else {
                         let message = response.error.message.value;
                         sap.m.MessageBox.error(message);
@@ -320,6 +367,7 @@ sap.ui.define([
             else
                 MessageBox.warning("No se ha seleccionado ningún archivo para subir.")
         },
+
         duplicarValorInicial: function () {
             const that = this;
             MessageBox.confirm('Desea asignar el valor de la primer fila a todos los registros existentes?', function (oAction) {
@@ -329,7 +377,6 @@ sap.ui.define([
                     const fecha = modelData.results[0].FechSumhasta;
                     const motivo = modelData.results[0].MotBaja;
                     const comentario = modelData.results[0].Comet;
-                    console.log(fecha, motivo, comentario);
 
                     for (let i = 0; i < modelData.results.length; i++) {
                         modelData.results[i].FechSumhasta = fecha;
@@ -376,8 +423,6 @@ sap.ui.define([
                 return false;
             }
 
-
-
             let filtros = [`IOption eq '2'`];
 
             filtros.push(`IUniqr eq '${folio}'`);
@@ -407,8 +452,6 @@ sap.ui.define([
             let oDataJSONModel = this.getOdataJsonModel(url, oODataJSONModel);
             let dataJSON = oDataJSONModel.getJSON();
             let Datos = JSON.parse(dataJSON);
-
-            // console.log(Datos);
 
             this.getOwnerComponent().setModel(new JSONModel(Datos.results[0]), "Folios");
 
@@ -604,10 +647,6 @@ sap.ui.define([
                     oDialog.open();
                 });
 
-                // }
-                // else
-                // sap.m.MessageBox.error("Debe selecionar un proveedor para continuar.");
-
             } catch (err) {
                 sap.m.MessageBox.error("Ocurrió una excepción al inicializar el proceso de baja.");
                 console.error(err);
@@ -666,6 +705,7 @@ sap.ui.define([
             if (response.getProperty("/results/0/ESuccess") === "X") {
                 MessageBox.success("Artículo apto para registro.", {
                     onClose: () => {
+                        //this.getGS1ProductData();
                         this.getView().byId('barCode').setValueState(sap.ui.core.ValueState.Success);
                         this.getOwnerComponent().getModel("ValidBarCode").setProperty("/value", true);
                     }
@@ -787,14 +827,11 @@ sap.ui.define([
                                 "ITIMGART": [...imagesToAttach]
                             };
 
-                            console.log(" >>>>>>> CREATING PRDUCT: ", createObjReq);
                             console.log(" >>>>>>> CREATING PRDUCT String: ", JSON.stringify(createObjReq));
 
                             // ** Nota Model.create(endpoint,data) No trabaja ni con callback ni con promesa Solo recepcion syncrona
 
                             let resp = Model.create("/HdrcatproSet", createObjReq);
-
-                            console.log("Respuesta Create: ", resp);
 
                             if (resp.ESuccess) {
 
@@ -802,9 +839,7 @@ sap.ui.define([
                                 let that = this;
 
                                 setTimeout(function () {
-                                    that._oWizard.discardProgress(that._oWizard.getSteps()[0]);
-                                    that.byId("wizardDialog").close();
-                                    that.getOwnerComponent().getModel("Folio").setData({});
+                                    that.clearFormFolioAlta();
                                 }, 3000);
 
                             } else {
@@ -814,17 +849,28 @@ sap.ui.define([
                             }
 
                         } else {
-                            this._oWizard.discardProgress(this._oWizard.getSteps()[0]);
-                            this.byId("wizardDialog").close();
-                            this.getOwnerComponent().getModel("Folio").setData({});
-                            this.getOwnerComponent().getModel("FolioToShow").setData({});
-                            this.getOwnerComponent().getModel("FolioImages").setData({});
+
+                            this.clearFormFolioAlta();
                         }
+
 
                     }
                 }.bind(this)
 
             });
+        },
+
+        clearFormFolioAlta(){
+
+            this._oWizard.discardProgress(this._oWizard.getSteps()[0]);
+            this.byId("wizardDialog").close();
+            this.getOwnerComponent().getModel("Folio").setData({});
+            this.getOwnerComponent().getModel("FolioToShow").setData({});
+            this.getOwnerComponent().getModel("FolioImages").setData({});
+            this.getOwnerComponent().getModel("ValidBarCode").setProperty("/value", false);
+            this.byId("ComboDivision").setValue("");
+            this.resetSalesHierarchy();
+            this.byId("barCode").setEditable(false);
         },
 
         selectAgree(oControlEvent) {
@@ -894,15 +940,10 @@ sap.ui.define([
 
             this.getOwnerComponent().getModel("FolioToShow").setData({ ...Folio });
 
-            // console.log(this.getOwnerComponent().getModel("FolioToShow").getData());
         },
 
         productTypeComplete: function (oControlEvent) {
 
-            // if (this.getView().byId('ProductTypeStep').getValidated()) {
-            //     console.log(">>>>>>>>>>> ENTRA AL IF ProductTypeStep <<<<<<<<<<<<<------ ");
-            //     return true;
-            // }
 
             let validated = true;
 
@@ -912,12 +953,7 @@ sap.ui.define([
             if (ModelFolio.getProperty('/CodEan') == undefined || ModelFolio.getProperty('/CodEan').trim() == '') {
                 validated = false;
                 this.getView().byId('barCode').setValueState(sap.ui.core.ValueState.Error);
-            }
-            // }else if (this.getView().byId('barCode').getValueState() !== sap.ui.core.ValueState.Success && swProveedorEnGS1) {
-            //     validated = false;
-            //     console.log(">>>>>>>> EAN IF 2 <<<<<<<<<<<<< ", swProveedorEnGS1);
-            // }
-            else {
+            } else {
                 this.getView().byId('barCode').setValueState(sap.ui.core.ValueState.None);
             }
 
@@ -934,8 +970,6 @@ sap.ui.define([
                 validated = false;
                 this.getView().byId('productType').setValueState(sap.ui.core.ValueState.Error);
             } else {
-                // let tipoProd = this.getView().byId("productType").getValue();
-                // this.getOwnerComponent().getModel("FolioToShow").setProperty("/TipArt", tipoProd);
                 this.getView().byId('productType').setValueState(sap.ui.core.ValueState.None);
             }
 
@@ -945,8 +979,6 @@ sap.ui.define([
                 this.getView().byId('brand').setValueState(sap.ui.core.ValueState.Error);
             }
             else {
-                // let marca = this.getView().byId("brand").getValue();
-                // this.getOwnerComponent().getModel("FolioToShow").setProperty("/Marca", marca);
                 this.getView().byId('brand').setValueState(sap.ui.core.ValueState.None);
             }
 
@@ -956,8 +988,6 @@ sap.ui.define([
                 this.getView().byId('codeType').setValueState(sap.ui.core.ValueState.Error);
             }
             else {
-                // let tipoEan = this.getView().byId("codeType").getValue();
-                // this.getOwnerComponent().getModel("FolioToShow").setProperty("/EanUpcType", tipoEan);
                 this.getView().byId('codeType').setValueState(sap.ui.core.ValueState.None);
             }
 
@@ -967,8 +997,6 @@ sap.ui.define([
                 this.getView().byId('country').setValueState(sap.ui.core.ValueState.Error);
             }
             else {
-                // let pais = this.getView().byId("country").getValue();
-                // this.getOwnerComponent().getModel("FolioToShow").setProperty("/Pais", pais);
                 this.getView().byId('country').setValueState(sap.ui.core.ValueState.None);
             }
 
@@ -977,8 +1005,6 @@ sap.ui.define([
                 validated = false;
                 this.getView().byId('description').setValueState(sap.ui.core.ValueState.Error);
             } else {
-                // let desc = this.getView().byId("description").getValue();
-                // this.getOwnerComponent().getModel("FolioToShow").setProperty("/DescrArt", desc);
                 this.getView().byId('description').setValueState(sap.ui.core.ValueState.None);
             }
 
@@ -988,8 +1014,6 @@ sap.ui.define([
                 this.getView().byId('exitStrategy').setValueState(sap.ui.core.ValueState.Error);
             }
             else {
-                // let stra = this.getView().byId("exitStrategy").getValue();
-                // this.getOwnerComponent().getModel("FolioToShow").setProperty("/EstSalida", stra);
                 this.getView().byId('exitStrategy').setValueState(sap.ui.core.ValueState.None);
             }
 
@@ -999,8 +1023,6 @@ sap.ui.define([
                 this.getView().byId('negotiatedFormat').setValueState(sap.ui.core.ValueState.Error);
             }
             else {
-                // let stra = this.getView().byId("exitStrategy").getValue();
-                // this.getOwnerComponent().getModel("FolioToShow").setProperty("/EstSalida", stra);
                 this.getView().byId('negotiatedFormat').setValueState(sap.ui.core.ValueState.None);
             }
 
@@ -1024,7 +1046,6 @@ sap.ui.define([
         },
 
         activateProductPresentation: function () {
-            //if (this.getView().byId('ProductPresentation').getValidated()) return true;
 
             let validated = true;
             let selectedVariantes = false;
@@ -1037,8 +1058,6 @@ sap.ui.define([
                 this.getView().byId('presentation').setValueState(sap.ui.core.ValueState.Error);
             }
             else {
-                // let present = this.getView().byId("presentation").getValue();
-                // this.getOwnerComponent().getModel("FolioToShow").setProperty("/Present", present);
                 this.getView().byId('presentation').setValueState(sap.ui.core.ValueState.None);
             }
 
@@ -1048,8 +1067,6 @@ sap.ui.define([
                 this.getView().byId('content').setValueState(sap.ui.core.ValueState.Error);
             }
             else {
-                // let content = this.getView().byId("content").getValue();
-                // this.getOwnerComponent().getModel("FolioToShow").setProperty("/Contenido", content);
                 this.getView().byId('content').setValueState(sap.ui.core.ValueState.None);
             }
 
@@ -1059,22 +1076,20 @@ sap.ui.define([
                 this.getView().byId('contentUnit').setValueState(sap.ui.core.ValueState.Error);
             }
             else {
-                // let content = this.getView().byId("contentUnit").getValue();
-                // this.getOwnerComponent().getModel("FolioToShow").setProperty("/UndCont", content);
                 this.getView().byId('contentUnit').setValueState(sap.ui.core.ValueState.None);
             }
 
 
             // Código de venta
-            if (ModelFolio.getProperty('/CodVent') == undefined || ModelFolio.getProperty('/CodVent').trim() == '') {
-                validated = false;
-                this.getView().byId('salesCode').setValueState(sap.ui.core.ValueState.Error);
-            }
-            else {
-                // let content = this.getView().byId("salesCode").getValue();
-                // this.getOwnerComponent().getModel("FolioToShow").setProperty("/CodVent", content);
-                this.getView().byId('salesCode').setValueState(sap.ui.core.ValueState.None);
-            }
+            // if (ModelFolio.getProperty('/CodVent') == undefined || ModelFolio.getProperty('/CodVent').trim() == '') {
+            //     validated = false;
+            //     this.getView().byId('salesCode').setValueState(sap.ui.core.ValueState.Error);
+            // }
+            // else {
+            //     // let content = this.getView().byId("salesCode").getValue();
+            //     // this.getOwnerComponent().getModel("FolioToShow").setProperty("/CodVent", content);
+            //     this.getView().byId('salesCode').setValueState(sap.ui.core.ValueState.None);
+            // }
 
 
             // Unidad de medida de venta
@@ -1083,21 +1098,19 @@ sap.ui.define([
                 this.getView().byId('salesUnit').setValueState(sap.ui.core.ValueState.Error);
             }
             else {
-                // let content = this.getView().byId("salesUnit").getValue();
-                // this.getOwnerComponent().getModel("FolioToShow").setProperty("/UndMventa", content);
                 this.getView().byId('salesUnit').setValueState(sap.ui.core.ValueState.None);
             }
 
             // Codigo unidad de compra
-            if (ModelFolio.getProperty('/CodCompra') == undefined || ModelFolio.getProperty('/CodCompra').trim() == '') {
-                validated = false;
-                this.getView().byId('purchaseUnitCode').setValueState(sap.ui.core.ValueState.Error);
-            }
-            else {
-                // let content = this.getView().byId("purchaseUnitCode").getValue();
-                // this.getOwnerComponent().getModel("FolioToShow").setProperty("/CodCompra", content);
-                this.getView().byId('purchaseUnitCode').setValueState(sap.ui.core.ValueState.None);
-            }
+            // if (ModelFolio.getProperty('/CodCompra') == undefined || ModelFolio.getProperty('/CodCompra').trim() == '') {
+            //     validated = false;
+            //     this.getView().byId('purchaseUnitCode').setValueState(sap.ui.core.ValueState.Error);
+            // }
+            // else {
+            //     // let content = this.getView().byId("purchaseUnitCode").getValue();
+            //     // this.getOwnerComponent().getModel("FolioToShow").setProperty("/CodCompra", content);
+            //     this.getView().byId('purchaseUnitCode').setValueState(sap.ui.core.ValueState.None);
+            // }
 
             // Unidad de compra
             if (ModelFolio.getProperty('/UndCompra') == undefined || ModelFolio.getProperty('/UndCompra').trim() == '') {
@@ -1105,8 +1118,6 @@ sap.ui.define([
                 this.getView().byId('purchaseUnit').setValueState(sap.ui.core.ValueState.Error);
             }
             else {
-                // let content = this.getView().byId("purchaseUnit").getValue();
-                // this.getOwnerComponent().getModel("FolioToShow").setProperty("/UndCompra", content);
                 this.getView().byId('purchaseUnit').setValueState(sap.ui.core.ValueState.None);
             }
 
@@ -1120,8 +1131,6 @@ sap.ui.define([
             }
             else {
 
-                // let content = this.getView().byId("boardingCapacity").getValue();
-                // this.getOwnerComponent().getModel("FolioToShow").setProperty("/CapEmpaq", content);
                 this.getView().byId('boardingCapacity').setValueState(sap.ui.core.ValueState.None);
             }
 
@@ -1148,10 +1157,6 @@ sap.ui.define([
         },
 
         completeValidateVariantStep: function () {
-
-
-            // this.getView().byId('VariantStep').setValidated(!this.getView().byId('variants').getSelected());
-            // if (this.getView().byId('VariantStep').getValidated()) return true;
 
             let validated = true;
 
@@ -1364,24 +1369,57 @@ sap.ui.define([
             this.getView().byId('Discounts').setValidated(validated || _testingSteps);
         },
 
+        validarDescuentosDif(){
+            let valid = false;
+            let dscNor = (this.byId("DscNormal").getValue()) ? this.byId("DscNormal").getValue() / 100 : 0;
+            let dscNor2 = (this.byId("DscNormal2").getValue()) ? this.byId("DscNormal2").getValue() / 100 : 0;
+            let dscNor3 = (this.byId("DscNormal3").getValue()) ? this.byId("DscNormal3").getValue() / 100 : 0;
+
+            valid = ( 
+                (dscNor == 0 && dscNor2 == 0 && dscNor3 == 0) ||
+                    (
+                        (dscNor!=dscNor2 || (dscNor == 0 || dscNor2 ==0))  
+                        && 
+                        (dscNor!=dscNor3 || (dscNor == 0 || dscNor3 == 0)) 
+                        && 
+                        (dscNor2!=dscNor3 || (dscNor3 == 0 || dscNor2==0))
+                    )
+                 );
+
+            return valid;
+        },
+
         calcularCostNetCom: async function (oControlEvent) {
 
-            let costob = (this.byId("CostoB").getValue()) ? this.byId("CostoB").getValue() : 0;
-            let porcentajesXaplicar = [];
-            porcentajesXaplicar.push((this.byId("DscNormal").getValue()) ? this.byId("DscNormal").getValue() / 100 : 0);
-            porcentajesXaplicar.push((this.byId("DscNormal2").getValue()) ? this.byId("DscNormal2").getValue() / 100 : 0);
-            porcentajesXaplicar.push((this.byId("DscNormal3").getValue()) ? this.byId("DscNormal3").getValue() / 100 : 0);
-            porcentajesXaplicar.push((this.byId("DscAdicional").getValue()) ? this.byId("DscAdicional").getValue() / 100 : 0);
-            porcentajesXaplicar.push((this.byId("DscPpago").getValue()) ? this.byId("DscPpago").getValue() / 100 : 0);
-            //porcentajesXaplicar.push((this.byId("ValBoni").getValue()) ? this.byId("ValBoni").getValue() / 100 : 0);
+            let ValueState = sap.ui.core.ValueState.None;
 
-            let costnetcom = costob;
+            if (this.validarDescuentosDif()){    
+                let costob = (this.byId("CostoB").getValue()) ? this.byId("CostoB").getValue() : 0;
+                let porcentajesXaplicar = [];
+                porcentajesXaplicar.push((this.byId("DscNormal").getValue()) ? this.byId("DscNormal").getValue() / 100 : 0);
+                porcentajesXaplicar.push((this.byId("DscNormal2").getValue()) ? this.byId("DscNormal2").getValue() / 100 : 0);
+                porcentajesXaplicar.push((this.byId("DscNormal3").getValue()) ? this.byId("DscNormal3").getValue() / 100 : 0);
+                porcentajesXaplicar.push((this.byId("DscAdicional").getValue()) ? this.byId("DscAdicional").getValue() / 100 : 0);
+                porcentajesXaplicar.push((this.byId("DscPpago").getValue()) ? this.byId("DscPpago").getValue() / 100 : 0);
+                //porcentajesXaplicar.push((this.byId("ValBoni").getValue()) ? this.byId("ValBoni").getValue() / 100 : 0);
 
-            await porcentajesXaplicar.forEach(function (porcentaje) {
-                costnetcom -= (costnetcom * (porcentaje))
-            });
+                let costnetcom = costob;
 
-            this.byId("CostNetComp").setValue(costnetcom);
+                await porcentajesXaplicar.forEach(function (porcentaje) {
+                    costnetcom -= (costnetcom * (porcentaje))
+                });
+
+                this.byId("CostNetComp").setValue(costnetcom);
+
+            }else{
+                sap.m.MessageBox.warning("Los descuentos tienes que ser diferentes");
+                this.byId("CostNetComp").setValue(null);
+                ValueState = sap.ui.core.ValueState.Error
+            }
+
+            this.byId("DscNormal").setValueState(ValueState);
+            this.byId("DscNormal2").setValueState(ValueState);
+            this.byId("DscNormal3").setValueState(ValueState);
         },
 
         calcularCostNetVen: function (oControlEvent) {
@@ -1459,10 +1497,6 @@ sap.ui.define([
 
             oSelectedItem = oSelectedContexts.find(element => element.getObject().NumLinea == oSelectedItem.getDescription());
 
-            //oEvent.getSource().getBinding("items").filter([]);
-
-            // console.log(">>>>>>>> Producto Base Selected: ", oSelectedItem.getObject());
-
             if (!oSelectedItem) {
                 return;
             }
@@ -1472,7 +1506,6 @@ sap.ui.define([
             this.getOwnerComponent().getModel('Folio').setProperty("/PurGroup", oSelectedItem.getObject().GrupoCompras);
             this.getOwnerComponent().getModel('FolioToShow').setProperty("/ProdBase", oSelectedItem.getObject().DescLinea);
             // this.getOwnerComponent().getModel('FolioToShow').setProperty("/PurGroup", oSelectedItem.getObject().DescGcom);
-            //this.setActiveLifnr(oSelectedItem.getTitle(), oSelectedItem.getDescription());
 
         },
 
@@ -1507,7 +1540,6 @@ sap.ui.define([
 
         onBrandClose: function (oEvent) {
             var oSelectedItem = oEvent.getParameter("selectedItem");
-            //oEvent.getSource().getBinding("items").filter([]);
 
             if (!oSelectedItem) {
                 return;
@@ -1515,7 +1547,6 @@ sap.ui.define([
 
             this.getOwnerComponent().getModel('Folio').setProperty("/Marca", oSelectedItem.getDescription());
             this.getOwnerComponent().getModel('FolioToShow').setProperty("/Marca", oSelectedItem.getTitle());
-            //this.setActiveLifnr(oSelectedItem.getTitle(), oSelectedItem.getDescription());
         },
 
         addOptionalInfo: function () {
@@ -1725,6 +1756,7 @@ sap.ui.define([
             else
                 MessageBox.warning('No existen registros para baja de productos.')
         },
+
         validateSaveDelete: function () {
             let valid = true;
 
@@ -1739,6 +1771,7 @@ sap.ui.define([
             }
             return valid;
         },
+
         onValueCountryRequest: function (oEvent) {
             var sInputValue = oEvent.getSource().getValue(),
                 oView = this.getView();
@@ -1781,15 +1814,14 @@ sap.ui.define([
             const description = oSelectedItem.getDescription();
             //this.getOwnerComponent().getModel('Folio').setProperty("/txtPais", title);
             this.byId("country").setSelectedKey(description);
-            //this.byId("selectedKeyIndicator").setText(sDescription);
 
         },
+
         onSuggestionCountryItemSelected: function (oEvent) {
             var oItem = oEvent.getParameter("selectedItem");
-            // console.log(oItem);
             var oText = oItem ? oItem.getKey() : "";
-            //this.byId("selectedKeyIndicator").setText(oText);
         },
+
         changeVariants: function (oEvent) {
             this.getView().byId('characteristicFormElement').setVisible(oEvent.getParameters().selected);
             if (oEvent.getParameters().selected) {
@@ -1801,35 +1833,39 @@ sap.ui.define([
             }
         },
 
-        imageAfterAddedTriggered(oControlEvent) {
+        async imageAfterAddedTriggered(oControlEvent) {
 
             let numberItemsAdded = this.byId("ImageUploadSet").getItems().length;
 
             let incommingUploadSetItem = oControlEvent.getParameter("item");
 
-            let fileSize = (incommingUploadSetItem.getFileObject().size / 1024) / 1024; //getting MBs for validation
+            let fileSize = (incommingUploadSetItem.getFileObject().size / 1024) ; //getting MBs for validation
+            let path = URL.createObjectURL(incommingUploadSetItem.getFileObject());
+            let imageObj = new Image();
 
-            if (numberItemsAdded <= 11 && fileSize < 4) {
+            imageObj.src = path;
+
+            await imageObj.decode();
+
+            if (numberItemsAdded <= 4 && fileSize < 300 && imageObj.height < 1024 && imageObj.width < 1024) {
                 incommingUploadSetItem.setUploadState(sap.m.UploadState.Complete);
-                let path = URL.createObjectURL(incommingUploadSetItem.getFileObject());
                 incommingUploadSetItem.setUrl(path);
                 incommingUploadSetItem.setThumbnailUrl(path);
                 this.byId("ImageUploadSet").addItem(incommingUploadSetItem);
                 this.getOwnerComponent().getModel("FolioImages").setProperty("/items", this.byId("ImageUploadSet").getItems());
                 this.attachImagesToModel();
-            } else if (fileSize > 4) {
-                sap.m.MessageBox.warning("Max size is 4MB");
+            } else if (fileSize > 300) {
+                sap.m.MessageBox.warning("Max size is 300 KB");
                 this.byId("ImageUploadSet").removeItem(incommingUploadSetItem);
-            } else if (numberItemsAdded >= 11) {
-                sap.m.MessageBox.warning("Max 12 imgs");
+            }else if (imageObj.height >= 1024 || imageObj.width >= 1024) {
+                sap.m.MessageBox.warning("Max img dimensions are 1024x1024 pixels");
+                this.byId("ImageUploadSet").removeItem(incommingUploadSetItem);
+            }  else if (numberItemsAdded >= 4) {
+                sap.m.MessageBox.warning("Max 5 imgs");
                 this.byId("ImageUploadSet").setUploadEnabled(false);
             }
 
             this.byId("imagesCounter").setText(this.byId("ImageUploadSet").getItems().length);
-
-            //console.log("Upload SET Item added  : ", oControlEvent.getParameter("item"));
-
-            // console.log("FolioImages Items: ", this.getOwnerComponent().getModel("FolioImages").getProperty("/items"));
 
         },
 
@@ -1838,7 +1874,7 @@ sap.ui.define([
             this.byId("imagesCounter").setText(numberItemsAdded);
             this.getOwnerComponent().getModel("FolioImages").setProperty("/items", this.byId("ImageUploadSet").getItems());
             this.attachImagesToModel();
-            if (numberItemsAdded <= 11) {
+            if (numberItemsAdded <= 4) {
                 this.byId("ImageUploadSet").setUploadEnabled(true);
             }
         },
@@ -1862,15 +1898,11 @@ sap.ui.define([
 
                 reader.readAsDataURL(oItem);
 
-                //console.log("oItem", oItem);
-
                 return oFile;
             });
 
             this.getOwnerComponent().setModel(new JSONModel(), "images64");
             this.getOwnerComponent().getModel("images64").setProperty("/attachArray", base64imgArray);
-
-            //console.log("DATA IAMGES BASE64 : ", this.getOwnerComponent().getModel("images64").getData());
 
         },
 
@@ -1882,16 +1914,16 @@ sap.ui.define([
 
             switch (selected) {
                 case "Ninguna":
-                    this.byId("ValBoni").setEditable(false);
-                    this.byId("UnisBonif").setEditable(false);
+                    this.byId("ValBoni").setVisible(false);
+                    this.byId("UnisBonif").setVisible(false);
                     break;
                 case "Por Porcentajes":
-                    this.byId("ValBoni").setEditable(true);
-                    this.byId("UnisBonif").setEditable(false);
+                    this.byId("ValBoni").setVisible(true);
+                    this.byId("UnisBonif").setVisible(false);
                     break;
                 case "Por Unidades":
-                    this.byId("ValBoni").setEditable(true);
-                    this.byId("UnisBonif").setEditable(true);
+                    this.byId("ValBoni").setVisible(false);
+                    this.byId("UnisBonif").setVisible(true);
                     break;
             }
 
@@ -2017,17 +2049,12 @@ sap.ui.define([
                 sap.m.MessageBox.error("No se lograron obtener los datos");
             }, this, false); //retirar false para volverlo asyncrono
             return children;
+        },
+
+        codeTypeChange(oControlEvent){
+            this.byId("barCode").setEditable(true);
         }
 
     })
 });
-/**
 
-    División
-    Gerencia de Categoría
-    Categoría
-    Sub Categoría
-    Segmento
-    Sub segmento
-
- */
