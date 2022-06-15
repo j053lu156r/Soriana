@@ -208,8 +208,11 @@ sap.ui.define([
 
                 var ojbResponse = dueModel.getProperty("/results/0");
                 var dueCompModel = ojbResponse.EFREMNAV.results;
-                console.log(dueModel);
-    
+
+                if(dueCompModel.length == 0){
+                    sap.m.MessageBox.information(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.tableEmpty"));
+                }
+
                 this.getOwnerComponent().setModel(new JSONModel(ojbResponse),
                     "tableRemissions");
     
