@@ -162,7 +162,7 @@ sap.ui.define([
             }
 
             var file = oFileUploader.oFileUpload.files[0];
-
+            console.log(file)
             var reader = new FileReader();
             var reader2 = new FileReader();
 

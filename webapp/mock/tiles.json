@@ -402,21 +402,6 @@
                             "idFunction": 28
                         }
                     ]
-                },
-                {
-                    "id": "0034",
-                    "title": "/aportaciones.title",
-                    "subHeader": "",
-                    "icon": "sap-icon://bbyd-dashboard",
-                    "numeric": " ",
-                    "footer": "",
-                    "type": "standard",
-                    "binding": "masterAportaciones",
-                    "functions": [
-                        {
-                            "idFunction": 29
-                        }
-                    ]
                 }
             ]
         },
@@ -481,6 +466,56 @@
                         }, 
                         {
                             "idFunction": 47
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "/tiles.titleNegCom",
+            "tiles": [
+                {
+                    "id": "0037",
+                    "title": "/tiles.acuerdos",
+                    "subHeader": "",
+                    "icon": "sap-icon://customer-order-entry",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterAcuerdos",
+                    "functions": [
+                        {
+                            "idFunction": 29
+                        }
+                    ]
+                },
+                {
+                    "id": "0034",
+                    "title": "/tiles.aportaciones",
+                    "subHeader": "",
+                    "icon": "sap-icon://bbyd-dashboard",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterAportaciones",
+                    "functions": [
+                        {
+                            "idFunction": 29
+                        }
+                    ]
+                },
+                {
+                    "id": "0039",
+                    "title": "/tiles.boletinVta",
+                    "subHeader": "",
+                    "icon": "sap-icon://my-sales-order",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterBoletinVta",
+                    "functions": [
+                        {
+                            "idFunction": 39
                         }
                     ]
                 }
