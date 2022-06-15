@@ -592,6 +592,13 @@
                 </columns>
                 
                 </Table>
+                 <OverflowToolbar  visible="true">
+
+                    <Text text="Saldo" />
+                    <ToolbarSpacer/>
+ <ObjectNumber
+                            number= "{parts: [{path: 'GroupedTotales>/Hierarchy/totalT'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+                              />                 </OverflowToolbar>
 
             </ScrollContainer>
         </f:content>

@@ -277,11 +277,7 @@ this.initTable()
             let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
             // format[AAAAMMDD] (2020101)
            // let desde_LV_ZDESDE = this.buildSapDate( this.subtractYears(1)    ); 
-<<<<<<< HEAD
-             let desde_LV_ZDESDE = '20160219'//this.buildSapDate( todayDate   ); 
-=======
            let desde_LV_ZDESDE = '20160219'//this.buildSapDate( todayDate   ); 
->>>>>>> e82b87458fd0fdb3f0e279b66cdf986fec96e604
             // format[AAAAMMDD] (2020101)
             let desde_LV_ZHASTA = this.buildSapDate( todayDate );
 
