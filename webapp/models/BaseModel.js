@@ -400,6 +400,17 @@ function Aportaciones() {
 Aportaciones.prototype = Object.create(BaseModel.prototype);
 Aportaciones.prototype.constructor = Aportaciones;//Model Aportaciones
 
+//Model Acuerdos
+function Acuerdos() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_ACUERDOS_SRV/";
+    params.sModel = "acuerdosModel";
+    BaseModel.call(this, params);
+}
+
+Acuerdos.prototype = Object.create(BaseModel.prototype);
+Acuerdos.prototype.constructor = Acuerdos;//Model Acuerdos
+
 //Model citas 1
 function RemissionCancel() {
     var params = {};
