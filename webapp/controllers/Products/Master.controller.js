@@ -1024,7 +1024,6 @@ sap.ui.define([
 
         productTypeComplete: function (oControlEvent) {
 
-
             let validated = true;
 
             const ModelFolio = this.getOwnerComponent().getModel("Folio");
