@@ -22,7 +22,7 @@ sap.ui.define([
                 onAfterShow: function (oEvent) {
                     var barModel = this.getOwnerComponent().getModel();
                     barModel.setProperty("/barVisible", true);
-                    this.getOwnerComponent().setModel(new JSONModel(), "3AcuerdosHdr");
+                    this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "AcuerdosHdr");
                     this.clearFilters();
                 }
             }, this);
@@ -69,38 +69,11 @@ sap.ui.define([
                     url += "Acuerdo eq '" + acuerdo + "'";
                 }
 
-                var oModel2 = new sap.ui.model.odata.ODataModel( "/sap/opu/odata/sap/ZOSP_ACUERDOS_SRV",
-                                { 
-                                    user: 'I_GTQ_PROV' , 
-                                    password:'Cotech2021' ,
-                                    json: true 
-                                });
-
-                var that = this;
-                
-                that.byId("tableAcuerdos").setBusy(true);
-
-                oModel2.read(url, {
-                    success: function(res){
-                        var ojbResponse = res.results[0];
-                        that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(ojbResponse),
-                            "3AcuerdosHdr");
-                        that.paginate("3AcuerdosHdr", "/AcuerdosDet", 1, 0);
-                        that.byId("tableAcuerdos").setBusy(false);
-                    },
-                    error: function(error) {
-                        console.log(error);
-                        that.byId("tableAcuerdos").setBusy(false);
-                    }
-                });
-
-                /*var dueModel = oModel.getJsonModel(url);
+                var dueModel = oModel.getJsonModel(url);
                 var ojbResponse = dueModel.getProperty("/results/0");
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(ojbResponse),
-                    "3AcuerdosHdr");*/
-                
-                //this.getView().setModel(new sap.ui.model.json.JSONModel(ojbResponse),"3AcuerdosHdr");
-                //this.paginate("3AcuerdosHdr", "/AcuerdosDet", 1, 0);
+                    "AcuerdosHdr");
+                this.paginate("AcuerdosHdr", "/AcuerdosDet", 1, 0);
             }
 
         },
@@ -113,9 +86,9 @@ sap.ui.define([
             this.getView().byId("documentoInput").setValue("");
             this.getView().byId("ejercicioInput").setValue("");
             this.getView().byId("acuerdoInput").setValue("");
-            var vModel = this.getView().getModel("3AcuerdosHdr");
-            if (vModel) {
-                vModel.setData([]);
+            var oModel = this.getOwnerComponent().getModel("AcuerdosHdr");
+            if (oModel) {
+                oModel.setData([]);
             }
         },
 
@@ -161,7 +134,7 @@ sap.ui.define([
                 }
             ];
 
-            this.exportxls('3AcuerdosHdr', '/AcuerdosDet/results', columns);
+            this.exportxls('AcuerdosHdr', '/AcuerdosDet/results', columns);
         }
 
     });
