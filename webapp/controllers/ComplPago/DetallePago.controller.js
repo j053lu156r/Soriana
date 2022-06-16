@@ -325,8 +325,6 @@ sap.ui.define([
 			});
 			oBreadCrumb.addLink(oLink);
 
-
-
 		},
 
 
