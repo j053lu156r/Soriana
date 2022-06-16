@@ -85,37 +85,24 @@ sap.ui.define([
             this.byId("EcAncho").setEditable(false);
             this.byId("EcProfundo").setValue(validDimensions.Profundo);
             this.byId("EcProfundo").setEditable(false);
-            this.byId("PvAlto").setValue(validDimensions.Alto);
-            this.byId("PvAlto").setEditable(false);
-            this.byId("PvAncho").setValue(validDimensions.Ancho);
-            this.byId("PvAncho").setEditable(false);
-            this.byId("PvProfundo").setValue(validDimensions.Profundo);
-            this.byId("PvProfundo").setEditable(false);
             this.byId("EcAlto").fireLiveChange();
-            this.byId("PvAlto").fireLiveChange();
-            // let unidadMed = formatterCatPrd.findPropertieValue("value", "text", gs1Json.UnidAncho,
-            // this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadVolumen'));
-            this.byId("EcUndaap").setValue(validDimensions.Unidad);
-            this.byId("EcUndvol").setSelectedKey(validDimensions.Unidad);
-            this.byId("PvUndaap").setValue(validDimensions.Unidad);
-            this.byId("PvUndvol").setSelectedKey(validDimensions.Unidad);
+            this.byId("EcUndaap").setSelectedKey(validDimensions.UnidadLon);
+            //this.byId("EcUndvol").setSelectedKey(validDimensions.Unidad);
 
             this.byId("EcPbruto").setValue(gs1Json.PesoBruto);
             this.byId("EcPbruto").setEditable(false);
             this.byId("EcPneto").setValue(gs1Json.PesoNeto);
             this.byId("EcPneto").setEditable(false);
-            this.byId("EcUndp").setSelectedKey(gs1Json.UnidPesoBruto);
-
-            this.byId("PvPbruto").setValue(gs1Json.PesoBruto);
-            this.byId("PvPbruto").setEditable(false);
-            this.byId("PvPneto").setValue(gs1Json.PesoNeto);
-            this.byId("PvPneto").setEditable(false);
-            this.byId("PvUndp").setSelectedKey(gs1Json.UnidPesoBruto);
+            this.byId("EcUndp").setSelectedKey(validDimensions.UnidadWeg);
                 
         },
 
         recalcularValoresDimensiones(gs1Json){
-            let Unidad = gs1Json.UnidAncho;
+            let UnidadLon = formatterCatPrd.findPropertieValue("IsoCode", "Cveunm", gs1Json.UnidAncho,
+                                                    this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadLongitud')); ;
+            let UnidadWeg = formatterCatPrd.findPropertieValue("IsoCode", "Cveunm", gs1Json.UnidPesoBruto,
+            this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadPeso'));
+            
             let Alto = gs1Json.Alto;
             let Ancho = gs1Json.Ancho;
             let Profundo = gs1Json.Profundo;
@@ -127,26 +114,20 @@ sap.ui.define([
                 Ancho /= 10;
                 Profundo /= 10;
                 volumen = Alto * Ancho * Profundo;
-                Unidad = this.getUnidadDimensiones(Unidad);
+                UnidadLon = this.getUnidadDimensiones(UnidadLon);
             }
 
-            return { Alto, Ancho, Profundo, Unidad };
+            return { Alto, Ancho, Profundo, UnidadLon, UnidadWeg };
         },
 
         getUnidadDimensiones(Unidad){
 
-            // let UnidadesMedida = this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadVolumen');
-            // let indexUnidad = UnidadesMedida.results.findIndex(unidad => unidad.value == Unidad);
-            // Unidad = UnidadesMedida.results[(indexUnidad+1)].value;
+            let UnidadesMedida = this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadLongitud');
+            let indexUnidad = UnidadesMedida.results.findIndex(unidad => unidad.Cveunm == Unidad);
+            Unidad = UnidadesMedida.results[(indexUnidad+1)].Cveunm;
 
-            switch (Unidad) {
-                case 'MMT':
-                    return 'CMT'
-                case 'CMT':
-                    return 'MT'
-                case 'MT':
-                    return 'KMT'
-            }
+            return Unidad;
+
         },
 
         setInitialDates() {
@@ -757,7 +738,7 @@ sap.ui.define([
             if ( !eanValue || eanValue.length != _selectedEanType.length) {
                 this.byId('codeType').setEditable(true);
                 oControlEvent.getSource().setValueState(sap.ui.core.ValueState.Error)
-                oControlEvent.getSource().setValueStateText('Codigo Ean Invalido');
+                oControlEvent.getSource().setValueStateText('Codigo Invalido. Longitud Maxima: ' + _selectedEanType.length);
             } else {
                 oControlEvent.getSource().setValueState(sap.ui.core.ValueState.None);
                 this.byId('codeType').setEditable(false);
@@ -783,7 +764,7 @@ sap.ui.define([
             if (response.getProperty("/results/0/ESuccess") === "X") {
                 MessageBox.success("Artículo apto para registro.", {
                     onClose: () => {
-                        //this.getGS1ProductData();
+                        // this.getGS1ProductData();
                         this.getView().byId('barCode').setValueState(sap.ui.core.ValueState.Success);
                         this.getOwnerComponent().getModel("ValidBarCode").setProperty("/value", true);
                     }
@@ -972,16 +953,22 @@ sap.ui.define([
             Folio.ForNegoc = formatterCatPrd.findPropertieValue("value", "text", Folio.ForNegoc,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/NegotiatedFormat'));
 
-            Folio.EcUndvol = formatterCatPrd.findPropertieValue("value", "text", Folio.EcUndvol,
+            Folio.EcUndaap = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.EcUndaap,
+            this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadLongitud'));
+
+            Folio.EcUndvol = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.EcUndvol,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadVolumen'));
 
-            Folio.EcUndp = formatterCatPrd.findPropertieValue("value", "text", Folio.EcUndp,
+            Folio.EcUndp = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.EcUndp,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadPeso'));
 
-            Folio.PvUndvol = formatterCatPrd.findPropertieValue("value", "text", Folio.PvUndvol,
+            Folio.PvUndaap = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.PvUndaap,
+            this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadLongitud'));
+
+            Folio.PvUndvol = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.PvUndvol,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadVolumen'));
 
-            Folio.PvUndp = formatterCatPrd.findPropertieValue("value", "text", Folio.PvUndp,
+            Folio.PvUndp = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.PvUndp,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadPeso'));
 
             Folio.Pais = formatterCatPrd.findPropertieValue("Land1", "Landx50", Folio.Pais,

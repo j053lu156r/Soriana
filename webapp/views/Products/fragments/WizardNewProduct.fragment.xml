@@ -562,7 +562,7 @@
                                     <Label text="{appTxts>/products.deep}" />
                                     <Input id="EcProfundo" value="{Folio>/EcProfundo}" type="Number" required="true" liveChange="calcularECVolumen" />
                                     <Label text="{appTxts>/products.msgExpressedIn}" />
-                                    <ComboBox id="EcUndaap" selectedKey="{Folio>/EcUndvol}" items="{path : 'Catalogos>/UnidadLongitud/results'}" required="true">
+                                    <ComboBox id="EcUndaap" selectedKey="{Folio>/EcUndaap}" items="{path : 'Catalogos>/UnidadLongitud/results'}" required="true">
                                         <items>
                                             <core:Item key="{Catalogos>Cveunm}" text="{Catalogos>Unidad}"/>
                                         </items>
@@ -585,7 +585,6 @@
                                             <core:Item key="{Catalogos>Cveunm}" text="{Catalogos>Unidad}"/>
                                         </items>
                                     </ComboBox>
-                                    <!-- <Input value="{Folio>/EcUndp}" required="true"/> -->
 
                                     <core:Title text="{appTxts>/products.subtitlesalesPresen}" />
                                     <Label text="{appTxts>/products.tall}" />
@@ -595,13 +594,17 @@
                                     <Label text="{appTxts>/products.deep}" />
                                     <Input id="PvProfundo" value="{Folio>/PvProfundo}" type="Number" required="true" liveChange="calcularPvVolumen"/>
                                     <Label text="{appTxts>/products.msgExpressedIn}" />
-                                    <Input id="PvUndaap" value="{Folio>/PvUndaap}" required="true" />
+                                    <ComboBox id="PvUndaap" selectedKey="{Folio>/PvUndaap}" items="{path : 'Catalogos>/UnidadLongitud/results'}" required="true">
+                                        <items>
+                                            <core:Item key="{Catalogos>Cveunm}" text="{Catalogos>Unidad}"/>
+                                        </items>
+                                    </ComboBox>
                                     <Label text="{appTxts>/products.volume}" />
                                     <Input id="PvVolumen" value="{Folio>/PvVolumen}" type="Number" editable="false" enabled="true" required="true"/>
                                     <Label text="{appTxts>/products.volumeUnit}" />
                                     <ComboBox id="PvUndvol" selectedKey="{Folio>/PvUndvol}" items="{path : 'Catalogos>/UnidadVolumen/results'}" required="true">
                                         <items>
-                                            <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
+                                            <core:Item key="{Catalogos>Cveunm}" text="{Catalogos>Unidad}"/>
                                         </items>
                                     </ComboBox>
                                     <Label text="{appTxts>/products.grossWeight}" />
@@ -611,10 +614,9 @@
                                     <Label text="{appTxts>/products.weightUnit}" />
                                     <ComboBox id="PvUndp" selectedKey="{Folio>/PvUndp}" items="{path : 'Catalogos>/UnidadPeso/results'}" required="true">
                                         <items>
-                                            <core:Item key="{Catalogos>value}" text="{Catalogos>text}" />
+                                            <core:Item key="{Catalogos>Cveunm}" text="{Catalogos>Unidad}" />
                                         </items>
                                     </ComboBox>
-                                    <!-- <Input value="{Folio>/PvUndp}" required="true"/> -->
 
                                     <core:Title text="{appTxts>/products.capPerPallet}" />
                                     <Label text="{appTxts>/products.palletCode}" />
