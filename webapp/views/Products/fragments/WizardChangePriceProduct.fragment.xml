@@ -48,7 +48,7 @@
                         </l:VerticalLayout>
                     </HBox>
                     <Table  mode="MultiSelect" id="tableItemsChangePrice"
-                        items="{ path : 'ETMODIFY>/Paginated/results'}" >
+                        items="{ path : 'ETMODIFY>/Paginated/results'}"  visible="false">
                         <headerToolbar>
                             <OverflowToolbar>
                                 <Button text="{appTxts>/products.deletePrice}" id="btnDeleteChangePriceRow" press=".deleteRow('tableItemsChangePrice','ETMODIFY')" type="Emphasized" />
