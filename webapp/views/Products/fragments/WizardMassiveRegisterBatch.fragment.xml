@@ -30,6 +30,7 @@
 		<Input
 			id="correoInput"
 			placeholder="{appTxts>/products.enterEmailplaceholder}"
+            type="Email"
 			>
 			
 		</Input>
