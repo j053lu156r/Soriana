@@ -8,6 +8,16 @@
 	 controllerName="demo.controllers.Acuerdos.Master" height="100%">
 	<f:DynamicPage  
 		class="sapUiContentPadding">
+        <!-- DynamicPage Title -->
+        <!--<f:title>
+            <f:DynamicPageTitle backgroundDesign="Transparent">
+                <f:heading>
+                    <vm:VariantManagement standardItemText="{appTxts>/acuerdos.title}">
+                    </vm:VariantManagement>
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>-->
+        <!-- DynamicPage Header -->
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
@@ -23,6 +33,7 @@
                                         id="sociedadInput"
                                         placeholder="{appTxts>/acuerdos.sociedad}"
                                         showSuggestion="true"
+                                        maxLength="4"
                                         >
                                     </Input>
                                 </fb:control>
@@ -34,6 +45,7 @@
                                         id="documentoInput"
                                         placeholder="{appTxts>/acuerdos.docto}"
                                         showSuggestion="true"
+                                        maxLength="10"
                                         >
                                     </Input>
                                 </fb:control>
@@ -45,6 +57,7 @@
                                         id="ejercicioInput"
                                         placeholder="{appTxts>/acuerdos.ejercicio}"
                                         showSuggestion="true"
+                                        maxLength="4"
                                         >
                                     </Input>
                                 </fb:control>
@@ -56,6 +69,7 @@
                                         id="acuerdoInput"
                                         placeholder="{appTxts>/acuerdos.acuerdo}"
                                         showSuggestion="true"
+                                        maxLength="10"
                                         >
                                     </Input>
                                 </fb:control>
@@ -77,6 +91,10 @@
                     <OverflowToolbar>
                         <Title text="{appTxts>/acuerdos.title} ({3AcuerdosHdr>/AcuerdosDet/results/length})" />
                         <ToolbarSpacer/>
+                        <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
+                            press=".buildExportTable"
+                            visible="{= ${3AcuerdosHdr>/AcuerdosDet/results/length} > 0}"
+                        />
                         <Select 
                             visible="{= ${3AcuerdosHdr>/AcuerdosDet/Paginated/results/length} > 0 }"
                             change=".paginateValue(${$parameters>/selectedItem}, '3AcuerdosHdr', '/AcuerdosDet')">
@@ -124,8 +142,11 @@
 				<items>
 					<ColumnListItem >                    
 						<cells>
-                            <Text xmlns="sap.m" 
-                                text="{3AcuerdosHdr>Centro}"/>
+                            <!--<Text xmlns="sap.m" 
+                                text="{3AcuerdosHdr>Centro}"/>-->
+                            <ObjectIdentifier 
+                                title="{3AcuerdosHdr>Centro}" 
+                                titleActive="true"/>
                             <ObjectNumber
                                 number="{3AcuerdosHdr>Base}"
                                 unit="MXN"/>
