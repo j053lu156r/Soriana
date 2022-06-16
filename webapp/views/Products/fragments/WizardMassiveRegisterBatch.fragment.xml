@@ -25,6 +25,15 @@
 
         <f:content>
 		<l:VerticalLayout>
+
+        <Label text="{appTxts>/products.personalBuyerEmail}" labelFor="correoInput" />
+		<Input
+			id="correoInput"
+			placeholder="{appTxts>/products.enterEmailplaceholder}"
+			>
+			
+		</Input>
+
 		<u:FileUploader
 			id="fileUploaderMassiveReg"
 			name="myFileUpload"
