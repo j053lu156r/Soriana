@@ -323,6 +323,8 @@ sap.ui.define([
 				text: "Conceptos",
 				press: [sPath, this.onBreadcrumbPress, this]
 			});
+			oBreadCrumb.destroyLinks();
+
 			oBreadCrumb.addLink(oLink);
 
 

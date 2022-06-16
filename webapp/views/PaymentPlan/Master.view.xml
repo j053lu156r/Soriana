@@ -17,14 +17,7 @@ xmlns:core="sap.ui.core"
                     </vm:VariantManagement>
                 </f:heading>
 
-                 <f:actions>
-                    <ToolbarSpacer/>
-                    <Button
-                        text  = "Pagos Futuros"
-                        type  = "Emphasized"
-                        press = "openUploadDialog"
-                    />
-                </f:actions>
+                 
                 
             </f:DynamicPageTitle>
         </f:title>

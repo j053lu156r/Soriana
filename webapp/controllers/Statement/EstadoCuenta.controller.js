@@ -411,6 +411,7 @@ console.log('on init table')
                 text: "Conceptos",
                 press:[sPath, this.onBreadcrumbPress, this]
             });
+            oBreadCrumb.destroyLinks();
             oBreadCrumb.addLink(oLink);
 
 
