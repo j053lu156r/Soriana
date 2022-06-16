@@ -80,7 +80,7 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.barCode}">
                                                     <form:fields>
-                                                        <Input required="true" id="barCode" type="Number" value="{Folio>/CodEan}" editable="false"/>
+                                                        <Input required="true" id="barCode" type="Number" value="{Folio>/CodEan}" editable="false" liveChange="validateBarCodeLength" />
                                                         <Button id="btnValidateDataSupplierGS1" press=".validateBarCode" icon="sap-icon://check-availability" text="">
                                                             <layoutData>
                                                                 <form:ColumnElementData cellsSmall="1" cellsLarge="1" />
@@ -378,7 +378,7 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.salesCode}">
                                                     <form:fields>
-                                                        <Input id="salesCode" value="{Folio>/CodVent}" type="Number"/>
+                                                        <Input id="salesCode" value="{Folio>/CodVent}" type="Number" liveChange="validateBarCodeLength"/>
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.salesUnitMeasure}">
@@ -394,7 +394,7 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.purchaseUnitCode}">
                                                     <form:fields>
-                                                        <Input  value="{Folio>/CodCompra}" id="purchaseUnitCode" type="Number"/>
+                                                        <Input  value="{Folio>/CodCompra}" id="purchaseUnitCode" type="Number" liveChange="validateBarCodeLength"/>
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.purchaseUnit}">
@@ -427,7 +427,7 @@
 
                                                 <form:FormElement label="{appTxts>/products.artWithVarients}">
                                                     <form:fields>
-                                                        <CheckBox id="variants" select=".changeVariants" />
+                                                        <CheckBox id="variants" select=".changeVariants" /> 
                                                     </form:fields>
                                                 </form:FormElement>
                                                 
@@ -520,8 +520,8 @@
                                             <!-- <ObjectIdentifier text="{ITARTVAR>index}" /> -->
                                             <Input value="{ITARTVAR>CaracTalla}" change=".changeQty"></Input>
                                             <Input value="{ITARTVAR>Colsabaro}" change=".changeQty"></Input>
-                                            <Input value="{ITARTVAR>CodVent}" change=".changeQty"></Input>
-                                            <Input value="{ITARTVAR>CodCompra}" change=".changeQty"></Input>
+                                            <Input value="{ITARTVAR>CodVent}" change=".changeQty" liveChange="validateBarCodeLength"></Input>
+                                            <Input value="{ITARTVAR>CodCompra}" change=".changeQty" liveChange="validateBarCodeLength"></Input>
                                             <Input value="{ITARTVAR>Proporcion}" change=".changeQty"></Input>
                                             
                                         </cells>
@@ -562,13 +562,17 @@
                                     <Label text="{appTxts>/products.deep}" />
                                     <Input id="EcProfundo" value="{Folio>/EcProfundo}" type="Number" required="true" liveChange="calcularECVolumen" />
                                     <Label text="{appTxts>/products.msgExpressedIn}" />
-                                    <Input id="EcUndaap" value="{Folio>/EcUndaap}" required="true" />
+                                    <ComboBox id="EcUndaap" selectedKey="{Folio>/EcUndvol}" items="{path : 'Catalogos>/UnidadLongitud/results'}" required="true">
+                                        <items>
+                                            <core:Item key="{Catalogos>Cveunm}" text="{Catalogos>Unidad}"/>
+                                        </items>
+                                    </ComboBox>
                                     <Label text="{appTxts>/products.volume}" />
                                     <Input id="EcVolumen" value="{Folio>/EcVolumen}" type="Number" editable="false" enabled="true" />
                                     <Label text="{appTxts>/products.volumeUnit}" />
                                     <ComboBox id="EcUndvol" selectedKey="{Folio>/EcUndvol}" items="{path : 'Catalogos>/UnidadVolumen/results'}" required="true">
                                         <items>
-                                            <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
+                                            <core:Item key="{Catalogos>Cveunm}" text="{Catalogos>Unidad}"/>
                                         </items>
                                     </ComboBox>
                                     <Label text="{appTxts>/products.grossWeight}" />
@@ -578,7 +582,7 @@
                                     <Label text="{appTxts>/products.weightUnit}" />
                                     <ComboBox id="EcUndp" selectedKey="{Folio>/EcUndp}" items="{path : 'Catalogos>/UnidadPeso/results'}" required="true">
                                         <items>
-                                            <core:Item key="{Catalogos>value}" text="{Catalogos>text}"/>
+                                            <core:Item key="{Catalogos>Cveunm}" text="{Catalogos>Unidad}"/>
                                         </items>
                                     </ComboBox>
                                     <!-- <Input value="{Folio>/EcUndp}" required="true"/> -->

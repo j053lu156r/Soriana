@@ -15,6 +15,7 @@ sap.ui.define([
     const CatNegotiatedFormat = ['1A', '1B'];
     var swProveedorEnGS1 = false;
     var swProveedorExcluido = false;
+    var _selectedEanType = {};
     var _testingSteps = true; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
 
     return BaseController.extend("demo.controllers.Products.Master", {
@@ -190,25 +191,9 @@ sap.ui.define([
                     ]
                 };
 
-                let UnidadVolumen = {
-                    results: [
-                        { value: "MMT", text: 'Milimetros' },
-                        { value: "CMT", text: 'Centimetros' }
-                    ]
-                };
-
-                let UnidadPeso = {
-                    results: [
-                        { value: "GM", text: 'Gramo' },
-                        { value: "KGM", text: 'Kilogramo' }
-                    ]
-                };
-
                 this.getOwnerComponent().getModel("Catalogos").setProperty('/NegotiatedFormat', CatNegotiatedFormat);
                 this.getOwnerComponent().getModel("Catalogos").setProperty('/TiposEtiqueta', CatTiposEtiqueta);
                 this.getOwnerComponent().getModel("Catalogos").setProperty('/EstrategiaSalida', CatEstrategiaSalida);
-                this.getOwnerComponent().getModel("Catalogos").setProperty('/UnidadVolumen', UnidadVolumen);
-                this.getOwnerComponent().getModel("Catalogos").setProperty('/UnidadPeso', UnidadPeso);
                 this.getOwnerComponent().getModel("Catalogos").setProperty('/TiposBonificacion', CatTipoBonif);
 
                 var url = `/HdrcatproSet?$expand=ETTART,ETCOUNTRYNAV,ETCODENAV,ETBRANDSNAV,ETTCARCV,ETUWEIG,ETULONG,ETUVOL,ETUNM,ETGPOART&$filter=IOption eq '4'`;
@@ -221,9 +206,11 @@ sap.ui.define([
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/TiposProducto', response.getProperty('/results/0/ETTART'));
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/TipoCodigo', response.getProperty('/results/0/ETCODENAV'));
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/UnidadMedida', response.getProperty('/results/0/ETUNM'));
+                    that.getOwnerComponent().getModel("Catalogos").setProperty('/UnidadLongitud', response.getProperty('/results/0/ETULONG'));
+                    that.getOwnerComponent().getModel("Catalogos").setProperty('/UnidadVolumen', response.getProperty('/results/0/ETUVOL'));
+                    that.getOwnerComponent().getModel("Catalogos").setProperty('/UnidadPeso', response.getProperty('/results/0/ETUWEIG'));
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/Caracteristicas', response.getProperty('/results/0/ETTCARCV'));
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/GrupoArticulos', response.getProperty('/results/0/ETGPOART'));
-
 
                     var pModel = {
                         "results": Paises
@@ -566,6 +553,7 @@ sap.ui.define([
 
             this.exportxls('Folios', '/ETPRICNAV/results', columns);
         },
+
         //alta masiva
         massiveRegisterBatch: function () {
 
@@ -603,10 +591,12 @@ sap.ui.define([
         },
 
         //nuevo producto
-        newProduct: function () {
+         newProduct: function () {
+
             if (!this.hasAccess(42)) {
                 return false;
             }
+
             try {
                 var oView = this.getView();
 
@@ -632,22 +622,21 @@ sap.ui.define([
                             return oDialog;
                         }.bind(this));
                     }
-                    this._pDialog.then(function (oDialog) {
+                     this._pDialog.then(function (oDialog) {
                         //oView.byId("negotiatedFormat").setSelectedIndex(0).fireSelect();
                         oDialog.open();
 
                     });
 
-
-
-                }
-                else
+                } else
                     sap.m.MessageBox.error("Debe selecionar un proveedor para continuar.");
 
             } catch (err) {
                 sap.m.MessageBox.error("Ocurrió una excepción al inicializar un nuevo folio.");
                 console.error(err);
             }
+
+            this.byId('codeType').setEditable(true);
         },
         changePriceProduct: function () {
 
@@ -762,6 +751,19 @@ sap.ui.define([
             }
         },
 
+        validateBarCodeLength(oControlEvent){
+            let eanValue = oControlEvent.getParameter('value');
+        
+            if ( !eanValue || eanValue.length != _selectedEanType.length) {
+                this.byId('codeType').setEditable(true);
+                oControlEvent.getSource().setValueState(sap.ui.core.ValueState.Error)
+                oControlEvent.getSource().setValueStateText('Codigo Ean Invalido');
+            } else {
+                oControlEvent.getSource().setValueState(sap.ui.core.ValueState.None);
+                this.byId('codeType').setEditable(false);
+            }
+        },
+
         validateBarCode: function () {
             const ModelFolio = this.getOwnerComponent().getModel("Folio");
 
@@ -774,14 +776,14 @@ sap.ui.define([
 
             const barCode = ModelFolio.getProperty('/CodEan').trim()
 
-            const url = `/HdrcatproSet?$expand=ETUWEIG,ETULONG,ETUVOL,ETUNM&$filter=IOption eq '7' and IEanv  eq '${barCode}'`;
+            const url = `/HdrcatproSet?$expand=ETUWEIG,ETULONG,ETUVOL,ETUNM&$filter=IOption eq '7' and IEanv  eq '${barCode}' and IEantp eq '${_selectedEanType.type}'`;
 
             var response = Model.getJsonModel(url);
 
             if (response.getProperty("/results/0/ESuccess") === "X") {
                 MessageBox.success("Artículo apto para registro.", {
                     onClose: () => {
-                        this.getGS1ProductData();
+                        //this.getGS1ProductData();
                         this.getView().byId('barCode').setValueState(sap.ui.core.ValueState.Success);
                         this.getOwnerComponent().getModel("ValidBarCode").setProperty("/value", true);
                     }
@@ -886,18 +888,18 @@ sap.ui.define([
                 onClose: async function (oAction) {
                     if (oAction === MessageBox.Action.YES) {
 
-                        if (sMessageBoxType == "confirm") {
+                        if (sMessageBoxType == "confirm") { // POST Prodcuto
 
                             //JSON.parse(this.getOwnerComponent().getModel("images64").getJSON).attachArray;
                             let imagesToAttach = [];
 
-                            let variantes = JSON.parse(this.getView().getModel('ITARTVAR').getJSON()).results;
+                            let variantes = [];
+                            //JSON.parse(this.getView().getModel('ITARTVAR').getJSON()).results;
 
                             let folioModel = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
                             folioModel.TMoneda = "MXN";
                             folioModel.Lifnr = this.getConfigModel().getProperty("/supplierInputKey");
                             folioModel.EanUpcBase = folioModel.CodEan;
-                            folioModel.VariantArt = "VA"; // Cambiar para crear correctamente
                             let createObjReq = {
                                 "IOption": "5",
                                 "ITREC": [
@@ -2130,8 +2132,18 @@ sap.ui.define([
             return children;
         },
 
-        codeTypeChange(oControlEvent){
+        async codeTypeChange(oControlEvent){
             this.byId("barCode").setEditable(true);
+
+            let itemSelectedKey = oControlEvent.getSource().getSelectedKey();
+
+            _selectedEanType = {};
+            _selectedEanType.type = itemSelectedKey;
+            _selectedEanType.length = await formatterCatPrd.findPropertieValue("Numtp", "Lnean", itemSelectedKey,
+                this.getOwnerComponent().getModel("Catalogos").getProperty('/TipoCodigo'));
+
+            this.byId("barCode").fireLiveChange( );
+            
         }
 
     })

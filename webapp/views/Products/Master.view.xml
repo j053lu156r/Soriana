@@ -29,10 +29,10 @@
                 </f:heading>
                 <f:actions>
                     <ToolbarSpacer/>
-                    <!-- <Button
+                    <Button
                             text="{appTxts>/products.massiveRegister}"
                             type="Emphasized"
-                            press="massiveRegisterBatch"/> -->
+                            press="massiveRegisterBatch"/>
                     <Button
                             text="{appTxts>/products.newProduct}"
                             type="Emphasized"
@@ -45,11 +45,6 @@
                             text="{appTxts>/products.deleteProductsTxt}"
                             type="Emphasized"
                             press="deleteProducts"/>
-
-                    <!-- <Button
-                            text=" FETCH GS1 "
-                            type="Emphasized"
-                            press="getGS1ProductData"/> -->
                 </f:actions>
             </f:DynamicPageTitle>
         </f:title>
