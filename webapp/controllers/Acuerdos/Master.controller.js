@@ -22,7 +22,7 @@ sap.ui.define([
                 onAfterShow: function (oEvent) {
                     var barModel = this.getOwnerComponent().getModel();
                     barModel.setProperty("/barVisible", true);
-                    this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "3AcuerdosHdr");
+                    this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "AcuerdosHdr");
                     this.clearFilters();
                 }
             }, this);
@@ -72,8 +72,8 @@ sap.ui.define([
                 var dueModel = oModel.getJsonModel(url);
                 var ojbResponse = dueModel.getProperty("/results/0");
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(ojbResponse),
-                    "3AcuerdosHdr");
-                this.paginate("3AcuerdosHdr", "/AcuerdosDet", 1, 0);
+                    "AcuerdosHdr");
+                this.paginate("AcuerdosHdr", "/AcuerdosDet", 1, 0);
             }
 
         },
@@ -86,7 +86,7 @@ sap.ui.define([
             this.getView().byId("documentoInput").setValue("");
             this.getView().byId("ejercicioInput").setValue("");
             this.getView().byId("acuerdoInput").setValue("");
-            var oModel = this.getOwnerComponent().getModel("3AcuerdosHdr");
+            var oModel = this.getOwnerComponent().getModel("AcuerdosHdr");
             if (oModel) {
                 oModel.setData([]);
             }
@@ -134,7 +134,7 @@ sap.ui.define([
                 }
             ];
 
-            this.exportxls('3AcuerdosHdr', '/AcuerdosDet/results', columns);
+            this.exportxls('AcuerdosHdr', '/AcuerdosDet/results', columns);
         }
 
     });
