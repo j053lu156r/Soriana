@@ -59,6 +59,7 @@ sap.ui.define([
             }
         },
         documentUploadPress: function () {
+            var that = this;
             var oFileUploader = sap.ui.core.Fragment.byId("uploadAviso", "fileUploaderAviso");
             var uploadList = sap.ui.core.Fragment.byId("uploadAviso", "logUploadListAviso");
             var uploadBox = sap.ui.core.Fragment.byId("uploadAviso", "uploadBoxAviso");
@@ -97,6 +98,19 @@ sap.ui.define([
 
             var reader = new FileReader();
             reader.onload = function (evn) {
+
+                //strip off the data uri prefix
+                let strXML = atob(evn.target.result.replace('data:text/xml;base64,',''));
+                var oXMLModel = new sap.ui.model.xml.XMLModel();  
+                oXMLModel.setXML(strXML);
+                var oXml = oXMLModel.getData();
+
+                var x = oXml.getElementsByTagName("cfdi:Comprobante"); //Nodo
+				if(x.length > 0){
+                    sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/rem.uploader.cfdiError"));
+                    return;
+                }
+                
                 if (file.type == "text/xml") {
                     var parts = evn.target.result.split(",");
                     objRequest.Cfdi = parts[1];
@@ -208,8 +222,11 @@ sap.ui.define([
 
                 var ojbResponse = dueModel.getProperty("/results/0");
                 var dueCompModel = ojbResponse.EFREMNAV.results;
-                console.log(dueModel);
-    
+
+                if(dueCompModel.length == 0){
+                    sap.m.MessageBox.information(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.tableEmpty"));
+                }
+
                 this.getOwnerComponent().setModel(new JSONModel(ojbResponse),
                     "tableRemissions");
     

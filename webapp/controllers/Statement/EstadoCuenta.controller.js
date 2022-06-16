@@ -235,7 +235,8 @@ var jsonModelG = new JSONModel({
     "movimientos": nestedMovs,
     "totalR":totalR,
     "totalD":totalD,
-    "totalC":totalC
+    "totalC":totalC,
+    "totalT":totalD-totalC
 }
 });
 
@@ -276,7 +277,7 @@ this.initTable()
             let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
             // format[AAAAMMDD] (2020101)
            // let desde_LV_ZDESDE = this.buildSapDate( this.subtractYears(1)    ); 
-           let desde_LV_ZDESDE =   let desde_LV_ZDESDE = '20160219'//this.buildSapDate( todayDate   ); 
+           let desde_LV_ZDESDE = '20160219'//this.buildSapDate( todayDate   ); 
             // format[AAAAMMDD] (2020101)
             let desde_LV_ZHASTA = this.buildSapDate( todayDate );
 
@@ -410,6 +411,7 @@ console.log('on init table')
                 text: "Conceptos",
                 press:[sPath, this.onBreadcrumbPress, this]
             });
+            oBreadCrumb.destroyLinks();
             oBreadCrumb.addLink(oLink);
 
 

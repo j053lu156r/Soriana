@@ -14,7 +14,7 @@ sap.ui.define([
 	var dTJSON;
 	var fechaAct = new Date();
 
-	return Controller.extend("demo.controllers.ComplPago.DetallePago", {
+	return Controller.extend("demo.controllers.ComplPago.DetallePagoFuturo", {
 
 		sCollection: "GroupedTotales>/Hierarchy",
 		aCrumbs: ["movimientos", "positions"],
@@ -323,7 +323,11 @@ sap.ui.define([
 				text: "Conceptos",
 				press: [sPath, this.onBreadcrumbPress, this]
 			});
+			oBreadCrumb.destroyLinks();
+
 			oBreadCrumb.addLink(oLink);
+
+
 
 		},
 

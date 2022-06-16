@@ -171,7 +171,22 @@
 				<subSections>
 					<ObjectPageSubSection>
 						<blocks>
+                        
                             <core:Fragment fragmentName="demo.views.PaymentPlan.TablePagination" type="XML" />
+                            
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>
+         <sections>
+			<ObjectPageSection showTitle="false" title="Futuros Pagos">
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+                        
+                            <core:Fragment fragmentName="demo.views.PaymentPlan.TableGrouped" type="XML" />
+                            
 						</blocks>
 					</ObjectPageSubSection>
 				</subSections>

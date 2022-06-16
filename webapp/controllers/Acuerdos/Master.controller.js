@@ -1,5 +1,8 @@
 sap.ui.define([
+    "jquery.sap.global",
+    "sap/ui/core/Fragment",
     "demo/controllers/BaseController",
+    "sap/m/UploadCollectionParameter",
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/routing/History",
@@ -7,15 +10,19 @@ sap.ui.define([
     "sap/ui/core/routing/Router",
     "demo/models/BaseModel",
     'sap/f/library'
-], function (Controller, JSONModel, History, fioriLibrary, MessageBox) {
+], function (jQuery, Fragment, Controller, UploadCollectionParameter, JSONModel, History, fioriLibrary, MessageBox) {
     "use strict";
 
     var oModel = new this.Acuerdos();
     return Controller.extend("demo.controllers.Acuerdos.Master", {
         onInit: function () {
+            /*this._pdfViewer = new PDFViewer();
+            this.getView().addDependent(this._pdfViewer);*/
             this.getView().addEventDelegate({
                 onAfterShow: function (oEvent) {
-                    this.getOwnerComponent().setModel(new JSONModel(), "2AcuerdosHdr");
+                    var barModel = this.getOwnerComponent().getModel();
+                    barModel.setProperty("/barVisible", true);
+                    this.getOwnerComponent().setModel(new JSONModel(), "3AcuerdosHdr");
                     this.clearFilters();
                 }
             }, this);
@@ -62,26 +69,58 @@ sap.ui.define([
                     url += "Acuerdo eq '" + acuerdo + "'";
                 }
 
-                var dueModel = oModel.getJsonModel(url);
+                var oModel2 = new sap.ui.model.odata.ODataModel( "/sap/opu/odata/sap/ZOSP_ACUERDOS_SRV",
+                                { 
+                                    user: 'I_GTQ_PROV' , 
+                                    password:'Cotech2021' ,
+                                    json: true 
+                                });
 
-                var ojbResponse = dueModel.getProperty("/results/0");
+                var that = this;
                 
-                this.getView().setModel(new sap.ui.model.json.JSONModel(ojbResponse),"3AcuerdosHdr");
+                that.byId("tableAcuerdos").setBusy(true);
 
-                this.paginate("3AcuerdosHdr", "/AcuerdosDet", 1, 0);
+                oModel2.read(url, {
+                    success: function(res){
+                        var ojbResponse = res.results[0];
+                        that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(ojbResponse),
+                            "3AcuerdosHdr");
+                        that.paginate("3AcuerdosHdr", "/AcuerdosDet", 1, 0);
+                        that.byId("tableAcuerdos").setBusy(false);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        that.byId("tableAcuerdos").setBusy(false);
+                    }
+                });
+
+                /*var dueModel = oModel.getJsonModel(url);
+                var ojbResponse = dueModel.getProperty("/results/0");
+                this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(ojbResponse),
+                    "3AcuerdosHdr");*/
+                
+                //this.getView().setModel(new sap.ui.model.json.JSONModel(ojbResponse),"3AcuerdosHdr");
+                //this.paginate("3AcuerdosHdr", "/AcuerdosDet", 1, 0);
             }
 
         },
         onExit: function () {
 
         },
+
         clearFilters : function(){
             this.getView().byId("sociedadInput").setValue("");
             this.getView().byId("documentoInput").setValue("");
             this.getView().byId("ejercicioInput").setValue("");
             this.getView().byId("acuerdoInput").setValue("");
+            var vModel = this.getView().getModel("3AcuerdosHdr");
+            if (vModel) {
+                vModel.setData([]);
+            }
         },
-        buildExportTable: function () {
+
+        buildExportTable: function () {            
+
             var texts = this.getOwnerComponent().getModel("appTxts");
             var columns = [
                  {
@@ -97,7 +136,7 @@ sap.ui.define([
                     }
                 },
                 {
-                    name: texts.getProperty("/acuerdos.descuento"),
+                    name: texts.getProperty("/acuerdos.desc"),
                     template: {
                         content: "{Descuento}"
                     }
@@ -119,13 +158,7 @@ sap.ui.define([
                     template: {
                         content: "{Unidad}"
                     }
-                },
-                {
-                    name: texts.getProperty("/aportaciones.estatus"),
-                    template: {
-                        content: "{Observ}"
-                    }
-                },                
+                }
             ];
 
             this.exportxls('3AcuerdosHdr', '/AcuerdosDet/results', columns);
