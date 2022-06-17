@@ -386,11 +386,20 @@
 					]
 				},
                 {
-                    "pattern": "detailComplPagos/{document}/{layout}",
+                    "pattern": "detailComplPagos/{document}/{layout}/{sociedad}/{ejercicio}",
                     "name": "detailComplPagos",
                     "target": [
                         "masterCompl",
                         "detailComplPagos"
+                    ]
+                },
+                {
+                    "pattern": "detailAcuerdos/{layout}/{document}/{sociedad}/{ejercicio}/{doc}",
+                    "name": "detailAcuerdos",
+                    "target": [
+                        "masterCompl",
+                        "detailComplPagos",
+                        "detailAcuerdos"
                     ]
                 },
                 {
@@ -755,6 +764,11 @@
                     "viewName": "Master",
                     "viewPath": "demo.views.Acuerdos",
                     "controlAggregation": "beginColumnPages"
+                },
+                "detailAcuerdos": {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "endColumnPages"
                 },
                 "Products": {
                     "viewName": "Master",
