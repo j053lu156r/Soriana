@@ -48,7 +48,7 @@
                         </l:VerticalLayout>
                     </HBox>
                     <Table  mode="MultiSelect" id="tableItemsDelete"
-                        items="{ path : 'ETDELETE>/Paginated/results'}" >
+                        items="{ path : 'ETDELETE>/Paginated/results'}"  visible="false">
                         <headerToolbar>
                             <OverflowToolbar>
                                 <Button text="{appTxts>/products.deleteRow}" id="btnDeleteRows" press=".deleteRow('tableItemsDelete','ETDELETE')" type="Emphasized" />

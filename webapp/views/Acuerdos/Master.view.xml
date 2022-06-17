@@ -8,6 +8,16 @@
 	 controllerName="demo.controllers.Acuerdos.Master" height="100%">
 	<f:DynamicPage  
 		class="sapUiContentPadding">
+        <!-- DynamicPage Title -->
+        <!--<f:title>
+            <f:DynamicPageTitle backgroundDesign="Transparent">
+                <f:heading>
+                    <vm:VariantManagement standardItemText="{appTxts>/acuerdos.title}">
+                    </vm:VariantManagement>
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>-->
+        <!-- DynamicPage Header -->
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
@@ -23,6 +33,7 @@
                                         id="sociedadInput"
                                         placeholder="{appTxts>/acuerdos.sociedad}"
                                         showSuggestion="true"
+                                        maxLength="4"
                                         >
                                     </Input>
                                 </fb:control>
@@ -34,6 +45,7 @@
                                         id="documentoInput"
                                         placeholder="{appTxts>/acuerdos.docto}"
                                         showSuggestion="true"
+                                        maxLength="10"
                                         >
                                     </Input>
                                 </fb:control>
@@ -45,6 +57,7 @@
                                         id="ejercicioInput"
                                         placeholder="{appTxts>/acuerdos.ejercicio}"
                                         showSuggestion="true"
+                                        maxLength="4"
                                         >
                                     </Input>
                                 </fb:control>
@@ -56,6 +69,7 @@
                                         id="acuerdoInput"
                                         placeholder="{appTxts>/acuerdos.acuerdo}"
                                         showSuggestion="true"
+                                        maxLength="10"
                                         >
                                     </Input>
                                 </fb:control>
@@ -72,14 +86,18 @@
 			<Table 
                 noDataText="{appTxts>/acuerdos.noData}" 
                 id="tableAcuerdos"
-                items="{3AcuerdosHdr>/AcuerdosDet/results}">
+                items="{AcuerdosHdr>/AcuerdosDet/results}">
                 <headerToolbar>
                     <OverflowToolbar>
-                        <Title text="{appTxts>/acuerdos.title} ({3AcuerdosHdr>/AcuerdosDet/results/length})" />
+                        <Title text="{appTxts>/acuerdos.title} ({AcuerdosHdr>/AcuerdosDet/results/length})" />
                         <ToolbarSpacer/>
+                        <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
+                            press=".buildExportTable"
+                            visible="{= ${AcuerdosHdr>/AcuerdosDet/results/length} > 0}"
+                        />
                         <Select 
-                            visible="{= ${3AcuerdosHdr>/AcuerdosDet/Paginated/results/length} > 0 }"
-                            change=".paginateValue(${$parameters>/selectedItem}, '3AcuerdosHdr', '/AcuerdosDet')">
+                            visible="{= ${AcuerdosHdr>/AcuerdosDet/Paginated/results/length} > 0 }"
+                            change=".paginateValue(${$parameters>/selectedItem}, 'AcuerdosHdr', '/AcuerdosDet')">
                             <items>
                                 <core:Item key="10" text="10"/>
                                 <core:Item key="20" text="20"/>
@@ -124,34 +142,47 @@
 				<items>
 					<ColumnListItem >                    
 						<cells>
-                            <Text xmlns="sap.m" 
-                                text="{3AcuerdosHdr>Centro}"/>
+                            <ObjectIdentifier 
+                                title="{AcuerdosHdr>Centro}" 
+                                titleActive="true"/>
                             <ObjectNumber
-                                number="{3AcuerdosHdr>Base}"
-                                unit="MXN"/>
+                                number="{
+                                    parts:[{path:'AcuerdosHdr>Base'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="MXN" />
                             <ObjectNumber
-                                number="{3AcuerdosHdr>Descuento}"
-                                unit="MXN"/>
+                                number="{
+                                    parts:[{path:'AcuerdosHdr>Descuento'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="MXN" />
                             <ObjectNumber
-                                number="{3AcuerdosHdr>IVA}"
-                                unit="MXN"/>
+                                number="{
+                                    parts:[{path:'AcuerdosHdr>IVA'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="MXN" />
                             <ObjectNumber
-                                number="{3AcuerdosHdr>PDesc}"
-                                unit="{3AcuerdosHdr>Unidad}"
+                                number="{AcuerdosHdr>PDesc}"
+                                unit="{AcuerdosHdr>Unidad}"
                                 state="Success" />
 						</cells>
 					</ColumnListItem>
 				</items>
 			</Table>
-            <OverflowToolbar visible="{= ${3AcuerdosHdr>/AcuerdosDet/Paginated/results/length} > 0 }">
-                <Text text="{3AcuerdosHdr>/AcuerdosDet/Paginated/initRow} - {3AcuerdosHdr>/AcuerdosDet/Paginated/endRow} {appTxts>/pagination.of} {3AcuerdosHdr>/AcuerdosDet/results/length}" />
+            <OverflowToolbar visible="{= ${AcuerdosHdr>/AcuerdosDet/Paginated/results/length} > 0 }">
+                <Text text="{AcuerdosHdr>/AcuerdosDet/Paginated/initRow} - {AcuerdosHdr>/AcuerdosDet/Paginated/endRow} {appTxts>/pagination.of} {AcuerdosHdr>/AcuerdosDet/results/length}" />
                 <ToolbarSpacer/>
                 <Button type="Default" icon="sap-icon://slim-arrow-left" 
-                        press=".prevPagination(${3AcuerdosHdr>/AcuerdosDet/Paginated/iterator}, ${3AcuerdosHdr>/AcuerdosDet/Paginated/initRow}, '3AcuerdosHdr', '/AcuerdosDet')" 
-                        enabled="{= ${3AcuerdosHdr>/AcuerdosDet/Paginated/iterator} !== 1}" />
+                        press=".prevPagination(${AcuerdosHdr>/AcuerdosDet/Paginated/iterator}, ${AcuerdosHdr>/AcuerdosDet/Paginated/initRow}, 'AcuerdosHdr', '/AcuerdosDet')" 
+                        enabled="{= ${AcuerdosHdr>/AcuerdosDet/Paginated/iterator} !== 1}" />
                 <Button type="Default" icon="sap-icon://slim-arrow-right" 
-                        press=".nextPagination(${3AcuerdosHdr>/AcuerdosDet/Paginated/iterator}, ${3AcuerdosHdr>/AcuerdosDet/Paginated/endRow}, '3AcuerdosHdr', '/AcuerdosDet')" 
-                        enabled="{= ${3AcuerdosHdr>/AcuerdosDet/Paginated/endRow} !== ${3AcuerdosHdr>/AcuerdosDet/results/length}}" />
+                        press=".nextPagination(${AcuerdosHdr>/AcuerdosDet/Paginated/iterator}, ${AcuerdosHdr>/AcuerdosDet/Paginated/endRow}, 'AcuerdosHdr', '/AcuerdosDet')" 
+                        enabled="{= ${AcuerdosHdr>/AcuerdosDet/Paginated/endRow} !== ${AcuerdosHdr>/AcuerdosDet/results/length}}" />
             </OverflowToolbar>
             </VBox>
 		</f:content>
