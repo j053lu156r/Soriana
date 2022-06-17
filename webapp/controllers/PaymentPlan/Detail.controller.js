@@ -419,6 +419,7 @@ sap.ui.define([
 
 			var me = this;
 
+            var acumulado = 0;
 			for (let x in groupedMovs) {
 
 
@@ -446,6 +447,8 @@ sap.ui.define([
 					return me.truncate(total, 2)
 				}, 0);
 
+                acumulado=acumulado+Math.abs(cost)
+                console.log(me.truncate(acumulado,2))
 
 				nestedMovs.push({
 					"name": x,
@@ -453,7 +456,8 @@ sap.ui.define([
 					"totalDebit": Math.abs(result),
 					"totalCredit": Math.abs(resultCredit),
 					"cost": Math.abs(cost),
-					"positions": groupedMovs[x]
+					"positions": groupedMovs[x],
+                    "costoAcumulado": me.truncate(acumulado,2)
 
 				})
 
@@ -547,9 +551,11 @@ sap.ui.define([
 			this._setAggregation(sPath);
 			var oBreadCrumb = this.byId("breadcrumb");
 			var oLink = new Link({
-				text: "Conceptos",
+				text: "Fecha de Corte",
 				press: [sPath, this.onBreadcrumbPress, this]
 			});
+            oBreadCrumb.destroyLinks();
+
 			oBreadCrumb.addLink(oLink);
 
 		},

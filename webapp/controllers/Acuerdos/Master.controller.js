@@ -44,6 +44,9 @@ sap.ui.define([
             if ( ( documento == "" || documento == null ) && ( acuerdo == "" || acuerdo == null ) ) {
                 MessageBox.error(texts.getProperty("/acuerdos.indNo"));
                 bContinue = false;
+            } else if ( ( documento != "" && documento != null ) && ( acuerdo != "" && acuerdo != null ) ) {
+                MessageBox.error(texts.getProperty("/acuerdos.soloIndNo"));
+                bContinue = false;
             } else if ( documento != "" && documento != null ) {
                 if ( sociedad == "" || sociedad == null ){
                     MessageBox.error(texts.getProperty("/acuerdos.indSoc"));
@@ -52,9 +55,6 @@ sap.ui.define([
                     MessageBox.error(texts.getProperty("/acuerdos.indEje"));
                     bContinue = false;
                 }
-            } else if ( ( documento != "" && documento != null ) && ( acuerdo != "" && acuerdo != null ) ) {
-                MessageBox.error(texts.getProperty("/acuerdos.soloIndNo"));
-                bContinue = false;
             }
 
             if (bContinue) {
@@ -66,7 +66,7 @@ sap.ui.define([
                     url += " and Documento eq '" + documento + "'";
                     url += " and Ejercicio eq '" + ejercicio + "'";
                 } else if (acuerdo != "" && acuerdo != null) {
-                    url += "Acuerdo eq '" + acuerdo + "'";
+                    url += "DoAcuerdo eq '" + acuerdo + "'";
                 }
 
                 var dueModel = oModel.getJsonModel(url);
@@ -82,9 +82,12 @@ sap.ui.define([
         },
 
         clearFilters : function(){
-            this.getView().byId("sociedadInput").setValue("");
+            var d = new Date();
+            var currentYear = d.getFullYear();
+
+            this.getView().byId("sociedadInput").setValue("2001");
             this.getView().byId("documentoInput").setValue("");
-            this.getView().byId("ejercicioInput").setValue("");
+            this.getView().byId("ejercicioInput").setValue(currentYear);
             this.getView().byId("acuerdoInput").setValue("");
             var oModel = this.getOwnerComponent().getModel("AcuerdosHdr");
             if (oModel) {
