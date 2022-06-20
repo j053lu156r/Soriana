@@ -437,9 +437,9 @@ sap.ui.define([
              this.getOwnerComponent().getRouter().navTo("detailComplPagos",
                 {
                     layout: sap.f.LayoutType.TwoColumnsMidExpanded,
-                    document: registro.Vblnr
-                   // laufd: docResult.Laufd,
-                   // laufi: docResult.Laufi,
+                    document: registro.Vblnr,
+                    sociedad: registro.Bukrs,
+                    ejercicio: registro.Gjahr,
                    // zbukr: docResult.Zbukr,
                    // lifnr: docResult.Lifnr
                 }, true);

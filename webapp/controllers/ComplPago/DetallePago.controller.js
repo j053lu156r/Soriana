@@ -323,6 +323,8 @@ sap.ui.define([
 				text: "Conceptos",
 				press: [sPath, this.onBreadcrumbPress, this]
 			});
+			oBreadCrumb.destroyLinks();
+
 			oBreadCrumb.addLink(oLink);
 
 		},
@@ -369,6 +371,7 @@ sap.ui.define([
 				this._oTable.setMode("None");
 				//  this.byId("weightColumn").setVisible(true);
 				// this.byId("dimensionsColumn").setVisible(true);
+				this._oTable.setMode("SingleSelectMaster");
 
 
 				this.byId("statusColumn").setVisible(true);
@@ -483,13 +486,39 @@ sap.ui.define([
 			// If we're on a leaf, remember the selections;
 			// otherwise navigate
 			if (sCurrentCrumb === this.aCrumbs[this.aCrumbs.length - 1]) {
+				console.log("on Documento seleccionado....")
 				var oSelectionInfo = {};
-				var bSelected = oEvent.getParameter("selected");
-				oEvent.getParameter("listItems").forEach(function (oItem) {
-					oSelectionInfo[oItem.getBindingContext().getPath()] = bSelected;
-				});
-				this._updateOrder(oSelectionInfo);
+				//var bSelected = oEvent.getParameter("selected");
+				//oEvent.getParameter("listItems").forEach(function (oItem) {
+				//	oSelectionInfo[oItem.getBindingContext().getPath()] = bSelected;
+				//});
+				//this._updateOrder(oSelectionInfo);
+
+				console.log('on documnt press',oEvent);
+				console.log(sPath)
+				//let posicion = oEvent.getSource().getBindingContext("GroupedTotales").getPath().split("/").pop();
+				let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(sPath);
+	
+				console.log(results)
+				//let registro = results[posicion];
+				//console.log(registro)
+			
+	
+				 this.getOwnerComponent().getRouter().navTo("detailAcuerdos",
+					{
+						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
+						document: results.Belnr,
+					    sociedad: this._sociedad,
+						ejercicio: this._ejercicio,
+					    doc: this._document,
+					   // zbukr: docResult.Zbukr,
+					   // lifnr: docResult.Lifnr
+					}, true);
+
+
+
 			} else {
+				console.log("on grupo seleccionado seleccionado.....")
 				var modelName = "GroupedTotales>"
 				var sNewPath = [sPath, this._nextCrumb(sCurrentCrumb)].join("/");
 
@@ -526,7 +555,9 @@ sap.ui.define([
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
 			this.oRouter.navTo("detailComplPagos", {
 				layout: sNextLayout,
-				document: this._document
+				document: this._document,
+				sociedad: this._sociedad,
+				ejercicio: this._ejercicio
 			});
 		},
 		handleExitFullScreen: function () {
@@ -534,7 +565,9 @@ sap.ui.define([
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
 			this.oRouter.navTo("detailComplPagos", {
 				layout: sNextLayout,
-				document: this._document
+				document: this._document,
+				sociedad: this._sociedad,
+				ejercicio: this._ejercicio
 			});
 		},
 		handleClose: function () {
@@ -547,6 +580,9 @@ sap.ui.define([
 
 		_onDocumentMatched: function (oEvent) {
 			this._document = oEvent.getParameter("arguments").document || this._document || "0";
+			this._sociedad = oEvent.getParameter("arguments").sociedad || this._sociedad || "0";
+			this._ejercicio = oEvent.getParameter("arguments").ejercicio || this._ejercicio || "0";
+
 			console.log(this._document);
 
 			this.getView().bindElement({
@@ -565,6 +601,36 @@ sap.ui.define([
 
 
 
-		}
+		},
+
+
+		//HAANDLE OPEN ACUERDOS
+
+		_onDocumentPress: function(oEvent){
+            console.log('on documnt press',oEvent);
+            let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
+            let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
+
+            let registro = results[posicion];
+            console.log(registro)
+
+             this.getOwnerComponent().getRouter().navTo("detailComplPagos",
+                {
+                    layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+                    document: registro.Vblnr
+                   // laufd: docResult.Laufd,
+                   // laufi: docResult.Laufi,
+                   // zbukr: docResult.Zbukr,
+                   // lifnr: docResult.Lifnr
+                }, true);
+
+
+
+        }
+
+
+
+
+
 	});
 });

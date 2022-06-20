@@ -14,19 +14,30 @@ sap.ui.define([
     "use strict";
 
     var oModel = new this.Acuerdos();
-    return Controller.extend("demo.controllers.Acuerdos.Master", {
+    return Controller.extend("demo.controllers.Acuerdos.Detail", {
         onInit: function () {
             /*this._pdfViewer = new PDFViewer();
             this.getView().addDependent(this._pdfViewer);*/
+         /*
             this.getView().addEventDelegate({
                 onAfterShow: function (oEvent) {
                     var barModel = this.getOwnerComponent().getModel();
                     barModel.setProperty("/barVisible", true);
                     this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "AcuerdosHdr");
-                    this.clearFilters();
+                  //  this.clearFilters();
                 }
             }, this);
-            this.configFilterLanguage(this.getView().byId("filterBar"));
+            */
+          //  this.configFilterLanguage(this.getView().byId("filterBar"));
+
+            this.oRouter = this.getOwnerComponent().getRouter();
+			this.oModel = this.getOwnerComponent().getModel();
+
+			this.oRouter.getRoute("detailAcuerdos").attachPatternMatched(this._onDocumentMatched, this);
+
+
+            console.log('on detalle acuerdos init-----')
+
         },
         searchData: function () {
             var texts = this.getOwnerComponent().getModel("appTxts");
@@ -36,16 +47,22 @@ sap.ui.define([
                 oModel.initModel();
             }
 
-            var sociedad = this.getView().byId('sociedadInput').getValue();
-            var documento = this.getView().byId('documentoInput').getValue();
-            var ejercicio = this.getView().byId('ejercicioInput').getValue();
-            var acuerdo = this.getView().byId('acuerdoInput').getValue();
+          //  var sociedad = this.getView().byId('sociedadInput').getValue();
+           // var documento = this.getView().byId('documentoInput').getValue();
+          //  var ejercicio = this.getView().byId('ejercicioInput').getValue();
+           // var acuerdo = this.getView().byId('acuerdoInput').getValue();
+
+            var sociedad = this._sociedad;
+            var documento = this._document;
+            var ejercicio = this._ejercicio;
+            var acuerdo = ""
+
+            
+
+
 
             if ( ( documento == "" || documento == null ) && ( acuerdo == "" || acuerdo == null ) ) {
                 MessageBox.error(texts.getProperty("/acuerdos.indNo"));
-                bContinue = false;
-            } else if ( ( documento != "" && documento != null ) && ( acuerdo != "" && acuerdo != null ) ) {
-                MessageBox.error(texts.getProperty("/acuerdos.soloIndNo"));
                 bContinue = false;
             } else if ( documento != "" && documento != null ) {
                 if ( sociedad == "" || sociedad == null ){
@@ -55,6 +72,9 @@ sap.ui.define([
                     MessageBox.error(texts.getProperty("/acuerdos.indEje"));
                     bContinue = false;
                 }
+            } else if ( ( documento != "" && documento != null ) && ( acuerdo != "" && acuerdo != null ) ) {
+                MessageBox.error(texts.getProperty("/acuerdos.soloIndNo"));
+                bContinue = false;
             }
 
             if (bContinue) {
@@ -66,7 +86,7 @@ sap.ui.define([
                     url += " and Documento eq '" + documento + "'";
                     url += " and Ejercicio eq '" + ejercicio + "'";
                 } else if (acuerdo != "" && acuerdo != null) {
-                    url += "DoAcuerdo eq '" + acuerdo + "'";
+                    url += "Acuerdo eq '" + acuerdo + "'";
                 }
 
                 var dueModel = oModel.getJsonModel(url);
@@ -82,12 +102,9 @@ sap.ui.define([
         },
 
         clearFilters : function(){
-            var d = new Date();
-            var currentYear = d.getFullYear();
-
-            this.getView().byId("sociedadInput").setValue("2001");
+            this.getView().byId("sociedadInput").setValue("");
             this.getView().byId("documentoInput").setValue("");
-            this.getView().byId("ejercicioInput").setValue(currentYear);
+            this.getView().byId("ejercicioInput").setValue("");
             this.getView().byId("acuerdoInput").setValue("");
             var oModel = this.getOwnerComponent().getModel("AcuerdosHdr");
             if (oModel) {
@@ -138,7 +155,76 @@ sap.ui.define([
             ];
 
             this.exportxls('AcuerdosHdr', '/AcuerdosDet/results', columns);
-        }
+        },
+
+        _onDocumentMatched: function (oEvent) {
+            console.log("on docuento matched**************")
+			this._document = oEvent.getParameter("arguments").document || this._document || "0";
+			this._sociedad = oEvent.getParameter("arguments").sociedad || this._sociedad || "0";
+			this._ejercicio = oEvent.getParameter("arguments").ejercicio || this._ejercicio || "0";
+			this._doc = oEvent.getParameter("arguments").doc || this._doc || "0";
+
+			console.log(this._document);
+
+            
+			this.getView().bindElement({
+				path: "/ProductCollection/" + this._document,
+				model: "products"
+			});
+
+			this.getView().setModel(new JSONModel({
+					"document": this._document
+				}),
+				"detailAcuerdos");
+                
+
+				//consume el servicio para obtener los docuemntos 
+
+				 this.searchData()
+
+
+
+		},
+
+
+        //HANDLE WINDOW EVENTS 
+
+		handleFullScreen: function () {
+			var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(2);
+			this.bFocusFullScreenButton = true;
+			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
+			this.oRouter.navTo("detailAcuerdos", {
+				layout: EndColumnFullScreen,
+				document: this._document,
+				sociedad: this._sociedad,
+				ejercicio: this._ejercicio,
+                doc:this._doc
+			});
+		},
+		handleExitFullScreen: function () {
+			this.bFocusFullScreenButton = true;
+			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
+			this.oRouter.navTo("detailAcuerdos", {
+				layout: ap.f.LayoutType.ThreeColumnsEndExpanded,
+				document: this._document,
+				sociedad: this._sociedad,
+				ejercicio: this._ejercicio,
+                doc:this._doc
+			});
+		},
+		handleClose: function () {
+			console.log('on hanlde close')
+			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
+			this.oRouter.navTo("detailComplPagos", {
+				layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+                document: this._doc,
+				sociedad: this._sociedad,
+				ejercicio: this._ejercicio
+			});
+		},
+
+        
+
 
     });
 });
