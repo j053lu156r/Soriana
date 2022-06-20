@@ -158,6 +158,7 @@ sap.ui.define([
                                 oContext.getController().changeFieldVlue(field.field, sValue, vView);
                             }
                             break;
+                            
                     }
                 }, this);
 
