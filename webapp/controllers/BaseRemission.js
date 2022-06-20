@@ -15,9 +15,9 @@ sap.ui.define([
     var remissionType = "";
 
     return Controller.extend("demo.controllers.BaseRemission", {
-        /*
         getTipoEntrega: function(){
-            var oi18NModel = this.getView().getModel("appTxts");
+            var oi18NModel = this.getOwnerComponent().getModel("appTxts");
+            console.log(oi18NModel)
             var oTipoEntrega = {
                 tipoEntrega: [
                     {
@@ -40,7 +40,6 @@ sap.ui.define([
             }
             return oTipoEntrega;
         },
-        */
         openSelectRemission: function () {
             if (!this.hasAccess(6)) {
                 return false;

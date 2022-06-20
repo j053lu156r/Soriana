@@ -85,15 +85,13 @@ xmlns:core="sap.ui.core"
                                 </fb:control>
                             </fb:FilterGroupItem>
 
-                            <!--
-                            <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="tipos" label="{appTxts>/rem.order2}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="true">
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="tipos" label="{appTxts>/rem.filters.tipo}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="true">
                                 <fb:control>
-                                    <ComboBox items="{TipoEntregaModel>/tipoEntrega}">
+                                    <ComboBox id="cboxTipo" items="{TipoEntregaModel>/tipoEntrega}" selectedKey="0">
                                         <core:Item key="{TipoEntregaModel>id}" text="{TipoEntregaModel>tipo}" />
                                     </ComboBox>
                                 </fb:control>
                             </fb:FilterGroupItem>
-                            -->
                         </fb:filterGroupItems>
 	                </fb:FilterBar>
                 </f:content>
