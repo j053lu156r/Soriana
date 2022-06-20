@@ -15,6 +15,32 @@ sap.ui.define([
     var remissionType = "";
 
     return Controller.extend("demo.controllers.BaseRemission", {
+        /*
+        getTipoEntrega: function(){
+            var oi18NModel = this.getView().getModel("appTxts");
+            var oTipoEntrega = {
+                tipoEntrega: [
+                    {
+                        id: 0,
+                        tipo: oi18NModel.getProperty("/rem.tipoEnterga.all")
+                    },
+                    {
+                        id: 1,
+                        tipo: oi18NModel.getProperty("/rem.tipoEnterga.reverse")
+                    },
+                    {
+                        id: 2,
+                        tipo: oi18NModel.getProperty("/rem.tipoEnterga.consolidado")
+                    },
+                    {
+                        id: 3,
+                        tipo: oi18NModel.getProperty("/rem.tipoEnterga.importaciones")
+                    }
+                ]
+            }
+            return oTipoEntrega;
+        },
+        */
         openSelectRemission: function () {
             if (!this.hasAccess(6)) {
                 return false;

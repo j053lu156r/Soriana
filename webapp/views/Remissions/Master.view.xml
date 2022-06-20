@@ -84,6 +84,16 @@ xmlns:core="sap.ui.core"
                                     <Input type="Number" id="order2" liveChange="onOrder2Change"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
+
+                            <!--
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="tipos" label="{appTxts>/rem.order2}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="true">
+                                <fb:control>
+                                    <ComboBox items="{TipoEntregaModel>/tipoEntrega}">
+                                        <core:Item key="{TipoEntregaModel>id}" text="{TipoEntregaModel>tipo}" />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            -->
                         </fb:filterGroupItems>
 	                </fb:FilterBar>
                 </f:content>

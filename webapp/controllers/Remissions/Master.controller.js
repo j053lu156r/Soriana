@@ -24,6 +24,12 @@ sap.ui.define([
             this._pdfViewer = new PDFViewer();
             this.getView().addDependent(this._pdfViewer);
 
+            /*
+            var tiposEntrega = this.getTipoEntrega();
+            var oTipoEntregaModel = new JSONModel(tiposEntrega);
+            this.getView().setModel(oTipoEntregaModel, "TipoEntregaModel");
+            */
+
             this.oRouter = this.getOwnerComponent().getRouter();
             this.getView().addEventDelegate({
                 onAfterShow: function (oEvent) {
