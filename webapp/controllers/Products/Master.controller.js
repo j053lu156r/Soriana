@@ -28,7 +28,7 @@ sap.ui.define([
                     this.getOwnerComponent().setModel(new JSONModel(), "Catalogos");
                     this.getOwnerComponent().setModel(new JSONModel(), "Folios");
                     this.getOwnerComponent().setModel(new JSONModel(), "Folio");
-                    this.getOwnerComponent().setModel(new JSONModel({ value: _testingSteps }), "ValidBarCode");
+                    this.getOwnerComponent().setModel(new JSONModel({ value: _testingSteps, gs1Finded: _testingSteps }), "ValidBarCode");
                     this.getOwnerComponent().setModel(new JSONModel({ 'items': [] }), "FolioImages");
                     this.getOwnerComponent().setModel(new JSONModel(), "FolioToShow");
                     this.getOwnerComponent().setModel(new JSONModel(), "ITARTVAR");
@@ -55,8 +55,15 @@ sap.ui.define([
                 
                 this.fillFolioModelData(gs1Json);
                 this.byId("barCode").setEditable(false || _testingSteps);
+
+                MessageBox.success('Producto Encontrado en GS1', {
+                    onClose: () => {
+                        this.getView().byId('barCode').setValueState(sap.ui.core.ValueState.Success);
+                    }
+                });
+
             }).catch( error => {
-                console.log(" >>>>>>>>>>>> ERROR FETCH GS1 ",  error);
+                console.error(" >>>>>>>>>>>> ERROR FETCH GS1 ",  error);
                 MessageBox.warning(error.message, {
                     onClose: () => {
                         this.getView().byId('barCode').setValueState(sap.ui.core.ValueState.Warning);
@@ -68,11 +75,18 @@ sap.ui.define([
         fillFolioModelData(gs1Json){
             //llenando Datos Generales
             this.byId("description").setValue(gs1Json.DescripcionCorta);
-            this.byId("country").setValue(gs1Json.RefPaisOrigen);
+
+            let countryCode = formatterCatPrd.findPropertieValue("Eland", "Land1", gs1Json.RefPaisOrigen,
+                                            JSON.parse(this.getOwnerComponent().getModel("Paises").getJSON()));
+            this.byId("country").setSelectedKey(countryCode);
 
             //llenando Presentacion
             this.byId("content").setValue(gs1Json.ContenidoNeto);
-            this.byId("contentUnit").setValue(gs1Json.UnidContenidoNeto);
+
+            let UnidadContenido = formatterCatPrd.findPropertieValue("IsoCode", "Cveunm", gs1Json.UnidContenidoNeto,
+                                                    this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadMedida')); ;
+
+            this.byId("contentUnit").setSelectedKey(UnidadContenido);
 
             //llenando datos de Dimensiones
             let validDimensions = this.recalcularValoresDimensiones(gs1Json);
@@ -80,20 +94,17 @@ sap.ui.define([
             console.log("Dimenciones Validas", validDimensions);
 
             this.byId("EcAlto").setValue(validDimensions.Alto);
-            this.byId("EcAlto").setEditable(false);
             this.byId("EcAncho").setValue(validDimensions.Ancho);
-            this.byId("EcAncho").setEditable(false);
             this.byId("EcProfundo").setValue(validDimensions.Profundo);
-            this.byId("EcProfundo").setEditable(false);
             this.byId("EcAlto").fireLiveChange();
             this.byId("EcUndaap").setSelectedKey(validDimensions.UnidadLon);
             //this.byId("EcUndvol").setSelectedKey(validDimensions.Unidad);
 
             this.byId("EcPbruto").setValue(gs1Json.PesoBruto);
-            this.byId("EcPbruto").setEditable(false);
             this.byId("EcPneto").setValue(gs1Json.PesoNeto);
-            this.byId("EcPneto").setEditable(false);
             this.byId("EcUndp").setSelectedKey(validDimensions.UnidadWeg);
+            
+             this.getOwnerComponent().getModel("ValidBarCode").setProperty("/gs1Finded", false);
                 
         },
 
@@ -142,42 +153,7 @@ sap.ui.define([
         getCatalogos: function () {
             try {
 
-                let CatNegotiatedFormat = {
-                    results: [
-                        { value: '1A', text: this.getOwnerComponent().getModel("appTxts").getProperty('/products.hyperSuperOption') },
-                        { value: '1B', text: this.getOwnerComponent().getModel("appTxts").getProperty('/products.expressOption') }
-                    ]
-                };
-
-                let CatTipoBonif = {
-                    results: [
-                        { value: 1, text: 'Por Porcentajes' },
-                        { value: 2, text: 'Por Unidades' },
-                        { value: 3, text: 'Ninguna' }
-                    ]
-                };
-
-                let CatTiposEtiqueta = {
-                    results: [
-                        { value: 1, text: 'Colgar' },
-                        { value: 2, text: 'Adhesiva' },
-                        { value: 3, text: 'Sin Etiqueta' }
-                    ]
-                };
-
-                let CatEstrategiaSalida = {
-                    results: [
-                        { value: 1, text: 'Liquidación' },
-                        { value: 2, text: 'Devolución' }
-                    ]
-                };
-
-                this.getOwnerComponent().getModel("Catalogos").setProperty('/NegotiatedFormat', CatNegotiatedFormat);
-                this.getOwnerComponent().getModel("Catalogos").setProperty('/TiposEtiqueta', CatTiposEtiqueta);
-                this.getOwnerComponent().getModel("Catalogos").setProperty('/EstrategiaSalida', CatEstrategiaSalida);
-                this.getOwnerComponent().getModel("Catalogos").setProperty('/TiposBonificacion', CatTipoBonif);
-
-                var url = `/HdrcatproSet?$expand=ETTART,ETCOUNTRYNAV,ETCODENAV,ETBRANDSNAV,ETTCARCV,ETUWEIG,ETULONG,ETUVOL,ETUNM,ETGPOART&$filter=IOption eq '4'`;
+                var url = `/HdrcatproSet?$expand=ETTART,ETCOUNTRYNAV,ETCODENAV,ETBRANDSNAV,ETTCARCV,ETUWEIG,ETULONG,ETUVOL,ETUNM,ETGPOART,ETLABEL,ETFORMAT,ETOUTSTRAT,ETBONUS&$filter=IOption eq '4'`;
                 Model.getJsonModelAsync(url, function (response, that) {
                     let Paises = [];
                     const catPaises = response.getProperty('/results/0/ETCOUNTRYNAV/results');
@@ -192,6 +168,10 @@ sap.ui.define([
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/UnidadPeso', response.getProperty('/results/0/ETUWEIG'));
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/Caracteristicas', response.getProperty('/results/0/ETTCARCV'));
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/GrupoArticulos', response.getProperty('/results/0/ETGPOART'));
+                    that.getOwnerComponent().getModel("Catalogos").setProperty('/NegotiatedFormat', response.getProperty('/results/0/ETFORMAT'));
+                    that.getOwnerComponent().getModel("Catalogos").setProperty('/TiposEtiqueta', response.getProperty('/results/0/ETLABEL'));
+                    that.getOwnerComponent().getModel("Catalogos").setProperty('/EstrategiaSalida', response.getProperty('/results/0/ETOUTSTRAT'));
+                    that.getOwnerComponent().getModel("Catalogos").setProperty('/TiposBonificacion', response.getProperty('/results/0/ETBONUS'));
 
                     var pModel = {
                         "results": Paises
@@ -227,7 +207,16 @@ sap.ui.define([
         },
 
         addAttach: function (oEvt) {
+
+            let viewModel = this.getView().getModel("ETMODIFY");
+
+            if (viewModel){
+                viewModel.setProperty("/Paginated/results", []);
+                viewModel.setProperty("/results", []);
+            }
+
             var aFiles = oEvt.getParameters().files;
+
             var currentFile = aFiles[0];
             var that = this;
 
@@ -247,7 +236,15 @@ sap.ui.define([
         },
 
         addAttachDelete: function (oEvt) {
+            let viewModel = this.getView().getModel("ETDELETE");
+
+            if (viewModel){
+                viewModel.setProperty("/Paginated/results", []);
+                viewModel.setProperty("/results", []);
+            }
+            
             var aFiles = oEvt.getParameters().files;
+
             var currentFile = aFiles[0];
             var that = this;
 
@@ -263,6 +260,7 @@ sap.ui.define([
                 ITEXT64Delete.attach.push(oFile);
                 that.getOwnerComponent().setModel(new JSONModel(ITEXT64Delete), "ITEXT64Delete");
             }
+
             reader.readAsDataURL(currentFile);
         },
 
@@ -303,11 +301,18 @@ sap.ui.define([
 
                             MessageBox.information(msj);
                             this.getOwnerComponent().setModel(new JSONModel(response.ETMODIFY), 'ETMODIFY');
+
                             this.paginate("ETMODIFY", "", 1, 0);
+
+                            let data = this.getOwnerComponent().getModel('ETMODIFY').getData();
+                            
+                            this.getView().setModel(new JSONModel(data), 'ETMODIFY');
+
+                            this.byId("fileUploader").clear();
                         } else
                             MessageBox.warning("No se encontraron folios en el archivo cargado");
                     } else {
-                        let message = response.error.message.value;
+                        let message = response.EMessage;
                         sap.m.MessageBox.error(message);
                     }
                 } else {
@@ -318,6 +323,7 @@ sap.ui.define([
                 MessageBox.warning("No se ha seleccionado ningún archivo para subir.")
 
         },
+
         handleUploadPressDelete: function () {
             let archivo = this.getOwnerComponent().getModel('ITEXT64Delete').getProperty('/attach');
             if (archivo.length == 1) {
@@ -350,6 +356,7 @@ sap.ui.define([
                                 const element = response.ETDELETE.results[i];
                                 if (element.Advertencia === '') registrosCorrectos.push(response.ETDELETE.results[i]);
                             }
+
                             for (let x = 0; x < registrosCorrectos.length; x++) {
                                 const element = registrosCorrectos[x];
                                 registrosCorrectos[x].FechSumhasta = String(fechaActual);
@@ -358,8 +365,16 @@ sap.ui.define([
                             response.ETDELETE.results = registrosCorrectos;
                             const msj = (registrosCorrectos.length === 0) ? "El archivo cargado no tiene registros válidos." : `Se encontraron ${registrosCorrectos.length} coincidencias de los ${registrosCargados} registros que contenía el archivo cargado.`;
                             MessageBox.information(msj);
+
                             this.getOwnerComponent().setModel(new JSONModel(response.ETDELETE), 'ETDELETE');
+
                             this.paginate("ETDELETE", "", 1, 0);
+
+                            let data = this.getOwnerComponent().getModel('ETDELETE').getData();
+                            
+                            this.getView().setModel(new JSONModel(data), 'ETDELETE');
+
+                            this.byId("fileUploaderDelete").clear();
                         } else
                             MessageBox.warning("No se encontraron folios en el archivo cargado");
           
@@ -721,7 +736,7 @@ sap.ui.define([
                     let country = response.getProperty('/results/0/Esdprov/Land1');
                     let countryName = response.getProperty('/results/0/Esdprov/Landx50');
                     that.getView().byId('codeGS1').setValue(codeGS1);
-                    that.getView().byId('country').setSelectedKey(country).setValue(countryName);
+                    // that.getView().byId('country').setSelectedKey(country).setValue(countryName);
                 }, function () {
                     MessageBox.error("No se lograron obtener los datos del proveedor registrado en GS1.");
                 }, this);
@@ -738,7 +753,7 @@ sap.ui.define([
             if ( !eanValue || eanValue.length != _selectedEanType.length) {
                 this.byId('codeType').setEditable(true);
                 oControlEvent.getSource().setValueState(sap.ui.core.ValueState.Error)
-                oControlEvent.getSource().setValueStateText('Codigo Invalido. Longitud Maxima: ' + _selectedEanType.length);
+                oControlEvent.getSource().setValueStateText('Codigo Invalido. Longitud Requrida: ' + _selectedEanType.length);
             } else {
                 oControlEvent.getSource().setValueState(sap.ui.core.ValueState.None);
                 this.byId('codeType').setEditable(false);
@@ -764,7 +779,7 @@ sap.ui.define([
             if (response.getProperty("/results/0/ESuccess") === "X") {
                 MessageBox.success("Artículo apto para registro.", {
                     onClose: () => {
-                        // this.getGS1ProductData();
+                        this.getGS1ProductData();
                         this.getView().byId('barCode').setValueState(sap.ui.core.ValueState.Success);
                         this.getOwnerComponent().getModel("ValidBarCode").setProperty("/value", true);
                     }
@@ -801,7 +816,26 @@ sap.ui.define([
         },
 
         closeDialog: function (idDialog) {
+
+            let viewModel = new JSONModel({});
+
+            if (this.byId("fileUploader")){
+                viewModel = this.getView().getModel("ETMODIFY");                
+                this.byId("fileUploader").clear();
+            }
+
+            if (this.byId("fileUploaderDelete")){
+                viewModel = this.getView().getModel("ETDELETE");
+                this.byId("fileUploaderDelete").clear();
+            }
+
+            if (viewModel){
+                viewModel.setProperty("/Paginated/results", []);
+                viewModel.setProperty("/results", []);
+            }
+
             this.byId(idDialog).close();
+            
         },
 
         onDialogBackButton: function () {
@@ -931,6 +965,7 @@ sap.ui.define([
             this.getOwnerComponent().getModel("FolioToShow").setData({});
             this.getOwnerComponent().getModel("FolioImages").setData({});
             this.getOwnerComponent().getModel("ValidBarCode").setProperty("/value", false);
+            this.getOwnerComponent().getModel("ValidBarCode").setProperty("/gs1Finded", true);
             this.byId("ComboDivision").setValue("");
             this.resetSalesHierarchy();
             this.byId("barCode").setEditable(false);
@@ -944,13 +979,13 @@ sap.ui.define([
         cloneFolioModel() {
             let Folio = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
 
-            Folio.TipEtq = formatterCatPrd.findPropertieValue("value", "text", Folio.TipEtq,
+            Folio.TipEtq = formatterCatPrd.findPropertieValue("Labelkey", "Descr", Folio.TipEtq,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/TiposEtiqueta'));
 
-            Folio.EstSalida = formatterCatPrd.findPropertieValue("value", "text", Folio.EstSalida,
+            Folio.EstSalida = formatterCatPrd.findPropertieValue("Strategykey", "Descr", Folio.EstSalida,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/EstrategiaSalida'));
 
-            Folio.ForNegoc = formatterCatPrd.findPropertieValue("value", "text", Folio.ForNegoc,
+            Folio.ForNegoc = formatterCatPrd.findPropertieValue("Formatkey", "Descr", Folio.ForNegoc,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/NegotiatedFormat'));
 
             Folio.EcUndaap = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.EcUndaap,
@@ -992,16 +1027,16 @@ sap.ui.define([
             Folio.Present = formatterCatPrd.findPropertieValue("AbrPres", "Descpres", Folio.Present,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/Presentaciones'));
 
-            Folio.UndCont = formatterCatPrd.findPropertieValue("IsoCode", "Unidad", Folio.UndCont,
+            Folio.UndCont = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.UndCont,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadMedida'));
 
-            Folio.UndMventa = formatterCatPrd.findPropertieValue("IsoCode", "Unidad", Folio.UndMventa,
+            Folio.UndMventa = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.UndMventa,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadMedida'));
 
-            Folio.UndCompra = formatterCatPrd.findPropertieValue("IsoCode", "Unidad", Folio.UndCompra,
+            Folio.UndCompra = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.UndCompra,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadMedida'));
 
-            Folio.UndBon = formatterCatPrd.findPropertieValue("value", "text", Folio.UndBon,
+            Folio.UndBon = formatterCatPrd.findPropertieValue("Bonuskey", "Descr", Folio.UndBon,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/TiposBonificacion'));
 
             Folio.Jerarquia = formatterCatPrd.findPropertieValue("Nodo", "Denominacion", Folio.Jerarquia,
@@ -1660,11 +1695,19 @@ sap.ui.define([
                 sap.m.MessageBox.warning("No se a seleccionado ningún registro");
             } else {
                 sap.m.MessageBox.confirm("¿Desea eliminar los registros?", function () {
+
+                    let dataModel = that.getView().getModel(modelName).getData();
+
                     for (let x = 0; x < aIndices.length; x++) {
-                        let dataModel = that.getView().getModel(modelName).getData();
+                        
                         dataModel.results.splice(aIndices[x].getBindingContextPath().split('/').pop(), 1);
-                        that.getView().setModel(new JSONModel(dataModel), modelName);
+
+                        if (dataModel.Paginated) {
+                            dataModel.Paginated.results.splice(aIndices[x].getBindingContextPath().split('/').pop(), 1);
+                        }
                     }
+
+                    that.getView().setModel(new JSONModel(dataModel), modelName);
                     that.paginate(modelName, "", 1, 0);
                     //that.reordenarRows(modelName);
                 });
@@ -1732,6 +1775,7 @@ sap.ui.define([
             else
                 MessageBox.warning('No existen registros para cambio de precios.')
         },
+        
         saveDelete: function () {
             let that = this;
 
@@ -1985,7 +2029,7 @@ sap.ui.define([
                     this.byId("ValBoni").setVisible(false);
                     this.byId("UnisBonif").setVisible(false);
                     break;
-                case "Por Porcentajes":
+                case "Por Porcentaje":
                     this.byId("ValBoni").setVisible(true);
                     this.byId("UnisBonif").setVisible(false);
                     break;
