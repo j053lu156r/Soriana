@@ -777,6 +777,10 @@ console.log(sPath)
                 return instanceFormatter.format( oDate );
             }
             
+        },
+        onDocumentPress: function(oEvent){
+            console.log(oEvent);
+
         }
 	});
 
