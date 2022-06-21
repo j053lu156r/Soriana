@@ -184,7 +184,7 @@ sap.ui.define([
                     body: body
                   };
                   
-                  fetch('http://192.168.190.17/RecibeCFD/wseDocRecibo.asmx', options)
+                  fetch('https://192.168.190.17/RecibeCFD/wseDocRecibo.asmx', options)
                     .then(response => {
                         console.log(response.json())
                     }).catch(err => {
