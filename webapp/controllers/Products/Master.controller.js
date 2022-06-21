@@ -779,7 +779,7 @@ sap.ui.define([
             if (response.getProperty("/results/0/ESuccess") === "X") {
                 MessageBox.success("Artículo apto para registro.", {
                     onClose: () => {
-                        this.getGS1ProductData();
+                        //this.getGS1ProductData();
                         this.getView().byId('barCode').setValueState(sap.ui.core.ValueState.Success);
                         this.getOwnerComponent().getModel("ValidBarCode").setProperty("/value", true);
                     }
