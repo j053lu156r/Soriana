@@ -193,12 +193,6 @@
                 "settings": {},
                 "uri": "localService/mockdata/notifModel.json",
                 "preload": true
-            },
-            "aportacionesModel": {
-                "type": "sap.ui.model.json.JSONModel",
-                "settings": {},
-                "uri": "localService/mockdata/aportacionesModel.json",
-                "preload": true
             }
         },
         "routing": {
@@ -501,9 +495,18 @@
                     "name": "masterAportaciones",
                     "pattern": "masterAportaciones",
                     "target": [
-                        "masterAportaciones"
+                        "masterAportaciones",
+                        "detailAportaciones"
                     ]
                 },
+                {
+					"pattern": "detailAportaciones/{layout}/{folio}/{concepto}/{gerencia}/{importe}",
+					"name": "detailAportaciones",
+					"target": [
+                        "masterAportaciones",
+						"detailAportaciones"
+					]
+				},
                 {
                     "name": "masterAcuerdos",
                     "pattern": "masterAcuerdos",
@@ -759,6 +762,11 @@
                     "viewName": "Master",
                     "viewPath": "demo.views.Aportaciones",
                     "controlAggregation": "beginColumnPages"
+                },
+                "detailAportaciones": {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.Aportaciones",
+                    "controlAggregation": "midColumnPages"
                 },
                 "masterAcuerdos" : {
                     "viewName": "Master",

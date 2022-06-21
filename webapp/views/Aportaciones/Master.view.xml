@@ -151,7 +151,13 @@
 							<Text xmlns="sap.m" text="{path: 'AportacionesHdr>FecCaptura', formatter: '.ReverseDate'}"/>
                             <Text xmlns="sap.m" text="{path: 'AportacionesHdr>FecAport', formatter: '.ReverseDate'}"/>
                             <Text xmlns="sap.m" text="{AportacionesHdr>ImpAport}"/>
-                            <Text xmlns="sap.m" text="{AportacionesHdr>Observ}"/>                            
+                            <Text xmlns="sap.m" text="{AportacionesHdr>Observ}"/>
+                            <Button xmlns="sap.m" 
+                                    type="Accept" 
+                                    text="{appTxts>/aportaciones.aprobar}" 
+                                    press="onPressAccept"
+                                    icon="sap-icon://accept"
+                                    enabled="{= ${AportacionesHdr>Zestatus} === '3' ? true : false }"/>
 						</cells>
 					</ColumnListItem>
 				</items>
