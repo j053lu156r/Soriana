@@ -11,7 +11,7 @@
 				     <Text text="{=  (${GroupedTotales>Pendt} === true) ? 'Pendiente' : ( ${GroupedTotales>Belnr} === ${GroupedTotales>Augbl} ? 'Pago' : 'Contabilizado'  ) }" wrapping="false" />
 
 
-                                <Text text="{GroupedTotales>Belnr}" wrapping="false" />
+                                <ObjectIdentifier  titleActive="true"  title="{GroupedTotales>Belnr}" wrapping="false" />
 
                                 <Text text="{GroupedTotales>Xblnr}" wrapping="false" />
 

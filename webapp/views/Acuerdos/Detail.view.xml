@@ -12,7 +12,7 @@
       	<f:title>
 			<f:DynamicPageTitle>
 				<f:heading>
-					<Title text="{detailComplPagos>/document}"/>
+					<Title text="{detailAcuerdos>/document}"/>
 				</f:heading>
 				<!--
 					<f:breadcrumbs>
@@ -27,13 +27,13 @@
 					</f:breadcrumbs>
 				-->
 				<f:expandedContent>
-					<Label text="{detailComplPagos>/document}"/>
+					<Label text="{detailAcuerdos>/document}"/>
 				</f:expandedContent>
 				<f:snappedContent>
-					<Label text="{detailComplPagos>/document}"/>
+					<Label text="{detailAcuerdos>/document}"/>
 				</f:snappedContent>
 				<f:snappedTitleOnMobile>
-					<Title text="{detailComplPagos>/document}"/>
+					<Title text="{detailAcuerdos>/document}"/>
 				</f:snappedTitleOnMobile>
 
 
