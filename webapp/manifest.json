@@ -397,6 +397,14 @@
                     ]
                 },
                 {
+                    "pattern": "detailAcuerdosAS/{layout}/{document}/{sociedad}/{ejercicio}/{doc}",
+                    "name": "detailAcuerdosAS",
+                    "target": [
+                        "EstadoCuenta",
+                         "detailAcuerdosAS"
+                    ]
+                },
+                {
                     "name": "EstadoCuenta",
                     "pattern": "EstadoCuenta",
                     "titleTarget": "",
@@ -777,6 +785,11 @@
                     "viewName": "Detail",
                     "viewPath": "demo.views.Acuerdos",
                     "controlAggregation": "endColumnPages"
+                },
+                "detailAcuerdosAS": {
+                    "viewName": "DetailAS",
+                    "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "midColumnPages"
                 },
                 "Products": {
                     "viewName": "Master",

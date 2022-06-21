@@ -168,7 +168,7 @@ sap.ui.define([
             let auxArray = [...Detalles]
 
       
-var groupedMovs=this.groupArrayOfObjects(auxArray,"DescTipomov");
+var groupedMovs=this.groupArrayOfObjects(auxArray,"DescripcionGpo");
 var nestedMovs= []
 
 var me = this;
@@ -194,8 +194,11 @@ for (let x in groupedMovs) {
           return  me.truncate(total,2)
       }, 0);
 
-
+      var agrupado=groupedMovs[x]
+      var idGrupo = agrupado[0].IdNumGpo ? agrupado[0].IdNumGpo : ""
+      //IdNumGpo
 nestedMovs.push({
+    "IdNumGpo":idGrupo,
     "name":x,
     "totalRegs":groupedMovs[x].length,
     "totalDebit":Math.abs(result),
@@ -208,7 +211,7 @@ nestedMovs.push({
 }
 
 
-console.log(nestedMovs);
+ 
 
 var totalR = nestedMovs.reduce(function(_this, val) {
     var current =   Number(val.totalRegs)  
@@ -229,6 +232,7 @@ var totalC = nestedMovs.reduce(function(_this, val) {
       }, 0);
 
 
+      var totalGeneral =  totalD-totalC
 
 var jsonModelG = new JSONModel({
     "Hierarchy":{
@@ -236,7 +240,7 @@ var jsonModelG = new JSONModel({
     "totalR":totalR,
     "totalD":totalD,
     "totalC":totalC,
-    "totalT":totalD-totalC
+    "totalT": me.truncate(totalGeneral,2)
 }
 });
 
@@ -325,7 +329,7 @@ this.initTable()
             var me = this;
 
       
-var groupedMovs=this.groupArrayOfObjects(auxArray,"DescTipomov");
+var groupedMovs=this.groupArrayOfObjects(auxArray,"DescripcionGpo");
 var nestedMovs= []
 
 for (let x in groupedMovs) {
@@ -347,13 +351,17 @@ for (let x in groupedMovs) {
 
 
 console.log(result)
-
+var agrupado=groupedMovs[x]
+var idGrupo = agrupado[0].IdNumGpo ? agrupado[0].IdNumGpo : ""
+//IdNumGpo
 nestedMovs.push({
+    "IdNumGpo":idGrupo,
     "name":x,
     "totalRegs":groupedMovs[x].length,
     "totalDebit":Math.abs(result),
     "totalCredit":Math.abs(resultCredit),
-    "positions":groupedMovs[x]
+    "positions":groupedMovs[x],
+    
 
 })
 
@@ -361,9 +369,34 @@ nestedMovs.push({
 }
 
 
+
+var totalR = nestedMovs.reduce(function(_this, val) {
+    var current =   Number(val.totalRegs)  
+          var total = _this+current
+          return  me.truncate(total,2)
+      }, 0);
+
+var totalD =  nestedMovs.reduce(function(_this, val) {
+    var current =  Number(val.totalDebit)  
+          var total = _this+current
+          return  me.truncate(total,2)
+      }, 0);
+
+var totalC = nestedMovs.reduce(function(_this, val) {
+    var current =   Number(val.totalCredit)  
+          var total = _this+current
+          return  me.truncate(total,2)
+      }, 0);
+
+
+      var totalGeneral =  totalD-totalC
 var jsonModelG = new JSONModel({
     "Hierarchy":{
-    "movimientos": nestedMovs
+    "movimientos": nestedMovs,
+    "totalR":totalR,
+    "totalD":totalD,
+    "totalC":totalC,
+    "totalT": me.truncate(totalGeneral,2)
 }
 });
 
@@ -457,6 +490,7 @@ truncate: function  (num, places) {
               //  this.byId("weightColumn").setVisible(true);
                // this.byId("dimensionsColumn").setVisible(true);
               
+               this._oTable.setMode("SingleSelectMaster");
 
                 this.byId("statusColumn").setVisible(true);
                  this.byId("folioColumn").setVisible(true);
@@ -469,6 +503,8 @@ truncate: function  (num, places) {
                  this.byId("mCondicionColumn").setVisible(true);
                  this.byId("bloqueoColumn").setVisible(true);
                  this.byId("conciliacionColumn").setVisible(true);
+
+                 this.byId("tipoMovColumn").setVisible(true);
 
                  //totles 
                 this.byId("tipoColumn").setVisible(false);
@@ -486,6 +522,8 @@ truncate: function  (num, places) {
                  this._oTable.setMode("SingleSelectMaster");
                  
                  this.byId("statusColumn").setVisible(false);
+                 this.byId("tipoMovColumn").setVisible(false);
+
                  this.byId("folioColumn").setVisible(false);
                  this.byId("referenceColumn").setVisible(false);
 
@@ -518,8 +556,10 @@ truncate: function  (num, places) {
             //   var tableModel = this.getOwnerComponent().getModel("GroupedTotales")
              //    this._oTable.setModel(tableModel)
                 this._pTemplate.then(function(oTemplate){
+                    var sorter = [new sap.ui.model.Sorter("IdNumGpo")]
 
-                this._oTable.bindAggregation("items", sPath, oTemplate);
+                this._oTable.bindAggregation("items", sPath, oTemplate,sorter);
+
                 
             }.bind(this));
 
@@ -568,11 +608,45 @@ console.log(sPath)
             // otherwise navigate
             if (sCurrentCrumb === this.aCrumbs[this.aCrumbs.length - 1]) {
                 var oSelectionInfo = {};
-                var bSelected = oEvent.getParameter("selected");
-                oEvent.getParameter("listItems").forEach(function (oItem) {
-                    oSelectionInfo[oItem.getBindingContext().getPath()] = bSelected;
-                });
-                this._updateOrder(oSelectionInfo);
+               // var bSelected = oEvent.getParameter("selected");
+               // oEvent.getParameter("listItems").forEach(function (oItem) {
+               //     oSelectionInfo[oItem.getBindingContext().getPath()] = bSelected;
+               // });
+              //  this._updateOrder(oSelectionInfo);
+
+              console.log('on documnt press',oEvent);
+              console.log(sPath)
+              //let posicion = oEvent.getSource().getBindingContext("GroupedTotales").getPath().split("/").pop();
+              let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(sPath);
+  
+              console.log( this.getOwnerComponent().getModel('totales'))
+              //let registro = results[posicion];
+              //console.log(registro)
+          
+              //            let totalRegistros = parseInt( this.getOwnerComponent().getModel('totales').getProperty('/Detalles/results/length'), 10);
+
+              var sociedad = this.getOwnerComponent().getModel('totales').getProperty('/Bukrs')
+             // var ejercicio = this.getOwnerComponent().getModel('totales').getProperty('/Gjahr')
+  
+              var ejercicio2 = results.Budat
+              var ejercicio = ejercicio2.substr(0,4) ? ejercicio2.substr(0,4) : ""
+              console.log(sociedad,ejercicio)
+               this.getOwnerComponent().getRouter().navTo("detailAcuerdosAS",
+                  {
+                      layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+                      document: results.Belnr,
+                      sociedad: sociedad,
+                      ejercicio: ejercicio,
+                      doc: results.Belnr,
+                     // zbukr: docResult.Zbukr,
+                     // lifnr: docResult.Lifnr
+                  }, true);
+
+
+
+
+
+
             } else {
                 var modelName="GroupedTotales>"
                 var sNewPath = [sPath, this._nextCrumb(sCurrentCrumb)].join("/");
