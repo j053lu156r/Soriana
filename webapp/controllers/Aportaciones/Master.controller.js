@@ -213,7 +213,9 @@ sap.ui.define([
             var resource = oEvent.getSource().getBindingContext("AportacionesHdr").getPath(),
                 line = resource.split("/").slice(-1).pop();
 
-            var aportaModel = this.getOwnerComponent().getModel("AportacionesHdr");
+            this._confirmDialog(line);
+
+            /*var aportaModel = this.getOwnerComponent().getModel("AportacionesHdr");
             var results = aportaModel.getProperty("/AportaDet/Paginated/results");
 
             var docResult = results[line];
@@ -238,29 +240,27 @@ sap.ui.define([
                 aportaModel.setProperty("/AportaDet/Paginated/results", results);
                 //MessageBox.success(texts.getProperty("/aportaciones.aprobada"));
                 MessageBox.success(ojbResponse.EDescripEvent);
-            }
+            }*/
         },
 
-        _ConfirmDialog: function (oEvent) {
-            //this.lineSource = oEvent;
-            this.lineSource = JSON.parse(JSON.stringify(oEvent));
+        _confirmDialog: function (line) {
+            var texts = this.getOwnerComponent().getModel("appTxts");
+
             if (!this.oApproveDialog) {
                 this.oApproveDialog = new sap.m.Dialog({
                     type: DialogType.Message,
-                    title: "Confirm",
-                    content: new sap.m.Text({ text: "Do you want to approve this order?" }),
+                    title: texts.getProperty("/aportaciones.confirmar"),
+                    content: new sap.m.Text({ text: texts.getProperty("/aportaciones.txtConfirmar") }),
                     beginButton: new sap.m.Button({
                         type: ButtonType.Emphasized,
-                        text: "Aprobar",
+                        text: texts.getProperty("/aportaciones.aprobar"),
                         press: function () {
-                            //MessageToast.show("Approve pressed!");
-                            this.ConfirmApprove = true;
                             this.oApproveDialog.close();
-                            this._approve(this.lineSource);
+                            this._approve(line);
                         }.bind(this)
                     }),
                     endButton: new sap.m.Button({
-                        text: "Cancel",
+                        text: texts.getProperty("/aportaciones.cancelar"),
                         press: function () {
                             this.oApproveDialog.close();
                         }.bind(this)
@@ -269,37 +269,46 @@ sap.ui.define([
             }
             this.oApproveDialog.open();
         },
-        _approve: function (oEvent) {
-            var texts = this.getOwnerComponent().getModel("appTxts");
-            var resource = oEvent.getSource().getBindingContext("AportacionesHdr").getPath(),
-                line = resource.split("/").slice(-1).pop();
+        _approve: function (line) {
+            //var texts = this.getOwnerComponent().getModel("appTxts");
+            /*var resource = oEvent.getSource().getBindingContext("AportacionesHdr").getPath(),
+                line = resource.split("/").slice(-1).pop();*/
 
             var aportaModel = this.getOwnerComponent().getModel("AportacionesHdr");
             var results = aportaModel.getProperty("/AportaDet/Paginated/results");
-
             var docResult = results[line];
 
-
-            var url = "AportaSet?$expand=AportaDet&$filter=IOption eq '2'";
-            ;
-
-            url += " and IEstatus eq '4'";
+            var url = "AportaSet?$expand=AportaDet&$filter=IOption eq '2' and IEstatus eq '4'";
 
             if (docResult.Folio != "" && docResult.Folio != null) {
                 url += " and IFolio eq '" + docResult.Folio + "'";
             }
 
-            var dueModel = oModel.getJsonModel(url);
-            var ojbResponse = dueModel.getProperty("/results/0");
+            /*var dueModel = oModel.getJsonModel(url);
+            var ojbResponse = dueModel.getProperty("/results/0");*/
+            
+            this.getView().byId('tableAportaciones').setBusy(true);
+            oModel.getJsonModelAsync(
+                url,
+                function (jsonModel, parent) {
+                    var objResponse = jsonModel.getProperty("/results/0");
+                    parent.getView().byId('tableAportaciones').setBusy(false);
 
-            if (ojbResponse.EError == "X") {
-                MessageBox.error(ojbResponse.EDescripEvent);
-            } else {
-                docResult.Zestatus = "4";
-                aportaModel.setProperty("/AportaDet/Paginated/results", results);
-                //MessageBox.success(texts.getProperty("/aportaciones.aprobada"));
-                MessageBox.success(ojbResponse.EDescripEvent);
-            }         
+                    if (objResponse != null) {
+                        if (objResponse.EError == "X") {
+                            MessageBox.error(objResponse.EDescripEvent);
+                        } else {
+                            docResult.Zestatus = "4";
+                            aportaModel.setProperty("/AportaDet/Paginated/results", results);
+                            MessageBox.success(objResponse.EDescripEvent);
+                        }
+                    }
+                },
+                function (parent) {
+                    parent.getView().byId('tableAportaciones').setBusy(false);
+                },
+                this
+            );
         }
     });
 });

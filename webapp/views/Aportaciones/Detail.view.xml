@@ -135,11 +135,6 @@
                                             <m:Text text="{appTxts>/aportaciones.tienda}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </m:header>
                                     </m:Column>
-                                    <!--<m:Column>
-                                        <m:header>
-                                            <m:Text text="S.K.U" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                        </m:header>
-                                    </m:Column>-->
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
                                             <m:Text text="{appTxts>/aportaciones.articulo}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -150,19 +145,14 @@
                                             <m:Text text="{appTxts>/aportaciones.piezas}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </m:header>
                                     </m:Column>
-                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                    <!--<m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
                                             <m:Text text="{appTxts>/aportaciones.vtaNeta}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </m:header>
-                                    </m:Column>
+                                    </m:Column>-->
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
-                                            <m:Text text="{appTxts>/aportaciones.ieps}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                        </m:header>
-                                    </m:Column>
-                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-                                        <m:header>
-                                            <m:Text text="{appTxts>/aportaciones.aporta}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                            <m:Text text="{appTxts>/aportaciones.bonif}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </m:header>
                                     </m:Column>
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
@@ -172,7 +162,7 @@
                                     </m:Column>
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
-                                            <m:Text text="{appTxts>/aportaciones.bonif}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                            <m:Text text="{appTxts>/aportaciones.ieps}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </m:header>
                                     </m:Column>
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
@@ -180,17 +170,19 @@
                                             <m:Text text="{appTxts>/aportaciones.total}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </m:header>
                                     </m:Column>
+                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:header>
+                                            <m:Text text="{appTxts>/aportaciones.aporta}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </m:header>
+                                    </m:Column>
 								</m:columns>
 								<m:items>
 									<m:ColumnListItem >
 										<m:cells>
-											<!--<m:ObjectIdentifier text="{AportacionesDet>Werks}" />-->
                                             <m:ObjectIdentifier title="{AportacionesDet>Werks}" 
                                                 text="{AportacionesDet>Namew}" />
-                                            <!--<m:ObjectIdentifier text="{AportacionesDet>Matnr}" />-->
                                             <m:ObjectIdentifier title="{AportacionesDet>Matnr}"
                                                 text="{AportacionesDet>Maktx}" />
-                                            <!--<m:ObjectIdentifier text="{AportacionesDet>Zcantidad}" />-->
                                             <m:ObjectIdentifier
                                                 text="{
                                                     path: 'AportacionesDet>Zcantidad',
@@ -199,25 +191,17 @@
                                                         maxFractionDigits: 2
                                                         }
                                                     }" />
-                                            <m:ObjectIdentifier
+                                            <!--<m:ObjectIdentifier
                                                 text="{
                                                     path: 'AportacionesDet>Zbonificacion',
                                                     type: 'sap.ui.model.type.Float',
                                                     formatOptions: {
                                                         maxFractionDigits: 2
                                                         }
-                                                    }" />
+                                                    }" />-->
                                             <m:ObjectIdentifier
                                                 text="{
-                                                    path: 'AportacionesDet>Zieps',
-                                                    type: 'sap.ui.model.type.Float',
-                                                    formatOptions: {
-                                                        maxFractionDigits: 2
-                                                        }
-                                                    }" />
-                                            <m:ObjectIdentifier
-                                                text="{
-                                                    path: 'AportacionesDet>Zaportacion',
+                                                    path: 'AportacionesDet>Zbonificacion',
                                                     type: 'sap.ui.model.type.Float',
                                                     formatOptions: {
                                                         maxFractionDigits: 2
@@ -233,7 +217,7 @@
                                                     }" />
                                             <m:ObjectIdentifier
                                                 text="{
-                                                    path: 'AportacionesDet>Zbonificacion',
+                                                    path: 'AportacionesDet>Zieps',
                                                     type: 'sap.ui.model.type.Float',
                                                     formatOptions: {
                                                         maxFractionDigits: 2
@@ -248,6 +232,14 @@
                                                         }"
                                                 unit="MXN"
                                                 state="Success" />
+                                            <m:ObjectIdentifier
+                                                text="{
+                                                    path: 'AportacionesDet>Zaportacion',
+                                                    type: 'sap.ui.model.type.Float',
+                                                    formatOptions: {
+                                                        maxFractionDigits: 2
+                                                        }
+                                                    }" />
 										</m:cells>
 									</m:ColumnListItem>
 								</m:items>
