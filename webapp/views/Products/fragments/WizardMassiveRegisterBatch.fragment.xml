@@ -10,7 +10,8 @@
 		id="massiveRegisterDialog"
 		showHeader="false"
 		verticalScrolling="false"
- 
+		contentHeight="45%"
+		contentWidth="40%"
         >
 		<f:DynamicPage
 			toggleHeaderOnTitleClick="false"
@@ -26,14 +27,19 @@
         <f:content>
 		<l:VerticalLayout>
 
+                    <MessageStrip class="sapUiSmallMarginBottom"
+								text="{appTxts>/products.messageStripMassiveReg}"
+								showIcon="true"/>
+
         <Label text="{appTxts>/products.personalBuyerEmail}" labelFor="correoInput" />
 		<Input
 			id="correoInput"
 			placeholder="{appTxts>/products.enterEmailplaceholder}"
             type="Email"
 			>
-			
 		</Input>
+
+        <Label text="{appTxts>/products.fileUploaderMassiveReg}" labelFor="fileUploaderMassiveReg" />
 
 		<u:FileUploader
 			id="fileUploaderMassiveReg"
