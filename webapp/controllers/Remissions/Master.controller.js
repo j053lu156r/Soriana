@@ -383,5 +383,13 @@ sap.ui.define([
                 }.bind(this)
             });
         },
+        clearFilters: function () {
+            this.getView().byId("dateOrder").setValue("");
+            this.getView().byId("folio").setValue("");
+            this.getView().byId("folio2").setValue("");
+            this.getView().byId("order").setValue("");
+            this.getView().byId("order2").setValue("");
+            this.cboxTipo.setSelectedKey("0");
+        }
     });
 });
