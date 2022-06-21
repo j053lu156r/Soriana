@@ -890,6 +890,7 @@ sap.ui.define([
             }
 
         },
+
         handleWizardCancel: function () {
             this._handleMessageBoxOpen(this.getOwnerComponent().getModel("appTxts").getProperty('/products.msgCancelNewProduct'), "warning");
         },
@@ -924,7 +925,7 @@ sap.ui.define([
                                 "ITIMGART": [...imagesToAttach]
                             };
 
-                            console.log(" >>>>>>> CREATING PRDUCT String: ", JSON.stringify(createObjReq));
+                            // console.log(" >>>>>>> CREATING PRDUCT String: ", JSON.stringify(createObjReq));
 
                             // ** Nota Model.create(endpoint,data) No trabaja ni con callback ni con promesa Solo recepcion syncrona
 
@@ -949,7 +950,6 @@ sap.ui.define([
 
                             this.clearFormFolioAlta();
                         }
-
 
                     }
                 }.bind(this)
