@@ -142,10 +142,18 @@
                     "binding": "masterDelivReview",
                     "functions": [
                         {
-                            "idFunction": 7
+                            "idFunction": 7,
+                            "roles": [
+                                "0000"
+                            ]
+
                         },
                         {
-                            "idFunction": 45
+                            "idFunction": 45,
+                            "roles": [
+                                "0000"
+                            ]
+
                         }
                     ]
                 },
@@ -290,6 +298,7 @@
                             "roles": [
                                 "0001",
                                 "0002",
+                                "0004",
                                 "0005"
                             ]
                         },
