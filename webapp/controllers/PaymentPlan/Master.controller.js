@@ -48,7 +48,7 @@ sap.ui.define([
             }
             this._oTable = this.byId("idGroupTable");
         },
-        _searchData: function () {
+        searchData: function () {
             var bContinue = false;
 
             if (!oModel.getModel()) {
@@ -177,7 +177,7 @@ sap.ui.define([
 
 
         //handle sech data 
-        searchData: function () {
+        _searchData: function () {
 
 			//let dateRange = this.getView().byId("dateRange");
 

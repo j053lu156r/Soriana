@@ -279,7 +279,7 @@ sap.ui.define([
 
 			this.initTable()
 
-			//this.getOwnerComponent().setModel(jsonModelT, "totales");
+		//	this.getOwnerComponent().setModel(jsonModelT, "totales");
 
 			//this.paginate("totales", "/Detalles", 1, 0);
 
