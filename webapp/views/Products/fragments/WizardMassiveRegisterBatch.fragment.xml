@@ -10,8 +10,8 @@
 		id="massiveRegisterDialog"
 		showHeader="false"
 		verticalScrolling="false"
-		contentHeight="45%"
-		contentWidth="40%"
+		contentHeight="60%"
+		contentWidth="45%"
         >
 		<f:DynamicPage
 			toggleHeaderOnTitleClick="false"
@@ -36,6 +36,7 @@
 			id="correoInput"
 			placeholder="{appTxts>/products.enterEmailplaceholder}"
             type="Email"
+            liveChange="changeBuyerEmail"
 			>
 		</Input>
 
@@ -46,18 +47,19 @@
 			name="myFileUpload"
 			tooltip="{appTxts>/products.toolTipUpload}"
             fileType="xlsx"
+            change="changeFileMassiveReg"
             />
-		<Button
+		<!-- <Button
 			text="{appTxts>/products.btnUploadFile}"
-			press="handleUploadPress"/>
+			press="handleUploadPress"/> -->
             </l:VerticalLayout>
             </f:content>
 
 			<f:footer>
 				<OverflowToolbar>
-                    <Button	text="{appTxts>/products.finish}" type="Emphasized" press="sendDataForNotification"/>
+                    <Button id="finishMassive"	text="{appTxts>/products.finish}" type="Emphasized" press="sendDataForNotification" enabled="false"/>
                     <ToolbarSpacer/>
-                    <Button	text="{appTxts>/products.cancel}" type="Emphasized" press=".closeDialog('massiveRegisterDialog')"/>
+                    <Button	text="{appTxts>/products.cancel}" type="Emphasized" press=".closeDialogMassiveReg('massiveRegisterDialog')"/>
                 </OverflowToolbar>
 			</f:footer>
 		</f:DynamicPage>
