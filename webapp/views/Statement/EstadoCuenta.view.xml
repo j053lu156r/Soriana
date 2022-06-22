@@ -466,10 +466,19 @@
                             <Text id="idFooterText" text="Total"/>
                         </footer>
                     </Column>
+                      <Column
+                        id="tipoMovColumn"
+                          demandPopin="false"
+                           minScreenWidth="Tablet"
+ visible="true"
+                        >
+                        <Text text="{appTxts>/aportaciones.concepto}"/>
+                    </Column>
                     <Column
                         id="statusColumn"
                         minScreenWidth="Tablet"
                          demandPopin="true"
+                            hAlign="End"
                         >
                         <Text text="{appTxts>/state.status}"/>
                     </Column>
