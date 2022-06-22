@@ -163,18 +163,17 @@ sap.ui.define([
 			this._sociedad = oEvent.getParameter("arguments").sociedad || this._sociedad || "0";
 			this._ejercicio = oEvent.getParameter("arguments").ejercicio || this._ejercicio || "0";
  
-			console.log(this._document);
-
+ 
             
-			this.getView().bindElement({
-				path: "/ProductCollection/" + this._document,
-				model: "products"
-			});
+			//this.getView().bindElement({
+		//		path: "/ProductCollection/" + this._document,
+		//		model: "products"
+		//	});
 
-			this.getView().setModel(new JSONModel({
-					"document": this._document
-				}),
-				"detailAcuerdosAS");
+		//	this.getView().setModel(new JSONModel({
+		//			"document": this._document
+		//		}),
+		//		"detailAcuerdosAS");
                 
 
 				//consume el servicio para obtener los docuemntos 
