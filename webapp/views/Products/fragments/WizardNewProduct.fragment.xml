@@ -88,11 +88,7 @@
                                                         </Button>
                                                     </form:fields>
                                                 </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.baseProduct}">
-                                                    <form:fields>
-                                                        <Input required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onBaseProductRequest" id="baseProduct" value="{FolioToShow>/ProdBase}" editable="{ValidBarCode>/value}"/>
-                                                    </form:fields>
-                                                </form:FormElement>
+                                                
                                                 <form:FormElement label="{appTxts>/products.productType}">
                                                     <form:fields>
                                                         <ComboBox selectedKey="{Folio>/TipArt}" required="true" id="productType" items="{
@@ -106,7 +102,15 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.shoppingGroup}">
                                                     <form:fields>
-                                                        <Input required="true" value="{Folio>/PurGroup}" id="shoppingGroup" editable="false" />
+                                                        <!-- <Input required="true" value="{Folio>/PurGroup}" id="shoppingGroup" editable="false" /> -->
+                                                        <ComboBox selectedKey="{Folio>/PurGroup}" id="shoppingGroup" items="{
+                                                                    path : 'Catalogos>/GrupoCompras/results'
+                                                                }"
+                                                                editable="{ValidBarCode>/value}">
+                                                            <items>
+                                                                <core:Item key="{Catalogos>Ekgrp}" text="{Catalogos>Eknam}"/>
+                                                            </items>
+                                                        </ComboBox>
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.productGroup}">
@@ -119,6 +123,11 @@
                                                                 <core:Item key="{Catalogos>GrupoArt}" text="{Catalogos>DescGart}"/>
                                                             </items>
                                                         </ComboBox>
+                                                    </form:fields>
+                                                </form:FormElement>
+                                                <form:FormElement label="{appTxts>/products.baseProduct}">
+                                                    <form:fields>
+                                                        <Input required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onBaseProductRequest" id="baseProduct" value="{FolioToShow>/ProdBase}" editable="{ValidBarCode>/value}"/>
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.supplier}">
@@ -752,7 +761,7 @@
                                              <ToolbarSpacer/>
                                              
                                             <Link
-                                                text="Descargar Guia de Imagenes"
+                                                text="{appTxts>/products.linkGuiaImg}"
                                                 target="_blank"
                                                 href="/index/public/PDFs/GUIA.pdf" />
 
