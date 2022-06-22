@@ -12,6 +12,7 @@ sap.ui.define([
     var sUri = "/sap/opu/odata/sap/ZOSP_CATPRO_SRV/";
 
     var Model = new Productos();
+    var NotifAltaMas = new NotifAltaMasiva();
     const CatNegotiatedFormat = ['1A', '1B'];
     var swProveedorEnGS1 = false;
     var swProveedorExcluido = false;
@@ -28,7 +29,7 @@ sap.ui.define([
                     this.getOwnerComponent().setModel(new JSONModel(), "Catalogos");
                     this.getOwnerComponent().setModel(new JSONModel(), "Folios");
                     this.getOwnerComponent().setModel(new JSONModel(), "Folio");
-                    this.getOwnerComponent().setModel(new JSONModel({ value: _testingSteps, gs1Finded: _testingSteps }), "ValidBarCode");
+                    this.getOwnerComponent().setModel(new JSONModel({ value: _testingSteps, gs1Finded: true }), "ValidBarCode");
                     this.getOwnerComponent().setModel(new JSONModel({ 'items': [] }), "FolioImages");
                     this.getOwnerComponent().setModel(new JSONModel(), "FolioToShow");
                     this.getOwnerComponent().setModel(new JSONModel(), "ITARTVAR");
@@ -198,6 +199,13 @@ sap.ui.define([
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/Divisiones', response.getProperty('/results/0/ETJERARQUIANAV'));
                 }, function () {
                     sap.m.MessageBox.error("No se lograron obtener las divisiones");
+                }, this);
+
+                let urlCompras = `HdrcatproSet?$expand=ETGPOCOMPRAS&$filter=IOption eq '22'`;
+                Model.getJsonModelAsync(urlCompras, function (response, that) {
+                    that.getOwnerComponent().getModel("Catalogos").setProperty('/GrupoCompras', response.getProperty('/results/0/ETGPOCOMPRAS'));
+                }, function () {
+                    sap.m.MessageBox.error("No se lograron obtener los grupos de compras");
                 }, this);
 
 
@@ -890,6 +898,7 @@ sap.ui.define([
             }
 
         },
+
         handleWizardCancel: function () {
             this._handleMessageBoxOpen(this.getOwnerComponent().getModel("appTxts").getProperty('/products.msgCancelNewProduct'), "warning");
         },
@@ -924,7 +933,7 @@ sap.ui.define([
                                 "ITIMGART": [...imagesToAttach]
                             };
 
-                            console.log(" >>>>>>> CREATING PRDUCT String: ", JSON.stringify(createObjReq));
+                            // console.log(" >>>>>>> CREATING PRDUCT String: ", JSON.stringify(createObjReq));
 
                             // ** Nota Model.create(endpoint,data) No trabaja ni con callback ni con promesa Solo recepcion syncrona
 
@@ -949,7 +958,6 @@ sap.ui.define([
 
                             this.clearFormFolioAlta();
                         }
-
 
                     }
                 }.bind(this)
@@ -1040,7 +1048,10 @@ sap.ui.define([
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/TiposBonificacion'));
 
             Folio.Jerarquia = formatterCatPrd.findPropertieValue("Nodo", "Denominacion", Folio.Jerarquia,
-            this.getOwnerComponent().getModel("Catalogos").getProperty('/SubSegmento'));
+                this.getOwnerComponent().getModel("Catalogos").getProperty('/SubSegmento'));
+            
+            Folio.PurGroup = formatterCatPrd.findPropertieValue("Ekgrp", "Eknam", Folio.PurGroup,
+            this.getOwnerComponent().getModel("Catalogos").getProperty('/GrupoCompras'));
 
             this.getOwnerComponent().getModel("FolioToShow").setData({ ...Folio });
 
@@ -2175,6 +2186,42 @@ sap.ui.define([
 
             this.byId("barCode").fireLiveChange( );
             
+        },
+
+        sendDataForNotification(){
+
+            // previamente se debe subir el archivo al repositorio y despues enviar la notificacion
+
+            let fileMassive = this.byId("fileUploaderMassiveReg").getValue();
+            let comprasMail = this.byId("correoInput").getValue();
+
+            let userSession = this.getOwnerComponent().getModel("userdata").getData();
+
+            let createObjReq = {
+              "IvBcase":"01",                       
+              "IvFilename": fileMassive,             
+              "IvSupplier": this.getConfigModel().getProperty("/supplierInputKey"),             
+              "ITRECIPIENT":[                       
+                {
+                  "Email": userSession.IMail.toLowerCase(),
+                },
+                {
+                  "Email": comprasMail, 
+                }
+              ],
+              "ETRETURN":[
+              ]
+            };
+
+            let resp = NotifAltaMas.create("/HeaderSet", createObjReq);
+
+            if (resp.EvSendStatus == "OK") {
+                sap.m.MessageBox.success(resp.EvSendStatus);
+                this.closeDialog('massiveRegisterDialog');
+            } else {
+                sap.m.MessageBox.error(resp.ETRETURN.results[0].Message);
+            }
+
         }
 
     })
