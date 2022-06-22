@@ -12,11 +12,12 @@ sap.ui.define([
     var sUri = "/sap/opu/odata/sap/ZOSP_CATPRO_SRV/";
 
     var Model = new Productos();
+    var NotifAltaMas = new NotifAltaMasiva();
     const CatNegotiatedFormat = ['1A', '1B'];
     var swProveedorEnGS1 = false;
     var swProveedorExcluido = false;
     var _selectedEanType = {};
-    var _testingSteps = true; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
+    var _testingSteps = false; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
 
     return BaseController.extend("demo.controllers.Products.Master", {
         formatterCatPrd: formatterCatPrd,
@@ -2185,6 +2186,42 @@ sap.ui.define([
 
             this.byId("barCode").fireLiveChange( );
             
+        },
+
+        sendDataForNotification(){
+
+            // previamente se debe subir el archivo al repositorio y despues enviar la notificacion
+
+            let fileMassive = this.byId("fileUploaderMassiveReg").getValue();
+            let comprasMail = this.byId("correoInput").getValue();
+
+            let userSession = this.getOwnerComponent().getModel("userdata").getData();
+
+            let createObjReq = {
+              "IvBcase":"01",                       
+              "IvFilename": fileMassive,             
+              "IvSupplier": this.getConfigModel().getProperty("/supplierInputKey"),             
+              "ITRECIPIENT":[                       
+                {
+                  "Email": userSession.IMail.toLowerCase(),
+                },
+                {
+                  "Email": comprasMail, 
+                }
+              ],
+              "ETRETURN":[
+              ]
+            };
+
+            let resp = NotifAltaMas.create("/HeaderSet", createObjReq);
+
+            if (resp.EvSendStatus == "OK") {
+                sap.m.MessageBox.success(resp.EvSendStatus);
+                this.closeDialog('massiveRegisterDialog');
+            } else {
+                sap.m.MessageBox.error(resp.ETRETURN.results[0].Message);
+            }
+
         }
 
     })

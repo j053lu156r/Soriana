@@ -152,7 +152,8 @@
                                                             suggestionItems="{Paises>/results}"
                                                             selectedKey="{Folio>/Pais}"
                                                             suggestionItemSelected=".onSuggestionCountryItemSelected"
-                                                            editable="{ValidBarCode>/value}">
+                                                            editable="{ValidBarCode>/value}"
+                                                            required="true" >
                                                             <suggestionItems>
                                                                 <core:ListItem
                                                                     key="{Paises>Land1}" text="{Paises>Landx50}"
@@ -629,7 +630,7 @@
 
                                     <core:Title text="{appTxts>/products.capPerPallet}" />
                                     <Label text="{appTxts>/products.palletCode}" />
-                                    <Input value="{Folio>/CodTarima}" type="Number" required="true"/>
+                                    <Input value="{Folio>/CodTarima}" type="Number" required="true" liveChange="validateBarCodeLength"/>
                                     <Label text="{appTxts>/products.boxesByContent}" />
                                     <Input value="{Folio>/CajasTend}" type="Number" required="true"/>
 
