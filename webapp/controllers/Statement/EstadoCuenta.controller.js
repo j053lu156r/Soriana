@@ -179,33 +179,36 @@ for (let x in groupedMovs) {
   console.log("sumando valores");
 
 
- var resultCredit = groupedMovs[x].reduce(function(_this, val) {
-    //console.log(val.Wrbtr)
+  var resultCredit = groupedMovs[x].reduce(function(_this, val) {
+    console.log(val.Wrbtr)
          var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
           var total = _this+current
-          return  me.truncate(total,2)
+          return total
       }, 0);
 
-//console.log(result)
 
  var result = groupedMovs[x].reduce(function(_this, val) {
     var current =  val.Bschl !== "21" ? Number(val.Wrbtr) : 0
           var total = _this+current
-          return  me.truncate(total,2)
+          return total
       }, 0);
 
-      var agrupado=groupedMovs[x]
-      var idGrupo = agrupado[0].IdNumGpo ? agrupado[0].IdNumGpo : ""
-      //IdNumGpo
+
+console.log(result)
+var agrupado=groupedMovs[x]
+var idGrupo = agrupado[0].IdNumGpo ? agrupado[0].IdNumGpo : ""
+//IdNumGpo
 nestedMovs.push({
     "IdNumGpo":idGrupo,
     "name":x,
     "totalRegs":groupedMovs[x].length,
-    "totalDebit":Math.abs(result),
-    "totalCredit":Math.abs(resultCredit),
-    "positions":groupedMovs[x]
+    "totalDebit":Math.abs(this.truncate(result,2)),
+    "totalCredit":Math.abs(this.truncate(resultCredit,2)),
+    "positions":groupedMovs[x],
+    
 
 })
+
 
 
 }
@@ -216,30 +219,31 @@ nestedMovs.push({
 var totalR = nestedMovs.reduce(function(_this, val) {
     var current =   Number(val.totalRegs)  
           var total = _this+current
-          return  me.truncate(total,2)
+          return  total
       }, 0);
 
 var totalD =  nestedMovs.reduce(function(_this, val) {
     var current =  Number(val.totalDebit)  
           var total = _this+current
-          return  me.truncate(total,2)
+          return  total
       }, 0);
 
 var totalC = nestedMovs.reduce(function(_this, val) {
     var current =   Number(val.totalCredit)  
           var total = _this+current
-          return  me.truncate(total,2)
+          return  total
       }, 0);
 
 
-      var totalGeneral =  totalD-totalC
+      var totalGeneral = me.truncate(totalD,2)-me.truncate(totalC,2)
+
 
 var jsonModelG = new JSONModel({
     "Hierarchy":{
     "movimientos": nestedMovs,
     "totalR":totalR,
-    "totalD":totalD,
-    "totalC":totalC,
+    "totalD":me.truncate(totalD,2),
+    "totalC":me.truncate(totalC,2),
     "totalT": me.truncate(totalGeneral,2)
 }
 });
@@ -339,14 +343,14 @@ for (let x in groupedMovs) {
     console.log(val.Wrbtr)
          var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
           var total = _this+current
-          return  me.truncate(total,2)
+          return total
       }, 0);
 
 
  var result = groupedMovs[x].reduce(function(_this, val) {
     var current =  val.Bschl !== "21" ? Number(val.Wrbtr) : 0
           var total = _this+current
-          return  me.truncate(total,2)
+          return total
       }, 0);
 
 
@@ -358,8 +362,8 @@ nestedMovs.push({
     "IdNumGpo":idGrupo,
     "name":x,
     "totalRegs":groupedMovs[x].length,
-    "totalDebit":Math.abs(result),
-    "totalCredit":Math.abs(resultCredit),
+    "totalDebit":Math.abs(this.truncate(result,2)),
+    "totalCredit":Math.abs(this.truncate(resultCredit,2)),
     "positions":groupedMovs[x],
     
 
@@ -373,29 +377,29 @@ nestedMovs.push({
 var totalR = nestedMovs.reduce(function(_this, val) {
     var current =   Number(val.totalRegs)  
           var total = _this+current
-          return  me.truncate(total,2)
+          return  total
       }, 0);
 
 var totalD =  nestedMovs.reduce(function(_this, val) {
     var current =  Number(val.totalDebit)  
           var total = _this+current
-          return  me.truncate(total,2)
+          return  total
       }, 0);
 
 var totalC = nestedMovs.reduce(function(_this, val) {
     var current =   Number(val.totalCredit)  
           var total = _this+current
-          return  me.truncate(total,2)
+          return  total
       }, 0);
 
 
-      var totalGeneral =  totalD-totalC
+      var totalGeneral = me.truncate(totalD,2)-me.truncate(totalC,2)
 var jsonModelG = new JSONModel({
     "Hierarchy":{
     "movimientos": nestedMovs,
     "totalR":totalR,
-    "totalD":totalD,
-    "totalC":totalC,
+    "totalD":me.truncate(totalD,2),
+    "totalC":me.truncate(totalC,2),
     "totalT": me.truncate(totalGeneral,2)
 }
 });
