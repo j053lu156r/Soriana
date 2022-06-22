@@ -45,7 +45,7 @@
 			id="fileUploaderMassiveReg"
 			name="myFileUpload"
 			tooltip="{appTxts>/products.toolTipUpload}"
-            fileType="xlsx,xls,csv,xlsb"
+            fileType="xlsx"
             />
 		<Button
 			text="{appTxts>/products.btnUploadFile}"
@@ -55,6 +55,8 @@
 
 			<f:footer>
 				<OverflowToolbar>
+                    <Button	text="{appTxts>/products.finish}" type="Emphasized" press="sendDataForNotification"/>
+                    <ToolbarSpacer/>
                     <Button	text="{appTxts>/products.cancel}" type="Emphasized" press=".closeDialog('massiveRegisterDialog')"/>
                 </OverflowToolbar>
 			</f:footer>
