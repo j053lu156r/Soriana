@@ -16,7 +16,7 @@ sap.ui.define([
     var swProveedorEnGS1 = false;
     var swProveedorExcluido = false;
     var _selectedEanType = {};
-    var _testingSteps = false; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
+    var _testingSteps = true; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
 
     return BaseController.extend("demo.controllers.Products.Master", {
         formatterCatPrd: formatterCatPrd,
@@ -28,7 +28,7 @@ sap.ui.define([
                     this.getOwnerComponent().setModel(new JSONModel(), "Catalogos");
                     this.getOwnerComponent().setModel(new JSONModel(), "Folios");
                     this.getOwnerComponent().setModel(new JSONModel(), "Folio");
-                    this.getOwnerComponent().setModel(new JSONModel({ value: _testingSteps, gs1Finded: _testingSteps }), "ValidBarCode");
+                    this.getOwnerComponent().setModel(new JSONModel({ value: _testingSteps, gs1Finded: true }), "ValidBarCode");
                     this.getOwnerComponent().setModel(new JSONModel({ 'items': [] }), "FolioImages");
                     this.getOwnerComponent().setModel(new JSONModel(), "FolioToShow");
                     this.getOwnerComponent().setModel(new JSONModel(), "ITARTVAR");
@@ -198,6 +198,13 @@ sap.ui.define([
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/Divisiones', response.getProperty('/results/0/ETJERARQUIANAV'));
                 }, function () {
                     sap.m.MessageBox.error("No se lograron obtener las divisiones");
+                }, this);
+
+                let urlCompras = `HdrcatproSet?$expand=ETGPOCOMPRAS&$filter=IOption eq '22'`;
+                Model.getJsonModelAsync(urlCompras, function (response, that) {
+                    that.getOwnerComponent().getModel("Catalogos").setProperty('/GrupoCompras', response.getProperty('/results/0/ETGPOCOMPRAS'));
+                }, function () {
+                    sap.m.MessageBox.error("No se lograron obtener los grupos de compras");
                 }, this);
 
 
@@ -1040,7 +1047,10 @@ sap.ui.define([
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/TiposBonificacion'));
 
             Folio.Jerarquia = formatterCatPrd.findPropertieValue("Nodo", "Denominacion", Folio.Jerarquia,
-            this.getOwnerComponent().getModel("Catalogos").getProperty('/SubSegmento'));
+                this.getOwnerComponent().getModel("Catalogos").getProperty('/SubSegmento'));
+            
+            Folio.PurGroup = formatterCatPrd.findPropertieValue("Ekgrp", "Eknam", Folio.PurGroup,
+            this.getOwnerComponent().getModel("Catalogos").getProperty('/GrupoCompras'));
 
             this.getOwnerComponent().getModel("FolioToShow").setData({ ...Folio });
 
