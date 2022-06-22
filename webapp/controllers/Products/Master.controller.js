@@ -577,7 +577,7 @@ sap.ui.define([
                     }).then(function (oDialog) {
                         oDialog.attachAfterClose(() => {
                             this.getOwnerComponent().setModel(new JSONModel(), 'ETMODIFY');
-                            this.byId('fileUploader').clear();
+                            this.byId('fileUploaderMassiveReg').clear();
                         }, this);
                         this.getOwnerComponent().setModel(new JSONModel(), 'ETMODIFY');
                         oView.addDependent(oDialog);
@@ -2188,8 +2188,48 @@ sap.ui.define([
             
         },
 
-        sendDataForNotification(){
+        changeBuyerEmail(oControlEvent){
+            this.validateMassiveInfo();
+        },
 
+        changeFileMassiveReg(oControlEvent){
+            this.validateMassiveInfo();
+            this.massiveFile = oControlEvent.getParameters().files[0];
+            
+            var that = this;
+
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                let oFile = {};
+                oFile.IText64 = e.target.result;
+
+                that.massiveFile64 = oFile;
+
+            }
+            reader.readAsDataURL(this.massiveFile);
+        },
+
+        validateMassiveInfo(){
+            let fileMassive = this.byId("fileUploaderMassiveReg").getValue();
+            let comprasMail = this.byId("correoInput").getValue();
+
+            let validInfo = fileMassive !="" && comprasMail !="";
+            this.byId("finishMassive").setEnabled(validInfo);
+
+        },
+
+        closeDialogMassiveReg: function (idDialog) {
+            this.byId("fileUploaderMassiveReg").clear();
+            this.byId("correoInput").setValue("");
+            this.validateMassiveInfo();
+            this.massiveFile64 = {};
+            this.closeDialog('massiveRegisterDialog');
+            
+        },
+
+        sendDataForNotification(){
+            console.log("Archivo excel: ", this.massiveFile64);
+            
             // previamente se debe subir el archivo al repositorio y despues enviar la notificacion
 
             let fileMassive = this.byId("fileUploaderMassiveReg").getValue();
@@ -2217,6 +2257,10 @@ sap.ui.define([
 
             if (resp.EvSendStatus == "OK") {
                 sap.m.MessageBox.success(resp.EvSendStatus);
+                this.byId("fileUploaderMassiveReg").clear();
+                this.byId("correoInput").setValue("");
+                this.validateMassiveInfo();
+                this.massiveFile64 = {};
                 this.closeDialog('massiveRegisterDialog');
             } else {
                 sap.m.MessageBox.error(resp.ETRETURN.results[0].Message);
