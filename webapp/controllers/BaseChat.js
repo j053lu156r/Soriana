@@ -200,7 +200,6 @@ sap.ui.define([
             let firstDay = new Date(1900, 1, 1);
             vField.setDateValue(firstDay);
             vField.setSecondDateValue(todayDate);
-
         },
 
         getvView: function (sRouteName, viewPath, viewName) {
