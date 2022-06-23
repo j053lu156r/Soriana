@@ -52,7 +52,7 @@ sap.ui.define([
                 var url = "AportaSet?$expand=AportaDet&$filter=IOption eq '3' and ILifnr eq '" + vLifnr + "'"; // Se debe validar que el usuario este activo
                 ;
 
-                url += " and IEstatus eq '2'";
+                //url += " and IEstatus eq '2'";
 
                 if (vAportacion != "" && vAportacion != null) {
                     url += " and IFolio eq '" + vAportacion + "'";
@@ -298,6 +298,7 @@ sap.ui.define([
                         if (objResponse.EError == "X") {
                             MessageBox.error(objResponse.EDescripEvent);
                         } else {
+                            docResult.Descest = "Autorizado Proveedor";
                             docResult.Zestatus = "4";
                             aportaModel.setProperty("/AportaDet/Paginated/results", results);
                             MessageBox.success(objResponse.EDescripEvent);
