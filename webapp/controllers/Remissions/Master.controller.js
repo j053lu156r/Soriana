@@ -104,16 +104,18 @@ sap.ui.define([
             var reader = new FileReader();
             reader.onload = function (evn) {
 
-                //strip off the data uri prefix
-                let strXML = atob(evn.target.result.replace('data:text/xml;base64,',''));
-                var oXMLModel = new sap.ui.model.xml.XMLModel();  
-                oXMLModel.setXML(strXML);
-                var oXml = oXMLModel.getData();
+                if (file.type == "text/xml") {
+                    //strip off the data uri prefix
+                    let strXML = atob(evn.target.result.replace('data:text/xml;base64,',''));
+                    var oXMLModel = new sap.ui.model.xml.XMLModel();  
+                    oXMLModel.setXML(strXML);
+                    var oXml = oXMLModel.getData();
 
-                var x = oXml.getElementsByTagName("cfdi:Comprobante"); //Nodo
-				if(x.length > 0){
-                    sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/rem.uploader.cfdiError"));
-                    return;
+                    var x = oXml.getElementsByTagName("cfdi:Comprobante"); //Nodo
+                    if(x.length > 0){
+                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/rem.uploader.cfdiError"));
+                        return;
+                    }
                 }
                 
                 if (file.type == "text/xml") {
