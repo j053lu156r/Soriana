@@ -127,12 +127,13 @@ sap.ui.define([
             var ojbResponse = dueModel.getProperty("/results/0");
             //console.log(dueModel);
 
+            
             this.getOwnerComponent().setModel(new JSONModel(ojbResponse),
                 "payPlanDetail");
 
             this.paginate("payPlanDetail", "/EDETNAV", 1, 0);
 
-            this.searchDataPartidas();
+          //  this.searchDataPartidas();
         },
         formatSatusOrder: function (status) {
             if (status) {

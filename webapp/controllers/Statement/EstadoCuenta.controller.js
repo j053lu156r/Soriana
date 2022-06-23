@@ -248,9 +248,9 @@ var jsonModelG = new JSONModel({
 }
 });
 
-console.log(jsonModelG);
 
 this.getOwnerComponent().setModel(jsonModelG, "GroupedTotales");
+console.log(jsonModelG);
 
  
 this.initTable()
