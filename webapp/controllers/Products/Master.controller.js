@@ -842,6 +842,12 @@ sap.ui.define([
                 viewModel.setProperty("/results", []);
             }
 
+            if(this.byId("fileUploaderMassiveReg")){
+                this.byId("correoInput").setValue("");
+                this.validateMassiveInfo();
+                this.massiveFile64 = {};
+            }
+
             this.byId(idDialog).close();
             
         },
@@ -2218,14 +2224,14 @@ sap.ui.define([
 
         },
 
-        closeDialogMassiveReg: function (idDialog) {
-            this.byId("fileUploaderMassiveReg").clear();
-            this.byId("correoInput").setValue("");
-            this.validateMassiveInfo();
-            this.massiveFile64 = {};
-            this.closeDialog('massiveRegisterDialog');
+        // closeDialogMassiveReg: function (idDialog) {
+        //     this.byId("fileUploaderMassiveReg").clear();
+        //     this.byId("correoInput").setValue("");
+        //     this.validateMassiveInfo();
+        //     this.massiveFile64 = {};
+        //     this.closeDialog('massiveRegisterDialog');
             
-        },
+        // },
 
         sendDataForNotification(){
             console.log("Archivo excel: ", this.massiveFile64);
@@ -2257,10 +2263,10 @@ sap.ui.define([
 
             if (resp.EvSendStatus == "OK") {
                 sap.m.MessageBox.success(resp.EvSendStatus);
-                this.byId("fileUploaderMassiveReg").clear();
-                this.byId("correoInput").setValue("");
-                this.validateMassiveInfo();
-                this.massiveFile64 = {};
+                // this.byId("fileUploaderMassiveReg").clear();
+                // this.byId("correoInput").setValue("");
+                // this.validateMassiveInfo();
+                // this.massiveFile64 = {};
                 this.closeDialog('massiveRegisterDialog');
             } else {
                 sap.m.MessageBox.error(resp.ETRETURN.results[0].Message);
