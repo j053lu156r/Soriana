@@ -78,8 +78,8 @@ sap.ui.define([
                     if (startDate != "" && endDate != "") {
                         bContinue = true;
                     } else {
-                        bContinue = false;
-                        sap.m.MessageBox.error("Debe ingresar al menos un criterio de busqueda.");
+                        bContinue = true;
+                      //  sap.m.MessageBox.error("Debe ingresar al menos un criterio de busqueda.");
                     }
                 } else {
                     bContinue = true;
@@ -102,6 +102,11 @@ sap.ui.define([
 
                 if (startDate != "" && endDate != "") {
                     url += " and Ilaufdi eq '" + startDate + "' and Ilaufdf eq '" + endDate + "'";
+                }else{
+                    var todayDate = "20220630"
+                    var desde= "20220601"
+                    url += " and Ilaufdi eq '" + desde + "' and Ilaufdf eq '" + todayDate + "'";
+
                 }
 
                 var dueModel = oModel.getJsonModel(url);
