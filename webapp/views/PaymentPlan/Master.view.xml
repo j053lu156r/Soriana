@@ -30,8 +30,10 @@ xmlns:core="sap.ui.core"
 		                filtersDialogClosed = "onFiltersDialogClosed"
 		                showRestoreButton="false" showClearButton="false" useToolbar="false">
 			
+                      
                         <fb:filterGroupItems>
-                            <fb:FilterGroupItem groupName="F1" name="Feha Pago" label="{appTxts>/plan.dateProg}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                            <!---->
+                            <fb:FilterGroupItem visible="false" groupName="F1" name="Feha Pago" label="{appTxts>/plan.dateProg}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
                                     <DateRangeSelection id="datePay" change="onChange" required="false"/>
                                 </fb:control>
@@ -51,6 +53,7 @@ xmlns:core="sap.ui.core"
                                     </Input>
                                 </fb:control>
                             </fb:FilterGroupItem>
+
 
 <!--INICIA CAMBIO BORTA 11.08.2021 - Se solicita quitar el filreo CLIENTE, ya que no tiene funcionalidad-->
 <!--                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Cliente" label="{appTxts>/detail.client}" labelTooltip="Tooltip Example" partOfCurrentVariant="true" visibleInFilterBar="true">
