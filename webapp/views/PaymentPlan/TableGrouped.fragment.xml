@@ -1,7 +1,7 @@
 <core:FragmentDefinition xmlns:m="sap.m"
     xmlns:core="sap.ui.core">
     <m:VBox>
-        <m:Table id="idGroupTable"  growing="true" growingThreshold="10" inset="false">
+        <m:Table id="idGroupTable" selectionChange="handleSelection"  growing="true" growingThreshold="10" inset="false">
             <m:headerToolbar>
                 <m:OverflowToolbar>
                    
@@ -15,15 +15,41 @@
             <m:columns   >
                
                 <!--columnas nuevas para agruapcion-->
-                <m:Column  visible="true">
+                <m:Column id="dateCorte"  visible="true">
                     <m:Text text="{appTxts>/plan.dateCorte}" />
                 </m:Column>
-                <m:Column  visible="true">
+                <m:Column  id="saldoCorte" visible="true">
                     <m:Text text="{appTxts>/plan.saldoCorte}" />
                 </m:Column>
-                <m:Column  visible="true">
+                <m:Column  id="saldoAcumulado" visible="true">
                     <m:Text text="{appTxts>/plan.saldoAcumulado}" />
                 </m:Column>
+
+                <!-- columans tabla original-->
+
+                	<m:Column id="paymentDocColumn" width="auto" hAlign="Left">
+						<m:header>
+							<m:Text text="{appTxts>/plan.paymentDoc}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</m:header>
+						<m:footer/>
+					</m:Column>
+					<m:Column id="clientColumn" width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<m:header>
+							<m:Text text="{appTxts>/iupload.client}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</m:header>
+					</m:Column>
+					<m:Column id="amountColumn" width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<m:header>
+							<m:Text text="{appTxts>/order.amount}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</m:header>
+						<m:footer/>
+					</m:Column>
+                    <m:Column id="datePayColumn" width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<m:header>
+							<m:Text text="{appTxts>/plan.datePay}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</m:header>
+						<m:footer/>
+					</m:Column>
 
 
  

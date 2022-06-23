@@ -80,7 +80,7 @@ xmlns:core="sap.ui.core"
         </f:header>
 		<f:content>
             <VBox>
-			<Table sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
+			<Table visible="false" sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
             noDataText="{appTxts>/plan.noData}"
             id="complPagoList"
             alternateRowColors="true" 
@@ -142,12 +142,19 @@ xmlns:core="sap.ui.core"
 					</ColumnListItem>
 				</items>
 			</Table>
+            <!---
             <OverflowToolbar visible="{= ${tableItemsPayPlan>/TBLPAYS/Paginated/results/length} > 0 }">
                 <Text text="{tableItemsPayPlan>/TBLPAYS/Paginated/initRow} - {tableItemsPayPlan>/TBLPAYS/Paginated/endRow} {appTxts>/pagination.of} {tableItemsPayPlan>/TBLPAYS/results/length}" />
                 <ToolbarSpacer/>
                 <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableItemsPayPlan>/TBLPAYS/Paginated/iterator}, ${tableItemsPayPlan>/TBLPAYS/Paginated/initRow}, 'tableItemsPayPlan', '/TBLPAYS')" enabled="{= ${tableItemsPayPlan>/TBLPAYS/Paginated/iterator} !== 1}" />
                 <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableItemsPayPlan>/TBLPAYS/Paginated/iterator}, ${tableItemsPayPlan>/TBLPAYS/Paginated/endRow}, 'tableItemsPayPlan', '/TBLPAYS')" enabled="{= ${tableItemsPayPlan>/TBLPAYS/Paginated/endRow} !== ${tableItemsPayPlan>/TBLPAYS/results/length}}" />
             </OverflowToolbar>
+            -->
+
+<!--grouped table-->
+                            <core:Fragment fragmentName="demo.views.PaymentPlan.TableGrouped" type="XML" />
+
+
             </VBox>
 		</f:content>
 	</f:DynamicPage>

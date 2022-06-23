@@ -5,7 +5,7 @@
 	 >
 		<cells>
 			<ObjectIdentifier
-				title="{GroupedTotales>name}"
+				title="{GroupedDates>name}"
 				   />
 
 				  
@@ -13,13 +13,26 @@
 		 
 
 				 	<ObjectNumber
-							number="{parts: [{path: 'GroupedTotales>cost'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+							number="{parts: [{path: 'GroupedDates>cost'}, {path: 'GroupedDates>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+							unit="{GroupedDates>Waers}" 
 							  />
 				 	
                      	<ObjectNumber
-							number="{parts: [{path: 'GroupedTotales>costoAcumulado'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+							number="{parts: [{path: 'GroupedDates>costoAcumulado'}, {path: 'GroupedDates>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+							unit="{GroupedDates>Waers}" 
 							  />
 				 	
+
+
+					 <ObjectIdentifier title="{GroupedDates>Vblnr}" text="" titleActive="false" visible="true" />
+                            <Text text="{GroupedDates>Butext}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+								xmlns="sap.m"
+								number="{parts: [{path: 'GroupedDates>Rbetr'}, {path: 'GroupedDates>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+								unit="{GroupedDates>Waers}" emphasized="false" state="None"/>
+							<Text text="{path: 'GroupedDates>Valut', formatter: '.ReverseDate'}"  
+                                 width="auto" maxLines="1" wrapping="false" textAlign="Begin"
+								textDirection="Inherit"/>
 				
 
 		 
