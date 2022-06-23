@@ -188,7 +188,7 @@
                                                     path: 'AportacionesDet>Zcantidad',
                                                     type: 'sap.ui.model.type.Float',
                                                     formatOptions: {
-                                                        maxFractionDigits: 2
+                                                        maxFractionDigits: 6
                                                         }
                                                     }" />
                                             <!--<m:ObjectIdentifier
@@ -204,7 +204,7 @@
                                                     path: 'AportacionesDet>Zbonificacion',
                                                     type: 'sap.ui.model.type.Float',
                                                     formatOptions: {
-                                                        maxFractionDigits: 2
+                                                        maxFractionDigits: 6
                                                         }
                                                     }" />
                                             <m:ObjectIdentifier
@@ -212,7 +212,7 @@
                                                     path: 'AportacionesDet>Ziva',
                                                     type: 'sap.ui.model.type.Float',
                                                     formatOptions: {
-                                                        maxFractionDigits: 2
+                                                        maxFractionDigits: 6
                                                         }
                                                     }" />
                                             <m:ObjectIdentifier
@@ -220,7 +220,7 @@
                                                     path: 'AportacionesDet>Zieps',
                                                     type: 'sap.ui.model.type.Float',
                                                     formatOptions: {
-                                                        maxFractionDigits: 2
+                                                        maxFractionDigits: 6
                                                         }
                                                     }" />
                                             <m:ObjectNumber
@@ -237,7 +237,7 @@
                                                     path: 'AportacionesDet>Zaportacion',
                                                     type: 'sap.ui.model.type.Float',
                                                     formatOptions: {
-                                                        maxFractionDigits: 2
+                                                        maxFractionDigits: 6
                                                         }
                                                     }" />
 										</m:cells>
