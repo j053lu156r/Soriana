@@ -41,6 +41,11 @@ sap.ui.define([
             this.inptFolio2 = this.getView().byId("folio2");
             this.inptOrder = this.getView().byId("order");
             this.inptOrder2 = this.getView().byId("order2");
+            this.cboxTipo = this.getView().byId("cboxTipo");
+
+            var tiposEntrega = this.getTipoEntrega();
+            var oTipoEntregaModel = new JSONModel(tiposEntrega);
+            this.getView().setModel(oTipoEntregaModel, "TipoEntregaModel");
         },
         openUploadDialog: function () {
             if (!this.hasAccess(40)) {
@@ -99,16 +104,18 @@ sap.ui.define([
             var reader = new FileReader();
             reader.onload = function (evn) {
 
-                //strip off the data uri prefix
-                let strXML = atob(evn.target.result.replace('data:text/xml;base64,',''));
-                var oXMLModel = new sap.ui.model.xml.XMLModel();  
-                oXMLModel.setXML(strXML);
-                var oXml = oXMLModel.getData();
+                if (file.type == "text/xml") {
+                    //strip off the data uri prefix
+                    let strXML = atob(evn.target.result.replace('data:text/xml;base64,',''));
+                    var oXMLModel = new sap.ui.model.xml.XMLModel();  
+                    oXMLModel.setXML(strXML);
+                    var oXml = oXMLModel.getData();
 
-                var x = oXml.getElementsByTagName("cfdi:Comprobante"); //Nodo
-				if(x.length > 0){
-                    sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/rem.uploader.cfdiError"));
-                    return;
+                    var x = oXml.getElementsByTagName("cfdi:Comprobante"); //Nodo
+                    if(x.length > 0){
+                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/rem.uploader.cfdiError"));
+                        return;
+                    }
                 }
                 
                 if (file.type == "text/xml") {
@@ -165,39 +172,33 @@ sap.ui.define([
             var vEbeln2 = this.inptOrder2.getValue();
             var vFolio = this.getView().byId('folio').getValue();
             var vFolio2 = this.inptFolio2.getValue();
+            var tipo = this.cboxTipo.getSelectedKey();
             var bFilterPriority = false;
             var callService = true;
 
-
-
-            var url = `/HdrAvisoSet?$expand=EFREMNAV,ETREMDNAV&$filter=IOption eq '1' and ILifnr eq '${vLifnr}' `;
+            var url = `/HdrAvisoSet?$expand=EFREMNAV,ETREMDNAV&$filter=IOption eq '1' and ILifnr eq '${vLifnr}'`;
 
             // Validar Folios
             // Si el folio 1 trae datos y el folio 2 trae datos
             if (vFolio != "" && vFolio2 != ""){
-                /*
-                // Validar que el folio 1 sea menor que el 2
-                if (vFolio < vFolio2){
-                    
-                } else {
-                    sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.folioErrorValue"));
-                    callService = false;
-                }
-                */
-               url += ` and IZremision eq '${vFolio}' and IZremision2 eq '${vFolio2}' `;
+               url += ` and IZremision eq '${vFolio}' and IZremision2 eq '${vFolio2}'`;
                bFilterPriority = true;
             } else if (vFolio == "" && vFolio2 != "") {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.folioEmpty"));
                 callService = false;
             } else if (vFolio != "" && vFolio2 == "") {
-                url += ` and IZremision eq '${vFolio}' `;
+                url += ` and IZremision eq '${vFolio}'`;
                 bFilterPriority = true;
             }
 
             if (bFilterPriority == false) {
-                if (startDate != null && endDate != null) {
+                if (startDate != "" && endDate != "") {
                     url += ` and ISfechrem eq '${startDate}' and IFfechrem eq '${endDate}'`;
                 }
+            }
+
+            if (tipo != 0){
+                url += ` and ITipoentrega eq '${tipo}'`;
             }
 
             // Validar pedidios
@@ -205,7 +206,7 @@ sap.ui.define([
             if (vEbeln != "" && vEbeln2 != ""){
                 // Validar que el pedido 1 sea menor que el 2
                 if (vEbeln < vEbeln2){
-                    url += ` and IEbeln eq '${vEbeln}' and IEbeln2 eq '${vEbeln2}' `;
+                    url += ` and IEbeln eq '${vEbeln}' and IEbeln2 eq '${vEbeln2}'`;
                 } else {
                     sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.orderErrorValue"));
                     callService = false;
@@ -214,7 +215,7 @@ sap.ui.define([
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.orderEmpty"));
                 callService = false;
             } else if (vEbeln != "" && vEbeln2 == "") {
-                url += ` and IEbeln eq '${vEbeln}' `;
+                url += ` and IEbeln eq '${vEbeln}'`;
             }
 
             if (callService){
@@ -226,7 +227,7 @@ sap.ui.define([
                 if(dueCompModel.length == 0){
                     sap.m.MessageBox.information(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.tableEmpty"));
                 }
-
+                
                 this.getOwnerComponent().setModel(new JSONModel(ojbResponse),
                     "tableRemissions");
     
@@ -384,5 +385,13 @@ sap.ui.define([
                 }.bind(this)
             });
         },
+        clearFilters: function () {
+            this.getView().byId("dateOrder").setValue("");
+            this.getView().byId("folio").setValue("");
+            this.getView().byId("folio2").setValue("");
+            this.getView().byId("order").setValue("");
+            this.getView().byId("order2").setValue("");
+            this.cboxTipo.setSelectedKey("0");
+        }
     });
 });
