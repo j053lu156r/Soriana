@@ -136,11 +136,21 @@ sap.ui.define([
                                 if (sRouteName != obj.target) {
                                     oContext.getController().getRouter().navTo(obj.target);
                                 }
-                                if (obj.idFunction == '0011'){
-                                    oContext.getController().changeFieldVlue2("filtroBusqueda", "Documento", vView);                                    
+                                if(obj.idFunction){
+                                    if (obj.idFunction == '0011'){
+                                        oContext.getController().changeFieldVlue2("filtroBusqueda", "Documento", vView);                                    
+                                    }
+                                    if (obj.idFunction == "0001"){
+                                        oContext.getController().changeFieldVlue3("dateRange", "Documento", vView);
+                                    }
+    
                                 }
-
-                                oContext.getController().changeFieldVlue(field.field, sValue, vView);
+                              
+                               // if(obj.target=="MiBandeja"){
+                               //     oContext.getController().changeFieldVlue("subject", sValue, vView);
+                              //  }else{
+                                    oContext.getController().changeFieldVlue(field.field, sValue, vView);
+                               // }
                             }
                             break;
 
@@ -152,8 +162,14 @@ sap.ui.define([
                                 if (sRouteName != obj.target) {
                                     oContext.getController().getRouter().navTo(obj.target);
                                 }
-                                if (obj.idFunction == '0011'){
+                                if(obj.idFunction){
+                                   if (obj.idFunction == '0011'){
                                     oContext.getController().changeFieldVlue2("filtroBusqueda", "Documento", vView);                                    
+                                    }
+                                    if (obj.idFunction == "0001" && field.field != "dateOrder"){
+                                      //  oContext.getController().changeFieldVlue3("dateOrder", "", vView);
+                                    }
+
                                 }
                                 oContext.getController().changeFieldVlue(field.field, sValue, vView);
                             }
@@ -176,6 +192,14 @@ sap.ui.define([
             var vField = vView.byId(field);
 
             vField.setSelectedKey("belnr");
+        },
+        changeFieldVlue3: function (field, value, vView) {
+
+            var vField = vView.byId(field);
+            let todayDate = new Date();
+            let firstDay = new Date(1900, 1, 1);
+            vField.setDateValue(firstDay);
+            vField.setSecondDateValue(todayDate);
         },
 
         getvView: function (sRouteName, viewPath, viewName) {

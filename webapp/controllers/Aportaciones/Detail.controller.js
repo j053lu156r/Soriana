@@ -150,22 +150,16 @@ sap.ui.define([
                         content: "{Zcantidad}"
                     }
                 },
-                {
+                /*{
                     name: texts.getProperty("/aportaciones.vtaNeta"),
                     template: {
                         content: "{Zbonificacion}"
                     }
-                },
+                },*/
                 {
-                    name: texts.getProperty("/aportaciones.ieps"),
+                    name: texts.getProperty("/aportaciones.bonif"),
                     template: {
-                        content: "{Zieps}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/aportaciones.aporta"),
-                    template: {
-                        content: "{Zaportacion}"
+                        content: "{Zbonificacion}"
                     }
                 },
                 {
@@ -175,15 +169,21 @@ sap.ui.define([
                     }
                 },
                 {
-                    name: texts.getProperty("/aportaciones.bonif"),
+                    name: texts.getProperty("/aportaciones.ieps"),
                     template: {
-                        content: "{Zbonificacion}"
+                        content: "{Zieps}"
                     }
                 },
                 {
                     name: texts.getProperty("/aportaciones.total"),
                     template: {
                         content: "{Ztotal}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/aportaciones.aporta"),
+                    template: {
+                        content: "{Zaportacion}"
                     }
                 }
             ];

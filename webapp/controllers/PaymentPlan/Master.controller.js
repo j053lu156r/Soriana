@@ -215,15 +215,17 @@ sap.ui.define([
                     var cost = groupedMovs[x].reduce(function (_this, val) {
                         var current = Number(val.Rbetr)
                         var total = _this + current
-                        return total
+                         return total
                     }, 0);
 
-                    acumulado = acumulado + me.truncate(Math.abs(cost),2)
+                    var cor=.001
+                    cost = cost + cor
+                    acumulado = acumulado + Math.abs(cost),
 
                     nestedMovs.push({
                         "name": x,
                         "totalRegs": groupedMovs[x].length,
-                        "cost": me.truncate(Math.abs(cost), 2),
+                        "cost":    me.truncate(cost, 2),
                         "positions": groupedMovs[x],
                         "costoAcumulado": me.truncate(acumulado, 2)
 
