@@ -159,6 +159,18 @@ sap.ui.define([
 
             return renglones;
         },
+        formatAvailableToIcon : function(bAvailable) {
+            switch(bAvailable){
+                case '1':
+                    return  "sap-icon://accept";
+                    break;
+                default:
+                    return  "sap-icon://decline";        
+                    break;
+
+            }
+			return bAvailable ? "sap-icon://accept" : "sap-icon://decline";
+		},
         buildExportTable: function () {
             var texts = this.getOwnerComponent().getModel("appTxts");
 
@@ -437,9 +449,9 @@ sap.ui.define([
              this.getOwnerComponent().getRouter().navTo("detailComplPagos",
                 {
                     layout: sap.f.LayoutType.TwoColumnsMidExpanded,
-                    document: registro.Vblnr
-                   // laufd: docResult.Laufd,
-                   // laufi: docResult.Laufi,
+                    document: registro.Vblnr,
+                    sociedad: registro.Bukrs,
+                    ejercicio: registro.Gjahr,
                    // zbukr: docResult.Zbukr,
                    // lifnr: docResult.Lifnr
                 }, true);

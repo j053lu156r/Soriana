@@ -24,4 +24,4 @@ builder:
           name: ZSENDFAC
           description: Portal de proveedores Soriana UI5
           package: ZSPORTAL
-          transport: DEVK900350
+          transport: DEVK900456

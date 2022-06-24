@@ -1,20 +1,17 @@
 sap.ui.define([
-    "jquery.sap.global",
-    "sap/ui/core/Fragment",
     "demo/controllers/BaseController",
-    "sap/m/UploadCollectionParameter",
-    "sap/ui/core/mvc/Controller",
     "sap/m/PDFViewer",
     "sap/ui/model/json/JSONModel",
-    "sap/ui/core/routing/History",
+    'sap/m/MessageToast',
     "sap/m/MessageBox",
-    "sap/ui/core/routing/Router",
-    "demo/models/BaseModel",
-    'sap/f/library'
-], function (jQuery, Fragment, Controller, UploadCollectionParameter, History, PDFViewer, JSONModel, fioriLibrary) {
+    "sap/m/library"
+], function (Controller, PDFViewer, JSONModel, MessageToast, MessageBox, mobileLibrary) {
     "use strict";
 
     var oModel = new this.Aportaciones();
+
+	var ButtonType = mobileLibrary.ButtonType;
+	var DialogType = mobileLibrary.DialogType;
     return Controller.extend("demo.controllers.Aportaciones.Master", {
         onInit: function () {
             //this.setDaterangeMaxMin();
@@ -48,41 +45,56 @@ sap.ui.define([
 
             if (bContinue) {
 
-                if(vLifnr == null){
+                if (vLifnr == null) {
                     vLifnr = "";
                 }
 
                 var url = "AportaSet?$expand=AportaDet&$filter=IOption eq '3' and ILifnr eq '" + vLifnr + "'"; // Se debe validar que el usuario este activo
                 ;
 
-                url += " and IEstatus eq '2'";
+                //url += " and IEstatus eq '2'";
 
                 if (vAportacion != "" && vAportacion != null) {
                     url += " and IFolio eq '" + vAportacion + "'";
                 }
 
-               /* if (vEstatus != "" && vEstatus != null){
-                    url += " and IEstatus eq '" + vEstatus + "'";
-                }*/
+                /* if (vEstatus != "" && vEstatus != null){
+                     url += " and IEstatus eq '" + vEstatus + "'";
+                 }*/
 
-                if (startDate != "" && startDate != null){
+                if (startDate != "" && startDate != null) {
                     url += " and IFecInicio eq '" + startDate + "'";
                 }
 
-                if (endDate != "" && endDate != null){
+                if (endDate != "" && endDate != null) {
                     url += " and IFecFin eq '" + endDate + "'";
                 }
 
-                var dueModel = oModel.getJsonModel(url);
-
+                /*var dueModel = oModel.getJsonModel(url);
                 var ojbResponse = dueModel.getProperty("/results/0");
-
-                console.log(dueModel);
-
                 this.getOwnerComponent().setModel(new JSONModel(ojbResponse),
                     "AportacionesHdr");
+                this.paginate("AportacionesHdr", "/AportaDet", 1, 0);*/
 
-                this.paginate("AportacionesHdr", "/AportaDet", 1, 0);
+                this.getView().byId('tableAportaciones').setBusy(true);
+                oModel.getJsonModelAsync(
+                    url,
+                    function (jsonModel, parent) {
+                        var objResponse = jsonModel.getProperty("/results/0");
+
+                        if (objResponse != null) {
+                            parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(objResponse),
+                                "AportacionesHdr");
+
+                            parent.paginate("AportacionesHdr", "/AportaDet", 1, 0);
+                        }
+                        parent.getView().byId('tableAportaciones').setBusy(false);
+                    },
+                    function (parent) {
+                        parent.getView().byId('tableAportaciones').setBusy(false);
+                    },
+                    this
+                );
             }
 
         },
@@ -122,18 +134,28 @@ sap.ui.define([
 
             var docResult = results[line]; //.campo para obtener el campo deseado            
 
-            this.getOwnerComponent().setModel(new JSONModel(status), "catalogStatus");
+            //this.getOwnerComponent().setModel(new JSONModel(status), "catalogStatus");
+            //this.createButton(docResult, true);
 
-            this.createButton(docResult, true);
+            this.getOwnerComponent().getRouter().navTo("detailAportaciones",
+                {
+                    layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+                    folio: docResult.Folio,
+                    concepto: docResult.Concepto,
+                    gerencia: docResult.GciaCateg,
+                    importe: docResult.ImpTotal
+
+                }, true);
+
         },
-        clearFilters : function(){
+        clearFilters: function () {
             this.getView().byId("aportacionInput").setValue("");
             this.getView().byId("supplierInput").setValue("");
         },
         buildExportTable: function () {
             var texts = this.getOwnerComponent().getModel("appTxts");
             var columns = [
-                 {
+                {
                     name: texts.getProperty("/aportaciones.folio"),
                     template: {
                         content: "{Folio}"
@@ -174,11 +196,120 @@ sap.ui.define([
                     template: {
                         content: "{Observ}"
                     }
-                },                
+                },
             ];
 
             this.exportxls('AportacionesHdr', '/AportaDet/results', columns);
-        }
+        },
+        onPressAccept: function (oEvent) {
+            /*this.ConfirmApprove = false;
+            this._ConfirmDialog(oEvent);
+            
+            if (!this.ConfirmApprove){ 
+                return; 
+            }*/
 
+            //var texts = this.getOwnerComponent().getModel("appTxts");
+            var resource = oEvent.getSource().getBindingContext("AportacionesHdr").getPath(),
+                line = resource.split("/").slice(-1).pop();
+
+            this._confirmDialog(line);
+
+            /*var aportaModel = this.getOwnerComponent().getModel("AportacionesHdr");
+            var results = aportaModel.getProperty("/AportaDet/Paginated/results");
+
+            var docResult = results[line];
+
+
+            var url = "AportaSet?$expand=AportaDet&$filter=IOption eq '2'";
+            ;
+
+            url += " and IEstatus eq '4'";
+
+            if (docResult.Folio != "" && docResult.Folio != null) {
+                url += " and IFolio eq '" + docResult.Folio + "'";
+            }
+
+            var dueModel = oModel.getJsonModel(url);
+            var ojbResponse = dueModel.getProperty("/results/0");
+
+            if (ojbResponse.EError == "X") {
+                MessageBox.error(ojbResponse.EDescripEvent);
+            } else {
+                docResult.Zestatus = "4";
+                aportaModel.setProperty("/AportaDet/Paginated/results", results);
+                //MessageBox.success(texts.getProperty("/aportaciones.aprobada"));
+                MessageBox.success(ojbResponse.EDescripEvent);
+            }*/
+        },
+
+        _confirmDialog: function (line) {
+            var texts = this.getOwnerComponent().getModel("appTxts");
+
+            if (!this.oApproveDialog) {
+                this.oApproveDialog = new sap.m.Dialog({
+                    type: DialogType.Message,
+                    title: texts.getProperty("/aportaciones.confirmar"),
+                    content: new sap.m.Text({ text: texts.getProperty("/aportaciones.txtConfirmar") }),
+                    beginButton: new sap.m.Button({
+                        type: ButtonType.Emphasized,
+                        text: texts.getProperty("/aportaciones.aprobar"),
+                        press: function () {
+                            this.oApproveDialog.close();
+                            this._approve(line);
+                        }.bind(this)
+                    }),
+                    endButton: new sap.m.Button({
+                        text: texts.getProperty("/aportaciones.cancelar"),
+                        press: function () {
+                            this.oApproveDialog.close();
+                        }.bind(this)
+                    })
+                });
+            }
+            this.oApproveDialog.open();
+        },
+        _approve: function (line) {
+            //var texts = this.getOwnerComponent().getModel("appTxts");
+            /*var resource = oEvent.getSource().getBindingContext("AportacionesHdr").getPath(),
+                line = resource.split("/").slice(-1).pop();*/
+
+            var aportaModel = this.getOwnerComponent().getModel("AportacionesHdr");
+            var results = aportaModel.getProperty("/AportaDet/Paginated/results");
+            var docResult = results[line];
+
+            var url = "AportaSet?$expand=AportaDet&$filter=IOption eq '2' and IEstatus eq '4'";
+
+            if (docResult.Folio != "" && docResult.Folio != null) {
+                url += " and IFolio eq '" + docResult.Folio + "'";
+            }
+
+            /*var dueModel = oModel.getJsonModel(url);
+            var ojbResponse = dueModel.getProperty("/results/0");*/
+            
+            this.getView().byId('tableAportaciones').setBusy(true);
+            oModel.getJsonModelAsync(
+                url,
+                function (jsonModel, parent) {
+                    var objResponse = jsonModel.getProperty("/results/0");
+                    parent.getView().byId('tableAportaciones').setBusy(false);
+
+                    if (objResponse != null) {
+                        if (objResponse.EError == "X") {
+                            MessageBox.error(objResponse.EDescripEvent);
+                        } else {
+                            docResult.Descest = "Autorizado Proveedor";
+                            docResult.Zestatus = "4";
+                            aportaModel.setProperty("/AportaDet/Paginated/results", results);
+                            MessageBox.success(objResponse.EDescripEvent);
+                        }
+                    }
+                },
+                function (parent) {
+                    parent.getView().byId('tableAportaciones').setBusy(false);
+                },
+                this
+            );
+        }
     });
 });

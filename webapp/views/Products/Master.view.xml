@@ -30,6 +30,10 @@
                 <f:actions>
                     <ToolbarSpacer/>
                     <Button
+                            text="{appTxts>/products.massiveRegister}"
+                            type="Emphasized"
+                            press="massiveRegisterBatch"/>
+                    <Button
                             text="{appTxts>/products.newProduct}"
                             type="Emphasized"
                             press="newProduct"/>
@@ -41,10 +45,6 @@
                             text="{appTxts>/products.deleteProductsTxt}"
                             type="Emphasized"
                             press="deleteProducts"/>
-                    <!-- <Button
-                            text=" FETCH GS1 "
-                            type="Emphasized"
-                            press="getGS1ProductData"/> -->
                 </f:actions>
             </f:DynamicPageTitle>
         </f:title>
@@ -212,13 +212,13 @@
                                 <Text text="{Folios>ProcStatus}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto">
+                        <!-- <t:Column width="auto">
                             <Label text="{appTxts>/products.descriptionStatus}" />
                             <t:template>
                                 <Text text="{Folios>Pristate}" wrapping="false"/>
                             </t:template>
-                        </t:Column>
-                        <t:Column width="auto">
+                        </t:Column> -->
+                        <!-- <t:Column width="auto">
                             <Label text="{appTxts>/products.registeredStore}" />
                             <t:template>
                                 <Text text="" wrapping="false"/>
@@ -229,7 +229,7 @@
                             <t:template>
                                 <Text text="" wrapping="false"/>
                             </t:template>
-                        </t:Column>
+                        </t:Column> -->
                     </t:columns>
                     
                 </t:Table>

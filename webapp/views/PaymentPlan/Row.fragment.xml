@@ -5,60 +5,34 @@
 	 >
 		<cells>
 			<ObjectIdentifier
-				title="{GroupedTotales>name}"
+				title="{GroupedDates>name}"
 				   />
 
-				     <Text text="{=  (${GroupedTotales>Pendt} === true) ? 'Pendiente' : ( ${GroupedTotales>Belnr} === ${GroupedTotales>Augbl} ? 'Pago' : 'Contabilizado'  ) }" wrapping="false" />
-
-
-                                <Text text="{GroupedTotales>Belnr}" wrapping="false" />
-
-                                <Text text="{GroupedTotales>Xblnr}" wrapping="false" />
-
-
-                                  <Text text="{GroupedTotales>Ltext}" wrapping="false" />
-
-                                <Text text="{GroupedTotales>Budat}" wrapping="false" />
-                                <Text text="{GroupedTotales>Wrbtr}" wrapping="false" />
-                                 <Text text="{GroupedTotales>MCondicion}" wrapping="false" />
-                                <!--
-                                 <Text text="{GroupedTotales>BloqueoFlag}" wrapping="false" />
-                             -->
-
-                                 	<ObjectMarker
-					
-					visible="{=  ${GroupedTotales>BloqueoFlag} === '' ? false : true }"
-
-					type="LockedBy"
-					 additionalInfo="{GroupedTotales>DescripcionBloqueo}"
-					press="onMarkerPress"
-					 
-					 />
-
-                                 <Text text="{GroupedTotales>Augbl}" wrapping="false" />
-
-
-
-
-
-				 		<ObjectNumber
-							number="{GroupedTotales>totalRegs}"
-							  />
-				 	
+				  
+  
+		 
 
 				 	<ObjectNumber
-							number= "{parts: [{path: 'GroupedTotales>totalDebit'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
-							  />
-				 	
-
-				 	<ObjectNumber
-							number="{parts: [{path: 'GroupedTotales>totalCredit'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+							number="{parts: [{path: 'GroupedDates>cost'}, {path: 'GroupedDates>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+							unit="{GroupedDates>Waers}" 
 							  />
 				 	
                      	<ObjectNumber
-							number="{parts: [{path: 'GroupedTotales>totalCredit'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+							number="{parts: [{path: 'GroupedDates>costoAcumulado'}, {path: 'GroupedDates>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+							unit="{GroupedDates>Waers}" 
 							  />
 				 	
+
+
+					 <ObjectIdentifier title="{GroupedDates>Vblnr}" text="" titleActive="false" visible="true" />
+                            <Text text="{GroupedDates>Butext}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+								xmlns="sap.m"
+								number="{parts: [{path: 'GroupedDates>Rbetr'}, {path: 'GroupedDates>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+								unit="{GroupedDates>Waers}" emphasized="false" state="None"/>
+							<Text text="{path: 'GroupedDates>Valut', formatter: '.ReverseDate'}"  
+                                 width="auto" maxLines="1" wrapping="false" textAlign="Begin"
+								textDirection="Inherit"/>
 				
 
 		 

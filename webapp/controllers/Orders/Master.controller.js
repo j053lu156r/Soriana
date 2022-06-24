@@ -19,6 +19,7 @@ sap.ui.define([
     var dPersCxP = "";
     var dIdCxP = "";
     var regulaArchivos = true;
+    var cfdiModel = new this.CfdiModel();
     return Controller.extend("demo.controllers.Orders.Master", {
         onInit: function () {
             this._pdfViewer = new PDFViewer();

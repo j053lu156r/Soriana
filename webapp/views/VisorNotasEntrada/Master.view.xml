@@ -69,7 +69,9 @@
                 growing="true"
                 id="tableVisor"
                 mode="None" 
-                alternateRowColors="true">
+                alternateRowColors="true"
+                items="{ path : 'migoModel>/MIGO_DOC' }"
+                >
                 <headerToolbar>
                     <OverflowToolbar>
                         <Title text="{appTxts>/visor.tableTitle} ({properties>/rowsCount})"/>
@@ -121,14 +123,14 @@
                 <items>
                     <ColumnListItem type="Navigation" press="onListItemPress">                    
                         <cells>
-                            <Text text=""/>
-                            <Text text=""/>
-                            <Text text=""/>
-                            <Text text=""/>
-                            <Text text=""/>
-                            <Text text=""/>   
-                            <Text text=""/>  
-                            <Text text=""/>  
+                            <Text text="{migoModel>Mblnr}"/>
+                            <Text text="{migoModel>Mblnr}"/>
+                            <Text text="{migoModel>Mblnr}"/>
+                            <Text text="{migoModel>Mblnr}"/>
+                            <Text text="{migoModel>BudatMkpf}"/>
+                            <Text text="{migoModel>Mblnr}"/>   
+                            <Text text="{migoModel>Mblnr}"/>  
+                            <Text text="{migoModel>Mblnr}"/>  
                         </cells>
                     </ColumnListItem>
                 </items>

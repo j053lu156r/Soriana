@@ -10,9 +10,9 @@
 		id="deleteProductsDialog"
 		showHeader="false"
 		verticalScrolling="false"
-        
 		contentHeight="95%"
-		contentWidth="96%">
+		contentWidth="96%"
+        >
 		<f:DynamicPage
 			toggleHeaderOnTitleClick="false"
 			showFooter="true">
@@ -48,7 +48,7 @@
                         </l:VerticalLayout>
                     </HBox>
                     <Table  mode="MultiSelect" id="tableItemsDelete"
-                        items="{ path : 'ETDELETE>/Paginated/results'}" >
+                        items="{ path : 'ETDELETE>/Paginated/results'}"  visible="true">
                         <headerToolbar>
                             <OverflowToolbar>
                                 <Button text="{appTxts>/products.deleteRow}" id="btnDeleteRows" press=".deleteRow('tableItemsDelete','ETDELETE')" type="Emphasized" />

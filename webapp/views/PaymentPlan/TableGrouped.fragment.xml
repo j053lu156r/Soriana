@@ -1,0 +1,75 @@
+<core:FragmentDefinition xmlns:m="sap.m"
+    xmlns:core="sap.ui.core">
+    <m:VBox>
+        <m:Table id="idGroupTable" selectionChange="handleSelection"  growing="true" growingThreshold="10" inset="false">
+            <m:headerToolbar>
+                <m:OverflowToolbar>
+                   
+                    <m:Breadcrumbs id="breadcrumb" />
+                    <m:ToolbarSpacer/>
+                    <!--
+                    <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExcel" visible="{= ${payPlanDetail>/EDETNAV/results/length} > 0}" />
+-->
+                </m:OverflowToolbar>
+            </m:headerToolbar>
+            <m:columns   >
+               
+                <!--columnas nuevas para agruapcion-->
+                <m:Column id="dateCorte"  visible="true">
+                    <m:Text text="{appTxts>/plan.dateCorte}" />
+                </m:Column>
+                <m:Column  id="saldoCorte" visible="true">
+                    <m:Text text="{appTxts>/plan.saldoCorte}" />
+                </m:Column>
+                <m:Column  id="saldoAcumulado" visible="true">
+                    <m:Text text="{appTxts>/plan.saldoAcumulado}" />
+                </m:Column>
+
+                <!-- columans tabla original-->
+
+                	<m:Column id="paymentDocColumn" width="auto" hAlign="Left">
+						<m:header>
+							<m:Text text="{appTxts>/plan.paymentDoc}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</m:header>
+						<m:footer/>
+					</m:Column>
+					<m:Column id="clientColumn" width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<m:header>
+							<m:Text text="{appTxts>/iupload.client}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</m:header>
+					</m:Column>
+					<m:Column id="amountColumn" width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<m:header>
+							<m:Text text="{appTxts>/order.amount}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</m:header>
+						<m:footer/>
+					</m:Column>
+                    <m:Column id="datePayColumn" width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<m:header>
+							<m:Text text="{appTxts>/plan.datePay}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</m:header>
+						<m:footer/>
+					</m:Column>
+
+
+ 
+            </m:columns>
+            <!--
+        <m:items>
+            <m:ColumnListItem>
+                <m:cells>
+                    <m:ObjectIdentifier text="{payPlanDetail>Blnr}" />
+                    <m:ObjectIdentifier text="{payPlanDetail>Ltext}" />
+                    <m:ObjectIdentifier text="{payPlanDetail>Xref3}" />
+                    <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout" xmlns="sap.m" number="{parts: [{path: 'payPlanDetail>Wrbtr'}, {path: 'payPlanDetail>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{payPlanDetail>Waers}" emphasized="false" state="None"/>
+                    <m:ObjectIdentifier text="{payPlanDetail>Xblnr}" />
+                    <m:ObjectIdentifier text="{path: 'payPlanDetail>Budat', formatter: '.ReverseDate'}" />
+                    <m:Button icon="sap-icon://document-text" visible="{= ${payPlanDetail>Xfile} === 'X' }" type="Transparent" press=".generateFile"></m:Button>
+                </m:cells>
+            </m:ColumnListItem>
+        </m:items>
+        -->
+        </m:Table>
+
+    </m:VBox>
+</core:FragmentDefinition>

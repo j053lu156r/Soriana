@@ -10,11 +10,11 @@ sap.ui.define([
 ], function (JSONModel, Controller, BaseModel, Label, Link, MessageToast, Text, Fragment) {
 	"use strict";
 
-	var sUri = "/sap/opu/odata/sap/ZOCP_DOCPAGO_01/";
+	var sUri = "/sap/opu/odata/sap/ZOSP_STATEMENT_SRV_01/";
 	var dTJSON;
 	var fechaAct = new Date();
 
-	return Controller.extend("demo.controllers.ComplPago.DetallePago", {
+	return Controller.extend("demo.controllers.ComplPago.DetallePagoFuturo", {
 
 		sCollection: "GroupedTotales>/Hierarchy",
 		aCrumbs: ["movimientos", "positions"],
@@ -185,7 +185,7 @@ sap.ui.define([
 			let auxArray = [...Detalles]
 
 
-			var groupedMovs = this.groupArrayOfObjects(auxArray, "DescripcionGpo");
+			var groupedMovs = this.groupArrayOfObjects(auxArray, "DescTipomov");
 			var nestedMovs = []
 
 			var me = this;
@@ -279,7 +279,7 @@ sap.ui.define([
 
 			this.initTable()
 
-		//	this.getOwnerComponent().setModel(jsonModelT, "totales");
+			//this.getOwnerComponent().setModel(jsonModelT, "totales");
 
 			//this.paginate("totales", "/Detalles", 1, 0);
 
@@ -327,6 +327,8 @@ sap.ui.define([
 
 			oBreadCrumb.addLink(oLink);
 
+
+
 		},
 
 
@@ -371,7 +373,6 @@ sap.ui.define([
 				this._oTable.setMode("None");
 				//  this.byId("weightColumn").setVisible(true);
 				// this.byId("dimensionsColumn").setVisible(true);
-				this._oTable.setMode("SingleSelectMaster");
 
 
 				this.byId("statusColumn").setVisible(true);
@@ -385,6 +386,9 @@ sap.ui.define([
 				this.byId("mCondicionColumn").setVisible(true);
 				this.byId("bloqueoColumn").setVisible(true);
 				this.byId("conciliacionColumn").setVisible(true);
+
+				this.byId("tipoMovColumn").setVisible(true);
+
 
 				//totles 
 				this.byId("tipoColumn").setVisible(false);
@@ -403,6 +407,8 @@ sap.ui.define([
 				this._oTable.setMode("SingleSelectMaster");
 
 				this.byId("statusColumn").setVisible(false);
+				this.byId("tipoMovColumn").setVisible(false);
+
 				this.byId("folioColumn").setVisible(false);
 				this.byId("referenceColumn").setVisible(false);
 
@@ -486,39 +492,13 @@ sap.ui.define([
 			// If we're on a leaf, remember the selections;
 			// otherwise navigate
 			if (sCurrentCrumb === this.aCrumbs[this.aCrumbs.length - 1]) {
-				console.log("on Documento seleccionado....")
 				var oSelectionInfo = {};
-				//var bSelected = oEvent.getParameter("selected");
-				//oEvent.getParameter("listItems").forEach(function (oItem) {
-				//	oSelectionInfo[oItem.getBindingContext().getPath()] = bSelected;
-				//});
-				//this._updateOrder(oSelectionInfo);
-
-				console.log('on documnt press',oEvent);
-				console.log(sPath)
-				//let posicion = oEvent.getSource().getBindingContext("GroupedTotales").getPath().split("/").pop();
-				let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(sPath);
-	
-				console.log(results)
-				//let registro = results[posicion];
-				//console.log(registro)
-			
-	
-				 this.getOwnerComponent().getRouter().navTo("detailAcuerdos",
-					{
-						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
-						document: results.Belnr,
-					    sociedad: this._sociedad,
-						ejercicio: this._ejercicio,
-					    doc: this._document,
-					   // zbukr: docResult.Zbukr,
-					   // lifnr: docResult.Lifnr
-					}, true);
-
-
-
+				var bSelected = oEvent.getParameter("selected");
+				oEvent.getParameter("listItems").forEach(function (oItem) {
+					oSelectionInfo[oItem.getBindingContext().getPath()] = bSelected;
+				});
+				this._updateOrder(oSelectionInfo);
 			} else {
-				console.log("on grupo seleccionado seleccionado.....")
 				var modelName = "GroupedTotales>"
 				var sNewPath = [sPath, this._nextCrumb(sCurrentCrumb)].join("/");
 
@@ -555,9 +535,7 @@ sap.ui.define([
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
 			this.oRouter.navTo("detailComplPagos", {
 				layout: sNextLayout,
-				document: this._document,
-				sociedad: this._sociedad,
-				ejercicio: this._ejercicio
+				document: this._document
 			});
 		},
 		handleExitFullScreen: function () {
@@ -565,9 +543,7 @@ sap.ui.define([
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
 			this.oRouter.navTo("detailComplPagos", {
 				layout: sNextLayout,
-				document: this._document,
-				sociedad: this._sociedad,
-				ejercicio: this._ejercicio
+				document: this._document
 			});
 		},
 		handleClose: function () {
@@ -580,9 +556,6 @@ sap.ui.define([
 
 		_onDocumentMatched: function (oEvent) {
 			this._document = oEvent.getParameter("arguments").document || this._document || "0";
-			this._sociedad = oEvent.getParameter("arguments").sociedad || this._sociedad || "0";
-			this._ejercicio = oEvent.getParameter("arguments").ejercicio || this._ejercicio || "0";
-
 			console.log(this._document);
 
 			this.getView().bindElement({
@@ -601,36 +574,6 @@ sap.ui.define([
 
 
 
-		},
-
-
-		//HAANDLE OPEN ACUERDOS
-
-		_onDocumentPress: function(oEvent){
-            console.log('on documnt press',oEvent);
-            let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
-            let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
-
-            let registro = results[posicion];
-            console.log(registro)
-
-             this.getOwnerComponent().getRouter().navTo("detailComplPagos",
-                {
-                    layout: sap.f.LayoutType.TwoColumnsMidExpanded,
-                    document: registro.Vblnr
-                   // laufd: docResult.Laufd,
-                   // laufi: docResult.Laufi,
-                   // zbukr: docResult.Zbukr,
-                   // lifnr: docResult.Lifnr
-                }, true);
-
-
-
-        }
-
-
-
-
-
+		}
 	});
 });

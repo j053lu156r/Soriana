@@ -29,7 +29,17 @@
         "sourceTemplate": {
             "id": "servicecatalog.connectivityComponentForManifest",
             "version": "0.0.0"
-        }
+        },
+
+		"dataSources": {
+			"migoRemote": {
+				"uri": "https://port8080-workspaces-ws-x4zxg.us10.trial.applicationstudio.cloud.sap/sap/opu/odata/sap/ZOSP_MMIM_MIGO_DOC_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0"
+				}
+			}
+		}
     },
     "sap.ui": {
         "technology": "UI5",
@@ -194,12 +204,9 @@
                 "uri": "localService/mockdata/notifModel.json",
                 "preload": true
             },
-            "aportacionesModel": {
-                "type": "sap.ui.model.json.JSONModel",
-                "settings": {},
-                "uri": "localService/mockdata/aportacionesModel.json",
-                "preload": true
-            }
+			"migoModel": {
+				"dataSource": "migoRemote"
+			}
         },
         "routing": {
             "config": {
@@ -386,11 +393,28 @@
 					]
 				},
                 {
-                    "pattern": "detailComplPagos/{document}/{layout}",
+                    "pattern": "detailComplPagos/{document}/{layout}/{sociedad}/{ejercicio}",
                     "name": "detailComplPagos",
                     "target": [
                         "masterCompl",
                         "detailComplPagos"
+                    ]
+                },
+                {
+                    "pattern": "detailAcuerdos/{layout}/{document}/{sociedad}/{ejercicio}/{doc}",
+                    "name": "detailAcuerdos",
+                    "target": [
+                        "masterCompl",
+                        "detailComplPagos",
+                        "detailAcuerdos"
+                    ]
+                },
+                {
+                    "pattern": "detailAcuerdosAS/{layout}/{document}/{sociedad}/{ejercicio}/{doc}",
+                    "name": "detailAcuerdosAS",
+                    "target": [
+                        "EstadoCuenta",
+                         "detailAcuerdosAS"
                     ]
                 },
                 {
@@ -492,9 +516,18 @@
                     "name": "masterAportaciones",
                     "pattern": "masterAportaciones",
                     "target": [
-                        "masterAportaciones"
+                        "masterAportaciones",
+                        "detailAportaciones"
                     ]
                 },
+                {
+					"pattern": "detailAportaciones/{layout}/{folio}/{concepto}/{gerencia}/{importe}",
+					"name": "detailAportaciones",
+					"target": [
+                        "masterAportaciones",
+						"detailAportaciones"
+					]
+				},
                 {
                     "name": "masterAcuerdos",
                     "pattern": "masterAcuerdos",
@@ -751,10 +784,25 @@
                     "viewPath": "demo.views.Aportaciones",
                     "controlAggregation": "beginColumnPages"
                 },
+                "detailAportaciones": {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.Aportaciones",
+                    "controlAggregation": "midColumnPages"
+                },
                 "masterAcuerdos" : {
                     "viewName": "Master",
                     "viewPath": "demo.views.Acuerdos",
                     "controlAggregation": "beginColumnPages"
+                },
+                "detailAcuerdos": {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "endColumnPages"
+                },
+                "detailAcuerdosAS": {
+                    "viewName": "DetailAS",
+                    "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "midColumnPages"
                 },
                 "Products": {
                     "viewName": "Master",

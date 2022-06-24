@@ -130,6 +130,30 @@ sap.ui.define([
                 obj.field.forEach(function (field) {
                     switch (field.type) {
                         case "input":
+                            var item = oItems.find(element => element.sId == `${field.field}Chat`);
+                            var sValue = item.getValue();
+                            if (sValue != null && sValue != "") {
+                                if (sRouteName != obj.target) {
+                                    oContext.getController().getRouter().navTo(obj.target);
+                                }
+                                if(obj.idFunction){
+                                    if (obj.idFunction == '0011'){
+                                        oContext.getController().changeFieldVlue2("filtroBusqueda", "Documento", vView);                                    
+                                    }
+                                    if (obj.idFunction == "0001"){
+                                        oContext.getController().changeFieldVlue3("dateRange", "Documento", vView);
+                                    }
+    
+                                }
+                              
+                               // if(obj.target=="MiBandeja"){
+                               //     oContext.getController().changeFieldVlue("subject", sValue, vView);
+                              //  }else{
+                                    oContext.getController().changeFieldVlue(field.field, sValue, vView);
+                               // }
+                            }
+                            break;
+
                         case "daterange":
                             var item = oItems.find(element => element.sId == `${field.field}Chat`);
                             var sValue = item.getValue();
@@ -138,13 +162,23 @@ sap.ui.define([
                                 if (sRouteName != obj.target) {
                                     oContext.getController().getRouter().navTo(obj.target);
                                 }
+                                if(obj.idFunction){
+                                   if (obj.idFunction == '0011'){
+                                    oContext.getController().changeFieldVlue2("filtroBusqueda", "Documento", vView);                                    
+                                    }
+                                    if (obj.idFunction == "0001" && field.field != "dateOrder"){
+                                      //  oContext.getController().changeFieldVlue3("dateOrder", "", vView);
+                                    }
+
+                                }
                                 oContext.getController().changeFieldVlue(field.field, sValue, vView);
                             }
                             break;
+                            
                     }
                 }, this);
 
-                if (typeof controller.searchData === "function") {
+                if (typeof controller.searchData === "function") {                    
                     controller.searchData();
                 }
 
@@ -154,6 +188,20 @@ sap.ui.define([
             var vField = vView.byId(field);
             vField.setValue(value);
         },
+        changeFieldVlue2: function (field, value, vView) {
+            var vField = vView.byId(field);
+
+            vField.setSelectedKey("belnr");
+        },
+        changeFieldVlue3: function (field, value, vView) {
+
+            var vField = vView.byId(field);
+            let todayDate = new Date();
+            let firstDay = new Date(1900, 1, 1);
+            vField.setDateValue(firstDay);
+            vField.setSecondDateValue(todayDate);
+        },
+
         getvView: function (sRouteName, viewPath, viewName) {
             var currRout = this.oOwnerComponent.getRouter().getViews()._oCache.view;
             var vView = currRout[`${viewPath}.${viewName}`]["undefined"];

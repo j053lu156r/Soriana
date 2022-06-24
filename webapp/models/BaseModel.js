@@ -455,3 +455,15 @@ function Productos() {
 
 Productos.prototype = Object.create(BaseModel.prototype);
 Productos.prototype.constructor = Productos;
+
+
+//Model Catálogo de productos
+function NotifAltaMasiva() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_NOTIF_SRV/";
+    params.sModel = "notifAltaModel";
+    BaseModel.call(this, params);
+}
+
+NotifAltaMasiva.prototype = Object.create(BaseModel.prototype);
+NotifAltaMasiva.prototype.constructor = NotifAltaMasiva;
