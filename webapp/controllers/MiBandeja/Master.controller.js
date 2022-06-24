@@ -84,7 +84,7 @@ sap.ui.define([
                     this.getHelpDocs();
                     break;
                 case "inbox":
-                    this.doSearchRelease(this.getView().byId("releaseSearch").getValue());
+                    this.doSearchRelease(this.getView().byId("subject").getValue());
                     break;
             }
         },

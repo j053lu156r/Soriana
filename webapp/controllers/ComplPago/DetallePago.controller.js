@@ -10,7 +10,7 @@ sap.ui.define([
 ], function (JSONModel, Controller, BaseModel, Label, Link, MessageToast, Text, Fragment) {
 	"use strict";
 
-	var sUri = "/sap/opu/odata/sap/ZOSP_STATEMENT_SRV_01/";
+	var sUri = "/sap/opu/odata/sap/ZOCP_DOCPAGO_01/";
 	var dTJSON;
 	var fechaAct = new Date();
 
@@ -185,7 +185,7 @@ sap.ui.define([
 			let auxArray = [...Detalles]
 
 
-			var groupedMovs = this.groupArrayOfObjects(auxArray, "DescTipomov");
+			var groupedMovs = this.groupArrayOfObjects(auxArray, "DescripcionGpo");
 			var nestedMovs = []
 
 			var me = this;
