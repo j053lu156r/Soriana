@@ -387,6 +387,9 @@ sap.ui.define([
 				this.byId("bloqueoColumn").setVisible(true);
 				this.byId("conciliacionColumn").setVisible(true);
 
+				this.byId("tipoMovColumn").setVisible(true);
+
+
 				//totles 
 				this.byId("tipoColumn").setVisible(false);
 
@@ -404,6 +407,8 @@ sap.ui.define([
 				this._oTable.setMode("SingleSelectMaster");
 
 				this.byId("statusColumn").setVisible(false);
+				this.byId("tipoMovColumn").setVisible(false);
+
 				this.byId("folioColumn").setVisible(false);
 				this.byId("referenceColumn").setVisible(false);
 
