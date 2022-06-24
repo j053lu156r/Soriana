@@ -166,7 +166,59 @@ sap.ui.define([
             }
 
             var file = oFileUploader.oFileUpload.files[0];
-            //var reader = new FileReader();
+            var reader = new FileReader();
+
+            reader.onload = function (evn) {
+                var obj = {};
+                var parts = evn.target.result.split(",");
+                obj.Cfdii = parts[1];
+                objRequest.Cfdi = parts[1];
+
+                var response = cfdiModel.create("/ECfdiSet ", objRequest);
+
+                if (response != null) {
+                    sap.ui.core.BusyIndicator.hide();
+                    uploadBox.setVisible(false);
+                    if (response.Log != null) {
+                        uploadList.setVisible(true);
+                        uploadList.setModel(new JSONModel(response));
+                    } else {
+                        sap.m.MessageBox.error(response.EMessage);
+                    }
+                }
+                oFileUploader.clear();
+            };
+            reader.readAsDataURL(file);
+        },
+
+        openUploadDialog2: function () {
+            if (!this.hasAccess(3)) {
+                return false;
+            }
+            if (!this._uploadDialog3) {
+                this._uploadDialog3 = sap.ui.xmlfragment("uploadInvoiceTest", "demo.fragments.UploadInvoice2", this);
+                this.getView().addDependent(this._uploadDialog3);
+            }
+            this._uploadDialog3.open();
+        },
+        onCloseDialogUpload2: function () {
+            if (this._uploadDialog3) {
+                this._uploadDialog3.destroy();
+                this._uploadDialog3 = null;
+            }
+        },
+        documentUploadPress2: function(){
+            var that = this;
+            var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoiceTest", "fileUploaderTest");
+            sap.ui.core.BusyIndicator.show(0);
+
+            if (!oFileUploader.getValue()) {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/helpDocs.uploader.nodata"));
+                sap.ui.core.BusyIndicator.hide();
+                return;
+            }
+
+            var file = oFileUploader.oFileUpload.files[0];
             var reader2 = new FileReader();
 
             reader2.onload = function (evn) {
@@ -190,7 +242,7 @@ sap.ui.define([
 
                 $.ajax(settings).done(function (response) {
                     sap.ui.core.BusyIndicator.hide();
-                    that.onCloseDialogUpload();
+                    that.onCloseDialogUpload2();
                     oFileUploader.clear();
                     var oXMLModel = new sap.ui.model.xml.XMLModel();  
                     oXMLModel.setXML(response.getElementsByTagName("RecibeCFDResult")[0].textContent);
@@ -204,30 +256,6 @@ sap.ui.define([
                 });
             };
             reader2.readAsText(file);
-
-            /*
-            reader.onload = function (evn) {
-                var obj = {};
-                var parts = evn.target.result.split(",");
-                obj.Cfdii = parts[1];
-                objRequest.Cfdi = parts[1];
-
-                var response = cfdiModel.create("/ECfdiSet ", objRequest);
-
-                if (response != null) {
-                    BusyIndicator.hide();
-                    uploadBox.setVisible(false);
-                    if (response.Log != null) {
-                        uploadList.setVisible(true);
-                        uploadList.setModel(new JSONModel(response));
-                    } else {
-                        sap.m.MessageBox.error(response.EMessage);
-                    }
-                }
-                oFileUploader.clear();
-            };
-            reader.readAsDataURL(file);
-            */
         },
         
         filtrado: function (evt) {
