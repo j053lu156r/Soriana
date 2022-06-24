@@ -489,7 +489,8 @@ sap.ui.define([
         },
 
         clearFilters: function () {
-
+            this.getView().byId("inputFolioTxt").setValue('');
+            this.getView().byId("dateRange").setValue('');
         },
 
         paginar: function (selectedItem, modelName, tableName, idTable) {
