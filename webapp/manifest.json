@@ -29,7 +29,17 @@
         "sourceTemplate": {
             "id": "servicecatalog.connectivityComponentForManifest",
             "version": "0.0.0"
-        }
+        },
+
+		"dataSources": {
+			"migoRemote": {
+				"uri": "https://port8080-workspaces-ws-x4zxg.us10.trial.applicationstudio.cloud.sap/sap/opu/odata/sap/ZOSP_MMIM_MIGO_DOC_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0"
+				}
+			}
+		}
     },
     "sap.ui": {
         "technology": "UI5",
@@ -193,7 +203,10 @@
                 "settings": {},
                 "uri": "localService/mockdata/notifModel.json",
                 "preload": true
-            }
+            },
+			"migoModel": {
+				"dataSource": "migoRemote"
+			}
         },
         "routing": {
             "config": {
