@@ -925,7 +925,7 @@ sap.ui.define([
                             //JSON.parse(this.getOwnerComponent().getModel("images64").getJSON).attachArray;
                             let imagesToAttach = [];
 
-                            let variantes = [];
+                            let variantes = JSON.parse(this.getView().getModel('ITARTVAR').getJSON()).results;
                             //JSON.parse(this.getView().getModel('ITARTVAR').getJSON()).results;
 
                             let folioModel = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
@@ -2203,6 +2203,7 @@ sap.ui.define([
                 "IvBcase": "01",
                 "IvFilename": fileMassive,
                 "IvSupplier": this.getConfigModel().getProperty("/supplierInputKey"),
+                "IvString": this.massiveFile64.IText64,
                 "ITRECIPIENT": [
                     {
                         "Email": userSession.IMail.toLowerCase(),
