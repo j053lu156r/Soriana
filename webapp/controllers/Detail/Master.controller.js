@@ -240,18 +240,34 @@ sap.ui.define([
                     "data": body
                 };
 
-                $.ajax(settings).done(function (response) {
-                    sap.ui.core.BusyIndicator.hide();
-                    that.onCloseDialogUpload2();
-                    oFileUploader.clear();
-                    var oXMLModel = new sap.ui.model.xml.XMLModel();  
-                    oXMLModel.setXML(response.getElementsByTagName("RecibeCFDResult")[0].textContent);
-                    var oXml = oXMLModel.getData();
-                    var status = oXml.getElementsByTagName("AckErrorApplication")[0].attributes[5].nodeValue;
-                    if (status == "ACCEPTED") {
-                        sap.m.MessageBox.success(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendSuccess"));
-                    } else {
-                        sap.m.MessageBox.error(oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent);
+                $.ajax({
+                    async: true,
+                    url: "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocRecibo.asmx",
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/xml",
+                        "Access-Control-Allow-Origin":"*"
+                    },
+                    "data": body,
+                    success: function(response) {
+                        sap.ui.core.BusyIndicator.hide();
+                        that.onCloseDialogUpload2();
+                        oFileUploader.clear();
+                        var oXMLModel = new sap.ui.model.xml.XMLModel();  
+                        oXMLModel.setXML(response.getElementsByTagName("RecibeCFDResult")[0].textContent);
+                        var oXml = oXMLModel.getData();
+                        var status = oXml.getElementsByTagName("AckErrorApplication")[0].attributes[5].nodeValue;
+                        if (status == "ACCEPTED") {
+                            sap.m.MessageBox.success(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendSuccess"));
+                        } else {
+                            sap.m.MessageBox.error(oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent);
+                        }
+                    },
+                    error: function(request, status, err) {
+                        sap.ui.core.BusyIndicator.hide();
+                        that.onCloseDialogUpload2();
+                        oFileUploader.clear();
+                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendError"));
                     }
                 });
             };
