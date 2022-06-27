@@ -10,7 +10,7 @@ sap.ui.define([
 ], function (JSONModel, Controller, BaseModel, Label, Link, MessageToast, Text, Fragment) {
 	"use strict";
 
-	var sUri = "/sap/opu/odata/sap/ZOCP_DOCPAGO_01/";
+	var sUri = "/sap/opu/odata/sap/ZOCP_DOCPAGO_SRV/";
 	var dTJSON;
 	var fechaAct = new Date();
 
@@ -121,7 +121,7 @@ sap.ui.define([
 			let todayDate = new Date();
 
 			// format[AAAAMMDD] (2020101)
-			let desde_LV_ZDESDE =  '20160219'// this.buildSapDate(todayDate);
+			let desde_LV_ZDESDE =  this.buildSapDate(this._fecha); // '20210621'// this.buildSapDate(todayDate);
 			// format[AAAAMMDD] (2020101)
 			let desde_LV_ZHASTA = this.buildSapDate(todayDate);
 
@@ -144,16 +144,18 @@ sap.ui.define([
 				// sap.m.MessageBox.error("Por favor defina el rango de fechas.");
 			}
 
+			var BUKRS = this._sociedad
+
 
 			 
-			var queryFiltro = ""
+			var queryFiltro = ` and belnr eq '${doc_BELNR}' and Bukrs eq '${BUKRS}' `
  
 
 
 			var oODataJSONModel = this.getOdata(sUri);
 			//            let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}' and belnr eq '${doc_BELNR}'  &$format=json`;
 
-			let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}' ${queryFiltro} &$format=json`;
+			let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}'${queryFiltro} &$format=json`;
 			//Xblnr
 
 			var odTJSONModel = this.getOdataJsonModel(urlParams, oODataJSONModel);
@@ -582,6 +584,7 @@ sap.ui.define([
 			this._document = oEvent.getParameter("arguments").document || this._document || "0";
 			this._sociedad = oEvent.getParameter("arguments").sociedad || this._sociedad || "0";
 			this._ejercicio = oEvent.getParameter("arguments").ejercicio || this._ejercicio || "0";
+			this._fecha = oEvent.getParameter("arguments").fecha || this._fecha || "0";
 
 			console.log(this._document);
 

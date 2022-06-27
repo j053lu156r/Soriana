@@ -393,7 +393,7 @@
 					]
 				},
                 {
-                    "pattern": "detailComplPagos/{document}/{layout}/{sociedad}/{ejercicio}",
+                    "pattern": "detailComplPagos/{document}/{layout}/{sociedad}/{ejercicio}/{fecha}",
                     "name": "detailComplPagos",
                     "target": [
                         "masterCompl",
