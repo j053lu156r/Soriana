@@ -1043,13 +1043,13 @@ sap.ui.define([
             Folio.Present = formatterCatPrd.findPropertieValue("AbrPres", "Descpres", Folio.Present,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/Presentaciones'));
 
-            Folio.UndCont = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.UndCont,
+            Folio.UndCont = formatterCatPrd.findPropertieValue("IsoCode", "Unidad", Folio.UndCont,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadMedida'));
 
-            Folio.UndMventa = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.UndMventa,
+            Folio.UndMventa = formatterCatPrd.findPropertieValue("IsoCode", "Unidad", Folio.UndMventa,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadMedida'));
 
-            Folio.UndCompra = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.UndCompra,
+            Folio.UndCompra = formatterCatPrd.findPropertieValue("IsoCode", "Unidad", Folio.UndCompra,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadMedida'));
 
             Folio.UndBon = formatterCatPrd.findPropertieValue("Bonuskey", "Descr", Folio.UndBon,
