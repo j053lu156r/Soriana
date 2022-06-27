@@ -12,6 +12,11 @@
     xmlns:data="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
     xmlns:sl="sap.ui.comp.navpopover"
 	displayBlock="true"
+
+  xmlns:viz="sap.viz.ui5.controls" xmlns:layout="sap.ui.layout"
+     xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+  xmlns:viz.data="sap.viz.ui5.data"
+
 	height="100%">
 	<x:ObjectPageLayout id="ObjectPageLayout" upperCaseAnchorBar="false">
 		<x:headerTitle>
@@ -177,7 +182,8 @@
                                                 <RadioButton select="changePieChart" id="radioImporte-2" text="{appTxts>/dashboard.import}" />
                                             </RadioButtonGroup>
                                             <ToolbarSpacer/>
-                                            <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".exportPieChart" visible="{= ${Totales>/ETPIECHARTNAV/results/length} > 0}" />
+                                             <Button icon="sap-icon://pie-chart" press=".VisualizadorGraficosP" visible="true" />
+                                            <Button icon="sap-icon://line-chart"  press=".VisualizadorGraficosL" visible="true" />
                                             <Select selectedKey="0" id="selectTipoPieChart" change="changePieChart" >
                                                 <items>
                                                     <core:Item key="r" text="{appTxts>/dashboard.received}"></core:Item>
@@ -186,7 +192,7 @@
                                                 </items>
                                             </Select>
                                         </OverflowToolbar>
-                                        <FlexBox width="100%" height="20rem" alignItems="Center" justifyContent="SpaceBetween">
+                                        <FlexBox width="100%" height="20rem" alignItems="Center" justifyContent="SpaceBetween" visible="false" id="graphPie">
                                             <items>
                                                 <mc:InteractiveDonutChart segments="{path:'Totales>/PieChart'}" selectionChanged="onSelectionChanged" displayedSegments="{Totales>/Segmentos}" press="press">
                                                     <mc:segments>
@@ -195,20 +201,38 @@
                                                 </mc:InteractiveDonutChart>
                                             </items>
                                         </FlexBox>
-                                    	<!--smartchart:SmartChart id ="smartChartGeneral" enableAutoBinding="true"
-                                            entitySet="ProductCollection" useVariantManagement="false"
-                                            persistencyKey="PKeyChartExample9" useChartPersonalisation="false"
-                                            header="" showFullScreenButton="false" selectionMode="Multi"
-                                            showChartTooltip="false" showDrillBreadcrumbs="false"
-                                            showDetailsButton="false" showDrillButtons="false"
-                                            showSemanticNavigationButton="false"
-                                            height="100%" width="100%"
-                                            data:dateFormatSettings='\{"pattern":"y MMMM d"\}'>
-                                            <smartchart:semanticObjectController>
-                                                <sl:SemanticObjectController
-                                                    navigationTargetsObtained="onNavigationTargetsObtained" navigate="onNavigate" />
-                                            </smartchart:semanticObjectController>
-                                        </smartchart:SmartChart-->
+
+  <layout:FixFlex id='chartFixFlex' minFlexSize="250" visible="true" >
+ <layout:flexContent>
+            <viz:Popover id="idPopOver"></viz:Popover>
+           
+            <viz:VizFrame id="idVizFrame" uiConfig="{applicationSet:'fiori'}"
+                height='100%' width="100%" vizType='column' >
+                <viz:dataset>
+                    <viz.data:FlattenedDataset data="{path:'Totales>/PieChart'}" >
+                        <viz.data:dimensions>
+                            <viz.data:DimensionDefinition name="Tipo"
+                                value="{Totales>DesAcla}" />
+                        </viz.data:dimensions>
+                        <viz.data:measures>
+                            <viz.data:MeasureDefinition name="Porcetaje"
+                                value="{Totales>valor}" />
+                              <viz.data:MeasureDefinition name="Cost"
+                                value="{Totales>valor}" />
+                        </viz.data:measures>
+                    </viz.data:FlattenedDataset>
+                </viz:dataset>
+
+                <viz:feeds>
+                    <viz.feeds:FeedItem id='valueAxisFeed' uid="valueAxis" type="Measure"
+                        values="Porcetaje" />
+                    <viz.feeds:FeedItem uid="categoryAxis" type="Dimension"
+                        values="Tipo" />
+                </viz:feeds>
+            </viz:VizFrame>
+        </layout:flexContent>
+                     </layout:FixFlex>                     
+                                    
                                     </VBox>
                                 </f:content>
                             </f:Card>
