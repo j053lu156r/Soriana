@@ -154,7 +154,7 @@ sap.ui.define([
 
 
 			 
-			var queryFiltro = ` and belnr eq '${doc_BELNR}' and bukrs eq '${BUKRS}' `
+			var queryFiltro = ` and belnr eq '${doc_BELNR}' and Bukrs eq '${BUKRS}' `
  
 
 
@@ -393,6 +393,7 @@ sap.ui.define([
 				this.byId("mCondicionColumn").setVisible(true);
 				this.byId("bloqueoColumn").setVisible(true);
 				this.byId("conciliacionColumn").setVisible(true);
+				this.byId("tipoMovColumn").setVisible(true);
 
 				//totles 
 				this.byId("tipoColumn").setVisible(false);
@@ -413,6 +414,7 @@ sap.ui.define([
 				this.byId("statusColumn").setVisible(false);
 				this.byId("folioColumn").setVisible(false);
 				this.byId("referenceColumn").setVisible(false);
+				this.byId("tipoMovColumn").setVisible(false);
 
 				this.byId("typeDocColumn").setVisible(false);
 
@@ -519,7 +521,7 @@ sap.ui.define([
 					    sociedad: this._sociedad,
 						ejercicio: this._ejercicio,
 					    doc: this._document,
-					   // zbukr: docResult.Zbukr,
+						fecha: this._fecha
 					   // lifnr: docResult.Lifnr
 					}, true);
 
@@ -565,7 +567,8 @@ sap.ui.define([
 				layout: sNextLayout,
 				document: this._document,
 				sociedad: this._sociedad,
-				ejercicio: this._ejercicio
+				ejercicio: this._ejercicio,
+				fecha: this._fecha
 			});
 		},
 		handleExitFullScreen: function () {
@@ -575,7 +578,8 @@ sap.ui.define([
 				layout: sNextLayout,
 				document: this._document,
 				sociedad: this._sociedad,
-				ejercicio: this._ejercicio
+				ejercicio: this._ejercicio,
+				fecha: this._fecha
 			});
 		},
 		handleClose: function () {
