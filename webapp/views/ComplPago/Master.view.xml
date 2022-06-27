@@ -156,7 +156,7 @@
                             id              = "column5">
                             <Label text="{appTxts>/pay.headerLimitDate}" />
                             <t:template>
-                                <Text text="{Documentos>Zaldt}" wrapping="false"/>
+                                <Text text="{Documentos>Augdt}" wrapping="false"/>
                             </t:template>
                         </t:Column>
                         <t:Column

@@ -393,7 +393,7 @@
 					]
 				},
                 {
-                    "pattern": "detailComplPagos/{document}/{layout}/{sociedad}/{ejercicio}",
+                    "pattern": "detailComplPagos/{document}/{layout}/{sociedad}/{ejercicio}/{fecha}",
                     "name": "detailComplPagos",
                     "target": [
                         "masterCompl",
@@ -567,8 +567,9 @@
                     ]
                 },
                 {
+                    
                     "name": "detailVisorNotas",
-                    "pattern": "detailVisorNotas/{layout}",
+                    "pattern": "detailVisorNotas/{layout}/{Mblnr}/{Mjahr}/{Ebeln}/{Lifnr}/{BudatMkpf}/{Werks}",
                     "target": [
                         "masterVisorNotas",
                         "detailVisorNotas"

@@ -57,6 +57,15 @@ sap.ui.define([
             }, this);
 
         },
+/* Validacion para activar  boton nueva Aclaracion*/
+ValidateNAc:function(){
+    var that= this;
+if (that.getView().byId("supplierInput").getValue()===""){
+    that.getView().byId("NewClarification").setEnabled(false);
+}else{
+    that.getView().byId("NewClarification").setEnabled(true);
+}
+},
 
         /*Validacion de vista **/
         ValidateDevice: function () {
@@ -76,8 +85,9 @@ sap.ui.define([
 				idFactura: false,
 				idMonRec: false,
 				idIvaRec: false,
-				idEstatus2: false,
+				
 				idAnalista: false,
+                idEstatus2:false,
 				idFAlta2: false,
 				idHalta: false,
 				idFvenc: false,
@@ -96,8 +106,9 @@ sap.ui.define([
 				idFactura: true,
 				idMonRec: false,
 				idIvaRec: false,
-				idEstatus2: false,
+				
 				idAnalista: false,
+                idEstatus2: false,
 				idFAlta2: false,
 				idHalta: false,
 				idFvenc: false,
@@ -148,8 +159,9 @@ sap.ui.define([
 				idFactura: bSelected,
 				idMonRec: bSelected,
 				idIvaRec: bSelected,
-				idEstatus2: bSelected,
+				
 				idAnalista: bSelected,
+                idEstatus2:bSelected,
 				idFAlta2: bSelected,
 				idHalta: bSelected,
 				idFvenc: bSelected,
@@ -161,7 +173,7 @@ sap.ui.define([
 		},
 		TableVisible: function() {
    var that= this;
-    that.getView().byId("idEstatus2").setVisible(that.getView().getModel().getProperty("idEstatus2"));
+ 
                 that.getView().byId("idfolio").setVisible(that.getView().getModel().getProperty("/idfolio"));
                 that.getView().byId("idFAlta").setVisible(that.getView().getModel().getProperty("/idFAlta"));
                 that.getView().byId("idlifnr").setVisible(that.getView().getModel().getProperty("/idlifnr"));
@@ -171,6 +183,7 @@ sap.ui.define([
                 that.getView().byId("idIvaRec").setVisible(that.getView().getModel().getProperty("/idIvaRec"));
                
                 that.getView().byId("idAnalista").setVisible(that.getView().getModel().getProperty("/idAnalista"));
+                that.getView().byId("idEstatus2").setVisible(that.getView().getModel().getProperty("/idEstatus2"));
                 that.getView().byId("idFAlta2").setVisible(that.getView().getModel().getProperty("/idFAlta2"));
                 that.getView().byId("idHalta").setVisible(that.getView().getModel().getProperty("/idHalta"));
                 that.getView().byId("idFvenc").setVisible(that.getView().getModel().getProperty("/idFvenc"));
@@ -208,7 +221,7 @@ sap.ui.define([
             //let IIdusua = '';
             //console.log(this.getOwnerComponent().getModel("userdata").getJSON());
 
-            if (proveedor_LIFNR === '' || dateRange.getValue() == '') {
+            if (proveedor_LIFNR === '') {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.msgNoFilter'));
                 return false;
             }
@@ -266,11 +279,17 @@ sap.ui.define([
             this.getView().byId("dateRange").setValue('');
         },
         newClarification: function () {
-            if (!this.hasAccess(19)) {
-                return false;
+            var that= this;
+            if (that.getView().byId("supplierInput").getValue()===""){
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.noSupplier'));
+            }else{
+                if (!this.hasAccess(19)) {
+                    return false;
+                }
+                this.getOwnerComponent().getRouter().navTo("detailAclaracion", { layout: sap.f.LayoutType.MidColumnFullScreen, document: '0', modo: 'new', tipo: '01' }, true);
+           
             }
-            this.getOwnerComponent().getRouter().navTo("detailAclaracion", { layout: sap.f.LayoutType.MidColumnFullScreen, document: '0', modo: 'new', tipo: '01' }, true);
-        },
+           },
         setDaterangeMaxMin: function () {
             var datarange = this.getView().byId('dateRange');
             var date = new Date();
@@ -364,104 +383,7 @@ sap.ui.define([
             }
             this.getOwnerComponent().getRouter().navTo("detailAclaracion", { layout: fioriLibrary.LayoutType.MidColumnFullScreen, document: results[line].Folio, modo: 'edit', tipo: results[line].TipAcla }, true);
         },
-        /*  buildExportTable: function () {
-              var texts = this.getOwnerComponent().getModel("appTxts");
-  
-              var columns = [
-                  {
-                      name: texts.getProperty("/clarifications.headerFolioUPC"),
-                      template: {
-                    1      content: "{Folio}"
-                      }
-                  },
-                  {
-                      name: texts.getProperty("/clarifications.headerDateUPC"),
-                      template: {
-                     2     content: "{FAlta}"
-                      }
-                  },
-                  {
-                      name: texts.getProperty("/clarifications.headerSupplierUPC"),
-                      template: {
-                     3     content: "{Lifnr}"
-                      }
-                  },
-                  {
-                      name: texts.getProperty("/clarifications.headerTypeUPC"),
-                      template: {
-                     4     content: "{DesAcla}"
-                      }
-                  },
-                  {
-                      name: texts.getProperty("/clarifications.headerInvoiceUPC"),
-                      template: {
-                      5    content: "{Factura}"
-                      }
-                  },
-                  {
-                      name: texts.getProperty("/clarifications.headerReclaimedAmountUPC"),
-                      template: {
-                    6      content: "{MonRec}"
-                      }
-                  },
-                  {
-                      name: texts.getProperty("/clarifications.headerReclaimedTaxesUPC"),
-                      template: {
-                     7     content: "{IvaRec}"
-                      }
-                  },
-                  {
-                      name: texts.getProperty("/clarifications.headerStatusUPC"),
-                      template: {
-                    8      content: "{DesStatus}"
-                      }
-                  },
-                  {
-                      name: texts.getProperty("/clarifications.headerAnalystUPC"),
-                      template: {
-                      9    content: "{Analista}"
-                      }
-                  },
-                  {
-                      name: texts.getProperty("/clarifications.headerAssignmentDateUPC"),
-                      template: {
-                      10    content: "{FAlta}"
-                      }
-                  },
-                  {
-                      name: texts.getProperty("/clarifications.headerAssignmentTimeUPC"),
-                      template: {
-                       11   content: "{HAlta}"
-                      }
-                  },
-                  {
-                      name: texts.getProperty("/clarifications.headerSolutionDateUPC"),
-                      template: {
-                       12   content: "{FVenc}"
-                      }
-                  },
-                  {
-                      name: texts.getProperty("/clarifications.headerClearedAmountUPC"),
-                      template: {
-                      13    content: "{MonAcla}"
-                      }
-                  },
-                  {
-                      name: texts.getProperty("/clarifications.headerClearedTaxesUPC"),
-                      template: {
-                      14    content: "{IvaAcla}"
-                      }
-                  },
-                  {
-                      name: texts.getProperty("/clarifications.headerPaymentUPC"),
-                      template: {
-                    15      content: "{NoDoc}"
-                      }
-                  }
-              ];
-  
-              this.exportxls('Aclaraciones', '/Detalles/results', columns);
-          },*/
+     
         createColumnConfig: function () {
             var that = this;
             var oModel = that.getView().getModel("Aclaraciones").getData(),
@@ -609,86 +531,7 @@ sap.ui.define([
             let tablaPrincipal = this.getView().byId("aclaracionesList");
             tablaPrincipal.setVisibleRowCount(totalRegistros < valorSeleccinado ? totalRegistros : valorSeleccinado);
             this.paginateValue(selectedItem, 'Aclaraciones', '/Detalles');
-        }
-        /*,
-		cargaParams: function () {
-			var view = this.getView().getId();
-			
-			for(var i = 0; i < jsonAclaracion.results.length; i++){
-				if(jsonAclaracion.results[i].cerrada === true){
-					sap.ui.getCore().getControl(view + "--celStatus-" + view + "--idTableAcla-" + i).setSelected(true);
-				}else{ 
-					sap.ui.getCore().getControl(view + "--celStatus-" + view + "--idTableAcla-" + i).setSelected(false);
-				}
-			}
-			
-		},
-		onSelectStatus: function (oEvent) {
-			var sUri = "/sap/opu/odata/sap/ZMMPORTAL_VERIFICACION_SRV/";
-			var ubicaId = oEvent.getSource().getId();
-			ubicaId = ubicaId.replace("celStatus", "celIdAcla");
-			var id = sap.ui.getCore().getControl(ubicaId).getText();
-			var cerrar =  oEvent.getSource().getSelected();
-			var that = this;
-			
-			var oNewParams = new sap.ui.model.odata.ODataModel(sUri, true);
-
-			var oEntry = {};
-			oEntry.id = id;
-			if(cerrar === true){
-				oEntry.cerrar = "X";
-			}else{
-				oEntry.cerrar = "";
-			}
-			
-			if (oEntry) {
-				oNewParams.setHeaders({
-					"X-Requested-With": "X"
-				});
-				oNewParams.create("/cerrarAclaracionSet", oEntry, null, function() {
-					sap.m.MessageBox.success(that.getOwnerComponent().getModel('appTxts').getProperty("/clarificationsCon.status"));
-				}, function(error) {
-					sap.m.MessageBox.error(that.getOwnerComponent().getModel('appTxts').getProperty("/clarificationsCon.error"));
-				});
-			}
-		},
-		onExit: function() {
-			if (this._oDialog) {
-				this._oDialog.destroy();
-				this._oDialog = null;
-			}
-
-			if (this._uploadDialog1) {
-				this._uploadDialog1.destroy();
-				this._uploadDialog1 = null;
-			}
-			
-			if (this._uploadDialog2) {
-				this._uploadDialog2.destroy();
-				this._uploadDialog2 = null;
-			}
-
-			if (this._oPopover) {
-				this._oPopover.destroy();
-				this._oPopover = null;
-			}
-		},
-		filtrado: function (evt) {
-			var filterCustomer = [];
-			var query = evt.getParameter("query");
-			var obFiltro = this.getView().byId("selectFilter");
-			var opFiltro = obFiltro.getSelectedKey();     
-			if (query && query.length > 0) {
-				var filter = new sap.ui.model.Filter(opFiltro, sap.ui.model.FilterOperator.Contains, query);
-				filterCustomer.push(filter);
-			}
-			
-			var list = this.getView().byId("idTableAcla");
-			var binding = list.getBinding("items");
-			binding.filter(filterCustomer);
-		}
-*/
-        ,
+        },
         formatStatus: function (idStatus) {
             var strStatus = "";
 

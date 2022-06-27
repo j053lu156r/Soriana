@@ -489,7 +489,8 @@ sap.ui.define([
         },
 
         clearFilters: function () {
-
+            this.getView().byId("inputFolioTxt").setValue('');
+            this.getView().byId("dateRange").setValue('');
         },
 
         paginar: function (selectedItem, modelName, tableName, idTable) {
@@ -924,7 +925,7 @@ sap.ui.define([
                             //JSON.parse(this.getOwnerComponent().getModel("images64").getJSON).attachArray;
                             let imagesToAttach = [];
 
-                            let variantes = [];
+                            let variantes = JSON.parse(this.getView().getModel('ITARTVAR').getJSON()).results;
                             //JSON.parse(this.getView().getModel('ITARTVAR').getJSON()).results;
 
                             let folioModel = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
@@ -1042,13 +1043,13 @@ sap.ui.define([
             Folio.Present = formatterCatPrd.findPropertieValue("AbrPres", "Descpres", Folio.Present,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/Presentaciones'));
 
-            Folio.UndCont = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.UndCont,
+            Folio.UndCont = formatterCatPrd.findPropertieValue("IsoCode", "Unidad", Folio.UndCont,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadMedida'));
 
-            Folio.UndMventa = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.UndMventa,
+            Folio.UndMventa = formatterCatPrd.findPropertieValue("IsoCode", "Unidad", Folio.UndMventa,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadMedida'));
 
-            Folio.UndCompra = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.UndCompra,
+            Folio.UndCompra = formatterCatPrd.findPropertieValue("IsoCode", "Unidad", Folio.UndCompra,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadMedida'));
 
             Folio.UndBon = formatterCatPrd.findPropertieValue("Bonuskey", "Descr", Folio.UndBon,
@@ -1827,44 +1828,6 @@ sap.ui.define([
 
                         if (response != null) {
                             if (response.ESuccess === 'X') {
-                                /*let msg = this.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.msgUpdated') ;
-                                let ETCERROR = {
-                                    results:[ ...response.ETCERROR.results ]
-                                }
-                                that.getOwnerComponent().getView().setModel( new JSONModel(ETCERROR), 'ETCERROR')
-                                if (!this.oDefaultDialog) {
-                                    this.oDefaultDialog = new Dialog({
-                                        title: "Folios",
-                                        content: new List({
-                                            items: {
-                                                path: "ETCERROR>/results",
-                                                template: new StandardListItem({
-                                                    title: "{ETCERROR>Ean}",
-                                                    description: "Folio: {ETCERROR>Uniquer}"
-                                                })
-                                            }
-                                        }),
-                                        beginButton: new Button({
-                                            type: ButtonType.Emphasized,
-                                            text: "OK",
-                                            press: function () {
-                                                this.oDefaultDialog.close();
-                                            }.bind(this)
-                                        }),
-                                        endButton: new Button({
-                                            text: "Close",
-                                            press: function () {
-                                                this.oDefaultDialog.close();
-                                            }.bind(this)
-                                        })
-                                    });
-                    
-                                    // to get access to the controller's model
-                                    this.getView().addDependent(this.oDefaultDialog);
-                                }
-                    
-                                this.oDefaultDialog.open();
-                                */
 
                                 sap.m.MessageBox.success("Se han generado correctamente las bajas.", {
                                     actions: [sap.m.MessageBox.Action.CLOSE],
@@ -2225,15 +2188,6 @@ sap.ui.define([
 
         },
 
-        // closeDialogMassiveReg: function (idDialog) {
-        //     this.byId("fileUploaderMassiveReg").clear();
-        //     this.byId("correoInput").setValue("");
-        //     this.validateMassiveInfo();
-        //     this.massiveFile64 = {};
-        //     this.closeDialog('massiveRegisterDialog');
-
-        // },
-
         sendDataForNotification() {
 
             console.log("Archivo excel: ", this.massiveFile64);
@@ -2249,6 +2203,7 @@ sap.ui.define([
                 "IvBcase": "01",
                 "IvFilename": fileMassive,
                 "IvSupplier": this.getConfigModel().getProperty("/supplierInputKey"),
+                "IvString": this.massiveFile64.IText64,
                 "ITRECIPIENT": [
                     {
                         "Email": userSession.IMail.toLowerCase(),
@@ -2265,10 +2220,6 @@ sap.ui.define([
 
             if (resp.EvSendStatus == "OK") {
                 sap.m.MessageBox.success(resp.EvSendStatus);
-                // this.byId("fileUploaderMassiveReg").clear();
-                // this.byId("correoInput").setValue("");
-                // this.validateMassiveInfo();
-                // this.massiveFile64 = {};
                 this.closeDialog('massiveRegisterDialog');
             } else {
                 sap.m.MessageBox.error(resp.ETRETURN.results[0].Message);

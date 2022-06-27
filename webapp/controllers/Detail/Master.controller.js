@@ -9,8 +9,9 @@ sap.ui.define([
     "sap/ui/core/routing/History",
     "sap/ui/core/routing/Router",
     "demo/models/BaseModel",
-    'sap/f/library'
-], function (jQuery, Fragment, Controller, UploadCollectionParameter, History, PDFViewer, JSONModel, fioriLibrary) {
+    "sap/f/library",
+    "sap/ui/core/BusyIndicator"
+], function (jQuery, Fragment, Controller, UploadCollectionParameter, History, PDFViewer, JSONModel, fioriLibrary, BusyIndicator) {
     "use strict";
 
     var tipoUpload = "";
@@ -137,13 +138,16 @@ sap.ui.define([
             }
         },
         documentUploadPress: function(){
+            var that = this;
             var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoice", "fileUploader");
             var uploadList = sap.ui.core.Fragment.byId("uploadInvoice", "logUploadList");
             var uploadBox = sap.ui.core.Fragment.byId("uploadInvoice", "uploadBox");
             var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+            sap.ui.core.BusyIndicator.show(0);
 
             if (!oFileUploader.getValue()) {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/helpDocs.uploader.nodata"));
+                sap.ui.core.BusyIndicator.hide();
                 return;
             }
 
@@ -162,66 +166,7 @@ sap.ui.define([
             }
 
             var file = oFileUploader.oFileUpload.files[0];
-            console.log(file)
             var reader = new FileReader();
-            var reader2 = new FileReader();
-
-            reader2.onload = function (evn) {
-                var strXML = evn.target.result;
-                //var oXMLModel = new sap.ui.model.xml.XMLModel();  
-                //oXMLModel.setXML(strXML);
-                //var oXml = oXMLModel.getData();
-
-                /*var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' + 
-                    'xmlns:sci="http://www.sci-grupo.com.mx/">' + 
-                    '\n<soapenv:Header/>\n<soapenv:Body>\n<sci:RecibeCFD><sci:XMLCFD>' + 
-                    '<![CDATA[' + strXML + ']]>\n</sci:XMLCFD>\n</sci:RecibeCFD>\n</soapenv:Body>\n' + 
-                    '</soapenv:Envelope>'*/
-
-                var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sci="http://www.sci-grupo.com.mx/"><soapenv:Header/><soapenv:Body><sci:RecibeCFD><sci:XMLCFD><![CDATA[<?xml version="1.0" encoding="UTF-8"?> <cfdi:Comprobante Version="4.0" xmlns:cfdi="http://www.sat.gob.mx/cfd/4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd" Serie="A" Folio="2969" Fecha="2022-05-04T10:41:11" NoCertificado="00001000000507417493" Certificado="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" Exportacion="01" Moneda="MXN" TipoDeComprobante="I" MetodoPago="PPD" FormaPago="99" SubTotal="2500.00" Total="2800.00" LugarExpedicion="07290" Sello="iEfWkBSYl5HQrn9olxQ3igb6QWtD2tdKI9xYDov3EufFSIn9T4n63G3X7xpqFztkGjR3E7YUKiTHaVXliqB8K0Jg3Kpl8riV1v7QJzDWMvwCTvaZTs8CtGDBbTmVLvghfLfiPCMYNW5otGnF+P26f8bdYw418U/dqrrG/BMbG2DfFoONaJCuAeJPrZHwop11sp5ZxLU8G2QqfhMx1znj6SgQyz4XeC+X9nJVC1Cuyyk9EXszzabiARWEDQ8FTVHhLSRJRqfc6d2ayBQp3CfzB3C6Z5iMTZ5gwcLQl8jhU/0pj4sgI2x0tLwUc+Ga1WJmvSRa3T4ywb3Z/uBFx4Bp3A=="><cfdi:Emisor Rfc="CACX5403294D8" Nombre="OSCAR CHAVEZ CHAVEZ" RegimenFiscal="612" /> <cfdi:Receptor Rfc="TSO991022PB6" Nombre="TIENDAS SORIANA" UsoCFDI="G03" DomicilioFiscalReceptor="64610" RegimenFiscalReceptor="601" /> <cfdi:Conceptos> <cfdi:Concepto ClaveProdServ="78101800" Cantidad="1.00" ClaveUnidad="E48" Descripcion="ALQUILER DE CAMIONETA 3.5, PARA TRANSFERENCIA DEL DEPTO. MTTO, DE HIPER EL ROSARIO, PABELLON AZCAPOTZALCO E HIPER VALLEJO A HIPER LA VILLA, REALIZADO EL DIA 3 DE MAYO." ValorUnitario="2500.00" Importe="2500.00" ObjetoImp="02"> <cfdi:Impuestos> <cfdi:Traslados> <cfdi:Traslado Base="2500.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="400.00" /> </cfdi:Traslados> <cfdi:Retenciones> <cfdi:Retencion Base="2500.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.040000" Importe="100.00" /> </cfdi:Retenciones> </cfdi:Impuestos> </cfdi:Concepto></cfdi:Conceptos><cfdi:Impuestos TotalImpuestosRetenidos="100.00" TotalImpuestosTrasladados="400.00"> <cfdi:Retenciones> <cfdi:Retencion Impuesto="002" Importe="100.00" /> </cfdi:Retenciones> <cfdi:Traslados> <cfdi:Traslado Base="2500.00" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="400.00" /> </cfdi:Traslados> </cfdi:Impuestos><cfdi:Complemento><tfd:TimbreFiscalDigital xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sat.gob.mx/TimbreFiscalDigital http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigitalv11.xsd" Version="1.1" UUID="A05BE938-CBC0-11EC-8910-00155D014009" FechaTimbrado="2022-05-04T10:41:12" RfcProvCertif="TBN040609RKA" SelloCFD="iEfWkBSYl5HQrn9olxQ3igb6QWtD2tdKI9xYDov3EufFSIn9T4n63G3X7xpqFztkGjR3E7YUKiTHaVXliqB8K0Jg3Kpl8riV1v7QJzDWMvwCTvaZTs8CtGDBbTmVLvghfLfiPCMYNW5otGnF+P26f8bdYw418U/dqrrG/BMbG2DfFoONaJCuAeJPrZHwop11sp5ZxLU8G2QqfhMx1znj6SgQyz4XeC+X9nJVC1Cuyyk9EXszzabiARWEDQ8FTVHhLSRJRqfc6d2ayBQp3CfzB3C6Z5iMTZ5gwcLQl8jhU/0pj4sgI2x0tLwUc+Ga1WJmvSRa3T4ywb3Z/uBFx4Bp3A==" NoCertificadoSAT="00001000000504587508" SelloSAT="Y+ZC+SFyhyEnlj2qBTOpavezqNX19D93KCjaH7CdzedmWlm7lhLLVJtEeo0pFHYK16ZpRhXSHZjxi0SW/hCVWT6wxnkI8NEtKayHS2Bhac2PWBhRZcjcuVBL86bvEazQz+QRpS+nb3bjT8qGmpKj5qKghlRLOckhYJtn6bAoIvZZE4Qy0m6tgGkCdd+222v4W44yRe0PGgUp9porb9OYzgFHohY+OHTWbmr/B0k/MyONnQIbyX0VvSbEj/HddfanZdSazFSfG7hSXAv7HYWWjud4cM+MGsP/Fk2t5rPjpHq6lU22yXvLojG+TCRMd52RiZ++psBz+UAsx+kMTifTig==" /></cfdi:Complemento><cfdi:Addenda><DSCargaRemisionProv><Remision><Proveedor>302058</Proveedor><Remision>506906</Remision><Consecutivo>0</Consecutivo><FechaRemision>2022-05-04T00:00:00</FechaRemision><Tienda>255</Tienda><TipoMoneda>1</TipoMoneda><TipoBulto>1</TipoBulto><EntregaMercancia>1</EntregaMercancia><CumpleReqFiscales>true</CumpleReqFiscales><CantidadBultos>1.000000</CantidadBultos><Subtotal>2500.000000</Subtotal><Descuentos>0.000000</Descuentos><IEPS>0.000000</IEPS><IVA>400.000000</IVA><OtrosImpuestos>0.000000</OtrosImpuestos><Total>2900.000000</Total><CantidadPedidos>1</CantidadPedidos><FechaEntregaMercancia>2022-05-04T00:00:00</FechaEntregaMercancia></Remision><Pedidos><Proveedor>302058</Proveedor><Remision>506906</Remision><FolioPedido>101001120</FolioPedido><Tienda>255</Tienda><CantidadArticulos>1</CantidadArticulos></Pedidos><Articulos><Proveedor>302058</Proveedor><Remision>506906</Remision><FolioPedido>101001120</FolioPedido><Tienda>255</Tienda><Codigo>2000110170677</Codigo><CantidadUnidadCompra>1.000000</CantidadUnidadCompra><CostoNetoUnidadCompra>2500.000000</CostoNetoUnidadCompra><PorcentajeIEPS>0.000000</PorcentajeIEPS><PorcentajeIVA>16.000000</PorcentajeIVA></Articulos></DSCargaRemisionProv></cfdi:Addenda></cfdi:Comprobante>]]></sci:XMLCFD></sci:RecibeCFD></soapenv:Body></soapenv:Envelope>'
-
-                /*
-                const options = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'text/xml',
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Methods': 'POST, PUT, DELETE, GET, OPTIONS',
-                        'Access-Control-Request-Method': '*',
-                        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-                    },
-                    //mode : 'no-cors',
-                    body: body
-                };
-                  
-                fetch('https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocRecibo.asmx', options)
-                .then(response => {
-                    console.log(response.json())
-                }).catch(err => {
-                    console.error(err)
-                });
-                */
-
-               const settings = {
-                    "async": true,
-                    "url": "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocRecibo.asmx",
-                    "method": "POST",
-                    "headers": {
-                        "Content-Type": "text/xml",
-                        'Access-Control-Request-Origin': '*',
-                        'Access-Control-Request-Methods': 'POST, PUT, DELETE, GET, OPTIONS',
-                        'Access-Control-Request-Method': '*',
-                        'Access-Control-Request-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-                    },
-                    "data": body
-                };
-
-                $.ajax(settings).done(function (response) {
-                    console.log(response);
-                  });
-                };
-
-            reader2.readAsText(file);
 
             reader.onload = function (evn) {
                 var obj = {};
@@ -232,6 +177,7 @@ sap.ui.define([
                 var response = cfdiModel.create("/ECfdiSet ", objRequest);
 
                 if (response != null) {
+                    sap.ui.core.BusyIndicator.hide();
                     uploadBox.setVisible(false);
                     if (response.Log != null) {
                         uploadList.setVisible(true);
@@ -244,6 +190,90 @@ sap.ui.define([
             };
             reader.readAsDataURL(file);
         },
+
+        openUploadDialog2: function () {
+            if (!this.hasAccess(3)) {
+                return false;
+            }
+            if (!this._uploadDialog3) {
+                this._uploadDialog3 = sap.ui.xmlfragment("uploadInvoiceTest", "demo.fragments.UploadInvoice2", this);
+                this.getView().addDependent(this._uploadDialog3);
+            }
+            this._uploadDialog3.open();
+        },
+        onCloseDialogUpload2: function () {
+            if (this._uploadDialog3) {
+                this._uploadDialog3.destroy();
+                this._uploadDialog3 = null;
+            }
+        },
+        documentUploadPress2: function(){
+            var that = this;
+            var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoiceTest", "fileUploaderTest");
+            sap.ui.core.BusyIndicator.show(0);
+
+            if (!oFileUploader.getValue()) {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/helpDocs.uploader.nodata"));
+                sap.ui.core.BusyIndicator.hide();
+                return;
+            }
+
+            var file = oFileUploader.oFileUpload.files[0];
+            var reader2 = new FileReader();
+
+            reader2.onload = function (evn) {
+                var strXML = evn.target.result;
+                var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' + 
+                    'xmlns:sci="http://www.sci-grupo.com.mx/">' + 
+                    '\n<soapenv:Header/>\n<soapenv:Body>\n<sci:RecibeCFD><sci:XMLCFD>' + 
+                    '<![CDATA[' + strXML + ']]>\n</sci:XMLCFD>\n</sci:RecibeCFD>\n</soapenv:Body>\n' + 
+                    '</soapenv:Envelope>';
+                
+               const settings = {
+                    "async": true,
+                    "url": "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocRecibo.asmx",
+                    "method": "POST",
+                    "headers": {
+                        "Content-Type": "text/xml",
+                        "Access-Control-Allow-Origin":"*"
+                    },
+                    "data": body
+                };
+
+                $.ajax({
+                    async: true,
+                    url: "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocRecibo.asmx",
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/xml",
+                        "Access-Control-Allow-Origin":"*"
+                    },
+                    "data": body,
+                    success: function(response) {
+                        sap.ui.core.BusyIndicator.hide();
+                        that.onCloseDialogUpload2();
+                        oFileUploader.clear();
+                        var oXMLModel = new sap.ui.model.xml.XMLModel();  
+                        oXMLModel.setXML(response.getElementsByTagName("RecibeCFDResult")[0].textContent);
+                        var oXml = oXMLModel.getData();
+                        var status = oXml.getElementsByTagName("AckErrorApplication")[0].attributes[5].nodeValue;
+                        if (status == "ACCEPTED") {
+                            sap.m.MessageBox.success(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendSuccess"));
+                        } else {
+                            sap.m.MessageBox.error(oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent);
+                        }
+                    },
+                    error: function(request, status, err) {
+                        sap.ui.core.BusyIndicator.hide();
+                        that.onCloseDialogUpload2();
+                        oFileUploader.clear();
+                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendError"));
+                    }
+                });
+            };
+            reader2.readAsText(file);
+        },
+        
         filtrado: function (evt) {
             var filterCustomer = [];
             var query = evt.getParameter("query");
