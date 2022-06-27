@@ -12,8 +12,11 @@ sap.ui.define([
     "sap/ui/core/UIComponent",
     "sap/ui/core/util/Export",
     "sap/ui/core/util/ExportTypeCSV",
-    "demo/models/BaseModel"
-], function (Controller, History, HashChanger, Filter, FilterOperator, Fragment, UIComponent, Device) {
+    "demo/models/BaseModel",
+    "sap/ui/model/json/JSONModel",
+    
+	
+], function (Controller, History, HashChanger, Filter, FilterOperator, Fragment, MessageBox, UIComponent, Device, JSONModel) {
     "use strict";
     var oUser = new this.UserModel();
     var inboxModel = new this.MyInbox();
@@ -1015,6 +1018,33 @@ sap.ui.define([
             } else {
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "searchLocations");
             }
-        }
+        },
+        /*Juan Pacheco Nueva forma de llamar los odata*/
+        _GEToDataV2: function(model, entity, filter,  expand,) {
+            var oModel2 = "/sap/opu/odata/sap/"+model;
+            var that = this;
+			let entidad = "/" + entity;
+			return new Promise(function(fnResolve, fnReject) {
+               
+                var oModel = new sap.ui.model.odata.ODataModel(oModel2);
+				oModel.read(entidad, {
+				filters: filter,
+                expand:expand,
+					success: function(oData, oResponse) {
+                       
+						fnResolve(oResponse);
+					},
+					error: function(error) {
+                        console.log(error)
+						sap.ui.core.BusyIndicator.hide();
+						MessageBox.error("Error: " + error.responseJSON.error.message, {
+							icon: MessageBox.Icon.ERROR,
+							title: "Error"
+						});
+						fnReject(new Error(error.message));
+					}
+				});
+			});
+		}
     });
 });
