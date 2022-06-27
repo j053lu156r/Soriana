@@ -6,8 +6,10 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
      "sap/ui/core/routing/Router",
     "demo/models/BaseModel",
+	"sap/m/MessageBox",
+	"sap/m/MessageToast",
      "sap/m/Link"
-], function ( Fragment, Controller, History, PDFViewer, JSONModel,Router,BaseModel,Link) {
+], function ( Fragment, Controller, History, PDFViewer, JSONModel,Router,BaseModel, MessageBox, MessageToast, Link) {
     "use strict";
     var dateFormat = sap.ui.core.format.DateFormat.getDateInstance({
         pattern: "YYYY-MM-dd"
