@@ -154,7 +154,7 @@ sap.ui.define([
 
 
 			 
-			var queryFiltro = ` and belnr eq '${doc_BELNR}' and Bukrs eq '${BUKRS}' `
+			var queryFiltro = ` and belnr eq '${doc_BELNR}' and bukrs eq '${BUKRS}' `
  
 
 
