@@ -174,8 +174,13 @@
                             hAlign          = "Center" 
                             id              = "column7">
                             <Label text="{appTxts>/pay.headerNC}" />
+                            	
                             <t:template>
-                                <Text text="{Documentos>Nc}" wrapping="false"/>
+                                <core:Icon src="{
+								path: 'Documentos>Nc',
+								formatter: '.formatAvailableToIcon'
+							}"/>
+
                             </t:template>
                         </t:Column>
                         <t:Column 
@@ -184,7 +189,11 @@
                             id              = "column8">
                             <Label text="{appTxts>/pay.headerCP} 03" />
                             <t:template>
-                                <Text text="{Documentos>Cp03}" wrapping="false"/>
+                                
+                                <core:Icon src="{
+								path: 'Documentos>Cp03',
+								formatter: '.formatAvailableToIcon'
+							}"/>
                             </t:template>
                         </t:Column>
                         <t:Column 
@@ -193,7 +202,11 @@
                             id              = "column9">
                             <Label text="{appTxts>/pay.headerCP} 17S" />
                             <t:template>
-                                <Text text="{Documentos>Cp17s}" wrapping="false"/>
+                                
+                                 <core:Icon src="{
+								path: 'Documentos>Cp17s',
+								formatter: '.formatAvailableToIcon'
+							}"/>
                             </t:template>
                         </t:Column>
                         <t:Column 
@@ -202,7 +215,12 @@
                             id              = "column10">
                             <Label text="{appTxts>/pay.headerCP} 17R" />
                             <t:template>
-                                <Text text="{Documentos>Cp17r}" wrapping="false"/>
+                                                             <core:Icon src="{
+								path: 'Documentos>Cp17r',
+								formatter: '.formatAvailableToIcon'
+							}"/>
+
+
                             </t:template>
                         </t:Column>
                         <t:Column 

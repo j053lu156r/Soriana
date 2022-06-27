@@ -159,6 +159,18 @@ sap.ui.define([
 
             return renglones;
         },
+        formatAvailableToIcon : function(bAvailable) {
+            switch(bAvailable){
+                case '1':
+                    return  "sap-icon://accept";
+                    break;
+                default:
+                    return  "sap-icon://decline";        
+                    break;
+
+            }
+			return bAvailable ? "sap-icon://accept" : "sap-icon://decline";
+		},
         buildExportTable: function () {
             var texts = this.getOwnerComponent().getModel("appTxts");
 

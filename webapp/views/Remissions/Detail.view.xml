@@ -137,6 +137,7 @@
                                     <m:Column><m:Text text="{appTxts>/rem.description}" /></m:Column>
                                     <m:Column><m:Text text="{appTxts>/rem.quantity}" /></m:Column>
                                     <m:Column><m:Text text="{appTxts>/rem.received}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/rem.porAgotar}" /></m:Column>
                                     <m:Column><m:Text text="{appTxts>/rem.netcost}" /></m:Column>
                                     <m:Column><m:Text text="{appTxts>/rem.totalcost}" /></m:Column>
 								</m:columns>
@@ -152,7 +153,8 @@
                                                 xmlns="sap.m"
                                                 number="{parts: [{path: 'tableRemissionDetail>Menge'}, {path: 'tableRemissionDetail>Bstme'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
                                                 unit="{tableRemissionDetail>Bstme}" emphasized="false" state="None"/>
-                                            <m:ObjectIdentifier text="{tableRemissionDetail>Cantrecibida}" />                                       
+                                            <m:ObjectIdentifier text="{tableRemissionDetail>Cantrecibida}" />
+                                            <m:ObjectIdentifier text="{tableRemissionDetail>PorAgotar}" />
                                             <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" 
                                             xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
                                                 xmlns="sap.m"
@@ -195,6 +197,7 @@
                                     <m:Column><m:Text text="{appTxts>/rem.description}" /></m:Column>
                                     <m:Column><m:Text text="{appTxts>/rem.quantity}" /></m:Column>
                                     <m:Column><m:Text text="{appTxts>/rem.received}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/rem.porAgotar}" /></m:Column>
                                     <m:Column><m:Text text="{appTxts>/rem.netcost}" /></m:Column>
                                     <m:Column><m:Text text="{appTxts>/rem.totalcost}" /></m:Column>
 								</m:columns>
@@ -213,6 +216,7 @@
                                                 number="{parts: [{path: 'tableRemissionDetail>Menge'}, {path: 'tableRemissionDetail>Bstme'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
                                                 unit="{tableRemissionDetail>Bstme}" emphasized="false" state="None"/>
                                             <m:ObjectIdentifier text="{tableRemissionDetail>Cantrecibida}" />
+                                            <m:ObjectIdentifier text="{tableRemissionDetail>PorAgotar}" />
                                             <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" 
                                             xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
                                                 xmlns="sap.m"
