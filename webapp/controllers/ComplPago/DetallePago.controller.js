@@ -108,7 +108,9 @@ sap.ui.define([
 
 			//ciltro documento 
 			 
-
+			var dateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+				pattern: "YYYYMMdd"
+			});
 			let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
 			// format[AAAAMMDD] (2020101)
 			// let desde_LV_ZDESDE = this.buildSapDate( dateRange.getDateValue()       ); 
@@ -120,12 +122,16 @@ sap.ui.define([
 			//tomar valores dummy para hacer al consulta 
 			let todayDate = new Date();
 
+			console.log(this._fecha)
+
 			// format[AAAAMMDD] (2020101)
-			let desde_LV_ZDESDE =  this.buildSapDate(this._fecha); // '20210621'// this.buildSapDate(todayDate);
+			let desde_LV_ZDESDE =  this._fecha.replace(/-/g, ''); // '20210621'// this.buildSapDate(todayDate);
 			// format[AAAAMMDD] (2020101)
-			let desde_LV_ZHASTA = this.buildSapDate(todayDate);
+			let desde_LV_ZHASTA =  dateFormat.format(todayDate)// this.buildSapDate(todayDate);
 
 
+
+			
 
 			let doc_BELNR = this._document// documentoInput.getValue();
 
