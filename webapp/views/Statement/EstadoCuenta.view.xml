@@ -444,7 +444,7 @@
                 </OverflowToolbar>
 
                 <!-- tabla con agrupacion -->
-                <Table  selectionChange="handleSelection" growing="true" growingThreshold="10" inset="false" id="idGroupTable">
+                <Table  selectionChange="handleSelection" growing="true" growingThreshold="100" inset="false" id="idGroupTable">
                     <headerToolbar>
                     <OverflowToolbar id="idCrumbToolbar" >
                         <Breadcrumbs id="breadcrumb" />
