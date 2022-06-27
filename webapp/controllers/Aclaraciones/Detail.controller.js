@@ -21,8 +21,8 @@ sap.ui.define([
             this.configUploadSet( this.getView().byId("attachmentDocuments") );
             var oUploadSet = this.getView().byId("attachmentDocuments");
 
-         //   oUploadSet.attachAfterItemRemoved(this.onDeleteAttach.bind(this));
-           // oUploadSet.attachAfterItemAdded(this.addAttach.bind(this));
+         oUploadSet.attachAfterItemRemoved(this.onDeleteAttach.bind(this));
+          oUploadSet.attachAfterItemAdded(this.addAttach.bind(this));
             
             this.clearFields();
 			this.oRouter = this.getOwnerComponent().getRouter();
@@ -202,7 +202,8 @@ sap.ui.define([
                 }
                 
             }  
-            
+            console.log(objRelease)
+            /*
             let modelAclaraciones = new Aclaraciones();
 
             var response = modelAclaraciones.create("/EAclaHdrSet", objRelease);
@@ -225,7 +226,7 @@ sap.ui.define([
             } else {
                 sap.m.MessageBox.error("No se pudo conectar con el servidor, intente nuevamente.");
             }
-
+*/
 
         },
         goToMainReleases : function(){
@@ -233,7 +234,7 @@ sap.ui.define([
         },
         clearFields : function(){
             //descomentar esto
-        /*    this.getView().byId("clarificationType").setEnabled(true).setEditable(true);
+      this.getView().byId("clarificationType").setEnabled(true).setEditable(true);
             this.getView().byId("sourceDocument").setEnabled(true).setEditable(true);
             this.getView().byId("invoice").setEnabled(true).setEditable(true);
             this.getView().byId("comments").setEnabled(true).setEditable(true);
@@ -259,7 +260,7 @@ sap.ui.define([
             this.getView().byId("attachmentDocuments").destroyItems();
             this.getView().byId("attachmentDocuments").destroyIncompleteItems();
 
-            */
+          
             
             this.getOwnerComponent().setModel(new JSONModel(), "nRelease");
 
@@ -439,6 +440,7 @@ sap.ui.define([
 
 
             let files = this.getOwnerComponent().getModel("nRelease").getProperty("/attach");
+        
             
             if ( this.modo == 'new' && (files == null || files == undefined || files.length === 0) ){
                 sap.m.MessageBox.warning( this.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.msgNoFileAttach') );
