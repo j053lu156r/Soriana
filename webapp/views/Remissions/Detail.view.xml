@@ -75,7 +75,6 @@
 							<m:ObjectNumber number="{tableRemissionDetail>/Eremh/Ztipoaviso}" emphasized="false"/>
 							<m:Label text="{appTxts>/rem.statusRemission}"/>
 							<m:ObjectNumber number="{tableRemissionDetail>/Eremh/Zstatus}" emphasized="false"/>
-
                         <m:layoutData>
 						    <m:FlexItemData growFactor="1" />
 					    </m:layoutData>
@@ -87,6 +86,8 @@
 							<m:Text text="{tableRemissionDetail>/Eremh/Zcita}"/>
                             <m:Label text="{appTxts>/rem.typedeliv}" />
                             <m:Text text="{tableRemissionDetail>/Eremh/Ztipoentreg}"/>
+                            <m:Label text="{appTxts>/rem.remFolio}"/>
+							<m:Text text="{tableRemissionDetail>/Eremh/Remfolio}"/>
                         <m:layoutData>
 						    <m:FlexItemData growFactor="1" />
 					    </m:layoutData>
