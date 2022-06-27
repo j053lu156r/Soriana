@@ -381,7 +381,7 @@
                                                                     path : 'Catalogos>/UnidadMedida/results'
                                                                 }" >
                                                             <items>
-                                                                <core:Item key="{Catalogos>Cveunm}" text="{Catalogos>Unidad}"/>
+                                                                <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
                                                             </items>
                                                         </ComboBox>
                                                     </form:fields>
@@ -397,7 +397,7 @@
                                                                     path : 'Catalogos>/UnidadMedida/results'
                                                                 }">
                                                             <items>
-                                                                <core:Item key="{Catalogos>Cveunm}" text="{Catalogos>Unidad}"/>
+                                                                <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
                                                             </items>
                                                         </ComboBox>
                                                     </form:fields>
