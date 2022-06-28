@@ -81,7 +81,7 @@ sap.ui.define([
                 this.getSegments();
                  }
                   else{
-                 sap.m.MessageBox.error("Debe ingresar al menos un criterio de busqueda."); 
+                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.searchFieldsEmpty")); 
                   }    
             }
         },
