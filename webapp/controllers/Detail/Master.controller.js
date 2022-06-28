@@ -246,7 +246,7 @@ sap.ui.define([
                     method: "POST",
                     headers: {
                         "Content-Type": "text/xml",
-                        "Access-Control-Allow-Origin":"*"
+                        "Access-Control-Allow-Origin": "*"
                     },
                     "data": body,
                     success: function(response) {
