@@ -529,6 +529,15 @@
 					]
 				},
                 {
+                    "pattern": "detailDetailAporta/{layout}/{folio}",
+                    "name": "detailDetailAporta",
+                    "target": [
+                        "masterAportaciones",
+						"detailAportaciones",
+                        "detailDetailAporta"
+                    ]
+                },
+                {
                     "name": "masterAcuerdos",
                     "pattern": "masterAcuerdos",
                     "target": [
@@ -789,6 +798,11 @@
                     "viewName": "Detail",
                     "viewPath": "demo.views.Aportaciones",
                     "controlAggregation": "midColumnPages"
+                },
+                "detailDetailAporta": {
+                    "viewName": "DetailDetail",
+                    "viewPath": "demo.views.Aportaciones",
+                    "controlAggregation": "endColumnPages"
                 },
                 "masterAcuerdos" : {
                     "viewName": "Master",
