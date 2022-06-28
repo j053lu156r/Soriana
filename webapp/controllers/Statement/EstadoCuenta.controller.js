@@ -108,7 +108,7 @@ sap.ui.define([
 
 
             if (proveedor_LIFNR == null || proveedor_LIFNR == "") {
-                sap.m.MessageBox.error("El campo proveedor es obligatorio.");
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.supplierSelectError"));
                 return false;
             } 
 
@@ -292,7 +292,7 @@ this.initTable()
            
 
             if (proveedor_LIFNR == null || proveedor_LIFNR == "") {
-                sap.m.MessageBox.error("El campo proveedor es obligatorio.");
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.supplierSelectError"));
                 return false;
             } 
 

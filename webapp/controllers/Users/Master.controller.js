@@ -59,7 +59,7 @@ sap.ui.define([
                          if(vDropUser == ""){
                             if(vCallUser == ""){
                                 bContinue = false;
-                                sap.m.MessageBox.error("Debe ingresar al menos un criterio de busqueda.");
+                                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.searchFieldsEmpty"));
                             }else{
                             bContinue = true;     
                              }
