@@ -50,7 +50,7 @@ sap.ui.define([
             if (vLifnr != null && vLifnr != "") {
                 bContinue = true;
             } else {
-                sap.m.MessageBox.error("El campo proveedor es obligatorio.");
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.supplierSelectError"));
             }
 
             if (bContinue) {
@@ -59,7 +59,7 @@ sap.ui.define([
                         bContinue = true;
                     } else {
                         bContinue = false;
-                        sap.m.MessageBox.error("Debe ingresar al menos un criterio de busqueda.");
+                        sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.searchFieldsEmpty"));
                     }
                 } else {
                     bContinue = true;
