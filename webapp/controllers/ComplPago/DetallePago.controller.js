@@ -221,7 +221,7 @@ sap.ui.define([
 				var cost = groupedMovs[x].reduce(function (_this, val) {
 					var current =   Number(val.Wrbtr)  
 					var total = _this + current
-					return me.truncate(total, 2)
+					return total
 				}, 0);
 
 
@@ -230,7 +230,7 @@ sap.ui.define([
 					"totalRegs": groupedMovs[x].length,
 					"totalDebit": 0,
 					"totalCredit": 0,
-					"cost": Math.abs(cost),
+					"cost": me.truncate(cost,2),
 					"positions": groupedMovs[x]
 
 				})
