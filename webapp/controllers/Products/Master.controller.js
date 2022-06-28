@@ -1004,22 +1004,22 @@ sap.ui.define([
             Folio.ForNegoc = formatterCatPrd.findPropertieValue("Formatkey", "Descr", Folio.ForNegoc,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/NegotiatedFormat'));
 
-            Folio.EcUndaap = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.EcUndaap,
+            Folio.EcUndaap = formatterCatPrd.findPropertieValue("IsoCode", "Unidad", Folio.EcUndaap,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadLongitud'));
 
-            Folio.EcUndvol = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.EcUndvol,
+            Folio.EcUndvol = formatterCatPrd.findPropertieValue("IsoCode", "Unidad", Folio.EcUndvol,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadVolumen'));
 
-            Folio.EcUndp = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.EcUndp,
+            Folio.EcUndp = formatterCatPrd.findPropertieValue("IsoCode", "Unidad", Folio.EcUndp,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadPeso'));
 
-            Folio.PvUndaap = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.PvUndaap,
+            Folio.PvUndaap = formatterCatPrd.findPropertieValue("IsoCode", "Unidad", Folio.PvUndaap,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadLongitud'));
 
-            Folio.PvUndvol = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.PvUndvol,
+            Folio.PvUndvol = formatterCatPrd.findPropertieValue("IsoCode", "Unidad", Folio.PvUndvol,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadVolumen'));
 
-            Folio.PvUndp = formatterCatPrd.findPropertieValue("Cveunm", "Unidad", Folio.PvUndp,
+            Folio.PvUndp = formatterCatPrd.findPropertieValue("IsoCode", "Unidad", Folio.PvUndp,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/UnidadPeso'));
 
             Folio.Pais = formatterCatPrd.findPropertieValue("Land1", "Landx50", Folio.Pais,

@@ -574,7 +574,7 @@
                                     <Label text="{appTxts>/products.msgExpressedIn}" />
                                     <ComboBox id="EcUndaap" selectedKey="{Folio>/EcUndaap}" items="{path : 'Catalogos>/UnidadLongitud/results'}" required="true" editable="{ValidBarCode>/gs1Finded}">
                                         <items>
-                                            <core:Item key="{Catalogos>Cveunm}" text="{Catalogos>Unidad}"/>
+                                            <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
                                         </items>
                                     </ComboBox>
                                     <Label text="{appTxts>/products.volume}" />
@@ -582,7 +582,7 @@
                                     <Label text="{appTxts>/products.volumeUnit}" />
                                     <ComboBox id="EcUndvol" selectedKey="{Folio>/EcUndvol}" items="{path : 'Catalogos>/UnidadVolumen/results'}" required="true">
                                         <items>
-                                            <core:Item key="{Catalogos>Cveunm}" text="{Catalogos>Unidad}"/>
+                                            <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
                                         </items>
                                     </ComboBox>
                                     <Label text="{appTxts>/products.grossWeight}" />
@@ -592,7 +592,7 @@
                                     <Label text="{appTxts>/products.weightUnit}" />
                                     <ComboBox id="EcUndp" selectedKey="{Folio>/EcUndp}" items="{path : 'Catalogos>/UnidadPeso/results'}" required="true" editable="{ValidBarCode>/gs1Finded}">
                                         <items>
-                                            <core:Item key="{Catalogos>Cveunm}" text="{Catalogos>Unidad}"/>
+                                            <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
                                         </items>
                                     </ComboBox>
 
@@ -606,7 +606,7 @@
                                     <Label text="{appTxts>/products.msgExpressedIn}" />
                                     <ComboBox id="PvUndaap" selectedKey="{Folio>/PvUndaap}" items="{path : 'Catalogos>/UnidadLongitud/results'}" required="true">
                                         <items>
-                                            <core:Item key="{Catalogos>Cveunm}" text="{Catalogos>Unidad}"/>
+                                            <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
                                         </items>
                                     </ComboBox>
                                     <Label text="{appTxts>/products.volume}" />
@@ -614,7 +614,7 @@
                                     <Label text="{appTxts>/products.volumeUnit}" />
                                     <ComboBox id="PvUndvol" selectedKey="{Folio>/PvUndvol}" items="{path : 'Catalogos>/UnidadVolumen/results'}" required="true">
                                         <items>
-                                            <core:Item key="{Catalogos>Cveunm}" text="{Catalogos>Unidad}"/>
+                                            <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
                                         </items>
                                     </ComboBox>
                                     <Label text="{appTxts>/products.grossWeight}" />
@@ -624,7 +624,7 @@
                                     <Label text="{appTxts>/products.weightUnit}" />
                                     <ComboBox id="PvUndp" selectedKey="{Folio>/PvUndp}" items="{path : 'Catalogos>/UnidadPeso/results'}" required="true">
                                         <items>
-                                            <core:Item key="{Catalogos>Cveunm}" text="{Catalogos>Unidad}" />
+                                            <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}" />
                                         </items>
                                     </ComboBox>
 
