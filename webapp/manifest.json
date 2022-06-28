@@ -532,8 +532,7 @@
                     "pattern": "detailDetailAporta/{layout}/{folio}",
                     "name": "detailDetailAporta",
                     "target": [
-                        "masterAportaciones",
-						"detailAportaciones",
+                        "EstadoCuenta",
                         "detailDetailAporta"
                     ]
                 },
@@ -802,7 +801,7 @@
                 "detailDetailAporta": {
                     "viewName": "DetailDetail",
                     "viewPath": "demo.views.Aportaciones",
-                    "controlAggregation": "endColumnPages"
+                    "controlAggregation": "midColumnPages"
                 },
                 "masterAcuerdos" : {
                     "viewName": "Master",
