@@ -632,19 +632,48 @@ console.log(sPath)
               var sociedad = this.getOwnerComponent().getModel('totales').getProperty('/Bukrs')
              // var ejercicio = this.getOwnerComponent().getModel('totales').getProperty('/Gjahr')
   
+
               var ejercicio2 = results.Budat
               var ejercicio = ejercicio2.substr(0,4) ? ejercicio2.substr(0,4) : ""
-              console.log(sociedad,ejercicio)
-               this.getOwnerComponent().getRouter().navTo("detailAcuerdosAS",
-                  {
-                      layout: sap.f.LayoutType.TwoColumnsMidExpanded,
-                      document: results.Belnr,
-                      sociedad: sociedad,
-                      ejercicio: ejercicio,
-                      doc: results.Belnr,
-                     // zbukr: docResult.Zbukr,
-                     // lifnr: docResult.Lifnr
-                  }, true);
+
+              console.log(results)
+              var tcode = results.Tcode
+              console.log(sociedad,ejercicio,tcode)
+
+              if(tcode !== "Z_APORTACIONES"    ){
+
+                console.log('on detailAcuerdosAS')
+
+
+                this.getOwnerComponent().getRouter().navTo("detailAcuerdosAS",
+                {
+                    layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+                    document: results.Belnr,
+                    sociedad: sociedad,
+                    ejercicio: ejercicio,
+                    doc: results.Belnr,
+                   // zbukr: docResult.Zbukr,
+                   // lifnr: docResult.Lifnr
+                }, true);
+
+              }else{
+
+                console.log('on detailAportacionesAS')
+
+                this.getOwnerComponent().getRouter().navTo("detailAportacionesAS",
+                {
+                    layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+                    document: results.Belnr,
+                    view: 'EstadoCuenta',
+                    //ejercicio: ejercicio,
+                    //doc: results.Belnr,
+                   // zbukr: docResult.Zbukr,
+                   // lifnr: docResult.Lifnr
+                }, true);
+
+              }
+
+              
 
 
 

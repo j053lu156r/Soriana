@@ -494,8 +494,9 @@ sap.ui.define([
 				console.log(results)
 				//let registro = results[posicion];
 				//console.log(registro)
-			
-	
+				var tcode = results.Tcode
+
+	  if(tcode !== "Z_APORTACIONES" ){
 				 this.getOwnerComponent().getRouter().navTo("detailAcuerdos",
 					{
 						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
@@ -506,6 +507,28 @@ sap.ui.define([
 						fecha: this._fecha
 					   // lifnr: docResult.Lifnr
 					}, true);
+
+				}else{
+
+
+
+					this.getOwnerComponent().getRouter().navTo("detailAportacionesComplemento",
+					{
+						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
+						document: results.Belnr,
+ 						sociedad: this._sociedad,
+						ejercicio: this._ejercicio,
+					    doc: this._document,
+						fecha: this._fecha
+						//ejercicio: ejercicio,
+						//doc: results.Belnr,
+					   // zbukr: docResult.Zbukr,
+					   // lifnr: docResult.Lifnr
+					}, true);
+	
+	
+
+					}
 
 
 
