@@ -163,6 +163,7 @@ sap.ui.define([
 			this._sociedad = oEvent.getParameter("arguments").sociedad || this._sociedad || "0";
 			this._ejercicio = oEvent.getParameter("arguments").ejercicio || this._ejercicio || "0";
 			this._doc = oEvent.getParameter("arguments").doc || this._doc || "0";
+			this._fecha = oEvent.getParameter("arguments").fecha || this._fecha || "0";
 
 			console.log(this._document);
 
@@ -172,12 +173,13 @@ sap.ui.define([
 				model: "products"
 			});
 
+            /*
 			this.getView().setModel(new JSONModel({
 					"document": this._document
 				}),
 				"detailAcuerdos");
                 
-
+*/
 				//consume el servicio para obtener los docuemntos 
 
 				 this.searchData()
@@ -199,7 +201,7 @@ sap.ui.define([
 				sociedad: this._sociedad,
 				ejercicio: this._ejercicio,
                 doc:this._doc
-			});
+ 			});
 		},
 		handleExitFullScreen: function () {
 			this.bFocusFullScreenButton = true;
@@ -219,7 +221,9 @@ sap.ui.define([
 				layout: sap.f.LayoutType.TwoColumnsMidExpanded,
                 document: this._doc,
 				sociedad: this._sociedad,
-				ejercicio: this._ejercicio
+				ejercicio: this._ejercicio,
+                fecha:this._fecha
+
 			});
 		},
 
