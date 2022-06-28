@@ -5,9 +5,9 @@
 	 >
 		<cells>
 			<ObjectIdentifier
-				title="{GroupedTotales>name}"
+				title="{GroupedTotales>name}" wrapping="true"
 				   />
-                                <Text text="{GroupedTotales>IdNumTipomov} {GroupedTotales>DescTipomov}" wrapping="false" />
+                                <Text text="{GroupedTotales>IdNumTipomov} {GroupedTotales>DescTipomov}" wrapping="true" />
 
 				     <Text text="{=  (${GroupedTotales>Pendt} === true) ? 'Pendiente' : ( ${GroupedTotales>Belnr} === ${GroupedTotales>Augbl} ? 'Pago' : 'Contabilizado'  ) }" wrapping="false" />
 
@@ -20,8 +20,9 @@
                                   <Text text="{GroupedTotales>Ltext}" wrapping="false" />
 
                                 <Text text="{GroupedTotales>Budat}" wrapping="false" />
-                                <Text text="{GroupedTotales>Wrbtr}" wrapping="false" />
-                                 <Text text="{GroupedTotales>MCondicion}" wrapping="false" />
+	<ObjectNumber
+							number= "{parts: [{path: 'GroupedTotales>Wrbtr'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+							  />                                 <Text text="{GroupedTotales>MCondicion}" wrapping="false" />
                                 <!--
                                  <Text text="{GroupedTotales>BloqueoFlag}" wrapping="false" />
                              -->

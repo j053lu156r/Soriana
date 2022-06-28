@@ -189,8 +189,21 @@ sap.ui.define([
 
 			//filtrar totales y crear modelo grupal 
 
-			console.info("agrupando datos", Detalles)
-			let auxArray = [...Detalles]
+ 			let auxArray = [...Detalles]
+
+
+
+			var sumaAux = auxArray.reduce(function (_this, val) {
+				//console.log(val.Wrbtr)
+				var current = Number(val.Wrbtr) 
+				var total = _this + current
+				return  total
+			}, 0);
+
+			 
+
+
+
 
 
 			var groupedMovs = this.groupArrayOfObjects(auxArray, "DescripcionGpo");
@@ -203,21 +216,7 @@ sap.ui.define([
 
 				console.log("sumando valores");
 
-
-				var resultCredit = groupedMovs[x].reduce(function (_this, val) {
-					//console.log(val.Wrbtr)
-					var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
-					var total = _this + current
-					return me.truncate(total, 2)
-				}, 0);
-
-				//console.log(result)
-
-				var result = groupedMovs[x].reduce(function (_this, val) {
-					var current = val.Bschl !== "21" ? Number(val.Wrbtr) : 0
-					var total = _this + current
-					return me.truncate(total, 2)
-				}, 0);
+ 
 
 				var cost = groupedMovs[x].reduce(function (_this, val) {
 					var current =   Number(val.Wrbtr)  
@@ -229,8 +228,8 @@ sap.ui.define([
 				nestedMovs.push({
 					"name": x,
 					"totalRegs": groupedMovs[x].length,
-					"totalDebit": Math.abs(result),
-					"totalCredit": Math.abs(resultCredit),
+					"totalDebit": 0,
+					"totalCredit": 0,
 					"cost": Math.abs(cost),
 					"positions": groupedMovs[x]
 
@@ -248,34 +247,17 @@ sap.ui.define([
 				return me.truncate(total, 2)
 			}, 0);
 
-			var totalD = nestedMovs.reduce(function (_this, val) {
-				var current = Number(val.totalDebit)
-				var total = _this + current
-				return me.truncate(total, 2)
-			}, 0);
+		 
 
-			var totalC = nestedMovs.reduce(function (_this, val) {
-				var current = Number(val.totalCredit)
-				var total = _this + current
-				return me.truncate(total, 2)
-			}, 0);
-
-			var totalCostos = nestedMovs.reduce(function (_this, val) {
-				var current = Number(val.cost)
-				var total = _this + current
-				return me.truncate(total, 2)
-			}, 0);
-
-
-
-
+			var cor=.00001
+			sumaAux = sumaAux + cor
 			var jsonModelG = new JSONModel({
 				"Hierarchy": {
 					"movimientos": nestedMovs,
 					"totalR": totalR,
-					"totalD": totalD,
-					"totalC": totalC,
-					"totalCostos": totalCostos
+					"totalD": 0,
+					"totalC": 0,
+					"totalCostos": me.truncate(sumaAux,2)
 
 				}
 			});
