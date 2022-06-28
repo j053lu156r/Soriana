@@ -83,7 +83,7 @@
 					</Column>
 					  <Column
                         id="tipoMovColumn"
-                          demandPopin="false"
+                          demandPopin="true"
                            minScreenWidth="Tablet"
  visible="true"
                         >

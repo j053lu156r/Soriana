@@ -401,7 +401,7 @@
                     ]
                 },
                 {
-                    "pattern": "detailAcuerdos/{layout}/{document}/{sociedad}/{ejercicio}/{doc}",
+                    "pattern": "detailAcuerdos/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{fecha}",
                     "name": "detailAcuerdos",
                     "target": [
                         "masterCompl",
