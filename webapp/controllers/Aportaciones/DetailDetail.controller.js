@@ -34,7 +34,7 @@ sap.ui.define([
         },
         handleFullScreen: function () {
             this.bFocusFullScreenButton = true;
-			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/fullScreen");
+			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
             this.oRouter.navTo("detailDetailAporta",
                 {
                     layout: sNextLayout,
@@ -44,7 +44,7 @@ sap.ui.define([
         },
         handleExitFullScreen: function () {
             this.bFocusFullScreenButton = true;
-			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/exitFullScreen");
+			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
             this.oRouter.navTo("detailDetailAporta",
                 {
                     layout: sNextLayout,
@@ -53,8 +53,8 @@ sap.ui.define([
             );
         },
         handleClose: function () {
-            var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/closeColumn");
-            this.oRouter.navTo("detailAportaciones", 
+            var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
+            this.oRouter.navTo("EstadoCuenta", 
                 { 
                     layout: sNextLayout
                 }
