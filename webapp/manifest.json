@@ -401,7 +401,7 @@
                     ]
                 },
                 {
-                    "pattern": "detailAcuerdos/{layout}/{document}/{sociedad}/{ejercicio}/{doc}",
+                    "pattern": "detailAcuerdos/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{fecha}",
                     "name": "detailAcuerdos",
                     "target": [
                         "masterCompl",
@@ -410,11 +410,28 @@
                     ]
                 },
                 {
+                    "pattern": "detailAportacionesComplemento/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{fecha}",
+                    "name": "detailAportacionesComplemento",
+                    "target": [
+                        "masterCompl",
+                        "detailComplPagos",
+                        "detailAportacionesComplemento"
+                    ]
+                },
+                {
                     "pattern": "detailAcuerdosAS/{layout}/{document}/{sociedad}/{ejercicio}/{doc}",
                     "name": "detailAcuerdosAS",
                     "target": [
                         "EstadoCuenta",
                          "detailAcuerdosAS"
+                    ]
+                },
+                {
+                    "pattern": "detailAportacionesAS/{layout}/{document}/{view}",
+                    "name": "detailAportacionesAS",
+                    "target": [
+                        "EstadoCuenta",
+                         "detailAportacionesAccount"
                     ]
                 },
                 {
@@ -528,6 +545,14 @@
 						"detailAportaciones"
 					]
 				},
+                {
+                    "pattern": "detailDetailAporta/{layout}/{folio}",
+                    "name": "detailDetailAporta",
+                    "target": [
+                        "EstadoCuenta",
+                        "detailDetailAporta"
+                    ]
+                },
                 {
                     "name": "masterAcuerdos",
                     "pattern": "masterAcuerdos",
@@ -789,6 +814,21 @@
                     "viewName": "Detail",
                     "viewPath": "demo.views.Aportaciones",
                     "controlAggregation": "midColumnPages"
+                },
+                "detailDetailAporta": {
+                    "viewName": "DetailDetail",
+                    "viewPath": "demo.views.Aportaciones",
+                    "controlAggregation": "midColumnPages"
+                },
+                "detailAportacionesAccount": {
+                    "viewName": "DetailDetailAS",
+                    "viewPath": "demo.views.Aportaciones",
+                    "controlAggregation": "midColumnPages"
+                },
+                "detailAportacionesComplemento": {
+                    "viewName": "DetailDetailAS",
+                    "viewPath": "demo.views.Aportaciones",
+                    "controlAggregation": "endColumnPages"
                 },
                 "masterAcuerdos" : {
                     "viewName": "Master",

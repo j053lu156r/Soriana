@@ -142,7 +142,7 @@ sap.ui.define([
 
 
 			if (proveedor_LIFNR == null || proveedor_LIFNR == "") {
-				sap.m.MessageBox.error("El campo proveedor es obligatorio.");
+				sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.supplierSelectError"));
 				return false;
 			}
 
@@ -154,7 +154,7 @@ sap.ui.define([
 
 
 			 
-			var queryFiltro = ` and belnr eq '${doc_BELNR}' and bukrs eq '${BUKRS}' `
+			var queryFiltro = ` and belnr eq '${doc_BELNR}' and Bukrs eq '${BUKRS}' `
  
 
 
@@ -189,8 +189,21 @@ sap.ui.define([
 
 			//filtrar totales y crear modelo grupal 
 
-			console.info("agrupando datos", Detalles)
-			let auxArray = [...Detalles]
+ 			let auxArray = [...Detalles]
+
+
+
+			var sumaAux = auxArray.reduce(function (_this, val) {
+				//console.log(val.Wrbtr)
+				var current = Number(val.Wrbtr) 
+				var total = _this + current
+				return  total
+			}, 0);
+
+			 
+
+
+
 
 
 			var groupedMovs = this.groupArrayOfObjects(auxArray, "DescripcionGpo");
@@ -203,35 +216,21 @@ sap.ui.define([
 
 				console.log("sumando valores");
 
-
-				var resultCredit = groupedMovs[x].reduce(function (_this, val) {
-					//console.log(val.Wrbtr)
-					var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
-					var total = _this + current
-					return me.truncate(total, 2)
-				}, 0);
-
-				//console.log(result)
-
-				var result = groupedMovs[x].reduce(function (_this, val) {
-					var current = val.Bschl !== "21" ? Number(val.Wrbtr) : 0
-					var total = _this + current
-					return me.truncate(total, 2)
-				}, 0);
+ 
 
 				var cost = groupedMovs[x].reduce(function (_this, val) {
 					var current =   Number(val.Wrbtr)  
 					var total = _this + current
-					return me.truncate(total, 2)
+					return total
 				}, 0);
 
 
 				nestedMovs.push({
 					"name": x,
 					"totalRegs": groupedMovs[x].length,
-					"totalDebit": Math.abs(result),
-					"totalCredit": Math.abs(resultCredit),
-					"cost": Math.abs(cost),
+					"totalDebit": 0,
+					"totalCredit": 0,
+					"cost": me.truncate(cost,2),
 					"positions": groupedMovs[x]
 
 				})
@@ -248,34 +247,17 @@ sap.ui.define([
 				return me.truncate(total, 2)
 			}, 0);
 
-			var totalD = nestedMovs.reduce(function (_this, val) {
-				var current = Number(val.totalDebit)
-				var total = _this + current
-				return me.truncate(total, 2)
-			}, 0);
+		 
 
-			var totalC = nestedMovs.reduce(function (_this, val) {
-				var current = Number(val.totalCredit)
-				var total = _this + current
-				return me.truncate(total, 2)
-			}, 0);
-
-			var totalCostos = nestedMovs.reduce(function (_this, val) {
-				var current = Number(val.cost)
-				var total = _this + current
-				return me.truncate(total, 2)
-			}, 0);
-
-
-
-
+			var cor=.00001
+			sumaAux = sumaAux + cor
 			var jsonModelG = new JSONModel({
 				"Hierarchy": {
 					"movimientos": nestedMovs,
 					"totalR": totalR,
-					"totalD": totalD,
-					"totalC": totalC,
-					"totalCostos": totalCostos
+					"totalD": 0,
+					"totalC": 0,
+					"totalCostos": me.truncate(sumaAux,2)
 
 				}
 			});
@@ -393,6 +375,7 @@ sap.ui.define([
 				this.byId("mCondicionColumn").setVisible(true);
 				this.byId("bloqueoColumn").setVisible(true);
 				this.byId("conciliacionColumn").setVisible(true);
+				this.byId("tipoMovColumn").setVisible(true);
 
 				//totles 
 				this.byId("tipoColumn").setVisible(false);
@@ -413,6 +396,7 @@ sap.ui.define([
 				this.byId("statusColumn").setVisible(false);
 				this.byId("folioColumn").setVisible(false);
 				this.byId("referenceColumn").setVisible(false);
+				this.byId("tipoMovColumn").setVisible(false);
 
 				this.byId("typeDocColumn").setVisible(false);
 
@@ -510,8 +494,9 @@ sap.ui.define([
 				console.log(results)
 				//let registro = results[posicion];
 				//console.log(registro)
-			
-	
+				var tcode = results.Tcode
+
+	  if(tcode !== "Z_APORTACIONES" ){
 				 this.getOwnerComponent().getRouter().navTo("detailAcuerdos",
 					{
 						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
@@ -519,9 +504,31 @@ sap.ui.define([
 					    sociedad: this._sociedad,
 						ejercicio: this._ejercicio,
 					    doc: this._document,
+						fecha: this._fecha
+					   // lifnr: docResult.Lifnr
+					}, true);
+
+				}else{
+
+
+
+					this.getOwnerComponent().getRouter().navTo("detailAportacionesComplemento",
+					{
+						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
+						document: results.Belnr,
+ 						sociedad: this._sociedad,
+						ejercicio: this._ejercicio,
+					    doc: this._document,
+						fecha: this._fecha
+						//ejercicio: ejercicio,
+						//doc: results.Belnr,
 					   // zbukr: docResult.Zbukr,
 					   // lifnr: docResult.Lifnr
 					}, true);
+	
+	
+
+					}
 
 
 
@@ -565,7 +572,8 @@ sap.ui.define([
 				layout: sNextLayout,
 				document: this._document,
 				sociedad: this._sociedad,
-				ejercicio: this._ejercicio
+				ejercicio: this._ejercicio,
+				fecha: this._fecha
 			});
 		},
 		handleExitFullScreen: function () {
@@ -575,7 +583,8 @@ sap.ui.define([
 				layout: sNextLayout,
 				document: this._document,
 				sociedad: this._sociedad,
-				ejercicio: this._ejercicio
+				ejercicio: this._ejercicio,
+				fecha: this._fecha
 			});
 		},
 		handleClose: function () {

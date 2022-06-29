@@ -67,7 +67,7 @@
         <footer>
 			<Bar id="footerBar" design="Footer">
                 <contentLeft>
-                    <Text text="v2.9.1p" class="footerFeed sapUiTinyMarginBegin"/>
+                    <Text text="v2.9.7p" class="footerFeed sapUiTinyMarginBegin"/>
                 </contentLeft>
                 <contentMiddle>
                     <Text text="{appTxts>/global.footer.feed}" id="text9" class="footerFeed"/>
