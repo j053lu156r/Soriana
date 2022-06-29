@@ -648,7 +648,7 @@ console.log(sPath)
                 this.getOwnerComponent().getRouter().navTo("detailAcuerdosAS",
                 {
                     layout: sap.f.LayoutType.TwoColumnsMidExpanded,
-                    document: results.Belnr,
+                    document: results.Xblnr,
                     sociedad: sociedad,
                     ejercicio: ejercicio,
                     doc: results.Belnr,
@@ -663,7 +663,7 @@ console.log(sPath)
                 this.getOwnerComponent().getRouter().navTo("detailAportacionesAS",
                 {
                     layout: sap.f.LayoutType.TwoColumnsMidExpanded,
-                    document: results.Belnr,
+                    document: results.Xblnr,
                     view: 'EstadoCuenta',
                     //ejercicio: ejercicio,
                     //doc: results.Belnr,

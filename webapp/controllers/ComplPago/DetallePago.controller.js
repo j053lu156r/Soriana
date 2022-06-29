@@ -500,7 +500,7 @@ sap.ui.define([
 				 this.getOwnerComponent().getRouter().navTo("detailAcuerdos",
 					{
 						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
-						document: results.Belnr,
+						document: results.Xblnr,
 					    sociedad: this._sociedad,
 						ejercicio: this._ejercicio,
 					    doc: this._document,
@@ -515,7 +515,7 @@ sap.ui.define([
 					this.getOwnerComponent().getRouter().navTo("detailAportacionesComplemento",
 					{
 						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
-						document: results.Belnr,
+						document: results.Xblnr,
  						sociedad: this._sociedad,
 						ejercicio: this._ejercicio,
 					    doc: this._document,
