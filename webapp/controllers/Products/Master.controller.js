@@ -1624,7 +1624,6 @@ sap.ui.define([
 
             this.getOwnerComponent().getModel('Folio').setProperty("/ProdBase", oSelectedItem.getObject().DescLinea);
             //this.getOwnerComponent().getModel('Folio').setProperty("/EanUpcBase", oSelectedItem.getObject().NumLinea);
-            this.getOwnerComponent().getModel('Folio').setProperty("/PurGroup", oSelectedItem.getObject().GrupoCompras);
             this.getOwnerComponent().getModel('FolioToShow').setProperty("/ProdBase", oSelectedItem.getObject().DescLinea);
             // this.getOwnerComponent().getModel('FolioToShow').setProperty("/PurGroup", oSelectedItem.getObject().DescGcom);
 
