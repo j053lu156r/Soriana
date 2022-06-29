@@ -500,7 +500,7 @@ sap.ui.define([
 				 this.getOwnerComponent().getRouter().navTo("detailAcuerdos",
 					{
 						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
-						document: results.Xblnr,
+						document: results.Belnr,
 					    sociedad: this._sociedad,
 						ejercicio: this._ejercicio,
 					    doc: this._document,
