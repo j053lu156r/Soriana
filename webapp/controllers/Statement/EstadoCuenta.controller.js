@@ -648,10 +648,10 @@ console.log(sPath)
                 this.getOwnerComponent().getRouter().navTo("detailAcuerdosAS",
                 {
                     layout: sap.f.LayoutType.TwoColumnsMidExpanded,
-                    document: results.Xblnr,
+                    document: results.Belnr,
                     sociedad: sociedad,
                     ejercicio: ejercicio,
-                    doc: results.Belnr,
+                    doc: results.Xblnr,
                    // zbukr: docResult.Zbukr,
                    // lifnr: docResult.Lifnr
                 }, true);
