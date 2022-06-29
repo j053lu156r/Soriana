@@ -1,0 +1,152 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    controllerName="demo.controllers.Aportaciones.DetailDetailAS"
+	xmlns="sap.uxap"
+	xmlns:layout="sap.ui.layout"
+	xmlns:m="sap.m"
+    xmlns:f="sap.f"
+	height="100%">
+	<ObjectPageLayout id="ObjectPageLayout" 
+        showTitleInHeaderContent="true" 
+        upperCaseAnchorBar="false">
+		<headerTitle>
+            <ObjectPageDynamicHeaderTitle>
+                <expandedHeading>
+                    <m:Title text="{AportaDetDet>/SoButxt}" wrapping="true"/>
+                </expandedHeading>
+
+                <snappedHeading>
+                    <m:FlexBox fitContainer="true" alignItems="Center">
+                        <m:Title text="{AportaDetDet>/SoButxt}" wrapping="true" />
+                    </m:FlexBox>
+                </snappedHeading>
+
+                <actions>
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/endColumn/fullScreen} !== null }"/>
+					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/endColumn/exitFullScreen} !== null }"/>
+					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close end column" visible="true"/>
+                </actions>
+            </ObjectPageDynamicHeaderTitle>
+		</headerTitle>
+
+		<headerContent>
+            <m:VBox>
+                <m:Panel>
+    			    <m:FlexBox direction="Column" alignItems="Center">
+                        <m:Label text="{AportaDetDet>/SoStreet} No. {AportaDetDet>/SoHouseNum1}" design="Bold"/>
+                        <m:Label text="Col. {AportaDetDet>/SoCity2}" design="Bold"/>
+                        <m:Label text="RFC {AportaDetDet>/SoRfc}" design="Bold"/>
+                        <m:Label text="C.P. {AportaDetDet>/SoPostCode1}, {AportaDetDet>/SoCity1}, {AportaDetDet>/SoRegion}" design="Bold"/>
+                        <m:Label text="{appTxts>/aportaciones.detDetOfi}" design="Bold"/>
+                        <m:Label text="{AportaDetDet>/SoStreet} No. {AportaDetDet>/SoHouseNum1}" design="Bold"/>
+                        <m:Label text="Col. {AportaDetDet>/SoCity2}" design="Bold"/>
+                        <m:Label text="C.P. {AportaDetDet>/SoPostCode1}, {AportaDetDet>/SoCity1}, {AportaDetDet>/SoRegion}" design="Bold"/>
+			        </m:FlexBox>
+                </m:Panel>
+            </m:VBox>
+		</headerContent>
+
+		<sections>
+			<ObjectPageSection>
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<m:VBox>
+                                <m:Panel>
+                                    <m:FlexBox direction="Column" alignItems="Start">
+                                        <m:HBox>
+                                            <m:Label text="{appTxts>/aportaciones.detDetRec}" design="Bold" class="sapUiSmallMarginEnd"/>
+                                            <m:Text text="{AportaDetDet>/LfName1}"/>
+                                        </m:HBox>
+                                        <m:HBox>
+                                            <m:Label text="{appTxts>/aportaciones.detDetDom}" design="Bold" class="sapUiSmallMarginEnd"/>
+                                            <m:Text text="{AportaDetDet>/LfStras}"/>
+                                        </m:HBox>
+                                        <m:HBox>
+                                            <m:Label text="{appTxts>/aportaciones.detDetRfc}" design="Bold" class="sapUiSmallMarginEnd"/>
+                                            <m:Text text="{AportaDetDet>/LfStcd1}"/>
+                                        </m:HBox>
+                                        <m:HBox>
+                                            <m:Label text="{appTxts>/aportaciones.detDetEst}" design="Bold" class="sapUiSmallMarginEnd"/>
+                                            <m:Text text="xxx"/>
+                                        </m:HBox>
+                                        <m:HBox>
+                                            <m:Label text="{appTxts>/aportaciones.detDetCan}" design="Bold" class="sapUiSmallMarginEnd"/>
+                                            <m:Text text="{AportaDetDet>/ImpTotwrd}"/>
+                                        </m:HBox>
+                                        <m:HBox>
+                                            <m:Label text="{appTxts>/aportaciones.detDetCon}" design="Bold" class="sapUiSmallMarginEnd"/>
+                                            <m:Text text="{AportaDetDet>/Concepto}"/>
+                                        </m:HBox>
+                                        <m:HBox>
+                                            <m:Label text="{appTxts>/aportaciones.detDetAvi}" design="Bold" class="sapUiSmallMarginEnd"/>
+                                            <m:Text text="{AportaDetDet>/Folio}"/>
+                                        </m:HBox>
+                                    </m:FlexBox>
+                                    <m:FlexBox direction="Column" alignItems="Start">
+                                        <m:Label text=""/>
+                                        <m:HBox>
+                                            <m:Label text="{appTxts>/aportaciones.detDetFol}" design="Bold" class="sapUiSmallMarginEnd"/>
+                                            <m:Text text="000000"/>
+                                        </m:HBox>
+                                        <m:HBox>
+                                            <m:Label text="{appTxts>/aportaciones.detDetSer}" design="Bold" class="sapUiSmallMarginEnd"/>
+                                            <m:Text text="P"/>
+                                        </m:HBox>
+                                        <m:HBox>
+                                            <m:Label text="{appTxts>/aportaciones.detDetPro}" design="Bold" class="sapUiSmallMarginEnd"/>
+                                            <m:Text text="{AportaDetDet>/Lifnr}"/>
+                                        </m:HBox>
+                                        <m:HBox>
+                                            <m:Label text="{appTxts>/aportaciones.detDetFec}" design="Bold" class="sapUiSmallMarginEnd"/>
+                                            <m:Text text="{AportaDetDet>/Zfeautoriza}"/>
+                                        </m:HBox>
+                                    </m:FlexBox>
+                                    <m:FlexBox direction="Column" alignItems="Center">
+                                        <m:HBox>
+                                            <m:Label text="{appTxts>/aportaciones.detDetCos}" class="sapUiSmallMarginEnd"/>
+                                            <m:ObjectNumber
+                                                number="{
+                                                    parts:[{path:'AportaDetDet>/ImpAport'},{path:'CurrencyCode'}],
+                                                    type: 'sap.ui.model.type.Currency',
+                                                    formatOptions: {showMeasure: false}
+                                                        }"
+                                                unit="MXN" />
+                                        </m:HBox>
+                                        <m:HBox>
+                                            <m:Label text="{appTxts>/aportaciones.detDetIva}" class="sapUiSmallMarginEnd"/>
+                                            <m:ObjectNumber
+                                                number="{
+                                                    parts:[{path:'AportaDetDet>/ImpIva'},{path:'CurrencyCode'}],
+                                                    type: 'sap.ui.model.type.Currency',
+                                                    formatOptions: {showMeasure: false}
+                                                        }"
+                                                unit="MXN" />
+                                        </m:HBox>
+                                        <m:HBox>
+                                            <m:Label text="{appTxts>/aportaciones.detDetTot}" class="sapUiSmallMarginEnd"/>
+                                            <m:ObjectNumber
+                                                number="{
+                                                    parts:[{path:'AportaDetDet>/ImpTotal'},{path:'CurrencyCode'}],
+                                                    type: 'sap.ui.model.type.Currency',
+                                                    formatOptions: {showMeasure: false}
+                                                        }"
+                                                unit="MXN" />
+                                        </m:HBox>
+                                    </m:FlexBox>
+                                </m:Panel>
+                                <m:Panel>
+                                    <m:FlexBox direction="Column" alignItems="Start">
+                                        <m:Text text="{appTxts>/aportaciones.detDetPag}"/>
+                                        <m:Text text="{appTxts>/aportaciones.detDetRep}"/>
+                                        <m:Text text="{appTxts>/aportaciones.detDetAut}"/>
+                                    </m:FlexBox>
+                                </m:Panel>
+                            </m:VBox>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>
+	</ObjectPageLayout>
+</mvc:View>

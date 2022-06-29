@@ -38,6 +38,20 @@ sap.ui.define([
             var lModel = this.getOwnerComponent().getModel("cBot");
             if (lModel == null) {
                 this.initialChatBot()
+            }else{
+                // si existe el modelo checar si esta en la url adecuada, sino, redireccionar
+                //lmodel /oData/ETCBCTRLNAV/results/0
+                //parameter {"event":"navigate","target":"masterOrders"}
+                var objCont = lModel.getProperty("/ETCBCTRLNAV/results/0/parameter");
+                if(objCont != null && objCont !=""){                    
+                    var objChange = JSON.parse(objCont);
+                    this.oRouter = this.getOwnerComponent().getRouter();
+                    var sRouteName = oView.oController.currentRouteName;
+                    if (sRouteName != objChange.target) {                        
+                        this.oRouter.navTo(objChange.target);
+                    }
+                }
+
             }
 
             this.getOwnerComponent().getModel("configSite").setProperty("/hasAutoChat", false);

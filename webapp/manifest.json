@@ -410,11 +410,28 @@
                     ]
                 },
                 {
+                    "pattern": "detailAportacionesComplemento/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{fecha}",
+                    "name": "detailAportacionesComplemento",
+                    "target": [
+                        "masterCompl",
+                        "detailComplPagos",
+                        "detailAportacionesComplemento"
+                    ]
+                },
+                {
                     "pattern": "detailAcuerdosAS/{layout}/{document}/{sociedad}/{ejercicio}/{doc}",
                     "name": "detailAcuerdosAS",
                     "target": [
                         "EstadoCuenta",
                          "detailAcuerdosAS"
+                    ]
+                },
+                {
+                    "pattern": "detailAportacionesAS/{layout}/{document}/{view}",
+                    "name": "detailAportacionesAS",
+                    "target": [
+                        "EstadoCuenta",
+                         "detailAportacionesAccount"
                     ]
                 },
                 {
@@ -802,6 +819,16 @@
                     "viewName": "DetailDetail",
                     "viewPath": "demo.views.Aportaciones",
                     "controlAggregation": "midColumnPages"
+                },
+                "detailAportacionesAccount": {
+                    "viewName": "DetailDetailAS",
+                    "viewPath": "demo.views.Aportaciones",
+                    "controlAggregation": "midColumnPages"
+                },
+                "detailAportacionesComplemento": {
+                    "viewName": "DetailDetailAS",
+                    "viewPath": "demo.views.Aportaciones",
+                    "controlAggregation": "endColumnPages"
                 },
                 "masterAcuerdos" : {
                     "viewName": "Master",
