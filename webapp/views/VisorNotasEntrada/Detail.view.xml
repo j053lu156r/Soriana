@@ -111,30 +111,38 @@
                                 <m:Text text="{DetallePosiciones>Maktx}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto" id="idMenge" visible="true" sortProperty="Erfmg" filterProperty="Erfmg">
+                        <t:Column width="auto" id="idErfmg" visible="true" sortProperty="Erfmg" filterProperty="Erfmg">
                             <m:Label text="{appTxts>/visor.quantity}" />
                             <t:template>
                                 <m:Text text="{DetallePosiciones>Erfmg}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                         <t:Column width="auto" id="id" visible="true" sortProperty="Erfme" filterProperty="Erfme">
+
+                          <t:Column width="auto" id="idFconver" visible="true" sortProperty="Fconver"  filterProperty="Fconver">
+                            <m:Label text="{appTxts>/visor.Fconver}" />
+                            <t:template>
+                                <m:Text text="{DetallePosiciones>Fconver}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                     <!--   <t:Column width="auto" id="id" visible="true" sortProperty="Erfme" filterProperty="Erfme">
                             <m:Label text="{appTxts>/visor.umedida}" />
                             <t:template>
                                 <m:Text text="{DetallePosiciones>Erfme}" wrapping="false"/>
                             </t:template>
-                        </t:Column>
-                        <t:Column width="auto" id="idWerks" visible="true" sortProperty="Menge"  filterProperty="Menge">
-                            <m:Label text="{appTxts>/visor.capacidad}" />
+                        </t:Column>--> 
+                         <t:Column width="auto" id="idMenge" visible="true" sortProperty="Menge"  filterProperty="Menge">
+                            <m:Label text="{appTxts>/visor.capacidad} " />
                             <t:template>
                                 <m:Text text="{DetallePosiciones>Menge}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                          <t:Column width="auto" id="id22" visible="true" sortProperty="Meins" filterProperty="Meins">
+                      
+                        <!--  <t:Column width="auto" id="id22" visible="true" sortProperty="Meins" filterProperty="Meins">
                             <m:Label text="{appTxts>/visor.umedida}" />
                             <t:template>
                                 <m:Text text="{DetallePosiciones>Meins}" wrapping="false"/>
                             </t:template>
-                        </t:Column>
+                        </t:Column>--> 
   
                     </t:columns>
                   
