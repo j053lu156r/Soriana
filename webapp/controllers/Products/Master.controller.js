@@ -2012,13 +2012,41 @@ sap.ui.define([
                 case "Por Porcentaje":
                     this.byId("ValBoni").setVisible(true);
                     this.byId("UnisBonif").setVisible(false);
+                    this.byId("BonValue1").setVisible(true);
+                    this.byId("BonValue2").setVisible(true);
+                    this.byId("BonUnits1").setVisible(false);
+                    this.byId("BonUnits2").setVisible(false);
                     break;
                 case "Por Unidades":
                     this.byId("ValBoni").setVisible(false);
                     this.byId("UnisBonif").setVisible(true);
+                    this.byId("BonValue1").setVisible(false);
+                    this.byId("BonValue2").setVisible(false);
+                    this.byId("BonUnits1").setVisible(true);
+                    this.byId("BonUnits2").setVisible(true);
                     break;
             }
 
+        },
+
+        changePrecioSugerido(oControlEvent) {
+            let selected = oControlEvent.getParameter("value");
+
+            if(selected == "Farmacia Soriana"){
+                this.byId("MaxPubPrice").setVisible(true);
+                this.byId("PSug").setVisible(false);
+                this.byId("MaxPubPrice1").setVisible(true);
+                this.byId("PSug1").setVisible(false);
+                this.byId("MaxPubPrice2").setVisible(true);
+                this.byId("PSug2").setVisible(false);
+            }else{
+                this.byId("PSug").setVisible(true);
+                this.byId("MaxPubPrice").setVisible(false);
+                this.byId("PSug1").setVisible(true);
+                this.byId("MaxPubPrice1").setVisible(false);
+                this.byId("PSug2").setVisible(true);
+                this.byId("MaxPubPrice2").setVisible(false);
+            }
         },
 
         hardStepChange(oControlEvent) {

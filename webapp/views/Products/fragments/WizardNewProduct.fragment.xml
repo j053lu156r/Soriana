@@ -91,7 +91,7 @@
                                                 
                                                 <form:FormElement label="{appTxts>/products.productType}">
                                                     <form:fields>
-                                                        <ComboBox selectedKey="{Folio>/TipArt}" required="true" id="productType" items="{
+                                                        <ComboBox selectedKey="{Folio>/TipArt}" required="true" change="changePrecioSugerido" id="productType" items="{
                                                                     path : 'Catalogos>/TiposProducto/results'
                                                                 }" editable="{ValidBarCode>/value}">
                                                             <items>
@@ -725,6 +725,8 @@
                                     <Input id="CostNetVen" value="{Folio>/CostNUVenta}" type="Number" required="true" editable="false"/>
                                     <Label text="{appTxts>/products.suggestedPrice}" />
                                     <Input id="PSug" value="{Folio>/PSug}" type="Number" required="true"/>
+                                    <Label text="{appTxts>/products.maxPublicPrice}" />
+                                    <Input id="MaxPubPrice" value="{Folio>/PSug}" type="Number" required="true"/>
                                     
                                 </form:content>
                             </form:SimpleForm>
@@ -1039,11 +1041,11 @@
                                     <Label text="{appTxts>/products.subtitleBonusType}" />
                                     <Text text="{FolioToShow>/UndBon}" />
 
-                                    <Label text="{appTxts>/products.bonusValue}" />
-                                    <Text text="{FolioToShow>/ValBoni}" />
+                                    <Label id="BonValue1" text="{appTxts>/products.bonusValue}" />
+                                    <Text id="BonValue2" text="{FolioToShow>/ValBoni}" />
 
-                                    <Label text="{appTxts>/products.bonusUnits}" />
-                                    <Text text="{FolioToShow>/ValBoni}" />
+                                    <Label id="BonUnits1" text="{appTxts>/products.bonusUnits}" />
+                                    <Text id="BonUnits2" text="{FolioToShow>/ValBoni}" />
                                     
                                     <core:Title text="{appTxts>/products.titlePurchaseCosts}" />
 
@@ -1059,8 +1061,11 @@
                                     <Label text="{appTxts>/products.netCostUnitOfSale}" />
                                     <Text text="{FolioToShow>/CostNUVenta}" />
 
-                                    <Label text="{appTxts>/products.suggestedPrice}" />
-                                    <Text text="{FolioToShow>/PSug}" />
+                                    <Label id="PSug1" text="{appTxts>/products.suggestedPrice}" />
+                                    <Text id="PSug2" text="{FolioToShow>/PSug}" />
+
+                                    <Label id="MaxPubPrice1" text="{appTxts>/products.maxPublicPrice}" />
+                                    <Text id="MaxPubPrice2" text="{FolioToShow>/PSug}" />
                                     
 									</form:content>
 								</form:SimpleForm>
