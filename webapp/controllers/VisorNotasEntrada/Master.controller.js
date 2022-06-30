@@ -23,6 +23,9 @@ sap.ui.define([
             this._oPropertiesModel.setDefaultBindingMode(BindingMode.TwoWay);
             this.getOwnerComponent().setModel(this._oPropertiesModel, "properties");
             this.VisibleTable();
+           
+          
+
         },
 
         VisibleTable: function () {
@@ -31,14 +34,32 @@ sap.ui.define([
             that.oModel = new JSONModel({
                 idMblnr: true,
                 idEbeln: true,
-                idLifnr: false,
+              
                 idBudatMkpf: true,
                 idWerks: true,
                 idXblnr: true,
-                idMjahr: false,
+idXblnr2: true
+
+              
             })
             that.getView().setModel(that.oModel);
             that.TableVisible()
+            var texts = that.getOwnerComponent().getModel("appTxts");
+           var data=[];
+           data.push(
+        {"text":texts.getProperty("/visor.invoice"),  "key":"Xblnr2"},
+           {"text": texts.getProperty("/visor.folio"),  "key":"Mblnr"},
+            {"text":texts.getProperty("/visor.order"),  "key":"Ebeln"}
+           )
+           
+            var auxJsonModel = new sap.ui.model.json.JSONModel(data);
+            that.getView().setModel(auxJsonModel, 'OPFiltros');
+            var Fecha= new Date();
+           
+            Fecha = (Fecha.getTime() - (1000*60*60*24*90))
+          
+         that.getView().byId("dateRange").setDateValue(new Date());
+         that.getView().byId("dateRange").setSecondDateValue(new Date(Fecha));
 
         },
         TableVisible: function () {
@@ -46,14 +67,26 @@ sap.ui.define([
 
             that.getView().byId("idMblnr").setVisible(that.getView().getModel().getProperty("/idMblnr"));
             that.getView().byId("idEbeln").setVisible(that.getView().getModel().getProperty("/idEbeln"));
-            that.getView().byId("idLifnr").setVisible(that.getView().getModel().getProperty("/idLifnr"));
+           
             that.getView().byId("idBudatMkpf").setVisible(that.getView().getModel().getProperty("/idBudatMkpf"));
             that.getView().byId("idWerks").setVisible(that.getView().getModel().getProperty("/idWerks"));
             that.getView().byId("idXblnr").setVisible(that.getView().getModel().getProperty("/idXblnr"));
-            that.getView().byId("idMjahr").setVisible(that.getView().getModel().getProperty("/idMjahr"));
+            that.getView().byId("idXblnr2").setVisible(that.getView().getModel().getProperty("/idXblnr2"));
+            
+           
 
         },
-
+        Validacion:function(){
+            var that=this;
+           
+            if(!that.getView().byId("OPFiltrosC").getSelectedKey()){
+            
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/visor.ComboboxError'));
+               
+                that.getView().byId("inpInvoice").setValue("")
+                return false;
+            }
+        },
         onPress: function (oEvent) {
            
           
@@ -106,7 +139,7 @@ sap.ui.define([
             )
             if (this.getView().byId("inpInvoice").getValue()!==""){
                 auxFilters.push(new sap.ui.model.Filter({
-                    path: "Xblnr",
+                    path: that.getView().byId("OPFiltrosC").getSelectedKey(),
                     operator: sap.ui.model.FilterOperator.EQ,
                     value1: this.getView().byId("inpInvoice").getValue()
                 })
@@ -270,11 +303,11 @@ sap.ui.define([
             this.oModel.setData({
                 idMblnr: bSelected,
                 idEbeln: bSelected,
-                idLifnr: bSelected,
+              
                 idBudatMkpf: bSelected,
                 idWerks: bSelected,
                 idXblnr: bSelected,
-                idMjahr: bSelected
+                idXblnr2:bSelected,
 
             });
         },
