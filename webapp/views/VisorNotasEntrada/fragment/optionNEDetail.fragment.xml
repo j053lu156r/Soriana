@@ -3,17 +3,16 @@
 		<l:VerticalLayout>
 		
 		<CheckBox text="{appTxts>/visor.msgSelectAll}"
-				selected="{= ${/idEbelp} || ${/idEan11} || ${/idMaktx}|| ${/idMenge}|| ${/idWerks}}"
-				partiallySelected="{= !(${/idEbelp} &amp;&amp; ${/idEan11} &amp;&amp; ${/idMaktx}&amp;&amp; ${/idMenge}&amp;&amp; ${/idWerks})}"
+				selected="{= ${/idEbelp} || ${/idEan11} || ${/idMaktx}|| ${/idErfmg}|| ${/idFconver}|| ${/idMenge}}"
+				partiallySelected="{= !(${/idEbelp} &amp;&amp; ${/idEan11} &amp;&amp; ${/idMaktx}&amp;&amp; ${/idErfmg}&amp;&amp; ${/idFconver}&amp;&amp; ${/idMenge})}"
 				select="onParentClicked"/>
 			<c:HTML content="&lt;hr&gt;"/>
 			<CheckBox text="{appTxts>/visor.position}" selected="{/idEbelp}"/>
 			<CheckBox text="{appTxts>/visor.codigo}" selected="{/idEan11}"/>
 			<CheckBox text="{appTxts>/visor.descripcion}" selected="{/idMaktx}"/>
-			<CheckBox text="{appTxts>/visor.quantity}" selected="{/idMenge}"/>
-			<CheckBox text="{appTxts>/visor.capacidad}" selected="{/idWerks}"/>
-		
-		
+			<CheckBox text="{appTxts>/visor.quantity}" selected="{/idErfmg}"/>
+			<CheckBox text="{appTxts>/visor.Fconver}" selected="{/idFconver}"/>
+            <CheckBox text="{appTxts>/visor.capacidad}" selected="{/idMenge}"/>
 
 
 
