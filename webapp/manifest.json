@@ -427,6 +427,14 @@
                     ]
                 },
                 {
+                    "pattern": "EstadoCuentaReporte/{layout}/{document}/{proveedor}/{serie}/{fecha}",
+                    "name": "EstadoCuentaReporte",
+                    "target": [
+                        "EstadoCuenta",
+                         "EstadoCuentaReporte"
+                    ]
+                },
+                {
                     "pattern": "detailAportacionesAS/{layout}/{document}/{view}",
                     "name": "detailAportacionesAS",
                     "target": [
@@ -666,6 +674,12 @@
                     "controlId": "app",
                     "viewPath": "demo.views.Statement"
                 },
+                "EstadoCuentaReporte": {
+                    "viewType": "XML",
+                    "viewName": "DetailReporte",
+                     "controlAggregation": "midColumnPages",
+                     "viewPath": "demo.views.Statement"
+                 },
                 "masterRelease":{
                     "viewName": "Master",
                     "viewPath": "demo.views.MiBandeja.Releases",

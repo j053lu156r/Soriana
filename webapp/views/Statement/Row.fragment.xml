@@ -29,6 +29,13 @@
                                  <Text text="{GroupedTotales>BloqueoFlag}" wrapping="false" />
                              -->
 
+
+											<Button text="Ver reporte" press=".onPress" />
+
+
+
+
+
                                  	<ObjectMarker
 					
 					visible="{=  ${GroupedTotales>BloqueoFlag} === '' ? false : true }"
