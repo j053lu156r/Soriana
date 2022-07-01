@@ -47,13 +47,30 @@
                                     </fb:control>
                                 </fb:FilterGroupItem>
 
-                                <fb:FilterGroupItem groupName="__$INTERNAL$" name="Invoice" 
-                                    label="{appTxts>/visor.invoice}" mandatory="false" 
+                                <fb:FilterGroupItem groupName="__$INTERNAL$" name="Invoice2" 
+                                    label="{appTxts>/visor.filtros}" mandatory="false" 
                                     partOfCurrentVariant="true" visibleInFilterBar="true">
                                     <fb:control>
-                                        <Input
-                                            id="inpInvoice" placeholder="{appTxts>/visor.invoice}"/>
+                                     	<ComboBox id="OPFiltrosC"
+                                            items="{
+                                                path: 'OPFiltros>/',
+                                                sorter: { path: 'text' }
+                                            }">
+                                            <core:Item key="{OPFiltros>key}" text="{OPFiltros>text}" />
+                                        </ComboBox>
+                                       
                                     </fb:control>
+                                    
+                                </fb:FilterGroupItem>
+                                 <fb:FilterGroupItem groupName="__$INTERNAL$" name="Invoice" 
+                                    label="" mandatory="false" 
+                                    partOfCurrentVariant="true" visibleInFilterBar="true">
+                                    <fb:control>
+                                     
+                                        <Input
+                                            id="inpInvoice" placeholder="{appTxts>/visor.placeholder}" liveChange="Validacion"/>
+                                    </fb:control>
+                                    
                                 </fb:FilterGroupItem>
                             </fb:filterGroupItems>
                     </fb:FilterBar>
@@ -94,12 +111,7 @@
                                 <Text text="{migoModel>Ebeln}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto" id="idLifnr" visible="false" sortProperty="Lifnr" filterProperty="Lifnr">
-                            <Label text="{appTxts>/visor.supplier}" />
-                            <t:template>
-                                <Text text="{migoModel>Lifnr}" wrapping="false"/>
-                            </t:template>
-                        </t:Column>
+                       
                         <t:Column width="auto" id="idBudatMkpf" visible="true" sortProperty="BudatMkpf" filterProperty="BudatMkpf">
                             <Label text="{appTxts>/visor.receivedDate}" />
                             <t:template>
@@ -112,19 +124,20 @@
                                 <Text text="{migoModel>Werks}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto" id="idXblnr" visible="true" sortProperty="Xblnr" filterProperty="Xblnr"> 
-                            <Label text="{appTxts>/visor.invoice}" />
+                         <t:Column width="auto" id="idXblnr" visible="true" sortProperty="Xblnr"  filterProperty="Xblnr">
+                            <Label text="{appTxts>/visor.Frecibo}" />
                             <t:template>
                                 <Text text="{migoModel>Xblnr}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                      
-                        <t:Column width="auto" id="idMjahr" visible="true" sortProperty="Mjahr" filterProperty="Mjahr">
-                            <Label text="{appTxts>/visor.SerieFolio}" />
+                        <t:Column width="auto" id="idXblnr2" visible="true" sortProperty="Xblnr2" filterProperty="Xblnr2"> 
+                            <Label text="{appTxts>/visor.invoice}" />
                             <t:template>
-                                <Text text="{migoModel>Mjahr}" wrapping="false"/>
+                                <Text text="{migoModel>Xblnr2}" wrapping="false"/>
                             </t:template>
                         </t:Column>
+                      
+                       
                           
                     </t:columns>
                   

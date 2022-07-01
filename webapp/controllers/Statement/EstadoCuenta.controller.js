@@ -651,7 +651,7 @@ console.log(sPath)
                     document: results.Belnr,
                     sociedad: sociedad,
                     ejercicio: ejercicio,
-                    doc: results.Belnr,
+                    doc: results.Xblnr,
                    // zbukr: docResult.Zbukr,
                    // lifnr: docResult.Lifnr
                 }, true);
@@ -663,7 +663,7 @@ console.log(sPath)
                 this.getOwnerComponent().getRouter().navTo("detailAportacionesAS",
                 {
                     layout: sap.f.LayoutType.TwoColumnsMidExpanded,
-                    document: results.Belnr,
+                    document: results.Xblnr,
                     view: 'EstadoCuenta',
                     //ejercicio: ejercicio,
                     //doc: results.Belnr,

@@ -3,17 +3,17 @@
 		<l:VerticalLayout>
 		
 			<CheckBox text="{appTxts>/visor.msgSelectAll}"
-				selected="{= ${/idMblnr} || ${/idEbeln} || ${/idLifnr}|| ${/idBudatMkpf}|| ${/idWerks}|| ${/idXblnr}|| ${/idMjahr}}"
-				partiallySelected="{= !(${/idMblnr} &amp;&amp; ${/idEbeln} &amp;&amp; ${/idLifnr}&amp;&amp; ${/idBudatMkpf}&amp;&amp; ${/idWerks}&amp;&amp; ${/idXblnr}&amp;&amp; ${/idMjahr})}"
+				selected="{= ${/idMblnr} || ${/idEbeln} || ${/idBudatMkpf}|| ${/idWerks}|| ${/idXblnr}|| ${/idXblnr2}}"
+				partiallySelected="{= !(${/idMblnr} &amp;&amp; ${/idEbeln} &amp;&amp; ${/idBudatMkpf}&amp;&amp; ${/idWerks}&amp;&amp; ${/idXblnr}&amp;&amp; ${/idXblnr2})}"
 				select="onParentClicked"/>
 			<c:HTML content="&lt;hr&gt;"/>
 			<CheckBox text="{appTxts>/visor.folio}" selected="{/idMblnr}"/>
 			<CheckBox text="{appTxts>/visor.order}" selected="{/idEbeln}"/>
-			<CheckBox text="{appTxts>/visor.supplier}" selected="{/idLifnr}"/>
 			<CheckBox text="{appTxts>/visor.receivedDate}" selected="{/idBudatMkpf}"/>
 			<CheckBox text="{appTxts>/visor.branchOffice}" selected="{/idWerks}"/>
-			<CheckBox text="{appTxts>/visor.invoice}" selected="{/idXblnr}"/>
-			<CheckBox text="{appTxts>/visor.SerieFolio}" selected="{/idMjahr}"/>
+			<CheckBox text="{appTxts>/visor.Frecibo}" selected="{/idXblnr}"/>
+            <CheckBox text="{appTxts>/visor.invoice}" selected="{/idXblnr2}"/>
+			
 		
 		
 			
