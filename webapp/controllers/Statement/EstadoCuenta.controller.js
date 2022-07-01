@@ -920,14 +920,15 @@ sap.ui.define([
        var    serieNonumbers =  serieOriginal.replace(/[0-9]/g, '');
 
        var serie =   serieNonumbers.replace('-','')
-
+        var folio = serieOriginal.replace(/\D/g,'')
        console.log(serieNonumbers)
        console.log(serie)
+       console.log(folio)
 
 
             this.getOwnerComponent().getRouter().navTo("EstadoCuentaReporte", {
                 layout: sap.f.LayoutType.TwoColumnsMidExpanded,
-                document: results.Belnr,
+                document: folio,
                 proveedor: proveedor,
                 serie: serieNonumbers,
                 fecha: results.Budat
