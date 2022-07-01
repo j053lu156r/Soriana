@@ -2217,10 +2217,6 @@ sap.ui.define([
 
         sendDataForNotification() {
 
-            console.log("Archivo excel: ", this.massiveFile64);
-
-            // previamente se debe subir el archivo al repositorio y despues enviar la notificacion
-
             let fileMassive = this.byId("fileUploaderMassiveReg").getValue();
             let comprasMail = this.byId("correoInput").getValue();
 
@@ -2246,7 +2242,7 @@ sap.ui.define([
             let resp = NotifAltaMas.create("/HeaderSet", createObjReq);
 
             if (resp.EvSendStatus == "OK") {
-                sap.m.MessageBox.success(resp.EvSendStatus);
+                sap.m.MessageBox.success("Folio: " + resp.EvFolio);
                 this.closeDialog('massiveRegisterDialog');
             } else {
                 sap.m.MessageBox.error(resp.ETRETURN.results[0].Message);
