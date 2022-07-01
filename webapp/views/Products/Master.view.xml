@@ -77,7 +77,7 @@
                                     <Input
                                         id="inputFolioTxt"
                                         placeholder="{appTxts>/products.folio}"
-                                        class="sapUiSmallMarginBottom" />
+                                         />
                                 </fb:control>
                             </fb:FilterGroupItem>
 
@@ -130,7 +130,7 @@
                                 partOfCurrentVariant = "true" 
                                 visibleInFilterBar   = "true">
                                 <fb:control>
-                                    <MessageStrip class="sapUiSmallMarginBottom"
+                                    <MessageStrip
                                             text="{appTxts>/products.msgMyProducts}"
                                             showIcon="true"/>
                                 </fb:control>
