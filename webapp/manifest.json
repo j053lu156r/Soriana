@@ -569,6 +569,14 @@
                     ]
                 },
                 {
+                    "pattern": "detailDetailAcu/{layout}/{sociedad}/{documento}/{ejercicio}/{tienda}",
+                    "name": "detailDetailAcu",
+                    "target": [
+                        "masterAcuerdos",
+                        "detailDetailAcu"
+                    ]
+                },
+                {
                     "name": "Products",
                     "pattern": "Products",
                     "target": [
@@ -848,6 +856,11 @@
                     "viewName": "Master",
                     "viewPath": "demo.views.Acuerdos",
                     "controlAggregation": "beginColumnPages"
+                },
+                "detailDetailAcu": {
+                    "viewName": "DetailDetail",
+                    "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "midColumnPages"
                 },
                 "detailAcuerdos": {
                     "viewName": "Detail",

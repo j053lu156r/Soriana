@@ -69,11 +69,31 @@ sap.ui.define([
                     url += "DoAcuerdo eq '" + acuerdo + "'";
                 }
 
-                var dueModel = oModel.getJsonModel(url);
+                /*var dueModel = oModel.getJsonModel(url);
                 var ojbResponse = dueModel.getProperty("/results/0");
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(ojbResponse),
                     "AcuerdosHdr");
-                this.paginate("AcuerdosHdr", "/AcuerdosDet", 1, 0);
+                this.paginate("AcuerdosHdr", "/AcuerdosDet", 1, 0);*/
+
+                this.getView().byId('tableAcuerdos').setBusy(true);
+                oModel.getJsonModelAsync(
+                    url,
+                    function (jsonModel, parent) {
+                        var objResponse = jsonModel.getProperty("/results/0");
+
+                        if (objResponse != null) {
+                            parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(objResponse),
+                                "AcuerdosHdr");
+
+                            parent.paginate("AcuerdosHdr", "/AcuerdosDet", 1, 0);
+                        }
+                        parent.getView().byId('tableAcuerdos').setBusy(false);
+                    },
+                    function (parent) {
+                        parent.getView().byId('tableAcuerdos').setBusy(false);
+                    },
+                    this
+                );
             }
 
         },
@@ -138,6 +158,31 @@ sap.ui.define([
             ];
 
             this.exportxls('AcuerdosHdr', '/AcuerdosDet/results', columns);
+        },
+
+        onListItemPress: function (oEvent) {
+            var resource = oEvent.getSource().getBindingContext("AcuerdosHdr").getPath(),
+                line = resource.split("/").slice(-1).pop();
+
+            var odata = this.getOwnerComponent().getModel("AcuerdosHdr");
+            var results = odata.getProperty("/AcuerdosDet/Paginated/results");
+
+            var docResult = results[line];
+
+            var sociedad = this.getView().byId("sociedadInput").getValue();
+            var documento = this.getView().byId("documentoInput").getValue();
+            var ejercicio = this.getView().byId("ejercicioInput").getValue();
+
+            this.getOwnerComponent().getRouter().navTo("detailDetailAcu",
+                {
+                    layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+                    sociedad: sociedad,
+                    documento: documento,
+                    ejercicio: ejercicio,
+                    tienda: docResult.Centro
+
+                }, true);
+
         }
 
     });
