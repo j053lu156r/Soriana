@@ -411,6 +411,19 @@ function Acuerdos() {
 Acuerdos.prototype = Object.create(BaseModel.prototype);
 Acuerdos.prototype.constructor = Acuerdos;//Model Acuerdos
 
+//MOdel REporte  Mejor Condicion 
+
+//Model Acuerdos
+function MejorCond() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_MEJOR_COND_REP_SRV/";
+    params.sModel = "mejorCondModel";
+    BaseModel.call(this, params);
+}
+
+MejorCond.prototype = Object.create(BaseModel.prototype);
+MejorCond.prototype.constructor = MejorCond;//Model Mejor Cond Model
+
 //Model citas 1
 function RemissionCancel() {
     var params = {};
