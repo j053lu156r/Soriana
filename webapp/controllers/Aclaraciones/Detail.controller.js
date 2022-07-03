@@ -212,18 +212,18 @@ return formateado
                 }
                 
             }  
-            console.log(objRelease)
-          
+            console.log(JSON.stringify(objRelease))
+      
             var model = "ZOSP_ACLARA_SRV";
             var entity = "/EAclaHdrSet";
             var json2 = JSON.stringify(objRelease);
-var that=this;
+            var that=this;
             sap.ui.core.BusyIndicator.show();
             that._POSToDataV2(model, entity, json2 ).then(function (_GEToDataV2Response) {
                 sap.ui.core.BusyIndicator.hide();
-                console.log(_GEToDataV2Response)
+            
                 var response = _GEToDataV2Response.d;
-                console.log(response)
+              
                 if (response != null) {
                     if (response.ESuccess == "X") {
                         let msg = (folio != '')? that.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.msgUpdated') : that.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.msgSaved') + ' ' + response.IFolio;
@@ -244,30 +244,9 @@ var that=this;
 
               
             });
+       
 
-         /*   let modelAclaraciones = new Aclaraciones();
 
-            var response = modelAclaraciones.create("/EAclaHdrSet", objRelease);
-
-            
-
-            if (response != null) {
-                if (response.ESuccess == "X") {
-                    let msg = (folio != '')? this.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.msgUpdated') : this.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.msgSaved') + ' ' + response.IFolio;
-                    sap.m.MessageBox.success( msg, {
-                        actions: [sap.m.MessageBox.Action.CLOSE],
-                        emphasizedAction: sap.m.MessageBox.Action.CLOSE,
-                        onClose: function (sAction) {
-                            this.goToMainReleases();
-                        }.bind(this)
-                    });
-                } else {
-                    sap.m.MessageBox.error( response.EMessage );
-                }
-            } else {
-                sap.m.MessageBox.error("No se pudo conectar con el servidor, intente nuevamente.");
-            }
-*/
 
         },
         goToMainReleases : function(){
@@ -458,6 +437,10 @@ var that=this;
                 this.getView().byId('status').setValueState( sap.ui.core.ValueState.Error );
             }
 
+            if( this.getView().byId('receipt').getValue() == '' ){
+                valid = false;
+                this.getView().byId('receipt').setValueState( sap.ui.core.ValueState.Error );
+            }
             //Se quita la obligatoriedad del centro de distribución por solicitud de Omar vía WhatsApp 26/10/2021 21:54
             /*if( this.getView().byId('distributionCenter').getValue().trim() == '' || this.getView().byId('distributionCenter').getValueState() !== sap.ui.core.ValueState.Success ){
                 valid = false;
