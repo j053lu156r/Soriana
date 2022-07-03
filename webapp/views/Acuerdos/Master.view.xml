@@ -86,7 +86,7 @@
 			<Table 
                 noDataText="{appTxts>/acuerdos.noData}" 
                 id="tableAcuerdos"
-                items="{AcuerdosHdr>/AcuerdosDet/results}">
+                items="{AcuerdosHdr>/AcuerdosDet/Paginated/results}">
                 <headerToolbar>
                     <OverflowToolbar>
                         <Title text="{appTxts>/acuerdos.title} ({AcuerdosHdr>/AcuerdosDet/results/length})" />
@@ -140,7 +140,7 @@
 					</Column>
 				</columns>
 				<items>
-					<ColumnListItem >                    
+					<ColumnListItem type="Navigation" press="onListItemPress">                    
 						<cells>
                             <ObjectIdentifier 
                                 title="{AcuerdosHdr>Centro}" 
