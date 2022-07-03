@@ -42,6 +42,9 @@ sap.ui.define([
             };
 
 
+          
+
+
 
             this.getOwnerComponent().setModel(new JSONModel(Catalogos), "catalogos");
             sap.ui.getCore().setModel(new JSONModel(JSON.parse(JSON.stringify(Catalogos))), "catalogos_base");
@@ -55,6 +58,12 @@ sap.ui.define([
                     this.clearFilters();
                 }
             }, this);
+
+           
+            console.log(this.getView().byId("dateRangeAcl").getDateValue())
+           
+            
+            
 
         },
 /* Validacion para activar  boton nueva Aclaracion*/
@@ -124,11 +133,17 @@ if (that.getView().byId("supplierInput").getValue()===""){
 			that.getView().setModel(that.oModel);
 			that.TableVisible()
 
-
-
-
+           
         },
-
+        onAfterRendering:function(){
+            console.log(this.getView().byId("dateRangeAcl").getDateValue())
+    var Fecha= new Date();
+  
+    Fecha = (Fecha.getTime() - (1000*60*60*24*90))
+  
+ this.getView().byId("dateRangeAcl").setDateValue(new Date(Fecha));
+ this.getView().byId("dateRangeAcl").setSecondDateValue(new Date());
+},
         ConfigTable: function() {
             var that= this;
 			var oDialog = that.getView().byId("dinamicTable");
@@ -200,7 +215,7 @@ if (that.getView().byId("supplierInput").getValue()===""){
             if (!this.hasAccess(18)) {
                 return false;
             }
-            var dateRange = this.getView().byId("dateRange");
+            var dateRange = this.getView().byId("dateRangeAcl");
             var comboStatus = this.getView().byId("comboStatus");
             var inputFolioTxt = this.getView().byId("inputFolioTxt");
 
@@ -276,7 +291,7 @@ if (that.getView().byId("supplierInput").getValue()===""){
         clearFilters: function () {
             this.getView().byId("inputFolioTxt").setValue('');
             this.getView().byId("comboStatus").setSelectedKey('');
-            this.getView().byId("dateRange").setValue('');
+            this.getView().byId("dateRangeAcl").setValue('');
         },
         newClarification: function () {
             var that= this;
@@ -290,8 +305,8 @@ if (that.getView().byId("supplierInput").getValue()===""){
            
             }
            },
-        setDaterangeMaxMin: function () {
-            var datarange = this.getView().byId('dateRange');
+     /*   setDaterangeMaxMin: function () {
+            var datarange = this.getView().byId('dateRangeAcl');
             var date = new Date();
             var minDate = new Date();
             var minConsultDate = new Date();
@@ -299,7 +314,7 @@ if (that.getView().byId("supplierInput").getValue()===""){
             minDate.setDate(date.getDate() - 30);
             datarange.setSecondDateValue(date);
             datarange.setDateValue(minConsultDate);
-        },
+        },*/
         genereteRowAction: function () {
             var texts = this.getOwnerComponent().getModel("appTxts");
 

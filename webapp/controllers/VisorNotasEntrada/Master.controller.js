@@ -58,8 +58,10 @@ idXblnr2: true
            
             Fecha = (Fecha.getTime() - (1000*60*60*24*90))
           
-         that.getView().byId("dateRange").setDateValue(new Date());
-         that.getView().byId("dateRange").setSecondDateValue(new Date(Fecha));
+         that.getView().byId("dateRange").setDateValue(new Date(Fecha));
+         that.getView().byId("dateRange").setSecondDateValue(new Date());
+
+         
 
         },
         TableVisible: function () {
