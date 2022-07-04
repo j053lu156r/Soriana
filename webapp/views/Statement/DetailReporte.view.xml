@@ -5,22 +5,49 @@
     xmlns:vm="sap.ui.comp.variants" 
     xmlns="sap.m" 
     xmlns:core="sap.ui.core"
-	 controllerName="demo.controllers.Acuerdos.Master" height="100%">
+	 controllerName="demo.controllers.Statement.DetailReporte" height="100%">
 	<f:DynamicPage  
 		class="sapUiContentPadding">
         <!-- DynamicPage Title -->
-        <!--<f:title>
-            <f:DynamicPageTitle backgroundDesign="Transparent">
-                <f:heading>
-                    <vm:VariantManagement standardItemText="{appTxts>/acuerdos.title}">
-                    </vm:VariantManagement>
-                </f:heading>
-            </f:DynamicPageTitle>
-        </f:title>-->
-        <!-- DynamicPage Header -->
+      	<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="{detailAcuerdosAS>/document}"/>
+				</f:heading>
+				<!--
+					<f:breadcrumbs>
+						<Breadcrumbs>
+							<Link text="Home" />
+							<Link text="Page 1" />
+							<Link text="Page 2" />
+							<Link text="Page 3" />
+							<Link text="Page 4" />
+							<Link text="Page 5" />
+						</Breadcrumbs>
+					</f:breadcrumbs>
+				-->
+				<f:expandedContent>
+					<Label text="{detailAcuerdosAS>/document}"/>
+				</f:expandedContent>
+				<f:snappedContent>
+					<Label text="{detailAcuerdosAS>/document}"/>
+				</f:snappedContent>
+				<f:snappedTitleOnMobile>
+					<Title text="{detailAcuerdosAS>/document}"/>
+				</f:snappedTitleOnMobile>
+
+
+				<f:navigationActions>
+					<Button icon="sap-icon://full-screen" type="Transparent" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }" />
+					<Button icon="sap-icon://exit-full-screen" type="Transparent" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }" />
+					<Button icon="sap-icon://decline" type="Transparent" press="handleClose" tooltip="Close column" />
+				</f:navigationActions>
+			</f:DynamicPageTitle>
+		</f:title>
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
+                <!--
                     <fb:FilterBar id="filterBar"  header="Header"
 		                reset="onReset" search="searchData" clear="clearFilters" cancel="onCancel" 
 		                filtersDialogClosed = "onFiltersDialogClosed"
@@ -78,6 +105,8 @@
                         </fb:filterGroupItems>
 
 	                </fb:FilterBar>
+                    -->
+
                 </f:content>
             </f:DynamicPageHeader>
         </f:header>
@@ -86,10 +115,10 @@
 			<Table 
                 noDataText="{appTxts>/acuerdos.noData}" 
                 id="tableAcuerdos"
-                items="{AcuerdosHdr>/AcuerdosDet/Paginated/results}">
+                items="{AcuerdosHdr>/AcuerdosDet/results}">
                 <headerToolbar>
                     <OverflowToolbar>
-                        <Title text="{appTxts>/acuerdos.title} ({AcuerdosHdr>/AcuerdosDet/results/length})" />
+                        <Title text="{appTxts>/acuerdos.title} " />
                         <ToolbarSpacer/>
                         <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
                             press=".buildExportTable"
@@ -140,7 +169,7 @@
 					</Column>
 				</columns>
 				<items>
-					<ColumnListItem type="Navigation" press="onListItemPress">                    
+					<ColumnListItem >                    
 						<cells>
                             <ObjectIdentifier 
                                 title="{AcuerdosHdr>Centro}" 

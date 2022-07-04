@@ -129,10 +129,10 @@
                                     <m:Label text="{appTxts>/clarifications.reclaimedImport}"/>
                                     <m:Input fieldGroupIds="aclaracion" id="reclaimedImport" value="{Aclaracion>/MonRec}" enabled="true" editable="false" maxLength="20"/>
 
-                                    <!--IVA reclamado/Reclaimed tax-->
+                                    <!--IVA reclamado/Reclaimed tax
                                     <m:Label text="{appTxts>/clarifications.reclaimedTax}"/>
                                     <m:Input fieldGroupIds="aclaracion" enabled="true" editable="false" id="reclaimedTax" value="{Aclaracion>/IvaRec}" maxLength="20"/>
-
+-->
                                     <!--Documento de pago/Payment document-->
                                     <m:Label visible="{= ${Aclaracion>/Folio} > 0 }" text="{appTxts>/clarifications.paymentDocument}"/>
                                     <m:Input fieldGroupIds="aclaracion" visible="{= ${Aclaracion>/Folio} > 0 }" id="paymentDocument" value="{Aclaracion>/NoDoc}" enabled="true" />
