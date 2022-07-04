@@ -56,8 +56,7 @@ sap.ui.define([
         Formato:function(value){
             const numero = Number(value);
             const formateado = numero.toLocaleString("en");
-            console.log(formateado);
-            console.log(this.modo)
+         
             if( this.modo == 'new' ){
                 this.getView().byId('reclaimedImport').setEditable(true)
                 this.getView().byId('reclaimedImport').setEnabled(true)
@@ -218,10 +217,10 @@ return formateado
             var entity = "/EAclaHdrSet";
             var json2 = JSON.stringify(objRelease);
             var that=this;
-            sap.ui.core.BusyIndicator.show();
+            
             that._POSToDataV2(model, entity, json2 ).then(function (_GEToDataV2Response) {
                 sap.ui.core.BusyIndicator.hide();
-            
+                console.log(JSON.stringify(objRelease))
                 var response = _GEToDataV2Response.d;
               
                 if (response != null) {
@@ -807,7 +806,7 @@ return formateado
                 inputInvoice.setValueState(sap.ui.core.ValueState.Error);
                 return false;
             }
-console.log(Datos)
+
             let clarifiedAmount = Datos.results[0].EPago;
             let clarifiedTax    = Datos.results[0].EIva ;
             let expirationDate  = Datos.results[0].IFecven ;

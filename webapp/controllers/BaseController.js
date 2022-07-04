@@ -1024,7 +1024,7 @@ sap.ui.define([
             var oModel2 = "/sap/opu/odata/sap/"+model;
             var that = this;
 			let entidad = "/" + entity;
-            console.log(that.getView().getModel(oModel2))
+         console.log(filter)
 			return new Promise(function(fnResolve, fnReject) {
                
                 var oModel = new sap.ui.model.odata.ODataModel(oModel2);
@@ -1032,7 +1032,7 @@ sap.ui.define([
 				filters: filter,
                 urlParameters: {
                     "$expand":expand,
-                  //  "$select": "LineID,ToCells/CellID,...", // reduce data load
+                
                   },
 					success: function(oData, oResponse) {
                        
