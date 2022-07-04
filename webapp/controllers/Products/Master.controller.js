@@ -1040,7 +1040,7 @@ sap.ui.define([
             Folio.GrupArt = formatterCatPrd.findPropertieValue("GrupoArt", "DescGart", Folio.GrupArt,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/GrupoArticulos'));
 
-            Folio.Present = formatterCatPrd.findPropertieValue("AbrPres", "Descpres", Folio.Present,
+            Folio.Present = formatterCatPrd.findPropertieValue("IsoCode", "Descpres", Folio.Present,
                 this.getOwnerComponent().getModel("Catalogos").getProperty('/Presentaciones'));
 
             Folio.UndCont = formatterCatPrd.findPropertieValue("IsoCode", "Unidad", Folio.UndCont,

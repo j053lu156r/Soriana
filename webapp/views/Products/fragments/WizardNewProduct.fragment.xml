@@ -365,7 +365,7 @@
                                                                     path : 'Catalogos>/Presentaciones/results'
                                                                 }">
                                                             <items>
-                                                                <core:Item key="{Catalogos>AbrPres}" text="{Catalogos>Descpres}"/>
+                                                                <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Descpres}"/>
                                                             </items>
                                                         </ComboBox>
                                                     </form:fields>
