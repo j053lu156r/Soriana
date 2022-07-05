@@ -1,0 +1,170 @@
+<mvc:View controllerName="demo.controllers.Factoraje.DetalleFactoraje"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:f="sap.f"
+	xmlns:layout="sap.ui.layout" height="100%">
+	<f:DynamicPage id="dynamicPageId">
+		<!-- DynamicPage Title -->
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="{detailFactoraje>/document}"/>
+				</f:heading>
+				<!--
+					<f:breadcrumbs>
+						<Breadcrumbs>
+							<Link text="Home" />
+							<Link text="Page 1" />
+							<Link text="Page 2" />
+							<Link text="Page 3" />
+							<Link text="Page 4" />
+							<Link text="Page 5" />
+						</Breadcrumbs>
+					</f:breadcrumbs>
+				-->
+				<f:expandedContent>
+					<Label text="{detailFactoraje>/document}"/>
+				</f:expandedContent>
+				<f:snappedContent>
+					<Label text="{detailFactoraje>/document}"/>
+				</f:snappedContent>
+				<f:snappedTitleOnMobile>
+					<Title text="{detailFactoraje>/document}"/>
+				</f:snappedTitleOnMobile>
+
+
+				<f:navigationActions>
+					<Button icon="sap-icon://full-screen" type="Transparent" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }" />
+					<Button icon="sap-icon://exit-full-screen" type="Transparent" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }" />
+					<Button icon="sap-icon://decline" type="Transparent" press="handleClose" tooltip="Close column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }" />
+				</f:navigationActions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<!-- DynamicPage Header -->
+		<f:header>
+			<f:DynamicPageHeader pinnable="true">
+				<layout:HorizontalLayout allowWrapping="true">
+					<layout:VerticalLayout class="sapUiMediumMarginEnd">
+						<ObjectAttribute title="{appTxts>/pay.form}" text=""/>
+						<ObjectAttribute title="{appTxts>/pay.headerLimitDate}" text="{detailFactoraje>/date}"/>
+						<ObjectAttribute title="{appTxts>/plan.datePay}" text="{detailFactoraje>/date}"/>
+ 					</layout:VerticalLayout>
+
+
+					<layout:VerticalLayout class="sapUiMediumMarginEnd">
+
+					</layout:VerticalLayout>
+				</layout:HorizontalLayout>
+
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+
+			<!-- tabla con agrupacion -->
+			<Table selectionChange="handleSelection" growing="true" growingThreshold="100" inset="false" id="idGroupTable">
+				<headerToolbar>
+					<OverflowToolbar id="idCrumbToolbar">
+						<Breadcrumbs id="breadcrumb" />
+						<ToolbarSpacer/>
+						<CheckBox id="checkPartidas" text="Partidas pendientes de pago" select="onTableGrouping" visible="{= ${totales>/Detalles/results/length} > 0}"/>
+						<Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${totales>/Detalles/results/length} > 0}" />
+					</OverflowToolbar>
+				</headerToolbar>
+
+				<columns>
+
+					<Column id="tipoColumn" demandPopin="false">
+						<Text text="{appTxts>/aportaciones.concepto}" />
+						<footer>
+
+							<Text id="idFooterText" text="Total"/>
+						</footer>
+					</Column>
+					  <Column
+                        id="tipoMovColumn"
+                          demandPopin="true"
+                           minScreenWidth="Tablet"
+ visible="true"
+                        >
+                        <Text text="{appTxts>/aportaciones.concepto}"/>
+                    </Column>
+					<Column id="statusColumn" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{appTxts>/state.status}"/>
+					</Column>
+					<Column id="folioColumn" minScreenWidth="Tablet" demandPopin="true" hAlign="End" visible="true">
+						<Text text="{appTxts>/clarifications.headerFolio}" />
+					</Column>
+					<Column id="referenceColumn" minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">
+						<Text text="{appTxts>/snote.invoice}" />
+					</Column>
+
+					<Column id="typeDocColumn" minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">
+						<Text text="{appTxts>/aportaciones.tienda}" />
+					</Column>
+
+					<Column id="dateColumn" minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">
+						<Text text="{appTxts>/state.date}" />
+					</Column>
+
+					<Column id="amountColumn" visible="true" hAlign="End">
+						<Text text="{appTxts>/state.amount}" />
+					</Column>
+
+					<Column id="mCondicionColumn" minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">
+						<Text text="Mejor Condición" />
+					</Column>
+
+					<Column id="bloqueoColumn" minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">
+						<Text text="Boqueo" />
+					</Column>
+
+					<Column id="conciliacionColumn" minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">
+						<Text text="{appTxts>/state.conciliation}" />
+					</Column>
+
+					<!-- totales grupo -->
+					<Column id="totalRegColumn" visible="End" hAlign="Center">
+						<Text text="{appTxts>/state.totalReg}" />
+						<footer>
+
+							<Text text="{GroupedFactoraje>/Hierarchy/totalR}"/>
+						</footer>
+					</Column>
+
+					<Column id="debitColumn" visible="false" hAlign="End">
+						<Text text="{appTxts>/state.debit}" />
+						<footer>
+
+							<ObjectNumber number= "{parts: [{path: 'GroupedFactoraje>/Hierarchy/totalD'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+
+						</footer>
+					</Column>
+					<Column id="creditColumn" visible="false" hAlign="End">
+						<Text text="{appTxts>/state.credit}" />
+						<footer>
+
+							<ObjectNumber number= "{parts: [{path: 'GroupedFactoraje>/Hierarchy/totalC'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+
+						</footer>
+					</Column>
+
+					<Column id="costoColumn" visible="true" hAlign="End">
+						<Text text="Costo" />
+						<footer>
+
+							<ObjectNumber number= "{parts: [{path: 'GroupedFactoraje>/Hierarchy/totalCostos'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+
+						</footer>
+					</Column>
+
+
+				</columns>
+
+			</Table>
+		</f:content>
+		<!-- DynamicPage Footer -->
+		<f:footer>
+
+		</f:footer>
+	</f:DynamicPage>
+</mvc:View>

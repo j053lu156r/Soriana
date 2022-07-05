@@ -538,7 +538,7 @@
                         minScreenWidth="Tablet"
                         demandPopin="true"
                         hAlign="Center"
-                        visible="true">
+                        visible="false">
                          
                     </Column>
 

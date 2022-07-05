@@ -1,0 +1,71 @@
+<core:FragmentDefinition
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m">
+	<ColumnListItem  
+	 >
+		<cells>
+			<ObjectIdentifier
+				title="{GroupedFactoraje>name}" wrapping="true"
+				   />
+                                <Text text="{GroupedFactoraje>IdNumTipomov} {GroupedFactoraje>DescTipomov}" wrapping="true" />
+
+				     <Text text="{=  (${GroupedFactoraje>Pendt} === true) ? 'Pendiente' : ( ${GroupedFactoraje>Belnr} === ${GroupedFactoraje>Augbl} ? 'Pago' : 'Contabilizado'  ) }" wrapping="false" />
+
+
+                                <Text text="{GroupedFactoraje>Belnr}" wrapping="false" />
+
+
+                                <Text text="{GroupedFactoraje>Xblnr}" wrapping="false" />
+
+
+                                  <Text text="{GroupedFactoraje>Tienda}" wrapping="false" />
+
+                                <Text text="{GroupedFactoraje>Budat}" wrapping="false" />
+	<ObjectNumber
+							number= "{parts: [{path: 'GroupedFactoraje>Wrbtr'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+							  />                                 <Text text="{GroupedFactoraje>MCondicion}" wrapping="false" />
+                                <!--
+                                 <Text text="{GroupedFactoraje>BloqueoFlag}" wrapping="false" />
+                             -->
+
+                                 	<ObjectMarker
+					
+					visible="{=  ${GroupedFactoraje>BloqueoFlag} === '' ? false : true }"
+
+					type="LockedBy"
+					 additionalInfo="{GroupedFactoraje>DescripcionBloqueo}"
+					press="onMarkerPress"
+					 
+					 />
+
+                                 <Text text="{GroupedFactoraje>Augbl}" wrapping="false" />
+
+
+
+
+
+				 		<ObjectNumber
+							number="{GroupedFactoraje>totalRegs}"
+							  />
+				 	
+
+				 	<ObjectNumber
+							number= "{parts: [{path: 'GroupedFactoraje>totalDebit'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+							  />
+				 	
+
+				 	<ObjectNumber
+							number="{parts: [{path: 'GroupedFactoraje>totalCredit'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+							  />
+				 	
+                     	<ObjectNumber
+							number="{parts: [{path: 'GroupedFactoraje>cost'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+							  />
+				 	
+				
+
+		 
+			 
+		</cells>
+	</ColumnListItem>
+</core:FragmentDefinition>
