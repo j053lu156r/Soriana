@@ -10,6 +10,12 @@ sap.ui.define([
     return Controller.extend("demo.controllers.VisorNotasEntrada.Detail", {
 
         onInit: function () {
+            	//Sentencia para borrar cache de input
+			$(document).ready(function () {
+				$(document).on('focus', ':input', function () {
+					$(this).attr('autocomplete', 'off');
+				});
+			});
             this.oRouter = this.getOwnerComponent().getRouter();
             this.oModel = this.getOwnerComponent().getModel();
             console.log(this.getView().getModel("migoModel"));
@@ -78,9 +84,10 @@ sap.ui.define([
             var entity = "MIGO_DOC(Mblnr='" + ModeloN.Mblnr + "',Mjahr='" + ModeloN.Mjahr + "')/DocDetalleNav";
             //var expand = "DocDetalleNav";
             var filter = "";
+            var expand = "";
 
             sap.ui.core.BusyIndicator.show();
-            that._GEToDataV2(model, entity, filter).then(function (_GEToDataV2Response) {
+            that._GEToDataV2(model, entity, filter, expand).then(function (_GEToDataV2Response) {
                 sap.ui.core.BusyIndicator.hide();
                 var data = _GEToDataV2Response.data.results;
                 console.log(data);
