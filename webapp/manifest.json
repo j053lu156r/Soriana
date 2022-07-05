@@ -384,6 +384,14 @@
                         "detailCompl"
 					]
 				},
+                {
+					"pattern": "masterFactoring",
+					"name": "masterFactoring",
+					"target": [
+                        "masterFactoring",
+                        "detailFactoring"
+					]
+				},
 				{
 					"pattern": "detailCompl/{document}/{layout}",
 					"name": "detailCompl",
@@ -398,6 +406,14 @@
                     "target": [
                         "masterCompl",
                         "detailComplPagos"
+                    ]
+                },
+                {
+                    "pattern": "detailFactoring/{document}/{layout}/{sociedad}/{ejercicio}/{fecha}",
+                    "name": "detailFactoring",
+                    "target": [
+                        "masterFactoring",
+                        "detailFactoring"
                     ]
                 },
                 {
@@ -708,6 +724,11 @@
                     "viewPath": "demo.views.ComplPago",
                     "controlAggregation": "beginColumnPages"
 				},
+                "masterFactoring": {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.Factoraje",
+                    "controlAggregation": "beginColumnPages"
+				},
 				"detailCompl": {
                     "viewName": "Detail",
                     "viewPath": "demo.views.ComplPago",
@@ -716,6 +737,11 @@
                 "detailComplPagos": {
                     "viewName": "DetallePago",
                     "viewPath": "demo.views.ComplPago",
+                    "controlAggregation": "midColumnPages"
+                },
+                "detailFactoring": {
+                    "viewName": "DetalleFactoraje",
+                    "viewPath": "demo.views.Factoraje",
                     "controlAggregation": "midColumnPages"
                 },
                 "masterCfdi": {
