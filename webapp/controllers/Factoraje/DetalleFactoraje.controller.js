@@ -11,6 +11,8 @@ sap.ui.define([
 	"use strict";
 
 	var sUri = "/sap/opu/odata/sap/ZOCP_DOCPAGO_SRV/";
+	//var sUri = "/sap/opu/odata/sap/ZOCP_FACTORAJE_SRV/";
+	//ZOCP_FACTORAJE_SRV
 	var dTJSON;
 	var fechaAct = new Date();
 
@@ -44,7 +46,7 @@ sap.ui.define([
 								  ]
 					});
 					this.getView().setModel(oModel);*/
- 					this.getOwnerComponent().setModel(new JSONModel(), "totales");
+					this.getOwnerComponent().setModel(new JSONModel(), "totales");
 
 					var oModel = new JSONModel({
 						filtros: [{
@@ -107,7 +109,7 @@ sap.ui.define([
 			//let dateRange = this.getView().byId("dateRange");
 
 			//ciltro documento 
-			 
+
 			var dateFormat = sap.ui.core.format.DateFormat.getDateInstance({
 				pattern: "YYYYMMdd"
 			});
@@ -125,20 +127,20 @@ sap.ui.define([
 			console.log(this._fecha)
 
 			// format[AAAAMMDD] (2020101)
-			let desde_LV_ZDESDE =  this._fecha.replace(/-/g, ''); // '20210621'// this.buildSapDate(todayDate);
+			let desde_LV_ZDESDE = this._fecha.replace(/-/g, ''); // '20210621'// this.buildSapDate(todayDate);
 			// format[AAAAMMDD] (2020101)
-			let desde_LV_ZHASTA =  dateFormat.format(todayDate)// this.buildSapDate(todayDate);
+			let desde_LV_ZHASTA = dateFormat.format(todayDate) // this.buildSapDate(todayDate);
 
 
 
-			
 
-			let doc_BELNR = this._document// documentoInput.getValue();
+
+			let doc_BELNR = this._document // documentoInput.getValue();
 
 			//checbox validaciones
 
- 
-		 
+
+
 
 
 			if (proveedor_LIFNR == null || proveedor_LIFNR == "") {
@@ -153,9 +155,9 @@ sap.ui.define([
 			var BUKRS = this._sociedad
 
 
-			 
+
 			var queryFiltro = ` and belnr eq '${doc_BELNR}' and Bukrs eq '${BUKRS}' `
- 
+
 
 
 			var oODataJSONModel = this.getOdata(sUri);
@@ -189,18 +191,18 @@ sap.ui.define([
 
 			//filtrar totales y crear modelo grupal 
 
- 			let auxArray = [...Detalles]
+			let auxArray = [...Detalles]
 
 
 
 			var sumaAux = auxArray.reduce(function (_this, val) {
 				//console.log(val.Wrbtr)
-				var current = Number(val.Wrbtr) 
+				var current = Number(val.Wrbtr)
 				var total = _this + current
-				return  total
+				return total
 			}, 0);
 
-			 
+
 
 
 
@@ -216,10 +218,10 @@ sap.ui.define([
 
 				console.log("sumando valores");
 
- 
+
 
 				var cost = groupedMovs[x].reduce(function (_this, val) {
-					var current =   Number(val.Wrbtr)  
+					var current = Number(val.Wrbtr)
 					var total = _this + current
 					return total
 				}, 0);
@@ -230,7 +232,7 @@ sap.ui.define([
 					"totalRegs": groupedMovs[x].length,
 					"totalDebit": 0,
 					"totalCredit": 0,
-					"cost": me.truncate(cost,2),
+					"cost": me.truncate(cost, 2),
 					"positions": groupedMovs[x]
 
 				})
@@ -247,9 +249,9 @@ sap.ui.define([
 				return me.truncate(total, 2)
 			}, 0);
 
-		 
 
-			var cor=.00001
+
+			var cor = .00001
 			sumaAux = sumaAux + cor
 			var jsonModelG = new JSONModel({
 				"Hierarchy": {
@@ -257,7 +259,7 @@ sap.ui.define([
 					"totalR": totalR,
 					"totalD": 0,
 					"totalC": 0,
-					"totalCostos": me.truncate(sumaAux,2)
+					"totalCostos": me.truncate(sumaAux, 2)
 
 				}
 			});
@@ -269,7 +271,7 @@ sap.ui.define([
 
 			this.initTable()
 
-		//	this.getOwnerComponent().setModel(jsonModelT, "totales");
+			//	this.getOwnerComponent().setModel(jsonModelT, "totales");
 
 			//this.paginate("totales", "/Detalles", 1, 0);
 
@@ -385,7 +387,7 @@ sap.ui.define([
 				this.byId("creditColumn").setVisible(false);
 				this.byId("costoColumn").setVisible(false);
 
-				
+
 
 
 
@@ -486,51 +488,47 @@ sap.ui.define([
 				//});
 				//this._updateOrder(oSelectionInfo);
 
-				console.log('on documnt press',oEvent);
+				console.log('on documnt press', oEvent);
 				console.log(sPath)
 				//let posicion = oEvent.getSource().getBindingContext("GroupedFactoraje").getPath().split("/").pop();
 				let results = this.getOwnerComponent().getModel("GroupedFactoraje").getProperty(sPath);
-	
+
 				console.log(results)
 				//let registro = results[posicion];
 				//console.log(registro)
 				var tcode = results.Tcode
 
-	  if(tcode !== "Z_APORTACIONES" ){
-				 this.getOwnerComponent().getRouter().navTo("detailAcuerdos",
-					{
+				//NAVEGACION A ERER NIVEL 
+
+/*
+				if (tcode !== "Z_APORTACIONES") {
+					this.getOwnerComponent().getRouter().navTo("detailAcuerdos", {
 						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
 						document: results.Belnr,
-					    sociedad: this._sociedad,
+						sociedad: this._sociedad,
 						ejercicio: this._ejercicio,
-					    doc: this._document,
+						doc: this._document,
 						fecha: this._fecha
-					   // lifnr: docResult.Lifnr
+						// lifnr: docResult.Lifnr
 					}, true);
 
-				}else{
+				} else {
 
-
-
-					this.getOwnerComponent().getRouter().navTo("detailAportacionesComplemento",
-					{
+					this.getOwnerComponent().getRouter().navTo("detailAportacionesComplemento", {
 						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
 						document: results.Xblnr,
- 						sociedad: this._sociedad,
+						sociedad: this._sociedad,
 						ejercicio: this._ejercicio,
-					    doc: this._document,
+						doc: this._document,
 						fecha: this._fecha
 						//ejercicio: ejercicio,
 						//doc: results.Belnr,
-					   // zbukr: docResult.Zbukr,
-					   // lifnr: docResult.Lifnr
+						// zbukr: docResult.Zbukr,
+						// lifnr: docResult.Lifnr
 					}, true);
-	
-	
+				}
 
-					}
-
-
+*/
 
 			} else {
 				console.log("on grupo seleccionado seleccionado.....")
@@ -613,9 +611,9 @@ sap.ui.define([
 				}),
 				"detailComplPagos");
 
-				//consume el servicio para obtener los docuemntos 
+			//consume el servicio para obtener los docuemntos 
 
-				 this.searchData()
+			this.searchData()
 
 
 
@@ -624,27 +622,26 @@ sap.ui.define([
 
 		//HAANDLE OPEN ACUERDOS
 
-		_onDocumentPress: function(oEvent){
-            console.log('on documnt press',oEvent);
-            let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
-            let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
+		_onDocumentPress: function (oEvent) {
+			console.log('on documnt press', oEvent);
+			let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
+			let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
 
-            let registro = results[posicion];
-            console.log(registro)
+			let registro = results[posicion];
+			console.log(registro)
 
-             this.getOwnerComponent().getRouter().navTo("detailComplPagos",
-                {
-                    layout: sap.f.LayoutType.TwoColumnsMidExpanded,
-                    document: registro.Vblnr
-                   // laufd: docResult.Laufd,
-                   // laufi: docResult.Laufi,
-                   // zbukr: docResult.Zbukr,
-                   // lifnr: docResult.Lifnr
-                }, true);
-
+			this.getOwnerComponent().getRouter().navTo("detailComplPagos", {
+				layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+				document: registro.Vblnr
+				// laufd: docResult.Laufd,
+				// laufi: docResult.Laufi,
+				// zbukr: docResult.Zbukr,
+				// lifnr: docResult.Lifnr
+			}, true);
 
 
-        }
+
+		}
 
 
 

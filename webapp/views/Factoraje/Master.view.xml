@@ -46,11 +46,11 @@
                                 groupName    = "__$INTERNAL$" 
                                 groupTitle   = "Group1" 
                                 name         = "C" 
-                                label        = "{appTxts>/pay.doc}" 
-                                labelTooltip = "{appTxts>/pay.doc}"
+                                label        = "{appTxts>/factoring.doc}" 
+                                labelTooltip = "{appTxts>/factoring.doc}"
                                 visibleInFilterBar   = "true">
                                 <fb:control>
-                                    <Input id="documentTxt" placeholder="{appTxts>/pay.doc}"/>
+                                    <Input id="documentTxt" placeholder="{appTxts>/factoring.doc}"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
 
