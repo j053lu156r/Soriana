@@ -47,7 +47,7 @@ idXblnr2: true
             var texts = that.getOwnerComponent().getModel("appTxts");
            var data=[];
            data.push(
-        {"text":texts.getProperty("/visor.invoice"),  "key":"Xblnr2"},
+        {"text":texts.getProperty("/visor.invoice"),  "key":"XblnrFact"},
            {"text": texts.getProperty("/visor.folio"),  "key":"Mblnr"},
             {"text":texts.getProperty("/visor.order"),  "key":"Ebeln"}
            )
@@ -58,8 +58,10 @@ idXblnr2: true
            
             Fecha = (Fecha.getTime() - (1000*60*60*24*90))
           
-         that.getView().byId("dateRange").setDateValue(new Date());
-         that.getView().byId("dateRange").setSecondDateValue(new Date(Fecha));
+         that.getView().byId("dateRange").setDateValue(new Date(Fecha));
+         that.getView().byId("dateRange").setSecondDateValue(new Date());
+
+         
 
         },
         TableVisible: function () {
@@ -138,10 +140,14 @@ idXblnr2: true
             })
             )
             if (this.getView().byId("inpInvoice").getValue()!==""){
+                var valor="";
+              
+                
+                console.log(valor);
                 auxFilters.push(new sap.ui.model.Filter({
                     path: that.getView().byId("OPFiltrosC").getSelectedKey(),
                     operator: sap.ui.model.FilterOperator.EQ,
-                    value1: this.getView().byId("inpInvoice").getValue()
+                    value1:this.getView().byId("inpInvoice").getValue()
                 })
                 )
             }
