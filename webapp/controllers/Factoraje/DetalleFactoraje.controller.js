@@ -10,8 +10,8 @@ sap.ui.define([
 ], function (JSONModel, Controller, BaseModel, Label, Link, MessageToast, Text, Fragment) {
 	"use strict";
 
-	var sUri = "/sap/opu/odata/sap/ZOCP_DOCPAGO_SRV/";
-	//var sUri = "/sap/opu/odata/sap/ZOCP_FACTORAJE_SRV/";
+	//var sUri = "/sap/opu/odata/sap/ZOCP_DOCPAGO_SRV/";
+	var sUri = "/sap/opu/odata/sap/ZOCP_FACTORAJE_SRV/";
 	//ZOCP_FACTORAJE_SRV
 	var dTJSON;
 	var fechaAct = new Date();
@@ -131,8 +131,9 @@ sap.ui.define([
 			// format[AAAAMMDD] (2020101)
 			let desde_LV_ZHASTA = dateFormat.format(todayDate) // this.buildSapDate(todayDate);
 
+			//desde_LV_ZDESDE ="20211118"
 
-
+			//desde_LV_ZHASTA = "20211118"
 
 
 			let doc_BELNR = this._document // documentoInput.getValue();
@@ -148,7 +149,7 @@ sap.ui.define([
 				return false;
 			}
 
-			if (desde_LV_ZDESDE == "" || desde_LV_ZHASTA == "") {
+			if (desde_LV_ZDESDE == "-" || desde_LV_ZHASTA == "-") {
 				// sap.m.MessageBox.error("Por favor defina el rango de fechas.");
 			}
 
@@ -156,28 +157,30 @@ sap.ui.define([
 
 
 
-			var queryFiltro = ` and belnr eq '${doc_BELNR}' and Bukrs eq '${BUKRS}' `
+			var queryFiltro = ` and Belnr eq '${doc_BELNR}'`
 
 
 
 			var oODataJSONModel = this.getOdata(sUri);
-			//            let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}' and belnr eq '${doc_BELNR}'  &$format=json`;
+ 
 
-			let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}'${queryFiltro} &$format=json`;
+				let urlParams = `EStmtHdrSet?$expand=Citms&$filter= Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZDESDE}'${queryFiltro} &$format=json`;
+
+			//let urlParams = `EStmtHdrSet?$expand=Citms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}'${queryFiltro} &$format=json`;
 			//Xblnr
 
 			var odTJSONModel = this.getOdataJsonModel(urlParams, oODataJSONModel);
 			dTJSON = odTJSONModel.getJSON();
 			var TDatos = JSON.parse(dTJSON);
 
-			let Detalles = [...TDatos.results[0].Citms.results, ...TDatos.results[0].Oitms.results];
+			let Detalles = [...TDatos.results[0].Citms.results];
 
 			TDatos.results[0].Detalles = {
 				results: [...Detalles]
 			};
 
 			delete TDatos.results[0].Citms;
-			delete TDatos.results[0].Oitms;
+			//delete TDatos.results[0].Oitms;
 
 
 			//TDatos.results[0].periodo = "Del " + this.formatDateTime(dateRange.getDateValue(), 'dd/MM/YYYY') + " al " + this.formatDateTime(dateRange.getSecondDateValue(), 'dd/MM/YYYY');
@@ -363,20 +366,20 @@ sap.ui.define([
 				this._oTable.setMode("None");
 				//  this.byId("weightColumn").setVisible(true);
 				// this.byId("dimensionsColumn").setVisible(true);
-				this._oTable.setMode("SingleSelectMaster");
+				this._oTable.setMode("None");
 
 
-				this.byId("statusColumn").setVisible(true);
+				this.byId("statusColumn").setVisible(false);
 				this.byId("folioColumn").setVisible(true);
 				this.byId("referenceColumn").setVisible(true);
 
 				this.byId("typeDocColumn").setVisible(true);
 
-				this.byId("dateColumn").setVisible(true);
+				this.byId("dateColumn").setVisible(false);
 				this.byId("amountColumn").setVisible(true);
-				this.byId("mCondicionColumn").setVisible(true);
-				this.byId("bloqueoColumn").setVisible(true);
-				this.byId("conciliacionColumn").setVisible(true);
+				this.byId("mCondicionColumn").setVisible(false);
+				this.byId("bloqueoColumn").setVisible(false);
+				this.byId("conciliacionColumn").setVisible(false);
 				this.byId("tipoMovColumn").setVisible(true);
 
 				//totles 
@@ -607,9 +610,10 @@ sap.ui.define([
 			});
 
 			this.getView().setModel(new JSONModel({
-					"document": this._document
+					"document": this._document,
+					"date": this._fecha
 				}),
-				"detailComplPagos");
+				"detailFactoraje");
 
 			//consume el servicio para obtener los docuemntos 
 

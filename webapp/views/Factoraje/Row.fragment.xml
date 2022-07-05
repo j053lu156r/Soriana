@@ -14,10 +14,11 @@
 
                                 <Text text="{GroupedFactoraje>Belnr}" wrapping="false" />
 
+
                                 <Text text="{GroupedFactoraje>Xblnr}" wrapping="false" />
 
 
-                                  <Text text="{GroupedFactoraje>Ltext}" wrapping="false" />
+                                  <Text text="{GroupedFactoraje>Tienda}" wrapping="false" />
 
                                 <Text text="{GroupedFactoraje>Budat}" wrapping="false" />
 	<ObjectNumber

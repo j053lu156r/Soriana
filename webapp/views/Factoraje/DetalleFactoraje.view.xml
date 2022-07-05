@@ -8,7 +8,7 @@
 		<f:title>
 			<f:DynamicPageTitle>
 				<f:heading>
-					<Title text="{detailComplPagos>/document}"/>
+					<Title text="{detailFactoraje>/document}"/>
 				</f:heading>
 				<!--
 					<f:breadcrumbs>
@@ -23,13 +23,13 @@
 					</f:breadcrumbs>
 				-->
 				<f:expandedContent>
-					<Label text="{detailComplPagos>/document}"/>
+					<Label text="{detailFactoraje>/document}"/>
 				</f:expandedContent>
 				<f:snappedContent>
-					<Label text="{detailComplPagos>/document}"/>
+					<Label text="{detailFactoraje>/document}"/>
 				</f:snappedContent>
 				<f:snappedTitleOnMobile>
-					<Title text="{detailComplPagos>/document}"/>
+					<Title text="{detailFactoraje>/document}"/>
 				</f:snappedTitleOnMobile>
 
 
@@ -46,10 +46,9 @@
 				<layout:HorizontalLayout allowWrapping="true">
 					<layout:VerticalLayout class="sapUiMediumMarginEnd">
 						<ObjectAttribute title="{appTxts>/pay.form}" text=""/>
-						<ObjectAttribute title="{appTxts>/pay.headerLimitDate}" text=""/>
-						<ObjectAttribute title="{appTxts>/pay.datePay}" text=""/>
-						<ObjectAttribute title="{appTxts>/state.currency}" text=""/>
-					</layout:VerticalLayout>
+						<ObjectAttribute title="{appTxts>/pay.headerLimitDate}" text="{detailFactoraje>/date}"/>
+						<ObjectAttribute title="{appTxts>/plan.datePay}" text="{detailFactoraje>/date}"/>
+ 					</layout:VerticalLayout>
 
 
 					<layout:VerticalLayout class="sapUiMediumMarginEnd">
@@ -93,14 +92,14 @@
 						<Text text="{appTxts>/state.status}"/>
 					</Column>
 					<Column id="folioColumn" minScreenWidth="Tablet" demandPopin="true" hAlign="End" visible="true">
-						<Text text="{appTxts>/state.folio}" />
+						<Text text="{appTxts>/clarifications.headerFolio}" />
 					</Column>
 					<Column id="referenceColumn" minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">
-						<Text text="{appTxts>/state.reference}" />
+						<Text text="{appTxts>/snote.invoice}" />
 					</Column>
 
 					<Column id="typeDocColumn" minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">
-						<Text text="{appTxts>/state.typeDoc}" />
+						<Text text="{appTxts>/aportaciones.tienda}" />
 					</Column>
 
 					<Column id="dateColumn" minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">

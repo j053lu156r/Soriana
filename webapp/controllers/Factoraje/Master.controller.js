@@ -452,7 +452,7 @@ sap.ui.define([
                     document: registro.Vblnr,
                     sociedad: registro.Bukrs,
                     ejercicio: registro.Gjahr,
-                    fecha: registro.Augdt
+                    fecha: registro.Laufd
                    // lifnr: docResult.Lifnr
                 }, true);
 
