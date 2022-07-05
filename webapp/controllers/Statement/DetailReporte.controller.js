@@ -49,7 +49,7 @@ sap.ui.define([
             }
 
             var dateFormat = sap.ui.core.format.DateFormat.getDateInstance({
-                pattern: "ddMMYY"
+                pattern: "YYYY"
             });
 
             //  var sociedad = this.getView().byId('sociedadInput').getValue();
@@ -58,33 +58,33 @@ sap.ui.define([
             // var acuerdo = this.getView().byId('acuerdoInput').getValue();
 
             var date = new Date(this._date)
-            var proveedor = this._proveedor;
+            var proveedor = this.padLeadingZeros(this._proveedor,10) ;
             var documento = this._document;
             var serie = this._serie;
-            var fecha =  dateFormat.format(date) ///this._fecha.replace(/-/g, '');;
+            var fecha = this._fecha.replace(/-/g, '');
 
 
 
 
             if (bContinue) {
 
-                var url = "RepMejorCondSet?$filter=";
+                var url = "RepMejorCondSet?$filter=(";
 
                 if (documento != "" && documento != null) {
 
                     url += "IAcre eq '" + proveedor + "'";
                     url += " and IFolio eq '" + documento + "'";
                     url += " and ISerie eq '" + serie + "'";
-                    url += " and IFe eq '" + fecha + "'";
+                    url += " and IFe eq '" + fecha + "')";
                 }
                 //  /sap/opu/odata/sap/ZOSP_MEJOR_COND_REP_SRV/
                 var dueModel = oModel.getJsonModel(url);
-                var ojbResponse = dueModel.getProperty("/results/0");
+                var ojbResponse = dueModel.getProperty("/results");
 
                 console.log(ojbResponse)
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(ojbResponse),
-                    "AcuerdosHdr");
-                this.paginate("AcuerdosHdr", "/AcuerdosDet", 1, 0);
+                    "MejorCondHdr");
+              //  this.paginate("MejorCondHdr", "/", 1, 0);
             }
 
         },
@@ -97,7 +97,7 @@ sap.ui.define([
             this.getView().byId("documentoInput").setValue("");
             this.getView().byId("ejercicioInput").setValue("");
             this.getView().byId("acuerdoInput").setValue("");
-            var oModel = this.getOwnerComponent().getModel("AcuerdosHdr");
+            var oModel = this.getOwnerComponent().getModel("MejorCondHdr");
             if (oModel) {
                 oModel.setData([]);
             }
@@ -144,7 +144,7 @@ sap.ui.define([
                 }
             ];
 
-            this.exportxls('AcuerdosHdr', '/AcuerdosDet/results', columns);
+            this.exportxls('MejorCondHdr', '/results', columns);
         },
 
         _onDocumentMatched: function (oEvent) {
@@ -184,9 +184,9 @@ sap.ui.define([
             this.oRouter.navTo("EstadoCuentaReporte", {
                 layout: sNextLayout,
                 document: this._document,
-                sociedad: this._sociedad,
-                ejercicio: this._ejercicio,
-                doc: this._document,
+                proveedor: this._proveedor,
+                serie: this._serie,
+                fecha: this._fecha
             });
         },
         handleExitFullScreen: function () {
@@ -195,9 +195,9 @@ sap.ui.define([
             this.oRouter.navTo("EstadoCuentaReporte", {
                 layout: sNextLayout,
                 document: this._document,
-                sociedad: this._sociedad,
-                ejercicio: this._ejercicio,
-                doc: this._document
+                proveedor: this._proveedor,
+                serie: this._serie,
+                fecha: this._fecha
             });
         },
         handleClose: function () {
@@ -206,6 +206,11 @@ sap.ui.define([
             this.oRouter.navTo("EstadoCuenta", {});
         },
 
+         padLeadingZeros: function(num, size) {
+            var s = num+"";
+            while (s.length < size) s = "0" + s;
+            return s;
+        },
 
         formatDate: function (d) {
             //get the month

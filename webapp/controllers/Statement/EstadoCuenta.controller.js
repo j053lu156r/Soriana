@@ -533,6 +533,11 @@ sap.ui.define([
 
 
 
+                this.byId("verReporteColumn").setVisible(true);
+
+
+
+
 
 
             } else {
@@ -559,6 +564,10 @@ sap.ui.define([
                 this.byId("totalRegColumn").setVisible(true);
                 this.byId("debitColumn").setVisible(true);
                 this.byId("creditColumn").setVisible(true);
+
+
+                this.byId("verReporteColumn").setVisible(false);
+
 
 
 
