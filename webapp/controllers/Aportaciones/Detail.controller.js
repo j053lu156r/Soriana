@@ -189,6 +189,20 @@ sap.ui.define([
             ];
 
             this.exportxls('AportacionesDet', '/AportaDetalle/results', columns);
+        },
+
+        handleReceipt: function () {
+            
+            this.oRouter.navTo("detailDetailAporta",
+                {
+                    layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
+                    folio: this._folio, 
+                    concepto: this._concepto,
+                    gerencia: this._gerencia,
+                    importe: this._importe
+                }
+            );            
+
         }
 	});
 });

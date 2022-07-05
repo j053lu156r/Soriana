@@ -570,10 +570,11 @@
 					]
 				},
                 {
-                    "pattern": "detailDetailAporta/{layout}/{folio}",
+                    "pattern": "detailDetailAporta/{layout}/{folio}/{concepto}/{gerencia}/{importe}",
                     "name": "detailDetailAporta",
                     "target": [
-                        "EstadoCuenta",
+                        "masterAportaciones",
+						"detailAportaciones",
                         "detailDetailAporta"
                     ]
                 },
@@ -866,7 +867,7 @@
                 "detailDetailAporta": {
                     "viewName": "DetailDetail",
                     "viewPath": "demo.views.Aportaciones",
-                    "controlAggregation": "midColumnPages"
+                    "controlAggregation": "endColumnPages"
                 },
                 "detailAportacionesAccount": {
                     "viewName": "DetailDetailAS",
