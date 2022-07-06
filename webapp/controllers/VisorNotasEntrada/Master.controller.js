@@ -107,8 +107,9 @@ idXblnr2: true
             var Lifnr= oSelectedItem.getBindingContext("migoModel").getProperty("Lifnr");
             var BudatMkpf= oSelectedItem.getBindingContext("migoModel").getProperty("BudatMkpf");
             var Werks= oSelectedItem.getBindingContext("migoModel").getProperty("Werks");
+           var  Xblnr= oSelectedItem.getBindingContext("migoModel").getProperty("Xblnr");
           
-              this.getOwnerComponent().getRouter().navTo("detailVisorNotas", { layout: sap.f.LayoutType.MidColumnFullScreen, Mblnr:Mblnr, Mjahr:Mjahr,Ebeln:Ebeln, Lifnr:Lifnr, BudatMkpf:BudatMkpf, Werks:Werks});
+              this.getOwnerComponent().getRouter().navTo("detailVisorNotas", { layout: sap.f.LayoutType.MidColumnFullScreen, Mblnr:Mblnr, Mjahr:Mjahr,Ebeln:Ebeln, Lifnr:Lifnr, BudatMkpf:BudatMkpf, Werks:Werks,Xblnr:Xblnr});
             //this._oPropertiesModel.setProperty("/rowsCount", 10);
             //http://ppqas.soriana.com/sap/opu/odata/sap/ZOSP_MMIM_MIGO_DOC_SRV/MIGO_DOC(Mblnr='5095076269',Mjahr='2022')
            
@@ -135,9 +136,10 @@ idXblnr2: true
             auxFilters.push(new sap.ui.model.Filter({
                 path: "BudatMkpf",
                 operator: sap.ui.model.FilterOperator.BT,
-                value1: new Date(FechaI).toISOString().slice(0, 10) + 'T00:00:00',
-                value2: new Date(FechaF).toISOString().slice(0, 10) + 'T00:00:00'
+                value1: FechaI.toISOString().slice(0, 10) + 'T00:00:00',
+                value2:FechaF.toISOString().slice(0, 10) + 'T00:00:00'
             })
+         
             )
             auxFilters.push(new sap.ui.model.Filter({
                 path: "Lifnr",
@@ -331,7 +333,7 @@ var arrT=[];
 for(var x =0;x<oModel.length;x++){
 var TemP=oModel[x].DocDetalleNav.results;
 arrT.push({
-BudatMkpf:oModel[x].BudatMkpf,
+    BudatMkpf:oModel[x].BudatMkpf,
     Ebeln: oModel[x].Ebeln,
     Lifnr: oModel[x].Lifnr,
     Mblnr: oModel[x].Mblnr,
@@ -356,7 +358,7 @@ BudatMkpf:oModel[x].BudatMkpf,
 for(var y =0;y<TemP.length;y++){
      
     arrT.push({
-    BudatMkpf:oModel[x].BudatMkpf,
+    BudatMkpf:"",
     Ebeln: "",
     Lifnr: "",
     Mblnr: "",
@@ -429,7 +431,7 @@ this.buildExportTable2();
             aCols.push({
                 label: texts.getProperty("/visor.invoice"),
                 type: EdmType.String,
-                property: 'Xblnr'
+                property: 'XblnrFact'
 
 
             });
@@ -437,7 +439,7 @@ this.buildExportTable2();
             aCols.push({
                 label: texts.getProperty("/visor.SerieFolio"),
                 type: EdmType.String,
-                property: 'Mjahr'
+                property: 'Xblnr'
             });
 
 

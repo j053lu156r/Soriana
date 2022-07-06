@@ -100,13 +100,14 @@
                     alternateRowColors ="true" 
                     rows              ="{Documentos>/Detalles/Paginated/results}"
                     enableColumnReordering = "false"
-                    enableSelectAll="false"
-                    selectionMode="Single"
+                    enableSelectAll="true"
+                    selectionMode="MultiToggle"
                     >
                     <t:extension>
                         <OverflowToolbar style="Clear">
                             <Title id="title" text="{appTxts>/pay.paylist}"/>
                             <ToolbarSpacer/>
+                             <Button icon="sap-icon://download-from-cloud" text="{appTxts>/pay.Desmasiva}" press="generateFileMasivo" visible="{= ${Documentos>/Detalles/Paginated/results/length} > 0}" />
                             <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${Documentos>/Detalles/Paginated/results/length} > 0}" />
                             <Select visible="{= ${Documentos>/Detalles/Paginated/results/length} > 0 }" change=".paginateValue(${$parameters>/selectedItem}, 'Documentos', '/Detalles')">
                                 <items>
@@ -114,21 +115,23 @@
                                     <core:Item key="20" text="20"/>
                                     <core:Item key="50" text="50"/>
                                     <core:Item key="100" text="100"/>
+                                     <core:Item key="1000" text="1000"/>
                                 </items>
                             </Select>
+                              <Button icon="sap-icon://action-settings" press="ConfigTable" />
                         </OverflowToolbar>
                     </t:extension>
                     <t:columns>
                         <t:Column 
                             width           = "13%" 
-                            hAlign          = "Left">
+                            hAlign          = "Left" id="column1" sortProperty="Butxt" filterProperty="Butxt">
                             <Label text="{appTxts>/pay.headerCompany}" />
                             <t:template>
                                 <Text text="{Documentos>Butxt}" wrapping="false"/>
                             </t:template>
                         </t:Column>
                         <t:Column 
-                            width           = "auto" >
+                            width  = "auto" id="column2" sortProperty="Text2" filterProperty="Text2">
                             <Label text="{appTxts>/pay.headerPaymentType}" />
                             <t:template>
                                 <Text text="{Documentos>Text2}" wrapping="false"/>
@@ -136,7 +139,7 @@
                         </t:Column>
                         <t:Column 
                             width           = "15%" 
-                            hAlign          = "Left" >
+                            hAlign          = "Left" id="column3" sortProperty="Vblnr" filterProperty="Vblnr">
                             <Label text="{appTxts>/pay.headerDocument}" />
                             <t:template>
                                 <ObjectIdentifier titlePress="onDocumentPress" titleActive="true" title="{Documentos>Vblnr}" wrapping="false"/>
@@ -144,7 +147,7 @@
                         </t:Column>
                         <t:Column 
                             width           = "5%" 
-                            hAlign          = "Center" >
+                            hAlign          = "Center" id="column4">
                             <Label text="{appTxts>/pay.headerFile}" />
                             <t:template>
                                 <Button icon="sap-icon://document-text" type="Transparent" press="generateFile" ></Button>
@@ -153,7 +156,7 @@
                         <t:Column 
                             width           = "7%" 
                             hAlign          = "Center"  
-                            id              = "column5">
+                            id              = "column5"  sortProperty="Augdt" filterProperty="Augdt">
                             <Label text="{appTxts>/pay.headerLimitDate}" />
                             <t:template>
                                 <Text text="{Documentos>Augdt}" wrapping="false"/>
@@ -162,7 +165,7 @@
                         <t:Column
                             width           = "12%" 
                             hAlign          = "Center" 
-                            id              = "column6">
+                            id              = "column6" sortProperty="Rbetr" filterProperty="Rbetr">
                             <Label text="{appTxts>/pay.headerAmount}" />
                             <t:template>
                                 <ObjectNumber
@@ -172,13 +175,16 @@
                         <t:Column 
                             width           = "5%" 
                             hAlign          = "Center" 
-                            id              = "column7">
+                            id              = "column7" sortProperty="Nc" filterProperty="Nc">
                             <Label text="{appTxts>/pay.headerNC}" />
                             	
                             <t:template>
                                 <core:Icon src="{
 								path: 'Documentos>Nc',
 								formatter: '.formatAvailableToIcon'
+							}" color="{
+								path: 'Documentos>Cp17r',
+								formatter: '.formatStatusIcon'
 							}"/>
 
                             </t:template>
@@ -186,38 +192,47 @@
                         <t:Column 
                             width           = "5%" 
                             hAlign          = "Center" 
-                            id              = "column8">
+                            id              = "column8" sortProperty="Cp03" filterProperty="Cp03">
                             <Label text="{appTxts>/pay.headerCP} 03" />
                             <t:template>
                                 
                                 <core:Icon src="{
 								path: 'Documentos>Cp03',
 								formatter: '.formatAvailableToIcon'
+							}" color="{
+								path: 'Documentos>Cp17r',
+								formatter: '.formatStatusIcon'
 							}"/>
                             </t:template>
                         </t:Column>
                         <t:Column 
                             width           = "5%" 
                             hAlign          = "Center" 
-                            id              = "column9">
+                            id              = "column9" sortProperty="Cp17s" filterProperty="Cp17s">
                             <Label text="{appTxts>/pay.headerCP} 17S" />
                             <t:template>
                                 
                                  <core:Icon src="{
 								path: 'Documentos>Cp17s',
 								formatter: '.formatAvailableToIcon'
+							}" color="{
+								path: 'Documentos>Cp17r',
+								formatter: '.formatStatusIcon'
 							}"/>
                             </t:template>
                         </t:Column>
                         <t:Column 
                             width           = "5%" 
                             hAlign          = "Center" 
-                            id              = "column10">
+                            id              = "column10" sortProperty="Cp17r" filterProperty="Cp17r">
                             <Label text="{appTxts>/pay.headerCP} 17R" />
                             <t:template>
                                                              <core:Icon src="{
 								path: 'Documentos>Cp17r',
 								formatter: '.formatAvailableToIcon'
+							}" color="{
+								path: 'Documentos>Cp17r',
+								formatter: '.formatStatusIcon'
 							}"/>
 
 
@@ -226,7 +241,7 @@
                         <t:Column 
                             width           = "5%" 
                             hAlign          = "Center" 
-                            id              = "column11">
+                            id              = "column11" sortProperty="Rzawe" filterProperty="Rzawe">
                             <Label text="{appTxts>/pay.headerEstatus}" />
                             <t:template>
                                 <Text text="{Documentos>Rzawe}" wrapping="false"/>

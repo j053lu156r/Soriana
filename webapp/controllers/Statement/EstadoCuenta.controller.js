@@ -936,7 +936,7 @@ sap.ui.define([
 
 
             this.getOwnerComponent().getRouter().navTo("EstadoCuentaReporte", {
-                layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+                layout: sap.f.LayoutType.MidColumnFullScreen,
                 document: folio,
                 proveedor: proveedor,
                 serie: serieNonumbers,
@@ -944,7 +944,11 @@ sap.ui.define([
                 // zbukr: docResult.Zbukr,
                 // lifnr: docResult.Lifnr
             }, true);
-        }
+        },
+        hasReport: function(mc){
+            return Number(mc) > 0 ? true : false
+        },
+
     });
 
 });

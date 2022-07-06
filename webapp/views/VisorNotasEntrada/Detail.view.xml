@@ -35,7 +35,7 @@
 							<m:Text text="{DetalleModel>/Werks}" class="sapUiTinyMarginBegin"/>
 
                             <m:Label text="{appTxts>/visor.SerieFolio}"/>
-							<m:Text text="{DetalleModel>/Mjahr}- {DetalleModel>/Mblnr}" class="sapUiTinyMarginBegin"/>
+							<m:Text text="{DetalleModel>/Xblnr}" class="sapUiTinyMarginBegin"/>
                             <m:layoutData>
                                 <m:FlexItemData growFactor="1" />
                             </m:layoutData>
@@ -121,7 +121,7 @@
                           <t:Column width="auto" id="idFconver" visible="true" sortProperty="Fconver"  filterProperty="Fconver">
                             <m:Label text="{appTxts>/visor.Fconver}" />
                             <t:template>
-                                <m:Text text="{DetallePosiciones>Fconver}" wrapping="false"/>
+                                <m:Text text="{DetallePosiciones>Menge}" wrapping="false"/>
                             </t:template>
                         </t:Column>
                      <!--   <t:Column width="auto" id="id" visible="true" sortProperty="Erfme" filterProperty="Erfme">

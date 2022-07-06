@@ -94,9 +94,9 @@
                         <OverflowToolbar>
                             <Title text="Reporte Mejor Condición" />
                             <ToolbarSpacer/>
-                            <!--
-                        <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${AcuerdosHdr>/AcuerdosDet/results/length} > 0}" />
-                        -->
+
+                            <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${MejorCondHdr>/length} > 0}" />
+
                             <Select visible="{= ${AcuerdosHdr>/AcuerdosDet/Paginated/results/length} > 0 }" change=".paginateValue(${$parameters>/selectedItem}, 'AcuerdosHdr', '/AcuerdosDet')">
                                 <items>
                                     <core:Item key="10" text="10"/>
@@ -108,7 +108,7 @@
                         </OverflowToolbar>
                     </t:extension>
                     <t:columns>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column 	sortProperty="TeSalida/DocCompra"  	width="8rem" hAlign="Left">
 
                             <Text text="Doc Compra" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
@@ -116,7 +116,7 @@
                                 <Text text="{MejorCondHdr>TeSalida/DocCompra}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column  sortProperty="TeSalida/Posicion" 	width="5rem"  hAlign="Left">
                             <Text text="Posición" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
 
@@ -126,7 +126,7 @@
 
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column 	sortProperty="TeSalida/DocMaterial" 	width="9rem" hAlign="Left">
 
                             <Text text="Docto. Material" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
@@ -136,7 +136,7 @@
                             </t:template>
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column 	sortProperty="TeSalida/DocFactura" 	width="9rem" hAlign="Left">
 
                             <Text text="Docto Factura" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
@@ -147,7 +147,7 @@
                             </t:template>
 
                         </t:Column>
-                        <t:Column width="auto">
+                        <t:Column  	sortProperty="TeSalida/DocCargo" 	width="9rem">
 
                             <Text text="Docto Cargo" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
@@ -157,7 +157,7 @@
                             </t:template>
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column 	sortProperty="TeSalida/Cmsucfol" 	width="11rem" hAlign="Left">
 
                             <Text text="CMSUCFOL" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
@@ -167,7 +167,7 @@
                             </t:template>
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column 	sortProperty="TeSalida/EanUpc" 	width="10rem" hAlign="Left">
 
                             <Text text="EAN" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
@@ -178,7 +178,7 @@
                             </t:template>
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column  sortProperty="TeSalida/MaterialSap" 	width="11rem" hAlign="Left">
 
                             <Text text="Material Proveedor" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
@@ -188,7 +188,7 @@
                             </t:template>
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column  sortProperty="TeSalida/FecharSap"  	width="6rem" hAlign="Left">
 
                             <Text text="Fecha SAP" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
@@ -198,7 +198,7 @@
                             </t:template>
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column sortProperty="TeSalida/UmedidaPSap" 	width="6rem" hAlign="Left">
 
                             <Text text="UMedida SAP" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
@@ -209,58 +209,58 @@
 
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column  sortProperty="TeSalida/CantidadSap" 	 width="6rem" hAlign="Left">
 
                             <Text text="Cantidad SAP" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
                             <t:template>
-                               <Text text="{MejorCondHdr>TeSalida/CantidadSap}" wrapping="false"/>
+                                <Text text="{MejorCondHdr>TeSalida/CantidadSap}" wrapping="false"/>
 
                             </t:template>
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column  sortProperty="TeSalida/PrecCDescSap" width="6rem" hAlign="Left">
 
                             <Text text="Prec Dec SAP" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
                             <t:template>
-                          <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/PrecCDescSap'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/PrecCDescSap'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
 
                             </t:template>
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column sortProperty="TeSalida/ImporteSap" width="6rem" hAlign="Left">
 
                             <Text text="Importe SAP" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
-                    <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/ImporteSap'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/ImporteSap'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
 
                             </t:template>
 
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column sortProperty="TeSalida/ImpuestosSap" width="6rem" hAlign="Left">
 
                             <Text text="Impuestos SAP" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
                             <t:template>
-                      <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/ImpuestosSap'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/ImpuestosSap'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
 
                             </t:template>
 
                         </t:Column>
 
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column  sortProperty="TeSalida/ImpTotCImpSap" width="6rem" hAlign="Left">
 
                             <Text text="ImpTotCImpSap" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
-                      <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/ImpTotCImpSap'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/ImpTotCImpSap'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
 
                             </t:template>
 
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column  sortProperty="TeSalida/FechaRegSap" width="6rem" hAlign="Left">
 
                             <Text text="Fecha Reg" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
@@ -270,7 +270,7 @@
 
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column  sortProperty="TeSalida/Serfol" width="6rem" hAlign="Left">
 
                             <Text text="Serfol" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
@@ -280,7 +280,7 @@
 
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column   sortProperty="TeSalida/Material" width="6rem" hAlign="Left">
 
                             <Text text="Material" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
@@ -291,7 +291,7 @@
 
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column  sortProperty="TeSalida/Unidad" width="6rem" hAlign="Left">
 
                             <Text text="Unidad" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
@@ -302,7 +302,7 @@
 
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column  sortProperty="TeSalida/Cantidad" width="6rem" hAlign="Left">
 
                             <Text text="Cantidad" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
@@ -312,7 +312,7 @@
 
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column sortProperty="TeSalida/PrecioUnSi" width="6rem" hAlign="Left">
 
                             <Text text="Precio UnSi" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
@@ -322,7 +322,7 @@
 
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column sortProperty="TeSalida/ImporteTotal"  width="6rem" hAlign="Left">
 
                             <Text text="Importe Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
@@ -332,7 +332,7 @@
 
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column  sortProperty="TeSalida/ImpuestosFact" width="6rem" hAlign="Left">
 
                             <Text text="Impuestos Fact" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
@@ -342,7 +342,7 @@
 
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column  sortProperty="TeSalida/ImporteTotCi" width="6rem" hAlign="Left">
 
                             <Text text="ImporteTotalCi" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
@@ -353,7 +353,7 @@
 
                         </t:Column>
 
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column sortProperty="TeSalida/MejorCantidad"  width="6rem" hAlign="Left">
 
                             <Text text="Mejor Cantidad" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
@@ -363,7 +363,7 @@
 
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column sortProperty="TeSalida/MejorPrecio" width="6rem" hAlign="Left">
 
                             <Text text="Mejor Precio" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
@@ -373,7 +373,7 @@
 
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column sortProperty="TeSalida/MejorSubtotal" width="6rem" hAlign="Left">
 
                             <Text text="Mejor Subtotal" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
@@ -383,7 +383,7 @@
 
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column sortProperty="TeSalida/ImpuestosTotal" width="6rem" hAlign="Left">
 
                             <Text text="Impuestos Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
@@ -393,7 +393,7 @@
 
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column sortProperty="TeSalida/MejorTotal" width="6rem" hAlign="Left">
 
                             <Text text="Mejor Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
@@ -404,7 +404,7 @@
 
                         </t:Column>
 
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column sortProperty="TeSalida/NcargoMc" width="6rem" hAlign="Left">
 
                             <Text text="NCargoMc" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
@@ -414,7 +414,7 @@
                             </t:template>
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column sortProperty="TeSalida/NcargoImpMc" width="6rem" hAlign="Left">
 
                             <Text text="NCargoImpMc" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
@@ -424,7 +424,7 @@
                             </t:template>
 
                         </t:Column>
-                        <t:Column width="auto" hAlign="Left">
+                        <t:Column sortProperty="TeSalida/NcargoTotMc" width="6rem" hAlign="Left">
 
                             <Text text="NcargoTotMc" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
