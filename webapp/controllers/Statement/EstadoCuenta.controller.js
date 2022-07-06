@@ -160,6 +160,8 @@ sap.ui.define([
                 results: [...Detalles]
             };
 
+
+ 
             delete TDatos.results[0].Citms;
             delete TDatos.results[0].Oitms;
 
@@ -187,12 +189,10 @@ sap.ui.define([
             for (let x in groupedMovs) {
 
 
-                console.log("sumando valores");
-
+ 
 
                 var resultCredit = groupedMovs[x].reduce(function (_this, val) {
-                    console.log(val.Wrbtr)
-                    var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
+                     var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
                     var total = _this + current
                     return total
                 }, 0);
@@ -205,8 +205,7 @@ sap.ui.define([
                 }, 0);
 
 
-                console.log(result)
-                var agrupado = groupedMovs[x]
+                 var agrupado = groupedMovs[x]
                 var idGrupo = agrupado[0].IdNumGpo ? agrupado[0].IdNumGpo : ""
                 //IdNumGpo
                 nestedMovs.push({
@@ -256,12 +255,13 @@ sap.ui.define([
                     "totalD": me.truncate(totalD, 2),
                     "totalC": me.truncate(totalC, 2),
                     "totalT": me.truncate(totalGeneral, 2)
-                }
+                },
+                "Bukrs": TDatos.results[0].Bukrs
+
             });
 
 
             this.getOwnerComponent().setModel(jsonModelG, "GroupedTotales");
-            console.log(jsonModelG);
 
 
             this.initTable()
@@ -353,8 +353,7 @@ sap.ui.define([
                 // console.log(x + ": "+ groupedMovs[x])
 
                 var resultCredit = groupedMovs[x].reduce(function (_this, val) {
-                    console.log(val.Wrbtr)
-                    var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
+                     var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
                     var total = _this + current
                     return total
                 }, 0);
@@ -367,8 +366,7 @@ sap.ui.define([
                 }, 0);
 
 
-                console.log(result)
-                var agrupado = groupedMovs[x]
+                 var agrupado = groupedMovs[x]
                 var idGrupo = agrupado[0].IdNumGpo ? agrupado[0].IdNumGpo : ""
                 //IdNumGpo
                 nestedMovs.push({
@@ -414,13 +412,15 @@ sap.ui.define([
                     "totalD": me.truncate(totalD, 2),
                     "totalC": me.truncate(totalC, 2),
                     "totalT": me.truncate(totalGeneral, 2)
-                }
+                },
+                "Bukrs": TDatos.results[0].Bukrs
+
             });
 
             this.getOwnerComponent().setModel(jsonModelG, "GroupedTotales");
 
 
-            this.initTable()
+             this.initTable()
 
 
 
@@ -651,7 +651,7 @@ sap.ui.define([
 
                 //            let totalRegistros = parseInt( this.getOwnerComponent().getModel('totales').getProperty('/Detalles/results/length'), 10);
 
-                var sociedad = this.getOwnerComponent().getModel('totales').getProperty('/Bukrs')
+                var sociedad = this.getOwnerComponent().getModel('GroupedTotales').getProperty('/Bukrs')
                 // var ejercicio = this.getOwnerComponent().getModel('totales').getProperty('/Gjahr')
 
 
