@@ -109,42 +109,42 @@ sap.ui.define([
             var columns = [{
                     name: texts.getProperty("/acuerdos.sucursal"),
                     template: {
-                        content: "{Centro}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/acuerdos.base"),
-                    template: {
-                        content: "{Base}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/acuerdos.desc"),
-                    template: {
-                        content: "{Descuento}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/acuerdos.iva"),
-                    template: {
-                        content: "{IVA}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/acuerdos.pDesc"),
-                    template: {
-                        content: "{PDesc}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/acuerdos.unidad"),
-                    template: {
-                        content: "{Unidad}"
+                        content: "{DocCompra}"
                     }
                 }
+               
             ];
 
-            this.exportxls('MejorCondHdr', '/results', columns);
+            columns = []
+
+
+            var table = this.byId("tableAcuerdos")
+
+            console.log(table)
+
+            var tableColumns = this.getView().byId("tableAcuerdos").getColumns();
+
+            console.log(tableColumns)
+
+            for (let column of  tableColumns){
+
+               var label = column.mAggregations.label.mProperties.text
+               var template = column.mProperties.sortProperty
+
+               console.log(label)
+               var content = `{${template}}`
+
+            columns.push({
+                name: label,
+                template: {
+                    content: content
+                }
+			});
+
+            }
+
+            
+            this.exportxls('MejorCondHdr', '/', columns);
         },
 
         _onDocumentMatched: function (oEvent) {
