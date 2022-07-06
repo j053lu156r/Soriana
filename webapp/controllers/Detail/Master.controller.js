@@ -228,17 +228,6 @@ sap.ui.define([
                     '\n<soapenv:Header/>\n<soapenv:Body>\n<sci:RecibeCFD><sci:XMLCFD>' + 
                     '<![CDATA[' + strXML + ']]>\n</sci:XMLCFD>\n</sci:RecibeCFD>\n</soapenv:Body>\n' + 
                     '</soapenv:Envelope>';
-                
-               const settings = {
-                    "async": true,
-                    "url": "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocRecibo.asmx",
-                    "method": "POST",
-                    "headers": {
-                        "Content-Type": "text/xml",
-                        "Access-Control-Allow-Origin":"*"
-                    },
-                    "data": body
-                };
 
                 $.ajax({
                     async: true,
