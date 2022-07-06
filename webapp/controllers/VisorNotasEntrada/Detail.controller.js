@@ -74,6 +74,7 @@ sap.ui.define([
                 "Lifnr": ModeloN.Lifnr,
                 "BudatMkpf": ModeloN.BudatMkpf,
                 "Werks": ModeloN.Werks,
+                "Xblnr":ModeloN.Xblnr,
                 "posiciones": []
 
 
