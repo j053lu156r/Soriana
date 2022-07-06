@@ -1,11 +1,15 @@
 sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "demo/controllers/BaseController",
-    "sap/ui/core/mvc/Controller"
-], function (JSONModel, Controller) {
+    'sap/ui/export/Spreadsheet',
+    'sap/m/MessageToast',
+    'sap/ui/export/library'
+], function (JSONModel, Controller, Spreadsheet, MessageToast, exportLibrary) {
     "use strict";
 
     var oModel = new this.Pedidostemp();
+    var EdmType = exportLibrary.EdmType;
+
     return Controller.extend("demo.controllers.Orders.Detail", {
         onInit: function () {
             var oExitButton = this.getView().byId("exitFullScreenBtn"),
@@ -104,183 +108,33 @@ sap.ui.define([
             this.onCloseDialog();
         },
         buildExcel: function(){
-        
-            var columns = [
-                {
-                    name: "Pedidos",
-                    template: {
-                        content: "{Ebeln}"
-                    }
-                },
-                {
-                    name: "Posicion",
-                    template: {
-                        content: "{Ebelp}"
-                    }
-                },
-                {
-                    name: this.getOwnerComponent().getModel("appTxts").getProperty("/order.assorment"),
-                    template: {
-                        content: this.getOwnerComponent().getModel("tableDetailMoves").getProperty( "/OEKKONAV/results/0/Telf1")
-                    }
-                },                
-                {
-                    name: "Estatus",
-                    template: {
-                        content: this.formatSatusOrder(this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0/Elikz" ) )
-                    }
-                },
-                {
-                    name: this.getOwnerComponent().getModel("appTxts").getProperty("/order.shipmentbegin"),
-                    template: {
-                        content: this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0/Kdatb")
-                    }
-                },
-                {
-                    name: this.getOwnerComponent().getModel("appTxts").getProperty("/order.shipmentend"),
-                    template: {
-                        content: this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0/Kdate")
-                    }
-                },
-                {
-                    name: this.getOwnerComponent().getModel("appTxts").getProperty("/order.date"),
-                    template: {
-                        content: this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0/Bedat")
-                    }
-                },
-                {
-                    name: "Proveedor",
-                   template: {
-                        content: this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0/Lifnr") 
-                    }
-                },
-                {
-                    name: "Monto Total",
-                    template: {
-                        content: this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0/Netwr") 
-                    }
-                },
-                {
-                    name: "Moneda",
-                    template: {
-                        content: this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0/Waers")
-                    }
-                },
-               {
-                    name: "Precio Unitario",
-                    template: {
-                        content: "{Netpr}"
-                    }
-                },
-                {
-                    name: "Moneda",
-                    template: {
-                        content: "{Waers}"
-                    }
-                },                
-               {
-                    name: "Monto Posicion",
-                    template: {
-                        content: "{Brtwr}"
-                    }
-                },
-                {
-                    name: "Moneda",
-                    template: {
-                        content: "{Waers}"
-                    }
-                },               
-                {
-                    name: "Fecha entrega",
-                    template: {
-                        content: this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0/Eindt")                        
-                    }
-                },
-                {
-                    name: "Codigo de Barras",
-                    template: {
-                        content: "{Ean11}"
-                    }
-                },
-                {
-                    name: "Descripcion",
-                    template: {
-                        content: "{Txz01}"
-                    }
-                },
-                {
-                    name: "Cantidad",
-                    template: {
-                        content: "{Menge}"
-                    }
-                },
-                {
-                    name: "Unidad de Medida",
-                    template: {
-                        content: "{Meins}"
-                    }
-                },               
-                {
-                    name: "Cantidad Entregada",
-                    template: {
-                        content: "{Centregada}"
-                    }
-                },
-                {
-                    name: "Unidad de Medida",
-                    template: {
-                        content: "{Meins}"
-                    }
-                },                
-                {
-                    name: "Cantidad Restante",
-                    template: {
-                        content: "{Cresta}"
-                    }
-                },
-                {
-                    name: "Unidad de Medida",
-                    template: {
-                        content: "{Meins}"
-                    }
-                },                
-                {
-                    name: "Sucursal",
-                    template: {
-                        content: "{Werks}"
-                    }
-                },  
-                {
-                    name: "Nombre Sucursal",
-                    template: {
-                        content: "{Name1}"
-                    }
-                },                                                  
-               {
-                    name: "Capacidad de empaque",
-                    template: {
-                        content: "{Cempaque}"
-                    }
-                },
-                {
-                    name: "Unidad de Medida",
-                    template: {
-                        content: "{Cempumb}"
-                    }
-                },                                  
-            ];
 
-            this.exportxls('tableDetailMoves', '/Oekponav/results', columns);
+            var oModel = this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0");
+            var columns = this.createColumnConfig();
+            var aDataPosiciones = this.createData();
+
+            var oSettings = {
+				workbook: { columns: columns },
+				dataSource: aDataPosiciones,
+                fileName: 'Detalle Pedido ' + oModel.Ebeln + '.xlsx',
+			};
+
+            var oSheet = new Spreadsheet(oSettings);
+            oSheet.build().then( function() {
+                MessageToast.show('Spreadsheet export has finished');
+            }).finally(oSheet.destroy);
         },
 
         createColumnConfig: function() {
 			return [
 				{
 					label: 'Número de proveedor',
+                    type: EdmType.Number,
 					property: 'Lifnr'
 				},
 				{
 					label: 'Número de pedido',
+                    type: EdmType.Number,
 					property: 'Ebeln'
 				},
 				{
@@ -289,10 +143,13 @@ sap.ui.define([
 				},
 				{
 					label: 'Codigo de tienda',
+                    type: EdmType.String,
 					property: 'Werks'
 				},
                 {
 					label: 'Descripcion de tienda',
+                    type: EdmType.String,
+                    width: 40,
 					property: 'Name1'
 				},
 				{
@@ -305,24 +162,45 @@ sap.ui.define([
 				},
                 {
 					label: 'Cantidad pedida',
-					property: 'Menge'
-				},
-                {
-					label: 'Unidad de compra',
-					property: 'Meins'
+                    type: EdmType.Currency,
+                    unitProperty: 'Meins',
+					property: 'Menge',
+                    displayUnit: true,
+                    width: 25
 				},
                 {
 					label: 'Codigo',
-					property: 'Ean11'
+					property: 'Ean11',
+                    width: 15
 				},
                 {
 					label: 'Precio',
-					property: 'Netpr'
+                    type: EdmType.Currency,
+                    unitProperty: 'Waers',
+					property: 'Netpr',
+                    displayUnit: true,
+                    width: 25
 				},
                 {
 					label: 'Descripcion de articulo',
-					property: 'Txz01'
+					property: 'Txz01',
+                    type: EdmType.String,
+                    width:40
 				}];
-		}
+		},
+
+        createData: function(){
+            var oCabecera = this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0");
+            var aPosiciones = this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/Oekponav/results");
+
+            aPosiciones.forEach(function(posicion) {
+                posicion.Lifnr = oCabecera.Lifnr;
+                posicion.Bedat = oCabecera.Bedat;
+                posicion.Kdate = oCabecera.Kdate;
+                posicion.Kdatb = oCabecera.Kdatb;
+            });
+
+            return aPosiciones;
+        }
     });
 });
