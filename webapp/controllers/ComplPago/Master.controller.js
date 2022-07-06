@@ -157,7 +157,7 @@ sap.ui.define([
 
 
 
-                console.log(valor);
+      
                 auxFilters.push(new sap.ui.model.Filter({
                     path: 'IAugbl',
                     operator: sap.ui.model.FilterOperator.EQ,
@@ -177,7 +177,7 @@ sap.ui.define([
             that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
                 sap.ui.core.BusyIndicator.hide();
                 var data = _GEToDataV2Response.data.results;
-                console.log(data)
+             
                 var Documentos = { Detalles: { results: [...data[0].EPYMNTDOCSNAV.results] } };
 
 
@@ -222,7 +222,7 @@ sap.ui.define([
             let oDataJSONModel = this.getOdataJsonModel(url, oODataJSONModel);
             let dataJSON = oDataJSONModel.getJSON();
 
-            console.log(dataJSON)
+          
             let Datos = JSON.parse(dataJSON);
 
 
@@ -507,12 +507,12 @@ sap.ui.define([
             datarange.setDateValue(minConsultDate);
         },
         onDocumentPress: function (oEvent) {
-            console.log('on documnt press', oEvent);
+         
             let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
             let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
 
             let registro = results[posicion];
-            console.log(registro)
+       
 
             this.getOwnerComponent().getRouter().navTo("detailComplPagos",
                 {
@@ -535,7 +535,7 @@ sap.ui.define([
 
             var oModel = that.getView().getModel("Documentos").getData().Detalles.Paginated.results,
                 aCols = [];
-            console.log(oModel);
+          
             var texts = this.getOwnerComponent().getModel("appTxts");
 
             aCols.push({
@@ -754,7 +754,7 @@ var auxFilters=[];
 
 
             var nombreArchivo = String(Datos.results[0].IBukrs + "_" + Datos.results[0].IGjahr + "_" + Datos.results[0].IVblnr + " -Comp Pago");
-console.log(nombreArchivo)
+
             //this.exportxls('Archivo', '/Detalles/results', columns, typeExport);
 
             sap.ui.core.util.File.save(ContenidoArchivo, nombreArchivo, "txt", "text/plain", "utf-8", false);
