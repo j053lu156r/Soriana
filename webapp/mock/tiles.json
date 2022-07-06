@@ -174,6 +174,22 @@
                             "idFunction": 41
                         }
                     ]
+                },
+                {
+                    "id": "0035",
+                    "title": "/incidencias.title",
+                    "subHeader": "",
+                    "icon": "sap-icon://bbyd-dashboard",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterIncidencias",
+                    "functions": [
+                        {
+                            "idFunction": 28
+                            
+                        }
+                    ]
                 }
             ]
         },
@@ -415,25 +431,8 @@
                             ]
                         }
                     ]
-                },
-                {
-                    "id": "0035",
-                    "title": "/incidencias.title",
-                    "subHeader": "",
-                    "icon": "sap-icon://bbyd-dashboard",
-                    "numeric": " ",
-                    "footer": "",
-                    "type": "standard",
-                    "binding": "masterIncidencias",
-                    "functions": [
-                        {
-                            "idFunction": 28,
-                            "roles": [
-                                "0000"
-                            ]
-                        }
-                    ]
                 }
+                
             ]
         },
         {
