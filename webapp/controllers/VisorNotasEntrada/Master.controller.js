@@ -437,7 +437,7 @@ this.buildExportTable2();
             });
 
             aCols.push({
-                label: texts.getProperty("/visor.SerieFolio"),
+                label: texts.getProperty("/visor.Frecibo"),
                 type: EdmType.String,
                 property: 'Xblnr'
             });
