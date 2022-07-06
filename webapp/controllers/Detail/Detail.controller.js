@@ -70,10 +70,6 @@ sap.ui.define([
 			this.oRouter.navTo("detailOrders", {layout: oNextUIState.layout,  document: document});
         },
         buildExcel: function(){
-
-            
-
-            /*
             var texts = this.getOwnerComponent().getModel("appTxts");
             let Encabezado = this.getOwnerComponent().getModel("tableDetailMoves");
 
@@ -214,60 +210,7 @@ sap.ui.define([
             ];
 
             this.exportxls('tableDetailMoves', '/EDOCDTLNAV/results', columns);
-            */
-
         },
 
-        createColumnConfig: function() {
-			return [
-				{
-					label: 'Número de proveedor',
-					property: 'Lifnr'
-				},
-				{
-					label: 'Número de pedido',
-					property: 'Ebeln'
-				},
-				{
-					label: 'Fecha de pedido',
-					property: 'Bedat'
-				},
-				{
-					label: 'Codigo de tienda',
-					property: 'Werks'
-				},
-                {
-					label: 'Descripcion de tienda',
-					property: 'Name1'
-				},
-				{
-					label: 'Fecha de inicio de embarque',
-					property: 'Kdate'
-				},
-                {
-					label: 'Fecha de fin de embarque',
-					property: 'Kdatb'
-				},
-                {
-					label: 'Cantidad pedida',
-					property: 'Menge'
-				},
-                {
-					label: 'Unidad de compra',
-					property: 'Meins'
-				},
-                {
-					label: 'Codigo',
-					property: 'Ean11'
-				},
-                {
-					label: 'Precio',
-					property: 'Netpr'
-				},
-                {
-					label: 'Descripcion de articulo',
-					property: 'Txz01'
-				}];
-		}
 	});
 });
