@@ -332,8 +332,6 @@ sap.ui.define([
         createColumnConfig: function(){
             var oCabecera = this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0");
             var aPosiciones = this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/Oekponav/results");
-            console.log(oCabecera)
-            console.log(aPosiciones)
 
             aPosiciones.forEach(function(posicion) {
                 posicion.setProperty("Lifnr", oCabecera.Lifnr);
@@ -341,6 +339,8 @@ sap.ui.define([
                 posicion.setProperty("Kdate", oCabecera.Kdate);
                 posicion.setProperty("Kdatb", oCabecera.Kdatb);
             });
+
+            console.log(aPosiciones)
         }
     });
 });
