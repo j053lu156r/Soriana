@@ -1,0 +1,43 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:c="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc">
+	<Dialog id="dinamicTableCP" title="{appTxts>/pay.msgPopOption} " draggable="true">
+		<l:VerticalLayout>
+		
+			<CheckBox text="{appTxts>/visor.msgSelectAll}"
+				selected="{= ${/column1} || ${/column2} || ${/column3}|| ${/column4}|| ${/column5}|| ${/column6}|| ${/column7}|| ${/column8}|| ${/column9}|| ${/column10}|| ${/column11}}"
+				partiallySelected="{= !(${/column1} &amp;&amp; ${/column2} &amp;&amp; ${/column3}&amp;&amp; ${/column4}&amp;&amp; ${/column5}&amp;&amp; ${/column6}&amp;&amp; ${/column7}&amp;&amp; ${/column8}&amp;&amp; ${/column9}&amp;&amp; ${/column10}&amp;&amp; ${/column11}  )}"
+				select="onParentClicked"/>
+			<c:HTML content="&lt;hr&gt;"/>
+			<CheckBox text="{appTxts>/pay.headerCompany}" selected="{/column1}"/>
+			<CheckBox text="{appTxts>/pay.headerPaymentType}" selected="{/column2}"/>
+			<CheckBox text="{appTxts>/pay.headerDocument}" selected="{/column3}"/>
+			<CheckBox text="{appTxts>/pay.headerFile}" selected="{/column4}"/>
+			<CheckBox text="{appTxts>/pay.headerLimitDate}" selected="{/column5}"/>
+            <CheckBox text="{appTxts>/pay.headerAmount}" selected="{/column6}"/>
+            <CheckBox text="{appTxts>/pay.headerNC}" selected="{/column7}"/>
+			<CheckBox text="{appTxts>/pay.headerCP} 03" selected="{/column8}"/>
+			<CheckBox text="{appTxts>/pay.headerCP} 17S" selected="{/column9}"/>
+			<CheckBox text="{appTxts>/pay.headerCP} 17R" selected="{/column10}"/>
+			<CheckBox text="{appTxts>/pay.headerEstatus}" selected="{/column11}"/>
+            
+
+
+
+
+
+
+
+
+
+
+
+
+			
+		
+		
+			
+		</l:VerticalLayout>
+		<buttons>
+			<Button text="{appTxts>/visor.msgCloseOption}" press="ClosepopUp"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>
