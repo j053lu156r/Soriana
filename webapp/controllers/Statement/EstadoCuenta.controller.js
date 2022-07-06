@@ -426,11 +426,11 @@ sap.ui.define([
 
 
 
-
-
+ 
             this.getOwnerComponent().setModel(jsonModelT, "totales");
 
-            this.paginate("totales", "/Detalles", 1, 0);
+ 
+        //    this.paginate("totales", "/Detalles", 1, 0);
 
         },
 
@@ -658,7 +658,7 @@ sap.ui.define([
                 var ejercicio2 = results.Budat
                 var ejercicio = ejercicio2.substr(0, 4) ? ejercicio2.substr(0, 4) : ""
 
-                console.log(results)
+                console.log(this.getOwnerComponent().getModel('totales'))
                 var tcode = results.Tcode
                 console.log(sociedad, ejercicio, tcode)
 
@@ -680,6 +680,8 @@ sap.ui.define([
                 } else {
 
                     console.log('on detailAportacionesAS')
+
+                    //camvuar  docuemnto con cual se va consultar 
 
                     this.getOwnerComponent().getRouter().navTo("detailAportacionesAS", {
                         layout: sap.f.LayoutType.TwoColumnsMidExpanded,
