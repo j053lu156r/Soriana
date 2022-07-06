@@ -104,7 +104,10 @@ sap.ui.define([
             this.onCloseDialog();
         },
         buildExcel: function(){
-        
+
+            var columns = this.createColumnConfig();
+
+            /*
             var columns = [
                 {
                     name: "Pedidos",
@@ -271,6 +274,7 @@ sap.ui.define([
             ];
 
             this.exportxls('tableDetailMoves', '/Oekponav/results', columns);
+            */
         },
 
         createColumnConfig: function() {
@@ -323,6 +327,20 @@ sap.ui.define([
 					label: 'Descripcion de articulo',
 					property: 'Txz01'
 				}];
-		}
+		},
+
+        createColumnConfig: function(){
+            var oCabecera = this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0");
+            var aPosiciones = this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/Oekponav/results");
+            console.log(oCabecera)
+            console.log(aPosiciones)
+
+            aPosiciones.forEach(function(posicion) {
+                posicion.setProperty("Lifnr", oCabecera.Lifnr);
+                posicion.setProperty("Bedat", oCabecera.Bedat);
+                posicion.setProperty("Kdate", oCabecera.Kdate);
+                posicion.setProperty("Kdatb", oCabecera.Kdatb);
+            });
+        }
     });
 });
