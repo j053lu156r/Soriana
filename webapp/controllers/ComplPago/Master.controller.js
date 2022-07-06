@@ -110,6 +110,10 @@ sap.ui.define([
             if (!this.hasAccess(9)) {
                 return
             }
+            if(that.getView().byId("dateRange").getValue()===""){
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/pay.msgPopErrSe'));
+                return false;
+            }
 
             let documentTxt = this.getView().byId("documentTxt");
 
