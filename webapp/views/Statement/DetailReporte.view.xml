@@ -1,0 +1,475 @@
+<mvc:View displayBlock="true"
+    xmlns:f="sap.f"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns="sap.m"
+    xmlns:t="sap.ui.table"
+    xmlns:core="sap.ui.core" controllerName="demo.controllers.Statement.DetailReporte" height="100%">
+    <f:DynamicPage class="sapUiContentPadding">
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="{detailAcuerdosAS>/document}"/>
+                </f:heading>
+                <!--
+					<f:breadcrumbs>
+						<Breadcrumbs>
+							<Link text="Home" />
+							<Link text="Page 1" />
+							<Link text="Page 2" />
+							<Link text="Page 3" />
+							<Link text="Page 4" />
+							<Link text="Page 5" />
+						</Breadcrumbs>
+					</f:breadcrumbs>
+				-->
+                <f:expandedContent>
+                    <Label text="{detailAcuerdosAS>/document}"/>
+                </f:expandedContent>
+                <f:snappedContent>
+                    <Label text="{detailAcuerdosAS>/document}"/>
+                </f:snappedContent>
+                <f:snappedTitleOnMobile>
+                    <Title text="{detailAcuerdosAS>/document}"/>
+                </f:snappedTitleOnMobile>
+
+
+                <f:navigationActions>
+                    <Button icon="sap-icon://full-screen" type="Transparent" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }" />
+                    <Button icon="sap-icon://exit-full-screen" type="Transparent" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }" />
+                    <Button icon="sap-icon://decline" type="Transparent" press="handleClose" tooltip="Close column" />
+                </f:navigationActions>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <!--
+                    <fb:FilterBar id="filterBar" header="Header" reset="onReset" search="searchData" clear="clearFilters" cancel="onCancel" 
+		                filtersDialogClosed = "onFiltersDialogClosed" showRestoreButton="false" showClearButton="false" useToolbar="false"> 
+			
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="{appTxts>/acuerdos.sociedad}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="sociedadInput" placeholder="{appTxts>/acuerdos.sociedad}" showSuggestion="true" maxLength="4">
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="B" label="{appTxts>/acuerdos.docto}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="documentoInput" placeholder="{appTxts>/acuerdos.docto}" showSuggestion="true" maxLength="10">
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="C" label="{appTxts>/acuerdos.ejercicio}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="ejercicioInput" placeholder="{appTxts>/acuerdos.ejercicio}" showSuggestion="true" maxLength="4">
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="D" label="{appTxts>/acuerdos.acuerdo}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="acuerdoInput" placeholder="{appTxts>/acuerdos.acuerdo}" showSuggestion="true" maxLength="10">
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                        </fb:filterGroupItems>
+
+	                </fb:FilterBar>
+                    -->
+
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
+            <VBox>
+                <t:Table selectionMode="None" noData="{appTxts>/acuerdos.noData}" id="tableAcuerdos" rows="{MejorCondHdr>/}">
+                    <t:extension>
+                        <OverflowToolbar>
+                            <Title text="Reporte Mejor Condición" />
+                            <ToolbarSpacer/>
+
+                            <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${MejorCondHdr>/length} > 0}" />
+
+                            <Select visible="{= ${AcuerdosHdr>/AcuerdosDet/Paginated/results/length} > 0 }" change=".paginateValue(${$parameters>/selectedItem}, 'AcuerdosHdr', '/AcuerdosDet')">
+                                <items>
+                                    <core:Item key="10" text="10"/>
+                                    <core:Item key="20" text="20"/>
+                                    <core:Item key="50" text="50"/>
+                                    <core:Item key="100" text="100"/>
+                                </items>
+                            </Select>
+                        </OverflowToolbar>
+                    </t:extension>
+                    <t:columns>
+                        <t:Column 	sortProperty="TeSalida/DocCompra"  	width="8rem" hAlign="Left">
+
+                            <Text text="Doc Compra" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/DocCompra}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column  sortProperty="TeSalida/Posicion" 	width="5rem"  hAlign="Left">
+                            <Text text="Posición" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+
+
+
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/Posicion}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+
+                            </t:template>
+                        </t:Column>
+                        <t:Column 	sortProperty="TeSalida/DocMaterial" 	width="9rem" hAlign="Left">
+
+                            <Text text="Docto. Material" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/DocMaterial}" wrapping="false"/>
+
+                            </t:template>
+
+                        </t:Column>
+                        <t:Column 	sortProperty="TeSalida/DocFactura" 	width="9rem" hAlign="Left">
+
+                            <Text text="Docto Factura" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/DocFactura}" wrapping="false"/>
+
+
+                            </t:template>
+
+                        </t:Column>
+                        <t:Column  	sortProperty="TeSalida/DocCargo" 	width="9rem">
+
+                            <Text text="Docto Cargo" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/DocCargo}" wrapping="false"/>
+
+                            </t:template>
+
+                        </t:Column>
+                        <t:Column 	sortProperty="TeSalida/Cmsucfol" 	width="11rem" hAlign="Left">
+
+                            <Text text="CMSUCFOL" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/Cmsucfol}" wrapping="false"/>
+
+                            </t:template>
+
+                        </t:Column>
+                        <t:Column 	sortProperty="TeSalida/EanUpc" 	width="10rem" hAlign="Left">
+
+                            <Text text="EAN" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/EanUpc}" wrapping="false"/>
+
+
+                            </t:template>
+
+                        </t:Column>
+                        <t:Column  sortProperty="TeSalida/MaterialSap" 	width="11rem" hAlign="Left">
+
+                            <Text text="Material Proveedor" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/MaterialSap}" wrapping="false"/>
+
+                            </t:template>
+
+                        </t:Column>
+                        <t:Column  sortProperty="TeSalida/FecharSap"  	width="6rem" hAlign="Left">
+
+                            <Text text="Fecha SAP" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/FecharSap}" wrapping="false"/>
+
+                            </t:template>
+
+                        </t:Column>
+                        <t:Column sortProperty="TeSalida/UmedidaPSap" 	width="6rem" hAlign="Left">
+
+                            <Text text="UMedida SAP" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+
+                                <Text text="{MejorCondHdr>TeSalida/UmedidaPSap}" wrapping="false"/>
+
+                            </t:template>
+
+
+                        </t:Column>
+                        <t:Column  sortProperty="TeSalida/CantidadSap" 	 width="6rem" hAlign="Left">
+
+                            <Text text="Cantidad SAP" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/CantidadSap}" wrapping="false"/>
+
+                            </t:template>
+
+                        </t:Column>
+                        <t:Column  sortProperty="TeSalida/PrecCDescSap" width="6rem" hAlign="Left">
+
+                            <Text text="Prec Dec SAP" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/PrecCDescSap'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+
+                            </t:template>
+
+                        </t:Column>
+                        <t:Column sortProperty="TeSalida/ImporteSap" width="6rem" hAlign="Left">
+
+                            <Text text="Importe SAP" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/ImporteSap'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+
+                            </t:template>
+
+
+                        </t:Column>
+                        <t:Column sortProperty="TeSalida/ImpuestosSap" width="6rem" hAlign="Left">
+
+                            <Text text="Impuestos SAP" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/ImpuestosSap'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+
+                            </t:template>
+
+                        </t:Column>
+
+                        <t:Column  sortProperty="TeSalida/ImpTotCImpSap" width="6rem" hAlign="Left">
+
+                            <Text text="ImpTotCImpSap" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/ImpTotCImpSap'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+
+                            </t:template>
+
+
+                        </t:Column>
+                        <t:Column  sortProperty="TeSalida/FechaRegSap" width="6rem" hAlign="Left">
+
+                            <Text text="Fecha Reg" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/FechaRegSap}" wrapping="false"/>
+
+                            </t:template>
+
+
+                        </t:Column>
+                        <t:Column  sortProperty="TeSalida/Serfol" width="6rem" hAlign="Left">
+
+                            <Text text="Serfol" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/Serfol}" wrapping="false"/>
+
+                            </t:template>
+
+
+                        </t:Column>
+                        <t:Column   sortProperty="TeSalida/Material" width="6rem" hAlign="Left">
+
+                            <Text text="Material" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/Material}" wrapping="false"/>
+
+
+                            </t:template>
+
+
+                        </t:Column>
+                        <t:Column  sortProperty="TeSalida/Unidad" width="6rem" hAlign="Left">
+
+                            <Text text="Unidad" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/Unidad}" wrapping="false"/>
+
+
+                            </t:template>
+
+
+                        </t:Column>
+                        <t:Column  sortProperty="TeSalida/Cantidad" width="6rem" hAlign="Left">
+
+                            <Text text="Cantidad" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/Cantidad'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+
+                            </t:template>
+
+
+                        </t:Column>
+                        <t:Column sortProperty="TeSalida/PrecioUnSi" width="6rem" hAlign="Left">
+
+                            <Text text="Precio UnSi" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/PrecioUnSi'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+
+                            </t:template>
+
+
+                        </t:Column>
+                        <t:Column sortProperty="TeSalida/ImporteTotal"  width="6rem" hAlign="Left">
+
+                            <Text text="Importe Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/ImporteTotal'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+
+                            </t:template>
+
+
+                        </t:Column>
+                        <t:Column  sortProperty="TeSalida/ImpuestosFact" width="6rem" hAlign="Left">
+
+                            <Text text="Impuestos Fact" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/ImpuestosFact'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+
+                            </t:template>
+
+
+                        </t:Column>
+                        <t:Column  sortProperty="TeSalida/ImporteTotCi" width="6rem" hAlign="Left">
+
+                            <Text text="ImporteTotalCi" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/ImporteTotCi'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+
+                            </t:template>
+
+
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/MejorCantidad"  width="6rem" hAlign="Left">
+
+                            <Text text="Mejor Cantidad" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/MejorCantidad'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+
+                            </t:template>
+
+
+                        </t:Column>
+                        <t:Column sortProperty="TeSalida/MejorPrecio" width="6rem" hAlign="Left">
+
+                            <Text text="Mejor Precio" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/MejorPrecio'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+
+                            </t:template>
+
+
+                        </t:Column>
+                        <t:Column sortProperty="TeSalida/MejorSubtotal" width="6rem" hAlign="Left">
+
+                            <Text text="Mejor Subtotal" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/MejorSubtotal'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+
+                            </t:template>
+
+
+                        </t:Column>
+                        <t:Column sortProperty="TeSalida/ImpuestosTotal" width="6rem" hAlign="Left">
+
+                            <Text text="Impuestos Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/ImpuestosTotal'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+
+                            </t:template>
+
+
+                        </t:Column>
+                        <t:Column sortProperty="TeSalida/MejorTotal" width="6rem" hAlign="Left">
+
+                            <Text text="Mejor Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/MejorTotal'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+
+                            </t:template>
+
+
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/NcargoMc" width="6rem" hAlign="Left">
+
+                            <Text text="NCargoMc" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/NcargoMc'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+
+                            </t:template>
+
+                        </t:Column>
+                        <t:Column sortProperty="TeSalida/NcargoImpMc" width="6rem" hAlign="Left">
+
+                            <Text text="NCargoImpMc" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/NcargoImpMc'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+
+                            </t:template>
+
+                        </t:Column>
+                        <t:Column sortProperty="TeSalida/NcargoTotMc" width="6rem" hAlign="Left">
+
+                            <Text text="NcargoTotMc" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/NcargoTotMc'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                            </t:template>
+
+
+                        </t:Column>
+                    </t:columns>
+                    <!---
+                    <items>
+                        <ColumnListItem >
+                            <cells>
+                                <ObjectIdentifier title="{MejorCondHdr>TeSalida/DocCompra}" titleActive="true"/>
+
+                                <Text text="{MejorCondHdr>TeSalida/Posicion}"></Text>
+
+                                <ObjectNumber number="{
+                                    parts:[{path:'AcuerdosHdr>Base'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }" unit="MXN" />
+                                <ObjectNumber number="{
+                                    parts:[{path:'AcuerdosHdr>Descuento'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }" unit="MXN" />
+                                <ObjectNumber number="{
+                                    parts:[{path:'AcuerdosHdr>IVA'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }" unit="MXN" />
+                                <ObjectNumber number="{AcuerdosHdr>PDesc}" unit="{AcuerdosHdr>Unidad}" state="Success" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+-->
+                </t:Table>
+                <OverflowToolbar visible="{= ${AcuerdosHdr>/AcuerdosDet/Paginated/results/length} > 0 }">
+                    <Text text="{AcuerdosHdr>/AcuerdosDet/Paginated/initRow} - {AcuerdosHdr>/AcuerdosDet/Paginated/endRow} {appTxts>/pagination.of} {AcuerdosHdr>/AcuerdosDet/results/length}" />
+                    <ToolbarSpacer/>
+                    <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${AcuerdosHdr>/AcuerdosDet/Paginated/iterator}, ${AcuerdosHdr>/AcuerdosDet/Paginated/initRow}, 'AcuerdosHdr', '/AcuerdosDet')" enabled="{= ${AcuerdosHdr>/AcuerdosDet/Paginated/iterator} !== 1}" />
+                    <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${AcuerdosHdr>/AcuerdosDet/Paginated/iterator}, ${AcuerdosHdr>/AcuerdosDet/Paginated/endRow}, 'AcuerdosHdr', '/AcuerdosDet')" enabled="{= ${AcuerdosHdr>/AcuerdosDet/Paginated/endRow} !== ${AcuerdosHdr>/AcuerdosDet/results/length}}" />
+                </OverflowToolbar>
+            </VBox>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

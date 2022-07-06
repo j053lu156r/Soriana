@@ -115,6 +115,7 @@ sap.ui.define([
             }
         },
         ordersMetric: function (supplier, property) {
+            return 0;
             var oModel = new Pedidostemp();
 
             var url = `/notCreditSet?$expand=OEKKONAV&$filter=IOption eq '1' and ILifnr eq '${supplier}'` +

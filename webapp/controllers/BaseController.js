@@ -1024,12 +1024,17 @@ sap.ui.define([
             var oModel2 = "/sap/opu/odata/sap/"+model;
             var that = this;
 			let entidad = "/" + entity;
+        
 			return new Promise(function(fnResolve, fnReject) {
                
                 var oModel = new sap.ui.model.odata.ODataModel(oModel2);
 				oModel.read(entidad, {
 				filters: filter,
-                expand:expand,
+                urlParameters: {
+                    "$expand":expand,
+                
+                  },
+                  //381970
 					success: function(oData, oResponse) {
                        
 						fnResolve(oResponse);
@@ -1045,6 +1050,60 @@ sap.ui.define([
 					}
 				});
 			});
-		}
+		},
+        _GEToDataV2ajax: function(url) {
+          
+            return new Promise((fnResolve, fnReject) => {
+
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8; IEEE754Compatible=true",
+                    success: function(dataResponse) {
+                        fnResolve(dataResponse);
+                    },
+                    error: function(error, status, err) {
+                        sap.ui.core.BusyIndicator.hide();
+                        console.log("error",error)
+                        /*MessageBox.error(error.responseText.replaceAll("\n",""), {
+                            icon: MessageBox.Icon.ERROR,
+                            title: err
+                        });*/
+                        fnReject(new Error(error));
+                    }
+                });
+            });
+        },
+
+        _POSToDataV2: function(model, entity, aData) {
+            var oModel2 = "/sap/opu/odata/sap/"+model;
+            var that = this;
+		
+            console.log(oModel2)
+			return new Promise(function(fnResolve, fnReject) {
+              
+                $.ajax({
+					url: oModel2+entity,
+					type: "POST",
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    data:aData,
+					success: function(dataResponse) {
+						fnResolve(dataResponse);
+					},
+					error: function(error, status, err) {
+						sap.ui.core.BusyIndicator.hide();
+						console.log("error",error)
+						/*MessageBox.error(error.responseText.replaceAll("\n",""), {
+							icon: MessageBox.Icon.ERROR,
+							title: err
+						});*/
+						fnReject(new Error(error));
+					}
+				});
+			});
+		},
+
     });
 });

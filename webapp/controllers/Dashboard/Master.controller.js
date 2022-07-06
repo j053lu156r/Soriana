@@ -9,10 +9,12 @@ sap.ui.define([
 
     
     
-	return BaseController.extend("sap.m.sample.SplitApp.C", {
+    var Controller = BaseController.extend("sap.m.sample.SplitApp.C", {
 
+       
+      
 		onInit: function () {
-            
+            var that=this;
 
             this.getView().addEventDelegate({
                 onBeforeShow: function (oEvent) {
@@ -29,7 +31,7 @@ sap.ui.define([
                 }
             }, this);
 
-
+         
         },
         reloadData: function(){
             this.getData();
@@ -67,9 +69,16 @@ sap.ui.define([
 
             let url = `HrddashbSet?$expand=${expand}&$filter=IOption eq '${option}' and  ISfalta eq '${fechaInicio}' and  IFfalta eq '${fechaFin}' and ILifnr eq '${proveedor}'&$format=json`;
 
-            this.setDataModel( this.Modelo.getJsonModel( url ).getProperty('/results/0'), option );
+           this.setDataModel( this.Modelo.getJsonModel( url ).getProperty('/results/0'), option );
+
+
+
+
+
+          
         },
         setDataModel: function( Datos, option ){
+            console.log(Datos)
 
             let Tipos = [];
 
@@ -90,18 +99,76 @@ sap.ui.define([
             }
 
 
-            this.getView().byId('selectAgrupamiento').setSelectedKey('0');
+            //this.getView().byId('selectAgrupamiento').setSelectedKey('0');
             this.getView().byId('RB1-1').setSelected(true);
+            console.log(Datos)
 
         },
-        changeDataModel: function( oControlEvent ){
-            let posicion = oControlEvent.getParameters().selectedItem.getKey();
+        changeDataModel: function( oEvent ){
+           
+            var selectedItems = oEvent.getParameter("selectedItems");
+         
+                var ArrT={
+                    "Ant7": 0,
+                    "Ant15": 0,
+                    "Antx": 0,
+                    "DesAcla":"", 
+                    "ImporComp": 0,
+                    "ImporPend":0,
+                    "ImporTpagado": 0,
+                    "TotalAc": 0,
+                    "TotalComp":0,
+                    "TotalPend": 0,
+                    "Waers": "",
+                };
 
-            let Model = this.getOwnerComponent().getModel("Totales");
+      
+            if (selectedItems.length>1){
+                let Model = this.getOwnerComponent().getModel("Totales");
+    
+             
+                for(var x =0; x<selectedItems.length;x++){
+                    console.log(selectedItems[x].getKey())
+                    ArrT.Ant7= (ArrT.Ant7 +Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].Ant7);
+                    ArrT.Ant15= (ArrT.Ant15+Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].Ant15);
+                    ArrT.Antx= (ArrT.Antx+Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].Antx);
+                    //ArrT.DesAcla= (ArrT.DesAcla+Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].DesAcla);
+                    ArrT.ImporComp= (Number(ArrT.ImporComp)+Number(Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].ImporComp));
+                    ArrT.ImporPend= (Number(ArrT.ImporPend)+Number(Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].ImporPend));
+                    ArrT.ImporTpagado= (Number(ArrT.ImporTpagado)+Number(Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].ImporTpagado));
+                    ArrT.TotalAc= (ArrT.TotalAc+Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].TotalAc);
+                    ArrT.TotalComp= (ArrT.TotalComp+Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].TotalComp);
+                    ArrT.TotalPend= (ArrT.TotalPend+Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].TotalPend);
+                   // ArrT.Waers= (ArrT.Waers+Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].Waers);
+                }
+                Model.setProperty('/ValoresActivos', ArrT);
+            }else{
+                let posicion = selectedItems[0].getKey();
 
-            let ValoresActivos = Model.getProperty('/ETDBTACNAV/results')[ posicion ];
+                let Model = this.getOwnerComponent().getModel("Totales");
+    
+                let ValoresActivos = Model.getProperty('/ETDBTACNAV/results')[ posicion ];
+    console.log(ValoresActivos)
+    var auxJsonModel = new sap.ui.model.json.JSONModel(ValoresActivos);
+    this.getView().setModel(auxJsonModel, 'prueba');
+                Model.setProperty('/ValoresActivos', ValoresActivos);
+            }
+        },
+        ValidaVista:function(){
+            if(this.getView().byId("AElect").getState()){
+                this.getView().byId("FCard1").setVisible(false)
+                this.getView().byId("FCard2").setVisible(false)
+                this.getView().byId("FCard3").setVisible(false)
+                this.getView().byId("FCard4").setVisible(false)
+                this.getView().byId("FCard5").setVisible(false)
 
-            Model.setProperty('/ValoresActivos', ValoresActivos);
+            }else{
+                this.getView().byId("FCard1").setVisible(true)
+                this.getView().byId("FCard2").setVisible(true)
+                this.getView().byId("FCard3").setVisible(true)
+                this.getView().byId("FCard4").setVisible(true)
+                this.getView().byId("FCard5").setVisible(true)
+            }
         },
         generaTopTen: function(){
             let dateRange = this.getView().byId('dateRange');
@@ -267,13 +334,20 @@ sap.ui.define([
             this.getOwnerComponent().getModel('Totales').setProperty('/Segmentos', PieChart.length);
         },
         setDaterangeMaxMin: function () {
-            var datarange = this.getView().byId('dateRange');
+            var that=this;
+         /*   var datarange = this.getView().byId('dateRange');
             var date = new Date();
             var minDate = new Date();
             minDate.setDate(1);
 
             datarange.setSecondDateValue(date);
-            datarange.setDateValue(minDate);
+            datarange.setDateValue(minDate);*/
+            var Fecha= new Date();
+           
+            Fecha = (Fecha.getTime() - (1000*60*60*24*90))
+          
+         that.getView().byId("dateRange").setDateValue(new Date(Fecha));
+         that.getView().byId("dateRange").setSecondDateValue(new Date());
         },
         exportTopTen: function(){
             var texts = this.getOwnerComponent().getModel("appTxts");
@@ -471,6 +545,22 @@ sap.ui.define([
             ];
 
             this.exportxls('Totales', '/ETDBTACNAV/results', columns);
-        }
-	});
+        },
+        /*JP 15/06/2022*/ 
+VisualizadorGraficosP:function(){
+    var that=this;
+    that.getView().byId("graphPie").setVisible(true)
+    that.getView().byId("chartFixFlex").setVisible(false)
+
+},
+VisualizadorGraficosL:function(){
+    var that=this;
+    that.getView().byId("graphPie").setVisible(false)
+    that.getView().byId("chartFixFlex").setVisible(true)
+
+}
+    });
+
+    return Controller;
+
 });

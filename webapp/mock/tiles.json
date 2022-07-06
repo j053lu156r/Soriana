@@ -215,6 +215,25 @@
                     ]
                 },
                 {
+                    "id": "0047",
+                    "title": "/tiles.factoring.title",
+                    "subHeader": "",
+                    "icon": "sap-icon://customer-financial-fact-sheet",
+                    "numeric": "metrics>/factoring",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterFactoring",
+                    "bind2": "sendcompl",
+                    "functions": [
+                        {
+                            "idFunction": 9
+                        },
+                        {
+                            "idFunction": 10
+                        }
+                    ]
+                },
+                {
                     "id": "0008",
                     "title": "/tiles.titleFi.0008.state",
                     "subHeader": "",
@@ -408,7 +427,10 @@
                     "binding": "masterIncidencias",
                     "functions": [
                         {
-                            "idFunction": 28
+                            "idFunction": 28,
+                            "roles": [
+                                "0000"
+                            ]
                         }
                     ]
                 }

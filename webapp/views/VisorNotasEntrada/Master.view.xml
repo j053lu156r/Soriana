@@ -21,7 +21,7 @@
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
-                    <fb:FilterBar id="filterBar"  header="Header" reset="onReset" search="onSearch" 
+                    <fb:FilterBar id="filterBar"  header="Header" reset="onReset" search="searchData" 
                         clear="clearFilters" cancel="onCancel" filtersDialogClosed = "onFiltersDialogClosed" 
                         showRestoreButton="false" showClearButton="false" useToolbar="false">
 
@@ -92,6 +92,7 @@
                         <OverflowToolbar style="Clear">
                             <Title id="title" text="{appTxts>/state.detail} ({migoModel>/length})"/>
                             <ToolbarSpacer/>
+                               <Button icon="sap-icon://excel-attachment" text="Descarga Global" press="DMAsivo" visible="{= ${migoModel>/length} > 0}" />
                             <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${migoModel>/length} > 0}" />
                          <Button icon="sap-icon://action-settings" press="ConfigTable" />
                         
@@ -130,10 +131,10 @@
                                 <Text text="{migoModel>Xblnr}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto" id="idXblnr2" visible="true" sortProperty="Xblnr2" filterProperty="Xblnr2"> 
+                        <t:Column width="auto" id="idXblnr2" visible="true" sortProperty="XblnrFact" filterProperty="XblnrFact"> 
                             <Label text="{appTxts>/visor.invoice}" />
                             <t:template>
-                                <Text text="{migoModel>Xblnr2}" wrapping="false"/>
+                                <Text text="{migoModel>XblnrFact}" wrapping="false"/>
                             </t:template>
                         </t:Column>
                       

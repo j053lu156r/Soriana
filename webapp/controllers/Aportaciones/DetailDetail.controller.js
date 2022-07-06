@@ -34,34 +34,47 @@ sap.ui.define([
         },
         handleFullScreen: function () {
             this.bFocusFullScreenButton = true;
-			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
+			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/fullScreen");
             this.oRouter.navTo("detailDetailAporta",
                 {
                     layout: sNextLayout,
-                    folio: this._folio
+                    folio: this._folio, 
+                    concepto: this._concepto,
+                    gerencia: this._gerencia,
+                    importe: this._importe
                 }
             );
         },
         handleExitFullScreen: function () {
             this.bFocusFullScreenButton = true;
-			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
+			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/exitFullScreen");
             this.oRouter.navTo("detailDetailAporta",
                 {
                     layout: sNextLayout,
-                    folio: this._folio
+                    folio: this._folio, 
+                    concepto: this._concepto,
+                    gerencia: this._gerencia,
+                    importe: this._importe
                 }
             );
         },
         handleClose: function () {
-            var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
-            this.oRouter.navTo("EstadoCuenta", 
+            var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/closeColumn");
+            this.oRouter.navTo("detailAportaciones", 
                 { 
-                    layout: sNextLayout
+                    layout: sNextLayout,
+                    folio: this._folio, 
+                    concepto: this._concepto,
+                    gerencia: this._gerencia,
+                    importe: this._importe
                 }
             );
         },
         _onDocumentMatched: function (oEvent) {
             this._folio = oEvent.getParameter("arguments").folio || this._folio || "0";
+            this._concepto = oEvent.getParameter("arguments").concepto || this.concepto || "0";
+            this._gerencia = oEvent.getParameter("arguments").gerencia || this.gerencia || "0";
+            this._importe = oEvent.getParameter("arguments").importe || this.importe || "0";
 
             var url = "AportaSet?$expand=AportaDet&$filter=IOption eq '1'";
             ;

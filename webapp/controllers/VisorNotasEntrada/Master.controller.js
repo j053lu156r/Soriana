@@ -14,6 +14,12 @@ sap.ui.define([
 
     return Controller.extend("demo.controllers.VisorNotasEntrada.Master", {
         onInit: function () {
+            	//Sentencia para borrar cache de input
+			$(document).ready(function () {
+				$(document).on('focus', ':input', function () {
+					$(this).attr('autocomplete', 'off');
+				});
+			});
             this.configFilterLanguage(this.getView().byId("filterBar"));
 
             this._oPropertiesModel = new JSONModel({
@@ -47,8 +53,8 @@ idXblnr2: true
             var texts = that.getOwnerComponent().getModel("appTxts");
            var data=[];
            data.push(
-        {"text":texts.getProperty("/visor.invoice"),  "key":"Xblnr2"},
-           {"text": texts.getProperty("/visor.folio"),  "key":"Mblnr"},
+        {"text":texts.getProperty("/visor.invoice"),  "key":"XblnrFact"},
+           {"text": texts.getProperty("/visor.Frecibo"),  "key":"Xblnr"},
             {"text":texts.getProperty("/visor.order"),  "key":"Ebeln"}
            )
            
@@ -58,8 +64,10 @@ idXblnr2: true
            
             Fecha = (Fecha.getTime() - (1000*60*60*24*90))
           
-         that.getView().byId("dateRange").setDateValue(new Date());
-         that.getView().byId("dateRange").setSecondDateValue(new Date(Fecha));
+         that.getView().byId("dateRange").setDateValue(new Date(Fecha));
+         that.getView().byId("dateRange").setSecondDateValue(new Date());
+
+         
 
         },
         TableVisible: function () {
@@ -99,15 +107,16 @@ idXblnr2: true
             var Lifnr= oSelectedItem.getBindingContext("migoModel").getProperty("Lifnr");
             var BudatMkpf= oSelectedItem.getBindingContext("migoModel").getProperty("BudatMkpf");
             var Werks= oSelectedItem.getBindingContext("migoModel").getProperty("Werks");
+           var  Xblnr= oSelectedItem.getBindingContext("migoModel").getProperty("Xblnr");
           
-              this.getOwnerComponent().getRouter().navTo("detailVisorNotas", { layout: sap.f.LayoutType.MidColumnFullScreen, Mblnr:Mblnr, Mjahr:Mjahr,Ebeln:Ebeln, Lifnr:Lifnr, BudatMkpf:BudatMkpf, Werks:Werks});
+              this.getOwnerComponent().getRouter().navTo("detailVisorNotas", { layout: sap.f.LayoutType.MidColumnFullScreen, Mblnr:Mblnr, Mjahr:Mjahr,Ebeln:Ebeln, Lifnr:Lifnr, BudatMkpf:BudatMkpf, Werks:Werks,Xblnr:Xblnr});
             //this._oPropertiesModel.setProperty("/rowsCount", 10);
             //http://ppqas.soriana.com/sap/opu/odata/sap/ZOSP_MMIM_MIGO_DOC_SRV/MIGO_DOC(Mblnr='5095076269',Mjahr='2022')
            
 
         },
 
-        onSearch: function () {
+        searchData: function () {
             var that = this
             var Model = that.getView().getModel("configSite").getData();
             if (that.getView().byId("supplierInput").getValue() === '') {
@@ -127,9 +136,10 @@ idXblnr2: true
             auxFilters.push(new sap.ui.model.Filter({
                 path: "BudatMkpf",
                 operator: sap.ui.model.FilterOperator.BT,
-                value1: new Date(FechaI).toISOString().slice(0, 10) + 'T00:00:00',
-                value2: new Date(FechaF).toISOString().slice(0, 10) + 'T23:59:59'
+                value1: FechaI.toISOString().slice(0, 10) + 'T00:00:00',
+                value2:FechaF.toISOString().slice(0, 10) + 'T00:00:00'
             })
+         
             )
             auxFilters.push(new sap.ui.model.Filter({
                 path: "Lifnr",
@@ -138,10 +148,14 @@ idXblnr2: true
             })
             )
             if (this.getView().byId("inpInvoice").getValue()!==""){
+                var valor="";
+              
+                
+                console.log(valor);
                 auxFilters.push(new sap.ui.model.Filter({
                     path: that.getView().byId("OPFiltrosC").getSelectedKey(),
                     operator: sap.ui.model.FilterOperator.EQ,
-                    value1: this.getView().byId("inpInvoice").getValue()
+                    value1:this.getView().byId("inpInvoice").getValue()
                 })
                 )
             }
@@ -311,6 +325,218 @@ idXblnr2: true
 
             });
         },
+        DMAsivo :function(){
+var that=this;
+  var oModel = that.getView().getModel("migoModel").getData();
+var arrT=[];
+
+for(var x =0;x<oModel.length;x++){
+var TemP=oModel[x].DocDetalleNav.results;
+arrT.push({
+    BudatMkpf:oModel[x].BudatMkpf,
+    Ebeln: oModel[x].Ebeln,
+    Lifnr: oModel[x].Lifnr,
+    Mblnr: oModel[x].Mblnr,
+    Mjahr: oModel[x].Mjahr,
+    Werks: oModel[x].Werks,
+    Xblnr: oModel[x].Xblnr,
+    XblnrFact:oModel[x].XblnrFact,
+    Ean11p: "",
+    Ebelnp:"",
+    Ebelpp:"",
+    Erfmep: "",
+    Erfmgp:"",
+    Maktxp:"",
+    Matnrp:"",
+    Mblnrp: "",
+    Meinsp:"",
+    Mengep:"",
+    Mjahrp: "",
+    Zeilep: "",
+});
+
+for(var y =0;y<TemP.length;y++){
+     
+    arrT.push({
+    BudatMkpf:"",
+    Ebeln: "",
+    Lifnr: "",
+    Mblnr: "",
+    Mjahr: "",
+    Werks:"",
+    Xblnr: "",
+    XblnrFact:"",
+    Ean11p: TemP[y].Ean11,
+    Ebelnp:TemP[y].Ebeln,
+    Ebelpp:TemP[y].Ebelp,
+    Erfmep: TemP[y].Erfme,
+    Erfmgp:TemP[y].Erfmg,
+    Maktxp:TemP[y].Maktx,
+    Matnrp: TemP[y].Matnr,
+    Mblnrp: TemP[y].Mblnr,
+    Meinsp: TemP[y].Meins,
+    Mengep: TemP[y].Menge,
+    Mjahrp: TemP[y].Mjahr,
+    Zeilep: TemP[y].Zeile,
+    Fconverp: (Number(TemP[y].Menge)/Number(TemP[y].Erfmg))
+});
+}
+}
+
+var auxJsonModel = new sap.ui.model.json.JSONModel(arrT);
+that.getView().setModel(auxJsonModel, 'ExcelMasivo');
+this.buildExportTable2();
+
+        },
+
+        createColumnConfig2: function () {
+            var that = this;
+            console.log(that.getView().getModel("ExcelMasivo"))
+            console.log(that.getView().getModel("ExcelMasivo").getData())
+            var oModel = that.getView().getModel("ExcelMasivo").getData(),
+                aCols = [];
+          
+            var texts = this.getOwnerComponent().getModel("appTxts");
+
+            aCols.push({
+                label: texts.getProperty("/visor.folio"),
+                type: EdmType.String,
+                property: 'Mblnr'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/visor.order"),
+                type: EdmType.String,
+                property: 'Ebeln'
+            });
+            aCols.push({
+                label: texts.getProperty("/visor.supplier"),
+                type: EdmType.String,
+                property: 'Lifnr'
+            });
+
+            //****
+            aCols.push({
+                label: texts.getProperty("/visor.receivedDate"),
+                type: EdmType.String,
+                property: 'BudatMkpf'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/visor.branchOffice"),
+                type: EdmType.String,
+                property: 'Werks'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/visor.invoice"),
+                type: EdmType.String,
+                property: 'XblnrFact'
+
+
+            });
+
+            aCols.push({
+                label: texts.getProperty("/visor.SerieFolio"),
+                type: EdmType.String,
+                property: 'Xblnr'
+            });
+
+
+            //detalle
+
+            
+            aCols.push({
+                label: texts.getProperty("/visor.position"),
+                type: EdmType.String,
+                property: 'Ebelpp'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/visor.codigo"),
+                type: EdmType.String,
+                property: 'Ean11p'
+            });
+            aCols.push({
+                label: texts.getProperty("/visor.descripcion"),
+                type: EdmType.String,
+                property: 'Maktxp'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/visor.quantity"),
+                type: EdmType.String,
+                property: 'Erfmgp'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/visor.Fconver"),
+                type: EdmType.String,
+                property: 'Fconverp'
+            });
+            aCols.push({
+                label: texts.getProperty("/visor.capacidad"),
+                type: EdmType.String,
+                property: 'Mengep'
+            });
+
+
+//19
+
+            return aCols;
+        },
+        //exporta excel
+        buildExportTable2: function () {
+        /*    var aCols, oRowBinding, oSettings, oSheet, oTable, that = this;
+
+            if (!that._oTable) {
+                that._oTable = this.byId('tableVisor');
+            }
+
+            oTable = that._oTable;
+
+            oRowBinding = oTable.getBinding().oList;
+
+            aCols = that.createColumnConfig2();
+
+            oSettings = {
+                workbook: {
+                    columns: aCols,
+                    hierarchyLevel: 'Level'
+                },
+                dataSource: oRowBinding,
+                fileName: 'Notas de Entrada',
+                worker: false // We need to disable worker because we are using a MockServer as OData Service
+            };
+
+            oSheet = new Spreadsheet(oSettings);
+            oSheet.build().finally(function () {
+                oSheet.destroy();
+            });*/
+            var aCols, aProducts, oSettings, oSheet;
+
+			aCols = this.createColumnConfig2();
+			aProducts = this.getView().getModel("ExcelMasivo").getProperty('/');
+
+			oSettings = {
+				workbook: { columns: aCols },
+				dataSource: aProducts,
+                fileName: 'Notas de Entrada',
+			};
+
+			oSheet = new Spreadsheet(oSettings);
+			oSheet.build()
+				.then( function() {
+				
+				})
+				.finally(oSheet.destroy);
+		
+        },
+        clearFilters: function () {
+            this.getView().byId("inpInvoice").setValue('');
+            this.getView().byId("dateRange").setValue('');
+        },
+
 
 
     });

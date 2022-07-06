@@ -533,6 +533,15 @@
                         <Text  text="Mejor Condición" />
                     </Column>
 
+                      <Column
+                        id="verReporteColumn"
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                        hAlign="Center"
+                        visible="false">
+                         
+                    </Column>
+
                     <Column
                         id="bloqueoColumn"
                         minScreenWidth="Tablet"
