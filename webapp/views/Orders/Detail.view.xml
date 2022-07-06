@@ -119,8 +119,7 @@
                                                     <m:Title text="{appTxts>/order.positions}" />
                                                     <m:ToolbarSpacer/>
                                                     <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
-                                                        press=".buildExcel"
-                                                        />
+                                                        press=".buildExcel" />
                                                     <m:Select 
                                                         visible="{= ${tableDetailMoves>/Oekponav/Paginated/results/length} > 0 }"
                                                         change=".paginateValue(${$parameters>/selectedItem}, 'tableDetailMoves', '/Oekponav')">
