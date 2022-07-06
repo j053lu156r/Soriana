@@ -427,7 +427,10 @@
                     "binding": "masterIncidencias",
                     "functions": [
                         {
-                            "idFunction": 28
+                            "idFunction": 28,
+                            "roles": [
+                                "0000"
+                            ]
                         }
                     ]
                 }

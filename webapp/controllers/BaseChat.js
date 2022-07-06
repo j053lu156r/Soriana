@@ -152,12 +152,15 @@ sap.ui.define([
                                 }
                                 if(obj.idFunction){
                                     if (obj.idFunction == '0011'){
-                                        oContext.getController().changeFieldVlue2("filtroBusqueda", "Documento", vView);                                    
+                                        oContext.getController().changeFieldVlue2("filtroBusqueda", "belnr", vView);                                    
                                     }
                                     if (obj.idFunction == "0001"){
                                         oContext.getController().changeFieldVlue3("dateOrder", "Documento", vView);
                                     }
-    
+                                    if (obj.idFunction == "0048"){
+                                        oContext.getController().changeFieldVlue2("OPFiltrosC", "Xblnr", vView);                                    
+                                        oContext.getController().changeFieldVlue3("dateRange", "Documento", vView);
+                                    }
                                 }
                               
                                // if(obj.target=="MiBandeja"){
@@ -178,7 +181,7 @@ sap.ui.define([
                                 }
                                 if(obj.idFunction){
                                    if (obj.idFunction == '0011'){
-                                    oContext.getController().changeFieldVlue2("filtroBusqueda", "Documento", vView);                                    
+                                    oContext.getController().changeFieldVlue2("filtroBusqueda", "belnr", vView);                                    
                                     }
                                     if (obj.idFunction == "0001" && field.field != "dateOrder" ){
                                         oContext.getController().changeFieldVlue3("dateOrder", sValue, vView);
@@ -205,7 +208,7 @@ sap.ui.define([
         changeFieldVlue2: function (field, value, vView) {
             var vField = vView.byId(field);
 
-            vField.setSelectedKey("belnr");
+            vField.setSelectedKey(value);
         },
         changeFieldVlue3: function (field, value, vView) {
 
