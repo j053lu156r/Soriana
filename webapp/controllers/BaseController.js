@@ -1024,7 +1024,7 @@ sap.ui.define([
             var oModel2 = "/sap/opu/odata/sap/"+model;
             var that = this;
 			let entidad = "/" + entity;
-         console.log(filter)
+        
 			return new Promise(function(fnResolve, fnReject) {
                
                 var oModel = new sap.ui.model.odata.ODataModel(oModel2);
@@ -1034,6 +1034,7 @@ sap.ui.define([
                     "$expand":expand,
                 
                   },
+                  //381970
 					success: function(oData, oResponse) {
                        
 						fnResolve(oResponse);
