@@ -167,7 +167,7 @@ sap.ui.define([
 			var odTJSONModel = this.getOdataJsonModel(urlParams, oODataJSONModel);
 			dTJSON = odTJSONModel.getJSON();
 			var TDatos = JSON.parse(dTJSON);
-
+console.log(TDatos)
 			let Detalles = [...TDatos.results[0].Citms.results, ...TDatos.results[0].Oitms.results];
 
 			TDatos.results[0].Detalles = {
@@ -492,11 +492,26 @@ sap.ui.define([
 				let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(sPath);
 	
 				console.log(results)
+                var sociedad = this.getOwnerComponent().getModel('GroupedTotales').getProperty('/Bukrs');
+                var ejercicio2 = results.Budat;
+                var ejercicio = ejercicio2.substr(0, 4) ? ejercicio2.substr(0, 4) : ""
 				//let registro = results[posicion];
 				//console.log(registro)
-				var tcode = results.Tcode
+				//var tcode = results.Tcode
+	         // if(tcode !== "Z_APORTACIONES" ){
+        console.log(this.getOwnerComponent().getModel('totales'))
+        var tcode = results.Tcode
+        console.log(sociedad, ejercicio, tcode)
+        var doc = results.Belnr
+        var acuerdosTCodes = ['WEB4','WLF4','MEB2','MEB0','WLF2','ZMMFILACUERDO','WFL5']
+        var aportacionesTCodes = ['Z_APORTACIONES']
 
-	  if(tcode !== "Z_APORTACIONES" ){
+        console.log(acuerdosTCodes.includes(tcode))
+        console.log(doc)
+        console.log(results.Xblnr)
+        if ( (acuerdosTCodes.includes(tcode)  && doc.startsWith('510')) || (tcode == "" && !( doc.startsWith("170") &&  results.Xblnr ))   ) {
+//1500000453
+            console.log('on detailAcuerdosAS')
 				 this.getOwnerComponent().getRouter().navTo("detailAcuerdos",
 					{
 						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
@@ -508,10 +523,10 @@ sap.ui.define([
 					   // lifnr: docResult.Lifnr
 					}, true);
 
-				}else{
+				}else if (aportacionesTCodes.includes(tcode) || ( doc.startsWith("170") &&  results.Xblnr )  ) {
 
 
-
+                    console.warn('detailAportacionesComplementoS')
 					this.getOwnerComponent().getRouter().navTo("detailAportacionesComplemento",
 					{
 						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
