@@ -16,6 +16,7 @@ sap.ui.define([
     var oModel = new this.EnvioCfdi();
     //var cfdiModel = new this.CfdiModel();
     var avisoModel = new this.AvisoModel();
+    var wsModel = new this.WSModel();
 
     var oRemisions = new this.Remissions();
     return Controller.extend("demo.controllers.Remissions.Master", {
@@ -64,6 +65,7 @@ sap.ui.define([
             }
         },
         documentUploadPress: function () {
+
             var that = this;
             var oFileUploader = sap.ui.core.Fragment.byId("uploadAviso", "fileUploaderAviso");
             var uploadList = sap.ui.core.Fragment.byId("uploadAviso", "logUploadListAviso");
@@ -135,7 +137,22 @@ sap.ui.define([
                     objRequest.Cfdi = JSON.stringify(obj);
                 }
 
-                var response = avisoModel.create("/ECfdiSet ", objRequest);
+                /*
+                var oModel = new sap.ui.model.odata.ODataModel(wsModel.sUrl);
+                oModel.setHeaders({
+                    "X-CSRF-Token": "Fetch"
+                });
+                oModel.read("$metadata");
+                var token = oModel.getSecurityToken();
+                console.log(token)
+                */
+
+                var oAvisoModel = new sap.ui.model.odata.ODataModel(avisoModel.sUrl);
+                oAvisoModel.setHeaders({
+                    "x-csrf-token" : "value1"
+                });
+
+                var response = oAvisoModel.create("/ECfdiSet ", objRequest);
 
                 if (response != null) {
                     uploadBox.setVisible(false);
