@@ -37,7 +37,7 @@
                     <HBox class="sapUiResponsiveContentPadding" >
                         <l:VerticalLayout>
                             <u:FileUploader
-                                id="fileUploader"
+                                id="fileUploaderChangeCost"
                                 name="myFileUpload"
                                 change="addAttach"
                                 fileType="txt"
@@ -114,7 +114,7 @@
                                     <ObjectIdentifier text="{ETMODIFY>Codigoean}" />
                                     <ObjectIdentifier text="{ETMODIFY>Descrip}" />
                                     <ObjectIdentifier text="{ETMODIFY>Costobant}" />
-                                    <Input value="{ETMODIFY>Costobnuevo}" type="Number" ></Input>
+                                    <Input value="{ETMODIFY>Costobnuevo}" type="Number" liveChange="validateCstBrutNuevo"></Input>
                                 </cells>
                             </ColumnListItem>
                         </items>
