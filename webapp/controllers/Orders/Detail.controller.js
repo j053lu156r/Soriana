@@ -1,10 +1,8 @@
 sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "demo/controllers/BaseController",
-    'sap/ui/export/Spreadsheet',
-    'sap/m/MessageToast',
     'sap/ui/export/library'
-], function (JSONModel, Controller, Spreadsheet, MessageToast, exportLibrary) {
+], function (JSONModel, Controller, exportLibrary) {
     "use strict";
 
     var oModel = new this.Pedidostemp();
@@ -112,17 +110,9 @@ sap.ui.define([
             var oModel = this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0");
             var columns = this.createColumnConfig();
             var aDataPosiciones = this.createData();
+            var name = 'Detalle Pedido ' + oModel.Ebeln + '.xlsx';
 
-            var oSettings = {
-				workbook: { columns: columns },
-				dataSource: aDataPosiciones,
-                fileName: 'Detalle Pedido ' + oModel.Ebeln + '.xlsx',
-			};
-
-            var oSheet = new Spreadsheet(oSettings);
-            oSheet.build().then( function() {
-                MessageToast.show('Spreadsheet export has finished');
-            }).finally(oSheet.destroy);
+            this.buildExcelSpreadSheet(columns, aDataPosiciones, name);
         },
 
         createColumnConfig: function() {
