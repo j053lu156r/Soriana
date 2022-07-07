@@ -548,7 +548,7 @@
                         demandPopin="true"
                         hAlign="Center"
                         visible="true">
-                        <Text  text="Boqueo" />
+                        <Text  text="Bloqueo" />
                     </Column>
 
                     <Column

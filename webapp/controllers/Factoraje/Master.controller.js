@@ -78,7 +78,16 @@ sap.ui.define([
                 let dataJSON = oDataJSONModel.getJSON();
                 let Datos = JSON.parse(dataJSON);
 
-                var Documentos = { Detalles: { results: [...Datos.results[0].EPYMNTDOCSNAV.results] } };
+                var dirtyArray = Datos.results[0].EPYMNTDOCSNAV.results
+
+                console.log(dirtyArray)
+                var cleanedArray =  dirtyArray.filter(obj => obj.Vblnr.startsWith("58"));
+
+                //Vblnr
+
+                var Documentos = { Detalles: { results: [...cleanedArray] } };
+
+
             
 
 
