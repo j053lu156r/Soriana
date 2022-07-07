@@ -769,8 +769,21 @@ sap.ui.define([
             }
         },
 
-        validateCstBrutNuevo(oControlEvent){
+        validateCstBrutNuevo(oControlEvent) {
+
             let cbn = oControlEvent.getParameter('value');
+
+            let splited_quant = cbn.split('.');
+            if (splited_quant.length > 1) {
+                if (splited_quant[1].length > 2) {
+                    oControlEvent.getSource().setValueState(sap.ui.core.ValueState.Warning);
+                    oControlEvent.getSource().setValueStateText("Maximo 2 decimales");
+                }else{
+                    oControlEvent.getSource().setValueState(sap.ui.core.ValueState.None);
+                }
+            }
+
+            
 
         },
 
@@ -1776,7 +1789,7 @@ sap.ui.define([
                     var response = Model.create("/HdrcatproSet", objRequest);
                     //pintar response
                     console.log(this.response);
-                    
+
 
                     if (response != null) {
                         if (response.ESuccess === 'X') {
@@ -1790,7 +1803,7 @@ sap.ui.define([
                                     this.closeDialog('changePriceDialog');
                                 }.bind(that)
                             });
-                            
+
                         } else {
                             let message = response.mensaje;
                             sap.m.MessageBox.error(message);
@@ -1844,9 +1857,9 @@ sap.ui.define([
                                         // that._oWizard.close();
                                         that.closeDialog('deleteProductsDialog');
                                     }.bind(this)
-                                    
-                                });        
-                                
+
+                                });
+
                             } else {
                                 let message = response.mensaje || response.EMessage;
                                 sap.m.MessageBox.error(message);
@@ -2044,14 +2057,14 @@ sap.ui.define([
         changePrecioSugerido(oControlEvent) {
             let selected = oControlEvent.getParameter("value");
 
-            if(selected == "Farmacia Soriana"){
+            if (selected == "Farmacia Soriana") {
                 this.byId("MaxPubPrice").setVisible(true);
                 this.byId("PSug").setVisible(false);
                 this.byId("MaxPubPrice1").setVisible(true);
                 this.byId("PSug1").setVisible(false);
                 this.byId("MaxPubPrice2").setVisible(true);
                 this.byId("PSug2").setVisible(false);
-            }else{
+            } else {
                 this.byId("PSug").setVisible(true);
                 this.byId("MaxPubPrice").setVisible(false);
                 this.byId("PSug1").setVisible(true);
