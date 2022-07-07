@@ -109,6 +109,7 @@ sap.ui.define([
                         Menge:Number(data[x].Menge) ,
                         Mjahr: data[x].Mjahr ,
                         Zeile: data[x].Zeile ,
+                        Umrez:data[x].Umrez ,
                         Fconver: (Number(data[x].Menge)/Number(data[x].Erfmg))
                     })
                 }
