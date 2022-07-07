@@ -161,6 +161,9 @@ sap.ui.define([
                                         oContext.getController().changeFieldVlue2("OPFiltrosC", "Xblnr", vView);                                    
                                         oContext.getController().changeFieldVlue3("dateRange", "Documento", vView);
                                     }
+                                    if (obj.idFunction == "0025"){
+                                        oContext.getController().changeFieldVlue3("budat", "Documento", vView);
+                                    }
                                 }
                               
                                // if(obj.target=="MiBandeja"){
