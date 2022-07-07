@@ -644,6 +644,7 @@ sap.ui.define([
                 console.log(sPath)
                 //let posicion = oEvent.getSource().getBindingContext("GroupedTotales").getPath().split("/").pop();
                 let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(sPath);
+                console.log("row clicked",results)
 
                 console.log(this.getOwnerComponent().getModel('totales'))
                 //let registro = results[posicion];
@@ -661,8 +662,12 @@ sap.ui.define([
                 console.log(this.getOwnerComponent().getModel('totales'))
                 var tcode = results.Tcode
                 console.log(sociedad, ejercicio, tcode)
+                var doc = results.Belnr
+                var acuerdosTCodes = ['WEB4','WLF4','MEB2','MEB0','WLF2','ZMMFILACUERDO','WFL5']
+                var aportacionesTCodes = ['Z_APORTACIONES']
 
-                if (tcode !== "Z_APORTACIONES") {
+                
+                if ( (acuerdosTCodes.includes(tcode)  && doc.startsWith('510')) || (tcode == "" && !( doc.startsWith("1700") &&  results.Xblnr ))   ) {
 
                     console.log('on detailAcuerdosAS')
 
@@ -672,12 +677,12 @@ sap.ui.define([
                         document: results.Belnr,
                         sociedad: sociedad,
                         ejercicio: ejercicio,
-                        doc: results.Xblnr,
+                        doc: results.Xblnr ? results.Xblnr : 'NA',
                         // zbukr: docResult.Zbukr,
                         // lifnr: docResult.Lifnr
                     }, true);
 
-                } else {
+                } else if (aportacionesTCodes.includes(tcode) || ( doc.startsWith("1700") &&  results.Xblnr )  ) {
 
                     console.log('on detailAportacionesAS')
 
@@ -948,7 +953,7 @@ sap.ui.define([
             }, true);
         },
         hasReport: function(mc){
-            return Number(mc) > 0 ? true : false
+            return Math.abs(mc) > 0 ? true : false
         },
 
     });
