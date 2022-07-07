@@ -118,40 +118,45 @@ sap.ui.define([
         createColumnConfig: function() {
 			return [
 				{
-					label: 'Número de proveedor',
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.supplierNum"),
                     type: EdmType.Number,
 					property: 'Lifnr'
 				},
 				{
-					label: 'Número de pedido',
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.order"),
                     type: EdmType.Number,
 					property: 'Ebeln'
 				},
 				{
-					label: 'Fecha de pedido',
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.orderDate"),
 					property: 'Bedat'
 				},
 				{
-					label: 'Codigo de tienda',
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.warehouseCode"),
                     type: EdmType.String,
 					property: 'Werks'
 				},
                 {
-					label: 'Descripcion de tienda',
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.warehouseDesc"),
                     type: EdmType.String,
                     width: 40,
 					property: 'Name1'
 				},
 				{
-					label: 'Fecha de inicio de embarque',
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.fechaEmbarque"),
 					property: 'Kdate'
 				},
                 {
-					label: 'Fecha de fin de embarque',
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.fechaEndEmbarque"),
 					property: 'Kdatb'
 				},
                 {
-					label: 'Cantidad pedida',
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.paymentLimit"),
+                    type: EdmType.String,
+					property: 'Zterm'
+				},
+                {
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.quantity"),
                     type: EdmType.Currency,
                     unitProperty: 'Meins',
 					property: 'Menge',
@@ -159,12 +164,12 @@ sap.ui.define([
                     width: 25
 				},
                 {
-					label: 'Codigo',
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.code"),
 					property: 'Ean11',
                     width: 15
 				},
                 {
-					label: 'Precio',
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.price"),
                     type: EdmType.Currency,
                     unitProperty: 'Waers',
 					property: 'Netpr',
@@ -172,7 +177,7 @@ sap.ui.define([
                     width: 25
 				},
                 {
-					label: 'Descripcion de articulo',
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.description"),
 					property: 'Txz01',
                     type: EdmType.String,
                     width:40
@@ -188,6 +193,7 @@ sap.ui.define([
                 posicion.Bedat = oCabecera.Bedat;
                 posicion.Kdate = oCabecera.Kdate;
                 posicion.Kdatb = oCabecera.Kdatb;
+                posicion.Zterm = oCabecera.Zterm;
             });
 
             return aPosiciones;

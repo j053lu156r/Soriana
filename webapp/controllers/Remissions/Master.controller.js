@@ -137,6 +137,7 @@ sap.ui.define([
                     objRequest.Cfdi = JSON.stringify(obj);
                 }
 
+                /*
                 var oModel = new sap.ui.model.odata.ODataModel(wsModel.sUrl);
                 oModel.setHeaders({
                     "X-CSRF-Token": "Fetch"
@@ -144,8 +145,14 @@ sap.ui.define([
                 oModel.read("$metadata");
                 var token = oModel.getSecurityToken();
                 console.log(token)
+                */
 
-                var response = avisoModel.create("/ECfdiSet ", objRequest);
+                var oAvisoModel = new sap.ui.model.odata.ODataModel(avisoModel.sUrl);
+                oAvisoModel.setHeaders({
+                    "x-csrf-token" : "value1"
+                });
+
+                var response = oAvisoModel.create("/ECfdiSet ", objRequest);
 
                 if (response != null) {
                     uploadBox.setVisible(false);
