@@ -1,6 +1,7 @@
 jQuery.sap.require("sap.ui.core.util.Export");
 jQuery.sap.require("sap.ui.core.util.ExportTypeCSV");
 sap.ui.define([
+    'sap/ui/export/Spreadsheet',
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/routing/History",
     "sap/ui/core/routing/HashChanger",
@@ -14,9 +15,7 @@ sap.ui.define([
     "sap/ui/core/util/ExportTypeCSV",
     "demo/models/BaseModel",
     "sap/ui/model/json/JSONModel",
-    
-	
-], function (Controller, History, HashChanger, Filter, FilterOperator, Fragment, MessageBox, UIComponent, Device, JSONModel) {
+], function (Spreadsheet, Controller, History, HashChanger, Filter, FilterOperator, Fragment, MessageBox, UIComponent, Device, JSONModel) {
     "use strict";
     var oUser = new this.UserModel();
     var inboxModel = new this.MyInbox();
@@ -1105,6 +1104,16 @@ sap.ui.define([
 			});
 		},
 
-        
+        buildExcelSpreadSheet: function(columns, rowData, name){
+            var oSettings = {
+				workbook: { columns: columns },
+				dataSource: rowData,
+                fileName: name
+			};
+
+            var oSheet = new Spreadsheet(oSettings);
+            oSheet.build().then( function() {})
+            .finally(oSheet.destroy);
+        }
     });
 });
