@@ -107,13 +107,17 @@ idXblnr2: true
             var Lifnr= oSelectedItem.getBindingContext("migoModel").getProperty("Lifnr");
             var BudatMkpf= oSelectedItem.getBindingContext("migoModel").getProperty("BudatMkpf");
             var Werks= oSelectedItem.getBindingContext("migoModel").getProperty("Werks");
-           var  Xblnr= oSelectedItem.getBindingContext("migoModel").getProperty("XblnrFact");
+           var  Xblnr= oSelectedItem.getBindingContext("migoModel").getProperty("Xblnr");
+          var  XblnrFact=oSelectedItem.getBindingContext("migoModel").getProperty("XblnrFact");
            
       
          if (Xblnr===''){
             Xblnr='0.1'
          }
-              this.getOwnerComponent().getRouter().navTo("detailVisorNotas", { layout: sap.f.LayoutType.MidColumnFullScreen, Mblnr:Mblnr, Mjahr:Mjahr,Ebeln:Ebeln, Lifnr:Lifnr, BudatMkpf:BudatMkpf, Werks:Werks, Xblnr:Xblnr});
+         if (XblnrFact===''){
+            XblnrFact='0.1'
+         }
+              this.getOwnerComponent().getRouter().navTo("detailVisorNotas", { layout: sap.f.LayoutType.MidColumnFullScreen, Mblnr:Mblnr, Mjahr:Mjahr,Ebeln:Ebeln, Lifnr:Lifnr, BudatMkpf:BudatMkpf, Werks:Werks, Xblnr:Xblnr, XblnrFact:XblnrFact});
          
            
 
@@ -251,16 +255,16 @@ idXblnr2: true
             aCols.push({
                 label: texts.getProperty("/visor.invoice"),
                 type: EdmType.String,
-                property: 'Xblnr'
+                property: 'XblnrFact'
 
 
             });
 
-            aCols.push({
+           /*aCols.push({
                 label: texts.getProperty("/visor.SerieFolio"),
                 type: EdmType.String,
                 property: 'Mjahr'
-            });
+            });*/
 
 
 
