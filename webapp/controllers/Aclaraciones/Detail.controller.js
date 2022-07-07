@@ -712,11 +712,47 @@ return formateado
                 return false;
             }
 
+          
+            var tipo_Doc= Datos.results[0].ZDocOri.results[0].Descripcion.split(" ")[0]
+            
+
+var TAclara=this.getView().getModel("catalogos").getData().Tipos.results;
+
+var ArrT=[];
+            if (tipo_Doc==='RE'){
+                for(var x =0;x<TAclara.length;x++){
+                    if(TAclara[x].TipAcla==="CD"||TAclara[x].TipAcla==="FI"||TAclara[x].TipAcla==="PF"){
+                        ArrT.push(TAclara[x])
+                    }
+
+                }
+                
+            }
+            if (tipo_Doc==='KD'){
+                for(var x =0;x<TAclara.length;x++){
+                    if(TAclara[x].TipAcla==="AP"||TAclara[x].TipAcla==="DC"||TAclara[x].TipAcla==="FC"||TAclara[x].TipAcla==="NS"){
+                        ArrT.push(TAclara[x])
+                    }
+
+                }
+            }
+            if (tipo_Doc==='RA'){
+                for(var x =0;x<TAclara.length;x++){
+                    if(TAclara[x].TipAcla==="CC"||TAclara[x].TipAcla==="DC"||TAclara[x].TipAcla==="FC"||TAclara[x].TipAcla==="UP"){
+                        ArrT.push(TAclara[x])
+                    }
+
+                } 
+            }
+
+            this.getOwnerComponent().setModel(new JSONModel(ArrT), "TipoAclara");
+
+
             let montoReclamado =this.Formato( Datos.results[0].ZDocOri.results[0].Monrec) ;
             let ivaReclamado   = Datos.results[0].ZDocOri.results[0].Ivarec ;
             let Xblnr   = Datos.results[0].ZDocOri.results[0].Xblnr ;
             let Werks = Datos.results[0].ZDocOri.results[0].Werks ;
-            let Sucursal = Datos.results[0].ZDocOri.results[0].Descripcion ;
+            let Sucursal = Datos.results[0].ZDocOri.results[0].Descripcion.slice(2);
             let Gjahr = Datos.results[0].ZDocOri.results[0].Gjahr;
             let Recibo = Datos.results[0].ZDocOri.results[0].Recibo;
 
@@ -755,12 +791,47 @@ return formateado
                 inputInvoice.setValueState(sap.ui.core.ValueState.Error);
                 return false;
             }
+            var tipo_Doc= Datos.results[0].ZDocOri.results[0].Descripcion.split(" ")[0]
+            
+
+var TAclara=this.getView().getModel("catalogos").getData().Tipos.results;
+
+var ArrT=[];
+            if (tipo_Doc==='RE'){
+                for(var x =0;x<TAclara.length;x++){
+                    if(TAclara[x].TipAcla==="CD"||TAclara[x].TipAcla==="FI"||TAclara[x].TipAcla==="PF"){
+                        ArrT.push(TAclara[x])
+                    }
+
+                }
+                
+            }
+            if (tipo_Doc==='KD'){
+                for(var x =0;x<TAclara.length;x++){
+                    if(TAclara[x].TipAcla==="AP"||TAclara[x].TipAcla==="DC"||TAclara[x].TipAcla==="FC"||TAclara[x].TipAcla==="NS"){
+                        ArrT.push(TAclara[x])
+                    }
+
+                }
+            }
+            if (tipo_Doc==='RA'){
+                for(var x =0;x<TAclara.length;x++){
+                    if(TAclara[x].TipAcla==="CC"||TAclara[x].TipAcla==="DC"||TAclara[x].TipAcla==="FC"||TAclara[x].TipAcla==="UP"){
+                        ArrT.push(TAclara[x])
+                    }
+
+                } 
+            }
+
+            this.getOwnerComponent().setModel(new JSONModel(ArrT), "TipoAclara");
+
+
             let montoReclamado =this.Formato( Datos.results[0].ZRefFac.results[0].Monrec) ;
             ///let montoReclamado = Datos.results[0].ZRefFac.results[0].Monrec ;
             let ivaReclamado   = Datos.results[0].ZRefFac.results[0].Ivarec ;
             let sourceDocument   = Datos.results[0].ZRefFac.results[0].Belnr ;
             let Werks = Datos.results[0].ZRefFac.results[0].Werks ;
-            let Sucursal = Datos.results[0].ZRefFac.results[0].Descripcion ;
+            let Sucursal = Datos.results[0].ZRefFac.results[0].Descripcion.slice(2) ;
             let Gjahr = Datos.results[0].ZRefFac.results[0].Gjahr;
             let Recibo = Datos.results[0].ZRefFac.results[0].Recibo;
 

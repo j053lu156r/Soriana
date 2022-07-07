@@ -57,7 +57,7 @@
 
 			<f:footer>
 				<OverflowToolbar>
-                    <Button id="finishMassive"	text="{appTxts>/products.finish}" type="Emphasized" press="sendDataForNotification" enabled="false"/>
+                    <Button id="finishMassive"	text="{appTxts>/products.massiveSend}" type="Emphasized" press="sendDataForNotification" enabled="false"/>
                     <ToolbarSpacer/>
                     <Button	text="{appTxts>/products.cancel}" type="Emphasized" press=".closeDialog('massiveRegisterDialog')"/>
                 </OverflowToolbar>

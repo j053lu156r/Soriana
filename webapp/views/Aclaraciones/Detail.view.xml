@@ -72,10 +72,10 @@
                                     <!--Tipo de Aclaracipon/Clarification type-->
                                     <m:Label text="{appTxts>/clarifications.clarificationType}"/>
                                     <m:ComboBox fieldGroupIds="aclaracion" id="clarificationType" items="{
-                                                path : 'catalogos>/Tipos/results'
+                                                path : 'TipoAclara>/'
                                             }" selectedKey="{Aclaracion>/TipAcla}" selectionChange=".loadAnalyst">
                                         <m:items>
-                                            <core:Item key="{catalogos>TipAcla}" text="{catalogos>DesAcla}"/>
+                                            <core:Item key="{TipoAclara>TipAcla}" text="{TipoAclara>DesAcla}"/>
                                         </m:items>
                                     </m:ComboBox>
 
