@@ -107,11 +107,14 @@ idXblnr2: true
             var Lifnr= oSelectedItem.getBindingContext("migoModel").getProperty("Lifnr");
             var BudatMkpf= oSelectedItem.getBindingContext("migoModel").getProperty("BudatMkpf");
             var Werks= oSelectedItem.getBindingContext("migoModel").getProperty("Werks");
-           var  Xblnr= oSelectedItem.getBindingContext("migoModel").getProperty("Xblnr");
-          
-              this.getOwnerComponent().getRouter().navTo("detailVisorNotas", { layout: sap.f.LayoutType.MidColumnFullScreen, Mblnr:Mblnr, Mjahr:Mjahr,Ebeln:Ebeln, Lifnr:Lifnr, BudatMkpf:BudatMkpf, Werks:Werks,Xblnr:Xblnr});
-            //this._oPropertiesModel.setProperty("/rowsCount", 10);
-            //http://ppqas.soriana.com/sap/opu/odata/sap/ZOSP_MMIM_MIGO_DOC_SRV/MIGO_DOC(Mblnr='5095076269',Mjahr='2022')
+           var  Xblnr= oSelectedItem.getBindingContext("migoModel").getProperty("XblnrFact");
+           
+      
+         if (Xblnr===''){
+            Xblnr='0.1'
+         }
+              this.getOwnerComponent().getRouter().navTo("detailVisorNotas", { layout: sap.f.LayoutType.MidColumnFullScreen, Mblnr:Mblnr, Mjahr:Mjahr,Ebeln:Ebeln, Lifnr:Lifnr, BudatMkpf:BudatMkpf, Werks:Werks, Xblnr:Xblnr});
+         
            
 
         },
@@ -151,7 +154,7 @@ idXblnr2: true
                 var valor="";
               
                 
-                console.log(valor);
+               
                 auxFilters.push(new sap.ui.model.Filter({
                     path: that.getView().byId("OPFiltrosC").getSelectedKey(),
                     operator: sap.ui.model.FilterOperator.EQ,
@@ -171,7 +174,7 @@ idXblnr2: true
             that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
                 sap.ui.core.BusyIndicator.hide();
                 var data = _GEToDataV2Response.data.results;
-                console.log(data)
+              
                 for (var x = 0; x < data.length; x++) {
                     data[x].BudatMkpf = new Date(data[x].BudatMkpf).toISOString().slice(0, 10)
                 }
@@ -212,7 +215,7 @@ idXblnr2: true
             var that = this;
             var oModel = that.getView().getModel("migoModel").getData(),
                 aCols = [];
-            console.log(oModel);
+           
             var texts = this.getOwnerComponent().getModel("appTxts");
 
             aCols.push({
@@ -391,8 +394,7 @@ this.buildExportTable2();
 
         createColumnConfig2: function () {
             var that = this;
-            console.log(that.getView().getModel("ExcelMasivo"))
-            console.log(that.getView().getModel("ExcelMasivo").getData())
+          
             var oModel = that.getView().getModel("ExcelMasivo").getData(),
                 aCols = [];
           
