@@ -160,6 +160,8 @@ sap.ui.define([
                 results: [...Detalles]
             };
 
+
+ 
             delete TDatos.results[0].Citms;
             delete TDatos.results[0].Oitms;
 
@@ -187,12 +189,10 @@ sap.ui.define([
             for (let x in groupedMovs) {
 
 
-                console.log("sumando valores");
-
+ 
 
                 var resultCredit = groupedMovs[x].reduce(function (_this, val) {
-                    console.log(val.Wrbtr)
-                    var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
+                     var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
                     var total = _this + current
                     return total
                 }, 0);
@@ -205,8 +205,7 @@ sap.ui.define([
                 }, 0);
 
 
-                console.log(result)
-                var agrupado = groupedMovs[x]
+                 var agrupado = groupedMovs[x]
                 var idGrupo = agrupado[0].IdNumGpo ? agrupado[0].IdNumGpo : ""
                 //IdNumGpo
                 nestedMovs.push({
@@ -256,12 +255,13 @@ sap.ui.define([
                     "totalD": me.truncate(totalD, 2),
                     "totalC": me.truncate(totalC, 2),
                     "totalT": me.truncate(totalGeneral, 2)
-                }
+                },
+                "Bukrs": TDatos.results[0].Bukrs
+
             });
 
 
             this.getOwnerComponent().setModel(jsonModelG, "GroupedTotales");
-            console.log(jsonModelG);
 
 
             this.initTable()
@@ -353,8 +353,7 @@ sap.ui.define([
                 // console.log(x + ": "+ groupedMovs[x])
 
                 var resultCredit = groupedMovs[x].reduce(function (_this, val) {
-                    console.log(val.Wrbtr)
-                    var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
+                     var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
                     var total = _this + current
                     return total
                 }, 0);
@@ -367,8 +366,7 @@ sap.ui.define([
                 }, 0);
 
 
-                console.log(result)
-                var agrupado = groupedMovs[x]
+                 var agrupado = groupedMovs[x]
                 var idGrupo = agrupado[0].IdNumGpo ? agrupado[0].IdNumGpo : ""
                 //IdNumGpo
                 nestedMovs.push({
@@ -414,23 +412,25 @@ sap.ui.define([
                     "totalD": me.truncate(totalD, 2),
                     "totalC": me.truncate(totalC, 2),
                     "totalT": me.truncate(totalGeneral, 2)
-                }
+                },
+                "Bukrs": TDatos.results[0].Bukrs
+
             });
 
             this.getOwnerComponent().setModel(jsonModelG, "GroupedTotales");
 
 
-            this.initTable()
+             this.initTable()
 
 
 
 
 
-
-
+ 
             this.getOwnerComponent().setModel(jsonModelT, "totales");
 
-            this.paginate("totales", "/Detalles", 1, 0);
+ 
+        //    this.paginate("totales", "/Detalles", 1, 0);
 
         },
 
@@ -644,6 +644,7 @@ sap.ui.define([
                 console.log(sPath)
                 //let posicion = oEvent.getSource().getBindingContext("GroupedTotales").getPath().split("/").pop();
                 let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(sPath);
+                console.log("row clicked",results)
 
                 console.log(this.getOwnerComponent().getModel('totales'))
                 //let registro = results[posicion];
@@ -651,18 +652,22 @@ sap.ui.define([
 
                 //            let totalRegistros = parseInt( this.getOwnerComponent().getModel('totales').getProperty('/Detalles/results/length'), 10);
 
-                var sociedad = this.getOwnerComponent().getModel('totales').getProperty('/Bukrs')
+                var sociedad = this.getOwnerComponent().getModel('GroupedTotales').getProperty('/Bukrs')
                 // var ejercicio = this.getOwnerComponent().getModel('totales').getProperty('/Gjahr')
 
 
                 var ejercicio2 = results.Budat
                 var ejercicio = ejercicio2.substr(0, 4) ? ejercicio2.substr(0, 4) : ""
 
-                console.log(results)
+                console.log(this.getOwnerComponent().getModel('totales'))
                 var tcode = results.Tcode
                 console.log(sociedad, ejercicio, tcode)
+                var doc = results.Belnr
+                var acuerdosTCodes = ['WEB4','WLF4','MEB2','MEB0','WLF2','ZMMFILACUERDO','WFL5']
+                var aportacionesTCodes = ['Z_APORTACIONES']
 
-                if (tcode !== "Z_APORTACIONES") {
+                
+                if ( (acuerdosTCodes.includes(tcode)  && doc.startsWith('510')) || (tcode == "" && !( doc.startsWith("1700") &&  results.Xblnr ))   ) {
 
                     console.log('on detailAcuerdosAS')
 
@@ -672,14 +677,16 @@ sap.ui.define([
                         document: results.Belnr,
                         sociedad: sociedad,
                         ejercicio: ejercicio,
-                        doc: results.Xblnr,
+                        doc: results.Xblnr ? results.Xblnr : 'NA',
                         // zbukr: docResult.Zbukr,
                         // lifnr: docResult.Lifnr
                     }, true);
 
-                } else {
+                } else if (aportacionesTCodes.includes(tcode) || ( doc.startsWith("1700") &&  results.Xblnr )  ) {
 
                     console.log('on detailAportacionesAS')
+
+                    //camvuar  docuemnto con cual se va consultar 
 
                     this.getOwnerComponent().getRouter().navTo("detailAportacionesAS", {
                         layout: sap.f.LayoutType.TwoColumnsMidExpanded,
@@ -946,7 +953,7 @@ sap.ui.define([
             }, true);
         },
         hasReport: function(mc){
-            return Number(mc) > 0 ? true : false
+            return Math.abs(mc) > 0 ? true : false
         },
 
     });

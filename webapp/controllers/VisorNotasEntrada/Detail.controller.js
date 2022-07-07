@@ -18,7 +18,7 @@ sap.ui.define([
 			});
             this.oRouter = this.getOwnerComponent().getRouter();
             this.oModel = this.getOwnerComponent().getModel();
-            console.log(this.getView().getModel("migoModel"));
+        
             var Router = sap.ui.core.UIComponent.getRouterFor(this);
             Router.getRoute("detailVisorNotas").attachMatched(this._onRouteMatched, this)
             this.VisibleTable();
@@ -65,7 +65,10 @@ sap.ui.define([
 
 
             var ModeloN = oEvent.getParameter("arguments")
+if (ModeloN.Xblnr==='0.1'){
+ModeloN.Xblnr=""
 
+}
             var ModelD = []
             ModelD = {
                 "Mblnr": ModeloN.Mblnr,
@@ -75,6 +78,7 @@ sap.ui.define([
                 "BudatMkpf": ModeloN.BudatMkpf,
                 "Werks": ModeloN.Werks,
                 "Xblnr":ModeloN.Xblnr,
+
                 "posiciones": []
 
 
@@ -91,7 +95,7 @@ sap.ui.define([
             that._GEToDataV2(model, entity, filter, expand).then(function (_GEToDataV2Response) {
                 sap.ui.core.BusyIndicator.hide();
                 var data = _GEToDataV2Response.data.results;
-                console.log(data);
+             
                 var DataT=[];
                 for (var x = 0; x < data.length; x++) {
 
@@ -101,23 +105,24 @@ sap.ui.define([
                         Ebeln: data[x].Ebeln ,
                         Ebelp: data[x].Ebelp ,
                         Erfme: data[x].Erfme ,
-                        Erfmg:Number( data[x].Erfmg) ,
+                        Erfmg:data[x].Erfmg ,
                         Maktx:data[x].Maktx ,
                         Matnr: data[x].Matnr ,
                         Mblnr: data[x].Mblnr ,
                         Meins: data[x].Meins ,
-                        Menge:Number(data[x].Menge) ,
+                        Menge:data[x].Menge ,
                         Mjahr: data[x].Mjahr ,
                         Zeile: data[x].Zeile ,
+                        Umrez:data[x].Umrez ,
                         Fconver: (Number(data[x].Menge)/Number(data[x].Erfmg))
                     })
                 }
-                console.log(DataT)
+              
                 var auxJsonModel = new sap.ui.model.json.JSONModel(DataT);
                 that.getView().setModel(auxJsonModel, 'DetallePosiciones');
 
             });
-            console.log(ModelD)
+           
             var auxJsonModel = new sap.ui.model.json.JSONModel(ModelD);
             that.getView().setModel(auxJsonModel, 'DetalleModel');
 
@@ -182,7 +187,7 @@ sap.ui.define([
             var that = this;
             var oModel = that.getView().getModel("migoModel").getData(),
                 aCols = [];
-            console.log(oModel);
+           
             var texts = this.getOwnerComponent().getModel("appTxts");
 
             aCols.push({

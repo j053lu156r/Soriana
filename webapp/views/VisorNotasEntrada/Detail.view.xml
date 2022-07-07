@@ -34,7 +34,7 @@
                             <m:Label text="{appTxts>/visor.branchOffice}"/>
 							<m:Text text="{DetalleModel>/Werks}" class="sapUiTinyMarginBegin"/>
 
-                            <m:Label text="{appTxts>/visor.SerieFolio}"/>
+                            <m:Label text="{appTxts>/visor.invoice}"/>
 							<m:Text text="{DetalleModel>/Xblnr}" class="sapUiTinyMarginBegin"/>
                             <m:layoutData>
                                 <m:FlexItemData growFactor="1" />
@@ -117,8 +117,13 @@
                                 <m:Text text="{DetallePosiciones>Erfmg}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-
-                          <t:Column width="auto" id="idFconver" visible="true" sortProperty="Fconver"  filterProperty="Fconver">
+      <t:Column width="auto" id="idMenge" visible="true" sortProperty="Umrez"  filterProperty="Umrez">
+                            <m:Label text="{appTxts>/visor.capacidad} " />
+                            <t:template>
+                                <m:Text text="{DetallePosiciones>Umrez}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                          <t:Column width="auto" id="idFconver" visible="true" sortProperty="Menge"  filterProperty="Menge">
                             <m:Label text="{appTxts>/visor.Fconver}" />
                             <t:template>
                                 <m:Text text="{DetallePosiciones>Menge}" wrapping="false"/>
@@ -130,12 +135,7 @@
                                 <m:Text text="{DetallePosiciones>Erfme}" wrapping="false"/>
                             </t:template>
                         </t:Column>--> 
-                         <t:Column width="auto" id="idMenge" visible="true" sortProperty="Menge"  filterProperty="Menge">
-                            <m:Label text="{appTxts>/visor.capacidad} " />
-                            <t:template>
-                                <m:Text text="{DetallePosiciones>Menge}" wrapping="false"/>
-                            </t:template>
-                        </t:Column>
+                   
                       
                         <!--  <t:Column width="auto" id="id22" visible="true" sortProperty="Meins" filterProperty="Meins">
                             <m:Label text="{appTxts>/visor.umedida}" />
