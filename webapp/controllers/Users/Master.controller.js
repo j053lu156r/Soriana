@@ -36,7 +36,6 @@ sap.ui.define([
             if(!this.hasAccess(12)){
                 return
             }
-
             var bContinue = false;
             if (!oModel.getModel()) {
                 oModel.initModel();
@@ -98,8 +97,12 @@ sap.ui.define([
             }
 
             if (bContinue) {
-                var dueModel = oModel.getJsonModel(url);
 
+                var oBusyDialog = new sap.m.BusyDialog();
+                oBusyDialog.open();
+                var dueModel = oModel.getJsonModel(url);
+                
+                oBusyDialog.close();
                 var ojbResponse = dueModel.getProperty("/results/0");
                 this.getOwnerComponent().setModel(new JSONModel(ojbResponse),
                     "tableItemsUsers");
