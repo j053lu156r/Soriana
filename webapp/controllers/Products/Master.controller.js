@@ -316,7 +316,7 @@ sap.ui.define([
 
                             this.getView().setModel(new JSONModel(data), 'ETMODIFY');
 
-                            this.byId("fileUploader").clear();
+                            this.byId("fileUploaderChangeCost").clear();
                         } else
                             MessageBox.warning("No se encontraron folios en el archivo cargado");
                     } else {
@@ -665,7 +665,7 @@ sap.ui.define([
                     }).then(function (oDialog) {
                         oDialog.attachAfterClose(() => {
                             this.getOwnerComponent().setModel(new JSONModel(), 'ETMODIFY');
-                            this.byId('fileUploader').clear();
+                            this.byId('fileUploaderChangeCost').clear();
                         }, this);
                         this.getOwnerComponent().setModel(new JSONModel(), 'ETMODIFY');
                         oView.addDependent(oDialog);
@@ -769,6 +769,11 @@ sap.ui.define([
             }
         },
 
+        validateCstBrutNuevo(oControlEvent){
+            let cbn = oControlEvent.getParameter('value');
+
+        },
+
         validateBarCode: function () {
             const ModelFolio = this.getOwnerComponent().getModel("Folio");
 
@@ -828,9 +833,9 @@ sap.ui.define([
 
             let viewModel = new JSONModel({});
 
-            if (this.byId("fileUploader")) {
+            if (this.byId("fileUploaderChangeCost")) {
                 viewModel = this.getView().getModel("ETMODIFY");
-                this.byId("fileUploader").clear();
+                this.byId("fileUploaderChangeCost").clear();
             }
 
             if (this.byId("fileUploaderDelete")) {
@@ -1769,6 +1774,9 @@ sap.ui.define([
                         }]
                     }
                     var response = Model.create("/HdrcatproSet", objRequest);
+                    //pintar response
+                    console.log(this.response);
+                    
 
                     if (response != null) {
                         if (response.ESuccess === 'X') {
@@ -1778,9 +1786,11 @@ sap.ui.define([
                                 actions: [sap.m.MessageBox.Action.CLOSE],
                                 emphasizedAction: sap.m.MessageBox.Action.CLOSE,
                                 onClose: function (sAction) {
-                                    that._oWizard.close();
+                                    // that._oWizard.close();
+                                    this.closeDialog('changePriceDialog');
                                 }.bind(that)
                             });
+                            
                         } else {
                             let message = response.mensaje;
                             sap.m.MessageBox.error(message);
@@ -1827,14 +1837,16 @@ sap.ui.define([
 
                         if (response != null) {
                             if (response.ESuccess === 'X') {
-
                                 sap.m.MessageBox.success("Se han generado correctamente las bajas.", {
                                     actions: [sap.m.MessageBox.Action.CLOSE],
                                     emphasizedAction: sap.m.MessageBox.Action.CLOSE,
                                     onClose: function (sAction) {
-                                        that._oWizard.close();
+                                        // that._oWizard.close();
+                                        that.closeDialog('deleteProductsDialog');
                                     }.bind(this)
-                                });
+                                    
+                                });        
+                                
                             } else {
                                 let message = response.mensaje || response.EMessage;
                                 sap.m.MessageBox.error(message);
