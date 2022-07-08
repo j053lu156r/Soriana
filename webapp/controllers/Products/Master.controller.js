@@ -776,25 +776,20 @@ sap.ui.define([
 
             let splited_quant = cbn.split('.');
 
-            if (splited_quant.length > 1) {
+            if ((splited_quant.length > 1) || ((parseFloat(cba) * 2) < parseFloat(cbn))) {
+
                 if (splited_quant[1].length > 2) {
                     oControlEvent.getSource().setValueState(sap.ui.core.ValueState.Warning);
                     oControlEvent.getSource().setValueStateText("Maximo 2 decimales");
-                } else {
+
+                }else if ((parseFloat(cba) * 2) < parseFloat(cbn)) {
+                    oControlEvent.getSource().setValueState(sap.ui.core.ValueState.Warning);
+                    oControlEvent.getSource().setValueStateText("No puede haber un incremento del 100% del costo bruto actual!");
+                    
+                }else {
                     oControlEvent.getSource().setValueState(sap.ui.core.ValueState.None);
-                }
+                } 
             }
-
-            if ((parseFloat(cba) * 2) < parseFloat(cbn)) {
-
-                oControlEvent.getSource().setValueState(sap.ui.core.ValueState.Warning);
-                oControlEvent.getSource().setValueStateText("No puede haber un incremento del 100% del costo bruto actual!");
-
-            } else {
-                oControlEvent.getSource().setValueState(sap.ui.core.ValueState.None);
-
-            }
-
         },
 
         validateBarCode: function () {
