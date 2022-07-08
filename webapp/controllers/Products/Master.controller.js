@@ -769,21 +769,31 @@ sap.ui.define([
             }
         },
 
-        validateCstBrutNuevo(oControlEvent) {
+         validateCstBrutNuevo(oControlEvent) {
 
             let cbn = oControlEvent.getParameter('value');
+            let cba = oControlEvent.getSource().data("cba");
 
             let splited_quant = cbn.split('.');
+
             if (splited_quant.length > 1) {
                 if (splited_quant[1].length > 2) {
                     oControlEvent.getSource().setValueState(sap.ui.core.ValueState.Warning);
                     oControlEvent.getSource().setValueStateText("Maximo 2 decimales");
-                }else{
+                } else {
                     oControlEvent.getSource().setValueState(sap.ui.core.ValueState.None);
                 }
             }
 
-            
+            if ((parseFloat(cba) * 2) < parseFloat(cbn)) {
+
+                oControlEvent.getSource().setValueState(sap.ui.core.ValueState.Warning);
+                oControlEvent.getSource().setValueStateText("No puede haber un incremento del 100% del costo bruto actual!");
+
+            } else {
+                oControlEvent.getSource().setValueState(sap.ui.core.ValueState.None);
+
+            }
 
         },
 
@@ -1758,6 +1768,7 @@ sap.ui.define([
 
             this.getView().setModel(new JSONModel(dataModel), modelName);
         },
+
         saveChangePrice: function () {
             let that = this;
             let items = this.getView().getModel('ETMODIFY').getProperty('/results');
@@ -1787,8 +1798,7 @@ sap.ui.define([
                         }]
                     }
                     var response = Model.create("/HdrcatproSet", objRequest);
-                    //pintar response
-                    console.log(this.response);
+                    console.log("Respuesta del save", response);
 
 
                     if (response != null) {
@@ -1805,7 +1815,7 @@ sap.ui.define([
                             });
 
                         } else {
-                            let message = response.mensaje;
+                            let message = response.EMessage;
                             sap.m.MessageBox.error(message);
                         }
                     } else {
