@@ -103,7 +103,7 @@ sap.ui.define([
 
 		/** HANDLE DATA CALL METHODS*/
 		searchData: function () {
-
+var that=this;
 			//let dateRange = this.getView().byId("dateRange");
 
 			//ciltro documento 
@@ -161,12 +161,29 @@ sap.ui.define([
 			var oODataJSONModel = this.getOdata(sUri);
 			//            let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}' and belnr eq '${doc_BELNR}'  &$format=json`;
 
-			let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}'${queryFiltro} &$format=json`;
-			//Xblnr
+		/*	let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}'${queryFiltro} &$format=json`;
+			//Xblnr*/
+            var auxFilters = [];
+         
+            auxFilters.push(new sap.ui.model.Filter({path: "Datei", operator: sap.ui.model.FilterOperator.EQ, value1: desde_LV_ZDESDE}));
+            auxFilters.push(new sap.ui.model.Filter({path: "Lifnr", operator: sap.ui.model.FilterOperator.EQ, value1: proveedor_LIFNR }));
+            auxFilters.push(new sap.ui.model.Filter({path: "Datef", operator: sap.ui.model.FilterOperator.EQ, value1: desde_LV_ZHASTA }));
+            auxFilters.push(new sap.ui.model.Filter({path: "belnr", operator: sap.ui.model.FilterOperator.EQ, value1: doc_BELNR }));
+            auxFilters.push(new sap.ui.model.Filter({path: "Bukrs", operator: sap.ui.model.FilterOperator.EQ, value1: BUKRS }));
+               
 
-			var odTJSONModel = this.getOdataJsonModel(urlParams, oODataJSONModel);
-			dTJSON = odTJSONModel.getJSON();
-			var TDatos = JSON.parse(dTJSON);
+            var model = "ZOCP_DOCPAGO_SRV";
+            var entity = "EStmtHdrSet";
+            var expand = ["Citms","Oitms"];
+            var filter = auxFilters;
+            var select = "";
+            that._GEToDataV2(model, entity, filter, expand).then(function (_GEToDataV2Response) {
+                sap.ui.core.BusyIndicator.show();
+                var dTJSON = _GEToDataV2Response.data;
+console.log(dTJSON);
+//dTJSON = odTJSONModel.getJSON();
+			var TDatos = dTJSON
+console.log(TDatos)
 
 			let Detalles = [...TDatos.results[0].Citms.results, ...TDatos.results[0].Oitms.results];
 
@@ -206,7 +223,7 @@ sap.ui.define([
 
 
 
-			var groupedMovs = this.groupArrayOfObjects(auxArray, "DescripcionGpo");
+			var groupedMovs = that.groupArrayOfObjects(auxArray, "DescripcionGpo");
 			var nestedMovs = []
 
 			var me = this;
@@ -230,7 +247,7 @@ sap.ui.define([
 					"totalRegs": groupedMovs[x].length,
 					"totalDebit": 0,
 					"totalCredit": 0,
-					"cost": me.truncate(cost,2),
+					"cost": that.truncate(cost,2),
 					"positions": groupedMovs[x]
 
 				})
@@ -244,7 +261,7 @@ sap.ui.define([
 			var totalR = nestedMovs.reduce(function (_this, val) {
 				var current = Number(val.totalRegs)
 				var total = _this + current
-				return me.truncate(total, 2)
+				return that.truncate(total, 2)
 			}, 0);
 
 		 
@@ -257,21 +274,26 @@ sap.ui.define([
 					"totalR": totalR,
 					"totalD": 0,
 					"totalC": 0,
-					"totalCostos": me.truncate(sumaAux,2)
+					"totalCostos": that.truncate(sumaAux,2)
 
 				}
 			});
 
 			console.log(jsonModelG);
 
-			this.getOwnerComponent().setModel(jsonModelG, "GroupedTotales");
+			that.getOwnerComponent().setModel(jsonModelG, "GroupedTotales");
 
 
-			this.initTable()
-
+			that.initTable()
+            sap.ui.core.BusyIndicator.hide();
 		//	this.getOwnerComponent().setModel(jsonModelT, "totales");
 
 			//this.paginate("totales", "/Detalles", 1, 0);
+        
+
+
+            });
+		
 
 		},
 
@@ -492,11 +514,26 @@ sap.ui.define([
 				let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(sPath);
 	
 				console.log(results)
+                var sociedad = this.getOwnerComponent().getModel('GroupedTotales').getProperty('/Bukrs');
+                var ejercicio2 = results.Budat;
+                var ejercicio = ejercicio2.substr(0, 4) ? ejercicio2.substr(0, 4) : ""
 				//let registro = results[posicion];
 				//console.log(registro)
-				var tcode = results.Tcode
+				//var tcode = results.Tcode
+	         // if(tcode !== "Z_APORTACIONES" ){
+        console.log(this.getOwnerComponent().getModel('totales'))
+        var tcode = results.Tcode
+        console.log(sociedad, ejercicio, tcode)
+        var doc = results.Belnr
+        var acuerdosTCodes = ['WEB4','WLF4','MEB2','MEB0','WLF2','ZMMFILACUERDO','WFL5']
+        var aportacionesTCodes = ['Z_APORTACIONES']
 
-	  if(tcode !== "Z_APORTACIONES" ){
+        console.log(acuerdosTCodes.includes(tcode))
+        console.log(doc)
+        console.log(results.Foliodescuento)
+        if ( (acuerdosTCodes.includes(tcode)  && doc.startsWith('510')) || (tcode == "" && !( doc.startsWith("170") &&  results.Foliodescuento ))   ) {
+//1500000453  1500177301
+            console.log('on detailAcuerdosAS')
 				 this.getOwnerComponent().getRouter().navTo("detailAcuerdos",
 					{
 						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
@@ -508,14 +545,14 @@ sap.ui.define([
 					   // lifnr: docResult.Lifnr
 					}, true);
 
-				}else{
+				}else if (aportacionesTCodes.includes(tcode) || ( doc.startsWith("170") &&  results.Foliodescuento )  ) {
 
 
-
+                    console.warn('detailAportacionesComplementoS')
 					this.getOwnerComponent().getRouter().navTo("detailAportacionesComplemento",
 					{
 						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
-						document: results.Xblnr,
+						document: results.Foliodescuento,
  						sociedad: this._sociedad,
 						ejercicio: this._ejercicio,
 					    doc: this._document,

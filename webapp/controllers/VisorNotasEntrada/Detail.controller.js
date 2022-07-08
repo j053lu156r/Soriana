@@ -69,6 +69,10 @@ if (ModeloN.Xblnr==='0.1'){
 ModeloN.Xblnr=""
 
 }
+if (ModeloN.XblnrFact==='0.1'){
+    ModeloN.XblnrFact=""
+    
+    }
             var ModelD = []
             ModelD = {
                 "Mblnr": ModeloN.Mblnr,
@@ -78,6 +82,7 @@ ModeloN.Xblnr=""
                 "BudatMkpf": ModeloN.BudatMkpf,
                 "Werks": ModeloN.Werks,
                 "Xblnr":ModeloN.Xblnr,
+                "XblnrFact":ModeloN.XblnrFact,
 
                 "posiciones": []
 

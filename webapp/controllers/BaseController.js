@@ -1,6 +1,7 @@
 jQuery.sap.require("sap.ui.core.util.Export");
 jQuery.sap.require("sap.ui.core.util.ExportTypeCSV");
 sap.ui.define([
+    'sap/ui/export/Spreadsheet',
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/routing/History",
     "sap/ui/core/routing/HashChanger",
@@ -14,9 +15,7 @@ sap.ui.define([
     "sap/ui/core/util/ExportTypeCSV",
     "demo/models/BaseModel",
     "sap/ui/model/json/JSONModel",
-    
-	
-], function (Controller, History, HashChanger, Filter, FilterOperator, Fragment, MessageBox, UIComponent, Device, JSONModel) {
+], function (Spreadsheet, Controller, History, HashChanger, Filter, FilterOperator, Fragment, MessageBox, UIComponent, Device, JSONModel) {
     "use strict";
     var oUser = new this.UserModel();
     var inboxModel = new this.MyInbox();
@@ -130,10 +129,10 @@ sap.ui.define([
                     d = d.substring(6, 8).concat('-').concat(d.substring(4, 6)).concat('-').concat(d.substring(0, 4));
                 }
             }
-            /*            
+            /*
                     if (s){
-                        return s.replace(/^(\d{4})-(\d{2})-(\d{2})$/g,'$3-$2-$1');  
-                    }         
+                        return s.replace(/^(\d{4})-(\d{2})-(\d{2})$/g,'$3-$2-$1');
+                    }
             */
             return d;
         },
@@ -281,7 +280,7 @@ sap.ui.define([
         onValueHelpRequest: function () {
             var oView = this.getView();
             oUser
-            this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({}), "tableItemsUsers");            
+            this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({}), "tableItemsUsers");
             if (!this._pValueHelpDialog) {
                 this._pValueHelpDialog = sap.ui.core.Fragment.load({
                     id: oView.getId(),
@@ -299,8 +298,8 @@ sap.ui.define([
         },
         onValueHelpRequestquitar: function () {
             var oView = this.getView();
-            this.getConfigModel().setProperty("/supplierInput",null);     
-            this.getConfigModel().setProperty("/supplierInputKey",null);       
+            this.getConfigModel().setProperty("/supplierInput",null);
+            this.getConfigModel().setProperty("/supplierInputKey",null);
             this.getConfigModel().setProperty("/supplierTitle",null);
         /*    if (!this._pValueHelpDialog) {
                 this._pValueHelpDialog = sap.ui.core.Fragment.load({
@@ -313,7 +312,7 @@ sap.ui.define([
                 });
             }
             this._pValueHelpDialog.then(function (oDialog) {
-               
+
                 oDialog.open();
             });*/
         },
@@ -395,8 +394,8 @@ sap.ui.define([
             var userFunctions = this.getOwnerComponent().getModel('userdata').getProperty("/ETROLUSUANAV/results");
             var hasCollab = this.getOwnerComponent().getModel('userdata').getProperty("/Esusdata/Zusuasor");
             var roluser = this.getOwnerComponent().getModel('userdata').getProperty("/ERol");
-            
-            
+
+
 
 
             sectionsModel.forEach(function (section) {
@@ -412,14 +411,14 @@ sap.ui.define([
                             if (hasCollab) {
                                 if (strFunction != null) {
                                     var funcValue = userFunctions.find(element => element.Idfuncion == strFunction.toString().padStart(6, "000000"));
-                                    
+
                                 }
                             } else {
                                 if (strFunction != null) {
                                     var funcValue = userFunctions.find(element => element.Idfuncion == strFunction.toString().padStart(6, "000000") && element.Lifnr == vLifnr);
                                 }
                             }
-    
+
                         }
 
                         if (funcValue != null) {
@@ -505,7 +504,7 @@ sap.ui.define([
 
             if (userTileAuth != null) {
                 var tiles = userTileAuth.getProperty("/tiles");
-                if (tiles != null) {                    
+                if (tiles != null) {
                     return tiles.includes(tileID);
                 } else {
                     return false;
@@ -561,7 +560,7 @@ sap.ui.define([
             return bValid;
         },
         hasOnlyNumbers: function (oEvent) {
-            
+
 
             this.validateOnlyNumbers(oEvent);
         },
@@ -614,7 +613,7 @@ sap.ui.define([
            if (esvisible && usr1 != "" && usr1 != undefined && usr1 !== null){
             var seve = true;
            }
-           
+
             return ((esvisible && usr1 !== null && usr1 !== "" && usr1 !== undefined));
             // return ((chgUsrRol == '0001' || chgUsrRol == '0005') && usrRol != '0005');
         },
@@ -625,14 +624,14 @@ sap.ui.define([
                     "barVisible": false
                 };
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(obj), "configSite");
-                var countmails = this.getInboxCount();            
+                var countmails = this.getInboxCount();
                 this.getOwnerComponent().getModel("configSite").setProperty("/inboxMetric", countmails);
             }
-            var countmails = this.getInboxCount();            
+            var countmails = this.getInboxCount();
             this.getOwnerComponent().getModel("configSite").setProperty("/inboxMetric", countmails);
         },
         getConfigModel: function () {
-           
+
             return this.getOwnerComponent().getModel("configSite");
         },
         paginate: function (modelName, pTable, iterator, startRow) {
@@ -880,10 +879,10 @@ sap.ui.define([
             reader.readAsDataURL(file);
         },
         getInboxCount:  function () {
-            
-            
+
+
             var countMails = 0;
-            
+
             if (this.getOwnerComponent().getModel("userdata") != null) {
                 var vMail = this.getOwnerComponent().getModel("userdata").getProperty("/IMail");
             var response = inboxModel.getJsonModel(
@@ -893,8 +892,8 @@ sap.ui.define([
                     //countMails= objResponse.getData().length;
                      countMails =  parseInt(response.getProperty("/results/0/ENmes"),10);
                     }
-                
-                    
+
+
             }
         return countMails;
         },
@@ -1024,19 +1023,19 @@ sap.ui.define([
             var oModel2 = "/sap/opu/odata/sap/"+model;
             var that = this;
 			let entidad = "/" + entity;
-        
+
 			return new Promise(function(fnResolve, fnReject) {
-               
+
                 var oModel = new sap.ui.model.odata.ODataModel(oModel2);
 				oModel.read(entidad, {
 				filters: filter,
                 urlParameters: {
                     "$expand":expand,
-                
+
                   },
                   //381970
 					success: function(oData, oResponse) {
-                       
+
 						fnResolve(oResponse);
 					},
 					error: function(error) {
@@ -1051,8 +1050,46 @@ sap.ui.define([
 				});
 			});
 		},
+
+
+        /*OPulido version de  _GEToDataV2 de Juan Pacheco  */
+
+        _GetODataV2: function(model, entity, filter,  expand,) {
+            var oModel2 = "/sap/opu/odata/sap/"+model;
+            var that = this;
+            let entidad = "/" + entity;
+
+            return new Promise(function(fnResolve, fnReject) {
+
+                var oModel = new sap.ui.model.odata.v2.ODataModel(oModel2);
+                oModel.read(entidad, {
+                    filters: filter,
+                    urlParameters: {
+                        "$expand":expand,
+
+                    },
+                    //381970
+                    success: function(oData, oResponse) {
+
+                        fnResolve(oResponse);
+                    },
+                    error: function(error) {
+                        console.log(error)
+                        sap.ui.core.BusyIndicator.hide();
+                        MessageBox.error("Error: " + error.responseJSON.error.message, {
+                            icon: MessageBox.Icon.ERROR,
+                            title: "Error"
+                        });
+                        fnReject(new Error(error.message));
+                    }
+                });
+            });
+        },
+
+
+
         _GEToDataV2ajax: function(url) {
-          
+
             return new Promise((fnResolve, fnReject) => {
 
                 $.ajax({
@@ -1079,10 +1116,10 @@ sap.ui.define([
         _POSToDataV2: function(model, entity, aData) {
             var oModel2 = "/sap/opu/odata/sap/"+model;
             var that = this;
-		
+
             console.log(oModel2)
 			return new Promise(function(fnResolve, fnReject) {
-              
+
                 $.ajax({
 					url: oModel2+entity,
 					type: "POST",
@@ -1105,6 +1142,16 @@ sap.ui.define([
 			});
 		},
 
-        
+        buildExcelSpreadSheet: function(columns, rowData, name){
+            var oSettings = {
+				workbook: { columns: columns },
+				dataSource: rowData,
+                fileName: name
+			};
+
+            var oSheet = new Spreadsheet(oSettings);
+            oSheet.build().then( function() {})
+            .finally(oSheet.destroy);
+        }
     });
 });

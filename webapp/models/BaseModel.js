@@ -334,6 +334,17 @@ function CfdiModel() {
 CfdiModel.prototype = Object.create(BaseModel.prototype);
 CfdiModel.prototype.constructor = CfdiModel;
 
+//Model Web Service Auth
+function WSModel() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_CFDI_WS_SRV/";
+    params.sModel = "wsModel";
+    BaseModel.call(this, params);
+}
+
+WSModel.prototype = Object.create(BaseModel.prototype);
+WSModel.prototype.constructor = WSModel;
+
 //Model Aviso anticipado
 function AvisoModel() {
     var params = {};
