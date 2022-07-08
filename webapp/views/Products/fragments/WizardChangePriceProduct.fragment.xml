@@ -5,7 +5,8 @@
 	xmlns:form="sap.ui.layout.form"
 	xmlns:u="sap.ui.unified"
     xmlns:l="sap.ui.layout"
-	xmlns:layout="sap.ui.layout">
+	xmlns:layout="sap.ui.layout"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">>
 	<Dialog
 		id="changePriceDialog"
 		showHeader="false"
@@ -114,7 +115,7 @@
                                     <ObjectIdentifier text="{ETMODIFY>Codigoean}" />
                                     <ObjectIdentifier text="{ETMODIFY>Descrip}" />
                                     <ObjectIdentifier text="{ETMODIFY>Costobant}" />
-                                    <Input value="{ETMODIFY>Costobnuevo}" type="Number" liveChange="validateCstBrutNuevo"></Input>
+                                    <Input value="{ETMODIFY>Costobnuevo}" type="Number" liveChange="validateCstBrutNuevo" customData:cba="{ETMODIFY>Costobant}" ></Input>
                                 </cells>
                             </ColumnListItem>
                         </items>

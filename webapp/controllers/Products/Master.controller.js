@@ -769,36 +769,32 @@ sap.ui.define([
             }
         },
 
-        validateCstBrutNuevo(oControlEvent) {
+         validateCstBrutNuevo(oControlEvent) {
 
             let cbn = oControlEvent.getParameter('value');
+            let cba = oControlEvent.getSource().data("cba");
 
             let splited_quant = cbn.split('.');
+
             if (splited_quant.length > 1) {
                 if (splited_quant[1].length > 2) {
                     oControlEvent.getSource().setValueState(sap.ui.core.ValueState.Warning);
                     oControlEvent.getSource().setValueStateText("Maximo 2 decimales");
-                }else{
+                } else {
                     oControlEvent.getSource().setValueState(sap.ui.core.ValueState.None);
                 }
             }
-            
-            let results = this.getView().getModel('ETMODIFY').getProperty('/Paginated/results');
-            ETMODIFY.Paginated.results;
 
-            console.log(results);
-            
-                    if ((parseFloat(results.Costobant) * 2) < parseFloat(cbn)) {
-                        oControlEvent.getSource().setValueState(sap.ui.core.ValueState.Warning);
-                        oControlEvent.getSource().setValueStateText("No puede haber un incremento del 100% del costo bruto actual!");
-                        
-                        
-                    }else{
-                        oControlEvent.getSource().setValueState(sap.ui.core.ValueState.None);
-                        
-                    }
-                                   
-            
+            if ((parseFloat(cba) * 2) < parseFloat(cbn)) {
+
+                oControlEvent.getSource().setValueState(sap.ui.core.ValueState.Warning);
+                oControlEvent.getSource().setValueStateText("No puede haber un incremento del 100% del costo bruto actual!");
+
+            } else {
+                oControlEvent.getSource().setValueState(sap.ui.core.ValueState.None);
+
+            }
+
         },
 
         validateBarCode: function () {
@@ -1803,7 +1799,7 @@ sap.ui.define([
                     }
                     var response = Model.create("/HdrcatproSet", objRequest);
                     console.log("Respuesta del save", response);
-                    
+
 
                     if (response != null) {
                         if (response.ESuccess === 'X') {
