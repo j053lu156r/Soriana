@@ -70,9 +70,10 @@ sap.ui.define([
                 if (startDate != "" && endDate != "") {
                     url += " and ISdate eq '" + startDate + "'" + " and IEdate eq '" + endDate + "'";
                 }
-
+                var oBusyDialog = new sap.m.BusyDialog();
+                oBusyDialog.open();
                 var dueModel = oModel.getJsonModel(url);
-
+                oBusyDialog.close();
                 var ojbResponse = dueModel.getProperty("/results/0");
 
                 this.getOwnerComponent().setModel(new JSONModel(ojbResponse),
