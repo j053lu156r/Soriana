@@ -385,8 +385,11 @@ sap.ui.define([
                 console.log(data)
                 let Detalles = [...data[0].Citms.results, ...data[0].Oitms.results];
 
+                var cleanedArray =  Detalles.filter(obj => !obj.Belnr.startsWith("58") && !obj.Belnr.startsWith("59"));
+
+
                 data[0].Detalles = {
-                    results: [...Detalles]
+                    results: [...cleanedArray]
                 };
 
 
@@ -395,7 +398,7 @@ sap.ui.define([
                 jsonModelT.setData(JSONT);
                 //filtrar totales y crear modelo grupal
 
-                let auxArray = [...Detalles]
+                let auxArray = [...cleanedArray]
 
                 var groupedMovs = that.groupArrayOfObjects(auxArray, "DescripcionGpo");
                 var nestedMovs = []
@@ -783,7 +786,7 @@ sap.ui.define([
                 //  this.byId("weightColumn").setVisible(true);
                 // this.byId("dimensionsColumn").setVisible(true);
 
-                this._oTable.setMode("SingleSelectMaster");
+                this._oTable.setMode("None");
 
                 this.byId("statusColumn").setVisible(true);
                 this.byId("folioColumn").setVisible(true);
@@ -904,11 +907,7 @@ sap.ui.define([
                 console.log(sPath)
                 //let posicion = oEvent.getSource().getBindingContext("GroupedTotales").getPath().split("/").pop();
                 let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(sPath);
-                console.log("row clicked", results)
 
-                console.log(this.getOwnerComponent().getModel('totales'))
-                //let registro = results[posicion];
-                //console.log(registro)
 
                 //            let totalRegistros = parseInt( this.getOwnerComponent().getModel('totales').getProperty('/Detalles/results/length'), 10);
 
@@ -1161,10 +1160,62 @@ sap.ui.define([
 
         },
         onDocumentPress: function (oEvent) {
-            let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(sPath);
 
-            console.log(oEvent);
+            var path = oEvent.getSource().getBindingContext("GroupedTotales").getPath();
+            let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(path);
 
+            console.log(results)
+
+            //nueva funcion apra mostrar detalle
+
+            var sociedad = this.getOwnerComponent().getModel('GroupedTotales').getProperty('/Bukrs')
+            // var ejercicio = this.getOwnerComponent().getModel('totales').getProperty('/Gjahr')
+
+
+            var ejercicio2 = results.Budat
+            var ejercicio = ejercicio2.substr(0, 4) ? ejercicio2.substr(0, 4) : ""
+
+            console.log(this.getOwnerComponent().getModel('totales'))
+            var tcode = results.Tcode
+            console.log(sociedad, ejercicio, tcode)
+            var doc = results.Belnr
+            var acuerdosTCodes = ['WEB4', 'WLF4', 'MEB2', 'MEB0', 'WLF2', 'ZMMFILACUERDO', 'WFL5']
+            var aportacionesTCodes = ['Z_APORTACIONES']
+
+
+            if ((acuerdosTCodes.includes(tcode) && doc.startsWith('510')) || (tcode == "" && !(doc.startsWith("1700") && results.Xblnr))) {
+
+                console.log('on detailAcuerdosAS')
+
+
+                this.getOwnerComponent().getRouter().navTo("detailAcuerdosAS", {
+                    layout: sap.f.LayoutType.MidColumnFullScreen,
+                    document: results.Belnr,
+                    sociedad: sociedad,
+                    ejercicio: ejercicio,
+                    doc: results.Xblnr ? results.Xblnr : 'NA',
+                    // zbukr: docResult.Zbukr,
+                    // lifnr: docResult.Lifnr
+                }, true);
+
+            } else if (aportacionesTCodes.includes(tcode) || (doc.startsWith("1700") && results.Xblnr)) {
+
+                console.log('on detailAportacionesAS')
+
+                //camvuar  docuemnto con cual se va consultar
+
+                this.getOwnerComponent().getRouter().navTo("detailAportacionesAS", {
+                    layout: sap.f.LayoutType.MidColumnFullScreen,
+                    document: results.Xblnr,
+                    view: 'EstadoCuenta',
+                    //ejercicio: ejercicio,
+                    //doc: results.Belnr,
+                    // zbukr: docResult.Zbukr,
+                    // lifnr: docResult.Lifnr
+                }, true);
+
+            }
+            
         },
 
         onPress: function (oEvent) {
