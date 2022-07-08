@@ -782,9 +782,23 @@ sap.ui.define([
                     oControlEvent.getSource().setValueState(sap.ui.core.ValueState.None);
                 }
             }
-
             
+            let results = this.getView().getModel('ETMODIFY').getProperty('/Paginated/results');
+            ETMODIFY.Paginated.results;
 
+            console.log(results);
+            
+                    if ((parseFloat(results.Costobant) * 2) < parseFloat(cbn)) {
+                        oControlEvent.getSource().setValueState(sap.ui.core.ValueState.Warning);
+                        oControlEvent.getSource().setValueStateText("No puede haber un incremento del 100% del costo bruto actual!");
+                        
+                        
+                    }else{
+                        oControlEvent.getSource().setValueState(sap.ui.core.ValueState.None);
+                        
+                    }
+                                   
+            
         },
 
         validateBarCode: function () {
@@ -1758,6 +1772,7 @@ sap.ui.define([
 
             this.getView().setModel(new JSONModel(dataModel), modelName);
         },
+
         saveChangePrice: function () {
             let that = this;
             let items = this.getView().getModel('ETMODIFY').getProperty('/results');
@@ -1787,9 +1802,8 @@ sap.ui.define([
                         }]
                     }
                     var response = Model.create("/HdrcatproSet", objRequest);
-                    //pintar response
-                    console.log(this.response);
-
+                    console.log("Respuesta del save", response);
+                    
 
                     if (response != null) {
                         if (response.ESuccess === 'X') {
@@ -1805,7 +1819,7 @@ sap.ui.define([
                             });
 
                         } else {
-                            let message = response.mensaje;
+                            let message = response.EMessage;
                             sap.m.MessageBox.error(message);
                         }
                     } else {
