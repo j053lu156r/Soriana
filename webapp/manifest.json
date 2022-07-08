@@ -443,6 +443,15 @@
                     ]
                 },
                 {
+                    "pattern": "detailDetailAcuEC/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{tda}",
+                    "name": "detailDetailAcuEC",
+                    "target": [
+                        "EstadoCuenta",
+                        "detailAcuerdosAS",
+                        "detailDetailAcuEC"
+                    ]
+                },
+                {
                     "pattern": "EstadoCuentaReporte/{layout}/{document}/{proveedor}/{serie}/{fecha}",
                     "name": "EstadoCuentaReporte",
                     "target": [
@@ -898,6 +907,11 @@
                     "viewName": "DetailAS",
                     "viewPath": "demo.views.Acuerdos",
                     "controlAggregation": "midColumnPages"
+                },
+                "detailDetailAcuEC": {
+                    "viewName": "DetailDetailEC",
+                    "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "endColumnPages"
                 },
                 "Products": {
                     "viewName": "Master",
