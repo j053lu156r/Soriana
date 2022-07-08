@@ -450,6 +450,7 @@
                         "EstadoCuenta",
                         "detailAcuerdosAS",
                         "detailDetailAcuEC"
+                    ]
                 },
                 {
                     "pattern": "detailAcuerdosFactoraje/{layout}/{document}/{sociedad}/{ejercicio}/{doc}",
