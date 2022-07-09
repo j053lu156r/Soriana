@@ -136,9 +136,18 @@ sap.ui.define([
 
             auxFilters.push(new sap.ui.model.Filter({
                 path: "IStartdate",
-                operator: sap.ui.model.FilterOperator.BT,
+                operator: sap.ui.model.FilterOperator.EQ,
                 value1: FechaI.toISOString().slice(0, 10) + 'T00:00:00',
-                value2: FechaF.toISOString().slice(0, 10) + 'T00:00:00'
+              
+            })
+
+            )
+             
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "IEnddate",
+                operator: sap.ui.model.FilterOperator.EQ,
+                
+                value1: FechaF.toISOString().slice(0, 10) + 'T00:00:00'
             })
 
             )
