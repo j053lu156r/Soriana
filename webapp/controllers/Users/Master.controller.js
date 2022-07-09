@@ -100,8 +100,9 @@ sap.ui.define([
 
                 var oBusyDialog = new sap.m.BusyDialog();
                 oBusyDialog.open();
+               // sap.ui.core.BusyIndicator.show();
                 var dueModel = oModel.getJsonModel(url);
-                
+               // sap.ui.core.BusyIndicator.hide();
                 oBusyDialog.close();
                 var ojbResponse = dueModel.getProperty("/results/0");
                 this.getOwnerComponent().setModel(new JSONModel(ojbResponse),

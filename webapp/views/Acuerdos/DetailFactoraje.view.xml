@@ -1,12 +1,12 @@
-<mvc:View displayBlock="true" 
-    xmlns:f="sap.f" 
+<mvc:View displayBlock="true"
+    xmlns:f="sap.f"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns:fb="sap.ui.comp.filterbar" 
-    xmlns:vm="sap.ui.comp.variants" 
-    xmlns="sap.m" 
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns="sap.m"
     xmlns:core="sap.ui.core"
-	 controllerName="demo.controllers.Acuerdos.DetailAS" height="100%">
-	<f:DynamicPage  
+	 controllerName="demo.controllers.Acuerdos.DetailFactoraje" height="100%">
+	<f:DynamicPage
 		class="sapUiContentPadding">
         <!-- DynamicPage Title -->
       	<f:title>
@@ -49,10 +49,10 @@
                 <f:content>
                 <!--
                     <fb:FilterBar id="filterBar"  header="Header"
-		                reset="onReset" search="searchData" clear="clearFilters" cancel="onCancel" 
+		                reset="onReset" search="searchData" clear="clearFilters" cancel="onCancel"
 		                filtersDialogClosed = "onFiltersDialogClosed"
-		                showRestoreButton="false" showClearButton="false" useToolbar="false"> 
-			
+		                showRestoreButton="false" showClearButton="false" useToolbar="false">
+
                         <fb:filterGroupItems>
                             <fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="{appTxts>/acuerdos.sociedad}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
@@ -65,7 +65,7 @@
                                     </Input>
                                 </fb:control>
                             </fb:FilterGroupItem>
-                        
+
                             <fb:FilterGroupItem groupName="__$INTERNAL$" name="B" label="{appTxts>/acuerdos.docto}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
                                     <Input
@@ -112,19 +112,19 @@
         </f:header>
 		<f:content>
             <VBox>
-			<Table 
-                noDataText="{appTxts>/acuerdos.noData}" 
+			<Table
+                noDataText="{appTxts>/acuerdos.noData}"
                 id="tableAcuerdos"
-                items="{AcuerdosHdr>/AcuerdosDet/Paginated/results}">
+                items="{AcuerdosHdr>/AcuerdosDet/results}">
                 <headerToolbar>
                     <OverflowToolbar>
                         <Title text="{appTxts>/acuerdos.title} ({AcuerdosHdr>/AcuerdosDet/results/length})" />
                         <ToolbarSpacer/>
-                        <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
+                        <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}"
                             press=".buildExportTable"
                             visible="{= ${AcuerdosHdr>/AcuerdosDet/results/length} > 0}"
                         />
-                        <Select 
+                        <Select
                             visible="{= ${AcuerdosHdr>/AcuerdosDet/Paginated/results/length} > 0 }"
                             change=".paginateValue(${$parameters>/selectedItem}, 'AcuerdosHdr', '/AcuerdosDet')">
                             <items>
@@ -169,10 +169,10 @@
 					</Column>
 				</columns>
 				<items>
-					<ColumnListItem type="Navigation" press="onListItemPress">
+					<ColumnListItem >
 						<cells>
-                            <ObjectIdentifier 
-                                title="{AcuerdosHdr>Centro}" 
+                            <ObjectIdentifier
+                                title="{AcuerdosHdr>Centro}"
                                 titleActive="true"/>
                             <ObjectNumber
                                 number="{
@@ -206,11 +206,11 @@
             <OverflowToolbar visible="{= ${AcuerdosHdr>/AcuerdosDet/Paginated/results/length} > 0 }">
                 <Text text="{AcuerdosHdr>/AcuerdosDet/Paginated/initRow} - {AcuerdosHdr>/AcuerdosDet/Paginated/endRow} {appTxts>/pagination.of} {AcuerdosHdr>/AcuerdosDet/results/length}" />
                 <ToolbarSpacer/>
-                <Button type="Default" icon="sap-icon://slim-arrow-left" 
-                        press=".prevPagination(${AcuerdosHdr>/AcuerdosDet/Paginated/iterator}, ${AcuerdosHdr>/AcuerdosDet/Paginated/initRow}, 'AcuerdosHdr', '/AcuerdosDet')" 
+                <Button type="Default" icon="sap-icon://slim-arrow-left"
+                        press=".prevPagination(${AcuerdosHdr>/AcuerdosDet/Paginated/iterator}, ${AcuerdosHdr>/AcuerdosDet/Paginated/initRow}, 'AcuerdosHdr', '/AcuerdosDet')"
                         enabled="{= ${AcuerdosHdr>/AcuerdosDet/Paginated/iterator} !== 1}" />
-                <Button type="Default" icon="sap-icon://slim-arrow-right" 
-                        press=".nextPagination(${AcuerdosHdr>/AcuerdosDet/Paginated/iterator}, ${AcuerdosHdr>/AcuerdosDet/Paginated/endRow}, 'AcuerdosHdr', '/AcuerdosDet')" 
+                <Button type="Default" icon="sap-icon://slim-arrow-right"
+                        press=".nextPagination(${AcuerdosHdr>/AcuerdosDet/Paginated/iterator}, ${AcuerdosHdr>/AcuerdosDet/Paginated/endRow}, 'AcuerdosHdr', '/AcuerdosDet')"
                         enabled="{= ${AcuerdosHdr>/AcuerdosDet/Paginated/endRow} !== ${AcuerdosHdr>/AcuerdosDet/results/length}}" />
             </OverflowToolbar>
             </VBox>

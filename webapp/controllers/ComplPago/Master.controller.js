@@ -136,9 +136,18 @@ sap.ui.define([
 
             auxFilters.push(new sap.ui.model.Filter({
                 path: "IStartdate",
-                operator: sap.ui.model.FilterOperator.BT,
+                operator: sap.ui.model.FilterOperator.EQ,
                 value1: FechaI.toISOString().slice(0, 10) + 'T00:00:00',
-                value2: FechaF.toISOString().slice(0, 10) + 'T00:00:00'
+              
+            })
+
+            )
+             
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "IEnddate",
+                operator: sap.ui.model.FilterOperator.EQ,
+                
+                value1: FechaF.toISOString().slice(0, 10) + 'T00:00:00'
             })
 
             )
@@ -180,15 +189,26 @@ sap.ui.define([
             sap.ui.core.BusyIndicator.show();
             that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
                 sap.ui.core.BusyIndicator.hide();
+                var arrT=[];
                 var data = _GEToDataV2Response.data.results;
-             
-                var Documentos = { Detalles: { results: [...data[0].EPYMNTDOCSNAV.results] } };
+                console.log(data)
+             for(var x =0;x<data.length;x++){
 
+                   if (!(data[x].IAugbl.startsWith('58') )&&!(data[x].IAugbl.startsWith('59')) ){
+                    arrT.push(data[x])
+             }
+            }
+            console.log(data)
+            console.log(arrT)
+            if(arrT.length>0){
+                var Documentos = { Detalles: { results: [...arrT[0].EPYMNTDOCSNAV.results] } };
 
 
                 that.getOwnerComponent().setModel(new JSONModel(Documentos), "Documentos");
 
                 that.paginate("Documentos", "/Detalles", 1, 0);
+            }
+               
 
             });
 

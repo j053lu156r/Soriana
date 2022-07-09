@@ -14,7 +14,7 @@ sap.ui.define([
     "use strict";
 
     var oModel = new this.Acuerdos();
-    return Controller.extend("demo.controllers.Acuerdos.DetailAS", {
+    return Controller.extend("demo.controllers.Acuerdos.DetailFactoraje", {
         onInit: function () {
             /*this._pdfViewer = new PDFViewer();
             this.getView().addDependent(this._pdfViewer);*/
@@ -33,7 +33,7 @@ sap.ui.define([
             this.oRouter = this.getOwnerComponent().getRouter();
 			this.oModel = this.getOwnerComponent().getModel();
 
-			this.oRouter.getRoute("detailAcuerdosAS").attachPatternMatched(this._onDocumentMatched, this);
+			this.oRouter.getRoute("detailAcuerdosFactoraje").attachPatternMatched(this._onDocumentMatched, this);
 
 
             console.log('on detalle acuerdos init-----')
@@ -57,7 +57,7 @@ sap.ui.define([
             var ejercicio = this._ejercicio;
             var acuerdo = ""
 
-            
+
 
 
 
@@ -89,30 +89,11 @@ sap.ui.define([
                     url += "Acuerdo eq '" + acuerdo + "'";
                 }
 
-                /*var dueModel = oModel.getJsonModel(url);
+                var dueModel = oModel.getJsonModel(url);
                 var ojbResponse = dueModel.getProperty("/results/0");
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(ojbResponse),
                     "AcuerdosHdr");
-                this.paginate("AcuerdosHdr", "/AcuerdosDet", 1, 0);*/
-                this.getView().byId('tableAcuerdos').setBusy(true);
-                oModel.getJsonModelAsync(
-                    url,
-                    function (jsonModel, parent) {
-                        var objResponse = jsonModel.getProperty("/results/0");
-
-                        if (objResponse != null) {
-                            parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(objResponse),
-                                "AcuerdosHdr");
-
-                            parent.paginate("AcuerdosHdr", "/AcuerdosDet", 1, 0);
-                        }
-                        parent.getView().byId('tableAcuerdos').setBusy(false);
-                    },
-                    function (parent) {
-                        parent.getView().byId('tableAcuerdos').setBusy(false);
-                    },
-                    this
-                );
+                this.paginate("AcuerdosHdr", "/AcuerdosDet", 1, 0);
             }
 
         },
@@ -131,7 +112,7 @@ sap.ui.define([
             }
         },
 
-        buildExportTable: function () {            
+        buildExportTable: function () {
 
             var texts = this.getOwnerComponent().getModel("appTxts");
             var columns = [
@@ -181,9 +162,9 @@ sap.ui.define([
 			this._document = oEvent.getParameter("arguments").document || this._document || "0";
 			this._sociedad = oEvent.getParameter("arguments").sociedad || this._sociedad || "0";
 			this._ejercicio = oEvent.getParameter("arguments").ejercicio || this._ejercicio || "0";
- 
- 
-            
+
+
+
 			//this.getView().bindElement({
 		//		path: "/ProductCollection/" + this._document,
 		//		model: "products"
@@ -193,9 +174,9 @@ sap.ui.define([
 		//			"document": this._document
 		//		}),
 		//		"detailAcuerdosAS");
-                
 
-				//consume el servicio para obtener los docuemntos 
+
+				//consume el servicio para obtener los docuemntos
 
 				 this.searchData()
 
@@ -204,13 +185,13 @@ sap.ui.define([
 		},
 
 
-        //HANDLE WINDOW EVENTS 
+        //HANDLE WINDOW EVENTS
 
 		handleFullScreen: function () {
 			var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(2);
 			this.bFocusFullScreenButton = true;
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
-			this.oRouter.navTo("detailAcuerdosAS", {
+			this.oRouter.navTo("detailAcuerdosFactoraje", {
 				layout: sNextLayout,
 				document: this._document,
 				sociedad: this._sociedad,
@@ -221,7 +202,7 @@ sap.ui.define([
 		handleExitFullScreen: function () {
 			this.bFocusFullScreenButton = true;
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
-			this.oRouter.navTo("detailAcuerdosAS", {
+			this.oRouter.navTo("detailAcuerdosFactoraje", {
 				layout: sNextLayout,
 				document: this._document,
 				sociedad: this._sociedad,
@@ -232,30 +213,10 @@ sap.ui.define([
 		handleClose: function () {
 			console.log('on hanlde close')
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
-			this.oRouter.navTo("EstadoCuenta", {} );
+			this.oRouter.navTo("masterFactoring", {} );
 		},
 
-        onListItemPress: function (oEvent) {
-            var resource = oEvent.getSource().getBindingContext("AcuerdosHdr").getPath(),
-                line = resource.split("/").slice(-1).pop();
 
-            var odata = this.getOwnerComponent().getModel("AcuerdosHdr");
-            var results = odata.getProperty("/AcuerdosDet/Paginated/results");
-
-            var docResult = results[line];
-
-            this.getOwnerComponent().getRouter().navTo("detailDetailAcuEC",
-                {
-                    layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
-                    document: this._document,
-				    sociedad: this._sociedad,
-				    ejercicio: this._ejercicio,
-                    doc: this._document,
-                    tda: docResult.Centro
-
-                }, true);
-
-        }
 
 
     });
