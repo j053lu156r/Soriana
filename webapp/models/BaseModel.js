@@ -348,7 +348,7 @@ WSModel.prototype.constructor = WSModel;
 //Model Aviso anticipado
 function AvisoModel() {
     var params = {};
-    params.sUrl = "/sap/opu/odata/sap/ZOSP_CFDI_BTNSND2_22_SRV/";
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_CFDI_BTNSND2A_SRV/";
     params.sModel = "avisoModel";
     BaseModel.call(this, params);
 }
