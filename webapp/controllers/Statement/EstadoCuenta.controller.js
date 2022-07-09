@@ -42,9 +42,9 @@ sap.ui.define([
 
                     var oModel = new JSONModel({
                         filtros: [{
-                                filtro: 'belnr',
-                                descripcion: 'Documento'
-                            },
+                            filtro: 'belnr',
+                            descripcion: 'Documento'
+                        },
                             {
                                 filtro: 'xblnr',
                                 descripcion: 'Factura'
@@ -61,9 +61,7 @@ sap.ui.define([
                     this.getView().setModel(oModel, 'filterOptions');
 
 
-                    //configuracion tabla 
-
-
+                    //configuracion tabla
 
 
                 }
@@ -83,26 +81,24 @@ sap.ui.define([
 
             let dateRange = this.getView().byId("dateRange");
 
-            //ciltro documento 
+            //ciltro documento
             let documentoInput = this.getView().byId("Belnr");
             let filterInput = this.getView().byId("filtroBusqueda");
 
             let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
             // format[AAAAMMDD] (2020101)
-            // let desde_LV_ZDESDE = this.buildSapDate( dateRange.getDateValue()       ); 
+            // let desde_LV_ZDESDE = this.buildSapDate( dateRange.getDateValue()       );
             // format[AAAAMMDD] (2020101)
             // let desde_LV_ZHASTA = this.buildSapDate( dateRange.getSecondDateValue() );
 
 
-
-            //tomar valores dummy para hacer al consulta 
+            //tomar valores dummy para hacer al consulta
             let todayDate = new Date();
 
             // format[AAAAMMDD] (2020101)
-            let desde_LV_ZDESDE = '20160219' //this.buildSapDate( todayDate ); 
+            let desde_LV_ZDESDE = '20160219' //this.buildSapDate( todayDate );
             // format[AAAAMMDD] (2020101)
             let desde_LV_ZHASTA = this.buildSapDate(todayDate);
-
 
 
             let doc_BELNR = documentoInput.getValue();
@@ -126,19 +122,18 @@ sap.ui.define([
             }
 
 
-            console.log('buscar por ...', filterInput.getSelectedKey())
 
             var filtroBusqueda = filterInput.getSelectedKey()
             var queryFiltro = ""
 
-            if (filtroBusqueda == "") {
+            if (filtroBusqueda === "") {
 
                 queryFiltro = ''
 
-            } else if (filtroBusqueda == "belnr") {
+            } else if (filtroBusqueda === "belnr") {
                 queryFiltro = `and belnr eq '${doc_BELNR}' `
 
-            } else if (filtroBusqueda == "xblnr") {
+            } else if (filtroBusqueda === "xblnr") {
                 queryFiltro = `and xblnr eq '${doc_BELNR}' `
 
             }
@@ -161,7 +156,6 @@ sap.ui.define([
             };
 
 
- 
             delete TDatos.results[0].Citms;
             delete TDatos.results[0].Oitms;
 
@@ -174,8 +168,7 @@ sap.ui.define([
             jsonModelT.setData(JSONT);
 
 
-
-            //filtrar totales y crear modelo grupal 
+            //filtrar totales y crear modelo grupal
 
             console.info("agrupando datos", Detalles)
             let auxArray = [...Detalles]
@@ -189,12 +182,9 @@ sap.ui.define([
             for (let x in groupedMovs) {
 
 
- 
-
                 var resultCredit = groupedMovs[x].reduce(function (_this, val) {
-                     var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
-                    var total = _this + current
-                    return total
+                    var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
+                    return _this + current
                 }, 0);
 
 
@@ -205,7 +195,7 @@ sap.ui.define([
                 }, 0);
 
 
-                 var agrupado = groupedMovs[x]
+                var agrupado = groupedMovs[x]
                 var idGrupo = agrupado[0].IdNumGpo ? agrupado[0].IdNumGpo : ""
                 //IdNumGpo
                 nestedMovs.push({
@@ -220,10 +210,7 @@ sap.ui.define([
                 })
 
 
-
             }
-
-
 
 
             var totalR = nestedMovs.reduce(function (_this, val) {
@@ -270,7 +257,231 @@ sap.ui.define([
 
             this.paginate("totales", "/Detalles", 1, 0);
 
+
         },
+
+        searchDataV2: function () {
+
+            let dateRange = this.getView().byId("dateRange");
+
+            //ciltro documento
+            let documentoInput = this.getView().byId("Belnr");
+            let filterInput = this.getView().byId("filtroBusqueda");
+
+            let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
+            // format[AAAAMMDD] (2020101)
+            // let desde_LV_ZDESDE = this.buildSapDate( dateRange.getDateValue()       );
+            // format[AAAAMMDD] (2020101)
+            // let desde_LV_ZHASTA = this.buildSapDate( dateRange.getSecondDateValue() );
+
+
+            //tomar valores dummy para hacer al consulta
+            let todayDate = new Date();
+
+            // format[AAAAMMDD] (2020101)
+            let desde_LV_ZDESDE = '20160219' //this.buildSapDate( todayDate );
+            // format[AAAAMMDD] (2020101)
+            let desde_LV_ZHASTA = this.buildSapDate(todayDate);
+
+
+            let doc_BELNR = documentoInput.getValue();
+
+            //checbox validaciones
+
+            let partidasFiltro = this.getView().byId("checkPartidas");
+
+            if (partidasFiltro.getSelected()) {
+                partidasFiltro.setSelected(false);
+            }
+
+
+            if (proveedor_LIFNR == null || proveedor_LIFNR == "") {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.supplierSelectError"));
+                return false;
+            }
+
+            if (desde_LV_ZDESDE == "" || desde_LV_ZHASTA == "") {
+                // sap.m.MessageBox.error("Por favor defina el rango de fechas.");
+            }
+
+
+
+            var filtroBusqueda = filterInput.getSelectedKey()
+            var queryFiltro = ""
+
+
+
+
+            var auxFilters = [];
+
+            auxFilters.push(new sap.ui.model.Filter({
+                    path: "Lifnr",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: proveedor_LIFNR
+                })
+
+            )
+
+            auxFilters.push(new sap.ui.model.Filter({
+                    path: "Datei",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: desde_LV_ZDESDE
+                })
+
+            )
+
+            auxFilters.push(new sap.ui.model.Filter({
+                    path: "Datei",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: desde_LV_ZHASTA
+                })
+
+            )
+
+            if (filtroBusqueda == "") {
+
+                queryFiltro = ''
+
+            } else if (filtroBusqueda == "belnr") {
+               // queryFiltro = `and belnr eq '${doc_BELNR}' `
+                auxFilters.push(new sap.ui.model.Filter({
+                        path: "belnr",
+                        operator: sap.ui.model.FilterOperator.EQ,
+                        value1: doc_BELNR
+                    })
+
+                )
+
+            } else if (filtroBusqueda == "xblnr") {
+               // queryFiltro = `and xblnr eq '${doc_BELNR}' `
+                auxFilters.push(new sap.ui.model.Filter({
+                        path: "xblnr",
+                        operator: sap.ui.model.FilterOperator.EQ,
+                        value1: doc_BELNR
+                    })
+
+                )
+
+            }
+
+
+
+
+           // let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}' ${queryFiltro} &$format=json`;
+            //Xblnr
+
+            var model = "ZOSP_STATEMENT_SRV_01";
+            var entity = "EStmtHdrSet";
+            var expand = ['Citms', 'Oitms'];
+            var filter = auxFilters;
+            var select = "";
+            sap.ui.core.BusyIndicator.show();
+
+            let that = this
+            this._GetODataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
+                sap.ui.core.BusyIndicator.hide();
+                var data = _GEToDataV2Response.data.results;
+
+                console.log(data)
+                let Detalles = [...data[0].Citms.results, ...data[0].Oitms.results];
+
+                var cleanedArray =  Detalles.filter(obj => !obj.Belnr.startsWith("58") && !obj.Belnr.startsWith("59"));
+
+
+                data[0].Detalles = {
+                    results: [...cleanedArray]
+                };
+
+
+                var JSONT = $.extend({}, data[0]);
+                var jsonModelT = new JSONModel();
+                jsonModelT.setData(JSONT);
+                //filtrar totales y crear modelo grupal
+
+                let auxArray = [...cleanedArray]
+
+                var groupedMovs = that.groupArrayOfObjects(auxArray, "DescripcionGpo");
+                var nestedMovs = []
+
+                for (let x in groupedMovs) {
+
+                    var resultCredit = groupedMovs[x].reduce(function (_this, val) {
+                        var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
+                        var total = _this + current
+                        return total
+                    }, 0);
+
+                    var result = groupedMovs[x].reduce(function (_this, val) {
+                        var current = val.Bschl !== "21" ? Number(val.Wrbtr) : 0
+                        var total = _this + current
+                        return total
+                    }, 0);
+
+                    var agrupado = groupedMovs[x]
+                    var idGrupo = agrupado[0].IdNumGpo ? agrupado[0].IdNumGpo : ""
+                    //IdNumGpo
+                    nestedMovs.push({
+                        "IdNumGpo": idGrupo,
+                        "name": x,
+                        "totalRegs": groupedMovs[x].length,
+                        "totalDebit": Math.abs(that.truncate(result, 2)),
+                        "totalCredit": Math.abs(that.truncate(resultCredit, 2)),
+                        "positions": groupedMovs[x],
+                    })
+                }
+
+                var totalR = nestedMovs.reduce(function (_this, val) {
+                    var current = Number(val.totalRegs)
+                    var total = _this + current
+                    return total
+                }, 0);
+
+                var totalD = nestedMovs.reduce(function (_this, val) {
+                    var current = Number(val.totalDebit)
+                    var total = _this + current
+                    return total
+                }, 0);
+
+                var totalC = nestedMovs.reduce(function (_this, val) {
+                    var current = Number(val.totalCredit)
+                    var total = _this + current
+                    return total
+                }, 0);
+
+
+                var totalGeneral = that.truncate(totalD, 2) - that.truncate(totalC, 2)
+
+
+                var jsonModelG = new JSONModel({
+                    "Hierarchy": {
+                        "movimientos": nestedMovs,
+                        "totalR": totalR,
+                        "totalD": that.truncate(totalD, 2),
+                        "totalC": that.truncate(totalC, 2),
+                        "totalT": that.truncate(totalGeneral, 2)
+                    },
+                    "Bukrs": data[0].Bukrs
+
+                });
+
+                that.getOwnerComponent().setModel(jsonModelG, "GroupedTotales");
+                that.initTable()
+                that.getOwnerComponent().setModel(jsonModelT, "totales");
+                that.paginate("totales", "/Detalles", 1, 0);
+
+
+
+            });
+
+
+
+
+           // TDatos.results[0].periodo = "Del " + this.formatDateTime(dateRange.getDateValue(), 'dd/MM/YYYY') + " al " + this.formatDateTime(dateRange.getSecondDateValue(), 'dd/MM/YYYY');
+
+
+
+        },
+
 
         subtractYears: function (numOfYears, date = new Date()) {
             date.setFullYear(date.getFullYear() - numOfYears);
@@ -287,19 +498,39 @@ sap.ui.define([
         },
 
 
-
         searchPartidasAbiertas: function () {
 
             let dateRange = this.getView().byId("dateRange");
-            let todayDate = new Date();
+
+            //ciltro documento
+            let documentoInput = this.getView().byId("Belnr");
+            let filterInput = this.getView().byId("filtroBusqueda");
 
             let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
             // format[AAAAMMDD] (2020101)
-            // let desde_LV_ZDESDE = this.buildSapDate( this.subtractYears(1)    ); 
-            let desde_LV_ZDESDE = '20160219' //this.buildSapDate( todayDate   ); 
+            // let desde_LV_ZDESDE = this.buildSapDate( dateRange.getDateValue()       );
+            // format[AAAAMMDD] (2020101)
+            // let desde_LV_ZHASTA = this.buildSapDate( dateRange.getSecondDateValue() );
+
+
+            //tomar valores dummy para hacer al consulta
+            let todayDate = new Date();
+
+            // format[AAAAMMDD] (2020101)
+            let desde_LV_ZDESDE = '20160219' //this.buildSapDate( todayDate );
             // format[AAAAMMDD] (2020101)
             let desde_LV_ZHASTA = this.buildSapDate(todayDate);
 
+
+            let doc_BELNR = documentoInput.getValue();
+
+            //checbox validaciones
+
+            let partidasFiltro = this.getView().byId("checkPartidas");
+
+            if (partidasFiltro.getSelected()) {
+                partidasFiltro.setSelected(false);
+            }
 
 
             if (proveedor_LIFNR == null || proveedor_LIFNR == "") {
@@ -308,136 +539,188 @@ sap.ui.define([
             }
 
             if (desde_LV_ZDESDE == "" || desde_LV_ZHASTA == "") {
-                sap.m.MessageBox.error("Por favor defina el rango de fechas.");
-
-
+                // sap.m.MessageBox.error("Por favor defina el rango de fechas.");
             }
 
 
-            var oODataJSONModel = this.getOdata(sUri);
-            let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}'&$format=json`;
 
-            var odTJSONModel = this.getOdataJsonModel(urlParams, oODataJSONModel);
-            dTJSON = odTJSONModel.getJSON();
-            var TDatos = JSON.parse(dTJSON);
-
-            let Detalles = [...TDatos.results[0].Oitms.results];
-
-            TDatos.results[0].Detalles = {
-                results: [...Detalles]
-            };
-
-            delete TDatos.results[0].Citms;
-            delete TDatos.results[0].Oitms;
+            var filtroBusqueda = filterInput.getSelectedKey()
+            var queryFiltro = ""
 
 
-            TDatos.results[0].periodo = "Del " + this.formatDateTime(dateRange.getDateValue(), 'dd/MM/YYYY') + " al " + this.formatDateTime(dateRange.getSecondDateValue(), 'dd/MM/YYYY');
 
 
-            var JSONT = $.extend({}, TDatos.results[0]);
-            var jsonModelT = new JSONModel();
-            jsonModelT.setData(JSONT);
+            let auxFilters = [];
 
-            //filtrar totales y crear modelo grupal 
-
-            console.info("agrupando datos", Detalles)
-            let auxArray = [...Detalles]
-
-            var me = this;
-
-
-            var groupedMovs = this.groupArrayOfObjects(auxArray, "DescripcionGpo");
-            var nestedMovs = []
-
-            for (let x in groupedMovs) {
-                // console.log(x + ": "+ groupedMovs[x])
-
-                var resultCredit = groupedMovs[x].reduce(function (_this, val) {
-                     var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
-                    var total = _this + current
-                    return total
-                }, 0);
-
-
-                var result = groupedMovs[x].reduce(function (_this, val) {
-                    var current = val.Bschl !== "21" ? Number(val.Wrbtr) : 0
-                    var total = _this + current
-                    return total
-                }, 0);
-
-
-                 var agrupado = groupedMovs[x]
-                var idGrupo = agrupado[0].IdNumGpo ? agrupado[0].IdNumGpo : ""
-                //IdNumGpo
-                nestedMovs.push({
-                    "IdNumGpo": idGrupo,
-                    "name": x,
-                    "totalRegs": groupedMovs[x].length,
-                    "totalDebit": Math.abs(this.truncate(result, 2)),
-                    "totalCredit": Math.abs(this.truncate(resultCredit, 2)),
-                    "positions": groupedMovs[x],
-
-
+            auxFilters.push(new sap.ui.model.Filter({
+                    path: "Lifnr",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: proveedor_LIFNR
                 })
 
+            )
+
+            auxFilters.push(new sap.ui.model.Filter({
+                    path: "Datei",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: desde_LV_ZDESDE
+                })
+
+            )
+
+            auxFilters.push(new sap.ui.model.Filter({
+                    path: "Datei",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: desde_LV_ZHASTA
+                })
+
+            )
+
+            if (filtroBusqueda == "") {
+
+                queryFiltro = ''
+
+            } else if (filtroBusqueda == "belnr") {
+                // queryFiltro = `and belnr eq '${doc_BELNR}' `
+                auxFilters.push(new sap.ui.model.Filter({
+                        path: "belnr",
+                        operator: sap.ui.model.FilterOperator.EQ,
+                        value1: doc_BELNR
+                    })
+
+                )
+
+            } else if (filtroBusqueda == "xblnr") {
+                // queryFiltro = `and xblnr eq '${doc_BELNR}' `
+                auxFilters.push(new sap.ui.model.Filter({
+                        path: "xblnr",
+                        operator: sap.ui.model.FilterOperator.EQ,
+                        value1: doc_BELNR
+                    })
+
+                )
 
             }
 
 
 
-            var totalR = nestedMovs.reduce(function (_this, val) {
-                var current = Number(val.totalRegs)
-                var total = _this + current
-                return total
-            }, 0);
 
-            var totalD = nestedMovs.reduce(function (_this, val) {
-                var current = Number(val.totalDebit)
-                var total = _this + current
-                return total
-            }, 0);
+            // let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}' ${queryFiltro} &$format=json`;
+            //Xblnr
 
-            var totalC = nestedMovs.reduce(function (_this, val) {
-                var current = Number(val.totalCredit)
-                var total = _this + current
-                return total
-            }, 0);
+            var model = "ZOSP_STATEMENT_SRV_01";
+            var entity = "EStmtHdrSet";
+            var expand = ['Citms', 'Oitms'];
+            var filter = auxFilters;
+            var select = "";
+            sap.ui.core.BusyIndicator.show();
+
+            let that = this
+            this._GetODataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
+                sap.ui.core.BusyIndicator.hide();
+                var data = _GEToDataV2Response.data.results;
+
+                console.log(data)
+                let Detalles = [...data[0].Citms.results, ...data[0].Oitms.results];
+
+                data[0].Detalles = {
+                    results: [...Detalles]
+                };
 
 
-            var totalGeneral = me.truncate(totalD, 2) - me.truncate(totalC, 2)
-            var jsonModelG = new JSONModel({
-                "Hierarchy": {
-                    "movimientos": nestedMovs,
-                    "totalR": totalR,
-                    "totalD": me.truncate(totalD, 2),
-                    "totalC": me.truncate(totalC, 2),
-                    "totalT": me.truncate(totalGeneral, 2)
-                },
-                "Bukrs": TDatos.results[0].Bukrs
+                var JSONT = $.extend({}, data[0]);
+                var jsonModelT = new JSONModel();
+                jsonModelT.setData(JSONT);
+                //filtrar totales y crear modelo grupal
+
+                let auxArray = [...Detalles]
+
+                var groupedMovs = that.groupArrayOfObjects(auxArray, "DescripcionGpo");
+                var nestedMovs = []
+
+                for (let x in groupedMovs) {
+
+                    var resultCredit = groupedMovs[x].reduce(function (_this, val) {
+                        var current = val.Bschl === "21" ? Number(val.Wrbtr) : 0
+                        var total = _this + current
+                        return total
+                    }, 0);
+
+                    var result = groupedMovs[x].reduce(function (_this, val) {
+                        var current = val.Bschl !== "21" ? Number(val.Wrbtr) : 0
+                        var total = _this + current
+                        return total
+                    }, 0);
+
+                    var agrupado = groupedMovs[x]
+                    var idGrupo = agrupado[0].IdNumGpo ? agrupado[0].IdNumGpo : ""
+                    //IdNumGpo
+                    nestedMovs.push({
+                        "IdNumGpo": idGrupo,
+                        "name": x,
+                        "totalRegs": groupedMovs[x].length,
+                        "totalDebit": Math.abs(that.truncate(result, 2)),
+                        "totalCredit": Math.abs(that.truncate(resultCredit, 2)),
+                        "positions": groupedMovs[x],
+                    })
+                }
+
+                var totalR = nestedMovs.reduce(function (_this, val) {
+                    var current = Number(val.totalRegs)
+                    var total = _this + current
+                    return total
+                }, 0);
+
+                var totalD = nestedMovs.reduce(function (_this, val) {
+                    var current = Number(val.totalDebit)
+                    var total = _this + current
+                    return total
+                }, 0);
+
+                var totalC = nestedMovs.reduce(function (_this, val) {
+                    var current = Number(val.totalCredit)
+                    var total = _this + current
+                    return total
+                }, 0);
+
+
+                var totalGeneral = that.truncate(totalD, 2) - that.truncate(totalC, 2)
+
+
+                var jsonModelG = new JSONModel({
+                    "Hierarchy": {
+                        "movimientos": nestedMovs,
+                        "totalR": totalR,
+                        "totalD": that.truncate(totalD, 2),
+                        "totalC": that.truncate(totalC, 2),
+                        "totalT": that.truncate(totalGeneral, 2)
+                    },
+                    "Bukrs": data[0].Bukrs
+
+                });
+
+                that.getOwnerComponent().setModel(jsonModelG, "GroupedTotales");
+                that.initTable()
+                that.getOwnerComponent().setModel(jsonModelT, "totales");
+                that.paginate("totales", "/Detalles", 1, 0);
+
+
 
             });
 
-            this.getOwnerComponent().setModel(jsonModelG, "GroupedTotales");
-
-
-             this.initTable()
 
 
 
+            // TDatos.results[0].periodo = "Del " + this.formatDateTime(dateRange.getDateValue(), 'dd/MM/YYYY') + " al " + this.formatDateTime(dateRange.getSecondDateValue(), 'dd/MM/YYYY');
 
 
- 
-            this.getOwnerComponent().setModel(jsonModelT, "totales");
-
- 
-        //    this.paginate("totales", "/Detalles", 1, 0);
 
         },
 
         onTableGrouping: function (oEvent) {
             console.log(oEvent.getSource().getSelected());
             if (!oEvent.getSource().getSelected()) {
-                this.searchData();
+                this.searchDataV2();
             } else {
                 this.searchPartidasAbiertas();
 
@@ -446,8 +729,7 @@ sap.ui.define([
         },
 
 
-
-        //esta fucnion inicializa la tabla de forma gerarquica 
+        //esta fucnion inicializa la tabla de forma gerarquica
         initTable: function () {
 
             console.log('on init table')
@@ -465,12 +747,10 @@ sap.ui.define([
             oBreadCrumb.addLink(oLink);
 
 
-
         },
 
 
-
-        ///TABLE HELPERS 
+        ///TABLE HELPERS
         // Initial path is the first crumb appended to the collection root
         _getInitialPath: function () {
             return [this.sCollection, this.aCrumbs[0]].join("/");
@@ -498,7 +778,6 @@ sap.ui.define([
         },
 
 
-
         _setAggregation: function (sPath) {
             // If we're at the leaf end, turn off navigation
             var sPathEnd = sPath.split("/").reverse()[0];
@@ -507,7 +786,7 @@ sap.ui.define([
                 //  this.byId("weightColumn").setVisible(true);
                 // this.byId("dimensionsColumn").setVisible(true);
 
-                this._oTable.setMode("SingleSelectMaster");
+                this._oTable.setMode("None");
 
                 this.byId("statusColumn").setVisible(true);
                 this.byId("folioColumn").setVisible(true);
@@ -523,7 +802,7 @@ sap.ui.define([
 
                 this.byId("tipoMovColumn").setVisible(true);
 
-                //totles 
+                //totles
                 this.byId("tipoColumn").setVisible(false);
 
                 this.byId("totalRegColumn").setVisible(false);
@@ -531,13 +810,7 @@ sap.ui.define([
                 this.byId("creditColumn").setVisible(false);
 
 
-
-
                 this.byId("verReporteColumn").setVisible(true);
-
-
-
-
 
 
             } else {
@@ -569,10 +842,6 @@ sap.ui.define([
                 this.byId("verReporteColumn").setVisible(false);
 
 
-
-
-
-
             }
 
             // Set the new aggregation
@@ -590,19 +859,13 @@ sap.ui.define([
             }.bind(this));
 
 
-
-
-
         },
-
-
 
 
         handleSelection: function (oEvent) {
 
             console.log(
                 "on condepto select"
-
             )
             var sPath = oEvent.getParameter("listItem").getBindingContextPath();
 
@@ -644,11 +907,7 @@ sap.ui.define([
                 console.log(sPath)
                 //let posicion = oEvent.getSource().getBindingContext("GroupedTotales").getPath().split("/").pop();
                 let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(sPath);
-                console.log("row clicked",results)
 
-                console.log(this.getOwnerComponent().getModel('totales'))
-                //let registro = results[posicion];
-                //console.log(registro)
 
                 //            let totalRegistros = parseInt( this.getOwnerComponent().getModel('totales').getProperty('/Detalles/results/length'), 10);
 
@@ -663,17 +922,17 @@ sap.ui.define([
                 var tcode = results.Tcode
                 console.log(sociedad, ejercicio, tcode)
                 var doc = results.Belnr
-                var acuerdosTCodes = ['WEB4','WLF4','MEB2','MEB0','WLF2','ZMMFILACUERDO','WFL5']
+                var acuerdosTCodes = ['WEB4', 'WLF4', 'MEB2', 'MEB0', 'WLF2', 'ZMMFILACUERDO', 'WFL5']
                 var aportacionesTCodes = ['Z_APORTACIONES']
 
-                
-                if ( (acuerdosTCodes.includes(tcode)  && doc.startsWith('510')) || (tcode == "" && !( doc.startsWith("1700") &&  results.Xblnr ))   ) {
+
+                if ((acuerdosTCodes.includes(tcode) && doc.startsWith('510')) || (tcode == "" && !(doc.startsWith("1700") && results.Xblnr))) {
 
                     console.log('on detailAcuerdosAS')
 
 
                     this.getOwnerComponent().getRouter().navTo("detailAcuerdosAS", {
-                        layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+                        layout: sap.f.LayoutType.MidColumnFullScreen,
                         document: results.Belnr,
                         sociedad: sociedad,
                         ejercicio: ejercicio,
@@ -682,14 +941,14 @@ sap.ui.define([
                         // lifnr: docResult.Lifnr
                     }, true);
 
-                } else if (aportacionesTCodes.includes(tcode) || ( doc.startsWith("1700") &&  results.Xblnr )  ) {
+                } else if (aportacionesTCodes.includes(tcode) || (doc.startsWith("1700") && results.Xblnr)) {
 
                     console.log('on detailAportacionesAS')
 
-                    //camvuar  docuemnto con cual se va consultar 
+                    //camvuar  docuemnto con cual se va consultar
 
                     this.getOwnerComponent().getRouter().navTo("detailAportacionesAS", {
-                        layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+                        layout: sap.f.LayoutType.MidColumnFullScreen,
                         document: results.Xblnr,
                         view: 'EstadoCuenta',
                         //ejercicio: ejercicio,
@@ -699,12 +958,6 @@ sap.ui.define([
                     }, true);
 
                 }
-
-
-
-
-
-
 
 
             } else {
@@ -731,11 +984,6 @@ sap.ui.define([
         },
 
 
-
-
-
-
-
         clearFilters: function () {
             //var fechaInicial = new Date();
             //fechaInicial.setDate(1);
@@ -756,11 +1004,11 @@ sap.ui.define([
             var texts = this.getOwnerComponent().getModel("appTxts");
             let Encabezado = this.getOwnerComponent().getModel("totales");
             var columns = [{
-                    name: texts.getProperty("/state.accountUPC"),
-                    template: {
-                        content: Encabezado.getProperty("/periodo")
-                    }
-                },
+                name: texts.getProperty("/state.accountUPC"),
+                template: {
+                    content: Encabezado.getProperty("/periodo")
+                }
+            },
                 {
                     name: texts.getProperty("/state.nameUPC"),
                     template: {
@@ -912,10 +1160,62 @@ sap.ui.define([
 
         },
         onDocumentPress: function (oEvent) {
-                            let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(sPath);
 
-            console.log(oEvent);
+            var path = oEvent.getSource().getBindingContext("GroupedTotales").getPath();
+            let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(path);
 
+            console.log(results)
+
+            //nueva funcion apra mostrar detalle
+
+            var sociedad = this.getOwnerComponent().getModel('GroupedTotales').getProperty('/Bukrs')
+            // var ejercicio = this.getOwnerComponent().getModel('totales').getProperty('/Gjahr')
+
+
+            var ejercicio2 = results.Budat
+            var ejercicio = ejercicio2.substr(0, 4) ? ejercicio2.substr(0, 4) : ""
+
+            console.log(this.getOwnerComponent().getModel('totales'))
+            var tcode = results.Tcode
+            console.log(sociedad, ejercicio, tcode)
+            var doc = results.Belnr
+            var acuerdosTCodes = ['WEB4', 'WLF4', 'MEB2', 'MEB0', 'WLF2', 'ZMMFILACUERDO', 'WFL5']
+            var aportacionesTCodes = ['Z_APORTACIONES']
+
+
+            if ((acuerdosTCodes.includes(tcode) && doc.startsWith('510')) || (tcode == "" && !(doc.startsWith("1700") && results.Xblnr))) {
+
+                console.log('on detailAcuerdosAS')
+
+
+                this.getOwnerComponent().getRouter().navTo("detailAcuerdosAS", {
+                    layout: sap.f.LayoutType.MidColumnFullScreen,
+                    document: results.Belnr,
+                    sociedad: sociedad,
+                    ejercicio: ejercicio,
+                    doc: results.Xblnr ? results.Xblnr : 'NA',
+                    // zbukr: docResult.Zbukr,
+                    // lifnr: docResult.Lifnr
+                }, true);
+
+            } else if (aportacionesTCodes.includes(tcode) || (doc.startsWith("1700") && results.Xblnr)) {
+
+                console.log('on detailAportacionesAS')
+
+                //camvuar  docuemnto con cual se va consultar
+
+                this.getOwnerComponent().getRouter().navTo("detailAportacionesAS", {
+                    layout: sap.f.LayoutType.MidColumnFullScreen,
+                    document: results.Xblnr,
+                    view: 'EstadoCuenta',
+                    //ejercicio: ejercicio,
+                    //doc: results.Belnr,
+                    // zbukr: docResult.Zbukr,
+                    // lifnr: docResult.Lifnr
+                }, true);
+
+            }
+            
         },
 
         onPress: function (oEvent) {
@@ -924,22 +1224,22 @@ sap.ui.define([
             console.log(path);
             let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(path);
             let proveedor = this.getConfigModel().getProperty("/supplierInputKey")
-           
-      console.log(results);
 
-      if(results.Xblnr == ""){
-          return
-      }
+            console.log(results);
+
+            if (results.Xblnr == "") {
+                return
+            }
 
 
-      var serieOriginal = results.Xblnr
-       var    serieNonumbers =  serieOriginal.replace(/[0-9]/g, '');
+            var serieOriginal = results.Xblnr
+            var serieNonumbers = serieOriginal.replace(/[0-9]/g, '');
 
-       var serie =   serieNonumbers.replace('-','')
-        var folio = serieOriginal.replace(/\D/g,'')
-       console.log(serieNonumbers)
-       console.log(serie)
-       console.log(folio)
+            var serie = serieNonumbers.replace('-', '')
+            var folio = serieOriginal.replace(/\D/g, '')
+            console.log(serieNonumbers)
+            console.log(serie)
+            console.log(folio)
 
 
             this.getOwnerComponent().getRouter().navTo("EstadoCuentaReporte", {
@@ -952,7 +1252,7 @@ sap.ui.define([
                 // lifnr: docResult.Lifnr
             }, true);
         },
-        hasReport: function(mc){
+        hasReport: function (mc) {
             return Math.abs(mc) > 0 ? true : false
         },
 

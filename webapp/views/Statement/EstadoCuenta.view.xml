@@ -1,13 +1,13 @@
-<mvc:View 
+<mvc:View
     displayBlock   = "true"
-    xmlns:f        = "sap.f" 
+    xmlns:f        = "sap.f"
     xmlns:mvc      = "sap.ui.core.mvc"
-    xmlns:fb       = "sap.ui.comp.filterbar" 
-    xmlns:vm       = "sap.ui.comp.variants" 
-    xmlns          = "sap.m" 
+    xmlns:fb       = "sap.ui.comp.filterbar"
+    xmlns:vm       = "sap.ui.comp.variants"
+    xmlns          = "sap.m"
     xmlns:core     = "sap.ui.core"
-    xmlns:unified  ="sap.ui.unified" 
-    xmlns:layout   ="sap.ui.commons.layout" 
+    xmlns:unified  ="sap.ui.unified"
+    xmlns:layout   ="sap.ui.commons.layout"
     controllerName ="demo.controllers.Statement.EstadoCuenta"
     height         = "90%">
 
@@ -33,52 +33,52 @@
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
-                    <fb:FilterBar 
+                    <fb:FilterBar
                         id                  = "filterBar"
                         header              = "Header"
-		                reset               = "onReset" 
-                        search              = "searchData" 
-                        clear               = "onClear" 
-                        cancel              = "onCancel" 
+		                reset               = "onReset"
+                        search              = "searchDataV2"
+                        clear               = "onClear"
+                        cancel              = "onCancel"
 		                filtersDialogClosed = "onFiltersDialogClosed"
-		                showRestoreButton   = "false" 
-                        showClearButton     = "false" 
+		                showRestoreButton   = "false"
+                        showClearButton     = "false"
                         useToolbar          = "false">
 
                         <fb:filterGroupItems>
 
-                            <fb:FilterGroupItem 
+                            <fb:FilterGroupItem
                                 groupName            = "__$INTERNAL$"
                                 name                 = "A"
-                                label                = "{appTxts>/state.date}" 
-                                mandatory            = "true" 
-                                partOfCurrentVariant = "true" 
+                                label                = "{appTxts>/state.date}"
+                                mandatory            = "true"
+                                partOfCurrentVariant = "true"
                                 visibleInFilterBar   = "false">
                                 <fb:control>
                                     <DateRangeSelection id="dateRange" change="onChange" required="false"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
 
-                            <fb:FilterGroupItem 
-                                groupName            = "__$INTERNAL$" 
-                                name                 = "B" 
+                            <fb:FilterGroupItem
+                                groupName            = "__$INTERNAL$"
+                                name                 = "B"
                                 mandatory            = "true"
-                                label                = "{appTxts>/state.supplier}" 
-                                labelTooltip         = "Tooltip Example" 
-                                partOfCurrentVariant = "true" 
+                                label                = "{appTxts>/state.supplier}"
+                                labelTooltip         = "Tooltip Example"
+                                partOfCurrentVariant = "true"
                                 visibleInFilterBar   = "true">
                                 <fb:control>
                                     <Input id="supplierInput" placeholder="{appTxts>/state.supplier}" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}">
                                     </Input>
                                 </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem 
-                                groupName            = "__$INTERNAL$" 
-                                name                 = "D" 
+                            <fb:FilterGroupItem
+                                groupName            = "__$INTERNAL$"
+                                name                 = "D"
                                 mandatory            = "false"
-                                label                = "Filtro" 
-                                labelTooltip         = "Filtro" 
-                                partOfCurrentVariant = "true" 
+                                label                = "Filtro"
+                                labelTooltip         = "Filtro"
+                                partOfCurrentVariant = "true"
                                 visibleInFilterBar   = "true">
                                 <fb:control>
                                    <Select
@@ -86,19 +86,19 @@
                         forceSelection="false"
                          items="{
                             path: 'filterOptions>/filtros'
-                            
+
                         }">
                     <core:Item key="{filterOptions>filtro}" text="{filterOptions>descripcion}" />
                 </Select>
                                 </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem 
-                                groupName            = "__$INTERNAL$" 
-                                name                 = "C" 
+                            <fb:FilterGroupItem
+                                groupName            = "__$INTERNAL$"
+                                name                 = "C"
                                 mandatory            = "false"
-                                label                = "" 
-                                labelTooltip         = "Tooltip Example" 
-                                partOfCurrentVariant = "true" 
+                                label                = ""
+                                labelTooltip         = "Tooltip Example"
+                                partOfCurrentVariant = "true"
                                 visibleInFilterBar   = "true">
                                 <fb:control>
                                     <Input id="Belnr"   >
@@ -331,7 +331,7 @@
                                                 xmlns:unified="sap.ui.unified"
                                                 xmlns:core="sap.ui.core"
                                                 xmlns:layout="sap.ui.commons.layout" text=""/>
-                                            
+
                                         </cells>
                                     </ColumnListItem>
                                     <columns>
@@ -462,7 +462,7 @@
                          >
                         <Text text="{appTxts>/aportaciones.concepto}" />
                         <footer>
-                        
+
                             <Text id="idFooterText" text="Total"/>
                         </footer>
                     </Column>
@@ -539,7 +539,7 @@
                         demandPopin="true"
                         hAlign="Center"
                         visible="false">
-                         
+
                     </Column>
 
                     <Column
@@ -560,14 +560,14 @@
                         <Text  text="{appTxts>/state.conciliation}" />
                     </Column>
 
-                    <!-- totales grupo --> 
+                    <!-- totales grupo -->
                      <Column
                          id="totalRegColumn"
                          visible="End"
                         hAlign="Center">
                         <Text text="{appTxts>/state.totalReg}" />
                         <footer>
-                        
+
                             <Text  text="{GroupedTotales>/Hierarchy/totalR}"/>
                         </footer>
                     </Column>
@@ -578,11 +578,11 @@
                          hAlign="End">
                         <Text text="{appTxts>/state.debit}" />
                         <footer>
-                        
+
                                 <ObjectNumber
-                            number= "{parts: [{path: 'GroupedTotales>/Hierarchy/totalD'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+                            number= "{parts: [{path: 'GroupedTotales>/Hierarchy/totalD'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
                               />
-                    
+
                         </footer>
                     </Column>
                        <Column
@@ -591,11 +591,11 @@
                          hAlign="End">
                         <Text text="{appTxts>/state.credit}" />
                         <footer>
-                        
+
                                 <ObjectNumber
-                            number= "{parts: [{path: 'GroupedTotales>/Hierarchy/totalC'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+                            number= "{parts: [{path: 'GroupedTotales>/Hierarchy/totalC'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
                               />
-                    
+
                         </footer>
                     </Column>
 
@@ -606,16 +606,16 @@
 
 
 
-                    
+
                 </columns>
-                
+
                 </Table>
                  <OverflowToolbar  visible="true">
 
                     <Text text="Saldo" />
                     <ToolbarSpacer/>
  <ObjectNumber
-                            number= "{parts: [{path: 'GroupedTotales>/Hierarchy/totalT'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+                            number= "{parts: [{path: 'GroupedTotales>/Hierarchy/totalT'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
                               />                 </OverflowToolbar>
 
             </ScrollContainer>

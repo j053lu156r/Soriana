@@ -443,6 +443,25 @@
                     ]
                 },
                 {
+
+                    "pattern": "detailDetailAcuEC/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{tda}",
+                    "name": "detailDetailAcuEC",
+                    "target": [
+                        "EstadoCuenta",
+                        "detailAcuerdosAS",
+                        "detailDetailAcuEC"
+                    ]
+                },
+                {
+                    "pattern": "detailAcuerdosFactoraje/{layout}/{document}/{sociedad}/{ejercicio}/{doc}",
+                    "name": "detailAcuerdosFactoraje",
+                    "target": [
+
+                        "detailAcuerdosFactoraje"
+
+                    ]
+                },
+                {
                     "pattern": "EstadoCuentaReporte/{layout}/{document}/{proveedor}/{serie}/{fecha}",
                     "name": "EstadoCuentaReporte",
                     "target": [
@@ -495,7 +514,7 @@
                         "masterFacSoriana" , "detailFacSoriana"
                     ]
                 },
-                {    
+                {
                     "name": "masterHelpDocs",
                     "pattern": "masterHelpDocs",
                     "target": [
@@ -625,7 +644,7 @@
                     ]
                 },
                 {
-                    
+
                     "name": "detailVisorNotas",
                     "pattern": "detailVisorNotas/{layout}/{Mblnr}/{Mjahr}/{Ebeln}/{Lifnr}/{BudatMkpf}/{Werks}/{Xblnr}/{XblnrFact}",
                     "target": [
@@ -810,7 +829,7 @@
                     "viewName": "Master",
                     "viewPath": "demo.views.FacSoriana",
                     "controlAggregation": "beginColumnPages"
-                }, 
+                },
                 "detailFacSoriana" : {
                     "viewName": "Detail",
                     "viewPath": "demo.views.FacSoriana" , "controlAggregation": "midColumnPages"
@@ -824,7 +843,7 @@
                     "viewName": "Master",
                     "viewPath": "demo.views.Devoluciones",
                     "controlAggregation": "beginColumnPages"
-                }, 
+                },
                 "detailDevo" : {
                     "viewName": "Detail",
                     "viewPath": "demo.views.Devoluciones" , "controlAggregation": "midColumnPages"
@@ -843,10 +862,10 @@
                     "viewName": "Master",
                     "viewPath": "demo.views.Remissions",
                     "controlAggregation": "beginColumnPages"
-                }, 
+                },
                 "detailRemission" : {
                     "viewName": "Detail",
-                    "viewPath": "demo.views.Remissions" , 
+                    "viewPath": "demo.views.Remissions" ,
                     "controlAggregation": "midColumnPages"
                 },
                 "masterIncidencias" : {
@@ -899,6 +918,11 @@
                     "viewPath": "demo.views.Acuerdos",
                     "controlAggregation": "midColumnPages"
                 },
+                "detailDetailAcuEC": {
+                    "viewName": "DetailDetailEC",
+                    "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "endColumnPages"
+                },
                 "Products": {
                     "viewName": "Master",
                     "controlAggregation": "beginColumnPages",
@@ -911,7 +935,7 @@
                 },
                 "detailQuotes" : {
                     "viewName": "Detail",
-                    "viewPath": "demo.views.Quotes" , 
+                    "viewPath": "demo.views.Quotes" ,
                     "controlAggregation": "midColumnPages"
                 },
                 "masterVisorNotas":{
@@ -921,7 +945,7 @@
                 },
                 "detailVisorNotas" : {
                     "viewName": "Detail",
-                    "viewPath": "demo.views.VisorNotasEntrada" , 
+                    "viewPath": "demo.views.VisorNotasEntrada" ,
                     "controlAggregation": "midColumnPages"
                 }
             }
