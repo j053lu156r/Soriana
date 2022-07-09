@@ -70,12 +70,22 @@ sap.ui.define([
 
             auxFilters.push(new sap.ui.model.Filter({
                     path: "IStartdate",
-                    operator: sap.ui.model.FilterOperator.BT,
-                    value1: IStartdate,
-                    value2: IEnddate
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: IStartdate
+
                 })
 
             )
+
+
+            auxFilters.push(new sap.ui.model.Filter({
+                    path: "IEnddate",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: IEnddate
+                })
+
+            )
+
             auxFilters.push(new sap.ui.model.Filter({
                     path: "ILifnr",
                     operator: sap.ui.model.FilterOperator.EQ,
@@ -110,12 +120,15 @@ sap.ui.define([
 
             sap.ui.core.BusyIndicator.show();
 
+            var me = this;
+
 
             this._GetODataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
                 sap.ui.core.BusyIndicator.hide();
                 var arrT=[];
                 var data = _GEToDataV2Response.data.results;
-                var dirtyArray = data.results[0].EPYMNTDOCSNAV.results
+                console.log(data)
+                var dirtyArray = data[0].EPYMNTDOCSNAV.results
 
                 var cleanedArray =  dirtyArray.filter(obj => obj.Vblnr.startsWith("58"));
 
@@ -125,9 +138,9 @@ sap.ui.define([
                     var Documentos = { Detalles: { results: [...cleanedArray] } };
 
 
-                    this.getOwnerComponent().setModel(new JSONModel(Documentos), "Documentos");
+                    me.getOwnerComponent().setModel(new JSONModel(Documentos), "Documentos");
 
-                    this.paginate("Documentos", "/Detalles", 1, 0);
+                    me.paginate("Documentos", "/Detalles", 1, 0);
                 }
 
 

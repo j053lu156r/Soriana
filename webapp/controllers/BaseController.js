@@ -460,7 +460,7 @@ sap.ui.define([
             var txtModel = this.getOwnerComponent().getModel('appTxts');
             return txtModel.getProperty(title);
         },
-        formatTranslate: function (title, idTile) {
+       formatTranslate: function (title, idTile) {
             var finalTitle = this.defineTileTitle(title, idTile);
             var txtModel = this.getOwnerComponent().getModel('appTxts');
             return txtModel.getProperty(finalTitle);
@@ -1062,7 +1062,7 @@ sap.ui.define([
             return new Promise(function(fnResolve, fnReject) {
 
                 var oModel = new sap.ui.model.odata.v2.ODataModel(oModel2);
-                oModel.setUseBatch(false);
+               // oModel.setUseBatch(false);
                 oModel.read(entidad, {
                     filters: filter,
                      urlParameters: {
