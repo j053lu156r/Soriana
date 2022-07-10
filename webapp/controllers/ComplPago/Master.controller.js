@@ -132,12 +132,13 @@ sap.ui.define([
 
             var FechaI = that.getView().byId("dateRange").getDateValue();
             var FechaF = that.getView().byId("dateRange").getSecondDateValue();
-
+            let dateRange = this.getView().byId("dateRange");
 
             auxFilters.push(new sap.ui.model.Filter({
                 path: "IStartdate",
                 operator: sap.ui.model.FilterOperator.EQ,
-                value1: FechaI.toISOString().slice(0, 10) + 'T00:00:00',
+                value1: this.buildSapDate(dateRange.getDateValue())
+               // value1: FechaI.toISOString().slice(0, 10) + 'T00:00:00',
               
             })
 
@@ -146,8 +147,8 @@ sap.ui.define([
             auxFilters.push(new sap.ui.model.Filter({
                 path: "IEnddate",
                 operator: sap.ui.model.FilterOperator.EQ,
-                
-                value1: FechaF.toISOString().slice(0, 10) + 'T00:00:00'
+              value1:this.buildSapDate(dateRange.getSecondDateValue()) 
+            //    value1: FechaF.toISOString().slice(0, 10) + 'T00:00:00'
             })
 
             )

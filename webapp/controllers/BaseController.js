@@ -330,7 +330,7 @@ sap.ui.define([
 
         onValueHelpClose: function (oEvent) {
             var oSelectedItem = oEvent.getParameter("selectedItem");
-                        console.log(oEvent.getSource().getBinding("items"));
+                    
             var descBloqueo = ""
 
             var oList = oEvent.getSource().getBinding("items").oList
