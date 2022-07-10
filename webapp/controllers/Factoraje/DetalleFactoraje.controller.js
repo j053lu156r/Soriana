@@ -69,7 +69,7 @@ sap.ui.define([
 					this.getView().setModel(oModel, 'filterOptions');
 
 
-					//configuracion tabla 
+					//configuracion tabla
 
 
 
@@ -97,7 +97,7 @@ sap.ui.define([
 								}.bind(this)
 							});
 						}, this);
-						
+
 						*/
 
 		},
@@ -108,20 +108,20 @@ sap.ui.define([
 
 			//let dateRange = this.getView().byId("dateRange");
 
-			//ciltro documento 
+			//ciltro documento
 
 			var dateFormat = sap.ui.core.format.DateFormat.getDateInstance({
 				pattern: "YYYYMMdd"
 			});
 			let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
 			// format[AAAAMMDD] (2020101)
-			// let desde_LV_ZDESDE = this.buildSapDate( dateRange.getDateValue()       ); 
+			// let desde_LV_ZDESDE = this.buildSapDate( dateRange.getDateValue()       );
 			// format[AAAAMMDD] (2020101)
 			// let desde_LV_ZHASTA = this.buildSapDate( dateRange.getSecondDateValue() );
 
 
 
-			//tomar valores dummy para hacer al consulta 
+			//tomar valores dummy para hacer al consulta
 			let todayDate = new Date();
 
 			console.log(this._fecha)
@@ -162,12 +162,15 @@ sap.ui.define([
 
 
 			var oODataJSONModel = this.getOdata(sUri);
- 
+
 
 				let urlParams = `EStmtHdrSet?$expand=Citms&$filter= Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZDESDE}'${queryFiltro} &$format=json`;
 
 			//let urlParams = `EStmtHdrSet?$expand=Citms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}'${queryFiltro} &$format=json`;
 			//Xblnr
+
+
+
 
 			var odTJSONModel = this.getOdataJsonModel(urlParams, oODataJSONModel);
 			dTJSON = odTJSONModel.getJSON();
@@ -192,7 +195,7 @@ sap.ui.define([
 
 
 
-			//filtrar totales y crear modelo grupal 
+			//filtrar totales y crear modelo grupal
 
 			let auxArray = [...Detalles]
 
@@ -205,22 +208,10 @@ sap.ui.define([
 				return total
 			}, 0);
 
-
-
-
-
-
-
 			var groupedMovs = this.groupArrayOfObjects(auxArray, "DescripcionGpo");
 			var nestedMovs = []
-
 			var me = this;
-
 			for (let x in groupedMovs) {
-
-
-				console.log("sumando valores");
-
 
 
 				var cost = groupedMovs[x].reduce(function (_this, val) {
@@ -228,7 +219,6 @@ sap.ui.define([
 					var total = _this + current
 					return total
 				}, 0);
-
 
 				nestedMovs.push({
 					"name": x,
@@ -240,18 +230,14 @@ sap.ui.define([
 
 				})
 
-
 			}
 
-
-			console.log(nestedMovs);
 
 			var totalR = nestedMovs.reduce(function (_this, val) {
 				var current = Number(val.totalRegs)
 				var total = _this + current
 				return me.truncate(total, 2)
 			}, 0);
-
 
 
 			var cor = .00001
@@ -267,10 +253,7 @@ sap.ui.define([
 				}
 			});
 
-			console.log(jsonModelG);
-
 			this.getOwnerComponent().setModel(jsonModelG, "GroupedFactoraje");
-
 
 			this.initTable()
 
@@ -304,7 +287,7 @@ sap.ui.define([
 		/***HANDLE TABLE FILTER METHODS */
 
 
-		//esta fucnion inicializa la tabla de forma gerarquica 
+		//esta fucnion inicializa la tabla de forma gerarquica
 		initTable: function () {
 
 			console.log('on init table')
@@ -382,7 +365,7 @@ sap.ui.define([
 				this.byId("conciliacionColumn").setVisible(false);
 				this.byId("tipoMovColumn").setVisible(true);
 
-				//totles 
+				//totles
 				this.byId("tipoColumn").setVisible(false);
 
 				this.byId("totalRegColumn").setVisible(false);
@@ -501,7 +484,7 @@ sap.ui.define([
 				//console.log(registro)
 				var tcode = results.Tcode
 
-				//NAVEGACION A ERER NIVEL 
+				//NAVEGACION A ERER NIVEL
 
 /*
 				if (tcode !== "Z_APORTACIONES") {
@@ -615,7 +598,7 @@ sap.ui.define([
 				}),
 				"detailFactoraje");
 
-			//consume el servicio para obtener los docuemntos 
+			//consume el servicio para obtener los docuemntos
 
 			this.searchData()
 
