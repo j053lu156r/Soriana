@@ -89,11 +89,30 @@ sap.ui.define([
                     url += "Acuerdo eq '" + acuerdo + "'";
                 }
 
-                var dueModel = oModel.getJsonModel(url);
+                /*var dueModel = oModel.getJsonModel(url);
                 var ojbResponse = dueModel.getProperty("/results/0");
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(ojbResponse),
                     "AcuerdosHdr");
-                this.paginate("AcuerdosHdr", "/AcuerdosDet", 1, 0);
+                this.paginate("AcuerdosHdr", "/AcuerdosDet", 1, 0);*/
+                this.getView().byId('tableAcuerdos').setBusy(true);
+                oModel.getJsonModelAsync(
+                    url,
+                    function (jsonModel, parent) {
+                        var objResponse = jsonModel.getProperty("/results/0");
+
+                        if (objResponse != null) {
+                            parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(objResponse),
+                                "AcuerdosHdr");
+
+                            parent.paginate("AcuerdosHdr", "/AcuerdosDet", 1, 0);
+                        }
+                        parent.getView().byId('tableAcuerdos').setBusy(false);
+                    },
+                    function (parent) {
+                        parent.getView().byId('tableAcuerdos').setBusy(false);
+                    },
+                    this
+                );
             }
 
         },
@@ -227,8 +246,26 @@ sap.ui.define([
 			});
 		},
 
-        
+        onListItemPress: function (oEvent) {
+            var resource = oEvent.getSource().getBindingContext("AcuerdosHdr").getPath(),
+                line = resource.split("/").slice(-1).pop();
 
+            var odata = this.getOwnerComponent().getModel("AcuerdosHdr");
+            var results = odata.getProperty("/AcuerdosDet/Paginated/results");
+
+            var docResult = results[line];
+
+            var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(3);
+            this.getOwnerComponent().getRouter().navTo("detailDetailAcuCP", 
+                {
+                    layout: oNextUIState.layout,
+                    sociedad: this._sociedad,
+                    document: this._document,
+                    ejercicio: this._ejercicio,
+                    doc: this._document,
+                    tda: docResult.Centro
+                });
+        }
 
     });
 });
