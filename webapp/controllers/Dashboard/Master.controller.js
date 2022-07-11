@@ -1,20 +1,22 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "demo/controllers/BaseController",
+    "sap/m/MessageBox",
     "sap/ui/model/json/JSONModel",
-	"sap/ui/Device",
-	"sap/base/Log"
-], function (Controller, BaseController, JSONModel, Device, Log) {
-	"use strict";
+    "sap/ui/Device",
+    "sap/base/Log",
 
-    
-    
+], function (Controller, BaseController, MessageBox, JSONModel, Device, Log) {
+    "use strict";
+
+
+
     var Controller = BaseController.extend("sap.m.sample.SplitApp.C", {
 
-       
-      
-		onInit: function () {
-            var that=this;
+
+
+        onInit: function () {
+            var that = this;
 
             this.getView().addEventDelegate({
                 onBeforeShow: function (oEvent) {
@@ -25,33 +27,38 @@ sap.ui.define([
                     this.getData();
                     
 
-                    this.generaTopTen();
+                  //  this.generaTopTen();
 
-                    this.generaGrafica();
+                   // this.generaGrafica();
                 }
             }, this);
-
-         
         },
-        reloadData: function(){
+       
+        reloadData: function () {
             this.getData();
-            this.generaTopTen();
-            this.generaGrafica();
+          
         },
-        getData: function (oControlEvent){
-
-            if(oControlEvent != null && !oControlEvent.getParameters().selected )
+        getData: function (oControlEvent) {
+            var that = this;
+            if (oControlEvent != null && !oControlEvent.getParameters().selected)
                 return false;
 
-            let dateRange = this.getView().byId('dateRange');
+            let dateRange = that.getView().byId('dateRange');
 
-            let fechaInicio = this.buildSapDate(dateRange.getDateValue()); 
-            let fechaFin = this.buildSapDate(dateRange.getSecondDateValue());
+            let fechaInicio = that.buildSapDate(dateRange.getDateValue());
+            let fechaFin = that.buildSapDate(dateRange.getSecondDateValue());
 
-            let expand = [];
 
-            let option = ( oControlEvent != null )? oControlEvent.getSource().getId().split('-').pop() : '1';
+            let proveedor = (that.getConfigModel().getProperty("/supplierInputKey") != undefined) ? that.getConfigModel().getProperty("/supplierInputKey") : '';
+           
 
+           // let option = ( oControlEvent != null )? oControlEvent.getSource().getId().split('-').pop() : '1';
+           var option=(that.getView().byId('rbg1').getSelectedIndex() +1)
+           option=option.toString();
+            console.log(that.getView().byId('rbg1').getSelectedIndex())
+            console.log(option)
+            console.log(( oControlEvent != null )? oControlEvent.getSource().getId().split('-').pop() : '1')
+            var expand = [];
             switch (option) {
                 case '1':
                 case '2':
@@ -63,502 +70,642 @@ sap.ui.define([
                     break;
             }
 
-            expand = expand.join(',');
+            var auxFilters = [];
 
-            let proveedor = (this.getConfigModel().getProperty("/supplierInputKey") != undefined)? this.getConfigModel().getProperty("/supplierInputKey") : '';
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "IOption",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: option
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "ISfalta",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: fechaInicio
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "IFfalta",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: fechaFin
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "ILifnr",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: proveedor
+            })
+            )
 
-            let url = `HrddashbSet?$expand=${expand}&$filter=IOption eq '${option}' and  ISfalta eq '${fechaInicio}' and  IFfalta eq '${fechaFin}' and ILifnr eq '${proveedor}'&$format=json`;
-
-           this.setDataModel( this.Modelo.getJsonModel( url ).getProperty('/results/0'), option );
-
-
-
-
-
+            var model = "ZOSP_ACDASHBOARD_SRV";
+            var entity = "HrddashbSet";
           
-        },
-        setDataModel: function( Datos, option ){
-            console.log(Datos)
+            var filter = auxFilters;
+            var select = "";
+console.log("1")
+            sap.ui.core.BusyIndicator.show();
+            that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
+                sap.ui.core.BusyIndicator.hide();
+                var Datos = _GEToDataV2Response.data.results[0];
+                console.log(Datos)
+                var auxJsonModel = new sap.ui.model.json.JSONModel([]);
+                that.getView().setModel(auxJsonModel, 'Totales');
+                var auxJsonModel = new sap.ui.model.json.JSONModel(Datos);
+                that.getView().setModel(auxJsonModel, 'Totales2');
+                that.generaTopTen();
+                var Items = [];
+                console.log( Datos.ETDBTACNAV)
+                for (var x = 0; x < Datos.ETDBTACNAV.results.length; x++) {
+                    Items.push({
+                        "Posicion": [x],
+                        "Descripcion": Datos.ETDBTACNAV.results[x].DesAcla
+                    })
 
-            let Tipos = [];
-
-            for (let i = 0; i < Datos.ETDBTACNAV.results.length; i++) {
-                const element = Datos.ETDBTACNAV.results[i];
-                Tipos.push( {posicion:i, descripcion: element.DesAcla });
-            }
-
-            Datos.Grupos = Tipos;
-            Datos.ValoresActivos = Datos.ETDBTACNAV.results[ 0 ];
-
-            if( this.getOwnerComponent().getModel("Totales") == undefined ) 
-                this.getOwnerComponent().setModel(new JSONModel(Datos), "Totales");
-            else{
-                this.getOwnerComponent().getModel("Totales").setProperty('/ValoresActivos', Datos.ValoresActivos);
-                this.getOwnerComponent().getModel("Totales").setProperty('/Grupos', Tipos);
-                this.getOwnerComponent().getModel("Totales").setProperty('/ETDBTACNAV', Datos.ETDBTACNAV);
-            }
-
-
-            //this.getView().byId('selectAgrupamiento').setSelectedKey('0');
-            this.getView().byId('RB1-1').setSelected(true);
-            console.log(Datos)
-
-        },
-        changeDataModel: function( oEvent ){
+                }
+              
+                var auxJsonModel = new sap.ui.model.json.JSONModel(Items);
+                that.getView().setModel(auxJsonModel, 'TiposAcl');
+                //INFORMACION GENERAL
            
-            var selectedItems = oEvent.getParameter("selectedItems");
+                if (that.getView().byId("selectAgrupamiento").getSelectedKeys() > 0) {
+                    var ArrT = oEvent.getParameter("selectedItems");
+
+
+                    var Temp = [{
+                        "Ant7": 0,
+                        "Ant15": 0,
+                        "Antx": 0,
+                        "ImporComp": 0,
+                        "ImporPend": 0,
+                        "ImporTpagado": 0,
+                        "TotalAc": 0,
+                        "TotalComp": 0,
+                        "TotalPend": 0,
+    
+    
+                    }];
+                    for (var x = 0; x < ArrT.length; x++) {
+                    
+                        Temp[0].Ant7 = Temp[0].Ant7 + Number(Model.ETDBTACNAV.results[ArrT[x].getKey()].Ant7);
+                        Temp[0].Ant15 = Temp[0].Ant15 + Number(Model.ETDBTACNAV.results[ArrT[x].getKey()].Ant15);
+                        Temp[0].Antx = Temp[0].Antx + Number(Model.ETDBTACNAV.results[ArrT[x].getKey()].Antx);
+                        Temp[0].ImporComp = Temp[0].ImporComp + Number(Model.ETDBTACNAV.results[ArrT[x].getKey()].ImporComp);
+                        Temp[0].ImporPend = Temp[0].ImporPend + Number(Model.ETDBTACNAV.results[ArrT[x].getKey()].ImporPend);
+                        Temp[0].ImporTpagado = Temp[0].ImporTpagado + Number(Model.ETDBTACNAV.results[ArrT[x].getKey()].ImporTpagado);
+                        Temp[0].TotalAc = Temp[0].TotalAc + Number(Model.ETDBTACNAV.results[ArrT[x].getKey()].TotalAc);
+                        Temp[0].TotalComp = Temp[0].TotalComp + Number(Model.ETDBTACNAV.results[ArrT[x].getKey()].TotalComp);
+                        Temp[0].TotalPend = Temp[0].TotalPend + Number(Model.ETDBTACNAV.results[ArrT[x].getKey()].TotalPend);
+    
+    
+    
+                    }
+                  
+                    var auxJsonModel = new sap.ui.model.json.JSONModel(Temp);
+                    that.getView().setModel(auxJsonModel, 'General');
+                } else {
+
+                    var General = [];
+                    General.push(Datos.Estotales);
+                
+                    var auxJsonModel = new sap.ui.model.json.JSONModel(General);
+                    that.getView().setModel(auxJsonModel, 'General');
+                }
+
          
-                var ArrT={
+            });
+        },
+        changeDataModel: function (oEvent) {
+            var that = this;
+            var Model = that.getView().getModel("Totales2").getData();
+          
+            if (oEvent.getParameter("selectedItems").length > 0) {
+                var ArrT = oEvent.getParameter("selectedItems");
+
+
+                var Temp = [{
                     "Ant7": 0,
                     "Ant15": 0,
                     "Antx": 0,
-                    "DesAcla":"", 
                     "ImporComp": 0,
-                    "ImporPend":0,
+                    "ImporPend": 0,
                     "ImporTpagado": 0,
                     "TotalAc": 0,
-                    "TotalComp":0,
+                    "TotalComp": 0,
                     "TotalPend": 0,
-                    "Waers": "",
+
+
+                }];
+                for (var x = 0; x < ArrT.length; x++) {
+                
+                    Temp[0].Ant7 = Temp[0].Ant7 + Number(Model.ETDBTACNAV.results[ArrT[x].getKey()].Ant7);
+                    Temp[0].Ant15 = Temp[0].Ant15 + Number(Model.ETDBTACNAV.results[ArrT[x].getKey()].Ant15);
+                    Temp[0].Antx = Temp[0].Antx + Number(Model.ETDBTACNAV.results[ArrT[x].getKey()].Antx);
+                    Temp[0].ImporComp = Temp[0].ImporComp + Number(Model.ETDBTACNAV.results[ArrT[x].getKey()].ImporComp);
+                    Temp[0].ImporPend = Temp[0].ImporPend + Number(Model.ETDBTACNAV.results[ArrT[x].getKey()].ImporPend);
+                    Temp[0].ImporTpagado = Temp[0].ImporTpagado + Number(Model.ETDBTACNAV.results[ArrT[x].getKey()].ImporTpagado);
+                    Temp[0].TotalAc = Temp[0].TotalAc + Number(Model.ETDBTACNAV.results[ArrT[x].getKey()].TotalAc);
+                    Temp[0].TotalComp = Temp[0].TotalComp + Number(Model.ETDBTACNAV.results[ArrT[x].getKey()].TotalComp);
+                    Temp[0].TotalPend = Temp[0].TotalPend + Number(Model.ETDBTACNAV.results[ArrT[x].getKey()].TotalPend);
+
+
+
+                }
+              
+                var auxJsonModel = new sap.ui.model.json.JSONModel(Temp);
+                that.getView().setModel(auxJsonModel, 'General');
+            } else {
+
+                var General = [];
+                General.push(Model.Estotales);
+             
+                var auxJsonModel = new sap.ui.model.json.JSONModel(General);
+                that.getView().setModel(auxJsonModel, 'General');
+            }
+
+
+        },
+        setDaterangeMaxMin: function () {
+            var that = this;
+
+            var Fecha = new Date();
+
+            Fecha = (Fecha.getTime() - (1000 * 60 * 60 * 24 * 90))
+
+            that.getView().byId("dateRange").setDateValue(new Date(Fecha));
+            that.getView().byId("dateRange").setSecondDateValue(new Date());
+        },
+
+        generaGrafica: function () {
+            var that = this;
+            let dateRange = this.getView().byId('dateRange');
+
+            let fechaInicio = this.buildSapDate(dateRange.getDateValue());
+            let fechaFin = this.buildSapDate(dateRange.getSecondDateValue());
+
+            let proveedor = (this.getConfigModel().getProperty("/supplierInputKey") != undefined) ? this.getConfigModel().getProperty("/supplierInputKey") : '';
+
+            // let url = `HrddashbSet?$expand=ETDBTACNAV,ETPIECHARTNAV,ETTOPNAV,ETHPERNAV&$filter=IOption eq '4' and  ISfalta eq '${fechaInicio}' and  IFfalta eq '${fechaFin}' and ILifnr eq '${proveedor}'&$format=json`;
+            // let Datos= this.Modelo.getJsonModel( url ).getProperty('/results/0');
+            var auxFilters = [];
+
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "IOption",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: '4'
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "ISfalta",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: fechaInicio
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "IFfalta",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: fechaFin
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "ILifnr",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: proveedor
+            })
+            )
+
+            var model = "ZOSP_ACDASHBOARD_SRV";
+            var entity = "HrddashbSet";
+            var expand = ['ETDBTACNAV', 'ETPIECHARTNAV', 'ETTOPNAV', 'ETHPERNAV'];
+            var filter = auxFilters;
+            var select = "";
+
+            sap.ui.core.BusyIndicator.show();
+            that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
+                var Datos = _GEToDataV2Response.data.results[0];
+                sap.ui.core.BusyIndicator.hide();
+                let PieChart = [];
+                let Totales = {
+                    CantidadRecibidas: 0,
+                    TiempoRecibidas: 0,
+                    ImporteRecibidas: 0,
+                    CantidadCompletadas: 0,
+                    TiempoCompletadas: 0,
+                    ImporteCompletadas: 0,
+                    CantidadPendientes: 0,
+                    TiempoPendientes: 0,
+                    ImportePendientes: 0
                 };
 
-      
-            if (selectedItems.length>1){
-                let Model = this.getOwnerComponent().getModel("Totales");
-    
+                for (let i = 0; i < Datos.ETPIECHARTNAV.results.length; i++) {
+                    const element = Datos.ETPIECHARTNAV.results[i];
+                    Totales.CantidadRecibidas += parseFloat(element.TotalAc)
+                    Totales.TiempoRecibidas += parseFloat(element.Antire)
+                    Totales.ImporteRecibidas += parseFloat(element.ImporRe)
+                    Totales.CantidadCompletadas += parseFloat(element.TotalComp)
+                    Totales.TiempoCompletadas += parseFloat(element.AntiComp)
+                    Totales.ImporteCompletadas += parseFloat(element.ImporComp)
+                    Totales.CantidadPendientes += parseFloat(element.TotalPend)
+                    Totales.TiempoPendientes += parseFloat(element.AntiPen)
+                    Totales.ImportePendientes += parseFloat(element.ImporPend)
+
+                }
+
+                for (let x = 0; x < Datos.ETPIECHARTNAV.results.length; x++) {
+                    const element = Datos.ETPIECHARTNAV.results[x];
+                    let porcentaje = (element.TotalAc / Totales.CantidadRecibidas) * 100;
+                    PieChart.push({
+                        DesAcla: element.DesAcla,
+                        valor: parseFloat(porcentaje.toFixed(2))
+                    })
+                }
              
-                for(var x =0; x<selectedItems.length;x++){
-                    console.log(selectedItems[x].getKey())
-                    ArrT.Ant7= (ArrT.Ant7 +Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].Ant7);
-                    ArrT.Ant15= (ArrT.Ant15+Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].Ant15);
-                    ArrT.Antx= (ArrT.Antx+Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].Antx);
-                    //ArrT.DesAcla= (ArrT.DesAcla+Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].DesAcla);
-                    ArrT.ImporComp= (Number(ArrT.ImporComp)+Number(Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].ImporComp));
-                    ArrT.ImporPend= (Number(ArrT.ImporPend)+Number(Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].ImporPend));
-                    ArrT.ImporTpagado= (Number(ArrT.ImporTpagado)+Number(Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].ImporTpagado));
-                    ArrT.TotalAc= (ArrT.TotalAc+Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].TotalAc);
-                    ArrT.TotalComp= (ArrT.TotalComp+Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].TotalComp);
-                    ArrT.TotalPend= (ArrT.TotalPend+Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].TotalPend);
-                   // ArrT.Waers= (ArrT.Waers+Model.getProperty('/ETDBTACNAV/results')[selectedItems[x].getKey()].Waers);
-                }
-                Model.setProperty('/ValoresActivos', ArrT);
-            }else{
-                let posicion = selectedItems[0].getKey();
+                that.getView().getModel('Totales').setProperty('/PieChart', PieChart);
+                that.getView().getModel('Totales').setProperty('/Segmentos', PieChart.length);
+                that.getView().getModel('Totales').setProperty('/ETPIECHARTNAV', Datos.ETPIECHARTNAV);
+                that.getView().getModel('Totales').setProperty('/TotalesChart', Totales);
 
-                let Model = this.getOwnerComponent().getModel("Totales");
-    
-                let ValoresActivos = Model.getProperty('/ETDBTACNAV/results')[ posicion ];
-    console.log(ValoresActivos)
-    var auxJsonModel = new sap.ui.model.json.JSONModel(ValoresActivos);
-    this.getView().setModel(auxJsonModel, 'prueba');
-                Model.setProperty('/ValoresActivos', ValoresActivos);
-            }
+
+
+            });
         },
-        ValidaVista:function(){
-            if(this.getView().byId("AElect").getState()){
-                this.getView().byId("FCard1").setVisible(false)
-                this.getView().byId("FCard2").setVisible(false)
-                this.getView().byId("FCard3").setVisible(false)
-                this.getView().byId("FCard4").setVisible(false)
-                this.getView().byId("FCard5").setVisible(false)
 
-            }else{
-                this.getView().byId("FCard1").setVisible(true)
-                this.getView().byId("FCard2").setVisible(true)
-                this.getView().byId("FCard3").setVisible(true)
-                this.getView().byId("FCard4").setVisible(true)
-                this.getView().byId("FCard5").setVisible(true)
-            }
-        },
-        generaTopTen: function(){
-            let dateRange = this.getView().byId('dateRange');
+        changePieChart: function (oControlEvent) {
+            var that = this;
 
-            let fechaInicio = this.buildSapDate(dateRange.getDateValue()); 
-            let fechaFin = this.buildSapDate(dateRange.getSecondDateValue());
-
-            let url = `HrddashbSet?$expand=ETDBTACNAV,ETPIECHARTNAV,ETTOPNAV,ETHPERNAV&$filter=IOption eq '5' and  ISfalta eq '${fechaInicio}' and  IFfalta eq '${fechaFin}'&$format=json`;
-
-            let Tipos = [];
-            let TiposAclaracionTopTen = [];
-
-            let Datos= this.Modelo.getJsonModel( url ).getProperty('/results/0');
-            let x= 0;
-
-            for (let i = 0; i < Datos.ETTOPNAV.results.length; i++) {
-                const element = Datos.ETTOPNAV.results[i];
-                if( !Tipos.includes(element.DesAcla) ){
-                    Tipos.push( element.DesAcla );
-                    TiposAclaracionTopTen.push({
-                        posicion: x,
-                        descripcion:element.DesAcla,
-                        Supplier:[ element ]
-                    });
-                    x++;
-                }else{
-                    
-                    let posicion = Tipos.indexOf( element.DesAcla );
-                    if( TiposAclaracionTopTen[posicion].Supplier.length < 10 )   
-                        TiposAclaracionTopTen[posicion].Supplier.push( element );
-                }
-            
-            }
-
-
-
-            //let TopTen = [];
-            
-            let TopTen =( Datos.ETTOPNAV.results.length > 0 )? TiposAclaracionTopTen[0].Supplier : [];
-
-
-            
-
-            //this.Modelo.getJsonModel( url ).setProperty('/Proveedores', TopTen);
-            this.getOwnerComponent().getModel('Totales').setProperty('/TopTen', TopTen);
-            this.getOwnerComponent().getModel('Totales').setProperty('/Tipos', TiposAclaracionTopTen);
-            
-        },
-        changeTipoTopTen: function(oControlEvent){
-            let posicion = oControlEvent.getParameters().selectedItem.getKey();
-
-            if( posicion == '' )
-                return;
-
-            let Model = this.getOwnerComponent().getModel("Totales");
-
-            let ValoresActivos = Model.getProperty('/Tipos')[ posicion ];
-
-            let TopTen =( ValoresActivos != null )? ValoresActivos.Supplier : [];
-
-            //let Model = this.getOwnerComponent().getModel("Totales");
-            this.getOwnerComponent().getModel('Totales').setProperty('/TopTen', TopTen);
-        } ,
-        generaGrafica: function(){
-            let dateRange = this.getView().byId('dateRange');
-
-            let fechaInicio = this.buildSapDate(dateRange.getDateValue()); 
-            let fechaFin = this.buildSapDate(dateRange.getSecondDateValue());
-
-            let proveedor = (this.getConfigModel().getProperty("/supplierInputKey") != undefined)? this.getConfigModel().getProperty("/supplierInputKey") : '';
-
-            let url = `HrddashbSet?$expand=ETDBTACNAV,ETPIECHARTNAV,ETTOPNAV,ETHPERNAV&$filter=IOption eq '4' and  ISfalta eq '${fechaInicio}' and  IFfalta eq '${fechaFin}' and ILifnr eq '${proveedor}'&$format=json`;
-            let Datos= this.Modelo.getJsonModel( url ).getProperty('/results/0');
-
-            let PieChart = [];
-            let Totales = {
-                CantidadRecibidas:0,
-                TiempoRecibidas:0,
-                ImporteRecibidas:0,
-                CantidadCompletadas:0,
-                TiempoCompletadas:0,
-                ImporteCompletadas:0,
-                CantidadPendientes:0,
-                TiempoPendientes:0,
-                ImportePendientes:0
-            };
-
-            for (let i = 0; i < Datos.ETPIECHARTNAV.results.length; i++) {
-                const element = Datos.ETPIECHARTNAV.results[i];
-                Totales.CantidadRecibidas += parseFloat( element.TotalAc )
-                Totales.TiempoRecibidas += parseFloat( element.Antire )
-                Totales.ImporteRecibidas += parseFloat( element.ImporRe )
-                Totales.CantidadCompletadas += parseFloat( element.TotalComp )
-                Totales.TiempoCompletadas += parseFloat( element.AntiComp )
-                Totales.ImporteCompletadas += parseFloat( element.ImporComp )
-                Totales.CantidadPendientes += parseFloat( element.TotalPend )
-                Totales.TiempoPendientes += parseFloat( element.AntiPen )
-                Totales.ImportePendientes += parseFloat( element.ImporPend )
-                
-            }
-
-            for (let x = 0; x < Datos.ETPIECHARTNAV.results.length; x++) {
-                const element = Datos.ETPIECHARTNAV.results[x];
-                let porcentaje =  (element.TotalAc/Totales.CantidadRecibidas) * 100 ;
-                PieChart.push({
-                    DesAcla:element.DesAcla,
-                    valor: parseFloat(porcentaje.toFixed(2))
-                })
-            }
-
-            this.getOwnerComponent().getModel('Totales').setProperty('/PieChart', PieChart);
-            this.getOwnerComponent().getModel('Totales').setProperty('/Segmentos', PieChart.length);
-            this.getOwnerComponent().getModel('Totales').setProperty('/ETPIECHARTNAV', Datos.ETPIECHARTNAV);
-            this.getOwnerComponent().getModel('Totales').setProperty('/TotalesChart', Totales);
-            
-        },
-        changePieChart: function(oControlEvent){
-            console.log(oControlEvent)
-            if( oControlEvent.sId == 'select' && !oControlEvent.getParameters().selected )
+            if (oControlEvent.sId == 'select' && !oControlEvent.getParameters().selected)
                 return;
 
             oControlEvent.getParameters();
-            let Datos = this.getOwnerComponent().getModel('Totales').getProperty('/ETPIECHARTNAV/results');
-            let Totales = this.getOwnerComponent().getModel('Totales').getProperty('/TotalesChart');
+           
+            let Datos = that.getView().getModel('Totales').getProperty('/ETPIECHARTNAV/results');
+            let Totales = that.getView().getModel('Totales').getProperty('/TotalesChart');
             let PieChart = [];
 
-            
 
-            let indiceRadio = oControlEvent.sId == 'select'? oControlEvent.getSource().getId().split('-').pop() : this.getView().byId('pieChart').getSelectedIndex();
-            let opcionSelect = this.getView().byId('selectTipoPieChart').getSelectedKey();
-            
+
+            let indiceRadio = oControlEvent.sId == 'select' ? oControlEvent.getSource().getId().split('-').pop() : that.getView().byId('pieChart').getSelectedIndex();
+            let opcionSelect = that.getView().byId('selectTipoPieChart').getSelectedKey();
+
             let atributo = '';
             let campoTotales = '';
 
-            switch (parseInt(indiceRadio,10)) {
+            switch (parseInt(indiceRadio, 10)) {
                 case 0:
-                    atributo = ( opcionSelect == 'r' )? 'TotalAc' : ( (opcionSelect == 'c')? 'TotalComp' : 'TotalPend' ) ;
-                    campoTotales = ( opcionSelect == 'r' )? 'CantidadRecibidas' : ( (opcionSelect == 'c')? 'CantidadCompletadas' : 'CantidadPendientes' ) ;
+                    atributo = (opcionSelect == 'r') ? 'TotalAc' : ((opcionSelect == 'c') ? 'TotalComp' : 'TotalPend');
+                    campoTotales = (opcionSelect == 'r') ? 'CantidadRecibidas' : ((opcionSelect == 'c') ? 'CantidadCompletadas' : 'CantidadPendientes');
                     break;
                 case 1:
-                    atributo = ( opcionSelect == 'r' )? 'Antire' : ( (opcionSelect == 'c')? 'AntiComp' : 'AntiPen' ) ;
-                    campoTotales = ( opcionSelect == 'r' )? 'TiempoRecibidas' : ( (opcionSelect == 'c')? 'TiempoCompletadas' : 'TiempoPendientes' ) ;
+                    atributo = (opcionSelect == 'r') ? 'Antire' : ((opcionSelect == 'c') ? 'AntiComp' : 'AntiPen');
+                    campoTotales = (opcionSelect == 'r') ? 'TiempoRecibidas' : ((opcionSelect == 'c') ? 'TiempoCompletadas' : 'TiempoPendientes');
                     break;
                 case 2:
-                    atributo = ( opcionSelect == 'r' )? 'ImporRe' : ( (opcionSelect == 'c')? 'ImporComp' : 'ImporPend' ) ;
-                    campoTotales = ( opcionSelect == 'r' )? 'ImporteRecibidas' : ( (opcionSelect == 'c')? 'ImporteCompletadas' : 'ImportePendientes' ) ;
+                    atributo = (opcionSelect == 'r') ? 'ImporRe' : ((opcionSelect == 'c') ? 'ImporComp' : 'ImporPend');
+                    campoTotales = (opcionSelect == 'r') ? 'ImporteRecibidas' : ((opcionSelect == 'c') ? 'ImporteCompletadas' : 'ImportePendientes');
                     break;
-            
+
                 default:
                     break;
             }
 
             for (let x = 0; x < Datos.length; x++) {
                 const element = Datos[x];
-                let porcentaje =  (element[atributo]/Totales[campoTotales]) * 100 ;
+                let porcentaje = (element[atributo] / Totales[campoTotales]) * 100;
                 PieChart.push({
-                    DesAcla:element.DesAcla,
+                    DesAcla: element.DesAcla,
                     valor: parseFloat(porcentaje.toFixed(2))
                 })
             }
 
-            this.getOwnerComponent().getModel('Totales').setProperty('/PieChart', PieChart);
-            this.getOwnerComponent().getModel('Totales').setProperty('/Segmentos', PieChart.length);
+            that.getView().getModel('Totales').setProperty('/PieChart', PieChart);
+            that.getView().getModel('Totales').setProperty('/Segmentos', PieChart.length);
         },
         setDaterangeMaxMin: function () {
-            var that=this;
-         /*   var datarange = this.getView().byId('dateRange');
-            var date = new Date();
-            var minDate = new Date();
-            minDate.setDate(1);
+            var that = this;
+            /*   var datarange = this.getView().byId('dateRange');
+               var date = new Date();
+               var minDate = new Date();
+               minDate.setDate(1);
+   
+               datarange.setSecondDateValue(date);
+               datarange.setDateValue(minDate);*/
+            var Fecha = new Date();
 
-            datarange.setSecondDateValue(date);
-            datarange.setDateValue(minDate);*/
-            var Fecha= new Date();
-           
-            Fecha = (Fecha.getTime() - (1000*60*60*24*90))
-          
-         that.getView().byId("dateRange").setDateValue(new Date(Fecha));
-         that.getView().byId("dateRange").setSecondDateValue(new Date());
+            Fecha = (Fecha.getTime() - (1000 * 60 * 60 * 24 * 90))
+
+            that.getView().byId("dateRange").setDateValue(new Date(Fecha));
+            that.getView().byId("dateRange").setSecondDateValue(new Date());
         },
-        exportTopTen: function(){
-            var texts = this.getOwnerComponent().getModel("appTxts");
+        VisualizadorGraficosP: function () {
+            var that = this;
+            that.getView().byId("graphPie").setVisible(true)
+            that.getView().byId("chartFixFlex").setVisible(false)
 
-            let tipos = this.getOwnerComponent().getModel('Totales').getProperty('/Tipos');
+        },
+        VisualizadorGraficosL: function () {
+            var that = this;
+            that.getView().byId("graphPie").setVisible(false)
+            that.getView().byId("chartFixFlex").setVisible(true)
 
-            let Proveedores = [];
+        },
 
-            for (let i = 0; i < tipos.length; i++) {
-                const element = tipos[i];
-                Proveedores.push( ...element.Supplier );
+        generaTopTen: function () {
+            var that = this;
+            let dateRange = that.getView().byId('dateRange');
+
+            let fechaInicio = that.buildSapDate(dateRange.getDateValue());
+            let fechaFin = that.buildSapDate(dateRange.getSecondDateValue());
+
+            var auxFilters=[];
+            //let url = `HrddashbSet?$expand=ETDBTACNAV,ETPIECHARTNAV,ETTOPNAV,ETHPERNAV&$filter=IOption eq '5' and  ISfalta eq '${fechaInicio}' and  IFfalta eq '${fechaFin}'&$format=json`;
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "IOption",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: '5'
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "ISfalta",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: fechaInicio
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "IFfalta",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: fechaFin
+            })
+            )
+        
+
+            var model = "ZOSP_ACDASHBOARD_SRV";
+            var entity = "HrddashbSet";
+            var expand = ['ETDBTACNAV', 'ETPIECHARTNAV', 'ETTOPNAV', 'ETHPERNAV'];
+            var filter = auxFilters;
+            var select = "";
+
+            sap.ui.core.BusyIndicator.show();
+            that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
+                var Datos = _GEToDataV2Response.data.results[0];
+              
+                that.generaGrafica();
+
+                var Tipos = [];
+                var TiposAclaracionTopTen = [];
+
+      
+          var x = 0;
+
+            for (var i = 0; i < Datos.ETTOPNAV.results.length; i++) {
+                const element = Datos.ETTOPNAV.results[i];
+                if (!Tipos.includes(element.DesAcla)) {
+                    Tipos.push(element.DesAcla);
+                    TiposAclaracionTopTen.push({
+                        posicion: x,
+                        descripcion: element.DesAcla,
+                        Supplier: [element]
+                    });
+                    x++;
+                } else {
+
+                    let posicion = Tipos.indexOf(element.DesAcla);
+                    if (TiposAclaracionTopTen[posicion].Supplier.length < 10)
+                        TiposAclaracionTopTen[posicion].Supplier.push(element);
+                }
+
             }
 
-            //console.log(Proveedores);
 
-            this.getOwnerComponent().getModel('Totales').setProperty('/Proveedores', Proveedores);
 
-            var columns = [
-                {
-                    name: texts.getProperty("/dashboard.topUPC"),
-                    template: {
-                        content: "{Ntop}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.supplierUPC"),
-                    template: {
-                        content: "{Nlifnr}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.supplierNumUPC"),
-                    template: {
-                        content: "{Lifnr}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.totalCompUPC"),
-                    template: {
-                        content: "{TotalComp}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.importCompUPC"),
-                    template: {
-                        content: "{ImporComp}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.tipoUPC"),
-                    template: {
-                        content: "{DesAcla}"
-                    }
-                }
-            ];
+            let TopTen = (Datos.ETTOPNAV.results.length > 0) ? TiposAclaracionTopTen[0].Supplier : [];
 
-            this.exportxls('Totales', '/Proveedores', columns);
+         
+
+            //this.Modelo.getJsonModel( url ).setProperty('/Proveedores', TopTen);
+            that.getView().getModel('Totales').setProperty('/TopTen', TopTen);
+            that.getView().getModel('Totales').setProperty('/Tipos', TiposAclaracionTopTen);
+        });
+
         },
-        exportPieChart: function(){
-            var texts = this.getOwnerComponent().getModel("appTxts");
+        changeTipoTopTen: function (oControlEvent) {
+            var that = this;
+            let posicion = oControlEvent.getParameters().selectedItem.getKey();
 
-            var columns = [
-                {
-                    name: texts.getProperty("/dashboard.tipoUPC"),
-                    template: {
-                        content: "{DesAcla}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.totalRecUPC"),
-                    template: {
-                        content: "{TotalAc}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.antiguedadRecUPC"),
-                    template: {
-                        content: "{Antire}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.importRecUPC"),
-                    template: {
-                        content: "{ImporRe}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.totalCompUPC"),
-                    template: {
-                        content: "{TotalComp}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.antiguedadCompUPC"),
-                    template: {
-                        content: "{AntiComp}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.importCompUPC"),
-                    template: {
-                        content: "{ImporComp}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.totalPendUPC"),
-                    template: {
-                        content: "{TotalPend}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.antiguedadPendUPC"),
-                    template: {
-                        content: "{AntiPen}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.importPendUPC"),
-                    template: {
-                        content: "{ImporPend}"
-                    }
-                }
-                
-            ];
+            if (posicion == '')
+                return;
 
-            this.exportxls('Totales', '/ETPIECHARTNAV/results', columns);
+            let Model = that.getOwnerComponent().getModel("Totales");
+
+            let ValoresActivos = Model.getProperty('/Tipos')[posicion];
+
+            let TopTen = (ValoresActivos != null) ? ValoresActivos.Supplier : [];
+
+            //let Model = this.getOwnerComponent().getModel("Totales");
+            that.getOwnerComponent().getModel('Totales').setProperty('/TopTen', TopTen);
         },
-        exportExcel: function(){
-            var texts = this.getOwnerComponent().getModel("appTxts");
-            
-            let indice = this.getView().byId('rbg1').getSelectedIndex();
-            let titulo = ( indice === 0  )? texts.getProperty("/dashboard.typesUPC") : ( ( indice === 1 )? texts.getProperty("/dashboard.areaUPC") : texts.getProperty("/dashboard.analystUPC") );
 
-            var columns = [
-                {
-                    name: titulo,
-                    template: {
-                        content: "{DesAcla}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.totalRecUPC"),
-                    template: {
-                        content: "{TotalAc}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.importRecUPC"),
-                    template: {
-                        content: "{ImporTpagado}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.totalCompUPC"),
-                    template: {
-                        content: "{TotalComp}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.importCompUPC"),
-                    template: {
-                        content: "{ImporComp}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.totalPendUPC"),
-                    template: {
-                        content: "{TotalPend}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.importPendUPC"),
-                    template: {
-                        content: "{ImporPend}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.7UPC"),
-                    template: {
-                        content: "{Ant7}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.15UPC"),
-                    template: {
-                        content: "{Ant15}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/dashboard.mayorUPC"),
-                    template: {
-                        content: "{Antx}"
-                    }
-                }                
-            ];
-
-            this.exportxls('Totales', '/ETDBTACNAV/results', columns);
-        },
-        /*JP 15/06/2022*/ 
-VisualizadorGraficosP:function(){
+//*****************************Export */
+exportTopTen: function(){
     var that=this;
-    that.getView().byId("graphPie").setVisible(true)
-    that.getView().byId("chartFixFlex").setVisible(false)
+    var texts =  that.getView().getModel("appTxts");
 
+    let tipos =  that.getView().getModel('Totales').getProperty('/Tipos');
+
+    let Proveedores = [];
+
+    for (let i = 0; i < tipos.length; i++) {
+        const element = tipos[i];
+        Proveedores.push( ...element.Supplier );
+    }
+
+    //console.log(Proveedores);
+
+    that.getView().getModel('Totales').setProperty('/Proveedores', Proveedores);
+
+    var columns = [
+        {
+            name: texts.getProperty("/dashboard.topUPC"),
+            template: {
+                content: "{Ntop}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.supplierUPC"),
+            template: {
+                content: "{Nlifnr}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.supplierNumUPC"),
+            template: {
+                content: "{Lifnr}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.totalCompUPC"),
+            template: {
+                content: "{TotalComp}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.importCompUPC"),
+            template: {
+                content: "{ImporComp}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.tipoUPC"),
+            template: {
+                content: "{DesAcla}"
+            }
+        }
+    ];
+
+    that.exportxls('Totales', '/Proveedores', columns);
 },
-VisualizadorGraficosL:function(){
+exportPieChart: function(){
     var that=this;
-    that.getView().byId("graphPie").setVisible(false)
-    that.getView().byId("chartFixFlex").setVisible(true)
 
-}
+    var texts =  that.getView().getModel("appTxts");
+
+    var columns = [
+        {
+            name: texts.getProperty("/dashboard.tipoUPC"),
+            template: {
+                content: "{DesAcla}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.totalRecUPC"),
+            template: {
+                content: "{TotalAc}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.antiguedadRecUPC"),
+            template: {
+                content: "{Antire}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.importRecUPC"),
+            template: {
+                content: "{ImporRe}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.totalCompUPC"),
+            template: {
+                content: "{TotalComp}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.antiguedadCompUPC"),
+            template: {
+                content: "{AntiComp}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.importCompUPC"),
+            template: {
+                content: "{ImporComp}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.totalPendUPC"),
+            template: {
+                content: "{TotalPend}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.antiguedadPendUPC"),
+            template: {
+                content: "{AntiPen}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.importPendUPC"),
+            template: {
+                content: "{ImporPend}"
+            }
+        }
+        
+    ];
+
+    that.exportxls('Totales', '/ETPIECHARTNAV/results', columns);
+},
+exportExcel: function(){
+    var that=this;
+    var texts =  that.getView().getModel("appTxts");
+    
+    let indice = this.getView().byId('rbg1').getSelectedIndex();
+    let titulo = ( indice === 0  )? texts.getProperty("/dashboard.typesUPC") : ( ( indice === 1 )? texts.getProperty("/dashboard.areaUPC") : texts.getProperty("/dashboard.analystUPC") );
+
+    var columns = [
+        {
+            name: titulo,
+            template: {
+                content: "{DesAcla}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.totalRecUPC"),
+            template: {
+                content: "{TotalAc}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.importRecUPC"),
+            template: {
+                content: "{ImporTpagado}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.totalCompUPC"),
+            template: {
+                content: "{TotalComp}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.importCompUPC"),
+            template: {
+                content: "{ImporComp}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.totalPendUPC"),
+            template: {
+                content: "{TotalPend}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.importPendUPC"),
+            template: {
+                content: "{ImporPend}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.7UPC"),
+            template: {
+                content: "{Ant7}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.15UPC"),
+            template: {
+                content: "{Ant15}"
+            }
+        },
+        {
+            name: texts.getProperty("/dashboard.mayorUPC"),
+            template: {
+                content: "{Antx}"
+            }
+        }                
+    ];
+
+    that.exportxls('Totales', '/ETDBTACNAV/results', columns);
+},
+
     });
 
     return Controller;

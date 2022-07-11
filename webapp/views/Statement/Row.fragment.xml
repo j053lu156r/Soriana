@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns:core="sap.ui.core"
 	xmlns="sap.m">
-	<ColumnListItem  
+	<ColumnListItem
 	 >
 <cells>
 <ObjectIdentifier title="{GroupedTotales>name}" />
@@ -9,7 +9,7 @@
 	<Text text="{=  (${GroupedTotales>Pendt} === true) ? 'Pendiente' : ( ${GroupedTotales>Belnr} === ${GroupedTotales>Augbl} ? 'Pago' : 'Contabilizado'  ) }" wrapping="false" />
 
 
-	<ObjectIdentifier titleActive="false" title="{GroupedTotales>Belnr}" wrapping="false" />
+	<ObjectIdentifier titlePress="onDocumentPress" titleActive="true" title="{GroupedTotales>Belnr}" wrapping="false" />
 
 	<Text text="{GroupedTotales>Xblnr}" wrapping="false" />
 

@@ -141,6 +141,7 @@ sap.ui.define([
             );
         },
         _onDocumentMatchedComplemento: function (oEvent) {
+            var that=this;
             this._vistaAnteior = "COMPLEMENTOS"
 
             this._folio = oEvent.getParameter("arguments").document || this._folio || "0";
@@ -154,7 +155,7 @@ sap.ui.define([
 
 
 
-            var url = "AportaSet?$expand=AportaDet&$filter=IOption eq '1'";;
+         /*   var url = "AportaSet?$expand=AportaDet&$filter=IOption eq '1'";
             if (this._folio != "" && this._folio != null) {
                 url += " and IFolio eq '" + this._folio + "'";
             }
@@ -165,17 +166,73 @@ sap.ui.define([
                 function (jsonModel, parent) {
                     var objResponse = jsonModel.getProperty("/results/0");
 
-                    if (objResponse != null) {
-                        parent.getOwnerComponent().setModel(new JSONModel(objResponse.AportaDet.results[0]),
-                            "AportaDetDet");
+                    if (objResponse.EError === 'X') {
+                        sap.m.MessageBox.error(objResponse.EDescripEvent, {
+    
+                            onClose: function (sAction) {
+                                this.handleClose();
+                            }
+                        });
+                    }else{
+                        if (objResponse != null) {
+                            parent.getOwnerComponent().setModel(new JSONModel(objResponse.AportaDet.results[0]),
+                                "AportaDetDet");
+                        }
                     }
+                   
                     //parent.getView().byId('ObjectPageLayout').setBusy(false);
                 },
                 function (parent) {
                     //parent.getView().byId('ObjectPageLayout').setBusy(false);
                 },
                 this
+            );*/
+
+            var auxFilters = [];
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "IOption",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: '1'
+            })
             );
+            if (this._folio != "" && this._folio != null) {
+                //  url += " and IFolio eq '" + this._folio + "'";
+                auxFilters.push(new sap.ui.model.Filter({
+                    path: "IFolio",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: this._folio
+                })
+                );
+            }
+
+            var model = "ZOSP_APORTA_SRV";
+            var entity = "AportaSet";
+            var expand = "AportaDet";
+            var filter = auxFilters;
+            var select = "";
+            sap.ui.core.BusyIndicator.show();
+            that._GEToDataV2(model, entity, filter, expand).then(function (_GEToDataV2Response) {
+                sap.ui.core.BusyIndicator.hide();
+                var objResponse = _GEToDataV2Response.data.results[0];
+console.log(objResponse);
+                if (objResponse.EError === 'X') {
+                    sap.m.MessageBox.error(objResponse.EDescripEvent, {
+
+                        onClose: function (sAction) {
+                            that.handleClose();
+                        }
+                    });
+
+                }
+                if (objResponse != null) {
+                   /* parent.getOwnerComponent().setModel(new JSONModel(objResponse.AportaDet.results[0]),
+                        "AportaDetDet");*/
+                        var auxJsonModel = new sap.ui.model.json.JSONModel(objResponse.AportaDet.results[0]);
+                        that.getView().setModel(auxJsonModel, 'AportaDetDet');
+                }
+
+
+            });
         }
     });
 });

@@ -56,7 +56,7 @@ sap.ui.define([
                 column1:true,
                 column2:true,
                 column3:true,
-                column4:true,
+                //column4:true,
                 column5:true,
                 column6:true,
                 column7:true,
@@ -76,7 +76,7 @@ sap.ui.define([
             that.getView().byId("column1").setVisible(that.getView().getModel().getProperty("/column1"));
             that.getView().byId("column2").setVisible(that.getView().getModel().getProperty("/column2"));
             that.getView().byId("column3").setVisible(that.getView().getModel().getProperty("/column3"));
-            that.getView().byId("column4").setVisible(that.getView().getModel().getProperty("/column4"));
+          //  that.getView().byId("column4").setVisible(that.getView().getModel().getProperty("/column4"));
             that.getView().byId("column5").setVisible(that.getView().getModel().getProperty("/column5"));
             that.getView().byId("column6").setVisible(that.getView().getModel().getProperty("/column6"));
             that.getView().byId("column7").setVisible(that.getView().getModel().getProperty("/column7"));
@@ -132,13 +132,23 @@ sap.ui.define([
 
             var FechaI = that.getView().byId("dateRange").getDateValue();
             var FechaF = that.getView().byId("dateRange").getSecondDateValue();
-
+            let dateRange = this.getView().byId("dateRange");
 
             auxFilters.push(new sap.ui.model.Filter({
                 path: "IStartdate",
-                operator: sap.ui.model.FilterOperator.BT,
-                value1: FechaI.toISOString().slice(0, 10) + 'T00:00:00',
-                value2: FechaF.toISOString().slice(0, 10) + 'T00:00:00'
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: this.buildSapDate(dateRange.getDateValue())
+               // value1: FechaI.toISOString().slice(0, 10) + 'T00:00:00',
+              
+            })
+
+            )
+             
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "IEnddate",
+                operator: sap.ui.model.FilterOperator.EQ,
+              value1:this.buildSapDate(dateRange.getSecondDateValue()) 
+            //    value1: FechaF.toISOString().slice(0, 10) + 'T00:00:00'
             })
 
             )
@@ -180,15 +190,26 @@ sap.ui.define([
             sap.ui.core.BusyIndicator.show();
             that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
                 sap.ui.core.BusyIndicator.hide();
+                var arrT=[];
                 var data = _GEToDataV2Response.data.results;
-             
-                var Documentos = { Detalles: { results: [...data[0].EPYMNTDOCSNAV.results] } };
+                console.log(data)
+             for(var x =0;x<data.length;x++){
 
+                   if (!(data[x].IAugbl.startsWith('58') )&&!(data[x].IAugbl.startsWith('59')) ){
+                    arrT.push(data[x])
+             }
+            }
+            console.log(data)
+            console.log(arrT)
+            if(arrT.length>0){
+                var Documentos = { Detalles: { results: [...arrT[0].EPYMNTDOCSNAV.results] } };
 
 
                 that.getOwnerComponent().setModel(new JSONModel(Documentos), "Documentos");
 
                 that.paginate("Documentos", "/Detalles", 1, 0);
+            }
+               
 
             });
 
@@ -338,7 +359,7 @@ sap.ui.define([
                 column1:bSelected,
                 column2:bSelected,
                 column3:bSelected,
-                column4:bSelected,
+               // column4:bSelected,
                 column5:bSelected,
                 column6:bSelected,
                 column7:bSelected,

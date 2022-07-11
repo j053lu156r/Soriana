@@ -38,16 +38,16 @@
                         <OverflowToolbar id="otb1">
                             <Label text="{appTxts>/dashboard.comparativo}"/>
                             <ToolbarSpacer/>
-                            <RadioButtonGroup id="rbg1" columns="3">
-                                <RadioButton select="getData" id="RB1-1" text="{appTxts>/dashboard.types}" />
-                                <RadioButton select="getData" id="RB1-2" text="{appTxts>/dashboard.area}" />
-                                <RadioButton select="getData" id="RB1-3" text="{appTxts>/dashboard.analyst}" />
+                            <RadioButtonGroup id="rbg1" columns="3" select="reloadData">
+                                <RadioButton  id="RB1-1" text="{appTxts>/dashboard.types}" />
+                                <RadioButton  id="RB1-2" text="{appTxts>/dashboard.area}" />
+                                <RadioButton  id="RB1-3" text="{appTxts>/dashboard.analyst}" />
                             </RadioButtonGroup>
                             <ToolbarSpacer/>
-                          	<Switch state="false" customTextOn="OP1" customTextOff="OP2" id="AElect"  change="ValidaVista" visible="false"/>
+                        
                             <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".exportExcel" visible="{= ${Totales>/ETDBTACNAV/results/length} > 0}" />
-                            <MultiComboBox  id="selectAgrupamiento" width="30%" items="{path:'Totales>/Grupos'}"  	selectionFinish="changeDataModel">
-                                <items><core:Item key="{Totales>posicion}" text="{Totales>descripcion}"></core:Item></items>
+                            <MultiComboBox  id="selectAgrupamiento" width="30%" items="{path:'TiposAcl>/'}"  	selectionFinish="changeDataModel">
+                                <items><core:Item key="{TiposAcl>Posicion}" text="{TiposAcl>Descripcion}"></core:Item></items>
                             </MultiComboBox>
                         </OverflowToolbar>
 							<f:GridContainer id="demoGrid" 
@@ -63,75 +63,7 @@
 			</f:layoutXS>
                           
 
-                            <f:Card id="FCard1" visible="false">
-                                <f:layoutData>
-                                    <f:GridContainerItemLayoutData minRows="2" columns="3" />
-                                </f:layoutData>
-                                <f:header>
-                                    <card:Header
-                                        title="{appTxts>/dashboard.received}"
-                                        />
-                                </f:header>
-                                <f:content>
-                                        <NumericContent icon="sap-icon://batch-payments" value="{Totales>/ValoresActivos/TotalAc}" withMargin="false" class="sapUiLargeMarginBegin" />
-                                </f:content>
-                            </f:Card>
-
-                            <f:Card id="FCard2" visible="false">
-                                <f:layoutData>
-                                    <f:GridContainerItemLayoutData minRows="2" columns="3" />
-                                </f:layoutData>
-                                <f:header>
-                                    <card:Header
-                                        title="{appTxts>/dashboard.reclaimed}"
-                                        />
-                                </f:header>
-                                <f:content>
-                                        <NumericContent icon="sap-icon://batch-payments" value="{parts: [{path: 'Totales>/ValoresActivos/ImporComp'}, {path: 'Totales>/ValoresActivos/Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" scale="$" formatterValue="false" withMargin="false"  class="sapUiLargeMarginBegin" />
-                                </f:content>
-                            </f:Card>
-
-                            <f:Card id="FCard3" visible="false">
-                                <f:layoutData>
-                                    <f:GridContainerItemLayoutData minRows="2" columns="3" />
-                                </f:layoutData>
-                                <f:header>
-                                    <card:Header
-                                        title="{appTxts>/dashboard.completed}"
-                                        />
-                                </f:header>
-                                <f:content>
-                                    <NumericContent icon="sap-icon://batch-payments" value="{Totales>/Estotales/TotalComp}" withMargin="false" class="sapUiLargeMarginBegin" />
-                                </f:content>
-                            </f:Card>
-
-                            <f:Card id="FCard4" visible="false">
-                                <f:layoutData>
-                                    <f:GridContainerItemLayoutData minRows="2" columns="3" />
-                                </f:layoutData>
-                                <f:header>
-                                    <card:Header
-                                        title="{appTxts>/dashboard.paid}"
-                                        />
-                                </f:header>
-                                <f:content>
-                                    <NumericContent icon="sap-icon://batch-payments" value="{parts: [{path: 'Totales>/ValoresActivos/ImporTpagado'}, {path: 'Totales>/ValoresActivos/Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" withMargin="false" class="sapUiLargeMarginBegin" />
-                                </f:content>
-                            </f:Card>
-
-                            <f:Card id="FCard5" visible="false">
-                                <f:layoutData>
-                                    <f:GridContainerItemLayoutData minRows="2" columns="3" />
-                                </f:layoutData>
-                                <f:header>
-                                    <card:Header
-                                        title="{appTxts>/dashboard.pending}"
-                                        />
-                                </f:header>
-                                <f:content>
-                                    <NumericContent icon="sap-icon://batch-payments" value="{Totales>/ValoresActivos/TotalPend}" withMargin="false" class="sapUiLargeMarginBegin" />
-                                </f:content>
-                            </f:Card>
+                         
  <f:Card id="FCard5_5" width="100%" visible="true" height="33%">
                                 <f:layoutData>
                                     <f:GridContainerItemLayoutData minRows="4" columns="9" />
@@ -147,7 +79,7 @@
                     noData                  ="{appTxts>/pay.merchandise}" 
                     id                      ="aclaracionesList"
                     alternateRowColors      ="true" 
-                    rows                    ="{Totales>/ValoresActivos}"
+                    rows                    ="{General>/}"
                     enableColumnReordering  = "false"
                     enableSelectAll         ="false"
                     visibleRowCount="1"
@@ -170,31 +102,37 @@
                         <t:Column width="auto"  visible="true" sortProperty="Folio" filterProperty="Folio">
                             <Label text="{appTxts>/dashboard.received}" />
                             <t:template>
-                                <Text text="{Totales>/ValoresActivos/TotalAc}" wrapping="false"/>
+                                <Text text="{General>TotalAc}" wrapping="false"/>
                             </t:template>
                         </t:Column>
                         <t:Column width="auto" visible="true" sortProperty="FAlta" filterProperty="FAlta" >
                             <Label text="{appTxts>/dashboard.reclaimed}" />
                             <t:template>
-                                <Text text="{parts: [{path: 'Totales>/ValoresActivos/ImporComp'}, {path: 'Totales>/ValoresActivos/Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" wrapping="false"/>
+                                <Text text="{parts: [{path: 'General>ImporComp'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" wrapping="false"/>
                             </t:template>
                         </t:Column>
                         <t:Column width="auto"  visible="true" sortProperty="Lifnr" filterProperty="Lifnr">
                             <Label text="{appTxts>/dashboard.completed}" />
                             <t:template>
-                                <Text text="{Totales>/Estotales/TotalComp}" wrapping="false"/>
+                                <Text text="{General>TotalComp}" wrapping="false"/>
                             </t:template>
                         </t:Column>
                         <t:Column width="auto"  visible="true" sortProperty="DesAcla" filterProperty="DesAcla">
                             <Label text="{appTxts>/dashboard.paid}" />
                             <t:template>
-                                <Text text="{parts: [{path: 'Totales>/ValoresActivos/ImporTpagado'}, {path: 'Totales>/ValoresActivos/Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" wrapping="false"/>
+                                <Text text="{parts: [{path: 'General>ImporTpagado'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                         <t:Column width="auto"  visible="true" sortProperty="DesAcla" filterProperty="DesAcla">
+                            <Label text="{appTxts>/dashboard.pendingImp}" />
+                            <t:template>
+                                <Text text="{parts: [{path: 'General>ImporPend'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" wrapping="false"/>
                             </t:template>
                         </t:Column>
                          <t:Column width="auto"  visible="true" sortProperty="DesAcla" filterProperty="DesAcla">
                             <Label text="{appTxts>/dashboard.pending}" />
                             <t:template>
-                                <Text text="{Totales>/ValoresActivos/TotalPend}" wrapping="false"/>
+                                <Text text="{General>TotalPend}" wrapping="false"/>
                             </t:template>
                         </t:Column>
                    

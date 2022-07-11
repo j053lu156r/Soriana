@@ -225,8 +225,10 @@ sap.ui.define([
         },
         doSearchLocation: function(strSearch){
             if (strSearch != null && strSearch != "") {
+                var oBusyDialog = new sap.m.BusyDialog();
+                oBusyDialog.open();
                 var response = inboxModel.getJsonModel("/headInboxSet?$expand=ETSTORENAV&$filter= IOption eq '14' and IName eq '" + strSearch + "'");
-
+                oBusyDialog.close();
                 if (response != null) {
                     var objResponse = response.getProperty("/results/0");
                     this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(objResponse), "tableLocations");

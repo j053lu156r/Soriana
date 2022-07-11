@@ -31,7 +31,7 @@ sap.ui.define([
                     this.clearFilters();
                     this.getConfigModel().setProperty("/updateFormatsSingle", "xml");
                     this.getOwnerComponent().setModel(new JSONModel(), "Documentos");
-                    
+
                 }
             }, this);
         },
@@ -45,7 +45,7 @@ sap.ui.define([
             }
             //if ( !oModel.getModel() )  oModel.initModel();
 
-            
+
                 let dateRange = this.getView().byId("dateRange");
                 let documentTxt = this.getView().byId("documentTxt");
 
@@ -64,27 +64,96 @@ sap.ui.define([
                 //let IEnddate = "31122020";
                 let IAugbl = documentTxt.getValue();
 
-                let filtros = `$filter= IOption eq '2' and  ILifnr eq '${proveedor_LIFNR}' and IStartdate eq '${IStartdate}'  and IEnddate eq '${IEnddate}'`;
+            //    let filtros = `$filter= IOption eq '2' and  ILifnr eq '${proveedor_LIFNR}' and IStartdate eq '${IStartdate}'  and IEnddate eq '${IEnddate}'`;
+
+            var auxFilters = [];
+
+            auxFilters.push(new sap.ui.model.Filter({
+                    path: "IStartdate",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: IStartdate
+
+                })
+
+            )
 
 
-                if (IAugbl != '') filtros += ` and IAugbl eq '${IAugbl}'`;
+            auxFilters.push(new sap.ui.model.Filter({
+                    path: "IEnddate",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: IEnddate
+                })
+
+            )
+
+            auxFilters.push(new sap.ui.model.Filter({
+                    path: "ILifnr",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: proveedor_LIFNR
+                })
+
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                    path: "IOption",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: '4'
+                })
+
+            )
 
 
-                let url = `HeaderPYMNTCSet?$expand=EPYMNTDOCSNAV,EPYMNTPRGRMNAV&${filtros}&$format=json`;
+            if (IAugbl !== '') {
+                auxFilters.push(new sap.ui.model.Filter({
+                        path: 'IAugbl',
+                        operator: sap.ui.model.FilterOperator.EQ,
+                        value1: documentTxt.getValue()
+                    })
+                )
 
-                let oODataJSONModel = this.getOdata(sUri);
+            }
 
-                let oDataJSONModel = this.getOdataJsonModel(url, oODataJSONModel);
-                let dataJSON = oDataJSONModel.getJSON();
-                let Datos = JSON.parse(dataJSON);
+            var model = "ZOSP_PYMNT_CMPL_SRV";
+            var entity = "HeaderPYMNTCSet";
+            var expand = ['EPYMNTDOCSNAV', 'EPYMNTPRGRMNAV'];
+            var filter = auxFilters;
+            var select = "";
 
-                var Documentos = { Detalles: { results: [...Datos.results[0].EPYMNTDOCSNAV.results] } };
-            
+            sap.ui.core.BusyIndicator.show();
+
+            var me = this;
 
 
-            this.getOwnerComponent().setModel(new JSONModel(Documentos), "Documentos");
+            this._GetODataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
+                sap.ui.core.BusyIndicator.hide();
+                var arrT=[];
+                var data = _GEToDataV2Response.data.results;
+                console.log(data)
+                var dirtyArray = data[0].EPYMNTDOCSNAV.results
 
-            this.paginate("Documentos", "/Detalles", 1, 0);
+                var cleanedArray = dirtyArray.filter(obj => obj.Vblnr.startsWith("58"));
+
+
+                if(cleanedArray.length>0){
+                    //var Documentos = { Detalles: { results: [...arrT[0].EPYMNTDOCSNAV.results] } };
+                    var Documentos = { Detalles: { results: [...cleanedArray] } };
+
+
+                    me.getOwnerComponent().setModel(new JSONModel(Documentos), "Documentos");
+
+                    me.paginate("Documentos", "/Detalles", 1, 0);
+                }
+
+
+
+
+            });
+
+
+
+
+
+
+
         },
         generateFile: function (oEvent) {
             let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
@@ -103,13 +172,13 @@ sap.ui.define([
             IVblnr eq '${registro.Vblnr}' and 
             IAugdt eq '${Augdt}'&$format=json`;
 
-            /*let url = `HeaderPYMNTCSet?$expand=ETXTHDRNAV,ETXTTOTALNAV,ETXTTAXNAV,ETXTFACTPROVNAV,ETXTFACTSORNAV,ETXTDISCOUNTNAV,ETXTAGREEMENTNAV&$filter= IOption eq '3' and 
-            ILaufd eq '20200429' and 
-            ILaufi eq 'PPDL' and 
-            IBukrs eq '2001' and 
-            ILifnr eq '96008' and 
-            IGjahr eq '2020' and 
-            IVblnr eq '1500001807' and 
+            /*let url = `HeaderPYMNTCSet?$expand=ETXTHDRNAV,ETXTTOTALNAV,ETXTTAXNAV,ETXTFACTPROVNAV,ETXTFACTSORNAV,ETXTDISCOUNTNAV,ETXTAGREEMENTNAV&$filter= IOption eq '3' and
+            ILaufd eq '20200429' and
+            ILaufi eq 'PPDL' and
+            IBukrs eq '2001' and
+            ILifnr eq '96008' and
+            IGjahr eq '2020' and
+            IVblnr eq '1500001807' and
             IAugdt eq '20200429'&$format=json`;*/
 
             let oODataJSONModel = this.getOdata(sUri);
@@ -165,7 +234,7 @@ sap.ui.define([
                     return  "sap-icon://accept";
                     break;
                 default:
-                    return  "sap-icon://decline";        
+                    return  "sap-icon://decline";
                     break;
 
             }
