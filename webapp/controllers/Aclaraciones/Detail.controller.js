@@ -171,7 +171,7 @@ return formateado
             let tipo                = clarificationType.getSelectedKey();
             let proveedor_LIFNR     = this.getConfigModel().getProperty("/supplierInputKey") ;
             let analyst             = this.getView().byId("analyst").getSelectedKey();
-            let paymentDocument     = this.getView().byId("paymentDocument").getValue();
+//let paymentDocument     = this.getView().byId("paymentDocument").getValue();
             let distributionCenter  = this.getView().byId("distributionCenter").getValue();
             let recibo              = this.getView().byId("receipt").getValue();
             let Gjahr               = this.getView().byId("Gjahr").getValue();
@@ -190,7 +190,7 @@ return formateado
                 "IMonrec": reclaimedImport.replace(/\,/g, ""),
                 //"IIvarec": reclaimedTax,
                 "IObsgen": comments, 
-                "INoDoc": paymentDocument,
+                "INoDoc": "",//paymentDocument,
                 "IDocori" : sourceDocument,
                 "IAnalista":analyst,
                 "IStatus": status,
@@ -204,7 +204,7 @@ return formateado
                 if( String(objRelease.INoDoc).trim() != '' ){
                     objRelease["IMonacl"] = this.getView().byId("clarifiedAmount").getValue().trim();
                     objRelease["IIvaacl"] = this.getView().byId("clarifiedTax").getValue().trim();
-                    //objRelease["INoDoc"] = this.getView().byId("paymentDocument").getValue().trim();
+                  
                     let fechaVencimiento = this.getView().byId("expirationDate").getDateValue();
                     objRelease["IFecven"] = fechaVencimiento.getFullYear() + '-' + String( '0' + (fechaVencimiento.getMonth() + 1) ).substr(-2) + '-' + String( '0' + fechaVencimiento.getDate() ).substr(-2)
                     //objRelease["IFecven"] = this.getView().byId("expirationDate").getValueFormat("yyyy-MM-dd");
@@ -259,7 +259,7 @@ return formateado
             this.getView().byId("comments").setEnabled(true).setEditable(true);
             this.getView().byId("analyst").setEnabled(true).setEditable(true);
             
-            this.getView().byId("paymentDocument").setEnabled(true).setEditable(true);
+            //this.getView().byId("paymentDocument").setEnabled(true).setEditable(true);
             
             this.getView().byId("validateSourceDocument").setEnabled(true);
             this.getView().byId("validateInvoice").setEnabled( true );
@@ -399,7 +399,7 @@ return formateado
 
             
             this.getView().byId("analyst").setSelectedKey(objDatos.Analista);
-            this.getView().byId("paymentDocument").setValue(objDatos.NoDoc);
+            //this.getView().byId("paymentDocument").setValue(objDatos.NoDoc);
         },
         validaCampos : function(){
             let valid = true;
@@ -594,20 +594,56 @@ return formateado
             
             
         },
+        ValidarValor:function(){
+            var that=this;
+           var Model=this.getView().getModel('Aclaracion').getData();
+           console.log(Model)
+           /** */
+           var MAcla=Number(Model.MonAcla.replace(',',''));
+           var Mrecl=Number(Model.MonRec.replace(',',''));
+          
+if (MAcla > Mrecl){
+    sap.m.MessageBox.error( this.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.validacionNum') );
+    this.getView().byId('clarifiedAmount').setValue();
+
+}else{
+ 
+    
+    var regex, num;
+    num = Model.MonAcla.split(".")[0];
+    var dec=Model.MonAcla.split(".")[1];
+    console.warn(num, dec)
+    regex = /(\.\d+)|\B(?=(\d{3})+(?!\d))/g;
+    num = num.toString().replace(regex, ",");
+
+   // return num;
+   if(dec!==undefined){
+    num=num+'.'+ dec;
+   }
+   this.getView().byId('clarifiedAmount').setValue(num);
+}
+
+
+
+
+        },
+     
+       
         bloquearCampos: function( modo, Estatus ){
-            
+            var Model=this.getView().getModel('Aclaracion').getData();
+            console.log(Model)
                 let Controles = this.getView().getControlsByFieldGroupId('aclaracion');
 
                 for (let i = 0; i < Controles.length; i++) {
                     const element = Controles[i];
-                   
-                    if( typeof element.setEditable == 'function' ) 
+                
+                    if( typeof element.setEditable == 'function' &&  (!(element.sId.includes("clarifiedAmount"))&& Model.descripcionEstatus!== "CONCLUIDA")) 
                       
                         element.setEditable( false ).setEnabled( false );
                         
-                    else if( typeof element.setEnabled == 'function' )
+                    else if( typeof element.setEnabled == 'function' && (!(element.sId.includes("clarifiedAmount"))&& Model.descripcionEstatus!== "CONCLUIDA")) 
                         element.setEnabled( false );
-                    else if( typeof element.setUploadEnabled == 'function' )
+                    else if( typeof element.setUploadEnabled == 'function' &&  (!(element.sId.includes("clarifiedAmount"))&& Model.descripcionEstatus!== "CONCLUIDA")) 
                         element.setUploadEnabled( false )
                 }
 
@@ -623,6 +659,7 @@ return formateado
             if( modo === "edit" ) {
 
                 //this.getView().byId("analyst").setEnabled(true).setEditable(true);
+
                 switch (Estatus) {
                     case "B":
                         this.getView().byId("clarificationType").setEnabled(true).setEditable(true);
@@ -631,9 +668,9 @@ return formateado
                     case "C":
                         let ComboStatus = this.getView().byId("status");
                         ComboStatus.setEnabled(true).setEditable(true);
-                        this.getView().byId("paymentDocument").setEnabled(true).setEditable(true);
+                      //  this.getView().byId("paymentDocument").setEnabled(true).setEditable(true);
                         this.getView().byId("comments").setEnabled(true).setEditable(true);
-                        this.getView().byId("validatePaymentDocument").setEnabled(true);
+                       // this.getView().byId("validatePaymentDocument").setEnabled(true);
                         ComboStatus.getItemByKey('A').setEnabled( false );
                         ComboStatus.getItemByKey('B').setEnabled( false );
                         
@@ -643,10 +680,10 @@ return formateado
                         break;
                     case "E":
                         this.getView().byId("status").setEnabled(true).setEditable(true);
-                        this.getView().byId("paymentDocument").setEnabled(true).setEditable(true);
+                    //    this.getView().byId("paymentDocument").setEnabled(true).setEditable(true);
                         this.getView().byId("comments").setEnabled(true).setEditable(true);
                         this.getView().byId("clarificationType").setEnabled(true).setEditable(true);
-                        this.getView().byId("validatePaymentDocument").setEnabled(true);
+                      //  this.getView().byId("validatePaymentDocument").setEnabled(true);
                         this.getView().byId("analyst").setEnabled(true).setEditable(true);
                         ComboStatus.getItemByKey('A').setEnabled(false);
                         ComboStatus.getItemByKey('B').setEnabled(false);
@@ -656,9 +693,9 @@ return formateado
                         break;
                     case "G":
                         this.getView().byId("status").setEnabled(true).setEditable(true);
-                        this.getView().byId("paymentDocument").setEnabled(true).setEditable(true);
+                      //  this.getView().byId("paymentDocument").setEnabled(true).setEditable(true);
                         this.getView().byId("comments").setEnabled(true).setEditable(true);
-                        this.getView().byId("validatePaymentDocument").setEnabled(true);
+                   //     this.getView().byId("validatePaymentDocument").setEnabled(true);
                         ComboStatus.getItemByKey('A').setEnabled(false);
                         ComboStatus.getItemByKey('B').setEnabled(false);
                         ComboStatus.getItemByKey('C').setEnabled(false);
@@ -845,7 +882,7 @@ var ArrT=[];
             this.getView().byId('receipt').setValue(Recibo);
             
         },
-        validatePaymentDocument : function(oEvent){
+       /* validatePaymentDocument : function(oEvent){
             let inputInvoice = this.getView().byId('paymentDocument');
 
             if( inputInvoice.getValue().trim() == '' ){
@@ -889,7 +926,7 @@ var ArrT=[];
             if( expirationDate != '' ) this.getView().byId('expirationDate').setDateValue(new Date(expirationDate + "T00:00:00"));
             
             
-        },
+        },*/
         loadAnalyst: function(oControlEvent){
 
             
