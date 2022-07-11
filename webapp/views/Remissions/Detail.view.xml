@@ -42,8 +42,7 @@
                                     text="{appTxts>/rem.cancel}"
                                     type="Transparent"
                                     press=".hancleCandel(${tableRemissionDetail>/Eremh/Remfolio})"
-                                    visible="{= ${tableRemissionDetail>/Eremh/NstatusCan} === '' }"
-                                     />
+                                    visible="{= ${tableRemissionDetail>/Eremh/NstatusCan} === '' }"/>
                             <m:Button 
                                     text="{appTxts>/rem.labels}"
                                     type="Transparent"
