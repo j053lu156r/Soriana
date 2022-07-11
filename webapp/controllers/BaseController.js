@@ -330,7 +330,7 @@ sap.ui.define([
 
         onValueHelpClose: function (oEvent) {
             var oSelectedItem = oEvent.getParameter("selectedItem");
-                    
+
             var descBloqueo = ""
 
             var oList = oEvent.getSource().getBinding("items").oList
@@ -1062,7 +1062,7 @@ sap.ui.define([
             return new Promise(function(fnResolve, fnReject) {
 
                 var oModel = new sap.ui.model.odata.v2.ODataModel(oModel2);
-               // oModel.setUseBatch(false);
+                oModel.setUseBatch(false);
                 oModel.read(entidad, {
                     filters: filter,
                      urlParameters: {
