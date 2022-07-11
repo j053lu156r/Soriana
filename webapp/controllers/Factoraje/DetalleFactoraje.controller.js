@@ -131,9 +131,9 @@ sap.ui.define([
 			// format[AAAAMMDD] (2020101)
 			let desde_LV_ZHASTA = dateFormat.format(todayDate) // this.buildSapDate(todayDate);
 
-			//desde_LV_ZDESDE ="20211118"
+			desde_LV_ZDESDE ="-"
 
-			//desde_LV_ZHASTA = "20211118"
+			desde_LV_ZHASTA = "-"
 
 
 			let doc_BELNR = this._document // documentoInput.getValue();
@@ -189,19 +189,22 @@ sap.ui.define([
 			)
 
 
+			var formatedBlnr = `${doc_BELNR}`
+			var formatedEjercicio = `'${this._ejercicio}'`
+
 
 			auxFilters.push(new sap.ui.model.Filter({
 					path: "Belnr",
 					operator: sap.ui.model.FilterOperator.EQ,
-					value1: doc_BELNR
+					value1: formatedBlnr
 				})
 
 			)
 
 			auxFilters.push(new sap.ui.model.Filter({
-					path: "Gjahr",
+					path: "GJAHR",
 					operator: sap.ui.model.FilterOperator.EQ,
-					value1: this._ejercicio
+					value1: formatedEjercicio
 				})
 
 			)
@@ -209,7 +212,7 @@ sap.ui.define([
 
 
 
-			var model = "ZOSP_STATEMENT_SRV_01";
+			var model = "ZOCP_FACTORAJE_SRV";
 			var entity = "EStmtHdrSet";
 			var expand = ['Citms'];
 			var filter = auxFilters;
@@ -248,9 +251,9 @@ sap.ui.define([
 					return total
 				}, 0);
 
-				var groupedMovs = this.groupArrayOfObjects(auxArray, "DescripcionGpo");
+				var groupedMovs = that.groupArrayOfObjects(auxArray, "DescripcionGpo");
 				var nestedMovs = []
-				var me = this;
+				var me = that;
 				for (let x in groupedMovs) {
 
 
@@ -293,9 +296,9 @@ sap.ui.define([
 					}
 				});
 
-				this.getOwnerComponent().setModel(jsonModelG, "GroupedFactoraje");
+				that.getOwnerComponent().setModel(jsonModelG, "GroupedFactoraje");
 
-				this.initTable()
+				that.initTable()
 
 
 
