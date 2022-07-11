@@ -17,7 +17,7 @@ sap.ui.define([
     var swProveedorEnGS1 = false;
     var swProveedorExcluido = false;
     var _selectedEanType = {};
-    var _testingSteps = false; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
+    var _testingSteps = true; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
 
     return BaseController.extend("demo.controllers.Products.Master", {
         formatterCatPrd: formatterCatPrd,

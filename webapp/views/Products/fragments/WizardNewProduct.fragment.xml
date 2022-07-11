@@ -766,7 +766,7 @@
                                             <Link
                                                 text="{appTxts>/products.linkGuiaImg}"
                                                 target="_blank"
-                                                href="/public/PDFs/GUIA.pdf" />
+                                                href="/index/public/GUIAS/GUIA_imagenes.pdf" />
 
                                         </OverflowToolbar>
                             </upload:toolbar>

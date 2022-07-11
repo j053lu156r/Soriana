@@ -31,6 +31,16 @@
 								text="{appTxts>/products.messageStripMassiveReg}"
 								showIcon="true"/>
 
+                                <Link
+                                                text="{appTxts>/products.linkGuideMassive}"
+                                                target="_blank"
+                                                href="/index/public/GUIAS/Guia_Alta_Masiva.pdf" />
+
+                                <Link
+                                                text="{appTxts>/products.linkFormatMassive}"
+                                                target="_blank"
+                                                href="/index/public/GUIAS/Formato_Alta_Masiva.xlsx" />
+
         <Label text="{appTxts>/products.personalBuyerEmail}" labelFor="correoInput" />
 		<Input
 			id="correoInput"
