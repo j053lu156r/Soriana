@@ -242,10 +242,7 @@
                     "bind2": "sendcompl",
                     "functions": [
                         {
-                            "idFunction": 9
-                        },
-                        {
-                            "idFunction": 10
+                            "idFunction": 51
                         }
                     ]
                 },
@@ -515,7 +512,7 @@
                     "binding": "masterAcuerdos",
                     "functions": [
                         {
-                            "idFunction": 29
+                            "idFunction": 52
                         }
                     ]
                 },
@@ -545,7 +542,7 @@
                     "binding": "masterBoletinVta",
                     "functions": [
                         {
-                            "idFunction": 39
+                            "idFunction": 53
                         }
                     ]
                 }
