@@ -130,7 +130,7 @@ sap.ui.define([
                 console.log(data)
                 var dirtyArray = data[0].EPYMNTDOCSNAV.results
 
-                var cleanedArray = dirtyArray //dirtyArray.filter(obj => obj.Vblnr.startsWith("58"));
+                var cleanedArray = dirtyArray.filter(obj => obj.Vblnr.startsWith("58"));
 
 
                 if(cleanedArray.length>0){

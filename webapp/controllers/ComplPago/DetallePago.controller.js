@@ -525,7 +525,8 @@ console.log(TDatos)
         var tcode = results.Tcode
         console.log(sociedad, ejercicio, tcode)
         var doc = results.Belnr
-        var acuerdosTCodes = ['WEB4','WLF4','MEB2','MEB0','WLF2','ZMMFILACUERDO','WFL5']
+        var acuerdosTCodes = ['WEB4','WLF4','MEB2','MEB0','WLF2','ZMMFILACUERDO','WFL5','MEB4']
+
         var aportacionesTCodes = ['Z_APORTACIONES']
 
 
@@ -533,7 +534,8 @@ console.log(TDatos)
         console.log(acuerdosTCodes.includes(tcode))
         console.log(doc)
         console.log(results.Foliodescuento)
-        if ( (acuerdosTCodes.includes(tcode)  && doc.startsWith('510')) || (tcode == "" && !( doc.startsWith("170") &&  results.Foliodescuento ))   ) {
+
+        if (( tcode.match("(ZMMFILACUERDO|MEB|WLF).*")  && doc.startsWith('51')) || (tcode == "" && !( doc.startsWith("170") &&  results.Foliodescuento ))   ) {
 //1500000453  1500177301
             console.log('on detailAcuerdosAS')
 				 this.getOwnerComponent().getRouter().navTo("detailAcuerdos",
