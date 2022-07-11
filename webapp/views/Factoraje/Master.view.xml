@@ -115,7 +115,7 @@
                     </t:extension>
                     <t:columns>
                         <t:Column
-                            width           = "13%"
+                            width           = "auto"
                             hAlign          = "Left">
                             <Label text="{appTxts>/pay.headerCompany}" />
                             <t:template>
@@ -123,7 +123,7 @@
                             </t:template>
                         </t:Column>
                         <t:Column
-                            width           = "auto" >
+                            width           = "15%" >
                             <Label text="{appTxts>/pay.headerPaymentType}" />
                             <t:template>
                                 <Text text="{Documentos>Text2}" wrapping="false"/>
@@ -137,6 +137,7 @@
                                 <ObjectIdentifier titlePress="onDocumentPress" titleActive="true" title="{Documentos>Vblnr}" wrapping="false"/>
                             </t:template>
                         </t:Column>
+                       <!--
                         <t:Column
                             width           = "5%"
                             hAlign          = "Center" >
@@ -145,8 +146,9 @@
                                 <Button icon="sap-icon://document-text" type="Transparent" press="generateFile" ></Button>
                             </t:template>
                         </t:Column>
+                        -->
                         <t:Column
-                            width           = "7%"
+                            width           = "15%"
                             hAlign          = "Center"
                             id              = "column5">
                             <Label text="{appTxts>/pay.headerLimitDate}" />
@@ -155,7 +157,7 @@
                             </t:template>
                         </t:Column>
                         <t:Column
-                            width           = "12%"
+                            width           = "15%"
                             hAlign          = "Center"
                             id              = "column6">
                             <Label text="{appTxts>/pay.headerAmount}" />

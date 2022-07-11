@@ -96,7 +96,7 @@ sap.ui.define([
             auxFilters.push(new sap.ui.model.Filter({
                     path: "IOption",
                     operator: sap.ui.model.FilterOperator.EQ,
-                    value1: '2'
+                    value1: '4'
                 })
 
             )
@@ -130,7 +130,7 @@ sap.ui.define([
                 console.log(data)
                 var dirtyArray = data[0].EPYMNTDOCSNAV.results
 
-                var cleanedArray =  dirtyArray.filter(obj => obj.Vblnr.startsWith("58"));
+                var cleanedArray = dirtyArray //dirtyArray.filter(obj => obj.Vblnr.startsWith("58"));
 
 
                 if(cleanedArray.length>0){

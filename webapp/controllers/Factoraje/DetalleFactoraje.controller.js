@@ -69,7 +69,7 @@ sap.ui.define([
 					this.getView().setModel(oModel, 'filterOptions');
 
 
-					//configuracion tabla 
+					//configuracion tabla
 
 
 
@@ -97,7 +97,7 @@ sap.ui.define([
 								}.bind(this)
 							});
 						}, this);
-						
+
 						*/
 
 		},
@@ -108,20 +108,20 @@ sap.ui.define([
 
 			//let dateRange = this.getView().byId("dateRange");
 
-			//ciltro documento 
+			//ciltro documento
 
 			var dateFormat = sap.ui.core.format.DateFormat.getDateInstance({
 				pattern: "YYYYMMdd"
 			});
 			let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
 			// format[AAAAMMDD] (2020101)
-			// let desde_LV_ZDESDE = this.buildSapDate( dateRange.getDateValue()       ); 
+			// let desde_LV_ZDESDE = this.buildSapDate( dateRange.getDateValue()       );
 			// format[AAAAMMDD] (2020101)
 			// let desde_LV_ZHASTA = this.buildSapDate( dateRange.getSecondDateValue() );
 
 
 
-			//tomar valores dummy para hacer al consulta 
+			//tomar valores dummy para hacer al consulta
 			let todayDate = new Date();
 
 			console.log(this._fecha)
@@ -141,6 +141,7 @@ sap.ui.define([
 			//checbox validaciones
 
 
+			let EJERCICIO = this._ejercicio;
 
 
 
@@ -161,13 +162,152 @@ sap.ui.define([
 
 
 
-			var oODataJSONModel = this.getOdata(sUri);
- 
+			//var oODataJSONModel = this.getOdata(sUri);
 
-				let urlParams = `EStmtHdrSet?$expand=Citms&$filter= Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZDESDE}'${queryFiltro} &$format=json`;
+
+			let urlParams = `EStmtHdrSet?$expand=Citms&$filter= Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZDESDE}'${queryFiltro} &$format=json`;
 
 			//let urlParams = `EStmtHdrSet?$expand=Citms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}'${queryFiltro} &$format=json`;
 			//Xblnr
+
+			var auxFilters = [];
+
+			auxFilters.push(new sap.ui.model.Filter({
+					path: "Datei",
+					operator: sap.ui.model.FilterOperator.EQ,
+					value1: desde_LV_ZDESDE
+				})
+
+			)
+
+			auxFilters.push(new sap.ui.model.Filter({
+					path: "Datef",
+					operator: sap.ui.model.FilterOperator.EQ,
+					value1: desde_LV_ZHASTA
+				})
+
+			)
+
+
+
+			auxFilters.push(new sap.ui.model.Filter({
+					path: "Belnr",
+					operator: sap.ui.model.FilterOperator.EQ,
+					value1: doc_BELNR
+				})
+
+			)
+
+			auxFilters.push(new sap.ui.model.Filter({
+					path: "Gjahr",
+					operator: sap.ui.model.FilterOperator.EQ,
+					value1: this._ejercicio
+				})
+
+			)
+
+
+
+
+			var model = "ZOSP_STATEMENT_SRV_01";
+			var entity = "EStmtHdrSet";
+			var expand = ['Citms'];
+			var filter = auxFilters;
+			var select = "";
+			sap.ui.core.BusyIndicator.show();
+
+			let that = this
+
+			this._GetODataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
+				sap.ui.core.BusyIndicator.hide();
+				var data = _GEToDataV2Response.data.results;
+
+				console.log(data)
+				let Detalles = [...data[0].Citms.results];
+
+				var cleanedArray = Detalles  //Detalles.filter(obj => !obj.Belnr.startsWith("58") && !obj.Belnr.startsWith("59"));
+
+
+				data[0].Detalles = {
+					results: [...cleanedArray]
+				};
+
+
+				var JSONT = $.extend({}, data[0]);
+				var jsonModelT = new JSONModel();
+				jsonModelT.setData(JSONT);
+				//filtrar totales y crear modelo grupal
+
+				let auxArray = [...cleanedArray]
+
+
+				var sumaAux = auxArray.reduce(function (_this, val) {
+					//console.log(val.Wrbtr)
+					var current = Number(val.Wrbtr)
+					var total = _this + current
+					return total
+				}, 0);
+
+				var groupedMovs = this.groupArrayOfObjects(auxArray, "DescripcionGpo");
+				var nestedMovs = []
+				var me = this;
+				for (let x in groupedMovs) {
+
+
+					var cost = groupedMovs[x].reduce(function (_this, val) {
+						var current = Number(val.Wrbtr)
+						var total = _this + current
+						return total
+					}, 0);
+
+					nestedMovs.push({
+						"name": x,
+						"totalRegs": groupedMovs[x].length,
+						"totalDebit": 0,
+						"totalCredit": 0,
+						"cost": me.truncate(cost, 2),
+						"positions": groupedMovs[x]
+
+					})
+
+				}
+
+
+				var totalR = nestedMovs.reduce(function (_this, val) {
+					var current = Number(val.totalRegs)
+					var total = _this + current
+					return me.truncate(total, 2)
+				}, 0);
+
+
+				var cor = .00001
+				sumaAux = sumaAux + cor
+				var jsonModelG = new JSONModel({
+					"Hierarchy": {
+						"movimientos": nestedMovs,
+						"totalR": totalR,
+						"totalD": 0,
+						"totalC": 0,
+						"totalCostos": me.truncate(sumaAux, 2)
+
+					}
+				});
+
+				this.getOwnerComponent().setModel(jsonModelG, "GroupedFactoraje");
+
+				this.initTable()
+
+
+
+
+			});
+
+
+
+
+//CODIGO V!
+
+			/*
 
 			var odTJSONModel = this.getOdataJsonModel(urlParams, oODataJSONModel);
 			dTJSON = odTJSONModel.getJSON();
@@ -180,10 +320,6 @@ sap.ui.define([
 			};
 
 			delete TDatos.results[0].Citms;
-			//delete TDatos.results[0].Oitms;
-
-
-			//TDatos.results[0].periodo = "Del " + this.formatDateTime(dateRange.getDateValue(), 'dd/MM/YYYY') + " al " + this.formatDateTime(dateRange.getSecondDateValue(), 'dd/MM/YYYY');
 
 
 			var JSONT = $.extend({}, TDatos.results[0]);
@@ -191,8 +327,6 @@ sap.ui.define([
 			jsonModelT.setData(JSONT);
 
 
-
-			//filtrar totales y crear modelo grupal 
 
 			let auxArray = [...Detalles]
 
@@ -205,22 +339,10 @@ sap.ui.define([
 				return total
 			}, 0);
 
-
-
-
-
-
-
 			var groupedMovs = this.groupArrayOfObjects(auxArray, "DescripcionGpo");
 			var nestedMovs = []
-
 			var me = this;
-
 			for (let x in groupedMovs) {
-
-
-				console.log("sumando valores");
-
 
 
 				var cost = groupedMovs[x].reduce(function (_this, val) {
@@ -228,7 +350,6 @@ sap.ui.define([
 					var total = _this + current
 					return total
 				}, 0);
-
 
 				nestedMovs.push({
 					"name": x,
@@ -240,18 +361,14 @@ sap.ui.define([
 
 				})
 
-
 			}
 
-
-			console.log(nestedMovs);
 
 			var totalR = nestedMovs.reduce(function (_this, val) {
 				var current = Number(val.totalRegs)
 				var total = _this + current
 				return me.truncate(total, 2)
 			}, 0);
-
 
 
 			var cor = .00001
@@ -267,17 +384,14 @@ sap.ui.define([
 				}
 			});
 
-			console.log(jsonModelG);
-
 			this.getOwnerComponent().setModel(jsonModelG, "GroupedFactoraje");
-
 
 			this.initTable()
 
 			//	this.getOwnerComponent().setModel(jsonModelT, "totales");
 
 			//this.paginate("totales", "/Detalles", 1, 0);
-
+*/
 		},
 
 		subtractYears: function (numOfYears, date = new Date()) {
@@ -304,7 +418,7 @@ sap.ui.define([
 		/***HANDLE TABLE FILTER METHODS */
 
 
-		//esta fucnion inicializa la tabla de forma gerarquica 
+		//esta fucnion inicializa la tabla de forma gerarquica
 		initTable: function () {
 
 			console.log('on init table')
@@ -382,7 +496,7 @@ sap.ui.define([
 				this.byId("conciliacionColumn").setVisible(false);
 				this.byId("tipoMovColumn").setVisible(true);
 
-				//totles 
+				//totles
 				this.byId("tipoColumn").setVisible(false);
 
 				this.byId("totalRegColumn").setVisible(false);
@@ -501,7 +615,7 @@ sap.ui.define([
 				//console.log(registro)
 				var tcode = results.Tcode
 
-				//NAVEGACION A ERER NIVEL 
+				//NAVEGACION A ERER NIVEL
 
 /*
 				if (tcode !== "Z_APORTACIONES") {
@@ -615,7 +729,7 @@ sap.ui.define([
 				}),
 				"detailFactoraje");
 
-			//consume el servicio para obtener los docuemntos 
+			//consume el servicio para obtener los docuemntos
 
 			this.searchData()
 
