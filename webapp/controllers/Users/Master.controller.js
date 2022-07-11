@@ -16,6 +16,7 @@ sap.ui.define([
     var oModel = new this.UserModel();
     return Controller.extend("demo.controllers.Users.Master", {
         onInit: function () {
+            
             this._pdfViewer = new PDFViewer();
             this.getView().addDependent(this._pdfViewer);
             this.getView().addEventDelegate({
@@ -34,7 +35,7 @@ sap.ui.define([
         },
         searchData: function () {
             if(!this.hasAccess(12)){
-                return
+                return false;
             }
             var bContinue = false;
             if (!oModel.getModel()) {
