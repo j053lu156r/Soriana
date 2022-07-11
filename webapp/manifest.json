@@ -453,6 +453,14 @@
                     ]
                 },
                 {
+                    "pattern": "detailDetailAcuCP/{layout}/{sociedad}/{document}/{ejercicio}/{doc}/{tda}",
+                    "name": "detailDetailAcuCP",
+                    "target": [
+                        "detailDetailAcuCP"
+                    ],
+                    "layout": "EndColumnFullScreen"
+                },
+                {
                     "pattern": "detailAcuerdosFactoraje/{layout}/{document}/{sociedad}/{ejercicio}/{doc}",
                     "name": "detailAcuerdosFactoraje",
                     "target": [
@@ -920,6 +928,11 @@
                 },
                 "detailDetailAcuEC": {
                     "viewName": "DetailDetailEC",
+                    "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "endColumnPages"
+                },
+                "detailDetailAcuCP": {
+                    "viewName": "DetailDetailCP",
                     "viewPath": "demo.views.Acuerdos",
                     "controlAggregation": "endColumnPages"
                 },

@@ -67,7 +67,7 @@ sap.ui.define([
 					this.getView().setModel(oModel, 'filterOptions');
 
 
-					//configuracion tabla 
+					//configuracion tabla
 
 
 
@@ -95,7 +95,7 @@ sap.ui.define([
 								}.bind(this)
 							});
 						}, this);
-						
+
 						*/
 
 		},
@@ -106,20 +106,20 @@ sap.ui.define([
 var that=this;
 			//let dateRange = this.getView().byId("dateRange");
 
-			//ciltro documento 
-			 
+			//ciltro documento
+
 			var dateFormat = sap.ui.core.format.DateFormat.getDateInstance({
 				pattern: "YYYYMMdd"
 			});
 			let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
 			// format[AAAAMMDD] (2020101)
-			// let desde_LV_ZDESDE = this.buildSapDate( dateRange.getDateValue()       ); 
+			// let desde_LV_ZDESDE = this.buildSapDate( dateRange.getDateValue()       );
 			// format[AAAAMMDD] (2020101)
 			// let desde_LV_ZHASTA = this.buildSapDate( dateRange.getSecondDateValue() );
 
 
 
-			//tomar valores dummy para hacer al consulta 
+			//tomar valores dummy para hacer al consulta
 			let todayDate = new Date();
 
 			console.log(this._fecha)
@@ -131,14 +131,14 @@ var that=this;
 
 
 
-			
+
 
 			let doc_BELNR = this._document// documentoInput.getValue();
 
 			//checbox validaciones
 
- 
-		 
+
+
 
 
 			if (proveedor_LIFNR == null || proveedor_LIFNR == "") {
@@ -153,9 +153,9 @@ var that=this;
 			var BUKRS = this._sociedad
 
 
-			 
+
 			var queryFiltro = ` and belnr eq '${doc_BELNR}' and Bukrs eq '${BUKRS}' `
- 
+
 
 
 			var oODataJSONModel = this.getOdata(sUri);
@@ -164,13 +164,13 @@ var that=this;
 		/*	let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}'${queryFiltro} &$format=json`;
 			//Xblnr*/
             var auxFilters = [];
-         
+
             auxFilters.push(new sap.ui.model.Filter({path: "Datei", operator: sap.ui.model.FilterOperator.EQ, value1: desde_LV_ZDESDE}));
             auxFilters.push(new sap.ui.model.Filter({path: "Lifnr", operator: sap.ui.model.FilterOperator.EQ, value1: proveedor_LIFNR }));
             auxFilters.push(new sap.ui.model.Filter({path: "Datef", operator: sap.ui.model.FilterOperator.EQ, value1: desde_LV_ZHASTA }));
             auxFilters.push(new sap.ui.model.Filter({path: "belnr", operator: sap.ui.model.FilterOperator.EQ, value1: doc_BELNR }));
             auxFilters.push(new sap.ui.model.Filter({path: "Bukrs", operator: sap.ui.model.FilterOperator.EQ, value1: BUKRS }));
-               
+
 
             var model = "ZOCP_DOCPAGO_SRV";
             var entity = "EStmtHdrSet";
@@ -204,7 +204,7 @@ console.log(TDatos)
 
 
 
-			//filtrar totales y crear modelo grupal 
+			//filtrar totales y crear modelo grupal
 
  			let auxArray = [...Detalles]
 
@@ -212,12 +212,12 @@ console.log(TDatos)
 
 			var sumaAux = auxArray.reduce(function (_this, val) {
 				//console.log(val.Wrbtr)
-				var current = Number(val.Wrbtr) 
+				var current = Number(val.Wrbtr)
 				var total = _this + current
 				return  total
 			}, 0);
 
-			 
+
 
 
 
@@ -233,10 +233,10 @@ console.log(TDatos)
 
 				console.log("sumando valores");
 
- 
+
 
 				var cost = groupedMovs[x].reduce(function (_this, val) {
-					var current =   Number(val.Wrbtr)  
+					var current =   Number(val.Wrbtr)
 					var total = _this + current
 					return total
 				}, 0);
@@ -264,7 +264,7 @@ console.log(TDatos)
 				return that.truncate(total, 2)
 			}, 0);
 
-		 
+
 
 			var cor=.00001
 			sumaAux = sumaAux + cor
@@ -289,11 +289,11 @@ console.log(TDatos)
 		//	this.getOwnerComponent().setModel(jsonModelT, "totales");
 
 			//this.paginate("totales", "/Detalles", 1, 0);
-        
+
 
 
             });
-		
+
 
 		},
 
@@ -321,7 +321,7 @@ console.log(TDatos)
 		/***HANDLE TABLE FILTER METHODS */
 
 
-		//esta fucnion inicializa la tabla de forma gerarquica 
+		//esta fucnion inicializa la tabla de forma gerarquica
 		initTable: function () {
 
 			console.log('on init table')
@@ -399,7 +399,7 @@ console.log(TDatos)
 				this.byId("conciliacionColumn").setVisible(true);
 				this.byId("tipoMovColumn").setVisible(true);
 
-				//totles 
+				//totles
 				this.byId("tipoColumn").setVisible(false);
 
 				this.byId("totalRegColumn").setVisible(false);
@@ -407,7 +407,7 @@ console.log(TDatos)
 				this.byId("creditColumn").setVisible(false);
 				this.byId("costoColumn").setVisible(false);
 
-				
+
 
 
 
@@ -512,7 +512,7 @@ console.log(TDatos)
 				console.log(sPath)
 				//let posicion = oEvent.getSource().getBindingContext("GroupedTotales").getPath().split("/").pop();
 				let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(sPath);
-	
+
 				console.log(results)
                 var sociedad = this.getOwnerComponent().getModel('GroupedTotales').getProperty('/Bukrs');
                 var ejercicio2 = results.Budat;
@@ -528,6 +528,8 @@ console.log(TDatos)
         var acuerdosTCodes = ['WEB4','WLF4','MEB2','MEB0','WLF2','ZMMFILACUERDO','WFL5']
         var aportacionesTCodes = ['Z_APORTACIONES']
 
+
+
         console.log(acuerdosTCodes.includes(tcode))
         console.log(doc)
         console.log(results.Foliodescuento)
@@ -539,7 +541,7 @@ console.log(TDatos)
 						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
 						document: results.Belnr,
 					    sociedad: this._sociedad,
-						ejercicio: this._ejercicio,
+						ejercicio: ejercicio,
 					    doc: this._document,
 						fecha: this._fecha
 					   // lifnr: docResult.Lifnr
@@ -554,7 +556,7 @@ console.log(TDatos)
 						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
 						document: results.Foliodescuento,
  						sociedad: this._sociedad,
-						ejercicio: this._ejercicio,
+						ejercicio: ejercicio,
 					    doc: this._document,
 						fecha: this._fecha
 						//ejercicio: ejercicio,
@@ -562,8 +564,8 @@ console.log(TDatos)
 					   // zbukr: docResult.Zbukr,
 					   // lifnr: docResult.Lifnr
 					}, true);
-	
-	
+
+
 
 					}
 
@@ -650,7 +652,7 @@ console.log(TDatos)
 				}),
 				"detailComplPagos");
 
-				//consume el servicio para obtener los docuemntos 
+				//consume el servicio para obtener los docuemntos
 
 				 this.searchData()
 
