@@ -96,7 +96,7 @@ sap.ui.define([
             auxFilters.push(new sap.ui.model.Filter({
                     path: "IOption",
                     operator: sap.ui.model.FilterOperator.EQ,
-                    value1: '2'
+                    value1: '4'
                 })
 
             )
