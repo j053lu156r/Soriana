@@ -79,7 +79,7 @@ sap.ui.define([
 
 
 			if (!this._pTemplate) {
-				this._pTemplate = Fragment.load({
+				this._pTemplate = this.loadFragment({
 					id: this.getView().getId(),
 					name: "demo.views.Factoraje.Row"
 				});
@@ -745,20 +745,66 @@ sap.ui.define([
 
 		_onDocumentPress: function (oEvent) {
 			console.log('on documnt press', oEvent);
-			let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
-			let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
+			let posicion = oEvent.getSource().getBindingContext("GroupedFactoraje").getPath() ;
+			let results = this.getOwnerComponent().getModel("GroupedFactoraje").getProperty(posicion);
 
-			let registro = results[posicion];
-			console.log(registro)
+ 			console.log(results)
 
-			this.getOwnerComponent().getRouter().navTo("detailComplPagos", {
-				layout: sap.f.LayoutType.TwoColumnsMidExpanded,
-				document: registro.Vblnr
-				// laufd: docResult.Laufd,
-				// laufi: docResult.Laufi,
-				// zbukr: docResult.Zbukr,
-				// lifnr: docResult.Lifnr
-			}, true);
+
+			var sociedad = this.getOwnerComponent().getModel('GroupedFactoraje').getProperty('/Bukrs');
+			var ejercicio2 = results.Gjahr;
+			var ejercicio = ejercicio2.substr(0, 4) ? ejercicio2.substr(0, 4) : ""
+
+			var tcode = results.Tcode
+			console.log(sociedad, ejercicio, tcode)
+			var doc = results.Belnr
+
+			var aportacionesTCodes = ['Z_APORTACIONES']
+
+			//logica para enviar a Aportaciones o a Acuerdos
+			console.log((( tcode !== "" &&  tcode.match("(ZMMFILACUERDO|MEB|WLF).*")  &&  doc.startsWith('51')) || ((tcode === "" && !( doc.startsWith("170") ) &&  results.Foliodescuento ))   ) )
+			if (( tcode !== "" &&  tcode.match("(ZMMFILACUERDO|MEB|WLF).*")  &&  doc.startsWith('51')) || ((tcode === "" && !( doc.startsWith("170") ) &&  results.Foliodescuento ))   ) {
+//1500000453  1500177301
+
+
+				console.log('on detail factoraje acuerdos',tcode.match("(ZMMFILACUERDO|MEB|WLF).*") )
+				this.getOwnerComponent().getRouter().navTo("detailAcuerdosFactoraje",
+					{
+						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
+						document: results.Belnr,
+						sociedad: this._sociedad,
+						ejercicio: ejercicio2,
+						doc: this._document,
+						fecha: this._fecha
+						// lifnr: docResult.Lifnr
+					}, true);
+
+			}else if ((aportacionesTCodes.includes(tcode) || ( doc.startsWith("170")) &&  results.Foliodescuento )  ) {
+
+
+				console.warn('on detail factoraje aportaciones')
+				this.getOwnerComponent().getRouter().navTo("detailAportacionesFactoraje",
+					{
+						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
+						document: results.Foliodescuento,
+						sociedad: this._sociedad,
+						ejercicio: ejercicio2,
+						doc: this._document,
+						fecha: this._fecha
+						//ejercicio: ejercicio,
+						//doc: results.Belnr,
+						// zbukr: docResult.Zbukr,
+						// lifnr: docResult.Lifnr
+					}, true);
+
+
+
+			}else{
+
+
+
+
+			}
 
 
 
