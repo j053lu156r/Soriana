@@ -213,11 +213,8 @@ sap.ui.define([
 		handleClose: function () {
 			console.log('on hanlde close')
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
-			this.oRouter.navTo("masterFactoring", {} );
+			this.oRouter.navTo("detailFactoring", {} );
 		},
-
-
-
 
     });
 });
