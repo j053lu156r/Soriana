@@ -96,8 +96,10 @@
 							<m:Text text="{tableRemissionDetail>/Eremh/Zcantped}"/>
 							<m:Label text="{appTxts>/rem.packagenumber}"/>
 							<m:Text text="{tableRemissionDetail>/Eremh/Zcantbul}"/>
+                            <!--
                             <m:Label text="{appTxts>/rem.cancelStatus}"/>
                             <m:Text text="{tableRemissionDetail>/Eremh/ZstatusCan}"/>
+                            -->
                         <m:layoutData>
 						    <m:FlexItemData growFactor="1" />
 					    </m:layoutData>
