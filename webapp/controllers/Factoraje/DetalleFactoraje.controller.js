@@ -762,7 +762,8 @@ sap.ui.define([
 			var aportacionesTCodes = ['Z_APORTACIONES']
 
 			//logica para enviar a Aportaciones o a Acuerdos
-			if (( tcode !== "" &&  tcode.match("(ZMMFILACUERDO|MEB|WLF).*")  &&  doc.startsWith('51')) || (tcode === "" && !( doc.startsWith("170") &&  results.Foliodescuento ))   ) {
+			console.log((( tcode !== "" &&  tcode.match("(ZMMFILACUERDO|MEB|WLF).*")  &&  doc.startsWith('51')) || ((tcode === "" && !( doc.startsWith("170") ) &&  results.Foliodescuento ))   ) )
+			if (( tcode !== "" &&  tcode.match("(ZMMFILACUERDO|MEB|WLF).*")  &&  doc.startsWith('51')) || ((tcode === "" && !( doc.startsWith("170") ) &&  results.Foliodescuento ))   ) {
 //1500000453  1500177301
 
 
@@ -795,6 +796,11 @@ sap.ui.define([
 						// zbukr: docResult.Zbukr,
 						// lifnr: docResult.Lifnr
 					}, true);
+
+
+
+			}else{
+
 
 
 

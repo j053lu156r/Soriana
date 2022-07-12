@@ -213,7 +213,15 @@ sap.ui.define([
 		handleClose: function () {
 			console.log('on hanlde close')
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
-			this.oRouter.navTo("detailFactoring", {} );
+			this.oRouter.navTo("detailFactoring",
+                {
+                    layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+                    document: this._doc,
+                    sociedad: this._sociedad,
+                    ejercicio:  this._ejercicio,
+                    fecha: this._fecha
+                    // lifnr: docResult.Lifnr
+                }, true);
 		},
 
     });
