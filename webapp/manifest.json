@@ -435,6 +435,15 @@
                     ]
                 },
                 {
+                    "pattern": "detailAportacionesFactoraje/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{fecha}",
+                    "name": "detailAportacionesFactoraje",
+                    "target": [
+                        "masterFactoring",
+                        "detailFactoring",
+                        "detailAportacionesFactoraje"
+                    ]
+                },
+                {
                     "pattern": "detailAcuerdosAS/{layout}/{document}/{sociedad}/{ejercicio}/{doc}",
                     "name": "detailAcuerdosAS",
                     "target": [
@@ -465,6 +474,8 @@
                     "name": "detailAcuerdosFactoraje",
                     "target": [
 
+                        "masterFactoring",
+                        "detailFactoring",
                         "detailAcuerdosFactoraje"
 
                     ]
@@ -906,6 +917,11 @@
                     "viewPath": "demo.views.Aportaciones",
                     "controlAggregation": "endColumnPages"
                 },
+                "detailAportacionesFactoraje": {
+                    "viewName": "DetailDetailAS",
+                    "viewPath": "demo.views.Aportaciones",
+                    "controlAggregation": "endColumnPages"
+                },
                 "masterAcuerdos" : {
                     "viewName": "Master",
                     "viewPath": "demo.views.Acuerdos",
@@ -918,6 +934,11 @@
                 },
                 "detailAcuerdos": {
                     "viewName": "Detail",
+                    "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "endColumnPages"
+                },
+                "detailAcuerdosFactoraje": {
+                    "viewName": "DetailFactoraje",
                     "viewPath": "demo.views.Acuerdos",
                     "controlAggregation": "endColumnPages"
                 },
