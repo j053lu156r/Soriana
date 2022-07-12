@@ -145,14 +145,14 @@
                                 <ObjectIdentifier titlePress="onDocumentPress" titleActive="true" title="{Documentos>Vblnr}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                       <!-- <t:Column 
+                        <t:Column 
                             width           = "5%" 
                             hAlign          = "Center" id="column4">
                             <Label text="{appTxts>/pay.headerFile}" />
                             <t:template>
                                 <Button icon="sap-icon://document-text" type="Transparent" press="generateFile" ></Button>
                             </t:template>
-                        </t:Column>-->
+                        </t:Column>
                         <t:Column 
                             width           = "7%" 
                             hAlign          = "Center"  
