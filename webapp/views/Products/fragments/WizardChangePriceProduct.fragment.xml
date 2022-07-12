@@ -49,8 +49,12 @@
                                 press="handleUploadPress"/>
                         </l:VerticalLayout>
                     </HBox>
+
+                    <ScrollContainer width="100%" horizontal="true" vertical="true" focusable="true">
+
+
                     <Table  mode="MultiSelect" id="tableItemsChangePrice"
-                        items="{ path : 'ETMODIFY>/Paginated/results'}"  visible="true">
+                        items="{ path : 'ETMODIFY>/Paginated/results'}"  visible="true"  width="220%">
                         <headerToolbar>
                             <OverflowToolbar>
                                 <Button text="{appTxts>/products.deletePrice}" id="btnDeleteChangePriceRow" press=".deleteRow('tableItemsChangePrice','ETMODIFY')" type="Emphasized" />
@@ -105,6 +109,49 @@
                                 </header>
                                 <footer/>
                             </Column>
+                            <!-- Nuevas columnas -->
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <header>
+                                <Text text="{appTxts>/products.normalDiscount}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                </header>
+                                <footer/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <header>
+                                <Text text="{appTxts>/products.additionalDiscount}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                </header>
+                                <footer/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <header>
+                                <Text text="{appTxts>/products.discountEarlyPay}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                </header>
+                                <footer/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <header>
+                                <Text text="{appTxts>/products.subtitleBonusType}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                </header>
+                                <footer/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <header>
+                                <Text text="{appTxts>/products.CostDiff}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                </header>
+                                <footer/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <header>
+                                <Text text="{appTxts>/products.CompCentral}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                </header>
+                                <footer/>
+                            </Column>
+                            <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                <header>
+                                <Text text="{appTxts>/products.CargoCosto}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                </header>
+                                <footer/>
+                            </Column>
                                             
                         </columns>
                         <items>
@@ -116,10 +163,21 @@
                                     <ObjectIdentifier text="{ETMODIFY>Descrip}" />
                                     <ObjectIdentifier text="{ETMODIFY>Costobant}" />
                                     <Input value="{ETMODIFY>Costobnuevo}" type="Number" liveChange="validateCstBrutNuevo" customData:cba="{ETMODIFY>Costobant}" ></Input>
+                                    <ObjectIdentifier text="{ETMODIFY>Costobant}" />
+                                    <ObjectIdentifier text="{ETMODIFY>Costobant}" />
+                                    <ObjectIdentifier text="{ETMODIFY>Costobant}" />
+                                    <ObjectIdentifier text="{ETMODIFY>Costobant}" />
+                                    <ObjectIdentifier text="{ETMODIFY>Costobant}" />
+                                    <ObjectIdentifier text="{ETMODIFY>Costobant}" />
+                                    <ObjectIdentifier text="{ETMODIFY>Costobant}" />
                                 </cells>
                             </ColumnListItem>
                         </items>
                     </Table>
+
+                     </ScrollContainer>
+
+
                     <OverflowToolbar visible="{= ${ETMODIFY>/Paginated/results/length} > 0 }">
                         <Text text="{ETMODIFY>/Paginated/initRow} - {ETMODIFY>/Paginated/endRow} {appTxts>/pagination.of} {ETMODIFY>/results/length}" />
                         <ToolbarSpacer/>
