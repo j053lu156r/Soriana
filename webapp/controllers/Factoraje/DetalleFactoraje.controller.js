@@ -190,13 +190,22 @@ sap.ui.define([
 
 
 			var formatedBlnr = `${doc_BELNR}`
-			var formatedEjercicio = `'${this._ejercicio}'`
+			var formatedEjercicio = `${this._ejercicio}`
+			var formatedLifnr = `${proveedor_LIFNR}`
 
 
 			auxFilters.push(new sap.ui.model.Filter({
 					path: "Belnr",
 					operator: sap.ui.model.FilterOperator.EQ,
 					value1: formatedBlnr
+				})
+
+			)
+
+			auxFilters.push(new sap.ui.model.Filter({
+					path: "LIFNR",
+					operator: sap.ui.model.FilterOperator.EQ,
+					value1: formatedLifnr
 				})
 
 			)
