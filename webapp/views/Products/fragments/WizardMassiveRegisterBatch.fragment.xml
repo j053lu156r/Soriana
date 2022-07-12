@@ -10,7 +10,7 @@
 		id="massiveRegisterDialog"
 		showHeader="false"
 		verticalScrolling="false"
-		contentHeight="60%"
+		contentHeight="70%"
 		contentWidth="45%"
         >
 		<f:DynamicPage
@@ -34,12 +34,14 @@
                                 <Link
                                                 text="{appTxts>/products.linkGuideMassive}"
                                                 target="_blank"
-                                                href="/index/public/GUIAS/Guia_Alta_Masiva.pdf" />
+                                                href="/index/public/GUIAS/Guia_Alta_Masiva.pdf" 
+                                                class="sapUiSmallMarginBottom"/>
 
                                 <Link
                                                 text="{appTxts>/products.linkFormatMassive}"
                                                 target="_blank"
-                                                href="/index/public/GUIAS/Formato_Alta_Masiva.xlsx" />
+                                                href="/index/public/GUIAS/Formato_Alta_Masiva.xlsx"
+                                                class="sapUiSmallMarginBottom" />
 
         <Label text="{appTxts>/products.personalBuyerEmail}" labelFor="correoInput" />
 		<Input
@@ -50,7 +52,7 @@
 			>
 		</Input>
 
-        <Label text="{appTxts>/products.fileUploaderMassiveReg}" labelFor="fileUploaderMassiveReg" />
+        <Label text="{appTxts>/products.fileUploaderMassiveReg}" labelFor="fileUploaderMassiveReg" class="sapUiSmallMarginTop"/>
 
 		<u:FileUploader
 			id="fileUploaderMassiveReg"
