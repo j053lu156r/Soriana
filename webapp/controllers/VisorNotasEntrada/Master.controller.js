@@ -124,6 +124,11 @@ idXblnr2: true
         },
 
         searchData: function () {
+
+
+            if(!this.hasAccess(48)){
+                return false;
+            }
             var that = this
             var Model = that.getView().getModel("configSite").getData();
             if (that.getView().byId("supplierInput").getValue() === '') {
