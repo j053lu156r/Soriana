@@ -759,10 +759,14 @@ sap.ui.define([
 			console.log(sociedad, ejercicio, tcode)
 			var doc = results.Belnr
 
+			var aportacionesTCodes = ['Z_APORTACIONES']
+
 			//logica para enviar a Aportaciones o a Acuerdos
-			if (( tcode.match("(ZMMFILACUERDO|MEB|WLF).*")  && doc.startsWith('51')) || (tcode == "" && !( doc.startsWith("170") &&  results.Foliodescuento ))   ) {
+			if (( tcode !== "" &&  tcode.match("(ZMMFILACUERDO|MEB|WLF).*")  &&  doc.startsWith('51')) || (tcode === "" && !( doc.startsWith("170") &&  results.Foliodescuento ))   ) {
 //1500000453  1500177301
-				console.log('on detail factoraje acuerdos')
+
+
+				console.log('on detail factoraje acuerdos',tcode.match("(ZMMFILACUERDO|MEB|WLF).*") )
 				this.getOwnerComponent().getRouter().navTo("detailAcuerdosFactoraje",
 					{
 						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
@@ -774,7 +778,7 @@ sap.ui.define([
 						// lifnr: docResult.Lifnr
 					}, true);
 
-			}else if (aportacionesTCodes.includes(tcode) || ( doc.startsWith("170") &&  results.Foliodescuento )  ) {
+			}else if ((aportacionesTCodes.includes(tcode) || ( doc.startsWith("170")) &&  results.Foliodescuento )  ) {
 
 
 				console.warn('on detail factoraje aportaciones')
