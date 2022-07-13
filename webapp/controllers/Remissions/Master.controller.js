@@ -269,13 +269,15 @@ sap.ui.define([
         },
         onListItemPress: function (oEvent) {
             var resource = oEvent.getSource().getBindingContext("tableRemissions").getPath(),
-                line = resource.split("/").slice(-1).pop();
+                line = resource.split("/").slice(-1).pop(),
+                objectRem = oEvent.getSource().getBindingContext("tableRemissions").getObject();
 
             var odata = this.getOwnerComponent().getModel("tableRemissions");
             var results = odata.getProperty("/EFREMNAV/Paginated/results");
 
             var document = results[line].Zremision;
-            this.getOwnerComponent().getRouter().navTo("detailRemission", { layout: sap.f.LayoutType.MidColumnFullScreen, document: document }, true);
+            var folio = objectRem.Zremfolio;
+            this.getOwnerComponent().getRouter().navTo("detailRemission", { layout: sap.f.LayoutType.MidColumnFullScreen, document: document, folio: folio}, true);
         },
         buildExportTable: function () {
             var texts = this.getOwnerComponent().getModel("appTxts");

@@ -578,7 +578,7 @@
                 },
                 {
                     "name": "detailRemission",
-                    "pattern": "detailRemission/{layout}/{document}",
+                    "pattern": "detailRemission/{layout}/{document}/{folio}",
                     "target": [
                         "masterRemission",
                         "detailRemission"
