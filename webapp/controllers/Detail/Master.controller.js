@@ -192,14 +192,19 @@ sap.ui.define([
         },
 
         openUploadDialog2: function () {
+            var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
             if (!this.hasAccess(3)) {
                 return false;
             }
-            if (!this._uploadDialog3) {
-                this._uploadDialog3 = sap.ui.xmlfragment("uploadInvoiceTest", "demo.fragments.UploadInvoice2", this);
-                this.getView().addDependent(this._uploadDialog3);
+            if (vLifnr !== undefined && vLifnr !== null){
+                if (!this._uploadDialog3) {
+                    this._uploadDialog3 = sap.ui.xmlfragment("uploadInvoiceTest", "demo.fragments.UploadInvoice2", this);
+                    this.getView().addDependent(this._uploadDialog3);
+                }
+                this._uploadDialog3.open();
+            } else {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/clarifications.noSupplier"));
             }
-            this._uploadDialog3.open();
         },
         onCloseDialogUpload2: function () {
             if (this._uploadDialog3) {
@@ -209,6 +214,7 @@ sap.ui.define([
         },
         documentUploadPress2: function(){
             var that = this;
+            var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
             var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoiceTest", "fileUploaderTest");
             sap.ui.core.BusyIndicator.show(0);
 
@@ -223,12 +229,19 @@ sap.ui.define([
 
             reader2.onload = function (evn) {
                 var strXML = evn.target.result;
+                
                 var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' + 
                     'xmlns:sci="http://www.sci-grupo.com.mx/">' + 
                     '\n<soapenv:Header/>\n<soapenv:Body>\n<sci:RecibeCFD><sci:XMLCFD>' + 
                     '<![CDATA[' + strXML + ']]>\n</sci:XMLCFD>\n</sci:RecibeCFD>\n</soapenv:Body>\n' + 
                     '</soapenv:Envelope>';
-
+                
+                /*
+                var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"' + 
+                    ' xmlns:sci="http://www.sci-grupo.com.mx/"><soapenv:Header/><soapenv:Body><sci:RecibeCFDPortal>' + 
+                    '<sci:XMLCFD>' + strXML + '</sci:XMLCFD><sci:proveedor>' + vLifnr + '</sci:proveedor></sci:RecibeCFDPortal>' +
+                    '</soapenv:Body></soapenv:Envelope>';
+                */
                 $.ajax({
                     async: true,
                     url: "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocRecibo.asmx",
@@ -237,7 +250,7 @@ sap.ui.define([
                         "Content-Type": "text/xml",
                         "Access-Control-Allow-Origin": "*"
                     },
-                    "data": body,
+                    data: body,
                     success: function(response) {
                         sap.ui.core.BusyIndicator.hide();
                         that.onCloseDialogUpload2();
