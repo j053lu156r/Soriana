@@ -48,6 +48,14 @@ sap.ui.define([
                 });
 
 
+            } else if(this._vistaAnteior == "FACTORAJE"){
+
+                this.oRouter.navTo("detailAportacionesFactoraje", {
+                    layout: sNextLayout,
+                    document: this._folio
+                });
+
+
             } else {
 
                 this.oRouter.navTo("detailAportacionesAS", {
@@ -73,7 +81,7 @@ sap.ui.define([
                 });
 
 
-            } else if (this._vistaAnteior == "FACTORAJE") {
+            } else  if (this._vistaAnteior == "Factoraje") {
 
                 this.oRouter.navTo("detailAportacionesFactoraje", {
                     layout: sNextLayout,
@@ -121,9 +129,7 @@ sap.ui.define([
 
                 });
 
-            }
-
-            else {
+            }  else {
 
                 this.oRouter.navTo("EstadoCuenta", {
                     //layout: sNextLayout
@@ -270,39 +276,6 @@ console.log(objResponse);
 
 
 
-            /*   var url = "AportaSet?$expand=AportaDet&$filter=IOption eq '1'";
-               if (this._folio != "" && this._folio != null) {
-                   url += " and IFolio eq '" + this._folio + "'";
-               }
-
-               //this.getView().byId('ObjectPageLayout').setBusy(true);
-               oModel.getJsonModelAsync(
-                   url,
-                   function (jsonModel, parent) {
-                       var objResponse = jsonModel.getProperty("/results/0");
-
-                       if (objResponse.EError === 'X') {
-                           sap.m.MessageBox.error(objResponse.EDescripEvent, {
-
-                               onClose: function (sAction) {
-                                   this.handleClose();
-                               }
-                           });
-                       }else{
-                           if (objResponse != null) {
-                               parent.getOwnerComponent().setModel(new JSONModel(objResponse.AportaDet.results[0]),
-                                   "AportaDetDet");
-                           }
-                       }
-
-                       //parent.getView().byId('ObjectPageLayout').setBusy(false);
-                   },
-                   function (parent) {
-                       //parent.getView().byId('ObjectPageLayout').setBusy(false);
-                   },
-                   this
-               );*/
-
             var auxFilters = [];
             auxFilters.push(new sap.ui.model.Filter({
                     path: "IOption",
@@ -349,8 +322,5 @@ console.log(objResponse);
 
             });
         }
-
-
-
     });
 });

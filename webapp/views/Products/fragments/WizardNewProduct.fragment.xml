@@ -655,6 +655,7 @@
 						<MessageStrip class="sapUiSmallMarginBottom"
 								text="{appTxts>/products.msgTapDiscountsWarning}"
 								showIcon="true"/>
+                                
                         <VBox class="sapUiSmallMargin">
                             <form:SimpleForm
                                     editable="true"

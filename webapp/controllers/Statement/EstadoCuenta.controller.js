@@ -1179,7 +1179,7 @@ sap.ui.define([
             var tcode = results.Tcode
             console.log(sociedad, ejercicio, tcode)
             var doc = results.Belnr
-            var acuerdosTCodes = ['WEB4', 'WLF4', 'MEB2', 'MEB0', 'WLF2', 'ZMMFILACUERDO', 'WFL5']
+            var acuerdosTCodes = ['MEB4', 'WLF4', 'MEB2', 'MEB0', 'WLF2', 'ZMMFILACUERDO', 'WFL5']
             var aportacionesTCodes = ['Z_APORTACIONES']
 
 
@@ -1215,7 +1215,7 @@ sap.ui.define([
                 }, true);
 
             }
-            
+
         },
 
         onPress: function (oEvent) {

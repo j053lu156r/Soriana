@@ -42,7 +42,7 @@
                                     text="{appTxts>/rem.cancel}"
                                     type="Transparent"
                                     press=".hancleCandel(${tableRemissionDetail>/Eremh/Remfolio})"
-                                    visible="{= ${tableRemissionDetail>/Eremh/NstatusCan} === '' }"/>
+                                    visible="{= ${tableRemissionDetail>/Eremh/Zstatus} !== 'Cancelado' }"/>
                             <m:Button 
                                     text="{appTxts>/rem.labels}"
                                     type="Transparent"
@@ -96,8 +96,10 @@
 							<m:Text text="{tableRemissionDetail>/Eremh/Zcantped}"/>
 							<m:Label text="{appTxts>/rem.packagenumber}"/>
 							<m:Text text="{tableRemissionDetail>/Eremh/Zcantbul}"/>
+                            <!--
                             <m:Label text="{appTxts>/rem.cancelStatus}"/>
                             <m:Text text="{tableRemissionDetail>/Eremh/ZstatusCan}"/>
+                            -->
                         <m:layoutData>
 						    <m:FlexItemData growFactor="1" />
 					    </m:layoutData>

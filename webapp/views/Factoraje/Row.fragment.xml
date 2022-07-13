@@ -13,7 +13,7 @@
                   wrapping="false"/>
 
 
-            <ObjectIdentifier titlePress="onDocumentPress" titleActive="true"  title="{GroupedFactoraje>Belnr}" wrapping="false"/>
+            <ObjectIdentifier titlePress="_onDocumentPress" titleActive="true"  title="{GroupedFactoraje>Belnr}" wrapping="false"/>
 
 
             <Text text="{GroupedFactoraje>Xblnr}" wrapping="false"/>

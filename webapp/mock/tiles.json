@@ -16,7 +16,7 @@
                     "functions": [
                         {
                             "idFunction": 1
-                        }, 
+                        },
                         {
                             "idFunction": 4
                         }
@@ -83,7 +83,7 @@
                         {
                             "idFunction": 48
                         }
-                      
+
                     ]
                 }
             ]
@@ -108,7 +108,7 @@
                         {
                             "idFunction": 3
                         }
-                       
+
                     ]
                 },
                 {
@@ -187,7 +187,7 @@
                     "functions": [
                         {
                             "idFunction": 28
-                            
+
                         }
                     ]
                 }
@@ -243,9 +243,6 @@
                     "functions": [
                         {
                             "idFunction": 9
-                        },
-                        {
-                            "idFunction": 10
                         }
                     ]
                 },
@@ -432,7 +429,7 @@
                         }
                     ]
                 }
-                
+
             ]
         },
         {
@@ -448,7 +445,7 @@
                     "type": "standard",
                     "binding": "Products",
                     "functions": [
-                      
+
                         {
                             "idFunction": 46
                         },
@@ -493,7 +490,7 @@
                         },
                         {
                             "idFunction": 34
-                        }, 
+                        },
                         {
                             "idFunction": 47
                         }
@@ -515,7 +512,7 @@
                     "binding": "masterAcuerdos",
                     "functions": [
                         {
-                            "idFunction": 29
+                            "idFunction": 52
                         }
                     ]
                 },
@@ -545,7 +542,7 @@
                     "binding": "masterBoletinVta",
                     "functions": [
                         {
-                            "idFunction": 39
+                            "idFunction": 53
                         }
                     ]
                 }

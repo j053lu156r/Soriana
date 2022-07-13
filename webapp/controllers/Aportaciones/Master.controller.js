@@ -245,6 +245,7 @@ sap.ui.define([
 
         _confirmDialog: function (line) {
             var texts = this.getOwnerComponent().getModel("appTxts");
+            this._line_approve = line;
 
             if (!this.oApproveDialog) {
                 this.oApproveDialog = new sap.m.Dialog({
@@ -256,7 +257,7 @@ sap.ui.define([
                         text: texts.getProperty("/aportaciones.aprobar"),
                         press: function () {
                             this.oApproveDialog.close();
-                            this._approve(line);
+                            this._approve(this._line_approve);
                         }.bind(this)
                     }),
                     endButton: new sap.m.Button({

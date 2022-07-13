@@ -71,10 +71,13 @@
                                         </m:OverflowToolbar>
                                     </m:headerToolbar>
                                     <m:columns>
-                                        <m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:Column width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                             <m:header>
                                                 <m:Text text="{appTxts>/acuerdos.detConv}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                             </m:header>
+                                            <m:footer>
+                                                <m:Text text="Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                            </m:footer>
                                         </m:Column>
                                         <m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                             <m:header>
@@ -96,20 +99,47 @@
                                                 <m:Text text="{appTxts>/acuerdos.detTda}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                             </m:header>
                                         </m:Column>
-                                        <m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                             <m:header>
                                                 <m:Text text="{appTxts>/acuerdos.detComp}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                             </m:header>
+                                            <m:footer>
+                                                <m:ObjectNumber
+                                                    number="{
+                                                        parts:[{path:'acuTotDetDetModel>/TotCompra'},{path:'CurrencyCode'}],
+                                                        type: 'sap.ui.model.type.Currency',
+                                                        formatOptions: {showMeasure: false}
+                                                            }"
+                                                    unit="MXN" />
+                                            </m:footer>
                                         </m:Column>
-                                        <m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                             <m:header>
                                                 <m:Text text="{appTxts>/acuerdos.detDesc}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                             </m:header>
+                                            <m:footer>
+                                                <m:ObjectNumber
+                                                    number="{
+                                                        parts:[{path:'acuTotDetDetModel>/TotDescto'},{path:'CurrencyCode'}],
+                                                        type: 'sap.ui.model.type.Currency',
+                                                        formatOptions: {showMeasure: false}
+                                                            }"
+                                                    unit="MXN" />
+                                            </m:footer>
                                         </m:Column>
-                                        <m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                             <m:header>
                                                 <m:Text text="{appTxts>/acuerdos.detIVA}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                             </m:header>
+                                            <m:footer>
+                                                <m:ObjectNumber
+                                                    number="{
+                                                        parts:[{path:'acuTotDetDetModel>/TotIVA'},{path:'CurrencyCode'}],
+                                                        type: 'sap.ui.model.type.Currency',
+                                                        formatOptions: {showMeasure: false}
+                                                            }"
+                                                    unit="MXN" />
+                                            </m:footer>
                                         </m:Column>
                                         <m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                             <m:header>
