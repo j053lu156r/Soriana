@@ -57,7 +57,7 @@ sap.ui.define([
             var vZfolagrup = this.getView().byId('zfolagrup').getValue();
             var vZfolfedex = this.getView().byId('zfolfedex').getValue();
             var vZfechreg = this.getView().byId('zfechreg').getValue();
-            var vAnulada = this.getView().byId('anul').getSelected();
+            //var vAnulada = this.getView().byId('anul').getSelected();
 
             if (vLifnr != null && vLifnr != "") {
                 bContinue = true;
@@ -125,10 +125,11 @@ sap.ui.define([
                 if (vZfolfedex != "") {
                     url += " and IZfolfedex eq '" + vZfolfedex + "'";
                 }
-
+                /*
                 if (vAnulada != "") {
                     url += " and IAnul eq 'X'";
                 }
+                */
 
                 var dueModel = oModel.getJsonModel(url);
                 if (dueModel != null) {

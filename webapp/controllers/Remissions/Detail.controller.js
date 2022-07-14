@@ -37,12 +37,12 @@ sap.ui.define([
         handleFullScreen: function () {
             this.bFocusFullScreenButton = true;
             var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
-            this.oRouter.navTo("detailRemission", { layout: sNextLayout, document: this._document });
+            this.oRouter.navTo("detailRemission", { layout: sNextLayout, document: this._document, folio: this._folio});
         },
         handleExitFullScreen: function () {
             this.bFocusFullScreenButton = true;
             var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
-            this.oRouter.navTo("detailRemission", { layout: sNextLayout, document: this._document });
+            this.oRouter.navTo("detailRemission", { layout: sNextLayout, document: this._document, folio: this._folio});
         },
         handleClose: function () {
             var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
@@ -50,10 +50,12 @@ sap.ui.define([
         },
         _onDocumentMatched: function (oEvent) {
             this._document = oEvent.getParameter("arguments").document || this._document || "0";
+            this._folio = oEvent.getParameter("arguments").folio;
             this._lifnr = this.getConfigModel().getProperty("/supplierInputKey");
+            //let oHeaderRem = this.getOwnerComponent().getModel("tableRemissionDetail");
+            //let folio = oHeaderRem.getProperty("/Eremh/Zremfolio")
 
-            var url =
-                `/HdrAvisoSet?$expand=EFREMNAV,ETREMDNAV&$filter=IOption eq '2' and ILifnr eq '${this._lifnr}' and IZremision eq '${this._document}'`;
+            var url = `/HdrAvisoSet?$expand=EFREMNAV,ETREMDNAV&$filter=IOption eq '2' and ILifnr eq '${this._lifnr}' and IZremision eq '${this._document}' and IZremfolio eq '${this._folio}'`;
             var dueModel = oModel.getJsonModel(url);
 
             var ojbResponse = dueModel.getProperty("/results/0");

@@ -5,17 +5,17 @@ sap.ui.define([
     "use strict";
 
     var oModel = new this.Acuerdos();
-    return Controller.extend("demo.controllers.Acuerdos.DetailDetailEC", {
+    return Controller.extend("demo.controllers.Acuerdos.DetailDetailFA", {
         onInit: function () {
-            var oExitButton = this.getView().byId("exitFullScreenBtn"),
-                oEnterButton = this.getView().byId("enterFullScreenBtn");
+            /*var oExitButton = this.getView().byId("exitFullScreenBtn"),
+                oEnterButton = this.getView().byId("enterFullScreenBtn");*/
 
             this.oRouter = this.getOwnerComponent().getRouter();
             this.oModel = this.getOwnerComponent().getModel();
 
-            this.oRouter.getRoute("detailDetailAcuEC").attachPatternMatched(this._onDocumentMatched, this);
+            this.oRouter.getRoute("detailDetailAcuFA").attachPatternMatched(this._onDocumentMatched, this);
 
-            [oExitButton, oEnterButton].forEach(function (oButton) {
+            /*[oExitButton, oEnterButton].forEach(function (oButton) {
                 oButton.addEventDelegate({
                     onAfterRendering: function () {
                         if (this.bFocusFullScreenButton) {
@@ -24,7 +24,7 @@ sap.ui.define([
                         }
                     }.bind(this)
                 });
-            }, this);
+            }, this);*/
         },
         handleItemPress: function (oEvent) {
 			/*var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(2),
@@ -33,7 +33,7 @@ sap.ui.define([
 
         },
         handleFullScreen: function () {
-            this.bFocusFullScreenButton = true;
+            /*this.bFocusFullScreenButton = true;
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/fullScreen");
             this.oRouter.navTo("detailDetailAcuEC",
                 {
@@ -44,10 +44,10 @@ sap.ui.define([
                     doc: this._doc,
                     tda: this._tda
                 }
-            );
+            );*/
         },
         handleExitFullScreen: function () {
-            this.bFocusFullScreenButton = true;
+            /*this.bFocusFullScreenButton = true;
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/exitFullScreen");
             this.oRouter.navTo("detailDetailAcuEC",
                 {
@@ -58,18 +58,30 @@ sap.ui.define([
                     doc: this._doc,
                     tda: this._tda
                 }
-            );
+            );*/
         },
-        handleClose: function () {
+        /*handleClose: function () {
             var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/closeColumn");
-            this.oRouter.navTo("detailAcuerdosAS", { 
+            this.oRouter.navTo("detailAcuerdos", { 
                 layout: sNextLayout,
                 document: this._document,
 				sociedad: this._sociedad,
 				ejercicio: this._ejercicio,
                 doc: this._doc
             });
-        },
+        },*/
+        handleClose: function () {
+			this.oRouter.navTo("detailAcuerdosFactoraje", {
+				layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
+				document: this._document,
+				sociedad: this._sociedad,
+				ejercicio: this._ejercicio,
+                doc: this._doc
+ 			});
+		},
+		onBack: function () {
+			window.history.go(-1);
+		},
         _onDocumentMatched: function (oEvent) {
 
             this._sociedad = oEvent.getParameter("arguments").sociedad || this._sociedad || "0";

@@ -101,6 +101,18 @@ sap.ui.define([
                         var objResponse = jsonModel.getProperty("/results/0");
 
                         if (objResponse != null) {
+
+                            var totBase = objResponse.AcuerdosDet.results.reduce((a, b) => +a + (+b["Base"] || 0), 0);
+                            var totDescto = objResponse.AcuerdosDet.results.reduce((a, b) => +a + (+b["Descuento"] || 0), 0);
+                            var totIVA = objResponse.AcuerdosDet.results.reduce((a, b) => +a + (+b["IVA"] || 0), 0);
+                            var totalAcuDet = {
+                                "TotBase": Number(totBase.toFixed(2)),
+                                "TotDescto": Number(totDescto.toFixed(2)),
+                                "TotIVA": Number(totIVA.toFixed(2))
+                            };
+                            parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(totalAcuDet), 
+                                "acuTotDetModel");
+
                             parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(objResponse),
                                 "AcuerdosHdr");
 

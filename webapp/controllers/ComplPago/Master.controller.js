@@ -56,7 +56,7 @@ sap.ui.define([
                 column1:true,
                 column2:true,
                 column3:true,
-                //column4:true,
+                column4:true,
                 column5:true,
                 column6:true,
                 column7:true,
@@ -76,7 +76,7 @@ sap.ui.define([
             that.getView().byId("column1").setVisible(that.getView().getModel().getProperty("/column1"));
             that.getView().byId("column2").setVisible(that.getView().getModel().getProperty("/column2"));
             that.getView().byId("column3").setVisible(that.getView().getModel().getProperty("/column3"));
-          //  that.getView().byId("column4").setVisible(that.getView().getModel().getProperty("/column4"));
+          that.getView().byId("column4").setVisible(that.getView().getModel().getProperty("/column4"));
             that.getView().byId("column5").setVisible(that.getView().getModel().getProperty("/column5"));
             that.getView().byId("column6").setVisible(that.getView().getModel().getProperty("/column6"));
             that.getView().byId("column7").setVisible(that.getView().getModel().getProperty("/column7"));
@@ -359,7 +359,7 @@ sap.ui.define([
                 column1:bSelected,
                 column2:bSelected,
                 column3:bSelected,
-               // column4:bSelected,
+                column4:bSelected,
                 column5:bSelected,
                 column6:bSelected,
                 column7:bSelected,
