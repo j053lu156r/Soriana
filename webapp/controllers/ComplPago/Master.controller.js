@@ -12,14 +12,8 @@ sap.ui.define([
     "sap/ui/core/routing/Router",
     "demo/models/BaseModel",
     'sap/f/library',
-  "demo/js/generaxls.soriana"
     
-   
-    
- 
-
-
-], function (exportLibrary, Spreadsheet, Fragment, Controller, UploadCollectionParameter, History, PDFViewer, JSONModel, fioriLibrary, generaxls) {
+], function (exportLibrary, Spreadsheet, Fragment, Controller, UploadCollectionParameter, History, PDFViewer, JSONModel, fioriLibrary) {
     "use strict";
     var EdmType = exportLibrary.EdmType;
     var tipoUpload;
