@@ -89,11 +89,43 @@ sap.ui.define([
                     url += "Acuerdo eq '" + acuerdo + "'";
                 }
 
-                var dueModel = oModel.getJsonModel(url);
+                /*var dueModel = oModel.getJsonModel(url);
                 var ojbResponse = dueModel.getProperty("/results/0");
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(ojbResponse),
                     "AcuerdosHdr");
-                this.paginate("AcuerdosHdr", "/AcuerdosDet", 1, 0);
+                this.paginate("AcuerdosHdr", "/AcuerdosDet", 1, 0);*/
+                this.getView().byId('tableAcuerdos').setBusy(true);
+                oModel.getJsonModelAsync(
+                    url,
+                    function (jsonModel, parent) {
+                        var objResponse = jsonModel.getProperty("/results/0");
+
+                        if (objResponse != null) {
+
+                            var totBase = objResponse.AcuerdosDet.results.reduce((a, b) => +a + (+b["Base"] || 0), 0);
+                            var totDescto = objResponse.AcuerdosDet.results.reduce((a, b) => +a + (+b["Descuento"] || 0), 0);
+                            var totIVA = objResponse.AcuerdosDet.results.reduce((a, b) => +a + (+b["IVA"] || 0), 0);
+                            var totalAcuDet = {
+                                "TotBase": Number(totBase.toFixed(2)),
+                                "TotDescto": Number(totDescto.toFixed(2)),
+                                "TotIVA": Number(totIVA.toFixed(2))
+                            };
+                            parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(totalAcuDet), 
+                                "acuTotDetModel");
+
+                            parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(objResponse),
+                                "AcuerdosHdr");
+
+                            parent.paginate("AcuerdosHdr", "/AcuerdosDet", 1, 0);
+                        }
+                        parent.getView().byId('tableAcuerdos').setBusy(false);
+                    },
+                    function (parent) {
+                        parent.getView().byId('tableAcuerdos').setBusy(false);
+                    },
+                    this
+                );
+
             }
 
         },
@@ -162,6 +194,8 @@ sap.ui.define([
 			this._document = oEvent.getParameter("arguments").document || this._document || "0";
 			this._sociedad = oEvent.getParameter("arguments").sociedad || this._sociedad || "0";
 			this._ejercicio = oEvent.getParameter("arguments").ejercicio || this._ejercicio || "0";
+            this._doc = oEvent.getParameter("arguments").doc || this._doc || "0";
+            this._fecha = oEvent.getParameter("arguments").fecha || this._fecha || "0";
 
 
 
@@ -223,6 +257,28 @@ sap.ui.define([
                     // lifnr: docResult.Lifnr
                 }, true);
 		},
+
+        onListItemPress: function (oEvent) {
+            var resource = oEvent.getSource().getBindingContext("AcuerdosHdr").getPath(),
+                line = resource.split("/").slice(-1).pop();
+
+            var odata = this.getOwnerComponent().getModel("AcuerdosHdr");
+            var results = odata.getProperty("/AcuerdosDet/Paginated/results");
+            var docResult = results[line];
+
+            var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(3);
+            this.getOwnerComponent().getRouter().navTo("detailDetailAcuFA",
+                {
+                    layout: oNextUIState.layout,
+                    sociedad: this._sociedad,
+                    document: this._document,
+				    ejercicio: this._ejercicio,
+                    doc: this._doc,
+                    tda: docResult.Centro
+
+                }, true);
+
+        }
 
     });
 });

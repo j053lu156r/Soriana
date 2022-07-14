@@ -329,16 +329,19 @@ sap.ui.define([
         },
 
         onValueHelpClose: function (oEvent) {
+            console.log("ON LIFNR SELECTION")
             var oSelectedItem = oEvent.getParameter("selectedItem");
 
             var descBloqueo = ""
 
-            var oList = oEvent.getSource().getBinding("items").oList
-            var oReg  = oList[0]
+             var oReg  = oEvent.getParameter("selectedItem").getBindingContext("userdata").getObject()
+
+
+            //console.log(oEvent.getParameter("selectedItem").getBindingContext("userdata").getObject())
 
             var bloqueo = oReg ? oReg.BloqueoFlag : ""
 
-        if(bloqueo == "X"){
+        if(bloqueo === "X"){
 
             descBloqueo="[Bloqueo de pago]"
 

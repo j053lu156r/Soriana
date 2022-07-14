@@ -470,6 +470,14 @@
                     "layout": "EndColumnFullScreen"
                 },
                 {
+                    "pattern": "detailDetailAcuFA/{layout}/{sociedad}/{document}/{ejercicio}/{doc}/{tda}",
+                    "name": "detailDetailAcuFA",
+                    "target": [
+                        "detailDetailAcuFA"
+                    ],
+                    "layout": "EndColumnFullScreen"
+                },
+                {
                     "pattern": "detailAcuerdosFactoraje/{layout}/{document}/{sociedad}/{ejercicio}/{doc}",
                     "name": "detailAcuerdosFactoraje",
                     "target": [
@@ -578,7 +586,7 @@
                 },
                 {
                     "name": "detailRemission",
-                    "pattern": "detailRemission/{layout}/{document}",
+                    "pattern": "detailRemission/{layout}/{document}/{folio}",
                     "target": [
                         "masterRemission",
                         "detailRemission"
@@ -954,6 +962,11 @@
                 },
                 "detailDetailAcuCP": {
                     "viewName": "DetailDetailCP",
+                    "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "endColumnPages"
+                },
+                "detailDetailAcuFA": {
+                    "viewName": "DetailDetailFA",
                     "viewPath": "demo.views.Acuerdos",
                     "controlAggregation": "endColumnPages"
                 },
