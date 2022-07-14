@@ -30,9 +30,19 @@
                     <MessageStrip class="sapUiSmallMarginBottom"
 								text="{appTxts>/products.messageStripDelete}"
 								showIcon="true"/>
-                    <!--Text 
-                        text="" 
-                        /-->
+
+                                <Link
+                                                text="{appTxts>/products.linkMassiveDelete}"
+                                                target="_blank"
+                                                href="./assets/GUIAS/Guia_Baja_Materiales.pdf"
+                                                class="sapUiSmallMarginBottom" />
+
+                                <Link
+                                                text="{appTxts>/products.linkFormatDelete}"
+                                                target="_blank"
+                                                href="./assets/GUIAS/56050_05072022_4_baja.txt"
+                                                class="sapUiSmallMarginBottom" />
+                    
                     <HBox class="sapUiResponsiveContentPadding" >
                         <l:VerticalLayout>
                             <u:FileUploader
