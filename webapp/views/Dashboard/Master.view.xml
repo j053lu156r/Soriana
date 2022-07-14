@@ -45,7 +45,7 @@
                             </RadioButtonGroup>
                             <ToolbarSpacer/>
                         
-                            <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".exportExcel" visible="{= ${Totales>/ETDBTACNAV/results/length} > 0}" />
+                           
                             <MultiComboBox  id="selectAgrupamiento" width="30%" items="{path:'TiposAcl>/'}"  	selectionFinish="changeDataModel">
                                 <items><core:Item key="{TiposAcl>Posicion}" text="{TiposAcl>Descripcion}"></core:Item></items>
                             </MultiComboBox>
@@ -88,8 +88,9 @@
                         <OverflowToolbar style="Clear">
                             <Title id="title" text="{appTxts>/state.detail} ({Aclaraciones>/Detalles/results/length})"/>
                             <ToolbarSpacer/>
-                       
-                            
+                          <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press="buildExportTablegeneral" visible="{GeneraL>/length} > 0}" />
+                        
+                    
                         </OverflowToolbar>
                     </t:extension>
                     <t:columns>
@@ -196,6 +197,7 @@
                                                 <RadioButton select="changePieChart" id="radioImporte-2" text="{appTxts>/dashboard.import}" />
                                             </RadioButtonGroup>
                                             <ToolbarSpacer/>
+                                             <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press="buildExportpiechart" />
                                              <Button icon="sap-icon://pie-chart" press=".VisualizadorGraficosP" visible="true" />
                                             <Button icon="sap-icon://line-chart"  press=".VisualizadorGraficosL" visible="true" />
                                             <Select selectedKey="0" id="selectTipoPieChart" change="changePieChart" >
