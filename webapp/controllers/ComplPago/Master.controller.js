@@ -12,9 +12,14 @@ sap.ui.define([
     "sap/ui/core/routing/Router",
     "demo/models/BaseModel",
     'sap/f/library',
+  "demo/js/generaxls.soriana"
+    
+   
+    
+ 
 
 
-], function (exportLibrary, Spreadsheet, Fragment, Controller, UploadCollectionParameter, History, PDFViewer, JSONModel, fioriLibrary) {
+], function (exportLibrary, Spreadsheet, Fragment, Controller, UploadCollectionParameter, History, PDFViewer, JSONModel, fioriLibrary, generaxls) {
     "use strict";
     var EdmType = exportLibrary.EdmType;
     var tipoUpload;
@@ -292,8 +297,9 @@ sap.ui.define([
             return renglones;
         },
         formatAvailableToIcon: function (bAvailable) {
+           
             switch (bAvailable) {
-                case '1':
+                case 'Y':
                     return "sap-icon://message-success";
                     break;
                 default:
@@ -304,8 +310,9 @@ sap.ui.define([
             return bAvailable ? "sap-icon://accept" : "sap-icon://decline";
         },
         formatStatusIcon: function (bAvailable) {
+            console.log(bAvailable)
             switch (bAvailable) {
-                case '1':
+                case 'Y':
                     return "#008000";
                     break;
                 default:
@@ -812,6 +819,7 @@ var auxFilters=[];
             that.getView().byId("dinamicTableCP").close();
         },
 
+       
 
 
 

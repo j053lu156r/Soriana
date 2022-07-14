@@ -150,7 +150,8 @@
                             hAlign          = "Center" id="column4">
                             <Label text="{appTxts>/pay.headerFile}" />
                             <t:template>
-                                <Button icon="sap-icon://document-text" type="Transparent" press="generateFile" ></Button>
+                              <!--  <Button icon="sap-icon://document-text" type="Transparent" press="DescargarExcel" ></Button>-->
+                               <Button icon="sap-icon://document-text" type="Transparent" press="generateFile" ></Button>
                             </t:template>
                         </t:Column>
                         <t:Column 
@@ -183,7 +184,7 @@
 								path: 'Documentos>Nc',
 								formatter: '.formatAvailableToIcon'
 							}" color="{
-								path: 'Documentos>Cp17r',
+								path: 'Documentos>Nc',
 								formatter: '.formatStatusIcon'
 							}"/>
 
@@ -200,7 +201,7 @@
 								path: 'Documentos>Cp03',
 								formatter: '.formatAvailableToIcon'
 							}" color="{
-								path: 'Documentos>Cp17r',
+								path: 'Documentos>Cp03',
 								formatter: '.formatStatusIcon'
 							}"/>
                             </t:template>
@@ -216,7 +217,7 @@
 								path: 'Documentos>Cp17s',
 								formatter: '.formatAvailableToIcon'
 							}" color="{
-								path: 'Documentos>Cp17r',
+								path: 'Documentos>Cp17s',
 								formatter: '.formatStatusIcon'
 							}"/>
                             </t:template>
