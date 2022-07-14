@@ -194,6 +194,8 @@ sap.ui.define([
 			this._document = oEvent.getParameter("arguments").document || this._document || "0";
 			this._sociedad = oEvent.getParameter("arguments").sociedad || this._sociedad || "0";
 			this._ejercicio = oEvent.getParameter("arguments").ejercicio || this._ejercicio || "0";
+            this._doc = oEvent.getParameter("arguments").doc || this._doc || "0";
+            this._fecha = oEvent.getParameter("arguments").fecha || this._fecha || "0";
 
 
 
@@ -255,6 +257,28 @@ sap.ui.define([
                     // lifnr: docResult.Lifnr
                 }, true);
 		},
+
+        onListItemPress: function (oEvent) {
+            var resource = oEvent.getSource().getBindingContext("AcuerdosHdr").getPath(),
+                line = resource.split("/").slice(-1).pop();
+
+            var odata = this.getOwnerComponent().getModel("AcuerdosHdr");
+            var results = odata.getProperty("/AcuerdosDet/Paginated/results");
+            var docResult = results[line];
+
+            var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(3);
+            this.getOwnerComponent().getRouter().navTo("detailDetailAcuFA",
+                {
+                    layout: oNextUIState.layout,
+                    sociedad: this._sociedad,
+                    document: this._document,
+				    ejercicio: this._ejercicio,
+                    doc: this._doc,
+                    tda: docResult.Centro
+
+                }, true);
+
+        }
 
     });
 });
