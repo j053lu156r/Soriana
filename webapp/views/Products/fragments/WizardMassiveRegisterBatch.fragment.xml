@@ -40,7 +40,7 @@
                                 <Link
                                                 text="{appTxts>/products.linkFormatMassive}"
                                                 target="_blank"
-                                                href="/assets/GUIAS/Formato_Alta_Masiva.xlsx"
+                                                href="./assets/GUIAS/Formato_Alta_Masiva.xlsx"
                                                 class="sapUiSmallMarginBottom" />
 
         <Label text="{appTxts>/products.personalBuyerEmail}" labelFor="correoInput" />

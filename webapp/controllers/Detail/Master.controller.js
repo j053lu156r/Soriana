@@ -228,23 +228,16 @@ sap.ui.define([
             var reader2 = new FileReader();
 
             reader2.onload = function (evn) {
-                var strXML = evn.target.result;
+                var strXML = evn.target.result;  
                 
                 var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' + 
-                    'xmlns:sci="http://www.sci-grupo.com.mx/">' + 
-                    '\n<soapenv:Header/>\n<soapenv:Body>\n<sci:RecibeCFD><sci:XMLCFD>' + 
-                    '<![CDATA[' + strXML + ']]>\n</sci:XMLCFD>\n</sci:RecibeCFD>\n</soapenv:Body>\n' + 
-                    '</soapenv:Envelope>';
+                    'xmlns:tem="http://tempuri.org/"><soapenv:Header/><soapenv:Body><tem:RecibeCFDPortal>' + 
+                    '<tem:XMLCFD><![CDATA[' + strXML + ']]></tem:XMLCFD><tem:proveedor>' + vLifnr + 
+                    '</tem:proveedor></tem:RecibeCFDPortal></soapenv:Body></soapenv:Envelope>';
                 
-                /*
-                var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"' + 
-                    ' xmlns:sci="http://www.sci-grupo.com.mx/"><soapenv:Header/><soapenv:Body><sci:RecibeCFDPortal>' + 
-                    '<sci:XMLCFD>' + strXML + '</sci:XMLCFD><sci:proveedor>' + vLifnr + '</sci:proveedor></sci:RecibeCFDPortal>' +
-                    '</soapenv:Body></soapenv:Envelope>';
-                */
                 $.ajax({
                     async: true,
-                    url: "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocRecibo.asmx",
+                    url: "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboPortal.asmx",
                     method: "POST",
                     headers: {
                         "Content-Type": "text/xml",
@@ -256,7 +249,7 @@ sap.ui.define([
                         that.onCloseDialogUpload2();
                         oFileUploader.clear();
                         var oXMLModel = new sap.ui.model.xml.XMLModel();  
-                        oXMLModel.setXML(response.getElementsByTagName("RecibeCFDResult")[0].textContent);
+                        oXMLModel.setXML(response.getElementsByTagName("RecibeCFDPortalResult")[0].textContent);
                         var oXml = oXMLModel.getData();
                         var status = oXml.getElementsByTagName("AckErrorApplication")[0].attributes[5].nodeValue;
                         if (status == "ACCEPTED") {
