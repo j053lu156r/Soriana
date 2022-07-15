@@ -861,12 +861,12 @@ var ArrT=[];
                 inputInvoice.setValueState(sap.ui.core.ValueState.Error);
                 return false;
             }
-            var tipo_Doc= Datos.results[0].ZDocOri.results[0].Descripcion.split(" ")[0]
+            var tipo_Doc= Datos.results[0].ZRefFac.results[0].Descripcion.split(" ")[0]
             
 
-var TAclara=this.getView().getModel("catalogos").getData().Tipos.results;
+            var TAclara=this.getView().getModel("catalogos").getData().Tipos.results;
 
-var ArrT=[];
+            var ArrT=[];
             if (tipo_Doc==='RE'){
                 for(var x =0;x<TAclara.length;x++){
                     if(TAclara[x].TipAcla==="CD"||TAclara[x].TipAcla==="FI"||TAclara[x].TipAcla==="PF"){
