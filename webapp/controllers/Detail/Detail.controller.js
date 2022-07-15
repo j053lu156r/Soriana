@@ -210,7 +210,6 @@ sap.ui.define([
             ];
 
             this.exportxls('tableDetailMoves', '/EDOCDTLNAV/results', columns);
-        },
-
+        }
 	});
 });
