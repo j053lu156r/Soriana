@@ -122,7 +122,7 @@
                                     </m:Button>
 
                                     <!--Recibo/Receipt-->
-                                    <m:Label text="{appTxts>/clarifications.Receipt}"/>
+                                    <m:Label text="{appTxts>/clarifications.Receipt}3"/>
                                     <m:Input fieldGroupIds="aclaracion" id="receipt" value="{Aclaracion>/Recibo}"/>
 
                                     <!--Importe reclamado/Reclaimed import-->
