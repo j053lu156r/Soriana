@@ -276,7 +276,9 @@ console.log(TDatos)
 					"totalC": 0,
 					"totalCostos": that.truncate(sumaAux,2)
 
-				}
+				},
+				"Lifnr":proveedor_LIFNR
+
 			});
 
 			console.log(jsonModelG);
@@ -525,7 +527,7 @@ console.log(TDatos)
         var tcode = results.Tcode
         console.log(sociedad, ejercicio, tcode)
         var doc = results.Belnr
-        var acuerdosTCodes = ['WEB4','WLF4','MEB2','MEB0','WLF2','ZMMFILACUERDO','WFL5','MEB4']
+        var acuerdosTCodes = ['MEB4','WLF4','MEB2','MEB0','WLF2','ZMMFILACUERDO','WFL5','MEB4']
 
         var aportacionesTCodes = ['Z_APORTACIONES']
 
@@ -685,7 +687,27 @@ console.log(TDatos)
 
 
 
-        }
+        },
+
+		onDocumentDevolucionPress: function (oEvent){
+			var path = oEvent.getSource().getBindingContext("GroupedTotales").getPath();
+			let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(path);
+
+			console.log(results)
+			var Lifnr = this.getOwnerComponent().getModel('GroupedTotales').getProperty('/Lifnr')
+
+
+			this.getOwnerComponent().getRouter().navTo("detailDevoComplemento", {
+				layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
+				xblnr: results.Foliodescuento,
+				lifnr: Lifnr,
+				ebeln: results.Ebeln || 0
+				// zbukr: docResult.Zbukr,
+				// lifnr: docResult.Lifnr
+			}, true);
+
+
+		},
 
 
 

@@ -750,6 +750,28 @@ sap.ui.define([
 		},
 
 
+		//HANDLE OPEN DEVOLUCIONES
+		onDocumentDevolucionPress: function (oEvent){
+			var path = oEvent.getSource().getBindingContext("GroupedFactoraje").getPath();
+			let results = this.getOwnerComponent().getModel("GroupedFactoraje").getProperty(path);
+
+			console.log(results)
+			var Lifnr = this.getOwnerComponent().getModel('GroupedFactoraje').getProperty('/Lifnr')
+
+
+			this.getOwnerComponent().getRouter().navTo("detailDevoFactoraje", {
+				layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
+				xblnr: results.Foliodescuento,
+				lifnr: Lifnr,
+				ebeln: results.Ebeln || 0
+				// zbukr: docResult.Zbukr,
+				// lifnr: docResult.Lifnr
+			}, true);
+
+
+		},
+
+
 		//HAANDLE OPEN ACUERDOS
 
 		_onDocumentPress: function (oEvent) {

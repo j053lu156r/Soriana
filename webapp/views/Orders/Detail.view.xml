@@ -118,8 +118,8 @@
                                                 <m:OverflowToolbar>
                                                     <m:Title text="{appTxts>/order.positions}" />
                                                     <m:ToolbarSpacer/>
-                                                    <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
-                                                        press=".buildExcel" />
+                                                    <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExcel" />
+                                                    <m:Button icon="sap-icon://attachment-text-file" visible="true" text="{appTxts>/global.downEDI}" press="downloadEDI" />
                                                     <m:Select 
                                                         visible="{= ${tableDetailMoves>/Oekponav/Paginated/results/length} > 0 }"
                                                         change=".paginateValue(${$parameters>/selectedItem}, 'tableDetailMoves', '/Oekponav')">

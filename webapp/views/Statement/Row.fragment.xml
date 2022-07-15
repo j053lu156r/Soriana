@@ -4,7 +4,7 @@
 	 >
 <cells>
 <ObjectIdentifier title="{GroupedTotales>name}" />
-	<Text text="{GroupedTotales>IdNumTipomov} {GroupedTotales>DescTipomov}" wrapping="false" />
+	<ObjectIdentifier titlePress="onDocumentDevolucionPress" titleActive="{= ${GroupedTotales>IdNumTipomov} === '12'}" title="{GroupedTotales>IdNumTipomov} {GroupedTotales>DescTipomov}" wrapping="false" />
 
 	<Text text="{=  (${GroupedTotales>Pendt} === true) ? 'Pendiente' : ( ${GroupedTotales>Belnr} === ${GroupedTotales>Augbl} ? 'Pago' : 'Contabilizado'  ) }" wrapping="false" />
 

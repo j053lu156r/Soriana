@@ -460,7 +460,8 @@ sap.ui.define([
                         "totalC": that.truncate(totalC, 2),
                         "totalT": that.truncate(totalGeneral, 2)
                     },
-                    "Bukrs": data[0].Bukrs
+                    "Bukrs": data[0].Bukrs,
+                    "Lifnr":proveedor_LIFNR
 
                 });
 
@@ -1157,6 +1158,26 @@ sap.ui.define([
 
                 return instanceFormatter.format(oDate);
             }
+
+        },
+
+        onDocumentDevolucionPress: function (oEvent){
+            var path = oEvent.getSource().getBindingContext("GroupedTotales").getPath();
+            let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(path);
+
+            console.log(results)
+            var Lifnr = this.getOwnerComponent().getModel('GroupedTotales').getProperty('/Lifnr')
+
+
+            this.getOwnerComponent().getRouter().navTo("detailDevoEstadoCuenta", {
+                layout: sap.f.LayoutType.MidColumnFullScreen,
+                xblnr: results.Foliodescuento,
+                lifnr: Lifnr,
+                ebeln: results.Ebeln
+                // zbukr: docResult.Zbukr,
+                // lifnr: docResult.Lifnr
+            }, true);
+
 
         },
         onDocumentPress: function (oEvent) {
