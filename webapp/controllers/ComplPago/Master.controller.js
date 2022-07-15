@@ -58,6 +58,7 @@ sap.ui.define([
                 column4:true,
                 column5:true,
                 column6:true,
+                column65:true,
                 column7:true,
                 column8:true,
                 column9:true,
@@ -78,6 +79,7 @@ sap.ui.define([
           that.getView().byId("column4").setVisible(that.getView().getModel().getProperty("/column4"));
             that.getView().byId("column5").setVisible(that.getView().getModel().getProperty("/column5"));
             that.getView().byId("column6").setVisible(that.getView().getModel().getProperty("/column6"));
+            that.getView().byId("column65").setVisible(that.getView().getModel().getProperty("/column65"));
             that.getView().byId("column7").setVisible(that.getView().getModel().getProperty("/column7"));
             that.getView().byId("column8").setVisible(that.getView().getModel().getProperty("/column8"));
             that.getView().byId("column9").setVisible(that.getView().getModel().getProperty("/column9"));
@@ -191,15 +193,14 @@ sap.ui.define([
                 sap.ui.core.BusyIndicator.hide();
                 var arrT=[];
                 var data = _GEToDataV2Response.data.results;
-                console.log(data)
+               console.log(data)
              for(var x =0;x<data.length;x++){
 
                    if (!(data[x].IAugbl.startsWith('58') )&&!(data[x].IAugbl.startsWith('59')) ){
                     arrT.push(data[x])
              }
             }
-            console.log(data)
-            console.log(arrT)
+           
             if(arrT.length>0){
                 var Documentos = { Detalles: { results: [...arrT[0].EPYMNTDOCSNAV.results] } };
 
@@ -307,7 +308,7 @@ sap.ui.define([
             return bAvailable ? "sap-icon://accept" : "sap-icon://decline";
         },
         formatStatusIcon: function (bAvailable) {
-            console.log(bAvailable)
+          
             switch (bAvailable) {
                 case 'Y':
                     return "#008000";
@@ -374,6 +375,7 @@ sap.ui.define([
                 column4:bSelected,
                 column5:bSelected,
                 column6:bSelected,
+                column65:bSelected,
                 column7:bSelected,
                 column8:bSelected,
                 column9:bSelected,
@@ -669,7 +671,13 @@ sap.ui.define([
                 property: 'Rbetr'
             });
 
+            aCols.push({
+                label: texts.getProperty("/pay.headerNCMC"),
+                type: EdmType.String,
+                property: 'Nc_mc'
 
+
+            });
 
             aCols.push({
                 label: texts.getProperty("/pay.headerNC"),
