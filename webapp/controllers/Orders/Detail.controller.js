@@ -8,7 +8,7 @@ sap.ui.define([
     "use strict";
 
     var oModel = new this.Pedidostemp();
-    var ediModel = new this.ModelEDI();
+    var oEdiModel = new this.ModelEDI();
     var EdmType = exportLibrary.EdmType;
 
     return Controller.extend("demo.controllers.Orders.Detail", {
@@ -18,6 +18,7 @@ sap.ui.define([
 
             this.oRouter = this.getOwnerComponent().getRouter();
             this.oModel = this.getOwnerComponent().getModel();
+            this.ediModel = new sap.ui.model.odata.v2.ODataModel(oEdiModel.sUrl);
 
             this.oRouter.getRoute("detailOrders").attachPatternMatched(this._onDocumentMatched, this);
 
@@ -206,8 +207,7 @@ sap.ui.define([
             var aFilters = [];
             aFilters.push(new Filter("Ebeln", FilterOperator.EQ, this._document));
 
-            ediModel = new sap.ui.model.odata.v2.ODataModel(ediModel.sUrl);
-            ediModel.read("/EdiFileSet", {
+            this.ediModel.read("/EdiFileSet", {
                 filters: aFilters,
                 success: function(response){
                     console.log(response)
