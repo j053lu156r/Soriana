@@ -563,6 +563,29 @@
                     ]
                 },
                 {
+                    "name": "detailDevoEstadoCuenta",
+                    "pattern": "detailDevoEstadoCuenta/{layout}/{xblnr}/{lifnr}",
+                    "target": [
+                        "EstadoCuenta" , "detailDevoEstadoC"
+                    ]
+                },
+                {
+                    "name": "detailDevoComplemento",
+                    "pattern": "detailDevoComplemento/{layout}/{xblnr}/{lifnr}",
+                    "target": [
+                        "masterCompl",
+                        "detailComplPagos" , "detailDevoComplemento"
+                    ]
+                },
+                {
+                    "name": "detailDevoFactoraje",
+                    "pattern": "detailDevoFactoraje/{layout}/{xblnr}/{lifnr}",
+                    "target": [
+                        "masterFactoring",
+                        "detailFactoring" , "detailDevoFactoraje"
+                    ]
+                },
+                {
                     "name": "Dashboard",
                     "pattern": "Dashboard",
                     "target": [
@@ -874,6 +897,18 @@
                 "detailDevo" : {
                     "viewName": "Detail",
                     "viewPath": "demo.views.Devoluciones" , "controlAggregation": "midColumnPages"
+                },
+                "detailDevoEstadoC" : {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.DevolucionesAlt" , "controlAggregation": "midColumnPages"
+                },
+                "detailDevoComplemento" : {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.DevolucionesAlt" , "controlAggregation": "endColumnPages"
+                },
+                "detailDevoFactoraje" : {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.DevolucionesAlt" , "controlAggregation": "endColumnPages"
                 },
                 "Dashboard": {
                     "viewName": "Master",
