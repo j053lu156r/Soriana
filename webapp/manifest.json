@@ -564,14 +564,14 @@
                 },
                 {
                     "name": "detailDevoEstadoCuenta",
-                    "pattern": "detailDevoEstadoCuenta/{layout}/{xblnr}/{lifnr}",
+                    "pattern": "detailDevoEstadoCuenta/{layout}/{xblnr}/{lifnr}/{ebeln}",
                     "target": [
                         "EstadoCuenta" , "detailDevoEstadoC"
                     ]
                 },
                 {
                     "name": "detailDevoComplemento",
-                    "pattern": "detailDevoComplemento/{layout}/{xblnr}/{lifnr}",
+                    "pattern": "detailDevoComplemento/{layout}/{xblnr}/{lifnr}/{ebeln}",
                     "target": [
                         "masterCompl",
                         "detailComplPagos" , "detailDevoComplemento"
@@ -579,7 +579,7 @@
                 },
                 {
                     "name": "detailDevoFactoraje",
-                    "pattern": "detailDevoFactoraje/{layout}/{xblnr}/{lifnr}",
+                    "pattern": "detailDevoFactoraje/{layout}/{xblnr}/{lifnr}/{ebeln}",
                     "target": [
                         "masterFactoring",
                         "detailFactoring" , "detailDevoFactoraje"

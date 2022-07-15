@@ -1173,7 +1173,7 @@ sap.ui.define([
                 layout: sap.f.LayoutType.MidColumnFullScreen,
                 xblnr: results.Foliodescuento,
                 lifnr: Lifnr,
-                ebeln: results.Ebeln || 0
+                ebeln: results.Ebeln
                 // zbukr: docResult.Zbukr,
                 // lifnr: docResult.Lifnr
             }, true);
