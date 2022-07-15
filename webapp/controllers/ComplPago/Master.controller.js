@@ -294,7 +294,7 @@ sap.ui.define([
            
             switch (bAvailable) {
                 case 'X':
-                    return "sap-icon://message-success";
+                    return "sap-icon://message-error";
                     break;
                     case 'Y':
                     return "sap-icon://message-success";
