@@ -293,11 +293,14 @@ sap.ui.define([
         formatAvailableToIcon: function (bAvailable) {
            
             switch (bAvailable) {
-                case 'Y':
+                case 'X':
+                    return "sap-icon://message-error";
+                    break;
+                    case 'Y':
                     return "sap-icon://message-success";
                     break;
                 default:
-                    return "sap-icon://message-error";
+                    return "sap-icon://less";
                     break;
 
             }
@@ -309,8 +312,11 @@ sap.ui.define([
                 case 'Y':
                     return "#008000";
                     break;
+                    case 'X':
+                        return "#FF0000";
+                        break;
                 default:
-                    return "#FF0000";
+                    return "";
                     break;
 
             }
