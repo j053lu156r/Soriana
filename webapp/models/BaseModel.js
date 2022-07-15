@@ -491,3 +491,14 @@ function NotifAltaMasiva() {
 
 NotifAltaMasiva.prototype = Object.create(BaseModel.prototype);
 NotifAltaMasiva.prototype.constructor = NotifAltaMasiva;
+
+//Model EDI
+function ModelEDI() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZSOP_EDI_OUTPUT_FILE_SRV/";
+    params.sModel = "downEdiModel";
+    BaseModel.call(this, params);
+}
+
+ModelEDI.prototype = Object.create(BaseModel.prototype);
+ModelEDI.prototype.constructor = ModelEDI;

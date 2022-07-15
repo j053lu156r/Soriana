@@ -1,11 +1,14 @@
 sap.ui.define([
+    "sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator",
     "sap/ui/model/json/JSONModel",
     "demo/controllers/BaseController",
     'sap/ui/export/library'
-], function (JSONModel, Controller, exportLibrary) {
+], function (Filter, FilterOperator, JSONModel, Controller, exportLibrary) {
     "use strict";
 
     var oModel = new this.Pedidostemp();
+    var ediModel = new this.ModelEDI();
     var EdmType = exportLibrary.EdmType;
 
     return Controller.extend("demo.controllers.Orders.Detail", {
@@ -197,6 +200,22 @@ sap.ui.define([
             });
 
             return aPosiciones;
+        },
+        downloadEDI: function(oEvent){
+            var aFilters = [];
+            aFilters.push(new Filter("Ebeln", FilterOperator.EQ, this._document));
+
+            ediModel = new sap.ui.model.odata.v2.ODataModel(ediModel.sUrl);
+            ediModel.read("/EdiFileSet", {
+                filters: aFilters,
+                success: function(oData, response){
+                    console.log(oData)
+                    console.log(response)
+                }, 
+                error: function(oData, error){
+                    sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/order.downEdiError"));
+                }
+            });
         }
     });
 });
