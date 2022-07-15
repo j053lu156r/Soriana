@@ -698,7 +698,7 @@ console.log(TDatos)
 
 
 			this.getOwnerComponent().getRouter().navTo("detailDevoComplemento", {
-				layout: sap.f.LayoutType.MidColumnFullScreen,
+				layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
 				xblnr: results.Foliodescuento,
 				lifnr: Lifnr,
 				ebeln: results.Ebeln || 0
