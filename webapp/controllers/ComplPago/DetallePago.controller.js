@@ -697,7 +697,7 @@ console.log(TDatos)
 			var Lifnr = this.getOwnerComponent().getModel('GroupedTotales').getProperty('/Lifnr')
 
 
-			this.getOwnerComponent().getRouter().navTo("detailDevoEstadoCuenta", {
+			this.getOwnerComponent().getRouter().navTo("detailDevoComplemento", {
 				layout: sap.f.LayoutType.MidColumnFullScreen,
 				xblnr: results.Foliodescuento,
 				lifnr: Lifnr,

@@ -750,6 +750,8 @@ sap.ui.define([
 		},
 
 
+
+
 		//HAANDLE OPEN ACUERDOS
 
 		_onDocumentPress: function (oEvent) {
