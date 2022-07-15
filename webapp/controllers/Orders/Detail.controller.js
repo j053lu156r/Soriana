@@ -202,18 +202,28 @@ sap.ui.define([
             return aPosiciones;
         },
         downloadEDI: function(oEvent){
+            var that = this;
             var aFilters = [];
             aFilters.push(new Filter("Ebeln", FilterOperator.EQ, this._document));
 
             ediModel = new sap.ui.model.odata.v2.ODataModel(ediModel.sUrl);
             ediModel.read("/EdiFileSet", {
                 filters: aFilters,
-                success: function(oData, response){
-                    console.log(oData)
+                success: function(response){
                     console.log(response)
+                    if(response.results.length > 0){
+                        var base64Data = response.results[0].Datar;
+                        const linkSource = `data:text/plain;charset=utf-8;base64,${base64Data}`;
+                        const downloadLink = document.createElement("a");
+                        downloadLink.href = linkSource;
+                        downloadLink.download = `EDI_${that._document}.txt`;
+                        downloadLink.click();
+                    } else {
+                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/order.ediEmptyError"));
+                    }
                 }, 
-                error: function(oData, error){
-                    sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/order.downEdiError"));
+                error: function(error){
+                    sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/order.downEdiError"));
                 }
             });
         }
