@@ -255,7 +255,9 @@ sap.ui.define([
                         if (status == "ACCEPTED") {
                             sap.m.MessageBox.success(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendSuccess"));
                         } else {
-                            sap.m.MessageBox.error(oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent);
+                            var strError = oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent;
+                            strError = strError.replaceAll(";","\n\n");
+                            sap.m.MessageBox.error(strError);
                         }
                     },
                     error: function(request, status, err) {
