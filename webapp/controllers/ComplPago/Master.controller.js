@@ -470,13 +470,15 @@ sap.ui.define([
                         that.onCloseDialogUpload();
                         oFileUploader.clear();
                         var oXMLModel = new sap.ui.model.xml.XMLModel();  
-                        oXMLModel.setXML(response.getElementsByTagName("RecibeCFDPortalResult")[0].textContent);
+                        oXMLModel.setXML(response.getElementsByTagName("RecibeCFDPagoResult")[0].textContent);
                         var oXml = oXMLModel.getData();
                         var status = oXml.getElementsByTagName("AckErrorApplication")[0].attributes[5].nodeValue;
                         if (status == "ACCEPTED") {
                             sap.m.MessageBox.success(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendSuccess"));
                         } else {
-                            sap.m.MessageBox.error(oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent);
+                            var strError = oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent;
+                            strError = strError.replaceAll(";","\n\n");
+                            sap.m.MessageBox.error(strError);
                         }
                     },
                     error: function(request, status, err) {

@@ -502,3 +502,14 @@ function ModelEDI() {
 
 ModelEDI.prototype = Object.create(BaseModel.prototype);
 ModelEDI.prototype.constructor = ModelEDI;
+
+//Model Terms&Cons
+function ModelTC() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_TXT_TERM_COND_SRV/";
+    params.sModel = "termconsModel";
+    BaseModel.call(this, params);
+}
+
+ModelTC.prototype = Object.create(BaseModel.prototype);
+ModelTC.prototype.constructor = ModelTC;
