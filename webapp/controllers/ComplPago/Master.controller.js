@@ -452,9 +452,9 @@ sap.ui.define([
                 var strXML = evn.target.result;  
                 
                 var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' + 
-                    'xmlns:tem="http://tempuri.org/"><soapenv:Header/><soapenv:Body><tem:RecibeCFDPortal>' + 
+                    'xmlns:tem="http://tempuri.org/"><soapenv:Header/><soapenv:Body><tem:RecibeCFDPago>' + 
                     '<tem:XMLCFD><![CDATA[' + strXML + ']]></tem:XMLCFD><tem:proveedor>' + vLifnr + 
-                    '</tem:proveedor></tem:RecibeCFDPortal></soapenv:Body></soapenv:Envelope>';
+                    '</tem:proveedor></tem:RecibeCFDPago></soapenv:Body></soapenv:Envelope>';
                 
                 $.ajax({
                     async: true,
@@ -470,7 +470,7 @@ sap.ui.define([
                         that.onCloseDialogUpload();
                         oFileUploader.clear();
                         var oXMLModel = new sap.ui.model.xml.XMLModel();  
-                        oXMLModel.setXML(response.getElementsByTagName("RecibeCFDPortalResult")[0].textContent);
+                        oXMLModel.setXML(response.getElementsByTagName("RecibeCFDPagoResult")[0].textContent);
                         var oXml = oXMLModel.getData();
                         var status = oXml.getElementsByTagName("AckErrorApplication")[0].attributes[5].nodeValue;
                         if (status == "ACCEPTED") {
