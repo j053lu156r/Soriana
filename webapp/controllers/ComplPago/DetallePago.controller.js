@@ -77,7 +77,7 @@ sap.ui.define([
 
 
 			if (!this._pTemplate) {
-				this._pTemplate = Fragment.load({
+				this._pTemplate = this.loadFragment({
 					id: this.getView().getId(),
 					name: "demo.views.ComplPago.Row"
 				});
