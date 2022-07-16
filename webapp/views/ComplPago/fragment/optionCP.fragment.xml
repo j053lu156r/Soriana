@@ -3,8 +3,8 @@
 		<l:VerticalLayout>
 		
 			<CheckBox text="{appTxts>/visor.msgSelectAll}"
-				selected="{= ${/column1} || ${/column2} || ${/column3}|| ${/column4}|| ${/column5}|| ${/column6}|| ${/column7}|| ${/column8}|| ${/column9}|| ${/column10}|| ${/column11}}"
-				partiallySelected="{= !(${/column1} &amp;&amp; ${/column2} &amp;&amp; ${/column3}&amp;&amp; ${/column4}&amp;&amp; ${/column5}&amp;&amp; ${/column6}&amp;&amp; ${/column7}&amp;&amp; ${/column8}&amp;&amp; ${/column9}&amp;&amp; ${/column10}&amp;&amp; ${/column11}  )}"
+				selected="{= ${/column1} || ${/column2} || ${/column3}|| ${/column4}|| ${/column5}|| ${/column6}|| ${/column65}|| ${/column7}|| ${/column8}|| ${/column9}|| ${/column10}|| ${/column11}}"
+				partiallySelected="{= !(${/column1} &amp;&amp; ${/column2} &amp;&amp; ${/column3}&amp;&amp; ${/column4}&amp;&amp; ${/column5}&amp;&amp; ${/column6}&amp;&amp; ${/column65}&amp;&amp; ${/column7}&amp;&amp; ${/column8}&amp;&amp; ${/column9}&amp;&amp; ${/column10}&amp;&amp; ${/column11}  )}"
 				select="onParentClicked"/>
 			<c:HTML content="&lt;hr&gt;"/>
 			<CheckBox text="{appTxts>/pay.headerCompany}" selected="{/column1}"/>
@@ -13,6 +13,7 @@
 			<CheckBox text="{appTxts>/pay.headerFile}" selected="{/column4}"/>
 			<CheckBox text="{appTxts>/pay.headerLimitDate}" selected="{/column5}"/>
             <CheckBox text="{appTxts>/pay.headerAmount}" selected="{/column6}"/>
+            <CheckBox text="{appTxts>/pay.headerAmoheaderNCMCunt}" selected="{/column65}"/>
             <CheckBox text="{appTxts>/pay.headerNC}" selected="{/column7}"/>
 			<CheckBox text="{appTxts>/pay.headerCP} 03" selected="{/column8}"/>
 			<CheckBox text="{appTxts>/pay.headerCP} 17S" selected="{/column9}"/>
