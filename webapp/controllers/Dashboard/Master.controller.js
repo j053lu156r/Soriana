@@ -5,9 +5,11 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "sap/ui/Device",
     "sap/base/Log",
-
-], function (Controller, BaseController, MessageBox, JSONModel, Device, Log) {
+    "sap/ui/export/library",
+    "sap/ui/export/Spreadsheet",
+], function (Controller, BaseController, MessageBox, JSONModel, Device, Log, exportLibrary, Spreadsheet) {
     "use strict";
+    var EdmType = exportLibrary.EdmType;
 
 
 
@@ -704,6 +706,139 @@ exportExcel: function(){
     ];
 
     that.exportxls('Totales', '/ETDBTACNAV/results', columns);
+},
+
+
+
+createColumnConfig2: function () {
+    var that = this;
+    var oModel = that.getView().getModel("General").getData(),
+        aCols = [];
+    console.log(oModel);
+    var texts = this.getOwnerComponent().getModel("appTxts");
+    
+    
+    aCols.push({
+        label: texts.getProperty("/dashboard.received"),
+        type: EdmType.String,
+        property: 'TotalAc'
+    });
+
+    aCols.push({
+        label: texts.getProperty("/dashboard.reclaimed"),
+        type: EdmType.String,
+        property: 'ImporComp'
+    });
+    aCols.push({
+        label: texts.getProperty("/dashboard.completed"),
+        type: EdmType.String,
+        property: 'TotalComp'
+    });
+
+    //****
+    aCols.push({
+        label: texts.getProperty("/dashboard.paid"),
+        type: EdmType.String,
+        property: 'ImporTpagado'
+    });
+
+    aCols.push({
+        label: texts.getProperty("/dashboard.pendingImp"),
+        type: EdmType.String,
+        property: 'ImporPend'
+    });
+
+    aCols.push({
+        label: texts.getProperty("/dashboard.pending"),
+        type: EdmType.String,
+        property: 'TotalPend'
+    });
+
+    
+
+
+    console.log(aCols);
+    return aCols;
+},
+//exporta excel
+buildExportTablegeneral: function () {
+    var aCols, oRowBinding, oSettings, oSheet, oTable, that = this;
+
+    if (!that._oTable) {
+        that._oTable = this.byId('aclaracionesList');
+    }
+
+    oTable = that._oTable;
+    console.log(oTable);
+    //oRowBinding = oTable.getBinding('items');
+    //oRowBinding = oTable.getBinding('rows');
+    oRowBinding = oTable.getBinding().oList;
+
+    aCols = that.createColumnConfig2();
+
+    oSettings = {
+        workbook: {
+            columns: aCols,
+            hierarchyLevel: 'Level'
+        },
+        dataSource: oRowBinding,
+        fileName: 'Aclaraciones',
+        worker: false // We need to disable worker because we are using a MockServer as OData Service
+    };
+
+    oSheet = new Spreadsheet(oSettings);
+    oSheet.build().finally(function () {
+        oSheet.destroy();
+    });
+},
+
+
+createColumnConfig3: function () {
+    var that = this;
+    var oModel = that.getView().getModel("General").getData(),
+        aCols = [];
+    console.log(oModel);
+    var texts = this.getOwnerComponent().getModel("appTxts");
+    
+    
+    aCols.push({
+        label:'Descripción',// texts.getProperty("/dashboard.received"),
+        type: EdmType.String,
+        property: 'DesAcla'
+    });
+
+    aCols.push({
+        label: 'valor',//texts.getProperty("/dashboard.reclaimed"),
+        type: EdmType.String,
+        property: 'valor'
+    });
+
+    
+
+
+    console.log(aCols);
+    return aCols;
+},
+//exporta excel
+buildExportpiechart: function () {
+    var aCols, aProducts, oSettings, oSheet;
+
+    aCols = this.createColumnConfig3();
+    aProducts =this.getView().getModel('Totales').getProperty('/PieChart');
+console.log(aProducts)
+    oSettings = {
+        workbook: { columns: aCols },
+        dataSource: aProducts,
+        fileName: 'Notas de Entrada',
+    };
+
+    oSheet = new Spreadsheet(oSettings);
+    oSheet.build()
+        .then( function() {
+        
+        })
+        .finally(oSheet.destroy);
+
 },
 
     });

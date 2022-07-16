@@ -7,7 +7,7 @@
             <ObjectIdentifier
                     title="{GroupedFactoraje>name}" wrapping="true"
             />
-            <Text text="{GroupedFactoraje>IdNumTipomov} {GroupedFactoraje>DescTipomov}" wrapping="true"/>
+            <ObjectIdentifier titlePress="onDocumentDevolucionPress" titleActive="{= ${GroupedFactoraje>IdNumTipomov} === '12'}"  title="{GroupedFactoraje>IdNumTipomov} {GroupedFactoraje>DescTipomov}" wrapping="true"/>
 
             <Text text="{=  (${GroupedFactoraje>Pendt} === true) ? 'Pendiente' : ( ${GroupedFactoraje>Belnr} === ${GroupedFactoraje>Augbl} ? 'Pago' : 'Contabilizado'  ) }"
                   wrapping="false"/>

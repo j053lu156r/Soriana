@@ -153,9 +153,28 @@ return formateado
             //itemName;
         },
         guardaAclara : function(){
-
+            var Model=this.getView().getModel('Aclaracion').getData();
             if( this.validaCampos() === false ){
                 return false;
+            }
+            console.log(Model)
+            //Model.Obsgen2
+            console.log(this.getView().byId("comments").getValue())
+            console.log(Model.Obsgen2)
+            if(this.getView().byId("comments").getValue() !== Model.Obsgen2){
+                console.log("entro")
+                console.log(this.getView().byId("comments").getValue().includes(Model.Obsgen2))     // false
+               if (!this.getView().byId("comments").getValue().includes(Model.Obsgen2)){
+                var text= Model.Obsgen2+'\n '+Model.Obsgen;
+                console.log(text)
+               }else{
+                var text= Model.Obsgen//+'\n '+Model.Obsgen.split(Model.Obsgen2 [1]);
+                console.log(text)
+
+               }
+               Model.Obsgen=text
+
+               // Model.Obsgen= Model.Obsgen2+'\n '+this.getView().byId("comments").getValue()
             }
 
             
@@ -165,7 +184,7 @@ return formateado
             let sourceDocument      = this.getView().byId("sourceDocument").getValue().trim();
             let reclaimedImport     = this.getView().byId("reclaimedImport").getValue();
             //let reclaimedTax        = this.getView().byId("reclaimedTax").getValue();
-            let comments            = this.getView().byId("comments").getValue();
+            let comments            = Model.Obsgen;//this.getView().byId("comments").getValue();
             let folio               = (parseInt( this._document, 10) == 0) ? '' : this._document;
             let status              = this.getView().byId("status").getSelectedKey();
             let tipo                = clarificationType.getSelectedKey();
@@ -218,7 +237,7 @@ return formateado
             var json2 = JSON.stringify(objRelease);
             var that=this;
             
-            that._POSToDataV2(model, entity, json2 ).then(function (_GEToDataV2Response) {
+           that._POSToDataV2(model, entity, json2 ).then(function (_GEToDataV2Response) {
                 sap.ui.core.BusyIndicator.hide();
                 console.log(JSON.stringify(objRelease))
                 var response = _GEToDataV2Response.d;
@@ -436,7 +455,7 @@ return formateado
                 this.getView().byId('status').setValueState( sap.ui.core.ValueState.Error );
             }
 
-            if( this.getView().byId('receipt').getValue() == '' ){
+            if( this.getView().byId('receipt').getValue() == '' && this.getView().byId("clarificationType").getSelectedKey()==='PF'){
                 valid = false;
                 this.getView().byId('receipt').setValueState( sap.ui.core.ValueState.Error );
             }
@@ -631,7 +650,7 @@ if (MAcla > Mrecl){
        
         bloquearCampos: function( modo, Estatus ){
             var Model=this.getView().getModel('Aclaracion').getData();
-            console.log(Model)
+          
                 let Controles = this.getView().getControlsByFieldGroupId('aclaracion');
 
                 for (let i = 0; i < Controles.length; i++) {
@@ -657,8 +676,12 @@ if (MAcla > Mrecl){
                 
 
             if( modo === "edit" ) {
-
+                console.log(Model)
+                Model.Obsgen2=Model.Obsgen
                 //this.getView().byId("analyst").setEnabled(true).setEditable(true);
+
+
+
 
                 switch (Estatus) {
                     case "B":
@@ -676,7 +699,17 @@ if (MAcla > Mrecl){
                         
                         break;
                     case "D":
+                        
+                       // let ComboStatus = this.getView().byId("status");
+                     
+                      //  this.getView().byId("paymentDocument").setEnabled(true).setEditable(true);
                         this.getView().byId("comments").setEnabled(true).setEditable(true);
+                       // this.getView().byId("validatePaymentDocument").setEnabled(true);
+                       this.getView().byId("status").setEnabled(true);
+                       this.getView().byId("status").setEditable(true);
+                        ComboStatus.getItemByKey('A').setEnabled( false );
+                        ComboStatus.getItemByKey('B').setEnabled( false );
+                     //   this.getView().byId("comments").setEnabled(true).setEditable(true);
                         break;
                     case "E":
                         this.getView().byId("status").setEnabled(true).setEditable(true);
@@ -828,12 +861,12 @@ var ArrT=[];
                 inputInvoice.setValueState(sap.ui.core.ValueState.Error);
                 return false;
             }
-            var tipo_Doc= Datos.results[0].ZDocOri.results[0].Descripcion.split(" ")[0]
+            var tipo_Doc= Datos.results[0].ZRefFac.results[0].Descripcion.split(" ")[0]
             
 
-var TAclara=this.getView().getModel("catalogos").getData().Tipos.results;
+            var TAclara=this.getView().getModel("catalogos").getData().Tipos.results;
 
-var ArrT=[];
+            var ArrT=[];
             if (tipo_Doc==='RE'){
                 for(var x =0;x<TAclara.length;x++){
                     if(TAclara[x].TipAcla==="CD"||TAclara[x].TipAcla==="FI"||TAclara[x].TipAcla==="PF"){
@@ -854,6 +887,14 @@ var ArrT=[];
             if (tipo_Doc==='RA'){
                 for(var x =0;x<TAclara.length;x++){
                     if(TAclara[x].TipAcla==="CC"||TAclara[x].TipAcla==="DC"||TAclara[x].TipAcla==="FC"||TAclara[x].TipAcla==="UP"){
+                        ArrT.push(TAclara[x])
+                    }
+
+                } 
+            }
+            if (tipo_Doc==='KE'){
+                for(var x =0;x<TAclara.length;x++){
+                    if(TAclara[x].TipAcla==="PF"){
                         ArrT.push(TAclara[x])
                     }
 

@@ -1,13 +1,13 @@
 <core:FragmentDefinition
 	xmlns:core="sap.ui.core"
 	xmlns="sap.m">
-	<ColumnListItem  
+	<ColumnListItem
 	 >
 		<cells>
 			<ObjectIdentifier
 				title="{GroupedTotales>name}" wrapping="true"
 				   />
-                                <Text text="{GroupedTotales>IdNumTipomov} {GroupedTotales>DescTipomov}" wrapping="true" />
+			<ObjectIdentifier titlePress="onDocumentDevolucionPress" titleActive="{= ${GroupedTotales>IdNumTipomov} === '12'}" title="{GroupedTotales>IdNumTipomov} {GroupedTotales>DescTipomov}" wrapping="false" />
 
 				     <Text text="{=  (${GroupedTotales>Pendt} === true) ? 'Pendiente' : ( ${GroupedTotales>Belnr} === ${GroupedTotales>Augbl} ? 'Pago' : 'Contabilizado'  ) }" wrapping="false" />
 
@@ -21,20 +21,20 @@
 
                                 <Text text="{GroupedTotales>Budat}" wrapping="false" />
 	<ObjectNumber
-							number= "{parts: [{path: 'GroupedTotales>Wrbtr'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+							number= "{parts: [{path: 'GroupedTotales>Wrbtr'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
 							  />                                 <Text text="{GroupedTotales>MCondicion}" wrapping="false" />
                                 <!--
                                  <Text text="{GroupedTotales>BloqueoFlag}" wrapping="false" />
                              -->
 
                                  	<ObjectMarker
-					
+
 					visible="{=  ${GroupedTotales>BloqueoFlag} === '' ? false : true }"
 
 					type="LockedBy"
 					 additionalInfo="{GroupedTotales>DescripcionBloqueo}"
 					press="onMarkerPress"
-					 
+
 					 />
 
                                  <Text text="{GroupedTotales>Augbl}" wrapping="false" />
@@ -46,25 +46,25 @@
 				 		<ObjectNumber
 							number="{GroupedTotales>totalRegs}"
 							  />
-				 	
+
 
 				 	<ObjectNumber
-							number= "{parts: [{path: 'GroupedTotales>totalDebit'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+							number= "{parts: [{path: 'GroupedTotales>totalDebit'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
 							  />
-				 	
+
 
 				 	<ObjectNumber
-							number="{parts: [{path: 'GroupedTotales>totalCredit'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+							number="{parts: [{path: 'GroupedTotales>totalCredit'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
 							  />
-				 	
+
                      	<ObjectNumber
-							number="{parts: [{path: 'GroupedTotales>cost'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" 
+							number="{parts: [{path: 'GroupedTotales>cost'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
 							  />
-				 	
-				
 
-		 
-			 
+
+
+
+
 		</cells>
 	</ColumnListItem>
 </core:FragmentDefinition>

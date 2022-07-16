@@ -58,6 +58,7 @@ sap.ui.define([
                 column4:true,
                 column5:true,
                 column6:true,
+                column65:true,
                 column7:true,
                 column8:true,
                 column9:true,
@@ -78,6 +79,7 @@ sap.ui.define([
           that.getView().byId("column4").setVisible(that.getView().getModel().getProperty("/column4"));
             that.getView().byId("column5").setVisible(that.getView().getModel().getProperty("/column5"));
             that.getView().byId("column6").setVisible(that.getView().getModel().getProperty("/column6"));
+            that.getView().byId("column65").setVisible(that.getView().getModel().getProperty("/column65"));
             that.getView().byId("column7").setVisible(that.getView().getModel().getProperty("/column7"));
             that.getView().byId("column8").setVisible(that.getView().getModel().getProperty("/column8"));
             that.getView().byId("column9").setVisible(that.getView().getModel().getProperty("/column9"));
@@ -191,15 +193,14 @@ sap.ui.define([
                 sap.ui.core.BusyIndicator.hide();
                 var arrT=[];
                 var data = _GEToDataV2Response.data.results;
-                console.log(data)
+               console.log(data)
              for(var x =0;x<data.length;x++){
 
                    if (!(data[x].IAugbl.startsWith('58') )&&!(data[x].IAugbl.startsWith('59')) ){
                     arrT.push(data[x])
              }
             }
-            console.log(data)
-            console.log(arrT)
+           
             if(arrT.length>0){
                 var Documentos = { Detalles: { results: [...arrT[0].EPYMNTDOCSNAV.results] } };
 
@@ -293,24 +294,30 @@ sap.ui.define([
         formatAvailableToIcon: function (bAvailable) {
            
             switch (bAvailable) {
-                case 'Y':
+                case 'X':
+                    return "sap-icon://message-error";
+                    break;
+                    case 'Y':
                     return "sap-icon://message-success";
                     break;
                 default:
-                    return "sap-icon://message-error";
+                    return "sap-icon://less";
                     break;
 
             }
             return bAvailable ? "sap-icon://accept" : "sap-icon://decline";
         },
         formatStatusIcon: function (bAvailable) {
-            console.log(bAvailable)
+          
             switch (bAvailable) {
                 case 'Y':
                     return "#008000";
                     break;
+                    case 'X':
+                        return "#FF0000";
+                        break;
                 default:
-                    return "#FF0000";
+                    return "";
                     break;
 
             }
@@ -339,14 +346,19 @@ sap.ui.define([
             }
         },
         openUploadDialog: function () {
+            var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
             if (!this.hasAccess(10)) {
                 return
             }
-            if (!this._uploadDialog2) {
-                this._uploadDialog2 = sap.ui.xmlfragment("uploadInvoice", "demo.fragments.UploadInvoice", this);
-                this.getView().addDependent(this._uploadDialog2);
+            if (vLifnr !== undefined && vLifnr !== null){
+                if (!this._uploadDialog2) {
+                    this._uploadDialog2 = sap.ui.xmlfragment("uploadInvoice", "demo.fragments.UploadInvoice", this);
+                    this.getView().addDependent(this._uploadDialog2);
+                }
+                this._uploadDialog2.open();
+            } else {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/clarifications.noSupplier"));
             }
-            this._uploadDialog2.open();
         },
         onCloseDialogUpload: function () {
             if (this._uploadDialog2) {
@@ -363,6 +375,7 @@ sap.ui.define([
                 column4:bSelected,
                 column5:bSelected,
                 column6:bSelected,
+                column65:bSelected,
                 column7:bSelected,
                 column8:bSelected,
                 column9:bSelected,
@@ -371,6 +384,7 @@ sap.ui.define([
             });
         },
         documentUploadPress: function () {
+            /*
             var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoice", "fileUploader");
             var uploadList = sap.ui.core.Fragment.byId("uploadInvoice", "logUploadList");
             var uploadBox = sap.ui.core.Fragment.byId("uploadInvoice", "uploadBox");
@@ -418,6 +432,64 @@ sap.ui.define([
                 oFileUploader.clear();
             };
             reader.readAsDataURL(file);
+            */
+
+           var that = this;
+           var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+           var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoice", "fileUploader");
+           sap.ui.core.BusyIndicator.show(0);
+
+           if (!oFileUploader.getValue()) {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/helpDocs.uploader.nodata"));
+                sap.ui.core.BusyIndicator.hide();
+                return;
+            }
+
+            var file = oFileUploader.oFileUpload.files[0];
+            var reader2 = new FileReader();
+
+            reader2.onload = function (evn) {
+                var strXML = evn.target.result;  
+                
+                var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' + 
+                    'xmlns:tem="http://tempuri.org/"><soapenv:Header/><soapenv:Body><tem:RecibeCFDPortal>' + 
+                    '<tem:XMLCFD><![CDATA[' + strXML + ']]></tem:XMLCFD><tem:proveedor>' + vLifnr + 
+                    '</tem:proveedor></tem:RecibeCFDPortal></soapenv:Body></soapenv:Envelope>';
+                
+                $.ajax({
+                    async: true,
+                    url: "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboPortal.asmx",
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/xml",
+                        "Access-Control-Allow-Origin": "*"
+                    },
+                    data: body,
+                    success: function(response) {
+                        sap.ui.core.BusyIndicator.hide();
+                        that.onCloseDialogUpload();
+                        oFileUploader.clear();
+                        var oXMLModel = new sap.ui.model.xml.XMLModel();  
+                        oXMLModel.setXML(response.getElementsByTagName("RecibeCFDPagoResult")[0].textContent);
+                        var oXml = oXMLModel.getData();
+                        var status = oXml.getElementsByTagName("AckErrorApplication")[0].attributes[5].nodeValue;
+                        if (status == "ACCEPTED") {
+                            sap.m.MessageBox.success(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendSuccess"));
+                        } else {
+                            var strError = oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent;
+                            strError = strError.replaceAll(";","\n\n");
+                            sap.m.MessageBox.error(strError);
+                        }
+                    },
+                    error: function(request, status, err) {
+                        sap.ui.core.BusyIndicator.hide();
+                        that.onCloseDialogUpload();
+                        oFileUploader.clear();
+                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendError"));
+                    }
+                });
+            };
+            reader2.readAsText(file);
         },
         delFact: function (oEvent) {
             sap.ui.getCore().setModel(null, "deliverTable");
@@ -601,7 +673,13 @@ sap.ui.define([
                 property: 'Rbetr'
             });
 
+            aCols.push({
+                label: texts.getProperty("/pay.headerNCMC"),
+                type: EdmType.String,
+                property: 'Nc_mc'
 
+
+            });
 
             aCols.push({
                 label: texts.getProperty("/pay.headerNC"),

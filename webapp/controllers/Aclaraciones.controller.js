@@ -236,10 +236,10 @@ if (that.getView().byId("supplierInput").getValue()===""){
             //let IIdusua = '';
             //console.log(this.getOwnerComponent().getModel("userdata").getJSON());
 
-            if (proveedor_LIFNR === '') {
+         /*   if (proveedor_LIFNR === '') {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.msgNoFilter'));
                 return false;
-            }
+            }*/
 
 
 
@@ -358,6 +358,7 @@ if (that.getView().byId("supplierInput").getValue()===""){
             }
 
             let Rol = this.getOwnerComponent().getModel("userdata").getProperty('/ERol');
+            console.log(Rol)
 
             let resource = oEvent.getSource().getBindingContext("Aclaraciones").getPath();
             let line = resource.split("/").slice(-1).pop();
@@ -367,7 +368,8 @@ if (that.getView().byId("supplierInput").getValue()===""){
 
             let continuar = true;
             let Estatus = results[line].Estatus;
-            switch (Estatus) {
+            console.log(Estatus)
+            /*switch (Estatus) {
                 case 'A':
 
                     break;
@@ -390,6 +392,10 @@ if (that.getView().byId("supplierInput").getValue()===""){
                 default:
                     continuar = false;
                     break;
+            }*/
+            if(Estatus==='H'){
+                continuar = false;
+
             }
 
             if (!continuar) {

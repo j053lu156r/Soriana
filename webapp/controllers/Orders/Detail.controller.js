@@ -1,11 +1,15 @@
 sap.ui.define([
+    "sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator",
     "sap/ui/model/json/JSONModel",
     "demo/controllers/BaseController",
     'sap/ui/export/library'
-], function (JSONModel, Controller, exportLibrary) {
+], function (Filter, FilterOperator, JSONModel, Controller, exportLibrary) {
     "use strict";
 
     var oModel = new this.Pedidostemp();
+    var oEdiModel = new this.ModelEDI();
+    var oTermsModel = new this.ModelTC();
     var EdmType = exportLibrary.EdmType;
 
     return Controller.extend("demo.controllers.Orders.Detail", {
@@ -15,6 +19,11 @@ sap.ui.define([
 
             this.oRouter = this.getOwnerComponent().getRouter();
             this.oModel = this.getOwnerComponent().getModel();
+            this.txtTermsCond = this.getView().byId("txtTermsCond");
+            this.txtTermsCond2 = this.getView().byId("txtTermsCond2");
+            this.txtTermsCond3 = this.getView().byId("txtTermsCond3");
+            this.ediModel = new sap.ui.model.odata.v2.ODataModel(oEdiModel.sUrl);
+            this.termModel = new sap.ui.model.odata.v2.ODataModel(oTermsModel.sUrl);
 
             this.oRouter.getRoute("detailOrders").attachPatternMatched(this._onDocumentMatched, this);
 
@@ -77,6 +86,7 @@ sap.ui.define([
 
             this.paginate("tableDetailMoves", "/Oekponav", 1, 0);
             this.paginate("tableDetailMoves", "/OEKKOADVRNAV", 1, 0);
+            this.getTermsCons();
         },
         formatSatusOrder: function (status) {
             if (status) {
@@ -197,6 +207,48 @@ sap.ui.define([
             });
 
             return aPosiciones;
+        },
+        downloadEDI: function(oEvent){
+            var that = this;
+            var aFilters = [];
+            aFilters.push(new Filter("Ebeln", FilterOperator.EQ, this._document));
+
+            this.ediModel.read("/EdiFileSet", {
+                filters: aFilters,
+                success: function(response){
+                    console.log(response)
+                    if(response.results.length > 0){
+                        var base64Data = response.results[0].Datar;
+                        const linkSource = `data:text/plain;charset=utf-8;base64,${base64Data}`;
+                        const downloadLink = document.createElement("a");
+                        downloadLink.href = linkSource;
+                        downloadLink.download = `EDI_${that._document}.txt`;
+                        downloadLink.click();
+                    } else {
+                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/order.ediEmptyError"));
+                    }
+                }, 
+                error: function(error){
+                    sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/order.downEdiError"));
+                }
+            });
+        },
+
+        getTermsCons: function(oEvent){
+            var that = this;
+            this.termModel.read("/TxtTermCondSet", {
+                success: function(response){
+                    console.log(response)
+                    var text = "Los Términos y Condiciones específicos de esta Orden de Compra y los genéricos del Convenio Comercial publicados en el Portal del Proveedor en el sitio www.soriana.com prevalecerán frente a cualquier acuerdo previo y serán extensivos para las subsidiarias y/o afiliadas de Tiendas Soriana, S.A. de C.V. y/o Organización Soriana, S.A.B. de C.V. " + 
+                    "El incumplimiento en el nivel de servicio comprometido bajo esta Orden de Compra dará lugar a una penalización equivalente al importe que resulte de restar al Precio de Venta de Soriana el Precio de Costo de los Productos no surtidos a partir del día siguiente de la Fecha Fin de Embarque, que podrá deducir Soriana sin mayor trámite de los adeudos que se registren en favor de";
+                    that.txtTermsCond.setText(text);
+                    that.txtTermsCond2.setText(text);
+                    that.txtTermsCond3.setText(text);
+                }, 
+                error: function(error){
+                    sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/order.termconsError"));
+                }
+            });
         }
     });
 });
