@@ -452,9 +452,9 @@ sap.ui.define([
                 var strXML = evn.target.result;  
                 
                 var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' + 
-                    'xmlns:tem="http://tempuri.org/"><soapenv:Header/><soapenv:Body><tem:RecibeCFDPago>' + 
+                    'xmlns:tem="http://tempuri.org/"><soapenv:Header/><soapenv:Body><tem:RecibeCFDPortal>' + 
                     '<tem:XMLCFD><![CDATA[' + strXML + ']]></tem:XMLCFD><tem:proveedor>' + vLifnr + 
-                    '</tem:proveedor></tem:RecibeCFDPago></soapenv:Body></soapenv:Envelope>';
+                    '</tem:proveedor></tem:RecibeCFDPortal></soapenv:Body></soapenv:Envelope>';
                 
                 $.ajax({
                     async: true,
