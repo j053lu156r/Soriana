@@ -157,27 +157,42 @@ return formateado
             if( this.validaCampos() === false ){
                 return false;
             }
-            console.log(Model)
-            //Model.Obsgen2
-            console.log(this.getView().byId("comments").getValue())
-            console.log(Model.Obsgen2)
+            console.log(Model.Obsgen2);
+            if(Model.Obsgen2 !== undefined){
+          
             if(this.getView().byId("comments").getValue() !== Model.Obsgen2){
-                console.log("entro")
-                console.log(this.getView().byId("comments").getValue().includes(Model.Obsgen2))     // false
+              
                if (!this.getView().byId("comments").getValue().includes(Model.Obsgen2)){
                 var text= Model.Obsgen2+'\n '+Model.Obsgen;
-                console.log(text)
+               
                }else{
                 var text= Model.Obsgen//+'\n '+Model.Obsgen.split(Model.Obsgen2 [1]);
-                console.log(text)
+               
 
                }
+               if(text.includes('undefined')){
+                const regex = /undefined/i;
+               // console.log(p.replace(regex, 'ferret'));
+                text.replace(regex, "");
+                console.log(text)
+            }
+
                Model.Obsgen=text
+             
 
                // Model.Obsgen= Model.Obsgen2+'\n '+this.getView().byId("comments").getValue()
             }
+          
+        }else{
+            var text=  this.getView().byId("comments").getValue()
+            Model.Obsgen=text
+        }
 
-            
+            console.log(Model);
+            if(this.getView().byId("comments").getValue()==='' || this.getView().byId("comments").getValue()===undefined || this.getView().byId("comments").getValue()===null){
+                sap.m.MessageBox.warning( this.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.Errorcoment') );
+                return false;
+            }
             let clarificationType   = this.getView().byId("clarificationType");
 
             let invoice             = this.getView().byId("invoice").getValue().trim();
@@ -194,7 +209,8 @@ return formateado
             let distributionCenter  = this.getView().byId("distributionCenter").getValue();
             let recibo              = this.getView().byId("receipt").getValue();
             let Gjahr               = this.getView().byId("Gjahr").getValue();
-
+            let clarifiedAmount = this.getView().byId("clarifiedAmount").getValue();
+            //clarifiedAmount
             if( proveedor_LIFNR == null && this.getView().byId("supplierInput").getValue().trim() != "" )
                 proveedor_LIFNR = this.getView().byId("supplierInput").getValue().trim().split(' ')[0];
             
@@ -207,6 +223,7 @@ return formateado
                 "ICendis": distributionCenter,
                 "ITacla": tipo,
                 "IMonrec": reclaimedImport.replace(/\,/g, ""),
+              //  "IMonacla":clarifiedAmount.replace(/\,/g, ""),
                 //"IIvarec": reclaimedTax,
                 "IObsgen": comments, 
                 "INoDoc": "",//paymentDocument,
@@ -215,7 +232,8 @@ return formateado
                 "IStatus": status,
                 "IRecibo" : recibo,
                 "IGjahr":Gjahr,
-                "ZFile": files
+                "ZFile": files,
+              
             };
 
             if( folio != '' ){
@@ -552,6 +570,8 @@ return formateado
 
                 
                 this.getOwnerComponent().getModel("catalogos").setProperty('/Analistas', {results:[ ...Datos.results[0].ZtaclaraAa.results ]});
+
+                console.log(this.getOwnerComponent().getModel("catalogos"));
                
                 var Aclaracion = Datos.results[0].ZtaclaraFo.results[0];
 
@@ -726,6 +746,7 @@ if (MAcla > Mrecl){
                         break;
                     case "G":
                         this.getView().byId("status").setEnabled(true).setEditable(true);
+                        this.CambioStatus();
                       //  this.getView().byId("paymentDocument").setEnabled(true).setEditable(true);
                         this.getView().byId("comments").setEnabled(true).setEditable(true);
                    //     this.getView().byId("validatePaymentDocument").setEnabled(true);
@@ -750,6 +771,22 @@ if (MAcla > Mrecl){
             
            
         },
+        CambioStatus:function(){
+            var that=this;
+
+            if(that.getView().byId("status").getSelectedKey()==='G'){
+             //   that.getView().byId("analyst").setVisible(true)
+                that.getView().byId("analyst").setEnabled(true)
+                that.getView().byId("analyst").setEditable(true)
+                
+            }else{
+              //  that.getView().byId("analyst").setVisible(false)
+                that.getView().byId("analyst").setEnabled(false)
+                that.getView().byId("analyst").setEditable(false)
+            }
+
+
+        }, 
         validateSourceDocument: function(oEvent){ 
             let inputsourceDocument = this.getView().byId('sourceDocument');
 
