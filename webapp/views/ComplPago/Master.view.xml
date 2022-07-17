@@ -25,6 +25,7 @@
                         type  = "Emphasized"
                         press = "openUploadDialog"
                     />
+                    <Button text="Validaciones fiscales" type="Emphasized" press="openUploadDialog2"/>
                 </f:actions>
             </f:DynamicPageTitle>
         </f:title>
