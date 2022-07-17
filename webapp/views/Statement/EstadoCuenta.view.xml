@@ -365,7 +365,7 @@
                         <Column sortProperty="IdNumTipomov" filterProperty="IdNumTipomov"  id="tipoMovColumn" width="30%">
                             <m:Label text="{appTxts>/aportaciones.concepto}" />
                             <template>
-                                <m:ObjectAttribute press="onDocumentDevolucionPress"  active="true"  text="{GroupedTotales>IdNumTipomov} {GroupedTotales>DescTipomov}"  />
+                                <m:ObjectAttribute press="onDocumentDevolucionPress"  active="{= ${GroupedTotales>IdNumTipomov} === '12'}"  text="{GroupedTotales>IdNumTipomov} {GroupedTotales>DescTipomov}"  />
                             </template>
                         </Column>
 
@@ -457,7 +457,26 @@
 
 
                     </columns>
+
                 </Table>
+
+                <OverflowToolbar  visible="true">
+
+                    <Text width="47%"  text="Total" />
+
+                    <Text width="17%"  text="{GroupedTotales>/Hierarchy/totalR}"/>
+                    <Text width="17%"
+                                  text= "{parts: [{path: 'GroupedTotales>/Hierarchy/totalD'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                    />
+                    <Text width="20%"
+                                  text= "{parts: [{path: 'GroupedTotales>/Hierarchy/totalC'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                    />
+
+                </OverflowToolbar>
+
+
+
+
                 <!--
                 <OverflowToolbar  visible="{= ${totales>/Detalles/Paginated/results/length} > 0 }">
                 -->

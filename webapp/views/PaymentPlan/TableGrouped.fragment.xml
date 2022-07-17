@@ -4,7 +4,7 @@
         <m:Table id="idGroupTable" selectionChange="handleSelection"  growing="true" growingThreshold="10" inset="false">
             <m:headerToolbar>
                 <m:OverflowToolbar>
-                   
+
                     <m:Breadcrumbs id="breadcrumb" />
                     <m:ToolbarSpacer/>
                     <!--
@@ -13,7 +13,7 @@
                 </m:OverflowToolbar>
             </m:headerToolbar>
             <m:columns   >
-               
+
                 <!--columnas nuevas para agruapcion-->
                 <m:Column id="dateCorte"  visible="true">
                     <m:Text text="{appTxts>/plan.dateCorte}" />
@@ -52,7 +52,7 @@
 					</m:Column>
 
 
- 
+
             </m:columns>
             <!--
         <m:items>
@@ -70,6 +70,15 @@
         </m:items>
         -->
         </m:Table>
+
+        <m:MessageStrip
+                text="LOS IMPORTES MANEJADOS EN ESTE CUADRO SON INFORMATIVOS Y NO REPRESENTAN UN COMPROMISO DE PAGO POR PARTE DE SORIANA Y
+PUEDEN VARIAR POR NUEVAS COMPRAS, DEVOLUCIONES O CARGOS VARIOS."
+                type="Information"
+                showIcon="true"
+                class="sapUiMediumMarginBottom">
+        </m:MessageStrip>
+
 
     </m:VBox>
 </core:FragmentDefinition>
