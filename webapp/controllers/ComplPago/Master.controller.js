@@ -360,11 +360,91 @@ sap.ui.define([
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/clarifications.noSupplier"));
             }
         },
+        openUploadDialog2: function () {
+            var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+            if (!this.hasAccess(10)) {
+                return
+            }
+            if (vLifnr !== undefined && vLifnr !== null){
+                if (!this._uploadDialog3) {
+                    this._uploadDialog3 = sap.ui.xmlfragment("uploadInvoiceTest", "demo.fragments.UploadInvoice2", this);
+                    this.getView().addDependent(this._uploadDialog3);
+                }
+                this._uploadDialog3.open();
+            } else {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/clarifications.noSupplier"));
+            }
+        },
+        onCloseDialogUpload2: function () {
+            if (this._uploadDialog3) {
+                this._uploadDialog3.destroy();
+                this._uploadDialog3 = null;
+            }
+        },
         onCloseDialogUpload: function () {
             if (this._uploadDialog2) {
                 this._uploadDialog2.destroy();
                 this._uploadDialog2 = null;
             }
+        },
+        documentUploadPress2: function(){
+            var that = this;
+           var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+           var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoiceTest", "fileUploaderTest");
+           sap.ui.core.BusyIndicator.show(0);
+
+           if (!oFileUploader.getValue()) {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/helpDocs.uploader.nodata"));
+                sap.ui.core.BusyIndicator.hide();
+                return;
+            }
+
+            var file = oFileUploader.oFileUpload.files[0];
+            var reader2 = new FileReader();
+
+            reader2.onload = function (evn) {
+                var strXML = evn.target.result;  
+                
+                var body = '<?xml version="1.0" encoding="utf-8"?>' + 
+                    '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' + 
+                    'xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><RecibeCFDPortal xmlns="http://tempuri.org/">' +
+                    '<XMLCFD><![CDATA[' + strXML + ']]></XMLCFD><proveedor>' + vLifnr + '</proveedor>' + 
+                    '</RecibeCFDPortal></soap:Body></soap:Envelope>';
+                
+                $.ajax({
+                    async: true,
+                    url: "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboPortal.asmx",
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/xml",
+                        "Access-Control-Allow-Origin": "*"
+                    },
+                    data: body,
+                    success: function(response) {
+                        sap.ui.core.BusyIndicator.hide();
+                        that.onCloseDialogUpload2();
+                        oFileUploader.clear();
+                        var oXMLModel = new sap.ui.model.xml.XMLModel();  
+                        oXMLModel.setXML(response.getElementsByTagName("RecibeCFDPortalResult")[0].textContent);
+                        var oXml = oXMLModel.getData();
+                        var status = oXml.getElementsByTagName("AckErrorApplication")[0].attributes[5].nodeValue;
+                        if (status == "ACCEPTED") {
+                            sap.m.MessageBox.success(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendSuccess"));
+                        } else {
+                            var strError = oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent;
+                            strError = strError.replaceAll(";","\n\n");
+                            sap.m.MessageBox.error(strError);
+                        }
+                    },
+                    error: function(request, status, err) {
+                        sap.ui.core.BusyIndicator.hide();
+                        that.onCloseDialogUpload2();
+                        oFileUploader.clear();
+                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendError"));
+                    }
+                });
+            };
+            reader2.readAsText(file);
         },
         onParentClicked: function (oEvent) {
             var bSelected = oEvent.getParameter("selected");
@@ -384,7 +464,7 @@ sap.ui.define([
             });
         },
         documentUploadPress: function () {
-            /*
+            
             var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoice", "fileUploader");
             var uploadList = sap.ui.core.Fragment.byId("uploadInvoice", "logUploadList");
             var uploadBox = sap.ui.core.Fragment.byId("uploadInvoice", "uploadBox");
@@ -432,64 +512,6 @@ sap.ui.define([
                 oFileUploader.clear();
             };
             reader.readAsDataURL(file);
-            */
-
-           var that = this;
-           var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
-           var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoice", "fileUploader");
-           sap.ui.core.BusyIndicator.show(0);
-
-           if (!oFileUploader.getValue()) {
-                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/helpDocs.uploader.nodata"));
-                sap.ui.core.BusyIndicator.hide();
-                return;
-            }
-
-            var file = oFileUploader.oFileUpload.files[0];
-            var reader2 = new FileReader();
-
-            reader2.onload = function (evn) {
-                var strXML = evn.target.result;  
-                
-                var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' + 
-                    'xmlns:tem="http://tempuri.org/"><soapenv:Header/><soapenv:Body><tem:RecibeCFDPortal>' + 
-                    '<tem:XMLCFD><![CDATA[' + strXML + ']]></tem:XMLCFD><tem:proveedor>' + vLifnr + 
-                    '</tem:proveedor></tem:RecibeCFDPortal></soapenv:Body></soapenv:Envelope>';
-                
-                $.ajax({
-                    async: true,
-                    url: "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboPortal.asmx",
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "text/xml",
-                        "Access-Control-Allow-Origin": "*"
-                    },
-                    data: body,
-                    success: function(response) {
-                        sap.ui.core.BusyIndicator.hide();
-                        that.onCloseDialogUpload();
-                        oFileUploader.clear();
-                        var oXMLModel = new sap.ui.model.xml.XMLModel();  
-                        oXMLModel.setXML(response.getElementsByTagName("RecibeCFDPagoResult")[0].textContent);
-                        var oXml = oXMLModel.getData();
-                        var status = oXml.getElementsByTagName("AckErrorApplication")[0].attributes[5].nodeValue;
-                        if (status == "ACCEPTED") {
-                            sap.m.MessageBox.success(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendSuccess"));
-                        } else {
-                            var strError = oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent;
-                            strError = strError.replaceAll(";","\n\n");
-                            sap.m.MessageBox.error(strError);
-                        }
-                    },
-                    error: function(request, status, err) {
-                        sap.ui.core.BusyIndicator.hide();
-                        that.onCloseDialogUpload();
-                        oFileUploader.clear();
-                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendError"));
-                    }
-                });
-            };
-            reader2.readAsText(file);
         },
         delFact: function (oEvent) {
             sap.ui.getCore().setModel(null, "deliverTable");
