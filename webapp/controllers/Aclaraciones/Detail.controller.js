@@ -223,7 +223,7 @@ return formateado
                 "ICendis": distributionCenter,
                 "ITacla": tipo,
                 "IMonrec": reclaimedImport.replace(/\,/g, ""),
-              //  "IMonacla":clarifiedAmount.replace(/\,/g, ""),
+                "IMonacl":clarifiedAmount.replace(/\,/g, ""),
                 //"IIvarec": reclaimedTax,
                 "IObsgen": comments, 
                 "INoDoc": "",//paymentDocument,
