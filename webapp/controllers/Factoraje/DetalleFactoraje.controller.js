@@ -518,6 +518,10 @@ sap.ui.define([
 
 
 
+				//folio y sucursal
+				this.byId("sucursalColumn").setVisible(true);
+				this.byId("folio2Column").setVisible(true);
+
 
 
 
@@ -548,6 +552,9 @@ sap.ui.define([
 
 
 
+				//folio y sucursal
+				this.byId("sucursalColumn").setVisible(false);
+				this.byId("folio2Column").setVisible(false);
 
 
 

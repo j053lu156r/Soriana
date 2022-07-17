@@ -801,7 +801,7 @@ sap.ui.define([
                 this.byId("amountColumn").setVisible(true);
                 this.byId("mCondicionColumn").setVisible(true);
                 this.byId("bloqueoColumn").setVisible(true);
-                this.byId("conciliacionColumn").setVisible(true);
+                this.byId("conciliacionColumn").setVisible(false);
 
                 this.byId("tipoMovColumn").setVisible(true);
 
@@ -814,6 +814,13 @@ sap.ui.define([
 
 
                 this.byId("verReporteColumn").setVisible(true);
+
+                //folio y sucursal
+                this.byId("sucursalColumn").setVisible(true);
+                this.byId("folio2Column").setVisible(true);
+
+
+
 
 
             } else {
@@ -844,6 +851,11 @@ sap.ui.define([
 
                 this.byId("verReporteColumn").setVisible(false);
 
+
+
+                //folio y sucursal
+                this.byId("sucursalColumn").setVisible(false);
+                this.byId("folio2Column").setVisible(false);
 
             }
 

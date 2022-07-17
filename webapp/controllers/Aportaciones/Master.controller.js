@@ -137,6 +137,8 @@ sap.ui.define([
             //this.getOwnerComponent().setModel(new JSONModel(status), "catalogStatus");
             //this.createButton(docResult, true);
 
+            docResult.Concepto = docResult.Concepto.replace (/\//g, "_");
+
             this.getOwnerComponent().getRouter().navTo("detailAportaciones",
                 {
                     layout: sap.f.LayoutType.TwoColumnsMidExpanded,
