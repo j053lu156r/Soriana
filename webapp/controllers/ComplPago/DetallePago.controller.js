@@ -409,6 +409,12 @@ console.log(TDatos)
 				this.byId("creditColumn").setVisible(false);
 				this.byId("costoColumn").setVisible(false);
 
+				//folio y sucursal
+				this.byId("sucursalColumn").setVisible(true);
+				this.byId("folio2Column").setVisible(true);
+
+
+
 
 
 
@@ -440,6 +446,9 @@ console.log(TDatos)
 				this.byId("costoColumn").setVisible(true);
 
 
+				//folio y sucursal
+				this.byId("sucursalColumn").setVisible(false);
+				this.byId("folio2Column").setVisible(false);
 
 
 

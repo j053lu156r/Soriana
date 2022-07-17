@@ -333,7 +333,7 @@
                             <m:Title id="title" text="{appTxts>/state.detail} ({totales>/Detalles/results/length})"/>
                             -->
                             <m:ToolbarSpacer/>
-                              <m:CheckBox id="checkPartidas_" text="Partidas pendientes de pago" select="onTableGrouping" visible="{= ${totales>/Detalles/results/length} > 0}"/>
+                              <m:CheckBox id="checkPartidas_" text="Partidas pendientes de pago" select="onTableGrouping" visible="false"/>
                             <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${totales>/Detalles/results/length} > 0}" />
 
                             <!--
@@ -375,6 +375,25 @@
                                 <m:Text text="{=  (${GroupedTotales>Pendt} === true) ? 'Pendiente' : ( ${GroupedTotales>Belnr} === ${GroupedTotales>Augbl} ? 'Pago' : 'Contabilizado'  ) }" wrapping="false" />
                             </template>
                         </Column>
+
+                        <!--sucursal folio -->
+                        <Column    id="sucursalColumn" width="15%">
+                            <m:Label text="{appTxts>/order.branch}" />
+                            <template>
+                                <m:Text text="{GroupedTotales>Sucursal}" wrapping="false" />
+                            </template>
+                        </Column>
+                        <Column    id="folio2Column" width="15%">
+                            <m:Label text="{appTxts>/invoice.folio}" />
+                            <template>
+                                <m:Text text="{GroupedTotales>Folio}" wrapping="false" />
+                            </template>
+                        </Column>
+
+
+                        <!-- end sucursal folio -->
+
+
                         <Column  filterType="sap.ui.model.type.Integer" filterProperty="Belnr" sortProperty="Belnr" id="folioColumn" width="20%">
                             <m:Label text="{appTxts>/state.folio}" />
                             <template>
@@ -494,7 +513,7 @@
                     <OverflowToolbar id="idCrumbToolbar" >
                         <Breadcrumbs id="_breadcrumb" />
                         <ToolbarSpacer/>
-                              <CheckBox id="checkPartidas" text="Partidas pendientes de pago" select="onTableGrouping" visible="{= ${totales>/Detalles/results/length} > 0}"/>
+                              <CheckBox id="checkPartidas" text="Partidas pendientes de pago" select="onTableGrouping" visible="false"/>
                               <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${totales>/Detalles/results/length} > 0}" />
                     </OverflowToolbar>
                 </headerToolbar>

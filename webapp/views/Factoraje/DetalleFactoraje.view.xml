@@ -91,8 +91,19 @@
 					<Column id="statusColumn" minScreenWidth="Tablet" demandPopin="true">
 						<Text text="{appTxts>/state.status}"/>
 					</Column>
+
+					<!--sucursal y folio -->
+					<Column id="sucursalColumn" minScreenWidth="Tablet" demandPopin="false">
+						<Text text="{appTxts>/order.branch}"/>
+					</Column>
+					<Column id="folio2Column" minScreenWidth="Tablet" demandPopin="false">
+						<Text text="{appTxts>/invoice.folio}"/>
+					</Column>
+
+					<!--- end sucursal y folio -->
+
 					<Column id="folioColumn" minScreenWidth="Tablet" demandPopin="true" hAlign="End" visible="true">
-						<Text text="{appTxts>/clarifications.headerFolio}" />
+						<Text text="{appTxts>/rem.remFolio}" />
 					</Column>
 					<Column id="referenceColumn" minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">
 						<Text text="{appTxts>/snote.invoice}" />
