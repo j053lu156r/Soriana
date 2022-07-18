@@ -215,26 +215,49 @@ return formateado
                 proveedor_LIFNR = this.getView().byId("supplierInput").getValue().trim().split(' ')[0];
             
             var files = ( this.getOwnerComponent().getModel("nRelease").getProperty("/attach") == null )? [] : this.getOwnerComponent().getModel("nRelease").getProperty("/attach") ;
-
-            var objRelease = {
-                "IOption": ( folio != '' )? '2' : "12",
-                "ILifnr": proveedor_LIFNR,
-                "IFactura": invoice,
-                "ICendis": distributionCenter,
-                "ITacla": tipo,
-                "IMonrec": reclaimedImport.replace(/\,/g, ""),
-                "IMonacl":clarifiedAmount.replace(/\,/g, ""),
-                //"IIvarec": reclaimedTax,
-                "IObsgen": comments, 
-                "INoDoc": "",//paymentDocument,
-                "IDocori" : sourceDocument,
-                "IAnalista":analyst,
-                "IStatus": status,
-                "IRecibo" : recibo,
-                "IGjahr":Gjahr,
-                "ZFile": files,
-              
-            };
+            var objRelease=[];
+         
+            if( folio != '' ){
+                 objRelease = {
+                    "IOption": ( folio != '' )? '2' : "12",
+                    "ILifnr": proveedor_LIFNR,
+                    "IFactura": invoice,
+                    "ICendis": distributionCenter,
+                    "ITacla": tipo,
+                    "IMonrec": reclaimedImport.replace(/\,/g, ""),
+                    "IMonacl":clarifiedAmount.replace(/\,/g, ""),
+                    //"IIvarec": reclaimedTax,
+                    "IObsgen": comments, 
+                    "INoDoc": "",//paymentDocument,
+                    "IDocori" : sourceDocument,
+                    "IAnalista":analyst,
+                    "IStatus": status,
+                    "IRecibo" : recibo,
+                    "IGjahr":Gjahr,
+                    "ZFile": files,
+                  
+                };
+            }else{
+                 objRelease = {
+                    "IOption": ( folio != '' )? '2' : "12",
+                    "ILifnr": proveedor_LIFNR,
+                    "IFactura": invoice,
+                    "ICendis": distributionCenter,
+                    "ITacla": tipo,
+                    "IMonrec": reclaimedImport.replace(/\,/g, ""),
+                    //"IMonacl":clarifiedAmount.replace(/\,/g, ""),
+                    //"IIvarec": reclaimedTax,
+                    "IObsgen": comments, 
+                    "INoDoc": "",//paymentDocument,
+                    "IDocori" : sourceDocument,
+                    "IAnalista":analyst,
+                    "IStatus": status,
+                    "IRecibo" : recibo,
+                    "IGjahr":Gjahr,
+                    "ZFile": files,
+                  
+                };
+            }
 
             if( folio != '' ){
                 objRelease["IFolio"] = folio;
