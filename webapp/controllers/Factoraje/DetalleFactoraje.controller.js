@@ -84,7 +84,7 @@ sap.ui.define([
 					name: "demo.views.Factoraje.Row"
 				});
 			}
-			this._oTable = this.byId("idGroupTable");
+			this._oTable = this.byId("detailsStatementList");
 
 			/*
 						[oExitButton, oEnterButton].forEach(function (oButton) {
@@ -489,10 +489,10 @@ sap.ui.define([
 			// If we're at the leaf end, turn off navigation
 			var sPathEnd = sPath.split("/").reverse()[0];
 			if (sPathEnd === this.aCrumbs[this.aCrumbs.length - 1]) {
-				this._oTable.setMode("None");
+			//	this._oTable.setMode("None");
 				//  this.byId("weightColumn").setVisible(true);
 				// this.byId("dimensionsColumn").setVisible(true);
-				this._oTable.setMode("None");
+				//this._oTable.setMode("None");
 
 
 				this.byId("statusColumn").setVisible(false);
@@ -526,7 +526,7 @@ sap.ui.define([
 
 
 			} else {
-				this._oTable.setMode("SingleSelectMaster");
+				//this._oTable.setMode("SingleSelectMaster");
 
 				this.byId("statusColumn").setVisible(false);
 				this.byId("folioColumn").setVisible(false);
@@ -566,12 +566,17 @@ sap.ui.define([
 
 			//   var tableModel = this.getOwnerComponent().getModel("GroupedFactoraje")
 			//    this._oTable.setModel(tableModel)
+			/*
 			this._pTemplate.then(function (oTemplate) {
 
 				this._oTable.bindAggregation("items", sPath, oTemplate);
 
 			}.bind(this));
+*/
 
+			this._oTable.bindRows({
+				path: sPath,
+			})
 
 
 
@@ -581,13 +586,14 @@ sap.ui.define([
 
 
 
-		handleSelection: function (oEvent) {
+		conceptoSelect: function (oEvent) {
 
 			console.log(
 				"on condepto select"
 
 			)
-			var sPath = oEvent.getParameter("listItem").getBindingContextPath();
+			//var sPath = oEvent.getParameter("listItem").getBindingContextPath();
+			let sPath = oEvent.getSource().getBindingContext("GroupedFactoraje").getPath();
 
 			console.log(sPath)
 			var aPath = sPath.split("/");
@@ -763,13 +769,13 @@ sap.ui.define([
 			let results = this.getOwnerComponent().getModel("GroupedFactoraje").getProperty(path);
 
 			console.log(results)
-			var Lifnr = this.getOwnerComponent().getModel('GroupedFactoraje').getProperty('/Lifnr')
+			//var Lifnr = this.getOwnerComponent().getModel('GroupedFactoraje').getProperty('/Lifnr')
 
 
 			this.getOwnerComponent().getRouter().navTo("detailDevoFactoraje", {
 				layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
 				xblnr: results.Foliodescuento,
-				lifnr: Lifnr,
+				lifnr: results.Lifnr,
 				ebeln: results.Ebeln || 0
 				// zbukr: docResult.Zbukr,
 				// lifnr: docResult.Lifnr
