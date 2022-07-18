@@ -377,13 +377,13 @@
                         </Column>
 
                         <!--sucursal folio -->
-                        <Column    id="sucursalColumn" width="15%">
+                        <Column filterProperty="Sucursal" sortProperty="Sucursal"  id="sucursalColumn" width="15%">
                             <m:Label text="{appTxts>/order.branch}" />
                             <template>
                                 <m:Text text="{GroupedTotales>Sucursal}" wrapping="false" />
                             </template>
                         </Column>
-                        <Column    id="folio2Column" width="15%">
+                        <Column  sortProperty="Folio"  filterProperty="Folio" id="folio2Column" width="15%">
                             <m:Label text="{appTxts>/invoice.folio}" />
                             <template>
                                 <m:Text text="{GroupedTotales>Folio}" wrapping="false" />
