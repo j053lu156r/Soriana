@@ -61,116 +61,192 @@
 		</f:header>
 		<f:content>
 
-			<!-- tabla con agrupacion -->
-			<Table selectionChange="handleSelection" growing="true" growingThreshold="100" inset="false" id="idGroupTable">
-				<headerToolbar>
-					<OverflowToolbar id="idCrumbToolbar">
-						<Breadcrumbs id="breadcrumb" />
-						<ToolbarSpacer/>
-						<CheckBox id="checkPartidas" text="Partidas pendientes de pago" select="onTableGrouping" visible="{= ${totales>/Detalles/results/length} > 0}"/>
-						<Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${totales>/Detalles/results/length} > 0}" />
-					</OverflowToolbar>
-				</headerToolbar>
-
-				<columns>
-
-					<Column id="tipoColumn" demandPopin="false">
-						<Text text="{appTxts>/aportaciones.concepto}" />
-						<footer>
-
-							<Text id="idFooterText" text="Total"/>
-						</footer>
-					</Column>
-					  <Column
-                        id="tipoMovColumn"
-                          demandPopin="true"
-                           minScreenWidth="Tablet"
- visible="true"
-                        >
-                        <Text text="{appTxts>/aportaciones.concepto}"/>
-                    </Column>
-					<Column id="statusColumn" minScreenWidth="Tablet" demandPopin="true">
-						<Text text="{appTxts>/state.status}"/>
-					</Column>
-					<!--sucursal y folio -->
-					<Column id="sucursalColumn" minScreenWidth="Tablet" demandPopin="false">
-						<Text text="{appTxts>/order.branch}"/>
-					</Column>
-					<Column id="folio2Column" minScreenWidth="Tablet" demandPopin="false">
-						<Text text="{appTxts>/invoice.folio}"/>
-					</Column>
-
-					<!--- end sucursal y folio -->
-					<Column id="folioColumn" minScreenWidth="Tablet" demandPopin="true" hAlign="End" visible="false">
-						<Text text="{appTxts>/state.folio}" />
-					</Column>
-					<Column id="referenceColumn" minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="false">
-						<Text text="{appTxts>/state.reference}" />
-					</Column>
-
-					<Column id="typeDocColumn" minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">
-						<Text text="{appTxts>/state.typeDoc}" />
-					</Column>
-
-					<Column id="dateColumn" minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">
-						<Text text="{appTxts>/state.date}" />
-					</Column>
-
-					<Column id="amountColumn" visible="true" hAlign="End">
-						<Text text="{appTxts>/state.amount}" />
-					</Column>
-
-					<Column id="mCondicionColumn" minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">
-						<Text text="Mejor Condición" />
-					</Column>
-
-					<Column id="bloqueoColumn" minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">
-						<Text text="Bloqueo" />
-					</Column>
-
-					<Column id="conciliacionColumn" minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">
-						<Text text="{appTxts>/state.conciliation}" />
-					</Column>
-
-					<!-- totales grupo -->
-					<Column id="totalRegColumn" visible="End" hAlign="Center">
-						<Text text="{appTxts>/state.totalReg}" />
-						<footer>
-
-							<Text text="{GroupedTotales>/Hierarchy/totalR}"/>
-						</footer>
-					</Column>
-
-					<Column id="debitColumn" visible="false" hAlign="End">
-						<Text text="{appTxts>/state.debit}" />
-						<footer>
-
-							<ObjectNumber number= "{parts: [{path: 'GroupedTotales>/Hierarchy/totalD'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
-
-						</footer>
-					</Column>
-					<Column id="creditColumn" visible="false" hAlign="End">
-						<Text text="{appTxts>/state.credit}" />
-						<footer>
-
-							<ObjectNumber number= "{parts: [{path: 'GroupedTotales>/Hierarchy/totalC'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
-
-						</footer>
-					</Column>
-
-					<Column id="costoColumn" visible="true" hAlign="End">
-						<Text text="Costo" />
-						<footer>
-
-							<ObjectNumber number= "{parts: [{path: 'GroupedTotales>/Hierarchy/totalCostos'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
-
-						</footer>
-					</Column>
+			<VBox>
 
 
-				</columns>
+			<!-- Tabla v2 con columnas filtrables  -->
 
-			</Table>
+				<Table visible="true" xmlns="sap.ui.table"
+					   selectionMode="None"
+					   id="detailsStatementList"
+					   xmlns:m="sap.m" rows="{GroupedTotales>/Hierarchy/movimientos}"   ariaLabelledBy="title" width="100%">
+					<extension>
+						<m:OverflowToolbar style="Clear">
+							<m:Breadcrumbs id="breadcrumb" />
+							<!--
+                                                        <m:Title id="title" text="{appTxts>/state.detail} ({totales>/Detalles/results/length})"/>
+                                                        -->
+							<m:ToolbarSpacer/>
+							<m:CheckBox id="checkPartidas_" text="Partidas pendientes de pago" select="onTableGrouping" visible="false"/>
+							<m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${totales>/Detalles/results/length} > 0}" />
+
+							<!--
+                            <m:Select visible="{= ${totales>/Detalles/Paginated/results/length} > 0 }" change="paginar( ${$parameters>/selectedItem} )">
+                                <m:items>
+                                    <core:Item key="10" text="10"/>
+                                    <core:Item key="20" text="20"/>
+                                    <core:Item key="50" text="50"/>
+                                    <core:Item key="100" text="100"/>
+                                </m:items>
+                            </m:Select>
+                            -->
+
+						</m:OverflowToolbar>
+					</extension>
+					<columns>
+
+						<Column sortProperty="name"   id="tipoColumn" width="40%">
+							<m:Label text="{appTxts>/aportaciones.concepto}" />
+							<template>
+
+								<m:ObjectAttribute 	active="true" text="{GroupedTotales>name}" press="conceptoSelect" />
+
+
+
+							</template>
+						</Column>
+
+						<Column sortProperty="IdNumTipomov" filterProperty="IdNumTipomov"  id="tipoMovColumn" width="30%">
+							<m:Label text="{appTxts>/aportaciones.concepto}" />
+							<template>
+								<m:ObjectAttribute press="onDocumentDevolucionPress"  active="{= ${GroupedTotales>IdNumTipomov} === '12'}"  text="{GroupedTotales>IdNumTipomov} {GroupedTotales>DescTipomov}"  />
+							</template>
+						</Column>
+
+						<Column    id="statusColumn" width="15%">
+							<m:Label text="{appTxts>/state.status}" />
+							<template>
+								<m:Text text="{=  (${GroupedTotales>Pendt} === true) ? 'Pendiente' : ( ${GroupedTotales>Belnr} === ${GroupedTotales>Augbl} ? 'Pago' : 'Contabilizado'  ) }" wrapping="false" />
+							</template>
+						</Column>
+
+						<!--sucursal folio -->
+						<Column filterProperty="Sucursal" sortProperty="Sucursal"  id="sucursalColumn" width="15%">
+							<m:Label text="{appTxts>/order.branch}" />
+							<template>
+								<m:Text text="{GroupedTotales>Sucursal}" wrapping="false" />
+							</template>
+						</Column>
+						<Column  sortProperty="Folio"  filterProperty="Folio" id="folio2Column" width="15%">
+							<m:Label text="{appTxts>/invoice.folio}" />
+							<template>
+								<m:Text text="{GroupedTotales>Folio}" wrapping="false" />
+							</template>
+						</Column>
+
+
+						<!-- end sucursal folio -->
+
+
+						<Column  filterType="sap.ui.model.type.Integer" filterProperty="Belnr" sortProperty="Belnr" id="folioColumn" width="20%">
+							<m:Label text="{appTxts>/state.folio}" />
+							<template>
+								<m:ObjectIdentifier titlePress="onDocumentPress" titleActive="true" title="{GroupedTotales>Belnr}"  />
+							</template>
+						</Column>
+						<Column  sortProperty="Xblnr" filterProperty="Xblnr"  id="referenceColumn" width="20%">
+							<m:Label text="{appTxts>/state.reference}" />
+							<template>
+								<m:Text text="{GroupedTotales>Xblnr}" wrapping="false" />
+							</template>
+						</Column>
+						<Column sortProperty="Ltext" filterProperty="Ltext" id="typeDocColumn"  width="20%">
+							<m:Label text="{appTxts>/state.typeDoc}" />
+							<template>
+								<m:Text text="{GroupedTotales>Ltext}" wrapping="false" />
+							</template>
+						</Column>
+						<Column    sortProperty="Budat"                      id="dateColumn"
+								   width="15%">
+							<m:Label text="{appTxts>/state.date}" />
+							<template>
+								<m:Text text="{GroupedTotales>Budat}" wrapping="false" />
+							</template>
+						</Column>
+						<Column id="amountColumn" sortProperty="Wrbtr" width="20%">
+							<m:Label text="{appTxts>/state.amount}" />
+							<template>
+								<m:ObjectNumber number= "{parts: [{path: 'GroupedTotales>Wrbtr'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+							</template>
+						</Column>
+						<Column sortProperty="MCondicion"  id="mCondicionColumn" width="20%">
+							<m:Label text="Mejor Condición" />
+							<template>
+								<m:Text text="{GroupedTotales>MCondicion}" wrapping="false" />
+							</template>
+						</Column>
+
+
+
+						<Column  id="bloqueoColumn" width="10%">
+							<m:Label text="Bloqueado" />
+							<template>
+								<m:ObjectMarker visible="{=  ${GroupedTotales>BloqueoFlag} === '' ? false : true }" type="LockedBy" additionalInfo="{GroupedTotales>DescripcionBloqueo}" press="onMarkerPress" />
+							</template>
+						</Column>
+						<Column sortProperty="Augbl" id="conciliacionColumn" width="15%">
+							<m:Label text="{appTxts>/state.conciliation}" />
+							<template>
+								<m:Text text="{GroupedTotales>Augbl}" wrapping="false" />
+
+							</template>
+						</Column>
+
+						<!--columnas nuevas para totales -->
+						<Column sortProperty="totalRegs" id="totalRegColumn"  width="15%">
+							<m:Label text="{appTxts>/state.totalReg}" />
+							<template>
+								<m:ObjectNumber number="{GroupedTotales>totalRegs}" />
+							</template>
+						</Column>
+						<Column  sortProperty="totalDebit"   id="debitColumn"  width="15%">
+							<m:Label text="{appTxts>/state.debit}" />
+							<template>
+								<m:ObjectNumber number= "{parts: [{path: 'GroupedTotales>totalDebit'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+							</template>
+						</Column>
+						<Column sortProperty="totalCredit"   id="creditColumn" width="15%">
+							<m:Label text="{appTxts>/state.credit}" />
+							<template>
+								<m:ObjectNumber number="{parts: [{path: 'GroupedTotales>totalCredit'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+							</template>
+						</Column>
+
+						<Column sortProperty="totalCosto"   id="costoColumn" width="15%">
+							<m:Label text="Costo" />
+							<template>
+								<m:ObjectNumber number="{parts: [{path: 'GroupedTotales>cost'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+							</template>
+						</Column>
+
+
+					</columns>
+
+				</Table>
+
+
+
+
+			<OverflowToolbar id="sumFooter" visible="true">
+
+				<Text width="60%"  text="Total" />
+
+				<Text width="20%"  text="{GroupedTotales>/Hierarchy/totalR}"/>
+
+				<Text   width="20%"
+					  text= "{parts: [{path: 'GroupedTotales>/Hierarchy/totalCostos'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+				/>
+
+			</OverflowToolbar>
+
+
+
+
+
+
+			<!-- END TABLE -->
+			</VBox>
+
 		</f:content>
 		<!-- DynamicPage Footer -->
 		<f:footer>
