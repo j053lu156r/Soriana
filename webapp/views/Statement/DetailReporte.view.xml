@@ -47,9 +47,9 @@
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
                     <!--
-                    <fb:FilterBar id="filterBar" header="Header" reset="onReset" search="searchData" clear="clearFilters" cancel="onCancel" 
-		                filtersDialogClosed = "onFiltersDialogClosed" showRestoreButton="false" showClearButton="false" useToolbar="false"> 
-			
+                    <fb:FilterBar id="filterBar" header="Header" reset="onReset" search="searchData" clear="clearFilters" cancel="onCancel"
+		                filtersDialogClosed = "onFiltersDialogClosed" showRestoreButton="false" showClearButton="false" useToolbar="false">
+
                         <fb:filterGroupItems>
                             <fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="{appTxts>/acuerdos.sociedad}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
@@ -57,7 +57,7 @@
                                     </Input>
                                 </fb:control>
                             </fb:FilterGroupItem>
-                        
+
                             <fb:FilterGroupItem groupName="__$INTERNAL$" name="B" label="{appTxts>/acuerdos.docto}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
                                     <Input id="documentoInput" placeholder="{appTxts>/acuerdos.docto}" showSuggestion="true" maxLength="10">
@@ -110,7 +110,7 @@
                     <t:columns>
                         <t:Column 	sortProperty="TeSalida/DocCompra"  	width="8rem" hAlign="Left">
 
-                            <Text text="Doc Compra" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.headerOrden}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
                             <t:template>
                                 <Text text="{MejorCondHdr>TeSalida/DocCompra}" wrapping="false"/>
@@ -118,17 +118,28 @@
                         </t:Column>
                         <t:Column  sortProperty="TeSalida/Posicion" 	width="5rem"  hAlign="Left">
                             <Text text="Posición" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-
-
-
                             <t:template>
                                 <Text text="{MejorCondHdr>TeSalida/Posicion}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
                             </t:template>
                         </t:Column>
+
+                        <t:Column  sortProperty="TeSalida/FolionEntrada" 	width="5rem"  hAlign="Left">
+                            <Text text="Folio Nota Entrega" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/FolionEntrada}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+
+                            </t:template>
+                        </t:Column>
+
+
+
+
+
+
                         <t:Column 	sortProperty="TeSalida/DocMaterial" 	width="9rem" hAlign="Left">
 
-                            <Text text="Docto. Material" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.headerEntradaMercancia}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
                             <t:template>
                                 <Text text="{MejorCondHdr>TeSalida/DocMaterial}" wrapping="false"/>
@@ -138,7 +149,7 @@
                         </t:Column>
                         <t:Column 	sortProperty="TeSalida/DocFactura" 	width="9rem" hAlign="Left">
 
-                            <Text text="Docto Factura" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.headerRegFactura}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
                             <t:template>
                                 <Text text="{MejorCondHdr>TeSalida/DocFactura}" wrapping="false"/>
@@ -149,7 +160,7 @@
                         </t:Column>
                         <t:Column  	sortProperty="TeSalida/DocCargo" 	width="9rem">
 
-                            <Text text="Docto Cargo" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.folioCargo}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
                             <t:template>
                                 <Text text="{MejorCondHdr>TeSalida/DocCargo}" wrapping="false"/>
@@ -159,7 +170,7 @@
                         </t:Column>
                         <t:Column 	sortProperty="TeSalida/Cmsucfol" 	width="11rem" hAlign="Left">
 
-                            <Text text="CMSUCFOL" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.refInterna}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
                             <t:template>
                                 <Text text="{MejorCondHdr>TeSalida/Cmsucfol}" wrapping="false"/>
@@ -180,7 +191,7 @@
                         </t:Column>
                         <t:Column  sortProperty="TeSalida/MaterialSap" 	width="11rem" hAlign="Left">
 
-                            <Text text="Material Proveedor" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.mterialRecibo}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
                             <t:template>
                                 <Text text="{MejorCondHdr>TeSalida/MaterialSap}" wrapping="false"/>
@@ -190,17 +201,17 @@
                         </t:Column>
                         <t:Column  sortProperty="TeSalida/FecharSap"  	width="6rem" hAlign="Left">
 
-                            <Text text="Fecha SAP" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.fechaRecibo}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
                             <t:template>
-                                <Text text="{MejorCondHdr>TeSalida/FecharSap}" wrapping="false"/>
+                                <Text text="{ path: 'MejorCondHdr>TeSalida/FecharSap'  }" wrapping="false"/>
 
                             </t:template>
 
                         </t:Column>
                         <t:Column sortProperty="TeSalida/UmedidaPSap" 	width="6rem" hAlign="Left">
 
-                            <Text text="UMedida SAP" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.unidadRecibo}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
 
                                 <Text text="{MejorCondHdr>TeSalida/UmedidaPSap}" wrapping="false"/>
@@ -211,7 +222,7 @@
                         </t:Column>
                         <t:Column  sortProperty="TeSalida/CantidadSap" 	 width="6rem" hAlign="Left">
 
-                            <Text text="Cantidad SAP" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.cantidadRecibo}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
                             <t:template>
                                 <Text text="{MejorCondHdr>TeSalida/CantidadSap}" wrapping="false"/>
@@ -221,7 +232,7 @@
                         </t:Column>
                         <t:Column  sortProperty="TeSalida/PrecCDescSap" width="6rem" hAlign="Left">
 
-                            <Text text="Prec Dec SAP" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.costoRecibo}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
                             <t:template>
                                 <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/PrecCDescSap'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
@@ -231,7 +242,7 @@
                         </t:Column>
                         <t:Column sortProperty="TeSalida/ImporteSap" width="6rem" hAlign="Left">
 
-                            <Text text="Importe SAP" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.subtotalRecibo}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
                                 <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/ImporteSap'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
 
@@ -241,7 +252,7 @@
                         </t:Column>
                         <t:Column sortProperty="TeSalida/ImpuestosSap" width="6rem" hAlign="Left">
 
-                            <Text text="Impuestos SAP" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.impuestosRecibo}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
                             <t:template>
                                 <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/ImpuestosSap'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
@@ -252,7 +263,7 @@
 
                         <t:Column  sortProperty="TeSalida/ImpTotCImpSap" width="6rem" hAlign="Left">
 
-                            <Text text="ImpTotCImpSap" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.totalRecibo}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
                                 <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/ImpTotCImpSap'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
 
@@ -262,7 +273,7 @@
                         </t:Column>
                         <t:Column  sortProperty="TeSalida/FechaRegSap" width="6rem" hAlign="Left">
 
-                            <Text text="Fecha Reg" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.recepcionCFDI}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
                                 <Text text="{MejorCondHdr>TeSalida/FechaRegSap}" wrapping="false"/>
 
@@ -272,7 +283,7 @@
                         </t:Column>
                         <t:Column  sortProperty="TeSalida/Serfol" width="6rem" hAlign="Left">
 
-                            <Text text="Serfol" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.factura}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
                                 <Text text="{MejorCondHdr>TeSalida/Serfol}" wrapping="false"/>
 
@@ -282,7 +293,7 @@
                         </t:Column>
                         <t:Column   sortProperty="TeSalida/Material" width="6rem" hAlign="Left">
 
-                            <Text text="Material" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.materialCFDI}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
                                 <Text text="{MejorCondHdr>TeSalida/Material}" wrapping="false"/>
 
@@ -293,7 +304,7 @@
                         </t:Column>
                         <t:Column  sortProperty="TeSalida/Unidad" width="6rem" hAlign="Left">
 
-                            <Text text="Unidad" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.unidadMedida}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
                                 <Text text="{MejorCondHdr>TeSalida/Unidad}" wrapping="false"/>
 
@@ -304,7 +315,7 @@
                         </t:Column>
                         <t:Column  sortProperty="TeSalida/Cantidad" width="6rem" hAlign="Left">
 
-                            <Text text="Cantidad" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.cantidadCFDI}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
                                 <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/Cantidad'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
 
@@ -314,7 +325,7 @@
                         </t:Column>
                         <t:Column sortProperty="TeSalida/PrecioUnSi" width="6rem" hAlign="Left">
 
-                            <Text text="Precio UnSi" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.costoCFDI}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
                                 <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/PrecioUnSi'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
 
@@ -324,7 +335,7 @@
                         </t:Column>
                         <t:Column sortProperty="TeSalida/ImporteTotal"  width="6rem" hAlign="Left">
 
-                            <Text text="Importe Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.subtotalCFDI}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
                                 <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/ImporteTotal'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
 
@@ -334,7 +345,7 @@
                         </t:Column>
                         <t:Column  sortProperty="TeSalida/ImpuestosFact" width="6rem" hAlign="Left">
 
-                            <Text text="Impuestos Fact" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.impuestosCFDI}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
                                 <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/ImpuestosFact'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
 
@@ -344,7 +355,7 @@
                         </t:Column>
                         <t:Column  sortProperty="TeSalida/ImporteTotCi" width="6rem" hAlign="Left">
 
-                            <Text text="ImporteTotalCi" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.totalCFDI}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
                                 <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/ImporteTotCi'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
 
@@ -355,7 +366,7 @@
 
                         <t:Column sortProperty="TeSalida/MejorCantidad"  width="6rem" hAlign="Left">
 
-                            <Text text="Mejor Cantidad" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.cantidadMC}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
                                 <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/MejorCantidad'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
 
@@ -365,7 +376,7 @@
                         </t:Column>
                         <t:Column sortProperty="TeSalida/MejorPrecio" width="6rem" hAlign="Left">
 
-                            <Text text="Mejor Precio" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.costoMC}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
                                 <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/MejorPrecio'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
 
@@ -375,7 +386,7 @@
                         </t:Column>
                         <t:Column sortProperty="TeSalida/MejorSubtotal" width="6rem" hAlign="Left">
 
-                            <Text text="Mejor Subtotal" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.subtotalMC}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
                                 <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/MejorSubtotal'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
 
@@ -385,7 +396,7 @@
                         </t:Column>
                         <t:Column sortProperty="TeSalida/ImpuestosTotal" width="6rem" hAlign="Left">
 
-                            <Text text="Impuestos Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.impuestosMC}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
                                 <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/ImpuestosTotal'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
 
@@ -395,7 +406,7 @@
                         </t:Column>
                         <t:Column sortProperty="TeSalida/MejorTotal" width="6rem" hAlign="Left">
 
-                            <Text text="Mejor Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="Total MC" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
                                 <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/MejorTotal'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
 
@@ -406,7 +417,7 @@
 
                         <t:Column sortProperty="TeSalida/NcargoMc" width="6rem" hAlign="Left">
 
-                            <Text text="NCargoMc" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.subtotalNC}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
                             <t:template>
                                 <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/NcargoMc'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
@@ -416,7 +427,7 @@
                         </t:Column>
                         <t:Column sortProperty="TeSalida/NcargoImpMc" width="6rem" hAlign="Left">
 
-                            <Text text="NCargoImpMc" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.impuestosNC}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
                             <t:template>
                                 <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/NcargoImpMc'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
@@ -426,9 +437,29 @@
                         </t:Column>
                         <t:Column sortProperty="TeSalida/NcargoTotMc" width="6rem" hAlign="Left">
 
-                            <Text text="NcargoTotMc" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{appTxts>/reporte.totalNC}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
                                 <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/NcargoTotMc'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                            </t:template>
+
+
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/Estatus" width="4rem" hAlign="Left">
+
+                            <Text text="Estatus" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/Estatus}" wrapping="false"/>
+                            </t:template>
+
+
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/DescEstat" width="15rem" hAlign="Left">
+
+                            <Text text="Desc Estatus" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/DescEstat}" wrapping="false"/>
                             </t:template>
 
 

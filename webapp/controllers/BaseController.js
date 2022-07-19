@@ -96,6 +96,21 @@ sap.ui.define([
             this.getOwnerComponent().getRouter().navTo("tile", { layout: sLayout }, true /*no history*/);
             //}
         },
+        onBackPreviousView: function (oEvent) {
+            var oHistory, sPreviousHash;
+            oHistory = History.getInstance();
+            sPreviousHash = oHistory.getPreviousHash();
+
+            var sLayout = sap.f.LayoutType.OneColumn;
+
+            this.onExit();
+            if (sPreviousHash !== undefined) {
+                window.history.go(-1);
+            } else {
+            this.getOwnerComponent().getRouter().navTo("tile", { layout: sLayout }, true /*no history*/);
+            }
+        },
+
         formatDate: function (v) {
             if (v) {
                 jQuery.sap.require("sap.ui.core.format.DateFormat");
