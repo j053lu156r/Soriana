@@ -418,6 +418,8 @@ console.log(TDatos)
 
 
 
+				this.byId("verReporteColumn").setVisible(true);
+
 
 
 
@@ -447,6 +449,8 @@ console.log(TDatos)
 				this.byId("creditColumn").setVisible(false);
 				this.byId("costoColumn").setVisible(true);
 
+
+				this.byId("verReporteColumn").setVisible(false);
 
 				//folio y sucursal
 				this.byId("sucursalColumn").setVisible(false);
@@ -684,6 +688,48 @@ console.log(TDatos)
 
 
 		},
+
+		//OPEN REPORT
+		onPressReporte: function (oEvent) {
+			console.info(oEvent)
+			var path = oEvent.getSource().getBindingContext("GroupedTotales").getPath();
+			console.log(path);
+			let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(path);
+			let proveedor = this.getConfigModel().getProperty("/supplierInputKey")
+
+			console.log(results);
+
+			if (results.Xblnr == "") {
+				return
+			}
+
+
+			var serieOriginal = results.Xblnr
+			var serieNonumbers = serieOriginal.replace(/[0-9]/g, '');
+
+			var serie = serieNonumbers.replace('-', '')
+			var folio = serieOriginal.replace(/\D/g, '')
+
+
+			console.log('serie numbers',serieNonumbers)
+			console.log('serie',serie)
+			console.log('folio',folio)
+
+
+			this.getOwnerComponent().getRouter().navTo("ComplementoReporteMC", {
+				layout: sap.f.LayoutType.EndColumnFullScreen,
+				document: folio,
+				proveedor: proveedor,
+				serie: serieNonumbers,
+				fecha: results.Budat
+				// zbukr: docResult.Zbukr,
+				// lifnr: docResult.Lifnr
+			}, false);
+		},
+		hasReport: function (mc) {
+			return Math.abs(mc) > 0 ? true : false
+		},
+
 
 
 		//HAANDLE OPEN ACUERDOS
