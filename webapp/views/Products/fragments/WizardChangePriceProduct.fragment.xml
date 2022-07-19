@@ -58,6 +58,7 @@
                         <headerToolbar>
                             <OverflowToolbar>
                                 <Button text="{appTxts>/products.deletePrice}" id="btnDeleteChangePriceRow" press=".deleteRow('tableItemsChangePrice','ETMODIFY')" type="Emphasized" />
+                                <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTableCostos" visible="{= ${ETMODIFY>/Paginated/results/length} > 0}" />
                                 <ToolbarSpacer/>
                                 <Select 
                                     id="paginatedChangePriceProducts"
@@ -162,7 +163,7 @@
                                     <ObjectIdentifier text="{ETMODIFY>Codigoean}" />
                                     <ObjectIdentifier text="{ETMODIFY>Descrip}" />
                                     <ObjectIdentifier text="${ETMODIFY>Costobant}" />
-                                    <Input value="{ETMODIFY>Costobnuevo}" type="Number" liveChange="validateCstBrutNuevo" customData:cba="{ETMODIFY>Costobant}" ></Input>
+                                    <Input value="{ETMODIFY>Costobnuevo}" type="Number" liveChange="validateCstBrutNuevo" customData:cba="{ETMODIFY>Costobant}" customData:ean="{ETMODIFY>Codigoean}"></Input>
                                     <ObjectIdentifier text="{ETMODIFY>DNormal}%" />
                                     <ObjectIdentifier text="{ETMODIFY>DAdicional}%" />
                                     <ObjectIdentifier text="{ETMODIFY>DPronto}%" />
