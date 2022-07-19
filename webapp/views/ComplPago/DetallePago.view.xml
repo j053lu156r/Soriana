@@ -176,6 +176,12 @@
 							</template>
 						</Column>
 
+						<Column   id="verReporteColumn" width="20%">
+							<m:Label text="Reporte MC" />
+							<template>
+								<m:Button text="Ver reporte MC" press=".onPressReporte" icon="sap-icon://expense-report" type="Default" visible="{path:'GroupedTotales>MCondicion', formatter:'.hasReport'}" />
+							</template>
+						</Column>
 
 
 						<Column  id="bloqueoColumn" width="10%">

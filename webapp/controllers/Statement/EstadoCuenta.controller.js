@@ -1257,7 +1257,7 @@ sap.ui.define([
             this.exportxls('totales', '/Detalles/results', columns);
         },
         onMarkerPress: function (oEvent) {
-            MessageToast.show(oEvent.getParameter("additionalInfo") + "");
+           // MessageToast.show(oEvent.getParameter("additionalInfo") + "");
         },
         formatDateTime: (oDateTime, outputFormat, inputFormat) => {
 
@@ -1405,7 +1405,7 @@ sap.ui.define([
                 fecha: results.Budat
                 // zbukr: docResult.Zbukr,
                 // lifnr: docResult.Lifnr
-            }, true);
+            }, false);
         },
         hasReport: function (mc) {
             return Math.abs(mc) > 0 ? true : false

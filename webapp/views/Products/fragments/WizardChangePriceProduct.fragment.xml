@@ -32,9 +32,19 @@
                     <MessageStrip class="sapUiSmallMarginBottom"
 								text="{appTxts>/products.messageStripPrice}"
 								showIcon="true"/>
-                    <!--Text 
-                        text="" 
-                        /-->
+
+                                <Link
+                                                text="{appTxts>/products.linkMassiveChange}"
+                                                target="_blank"
+                                                href="./assets/GUIAS/Guia_cambio_costos.pdf"
+                                                class="sapUiSmallMarginBottom" />
+
+                                <Link
+                                                text="{appTxts>/products.linkFormatChange}"
+                                                target="_blank"
+                                                href="./assets/GUIAS/FormatoCambioCostos.txt"
+                                                class="sapUiSmallMarginBottom" />
+
                     <HBox class="sapUiResponsiveContentPadding" >
                         <l:VerticalLayout>
                             <u:FileUploader
@@ -58,6 +68,7 @@
                         <headerToolbar>
                             <OverflowToolbar>
                                 <Button text="{appTxts>/products.deletePrice}" id="btnDeleteChangePriceRow" press=".deleteRow('tableItemsChangePrice','ETMODIFY')" type="Emphasized" />
+                                <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTableCostos" visible="{= ${ETMODIFY>/Paginated/results/length} > 0}" />
                                 <ToolbarSpacer/>
                                 <Select 
                                     id="paginatedChangePriceProducts"
@@ -161,15 +172,15 @@
                                     <ObjectIdentifier text="{ETMODIFY>Centro}" />
                                     <ObjectIdentifier text="{ETMODIFY>Codigoean}" />
                                     <ObjectIdentifier text="{ETMODIFY>Descrip}" />
-                                    <ObjectIdentifier text="{ETMODIFY>Costobant}" />
-                                    <Input value="{ETMODIFY>Costobnuevo}" type="Number" liveChange="validateCstBrutNuevo" customData:cba="{ETMODIFY>Costobant}" ></Input>
-                                    <ObjectIdentifier text="{ETMODIFY>DNormal}" />
-                                    <ObjectIdentifier text="{ETMODIFY>DAdicional}" />
-                                    <ObjectIdentifier text="{ETMODIFY>DPronto}" />
-                                    <ObjectIdentifier text="{ETMODIFY>PDBonif}{ETMODIFY>MBonif}" />
-                                    <ObjectIdentifier text="{ETMODIFY>PDifCos}" />
-                                    <ObjectIdentifier text="{ETMODIFY>PComCen}" />
-                                    <ObjectIdentifier text="{ETMODIFY>PCargoC}{ETMODIFY>MCargoC}" />
+                                    <ObjectIdentifier text="${ETMODIFY>Costobant}" />
+                                    <Input value="{ETMODIFY>Costobnuevo}" type="Number" liveChange="validateCstBrutNuevo" customData:cba="{ETMODIFY>Costobant}" customData:ean="{ETMODIFY>Codigoean}"></Input>
+                                    <ObjectIdentifier text="{ETMODIFY>DNormal}%" />
+                                    <ObjectIdentifier text="{ETMODIFY>DAdicional}%" />
+                                    <ObjectIdentifier text="{ETMODIFY>DPronto}%" />
+                                    <ObjectIdentifier text="{= (${ETMODIFY>PDBonif} > 0 ) ? (${ETMODIFY>PDBonif} + '%') : ('$' + ${ETMODIFY>MBonif}) }" />
+                                    <ObjectIdentifier text="{ETMODIFY>PDifCos}%" />
+                                    <ObjectIdentifier text="{ETMODIFY>PComCen}%" />
+                                    <ObjectIdentifier text="{= (${ETMODIFY>PCargoC} > 0 ) ? (${ETMODIFY>PCargoC} + '%') : ('$' + ${ETMODIFY>MCargoC}) }" />
                                 </cells>
                             </ColumnListItem>
                         </items>

@@ -17,7 +17,8 @@ sap.ui.define([
     var swProveedorEnGS1 = false;
     var swProveedorExcluido = false;
     var _selectedEanType = {};
-    var _testingSteps = true; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
+    var _invalidCostoNuevo = {};
+    var _testingSteps = ( document.location.hostname.slice(-4) == '.sap' );//true; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
 
     return BaseController.extend("demo.controllers.Products.Master", {
         formatterCatPrd: formatterCatPrd,
@@ -561,6 +562,99 @@ sap.ui.define([
             this.exportxls('Folios', '/ETPRICNAV/results', columns);
         },
 
+        buildExportTableCostos: function () {
+            var texts = this.getOwnerComponent().getModel("appTxts");
+
+            var columns = [
+                {
+                    name: texts.getProperty("/products.organizePrice"),
+                    template: {
+                        content: "{OrgCompras}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/products.centerPrice"),
+                    template: {
+                        content: "{Centro}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/products.codePrice"),
+                    template: {
+                        content: "{Codigoean}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/products.descriptionPrice"),
+                    template: {
+                        content: "{Descrip}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/products.costPrice"),
+                    template: {
+                        content: "{Costobant}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/products.normalDiscount"),
+                    template: {
+                        content: "{DNormal}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/products.additionalDiscount"),
+                    template: {
+                        content: "{DAdicional}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/products.discountEarlyPay"),
+                    template: {
+                        content: "{DPronto}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/products.subtitleBonusType") + '(%)',
+                    template: {
+                        content: "{PDBonif}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/products.subtitleBonusType") + '($)',
+                    template: {
+                        content: "{PDBonif}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/products.CostDiff"),
+                    template: {
+                        content: "{PDifCos}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/products.CompCentral"),
+                    template: {
+                        content: "{PComCen}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/products.CargoCosto") + '(%)',
+                    template: {
+                        content: "{PCargoC}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/products.CargoCosto") + '($)',
+                    template: {
+                        content: "{MCargoC}"
+                    }
+                }
+            ];
+
+            this.exportxls('ETMODIFY', '/Paginated/results', columns);
+        },
+
         //alta masiva
         massiveRegisterBatch: function () {
 
@@ -775,6 +869,7 @@ sap.ui.define([
 
             let cbn = oControlEvent.getParameter('value');
             let cba = oControlEvent.getSource().data("cba");
+            let ean = oControlEvent.getSource().data("ean");
 
             let splited_quant = cbn.split('.');
 
@@ -783,15 +878,27 @@ sap.ui.define([
                 if (splited_quant[1].length > 2) {
                     oControlEvent.getSource().setValueState(sap.ui.core.ValueState.Warning);
                     oControlEvent.getSource().setValueStateText("Maximo 2 decimales");
+                    _invalidCostoNuevo.valid = false;
+                    _invalidCostoNuevo.identifier = ean;
 
                 }else if ((parseFloat(cba) * 2) < parseFloat(cbn)) {
                     oControlEvent.getSource().setValueState(sap.ui.core.ValueState.Warning);
                     oControlEvent.getSource().setValueStateText("No puede haber un incremento del 100% del costo bruto actual!");
+                    _invalidCostoNuevo.valid = false;
+                    _invalidCostoNuevo.identifier = ean;
                     
                 }else {
                     oControlEvent.getSource().setValueState(sap.ui.core.ValueState.None);
+
+                    if (!_invalidCostoNuevo.valid && _invalidCostoNuevo.identifier == ean) {
+                        _invalidCostoNuevo.valid = true;
+                        _invalidCostoNuevo.identifier = null;
+                    }
+
                 } 
             }
+
+            this.byId("btnSaveChangePriceRow").setEnabled(_invalidCostoNuevo.valid);
         },
 
         validateBarCode: function () {
