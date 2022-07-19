@@ -58,6 +58,7 @@
                         <headerToolbar>
                             <OverflowToolbar>
                                 <Button text="{appTxts>/products.deletePrice}" id="btnDeleteChangePriceRow" press=".deleteRow('tableItemsChangePrice','ETMODIFY')" type="Emphasized" />
+                                <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTableCostos" visible="{= ${ETMODIFY>/Paginated/results/length} > 0}" />
                                 <ToolbarSpacer/>
                                 <Select 
                                     id="paginatedChangePriceProducts"
