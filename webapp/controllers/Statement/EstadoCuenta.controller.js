@@ -798,6 +798,8 @@ sap.ui.define([
                 this.byId("typeDocColumn").setVisible(true);
 
                 this.byId("dateColumn").setVisible(true);
+                this.byId("dateVColumn").setVisible(true);
+
                 this.byId("amountColumn").setVisible(true);
                 this.byId("mCondicionColumn").setVisible(true);
                 this.byId("bloqueoColumn").setVisible(true);
@@ -835,6 +837,8 @@ sap.ui.define([
                 this.byId("typeDocColumn").setVisible(false);
 
                 this.byId("dateColumn").setVisible(false);
+                this.byId("dateVColumn").setVisible(false);
+
                 this.byId("amountColumn").setVisible(false);
                 this.byId("mCondicionColumn").setVisible(false);
 

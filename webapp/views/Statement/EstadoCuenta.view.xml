@@ -412,11 +412,18 @@
                                 <m:Text text="{GroupedTotales>Ltext}" wrapping="false" />
                             </template>
                         </Column>
-                        <Column    sortProperty="Budat"                      id="dateColumn"
-                                                         width="15%">
+                        <Column    sortProperty="Budat"                      id="dateVColumn"
+                                                         width="5rem">
                             <m:Label text="{appTxts>/state.date}" />
                             <template>
                                 <m:Text text="{GroupedTotales>Budat}" wrapping="false" />
+                            </template>
+                        </Column>
+                        <Column    sortProperty="fechaTesoreria"                      id="dateColumn"
+                                   width="5rem">
+                            <m:Label text="{appTxts>/clarifications.expirationDate}" />
+                            <template>
+                                <m:Text text="{GroupedTotales>FechaTesoreria}" wrapping="false" />
                             </template>
                         </Column>
                         <Column id="amountColumn" sortProperty="Wrbtr" width="20%">
