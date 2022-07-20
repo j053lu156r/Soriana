@@ -32,9 +32,19 @@
                     <MessageStrip class="sapUiSmallMarginBottom"
 								text="{appTxts>/products.messageStripPrice}"
 								showIcon="true"/>
-                    <!--Text 
-                        text="" 
-                        /-->
+
+                                <Link
+                                                text="{appTxts>/products.linkMassiveChange}"
+                                                target="_blank"
+                                                href="./assets/GUIAS/Guia_cambio_costos.pdf"
+                                                class="sapUiSmallMarginBottom" />
+
+                                <Link
+                                                text="{appTxts>/products.linkFormatChange}"
+                                                target="_blank"
+                                                href="./assets/GUIAS/FormatoCambioCostos.txt"
+                                                class="sapUiSmallMarginBottom" />
+
                     <HBox class="sapUiResponsiveContentPadding" >
                         <l:VerticalLayout>
                             <u:FileUploader
