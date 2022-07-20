@@ -236,11 +236,13 @@ sap.ui.define([
 
         getTermsCons: function(oEvent){
             var that = this;
+            var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+            var aFilters = [];
+            aFilters.push(new Filter("Lifnr", FilterOperator.EQ, vLifnr));
             this.termModel.read("/TxtTermCondSet", {
+                filters: aFilters,
                 success: function(response){
-                    console.log(response)
-                    var text = "Los Términos y Condiciones específicos de esta Orden de Compra y los genéricos del Convenio Comercial publicados en el Portal del Proveedor en el sitio www.soriana.com prevalecerán frente a cualquier acuerdo previo y serán extensivos para las subsidiarias y/o afiliadas de Tiendas Soriana, S.A. de C.V. y/o Organización Soriana, S.A.B. de C.V. " + 
-                    "El incumplimiento en el nivel de servicio comprometido bajo esta Orden de Compra dará lugar a una penalización equivalente al importe que resulte de restar al Precio de Venta de Soriana el Precio de Costo de los Productos no surtidos a partir del día siguiente de la Fecha Fin de Embarque, que podrá deducir Soriana sin mayor trámite de los adeudos que se registren en favor de";
+                    var text = response.results[0].Texto;
                     that.txtTermsCond.setText(text);
                     that.txtTermsCond2.setText(text);
                     that.txtTermsCond3.setText(text);
