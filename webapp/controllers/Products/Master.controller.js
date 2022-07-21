@@ -436,7 +436,6 @@ sap.ui.define([
             //var comboStatus = this.getView().byId("comboStatus");
             var inputFolioTxt = this.getView().byId("inputFolioTxt");
 
-
             let folio = inputFolioTxt.getValue().trim();
 
             let proveedor_LIFNR = (this.getConfigModel().getProperty("/supplierInputKey") != undefined) ? this.getConfigModel().getProperty("/supplierInputKey") : '';
@@ -463,35 +462,34 @@ sap.ui.define([
             if (folio != '') {
 
                 filtros.push(new sap.ui.model.Filter({
-                    path: "IUniqr",
-                    operator: sap.ui.model.FilterOperator.EQ,
-                    value1: folio
-                })
+                        path: "IUniqr",
+                        operator: sap.ui.model.FilterOperator.EQ,
+                        value1: folio
+                    })
                 );
             } else {
 
                 filtros.push(new sap.ui.model.Filter({
-                    path: "ISdate",
-                    operator: sap.ui.model.FilterOperator.EQ,
-                    value1: IStartdate
-                })
+                        path: "ISdate",
+                        operator: sap.ui.model.FilterOperator.EQ,
+                        value1: IStartdate
+                    })
                 );
 
                 filtros.push(new sap.ui.model.Filter({
-                    path: "IFdate",
-                    operator: sap.ui.model.FilterOperator.EQ,
-                    value1: IEnddate
-                })
+                        path: "IFdate",
+                        operator: sap.ui.model.FilterOperator.EQ,
+                        value1: IEnddate
+                    })
                 );
             }
 
             filtros.push(new sap.ui.model.Filter({
-                path: "ILifnr",
-                operator: sap.ui.model.FilterOperator.EQ,
-                value1: proveedor_LIFNR
-            })
+                    path: "ILifnr",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: proveedor_LIFNR
+                })
             );
-
 
             sap.ui.core.BusyIndicator.show();
             let that = this;
@@ -734,11 +732,6 @@ sap.ui.define([
             try {
                 var oView = this.getView();
 
-                //var that = this;
-
-                // if (this.getConfigModel().getProperty("/supplierInputKey") != null && this.getConfigModel().getProperty("/supplierInputKey") != "") {
-                // if( true ){
-
                 // create Dialog
                 if (!this._cpDialog) {
                     this._cpDialog = Fragment.load({
@@ -759,26 +752,18 @@ sap.ui.define([
                     oDialog.open();
                 });
 
-                // }
-                // else
-                // sap.m.MessageBox.error("Debe selecionar un proveedor para continuar.");
-
             } catch (err) {
                 sap.m.MessageBox.error("Ocurrió una excepción al inicializar un nuevo folio.");
                 console.error(err);
             }
         },
+
         deleteProducts: function () {
             if (!this.hasAccess(44)) {
                 return false;
             }
             try {
                 var oView = this.getView();
-
-                //var that = this;
-
-                // if (this.getConfigModel().getProperty("/supplierInputKey") != null && this.getConfigModel().getProperty("/supplierInputKey") != "") {
-                // if( true ){
 
                 // create Dialog
                 if (!this._dpDialog) {
@@ -1320,19 +1305,6 @@ sap.ui.define([
                 this.getView().byId('contentUnit').setValueState(sap.ui.core.ValueState.None);
             }
 
-
-            // Código de venta
-            // if (ModelFolio.getProperty('/CodVent') == undefined || ModelFolio.getProperty('/CodVent').trim() == '') {
-            //     validated = false;
-            //     this.getView().byId('salesCode').setValueState(sap.ui.core.ValueState.Error);
-            // }
-            // else {
-            //     // let content = this.getView().byId("salesCode").getValue();
-            //     // this.getOwnerComponent().getModel("FolioToShow").setProperty("/CodVent", content);
-            //     this.getView().byId('salesCode').setValueState(sap.ui.core.ValueState.None);
-            // }
-
-
             // Unidad de medida de venta
             if (ModelFolio.getProperty('/UndMventa') == undefined || ModelFolio.getProperty('/UndMventa').trim() == '') {
                 validated = false;
@@ -1341,17 +1313,6 @@ sap.ui.define([
             else {
                 this.getView().byId('salesUnit').setValueState(sap.ui.core.ValueState.None);
             }
-
-            // Codigo unidad de compra
-            // if (ModelFolio.getProperty('/CodCompra') == undefined || ModelFolio.getProperty('/CodCompra').trim() == '') {
-            //     validated = false;
-            //     this.getView().byId('purchaseUnitCode').setValueState(sap.ui.core.ValueState.Error);
-            // }
-            // else {
-            //     // let content = this.getView().byId("purchaseUnitCode").getValue();
-            //     // this.getOwnerComponent().getModel("FolioToShow").setProperty("/CodCompra", content);
-            //     this.getView().byId('purchaseUnitCode').setValueState(sap.ui.core.ValueState.None);
-            // }
 
             // Unidad de compra
             if (ModelFolio.getProperty('/UndCompra') == undefined || ModelFolio.getProperty('/UndCompra').trim() == '') {
@@ -1415,8 +1376,6 @@ sap.ui.define([
                 if (rowPresentacion.CodVent == undefined || rowPresentacion.CodVent.trim() == '') {
                     validated = false;
                 }
-                // if( rowPresentacion.index == undefined || rowPresentacion.index.trim() == '' )
-                // validated = false;
 
                 if (rowPresentacion.CaracTalla == undefined || rowPresentacion.CaracTalla.trim() == '') {
                     validated = false;
@@ -1596,7 +1555,6 @@ sap.ui.define([
 
             const Folio = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
 
-            // if (Folio.CapEmbar == undefined || Folio.CapEmbar.trim() == '') validated = false;
             if (Folio.UndBon == undefined || Folio.UndBon.trim() == '') validated = false;
             if (Folio.CostoB == undefined || Folio.CostoB.trim() == '') validated = false;
             if (Folio.CostNUCompra == undefined || Folio.CostNUCompra.trim() == '') validated = false;
@@ -1743,9 +1701,7 @@ sap.ui.define([
             }
 
             this.getOwnerComponent().getModel('Folio').setProperty("/ProdBase", oSelectedItem.getObject().DescLinea);
-            //this.getOwnerComponent().getModel('Folio').setProperty("/EanUpcBase", oSelectedItem.getObject().NumLinea);
             this.getOwnerComponent().getModel('FolioToShow').setProperty("/ProdBase", oSelectedItem.getObject().DescLinea);
-            // this.getOwnerComponent().getModel('FolioToShow').setProperty("/PurGroup", oSelectedItem.getObject().DescGcom);
 
         },
 
@@ -1792,7 +1748,6 @@ sap.ui.define([
         addOptionalInfo: function () {
 
             var presentacion = {
-                //index: '',
                 Taltam: "",
                 CaracCsa: "",
                 CaracTalla: "",
@@ -1895,7 +1850,6 @@ sap.ui.define([
 
                     if (response != null) {
                         if (response.ESuccess === 'X') {
-                            //let msg = that.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.msgUpdated') ;
                             const msg = "Se han generado correctamente los cambios de precio.";
                             sap.m.MessageBox.success(msg, {
                                 actions: [sap.m.MessageBox.Action.CLOSE],
@@ -1934,7 +1888,6 @@ sap.ui.define([
                 return false;
             }
 
-            // let items = this.getView().getModel('ETDELETE').getProperty('/results');
             if (items.length > 0) {
                 MessageBox.confirm("Desea enviar los registros para baja de productos?", function (oAction) {
                     if (oAction === MessageBox.Action.OK) {
@@ -2389,21 +2342,15 @@ sap.ui.define([
             let shoppgrp = this.byId("shoppingGroup").getSelectedKey();
             let grupArt = this.byId("productGroup").getSelectedKey();
 
-            if (!shoppgrp && !grupArt) {
-                console.log("No selecciono grupos");
+            if (!shoppgrp && !grupArt) 
                 return;
-            }
-
-
+            
             let model = "ZOSP_CATPRO_SRV";
             let entity = `HierarchySet(Ekgrp='${shoppgrp}',Matkl='${grupArt}')`;
             
             let that = this;
             this._GetODataV2(model, entity, [], [], "").then(resp => {
-                // that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "Folios");
-                // that.paginate("Folios", "/ETPRICNAV", 1, 0);
                 console.log("Prod/cateori: ", resp.d);
-                
                 sap.ui.core.BusyIndicator.hide();
             }).catch(error => {
                 console.error(error);
