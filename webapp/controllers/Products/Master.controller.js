@@ -5,8 +5,9 @@ sap.ui.define([
     "sap/m/MessageBox",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
-    "demo/models/formatterCatPrd"
-], function (BaseController, JSONModel, Fragment, MessageBox, Filter, FilterOperator, formatterCatPrd) {
+    "demo/models/formatterCatPrd",
+    "sap/ui/core/BusyIndicator"
+], function (BaseController, JSONModel, Fragment, MessageBox, Filter, FilterOperator, formatterCatPrd, BusyIndicator) {
     "use strict";
 
     var sUri = "/sap/opu/odata/sap/ZOSP_CATPRO_SRV/";
@@ -18,12 +19,11 @@ sap.ui.define([
     var swProveedorExcluido = false;
     var _selectedEanType = {};
     var _invalidCostoNuevo = {};
-    var _testingSteps = ( document.location.hostname.slice(-4) == '.sap' );//true; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
+    var _testingSteps = (document.location.hostname.slice(-4) == '.sap');//true; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
 
     return BaseController.extend("demo.controllers.Products.Master", {
         formatterCatPrd: formatterCatPrd,
         onInit: function () {
-
             this.getView().addEventDelegate({
                 onBeforeShow: function (oEvent) {
                     this.getOwnerComponent().setModel(new JSONModel(), "Paises");
@@ -42,7 +42,6 @@ sap.ui.define([
 
             this.configFilterLanguage(this.getView().byId("filterBar"));
             this.setInitialDates();
-
         },
 
         async getGS1ProductData() {
@@ -153,6 +152,7 @@ sap.ui.define([
         },
 
         getCatalogos: function () {
+
             try {
 
                 var url = `/HdrcatproSet?$expand=ETTART,ETCOUNTRYNAV,ETCODENAV,ETBRANDSNAV,ETTCARCV,ETUWEIG,ETULONG,ETUVOL,ETUNM,ETGPOART,ETLABEL,ETFORMAT,ETOUTSTRAT,ETBONUS&$filter=IOption eq '4'`;
@@ -240,8 +240,10 @@ sap.ui.define([
 
                 ITEXT64.attach.push(oFile);
                 that.getOwnerComponent().setModel(new JSONModel(ITEXT64), "ITEXT64");
+
             }
             reader.readAsDataURL(currentFile);
+            
         },
 
         addAttachDelete: function (oEvt) {
@@ -274,6 +276,9 @@ sap.ui.define([
         },
 
         handleUploadPress: function () {
+
+            // sap.ui.core.BusyIndicator.show(0);
+
             let archivo = this.getOwnerComponent().getModel('ITEXT64').getProperty('/attach');
             if (archivo.length == 1) {
 
@@ -423,10 +428,6 @@ sap.ui.define([
         },
         searchData: function () {
 
-            /* falto dar de alta este codigo, lo dejo preparado if (!this.hasAccess()) {
-                 return false;
-             }*/
-
             if (!this.hasAccess(46)) {
                 return false;
             }
@@ -478,7 +479,6 @@ sap.ui.define([
 
             // let url = `HeaderPYMNTCSet?$expand=EPYMNTDOCSNAV,EPYMNTPRGRMNAV&$filter= IOption eq '2' and ILifnr eq '${proveedor_LIFNR}' and IStartdate eq '${IStartdate}'  and IEnddate eq '${IEnddate}'&$format=json`;
             let url = `HdrcatproSet?$expand=ETPRICNAV&$filter=${filtros}&$format=json`;
-
 
             let oODataJSONModel = this.getOdata(sUri);
 
@@ -562,97 +562,70 @@ sap.ui.define([
             this.exportxls('Folios', '/ETPRICNAV/results', columns);
         },
 
-        buildExportTableCostos: function () {
-            var texts = this.getOwnerComponent().getModel("appTxts");
-
-            var columns = [
+        buildExportTableCostos() {
+            let texts = this.getOwnerComponent().getModel("appTxts");
+            let columns = [
                 {
-                    name: texts.getProperty("/products.organizePrice"),
-                    template: {
-                        content: "{OrgCompras}"
-                    }
+                    label: texts.getProperty("/products.organizePrice"),
+                    property: "OrgCompras"
                 },
                 {
-                    name: texts.getProperty("/products.centerPrice"),
-                    template: {
-                        content: "{Centro}"
-                    }
+                    label: texts.getProperty("/products.centerPrice"),
+                    property: "Centro"
                 },
                 {
-                    name: texts.getProperty("/products.codePrice"),
-                    template: {
-                        content: "{Codigoean}"
-                    }
+                    label: texts.getProperty("/products.codePrice"),
+                    property: "Codigoean"
                 },
                 {
-                    name: texts.getProperty("/products.descriptionPrice"),
-                    template: {
-                        content: "{Descrip}"
-                    }
+                    label: texts.getProperty("/products.descriptionPrice"),
+                    property: "Descrip"
                 },
                 {
-                    name: texts.getProperty("/products.costPrice"),
-                    template: {
-                        content: "{Costobant}"
-                    }
+                    label: texts.getProperty("/products.costPrice"),
+                    property: "Costobant"
                 },
                 {
-                    name: texts.getProperty("/products.normalDiscount"),
-                    template: {
-                        content: "{DNormal}"
-                    }
+                    label: texts.getProperty("/products.normalDiscount"),
+                    property: "DNormal"
                 },
                 {
-                    name: texts.getProperty("/products.additionalDiscount"),
-                    template: {
-                        content: "{DAdicional}"
-                    }
+                    label: texts.getProperty("/products.additionalDiscount"),
+                    property: "DAdicional"
                 },
                 {
-                    name: texts.getProperty("/products.discountEarlyPay"),
-                    template: {
-                        content: "{DPronto}"
-                    }
+                    label: texts.getProperty("/products.discountEarlyPay"),
+                    property: "DPronto"
                 },
                 {
-                    name: texts.getProperty("/products.subtitleBonusType") + '(%)',
-                    template: {
-                        content: "{PDBonif}"
-                    }
+                    label: texts.getProperty("/products.subtitleBonusType") + '(%)',
+                    property: "PDBonif"
                 },
                 {
-                    name: texts.getProperty("/products.subtitleBonusType") + '($)',
-                    template: {
-                        content: "{PDBonif}"
-                    }
+                    label: texts.getProperty("/products.subtitleBonusType") + '($)',
+                    property: "PDBonif"
                 },
                 {
-                    name: texts.getProperty("/products.CostDiff"),
-                    template: {
-                        content: "{PDifCos}"
-                    }
+                    label: texts.getProperty("/products.CostDiff"),
+                    property: "PDifCos"
                 },
                 {
-                    name: texts.getProperty("/products.CompCentral"),
-                    template: {
-                        content: "{PComCen}"
-                    }
+                    label: texts.getProperty("/products.CompCentral"),
+                    property: "PComCen"
                 },
                 {
-                    name: texts.getProperty("/products.CargoCosto") + '(%)',
-                    template: {
-                        content: "{PCargoC}"
-                    }
+                    label: texts.getProperty("/products.CargoCosto") + '(%)',
+                    property: "PCargoC"
                 },
                 {
-                    name: texts.getProperty("/products.CargoCosto") + '($)',
-                    template: {
-                        content: "{MCargoC}"
-                    }
+                    label: texts.getProperty("/products.CargoCosto") + '($)',
+                    property: "MCargoC"
                 }
-            ];
+            ]
 
-            this.exportxls('ETMODIFY', '/Paginated/results', columns);
+            let results = this.getOwnerComponent().getModel("ETMODIFY").getProperty("/Paginated/results")
+            this.buildExcelSpreadSheet(columns,results, "CostosActuales.xlsx" );
+            
         },
 
         //alta masiva
@@ -865,7 +838,7 @@ sap.ui.define([
             }
         },
 
-         validateCstBrutNuevo(oControlEvent) {
+        validateCstBrutNuevo(oControlEvent) {
 
             let cbn = oControlEvent.getParameter('value');
             let cba = oControlEvent.getSource().data("cba");
@@ -881,13 +854,13 @@ sap.ui.define([
                     _invalidCostoNuevo.valid = false;
                     _invalidCostoNuevo.identifier = ean;
 
-                }else if ((parseFloat(cba) * 2) < parseFloat(cbn)) {
+                } else if ((parseFloat(cba) * 2) < parseFloat(cbn)) {
                     oControlEvent.getSource().setValueState(sap.ui.core.ValueState.Warning);
                     oControlEvent.getSource().setValueStateText("No puede haber un incremento del 100% del costo bruto actual!");
                     _invalidCostoNuevo.valid = false;
                     _invalidCostoNuevo.identifier = ean;
-                    
-                }else {
+
+                } else {
                     oControlEvent.getSource().setValueState(sap.ui.core.ValueState.None);
 
                     if (!_invalidCostoNuevo.valid && _invalidCostoNuevo.identifier == ean) {
@@ -895,7 +868,7 @@ sap.ui.define([
                         _invalidCostoNuevo.identifier = null;
                     }
 
-                } 
+                }
             }
 
             this.byId("btnSaveChangePriceRow").setEnabled(_invalidCostoNuevo.valid);
@@ -1925,6 +1898,8 @@ sap.ui.define([
                     } else {
                         sap.m.MessageBox.error("No se pudo conectar con el servidor, intente nuevamente.");
                     }
+
+			sap.ui.core.BusyIndicator.hide();
                 })
             }
             else
@@ -2300,13 +2275,17 @@ sap.ui.define([
         },
 
         async fetchHierarchyChildren(key) {
+
+            sap.ui.core.BusyIndicator.show();
             let children = null;
             let urlDivision = `HdrcatproSet?$expand=ETJERARQUIANODO&$filter=IOption eq '21' and IParent eq '${key}'`;
             await Model.getJsonModelAsync(urlDivision, async function (response, that) {
                 children = await response.getProperty('/results/0/ETJERARQUIANODO');
+                sap.ui.core.BusyIndicator.hide();
             }, function () {
                 sap.m.MessageBox.error("No se lograron obtener los datos");
             }, this, false); //retirar false para volverlo asyncrono
+
             return children;
         },
 
