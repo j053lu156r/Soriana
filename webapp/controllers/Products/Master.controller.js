@@ -11,6 +11,8 @@ sap.ui.define([
     "use strict";
 
     var sUri = "/sap/opu/odata/sap/ZOSP_CATPRO_SRV/";
+    var _oDataModel = "ZOSP_CATPRO_SRV";
+    var _oDataEntity = "HdrcatproSet";
 
     var Model = new Productos();
     var NotifAltaMas = new NotifAltaMasiva();
@@ -154,7 +156,7 @@ sap.ui.define([
         getCatalogos: function () {
 
             try {
-
+                BusyIndicator.show();
                 var url = `/HdrcatproSet?$expand=ETTART,ETCOUNTRYNAV,ETCODENAV,ETBRANDSNAV,ETTCARCV,ETUWEIG,ETULONG,ETUVOL,ETUNM,ETGPOART,ETLABEL,ETFORMAT,ETOUTSTRAT,ETBONUS&$filter=IOption eq '4'`;
                 Model.getJsonModelAsync(url, function (response, that) {
                     let Paises = [];
@@ -181,6 +183,8 @@ sap.ui.define([
                     that.getOwnerComponent().setModel(new JSONModel(pModel), "Paises");
 
                     that.getOwnerComponent().getModel("Paises").setSizeLimit(parseInt(Paises.length, 10));
+
+                    sap.ui.core.BusyIndicator.hide();
 
                 }, function () {
                     sap.m.MessageBox.error("No se lograron obtener los datos del proveedor registrado en GS1.");
@@ -275,9 +279,8 @@ sap.ui.define([
             reader.readAsDataURL(currentFile);
         },
 
-        handleUploadPress: function () {
-
-            // sap.ui.core.BusyIndicator.show(0);
+        handleUploadPress: async function () {
+            
 
             let archivo = this.getOwnerComponent().getModel('ITEXT64').getProperty('/attach');
             if (archivo.length == 1) {
@@ -298,9 +301,19 @@ sap.ui.define([
                         }
                     ]
                 }
-                var response = Model.create("/HdrcatproSet", objRequest);
 
-                console.log("respuesta opcion 16", response);
+                sap.ui.core.BusyIndicator.show();
+
+                let response = null;
+
+                await this._PostODataV2Async(_oDataModel, _oDataEntity, objRequest).then(resp => {
+
+                    response = resp.data;
+                    sap.ui.core.BusyIndicator.hide();
+
+                }).catch(error => {
+                    console.error(error);
+                });
 
                 if (response != null) {
                     if (response.ESuccess == "X") {
@@ -340,7 +353,7 @@ sap.ui.define([
 
         },
 
-        handleUploadPressDelete: function () {
+        handleUploadPressDelete: async function () {
             let archivo = this.getOwnerComponent().getModel('ITEXT64Delete').getProperty('/attach');
             if (archivo.length == 1) {
                 let objRequest = {
@@ -357,7 +370,18 @@ sap.ui.define([
                         }
                     ]
                 }
-                var response = Model.create("/HdrcatproSet", objRequest);
+
+                sap.ui.core.BusyIndicator.show();
+                let response = null;
+
+                await this._PostODataV2Async(_oDataModel, _oDataEntity , objRequest).then(resp => {
+
+                    response = resp.data;
+                    sap.ui.core.BusyIndicator.hide();
+
+                }).catch(error => {
+                    console.error(error);
+                });
 
                 if (response != null) {
                     if (response.ESuccess == "X") {
@@ -444,7 +468,7 @@ sap.ui.define([
             // format[AAAAMMDD] (2020101)
             let IEnddate = this.buildSapDate(dateRange.getSecondDateValue());
 
-            if (proveedor_LIFNR == '' || (folio.trim() === '' && dateRange.getValue() == '') ) {
+            if (proveedor_LIFNR == '' || (folio.trim() === '' && dateRange.getValue() == '')) {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/products.msgNoFilter'));
                 return false;
             }
@@ -452,43 +476,43 @@ sap.ui.define([
             let filtros = [];
 
             filtros.push(new sap.ui.model.Filter({
-                    path: "IOption",
-                    operator: sap.ui.model.FilterOperator.EQ,
-                    value1: '2'
-                })
+                path: "IOption",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: '2'
+            })
             )
 
 
             if (folio != '') {
 
                 filtros.push(new sap.ui.model.Filter({
-                        path: "IUniqr",
-                        operator: sap.ui.model.FilterOperator.EQ,
-                        value1: folio
-                    })
+                    path: "IUniqr",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: folio
+                })
                 );
             } else {
 
                 filtros.push(new sap.ui.model.Filter({
-                        path: "ISdate",
-                        operator: sap.ui.model.FilterOperator.EQ,
-                        value1: IStartdate
-                    })
+                    path: "ISdate",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: IStartdate
+                })
                 );
 
                 filtros.push(new sap.ui.model.Filter({
-                        path: "IFdate",
-                        operator: sap.ui.model.FilterOperator.EQ,
-                        value1: IEnddate
-                    })
+                    path: "IFdate",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: IEnddate
+                })
                 );
             }
 
             filtros.push(new sap.ui.model.Filter({
-                    path: "ILifnr",
-                    operator: sap.ui.model.FilterOperator.EQ,
-                    value1: proveedor_LIFNR
-                })
+                path: "ILifnr",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: proveedor_LIFNR
+            })
             );
 
             sap.ui.core.BusyIndicator.show();
@@ -1015,7 +1039,7 @@ sap.ui.define([
             this._handleMessageBoxOpen(this.getOwnerComponent().getModel("appTxts").getProperty('/products.msgCancelNewProduct'), "warning");
         },
 
-        _handleMessageBoxOpen: function (sMessage, sMessageBoxType) {
+        _handleMessageBoxOpen: async function (sMessage, sMessageBoxType) {
 
             MessageBox[sMessageBoxType](sMessage, {
 
@@ -1045,11 +1069,14 @@ sap.ui.define([
                                 "ITIMGART": [...imagesToAttach]
                             };
 
-                            // console.log(" >>>>>>> CREATING PRDUCT String: ", JSON.stringify(createObjReq));
-
-                            // ** Nota Model.create(endpoint,data) No trabaja ni con callback ni con promesa Solo recepcion syncrona
-
-                            let resp = Model.create("/HdrcatproSet", createObjReq);
+                            sap.ui.core.BusyIndicator.show();
+                            let resp = null; 
+                            await this._PostODataV2Async(_oDataModel,_oDataEntity, createObjReq).then(response=>{
+                                resp = response.data;
+                                sap.ui.core.BusyIndicator.hide();
+                            }).catch(error=>{
+                                console.error(error);
+                            });
 
                             if (resp.ESuccess) {
 
@@ -1844,9 +1871,9 @@ sap.ui.define([
 
                         }]
                     }
+                    BusyIndicator.show();
                     var response = Model.create("/HdrcatproSet", objRequest);
                     console.log("Respuesta del save", response);
-
 
                     if (response != null) {
                         if (response.ESuccess === 'X') {
@@ -1868,7 +1895,7 @@ sap.ui.define([
                         sap.m.MessageBox.error("No se pudo conectar con el servidor, intente nuevamente.");
                     }
 
-                    sap.ui.core.BusyIndicator.hide();
+
                 })
             }
             else
@@ -2336,18 +2363,18 @@ sap.ui.define([
 
         },
 
-        fetchProdBase_categroria(oControlEvent){
+        fetchProdBase_categroria(oControlEvent) {
             sap.ui.core.BusyIndicator.show();
 
             let shoppgrp = this.byId("shoppingGroup").getSelectedKey();
             let grupArt = this.byId("productGroup").getSelectedKey();
 
-            if (!shoppgrp && !grupArt) 
+            if (!shoppgrp && !grupArt)
                 return;
-            
+
             let model = "ZOSP_CATPRO_SRV";
             let entity = `HierarchySet(Ekgrp='${shoppgrp}',Matkl='${grupArt}')`;
-            
+
             let that = this;
             this._GetODataV2(model, entity, [], [], "").then(resp => {
                 console.log("Prod/cateori: ", resp.d);
