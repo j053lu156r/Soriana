@@ -122,7 +122,7 @@
                                 <Text text="{Documentos>Butxt}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column
+                        <t:Column visible="false"
                             width           = "15%" >
                             <Label text="{appTxts>/pay.headerPaymentType}" />
                             <t:template>
