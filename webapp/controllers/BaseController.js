@@ -731,7 +731,7 @@ sap.ui.define([
             exportType || (exportType = new sap.ui.core.util.ExportTypeCSV({
                 separatorChar: "\t",
                 mimeType: "application/vnd.ms-excel",
-                charset: "utf-8",
+                charset: "UTF-8",
                 fileExtension: "xls"
             }));
 
