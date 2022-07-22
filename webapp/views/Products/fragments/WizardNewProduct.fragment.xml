@@ -102,7 +102,6 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.shoppingGroup}">
                                                     <form:fields>
-                                                        <!-- <Input required="true" value="{Folio>/PurGroup}" id="shoppingGroup" editable="false" /> -->
                                                         <ComboBox selectedKey="{Folio>/PurGroup}" id="shoppingGroup" items="{
                                                                     path : 'Catalogos>/GrupoCompras/results'
                                                                 }"
@@ -142,7 +141,6 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.country}">
                                                     <form:fields>
-                                                    <!-- value="{Folio>/txtPais}" -->
                                                         <Input
                                                             id="country"
                                                             textFormatMode="Value"
@@ -227,11 +225,6 @@
                                                                 <core:Item key="{Catalogos>Formatkey}" text="{Catalogos>Descr}"/>
                                                             </items>
                                                         </ComboBox>
-                                                        <!-- <RadioButtonGroup select=".onSelectNegotiatedFormat" id="negotiatedFormat">
-                                                            <RadioButton id="negotiatedFormat-super-hipermercado" text="{appTxts>/products.hyperSuperOption}" selected="true" />
-                                                            <RadioButton id="negotiatedFormat-mercado-express" text="{appTxts>/products.expressOption}" />
-                                                            <RadioButton visible="false" id="negotiatedFormat-mega" text="{appTxts>/products.megaOption}" />
-                                                        </RadioButtonGroup> -->
                                                     </form:fields>
                                                 </form:FormElement>
                                             </form:formElements>
@@ -339,9 +332,6 @@
 								validated="true"
 								title="{appTxts>/products.titleTabPresentation}"
 								complete="activateProductPresentation">
-						<!--MessageStrip class="sapUiSmallMarginBottom"
-								text="Validation in the wizard is controlled by calling the validateStep(Step) and invalidateStep(Step) methods "
-								showIcon="true"/-->
 						<Text text="{appTxts>/products.msgComptData}"/>
 						<VBox class="sapUiSmallMargin"
 								alignItems="Center"
@@ -462,9 +452,6 @@
 								validated="true"
 								complete="completeValidateVariantStep"
 								title="{appTxts>/products.titleTabVariants}">
-						<!--MessageStrip class="sapUiSmallMarginBottom"
-								text="You can validate steps by default with the validated='true' property of the step. The next button is always enabled."
-								showIcon="true"/-->
 						<VBox>
                             <Table mode="MultiSelect" id="tableWizardVariants"
                                 items="{ path : 'ITARTVAR>/results'}">
@@ -487,12 +474,6 @@
                                     </OverflowToolbar>
                                 </headerToolbar>
                                 <columns>
-                                    <!-- <Column width="auto" hAlign="Left">
-                                        <header>
-                                            <Text text="No" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                        </header>
-                                        <footer/>
-                                    </Column> -->
                                     <Column width="auto" hAlign="Left">
                                         <header>
                                             <Text text="{appTxts>/products.size}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -527,7 +508,6 @@
                                 <items>
                                     <ColumnListItem press="onListItemPress">
                                         <cells>
-                                            <!-- <ObjectIdentifier text="{ITARTVAR>index}" /> -->
                                             <Input value="{ITARTVAR>CaracTalla}" change=".changeQty"></Input>
                                             <Input value="{ITARTVAR>Colsabaro}" change=".changeQty"></Input>
                                             <Input value="{ITARTVAR>CodVent}" change=".changeQty" liveChange="validateBarCodeLength"></Input>
@@ -551,9 +531,6 @@
 								complete="validateCompleteStepDimensions"
 								validated="true"
 								title="{appTxts>/products.titleTabDimensions}">
-						<!--MessageStrip class="sapUiSmallMarginBottom"
-								text="You can use the wizard previousStep() and nextStep() methods to navigate from step to step without validation. Also you can use the GoToStep(step) method to scroll programmatically to previously visited steps."
-								showIcon="true"/-->
                         <VBox class="sapUiSmallMargin">
                             <form:SimpleForm
                                     editable="true"
@@ -696,7 +673,6 @@
                                     <core:Title text="{appTxts>/products.titleBonus}" />
 
                                     <Label text="{appTxts>/products.subtitleBonusType}" />
-                                    <!-- <Input value="{Folio>/Bonif}" /> -->
                                     <ComboBox selectedKey="{Folio>/UndBon}" items="{path : 'Catalogos>/TiposBonificacion/results'}" required="true" change="changeTipoBonif">
                                         <items>
                                             <core:Item key="{Catalogos>Bonuskey}" text="{Catalogos>Descr}" />
@@ -711,11 +687,6 @@
                                     
 
                                     <core:Title text="{appTxts>/products.titlePurchaseCosts}" />
-                                    <!--Label text="Costos" />
-                                    <RadioButtonGroup id="radioCostos" >
-                                        <RadioButton id="radioCompra" text="Un compra" />
-                                        <RadioButton id="radioVenta" text="Un venta" />
-                                    </RadioButtonGroup-->
                                     <Label text="{appTxts>/products.grossCost}" />
                                     <Input id="CostoB" value="{Folio>/CostoB}" type="Number" required="true" liveChange="calcularCostNetVen"/>
                                     <Label text="{appTxts>/products.packingCapacity}" />

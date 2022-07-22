@@ -81,7 +81,6 @@
                                         <core:Item key="100" text="100"/>
                                     </items>
                                 </Select>
-                                <!--Button text="Agregar" id="newVariant" press="addOptionalInfo" type="Emphasized" /-->
                             </OverflowToolbar>
                         </headerToolbar>
                         <columns>

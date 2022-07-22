@@ -61,9 +61,6 @@
             fileType="xlsx"
             change="changeFileMassiveReg"
             />
-		<!-- <Button
-			text="{appTxts>/products.btnUploadFile}"
-			press="handleUploadPress"/> -->
             </l:VerticalLayout>
             </f:content>
 
