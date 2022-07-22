@@ -486,12 +486,6 @@ sap.ui.define([
         },
 
 
-        subtractYears: function (numOfYears, date = new Date()) {
-            date.setFullYear(date.getFullYear() - numOfYears);
-
-            return date;
-        },
-
 
         groupArrayOfObjects: function (list, key) {
             return list.reduce(function (rv, x) {
