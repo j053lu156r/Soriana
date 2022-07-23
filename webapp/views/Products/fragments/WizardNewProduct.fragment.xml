@@ -102,14 +102,7 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.shoppingGroup}">
                                                     <form:fields>
-                                                        <ComboBox selectedKey="{Folio>/PurGroup}" id="shoppingGroup" items="{
-                                                                    path : 'Catalogos>/GrupoCompras/results'
-                                                                }"
-                                                                editable="{ValidBarCode>/value}">
-                                                            <items>
-                                                                <core:Item key="{Catalogos>Ekgrp}" text="{Catalogos>Eknam}"/>
-                                                            </items>
-                                                        </ComboBox>
+                                                        <Input id="shoppingGroupInput" required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onShoppingGroupRequest" value="{FolioToShow>/PurGroup}" editable="{ValidBarCode>/value}"/>
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.productGroup}">
@@ -126,7 +119,7 @@
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.baseProduct}">
                                                     <form:fields>
-                                                        <Input required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onBaseProductRequest" id="baseProduct" value="{FolioToShow>/ProdBase}" editable="{ValidBarCode>/value}"/>
+                                                        <Input required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onBaseProductRequest" id="baseProduct" value="{FolioToShow>/ProdBase}" editable="false"/>
                                                     </form:fields>
                                                 </form:FormElement>
                                                 <form:FormElement label="{appTxts>/products.supplier}">
@@ -259,7 +252,7 @@
                                                     <form:fields>
                                                         <ComboBox required="true" id="ComboDivision" items="{
                                                                     path : 'Catalogos>/Divisiones/results'
-                                                                }" selectionChange="onDivisionChange" value="{/HieDivision}">
+                                                                }" selectionChange="onDivisionChange" value="{/HieDivision}" editable="false">
                                                             <items>
                                                                 <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
                                                             </items>
