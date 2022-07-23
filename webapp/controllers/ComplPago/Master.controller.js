@@ -12,7 +12,7 @@ sap.ui.define([
     "sap/ui/core/routing/Router",
     "demo/models/BaseModel",
     'sap/f/library',
-    
+
 ], function (exportLibrary, Spreadsheet, Fragment, Controller, UploadCollectionParameter, History, PDFViewer, JSONModel, fioriLibrary) {
     "use strict";
     var EdmType = exportLibrary.EdmType;
@@ -40,7 +40,7 @@ sap.ui.define([
                 }
             }, this);
 
-           
+
         },
         onAfterRendering: function () {
             var Fecha = new Date();
@@ -50,10 +50,10 @@ sap.ui.define([
             that.getView().byId("dateRange").setDateValue(new Date(Fecha));
             that.getView().byId("dateRange").setSecondDateValue(new Date());
 
-          
+
             that.oModel = new JSONModel({
                 column1:true,
-                column2:true,
+                column2:false,
                 column3:true,
                 column4:true,
                 column5:true,
@@ -65,13 +65,13 @@ sap.ui.define([
                 column10:true,
                 column11:true,
 
-              
+
             })
             that.getView().setModel(that.oModel);
             that.TableVisible()
         },
         TableVisible: function () {
-         
+
 
             that.getView().byId("column1").setVisible(that.getView().getModel().getProperty("/column1"));
             that.getView().byId("column2").setVisible(that.getView().getModel().getProperty("/column2"));
@@ -85,22 +85,22 @@ sap.ui.define([
             that.getView().byId("column9").setVisible(that.getView().getModel().getProperty("/column9"));
             that.getView().byId("column10").setVisible(that.getView().getModel().getProperty("/column10"));
             that.getView().byId("column11").setVisible(that.getView().getModel().getProperty("/column11"));
-           
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         },
-     
+
 
         clearFilters: function () {
             this.getView().byId("dateRange").setValue('');
@@ -140,15 +140,15 @@ sap.ui.define([
                 operator: sap.ui.model.FilterOperator.EQ,
                 value1: this.buildSapDate(dateRange.getDateValue())
                // value1: FechaI.toISOString().slice(0, 10) + 'T00:00:00',
-              
+
             })
 
             )
-             
+
             auxFilters.push(new sap.ui.model.Filter({
                 path: "IEnddate",
                 operator: sap.ui.model.FilterOperator.EQ,
-              value1:this.buildSapDate(dateRange.getSecondDateValue()) 
+              value1:this.buildSapDate(dateRange.getSecondDateValue())
             //    value1: FechaF.toISOString().slice(0, 10) + 'T00:00:00'
             })
 
@@ -172,7 +172,7 @@ sap.ui.define([
 
 
 
-      
+
                 auxFilters.push(new sap.ui.model.Filter({
                     path: 'IAugbl',
                     operator: sap.ui.model.FilterOperator.EQ,
@@ -200,7 +200,7 @@ sap.ui.define([
                     arrT.push(data[x])
              }
             }
-           
+
             if(arrT.length>0){
                 var Documentos = { Detalles: { results: [...arrT[0].EPYMNTDOCSNAV.results] } };
 
@@ -209,7 +209,7 @@ sap.ui.define([
 
                 that.paginate("Documentos", "/Detalles", 1, 0);
             }
-               
+
 
             });
 
@@ -233,13 +233,13 @@ sap.ui.define([
             IVblnr eq '${registro.Vblnr}' and 
             IAugdt eq '${Augdt}'&$format=json`;
 
-            /*let url = `HeaderPYMNTCSet?$expand=ETXTHDRNAV,ETXTTOTALNAV,ETXTTAXNAV,ETXTFACTPROVNAV,ETXTFACTSORNAV,ETXTDISCOUNTNAV,ETXTAGREEMENTNAV&$filter= IOption eq '3' and 
-            ILaufd eq '20200429' and 
-            ILaufi eq 'PPDL' and 
-            IBukrs eq '2001' and 
-            ILifnr eq '96008' and 
-            IGjahr eq '2020' and 
-            IVblnr eq '1500001807' and 
+            /*let url = `HeaderPYMNTCSet?$expand=ETXTHDRNAV,ETXTTOTALNAV,ETXTTAXNAV,ETXTFACTPROVNAV,ETXTFACTSORNAV,ETXTDISCOUNTNAV,ETXTAGREEMENTNAV&$filter= IOption eq '3' and
+            ILaufd eq '20200429' and
+            ILaufi eq 'PPDL' and
+            IBukrs eq '2001' and
+            ILifnr eq '96008' and
+            IGjahr eq '2020' and
+            IVblnr eq '1500001807' and
             IAugdt eq '20200429'&$format=json`;*/
 
             let oODataJSONModel = this.getOdata(sUri);
@@ -247,7 +247,7 @@ sap.ui.define([
             let oDataJSONModel = this.getOdataJsonModel(url, oODataJSONModel);
             let dataJSON = oDataJSONModel.getJSON();
 
-          
+
             let Datos = JSON.parse(dataJSON);
 
 
@@ -292,7 +292,7 @@ sap.ui.define([
             return renglones;
         },
         formatAvailableToIcon: function (bAvailable) {
-           
+
             switch (bAvailable) {
                 case 'X':
                     return "sap-icon://message-error";
@@ -308,7 +308,7 @@ sap.ui.define([
             return bAvailable ? "sap-icon://accept" : "sap-icon://decline";
         },
         formatStatusIcon: function (bAvailable) {
-          
+
             switch (bAvailable) {
                 case 'Y':
                     return "#008000";
@@ -403,14 +403,14 @@ sap.ui.define([
             var reader2 = new FileReader();
 
             reader2.onload = function (evn) {
-                var strXML = evn.target.result;  
-                
-                var body = '<?xml version="1.0" encoding="utf-8"?>' + 
-                    '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' + 
+                var strXML = evn.target.result;
+
+                var body = '<?xml version="1.0" encoding="utf-8"?>' +
+                    '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
                     'xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><RecibeCFDPortal xmlns="http://tempuri.org/">' +
-                    '<XMLCFD><![CDATA[' + strXML + ']]></XMLCFD><proveedor>' + vLifnr + '</proveedor>' + 
+                    '<XMLCFD><![CDATA[' + strXML + ']]></XMLCFD><proveedor>' + vLifnr + '</proveedor>' +
                     '</RecibeCFDPortal></soap:Body></soap:Envelope>';
-                
+
                 $.ajax({
                     async: true,
                     url: "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboPortal.asmx",
@@ -424,7 +424,7 @@ sap.ui.define([
                         sap.ui.core.BusyIndicator.hide();
                         that.onCloseDialogUpload2();
                         oFileUploader.clear();
-                        var oXMLModel = new sap.ui.model.xml.XMLModel();  
+                        var oXMLModel = new sap.ui.model.xml.XMLModel();
                         oXMLModel.setXML(response.getElementsByTagName("RecibeCFDPortalResult")[0].textContent);
                         var oXml = oXMLModel.getData();
                         var status = oXml.getElementsByTagName("AckErrorApplication")[0].attributes[5].nodeValue;
@@ -464,7 +464,7 @@ sap.ui.define([
             });
         },
         documentUploadPress: function () {
-            
+
             var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoice", "fileUploader");
             var uploadList = sap.ui.core.Fragment.byId("uploadInvoice", "logUploadList");
             var uploadBox = sap.ui.core.Fragment.byId("uploadInvoice", "uploadBox");
@@ -627,12 +627,12 @@ sap.ui.define([
             datarange.setDateValue(minConsultDate);
         },
         onDocumentPress: function (oEvent) {
-         
+
             let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
             let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
 
             let registro = results[posicion];
-       
+
 
             this.getOwnerComponent().getRouter().navTo("detailComplPagos",
                 {
@@ -655,7 +655,7 @@ sap.ui.define([
 
             var oModel = that.getView().getModel("Documentos").getData().Detalles.Paginated.results,
                 aCols = [];
-          
+
             var texts = this.getOwnerComponent().getModel("appTxts");
 
             aCols.push({
@@ -775,15 +775,15 @@ sap.ui.define([
            // var posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
             var results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
             var registro = results;
-           
+
             var aIndices = this.byId("complPagoList").getSelectedIndices();
-         
+
             for(var x =0;x<aIndices.length;x++){
-               
-          
+
+
             var Laufd = String(registro[aIndices[x]].Laufd).replace(/-/g, "");
             var Augdt = String(registro[aIndices[x]].Augdt).replace(/-/g, "");
-           
+
 var auxFilters=[];
             auxFilters.push(new sap.ui.model.Filter({
                 path: "IOption",
@@ -852,8 +852,8 @@ var auxFilters=[];
          that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
                 sap.ui.core.BusyIndicator.hide();
                 var Datos = _GEToDataV2Response.data;
-                
-               
+
+
             var Encabezado = Object.values(Datos.results[0].ETXTHDRNAV.results[0]).slice(1).join('\t');
             var Totales = Datos.results[0].ETXTTOTALNAV.results;
             var Impuestos = Datos.results[0].ETXTTAXNAV.results;
@@ -913,7 +913,7 @@ var auxFilters=[];
             that.getView().byId("dinamicTableCP").close();
         },
 
-       
+
 
 
 
