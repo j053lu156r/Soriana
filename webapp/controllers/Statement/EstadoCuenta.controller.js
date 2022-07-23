@@ -1362,9 +1362,9 @@ sap.ui.define([
                     document: results.Xblnr,
                     view: 'EstadoCuenta',
                     //ejercicio: ejercicio,
-                    //doc: results.Belnr,
-                    // zbukr: docResult.Zbukr,
-                    // lifnr: docResult.Lifnr
+                    belnr: doc,
+                    bukrs: sociedad,
+                    gjahr: ejercicio
                 }, true);
 
             }

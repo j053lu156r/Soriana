@@ -506,7 +506,7 @@
                     ]
                 },
                 {
-                    "pattern": "detailAportacionesAS/{layout}/{document}/{view}",
+                    "pattern": "detailAportacionesAS/{layout}/{document}/{view}/{belnr}/{bukrs}/{gjahr}",
                     "name": "detailAportacionesAS",
                     "target": [
                         "EstadoCuenta",
