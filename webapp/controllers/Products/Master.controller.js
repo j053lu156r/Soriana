@@ -157,7 +157,7 @@ sap.ui.define([
 
             try {
                 BusyIndicator.show();
-                var url = `/HdrcatproSet?$expand=ETTART,ETCOUNTRYNAV,ETCODENAV,ETBRANDSNAV,ETTCARCV,ETUWEIG,ETULONG,ETUVOL,ETUNM,ETGPOART,ETLABEL,ETFORMAT,ETOUTSTRAT,ETBONUS&$filter=IOption eq '4'`;
+                var url = `/HdrcatproSet?$expand=ETTART,ETCOUNTRYNAV,ETCODENAV,ETBRANDSNAV,ETTCARCV,ETUWEIG,ETULONG,ETUVOL,ETUNM,ETLABEL,ETFORMAT,ETOUTSTRAT,ETBONUS&$filter=IOption eq '4'`;
                 Model.getJsonModelAsync(url, function (response, that) {
                     let Paises = [];
                     const catPaises = response.getProperty('/results/0/ETCOUNTRYNAV/results');
@@ -171,7 +171,7 @@ sap.ui.define([
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/UnidadVolumen', response.getProperty('/results/0/ETUVOL'));
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/UnidadPeso', response.getProperty('/results/0/ETUWEIG'));
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/Caracteristicas', response.getProperty('/results/0/ETTCARCV'));
-                    that.getOwnerComponent().getModel("Catalogos").setProperty('/GrupoArticulos', response.getProperty('/results/0/ETGPOART'));
+                    //that.getOwnerComponent().getModel("Catalogos").setProperty('/GrupoArticulos', response.getProperty('/results/0/ETGPOART'));
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/NegotiatedFormat', response.getProperty('/results/0/ETFORMAT'));
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/TiposEtiqueta', response.getProperty('/results/0/ETLABEL'));
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/EstrategiaSalida', response.getProperty('/results/0/ETOUTSTRAT'));
@@ -206,13 +206,12 @@ sap.ui.define([
                     sap.m.MessageBox.error("No se lograron obtener las divisiones");
                 }, this);
 
-                let urlCompras = `HdrcatproSet?$expand=ETGPOCOMPRAS&$filter=IOption eq '22'`;
-                Model.getJsonModelAsync(urlCompras, function (response, that) {
-                    that.getOwnerComponent().getModel("Catalogos").setProperty('/GrupoCompras', response.getProperty('/results/0/ETGPOCOMPRAS'));
-                }, function () {
-                    sap.m.MessageBox.error("No se lograron obtener los grupos de compras");
-                }, this);
-
+                // let urlCompras = `HdrcatproSet?$expand=ETGPOCOMPRAS&$filter=IOption eq '22'`;
+                // Model.getJsonModelAsync(urlCompras, function (response, that) {
+                //     that.getOwnerComponent().getModel("Catalogos").setProperty('/GrupoCompras', response.getProperty('/results/0/ETGPOCOMPRAS'));
+                // }, function () {
+                //     sap.m.MessageBox.error("No se lograron obtener los grupos de compras");
+                // }, this);
 
             } catch (error) {
                 console.error(" Get Catalogos Error ", error);
@@ -517,7 +516,7 @@ sap.ui.define([
 
             sap.ui.core.BusyIndicator.show();
             let that = this;
-            this._GetODataV2("ZOSP_CATPRO_SRV", "HdrcatproSet", filtros, ["ETPRICNAV"], "").then(resp => {
+            this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["ETPRICNAV"], "").then(resp => {
                 that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "Folios");
                 that.paginate("Folios", "/ETPRICNAV", 1, 0);
                 sap.ui.core.BusyIndicator.hide();
@@ -1666,7 +1665,7 @@ sap.ui.define([
             if (!oselectedItem)
                 return;
             this.getOwnerComponent().getModel("FolioToShow").setProperty("/GrupoArt", oselectedItem.getText());
-            // this.fetchProdBase_categroria(oControlEvent);
+            this.fetchProdBase_categroria(oControlEvent);
         },
 
         getTallasColores: function () {
@@ -2191,7 +2190,7 @@ sap.ui.define([
 
             if (children) {
                 this.getOwnerComponent().getModel("Catalogos").setProperty('/GerenCategoria', children);
-                this.byId("ComboCatMgmt").setEditable(true);
+                //this.byId("ComboCatMgmt").setEditable(true);
             }
         },
 
@@ -2214,7 +2213,7 @@ sap.ui.define([
 
             if (children) {
                 this.getOwnerComponent().getModel("Catalogos").setProperty('/Categoria', children);
-                this.byId("ComboCategory").setEditable(true);
+                //this.byId("ComboCategory").setEditable(true);
             }
         },
 
@@ -2229,7 +2228,8 @@ sap.ui.define([
             this.byId("ComboSubSegmento").setEditable(false);
             this.byId("ComboSubSegmento").setValue("");
 
-            let catKey = oControlEvent.getParameter('selectedItem').getKey();
+            let catKey = this.byId("ComboCategory").getSelectedKey(); //oControlEvent.getParameter('selectedItem').getKey();
+            
             let children = await this.fetchHierarchyChildren(catKey);
 
             if (children) {
@@ -2363,24 +2363,126 @@ sap.ui.define([
 
         },
 
-        fetchProdBase_categroria(oControlEvent) {
+        async fetchProdBase_categroria(oControlEvent) {
             sap.ui.core.BusyIndicator.show();
 
-            let shoppgrp = this.byId("shoppingGroup").getSelectedKey();
+            let shoppgrp = this.getOwnerComponent().getModel('Folio').getProperty("/PurGroup");
             let grupArt = this.byId("productGroup").getSelectedKey();
 
             if (!shoppgrp && !grupArt)
                 return;
 
-            let model = "ZOSP_CATPRO_SRV";
             let entity = `HierarchySet(Ekgrp='${shoppgrp}',Matkl='${grupArt}')`;
 
-            let that = this;
-            this._GetODataV2(model, entity, [], [], "").then(resp => {
-                console.log("Prod/cateori: ", resp.d);
+            let response = null
+            await this._GetODataV2(_oDataModel, entity, [], [], "").then(resp => {
+                response = resp.data;
                 sap.ui.core.BusyIndicator.hide();
             }).catch(error => {
                 console.error(error);
+            });
+
+            this.getOwnerComponent().getModel('Folio').setProperty("/ProdBase", response.Hnode04);
+            this.getOwnerComponent().getModel('FolioToShow').setProperty("/ProdBase", response.Hlevel04);
+            this.byId("ComboDivision").setValue(response.Hlevel02);
+            this.byId("ComboDivision").setSelectedKey(response.Hnode02);
+            this.byId("ComboCatMgmt").setValue(response.Hlevel03);
+            this.byId("ComboCatMgmt").setSelectedKey(response.Hnode03);
+            this.byId("ComboCategory").setValue(response.Hlevel04);
+            this.byId("ComboCategory").setSelectedKey(response.Hnode04);
+            this.byId("ComboCategory").fireSelectionChange();
+            
+        },
+
+        onShoppingGroupRequest(oControlEvent){
+
+            this.getOwnerComponent().getModel('Folio').setProperty("/GrupArt", null);
+            this.getOwnerComponent().getModel('FolioToShow').setProperty("/GrupArt", null);
+            this.byId("productGroup").setValue(null);
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/GrupoArticulos', null);
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/GrupoCompras', null);
+            
+            var oView = this.getView();
+            if (!this._pSearchShoppingGroup) {
+                this._pSearchShoppingGroup = sap.ui.core.Fragment.load({
+                    id: oView.getId(),
+                    name: "demo.views.Products.fragments.SearchShoppingGroup",
+                    controller: this
+                }).then(function (oDialog) {
+                    oView.addDependent(oDialog);
+                    return oDialog;
+                });
+            }
+            this._pSearchShoppingGroup.then(function (oDialog) {
+                oDialog.open();
+            });
+
+        },
+
+        async searchShoppingGroup(oControlEvent){
+
+            let searchTxt = oControlEvent.getParameter("value");
+
+            if (searchTxt == null || searchTxt == "")
+                return;
+            
+            let filters = [];
+            filters.push(this.generateFilter("IOption",'22'));
+            filters.push(this.generateFilter("IEknam", searchTxt));
+
+            sap.ui.core.BusyIndicator.show();
+            let response = []
+            await this._GetODataV2(_oDataModel, _oDataEntity, filters, ["ETGPOCOMPRAS"],"").then(resp =>{
+                response = resp.data;
+                sap.ui.core.BusyIndicator.hide();
+            } ).catch(error => {
+                console.error(error);
+            });
+
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/GrupoCompras', response.results[0].ETGPOCOMPRAS);
+        },
+
+        onShoppingGroupClose(oEvent) {
+            let oSelectedContexts = oEvent.getParameter("selectedContexts");
+            let oSelectedItem = oEvent.getParameter("selectedItem");
+
+            oSelectedItem = oSelectedContexts.find(element => element.getObject().Ekgrp == oSelectedItem.getDescription());
+
+            if (!oSelectedItem)
+                return;
+
+            this.getOwnerComponent().getModel('Folio').setProperty("/PurGroup", oSelectedItem.getObject().Ekgrp);
+            this.getOwnerComponent().getModel('FolioToShow').setProperty("/PurGroup", oSelectedItem.getObject().Eknam);
+            this.searchArtGroup();
+
+        },
+
+        async searchArtGroup(){
+            let shoppingGroup = this.getOwnerComponent().getModel('Folio').getProperty("/PurGroup");
+            if (!shoppingGroup)
+                return
+
+            let filters = [];
+            filters.push(this.generateFilter("IOption",'23'));
+            filters.push(this.generateFilter("IEkgrp", shoppingGroup));
+
+            sap.ui.core.BusyIndicator.show();
+            let response = []
+            await this._GetODataV2(_oDataModel, _oDataEntity, filters, ["ETGPOART"],"").then(resp =>{
+                response = resp.data;
+                sap.ui.core.BusyIndicator.hide();
+            } ).catch(error => {
+                console.error(error);
+            });
+
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/GrupoArticulos', response.results[0].ETGPOART);
+        },
+
+        generateFilter(paramName, paramValue){
+           return new sap.ui.model.Filter({
+                path: paramName,
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: paramValue
             });
         }
 
