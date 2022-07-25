@@ -65,7 +65,7 @@
 
                             <l:VerticalLayout class="sapUiLargeMarginEnd" >
 
-                                <Label text="{appTxts>/products.personalBuyerEmail}" labelFor="inputDestinatario" />
+                                <Label text="{appTxts>/products.personalBuyerEmail}" labelFor="inputDestinatario" required="true" />
                                 <Input id="inputDestinatario" 
                                         placeholder="{appTxts>/products.enterEmailplaceholder}"
                                         type="Email"
@@ -76,7 +76,7 @@
 
                             <l:VerticalLayout class="sapUiLargeMarginEnd">
 
-                                <Label text="Letter" labelFor="fileUploaderChangeCost" required="true"/>
+                                <Label text="{appTxts>/products.EngagementLetter}" labelFor="fileUploaderChangeCost" required="true"/>
                                 <u:FileUploader
                                     id="fileUploaderLetter"
                                     name="myLetterUpload"

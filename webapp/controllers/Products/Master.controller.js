@@ -237,6 +237,7 @@ sap.ui.define([
                     'attach': []
                 };
 
+                that.getOwnerComponent().setModel(new JSONModel(ITEXT64), "LETTERx64");
                 ITEXT64.attach.push(oFile);
                 that.getOwnerComponent().setModel(new JSONModel(ITEXT64), "ITEXT64");
 
@@ -246,7 +247,7 @@ sap.ui.define([
 
         addAttachLetter(oControlEvent) {
 
-            let aFiles = oEvt.getParameters().files;
+            let aFiles = oControlEvent.getParameters().files;
 
             let currentFile = aFiles[0];
             let that = this;
@@ -1865,8 +1866,8 @@ sap.ui.define([
         saveChangePrice: function () {
             let that = this;
             let items = this.getView().getModel('ETMODIFY').getProperty('/results');
-            let letter = that.getOwnerComponent().getModel("LETTERx64").getProperty("/attach");
-            let destinatario = this.byId("inputDestinatario");
+            let letter = this.getOwnerComponent().getModel("LETTERx64").getProperty("/attach");
+            let destinatario = this.byId("inputDestinatario").getValue();
             if (items.length > 0 && destinatario != null && destinatario.trim() != "" && letter.length > 0) {
                 MessageBox.confirm("Desea enviar los registros para cambio de precio?", function () {
 
@@ -1893,7 +1894,6 @@ sap.ui.define([
                         }]
                     }
                     var response = Model.create("/HdrcatproSet", objRequest);
-                    console.log("Respuesta del save", response);
 
                     if (response != null) {
                         if (response.ESuccess === 'X') {
@@ -1915,11 +1915,10 @@ sap.ui.define([
                         sap.m.MessageBox.error("No se pudo conectar con el servidor, intente nuevamente.");
                     }
 
-
                 })
             }
             else
-                MessageBox.warning('No existen registros para cambio de precios.')
+                MessageBox.warning('Debe capturar el destinatario y la carta compromiso. \r\n Y almenos un regsitro para el cambio de costo')
         },
 
         saveDelete: function () {
