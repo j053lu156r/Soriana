@@ -38,14 +38,14 @@ BaseModel.prototype.getJsonModel = function (string) {
     return jsonModel;
 };
 
-BaseModel.prototype.getJsonModelAsync = function (string, successFunction, errorFunction, parent) {
+BaseModel.prototype.getJsonModelAsync = function (string, successFunction, errorFunction, parent, async = true) {
     if (!this.getModel()) {
         this.initModel();
     }
 
     this.getModel().read(string,
         {
-            async: true,
+            async: async,
             success: function (oData, response) {
                 var jsonModel = new sap.ui.model.json.JSONModel();
                 jsonModel.setData(oData);
@@ -66,6 +66,7 @@ BaseModel.prototype.create = function (url, object) {
 
     var oSucces = null;
     var model = this.getModel();
+    console.log(model)    
     model.setHeaders({
         "X-CSRF-Token": "fetch",
         "X-Requested-With": "XMLHttpRequest"
@@ -75,8 +76,9 @@ BaseModel.prototype.create = function (url, object) {
     console.log("***************** After refreshSecurityToken");
 
     model.read("");
-
+    console.log(model)
     var gToken = model.getSecurityToken();
+    console.log(gToken)
 
     model.setHeaders({
         "X-CSRF-Token": gToken,
@@ -332,6 +334,28 @@ function CfdiModel() {
 CfdiModel.prototype = Object.create(BaseModel.prototype);
 CfdiModel.prototype.constructor = CfdiModel;
 
+//Model Web Service Auth
+function WSModel() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_CFDI_WS_SRV/";
+    params.sModel = "wsModel";
+    BaseModel.call(this, params);
+}
+
+WSModel.prototype = Object.create(BaseModel.prototype);
+WSModel.prototype.constructor = WSModel;
+
+//Model Aviso anticipado
+function AvisoModel() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_CFDI_BTNSND2A_SRV/";
+    params.sModel = "avisoModel";
+    BaseModel.call(this, params);
+}
+
+AvisoModel.prototype = Object.create(BaseModel.prototype);
+AvisoModel.prototype.constructor = AvisoModel;
+
 //Model para Descarga ZIP Devoluciones Detecno
 function DevoZipModel() {
     var params = {};
@@ -387,6 +411,30 @@ function Aportaciones() {
 Aportaciones.prototype = Object.create(BaseModel.prototype);
 Aportaciones.prototype.constructor = Aportaciones;//Model Aportaciones
 
+//Model Acuerdos
+function Acuerdos() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_ACUERDOS_SRV/";
+    params.sModel = "acuerdosModel";
+    BaseModel.call(this, params);
+}
+
+Acuerdos.prototype = Object.create(BaseModel.prototype);
+Acuerdos.prototype.constructor = Acuerdos;//Model Acuerdos
+
+//MOdel REporte  Mejor Condicion 
+
+//Model Acuerdos
+function MejorCond() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_MEJOR_COND_REP_SRV/";
+    params.sModel = "mejorCondModel";
+    BaseModel.call(this, params);
+}
+
+MejorCond.prototype = Object.create(BaseModel.prototype);
+MejorCond.prototype.constructor = MejorCond;//Model Mejor Cond Model
+
 //Model citas 1
 function RemissionCancel() {
     var params = {};
@@ -431,3 +479,37 @@ function Productos() {
 
 Productos.prototype = Object.create(BaseModel.prototype);
 Productos.prototype.constructor = Productos;
+
+
+//Model Catálogo de productos
+function NotifAltaMasiva() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_NOTIF_SRV/";
+    params.sModel = "notifAltaModel";
+    BaseModel.call(this, params);
+}
+
+NotifAltaMasiva.prototype = Object.create(BaseModel.prototype);
+NotifAltaMasiva.prototype.constructor = NotifAltaMasiva;
+
+//Model EDI
+function ModelEDI() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZSOP_EDI_OUTPUT_FILE_SRV/";
+    params.sModel = "downEdiModel";
+    BaseModel.call(this, params);
+}
+
+ModelEDI.prototype = Object.create(BaseModel.prototype);
+ModelEDI.prototype.constructor = ModelEDI;
+
+//Model Terms&Cons
+function ModelTC() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_TXT_TERM_COND_SRV/";
+    params.sModel = "termconsModel";
+    BaseModel.call(this, params);
+}
+
+ModelTC.prototype = Object.create(BaseModel.prototype);
+ModelTC.prototype.constructor = ModelTC;

@@ -15,7 +15,8 @@
                 </f:heading>
                 <f:actions>
                     <ToolbarSpacer/>
-                    <Button text="{appTxts>/sendInv.load}" type="Emphasized" press="openUploadDialog"/>
+                    <Button text="{appTxts>/sendInv.load}" type="Emphasized" press="openUploadDialog" visible="false"/>
+                    <Button text="{appTxts>/sendInv.uploadCFD}" type="Emphasized" press="openUploadDialog2"/>
                 </f:actions>
             </f:DynamicPageTitle>
         </f:title>

@@ -16,6 +16,10 @@
                     <vm:VariantManagement standardItemText="{appTxts>/quotes.quotes}">
                     </vm:VariantManagement>
                 </f:heading>
+                <f:actions>
+                    <ToolbarSpacer/>
+                    <Button text="{appTxts>/quotes.uploadQuote}" type="Emphasized" press="openUploadDialog"/>
+                </f:actions>
                <f:actions>
                     <ToolbarSpacer/>
                     <Button text="{appTxts>/quotes.createQuote}" type="Emphasized" press=".createQuote"/>
@@ -41,8 +45,7 @@
                                         valueHelpOnly="true"
                                         showValueHelp="true"
                                         valueHelpRequest=".onValueHelpRequest"
-                                        value="{configSite>/supplierInput}"
-                                        >
+                                        value="{configSite>/supplierInput}">
                                     </Input>
                                 </fb:control>
                             </fb:FilterGroupItem>
@@ -174,8 +177,7 @@
                 id="tableQuotes"
                 mode="None" 
                 alternateRowColors="true" 
-                items="{path: 'tableQuotesModel>/ECITASCONSNAV/Paginated/results', sorter : { path : 'ZfolioCita', descending : true }}"                
-				>
+                items="{path: 'tableQuotesModel>/ECITASCONSNAV/Paginated/results', sorter : { path : 'ZfolioCita', descending : true }}">
                 <headerToolbar>
                     <OverflowToolbar>
                         <Title text="{appTxts>/quotes.quotes} ({tableQuotesModel>/ECITASCONSNAV/results/length})" />

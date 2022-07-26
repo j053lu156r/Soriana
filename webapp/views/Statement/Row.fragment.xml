@@ -1,0 +1,56 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+	xmlns="sap.m">
+	<ColumnListItem
+	 >
+<cells>
+<ObjectIdentifier title="{GroupedTotales>name}" />
+	<ObjectIdentifier titlePress="onDocumentDevolucionPress" titleActive="{= ${GroupedTotales>IdNumTipomov} === '12'}" title="{GroupedTotales>IdNumTipomov} {GroupedTotales>DescTipomov}" wrapping="false" />
+
+	<Text text="{=  (${GroupedTotales>Pendt} === true) ? 'Pendiente' : ( ${GroupedTotales>Belnr} === ${GroupedTotales>Augbl} ? 'Pago' : 'Contabilizado'  ) }" wrapping="false" />
+
+
+	<ObjectIdentifier titlePress="onDocumentPress" titleActive="true" title="{GroupedTotales>Belnr}" wrapping="false" />
+
+	<Text text="{GroupedTotales>Xblnr}" wrapping="false" />
+
+
+	<Text text="{GroupedTotales>Ltext}" wrapping="false" />
+
+	<Text text="{GroupedTotales>Budat}" wrapping="false" />
+	<ObjectNumber number= "{parts: [{path: 'GroupedTotales>Wrbtr'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+
+	<Text text="{GroupedTotales>MCondicion}" wrapping="false" />
+	<!--
+                                 <Text text="{GroupedTotales>BloqueoFlag}" wrapping="false" />
+                             -->
+
+
+	<Button text="Ver reporte MC" press=".onPress" icon="sap-icon://expense-report" type="Default" visible="{path:'GroupedTotales>MCondicion', formatter:'.hasReport'}" />
+
+
+
+
+
+	<ObjectMarker visible="{=  ${GroupedTotales>BloqueoFlag} === '' ? false : true }" type="LockedBy" additionalInfo="{GroupedTotales>DescripcionBloqueo}" press="onMarkerPress" />
+
+	<Text text="{GroupedTotales>Augbl}" wrapping="false" />
+
+
+
+
+
+	<ObjectNumber number="{GroupedTotales>totalRegs}" />
+
+
+	<ObjectNumber number= "{parts: [{path: 'GroupedTotales>totalDebit'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+
+
+	<ObjectNumber number="{parts: [{path: 'GroupedTotales>totalCredit'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+
+
+
+
+
+</cells>
+</ColumnListItem>
+</core:FragmentDefinition>

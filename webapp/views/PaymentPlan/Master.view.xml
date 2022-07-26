@@ -16,6 +16,8 @@ xmlns:core="sap.ui.core"
                     <vm:VariantManagement standardItemText="{appTxts>/plan.title}">
                     </vm:VariantManagement>
                 </f:heading>
+
+                 
                 
             </f:DynamicPageTitle>
         </f:title>
@@ -28,8 +30,10 @@ xmlns:core="sap.ui.core"
 		                filtersDialogClosed = "onFiltersDialogClosed"
 		                showRestoreButton="false" showClearButton="false" useToolbar="false">
 			
+                      
                         <fb:filterGroupItems>
-                            <fb:FilterGroupItem groupName="F1" name="Feha Pago" label="{appTxts>/plan.dateProg}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                            <!---->
+                            <fb:FilterGroupItem visible="false" groupName="F1" name="Feha Pago" label="{appTxts>/plan.dateProg}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
                                     <DateRangeSelection id="datePay" change="onChange" required="false"/>
                                 </fb:control>
@@ -49,6 +53,7 @@ xmlns:core="sap.ui.core"
                                     </Input>
                                 </fb:control>
                             </fb:FilterGroupItem>
+
 
 <!--INICIA CAMBIO BORTA 11.08.2021 - Se solicita quitar el filreo CLIENTE, ya que no tiene funcionalidad-->
 <!--                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Cliente" label="{appTxts>/detail.client}" labelTooltip="Tooltip Example" partOfCurrentVariant="true" visibleInFilterBar="true">
@@ -78,7 +83,7 @@ xmlns:core="sap.ui.core"
         </f:header>
 		<f:content>
             <VBox>
-			<Table sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
+			<Table visible="false" sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
             noDataText="{appTxts>/plan.noData}"
             id="complPagoList"
             alternateRowColors="true" 
@@ -140,12 +145,19 @@ xmlns:core="sap.ui.core"
 					</ColumnListItem>
 				</items>
 			</Table>
+            <!---
             <OverflowToolbar visible="{= ${tableItemsPayPlan>/TBLPAYS/Paginated/results/length} > 0 }">
                 <Text text="{tableItemsPayPlan>/TBLPAYS/Paginated/initRow} - {tableItemsPayPlan>/TBLPAYS/Paginated/endRow} {appTxts>/pagination.of} {tableItemsPayPlan>/TBLPAYS/results/length}" />
                 <ToolbarSpacer/>
                 <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableItemsPayPlan>/TBLPAYS/Paginated/iterator}, ${tableItemsPayPlan>/TBLPAYS/Paginated/initRow}, 'tableItemsPayPlan', '/TBLPAYS')" enabled="{= ${tableItemsPayPlan>/TBLPAYS/Paginated/iterator} !== 1}" />
                 <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableItemsPayPlan>/TBLPAYS/Paginated/iterator}, ${tableItemsPayPlan>/TBLPAYS/Paginated/endRow}, 'tableItemsPayPlan', '/TBLPAYS')" enabled="{= ${tableItemsPayPlan>/TBLPAYS/Paginated/endRow} !== ${tableItemsPayPlan>/TBLPAYS/results/length}}" />
             </OverflowToolbar>
+            -->
+
+<!--grouped table-->
+                            <core:Fragment fragmentName="demo.views.PaymentPlan.TableGrouped" type="XML" />
+
+
             </VBox>
 		</f:content>
 	</f:DynamicPage>

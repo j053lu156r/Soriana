@@ -38,6 +38,20 @@ sap.ui.define([
             var lModel = this.getOwnerComponent().getModel("cBot");
             if (lModel == null) {
                 this.initialChatBot()
+            }else{
+                // si existe el modelo checar si esta en la url adecuada, sino, redireccionar
+                //lmodel /oData/ETCBCTRLNAV/results/0
+                //parameter {"event":"navigate","target":"masterOrders"}
+                var objCont = lModel.getProperty("/ETCBCTRLNAV/results/0/parameter");
+                if(objCont != null && objCont !=""){                    
+                    var objChange = JSON.parse(objCont);
+                    this.oRouter = this.getOwnerComponent().getRouter();
+                    var sRouteName = oView.oController.currentRouteName;
+                    if (sRouteName != objChange.target) {                        
+                        this.oRouter.navTo(objChange.target);
+                    }
+                }
+
             }
 
             this.getOwnerComponent().getModel("configSite").setProperty("/hasAutoChat", false);
@@ -130,6 +144,36 @@ sap.ui.define([
                 obj.field.forEach(function (field) {
                     switch (field.type) {
                         case "input":
+                            var item = oItems.find(element => element.sId == `${field.field}Chat`);
+                            var sValue = item.getValue();
+                            if (sValue != null && sValue != "") {
+                                if (sRouteName != obj.target) {
+                                    oContext.getController().getRouter().navTo(obj.target);
+                                }
+                                if(obj.idFunction){
+                                    if (obj.idFunction == '0011'){
+                                        oContext.getController().changeFieldVlue2("filtroBusqueda", "belnr", vView);                                    
+                                    }
+                                    if (obj.idFunction == "0001"){
+                                        oContext.getController().changeFieldVlue3("dateOrder", "Documento", vView);
+                                    }
+                                    if (obj.idFunction == "0048"){
+                                        oContext.getController().changeFieldVlue2("OPFiltrosC", "Xblnr", vView);                                    
+                                        oContext.getController().changeFieldVlue3("dateRange", "Documento", vView);
+                                    }
+                                    if (obj.idFunction == "0025"){
+                                        oContext.getController().changeFieldVlue3("budat", "Documento", vView);
+                                    }
+                                }
+                              
+                               // if(obj.target=="MiBandeja"){
+                               //     oContext.getController().changeFieldVlue("subject", sValue, vView);
+                              //  }else{
+                                    oContext.getController().changeFieldVlue(field.field, sValue, vView);
+                               // }
+                            }
+                            break;
+
                         case "daterange":
                             var item = oItems.find(element => element.sId == `${field.field}Chat`);
                             var sValue = item.getValue();
@@ -138,13 +182,23 @@ sap.ui.define([
                                 if (sRouteName != obj.target) {
                                     oContext.getController().getRouter().navTo(obj.target);
                                 }
+                                if(obj.idFunction){
+                                   if (obj.idFunction == '0011'){
+                                    oContext.getController().changeFieldVlue2("filtroBusqueda", "belnr", vView);                                    
+                                    }
+                                    if (obj.idFunction == "0001" && field.field != "dateOrder" ){
+                                        oContext.getController().changeFieldVlue3("dateOrder", sValue, vView);
+                                    }
+
+                                }
                                 oContext.getController().changeFieldVlue(field.field, sValue, vView);
                             }
                             break;
+                            
                     }
                 }, this);
 
-                if (typeof controller.searchData === "function") {
+                if (typeof controller.searchData === "function") {                    
                     controller.searchData();
                 }
 
@@ -154,6 +208,21 @@ sap.ui.define([
             var vField = vView.byId(field);
             vField.setValue(value);
         },
+        changeFieldVlue2: function (field, value, vView) {
+            var vField = vView.byId(field);
+
+            vField.setSelectedKey(value);
+        },
+        changeFieldVlue3: function (field, value, vView) {
+
+            var vField = vView.byId(field);
+            let todayDate = new Date();
+            let firstDay = new Date(2019, 1, 1);
+            vField.setDateValue(firstDay);
+            vField.setSecondDateValue(todayDate);
+           // vField.setValue(value);
+        },
+
         getvView: function (sRouteName, viewPath, viewName) {
             var currRout = this.oOwnerComponent.getRouter().getViews()._oCache.view;
             var vView = currRout[`${viewPath}.${viewName}`]["undefined"];

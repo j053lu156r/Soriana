@@ -99,12 +99,12 @@
 						</header>
 						<footer/>
 					</Column>
-                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                    <!--<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
 						<header>
 							<Text text="{appTxts>/aportaciones.concepto}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 						</header>
 						<footer/>
-					</Column>
+					</Column>-->
 					<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
 						<header>
 							<Text text="{appTxts>/aportaciones.gerencia}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -145,13 +145,32 @@
 				<items>
 					<ColumnListItem type="Navigation" press="onListItemPress">                    
 						<cells>
-                            <Text xmlns="sap.m" text="{AportacionesHdr>Folio}"/>
-                            <Text xmlns="sap.m" text="{AportacionesHdr>Concepto}"/>
+                            <!--<Text xmlns="sap.m" text="{AportacionesHdr>Folio}"/>-->
+                            <ObjectIdentifier xmlns="sap.m" 
+                                              title="{AportacionesHdr>Folio}"
+                                              text="{AportacionesHdr>Concepto}"/>
+                            <!--<Text xmlns="sap.m" text="{AportacionesHdr>Concepto}"/>-->
 							<Text xmlns="sap.m" text="{AportacionesHdr>GciaCateg}"/>
 							<Text xmlns="sap.m" text="{path: 'AportacionesHdr>FecCaptura', formatter: '.ReverseDate'}"/>
                             <Text xmlns="sap.m" text="{path: 'AportacionesHdr>FecAport', formatter: '.ReverseDate'}"/>
-                            <Text xmlns="sap.m" text="{AportacionesHdr>ImpAport}"/>
-                            <Text xmlns="sap.m" text="{AportacionesHdr>Observ}"/>                            
+                            <!--<Text xmlns="sap.m" text="{AportacionesHdr>ImpAport}"/>-->
+                            <ObjectNumber 
+                                xmlns="sap.m" 
+                                emphasized="true"
+                                number="{
+                                    parts:[{path:'AportacionesHdr>ImpAport'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="MXN"
+                                state="Success" />
+                            <Text xmlns="sap.m" text="{AportacionesHdr>Descest}"/>
+                            <Button xmlns="sap.m" 
+                                    type="Accept" 
+                                    text="{appTxts>/aportaciones.aprobar}" 
+                                    press="onPressAccept"
+                                    icon="sap-icon://accept"
+                                    enabled="{= ${AportacionesHdr>Zestatus} === '3' ? true : false }"/>
 						</cells>
 					</ColumnListItem>
 				</items>

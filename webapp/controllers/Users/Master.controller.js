@@ -16,6 +16,7 @@ sap.ui.define([
     var oModel = new this.UserModel();
     return Controller.extend("demo.controllers.Users.Master", {
         onInit: function () {
+            
             this._pdfViewer = new PDFViewer();
             this.getView().addDependent(this._pdfViewer);
             this.getView().addEventDelegate({
@@ -34,9 +35,8 @@ sap.ui.define([
         },
         searchData: function () {
             if(!this.hasAccess(12)){
-                return
+                return false;
             }
-
             var bContinue = false;
             if (!oModel.getModel()) {
                 oModel.initModel();
@@ -59,7 +59,7 @@ sap.ui.define([
                          if(vDropUser == ""){
                             if(vCallUser == ""){
                                 bContinue = false;
-                                sap.m.MessageBox.error("Debe ingresar al menos un criterio de busqueda.");
+                                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.searchFieldsEmpty"));
                             }else{
                             bContinue = true;     
                              }
@@ -76,8 +76,7 @@ sap.ui.define([
 
             if(bContinue){
             var url = "/headerAdmSet?$expand=ETNOMPROVNAV&$filter=IOption eq '10' and IRol eq '" + vRol + "'"
-            + " and  IIdusua eq '" + vIuser + "'";
-
+            + " and  IIdusua eq '" + vIuser + "'";            
             if(vLifnr != null && vLifnr != ""){
                 url += " and ILifnr eq '" + vLifnr + "'";
                 bContinue = true;
@@ -99,8 +98,13 @@ sap.ui.define([
             }
 
             if (bContinue) {
-                var dueModel = oModel.getJsonModel(url);
 
+                var oBusyDialog = new sap.m.BusyDialog();
+                oBusyDialog.open();
+               // sap.ui.core.BusyIndicator.show();
+                var dueModel = oModel.getJsonModel(url);
+               // sap.ui.core.BusyIndicator.hide();
+                oBusyDialog.close();
                 var ojbResponse = dueModel.getProperty("/results/0");
                 this.getOwnerComponent().setModel(new JSONModel(ojbResponse),
                     "tableItemsUsers");
@@ -108,6 +112,37 @@ sap.ui.define([
 
             this.paginate("tableItemsUsers", "/ETNOMPROVNAV", 1, 0);
             }
+        },
+        cambioValor: function () {
+            this.getOwnerComponent().setModel(new JSONModel({}),
+            "tableItemsUsers");
+        },
+        onValueHelpRequest1: function () {
+       
+            //gpg
+            
+            this.getOwnerComponent().setModel(new JSONModel({}),
+                "tableItemsUsers");
+                
+                //gpg
+            var oView = this.getView();
+
+            if (!this._pValueHelpDialog) {
+                this._pValueHelpDialog = sap.ui.core.Fragment.load({
+                    id: oView.getId(),
+                    name: "demo.fragments.SupplierSelect",
+                    controller: this
+                }).then(function (oDialog) {
+                    oView.addDependent(oDialog);
+                    return oDialog;
+                });
+            }
+            this._pValueHelpDialog.then(function (oDialog) {
+                // Create a filter for the binding
+                //oDialog.getBinding("items").filter([new Filter("Name", FilterOperator.Contains, sInputValue)]);
+                // Open ValueHelpDialog filtered by the input's value
+                oDialog.open();
+            });
         },
         onSelectColaborator: function () {
             if (this.getView().byId("colSor").getSelected() || this.getView().byId("callUser").getSelected()) {
@@ -141,9 +176,7 @@ sap.ui.define([
             this.getOwnerComponent().getModel("tableItemsUsers").destroy();
         },
         onListItemPress: function (oEvent) {
-            if(!this.hasAccess(14)){
-                return
-            }
+           
             var userPath = oEvent.getSource().getBindingContext("tableItemsUsers").getPath(),
                 line = userPath.split("/").slice(-1).pop();
 
@@ -156,6 +189,7 @@ sap.ui.define([
 
             this.getOwnerComponent().getRouter().navTo("detailUsers", { layout: sap.f.LayoutType.TwoColumnsMidExpanded, user: result.Idusua, supplier: result.Lifnr }, true);
         },
+       
         createUser: function () {
             if(!this.hasAccess(13)){
                 return

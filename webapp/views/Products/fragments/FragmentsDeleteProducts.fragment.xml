@@ -10,9 +10,9 @@
 		id="deleteProductsDialog"
 		showHeader="false"
 		verticalScrolling="false"
-        
 		contentHeight="95%"
-		contentWidth="96%">
+		contentWidth="96%"
+        >
 		<f:DynamicPage
 			toggleHeaderOnTitleClick="false"
 			showFooter="true">
@@ -30,9 +30,19 @@
                     <MessageStrip class="sapUiSmallMarginBottom"
 								text="{appTxts>/products.messageStripDelete}"
 								showIcon="true"/>
-                    <!--Text 
-                        text="" 
-                        /-->
+
+                                <Link
+                                                text="{appTxts>/products.linkMassiveDelete}"
+                                                target="_blank"
+                                                href="./assets/GUIAS/Guia_Baja_Materiales.pdf"
+                                                class="sapUiSmallMarginBottom" />
+
+                                <Link
+                                                text="{appTxts>/products.linkFormatDelete}"
+                                                target="_blank"
+                                                href="./assets/GUIAS/56050_05072022_4_baja.txt"
+                                                class="sapUiSmallMarginBottom" />
+                    
                     <HBox class="sapUiResponsiveContentPadding" >
                         <l:VerticalLayout>
                             <u:FileUploader
@@ -48,7 +58,7 @@
                         </l:VerticalLayout>
                     </HBox>
                     <Table  mode="MultiSelect" id="tableItemsDelete"
-                        items="{ path : 'ETDELETE>/Paginated/results'}" >
+                        items="{ path : 'ETDELETE>/Paginated/results'}"  visible="true">
                         <headerToolbar>
                             <OverflowToolbar>
                                 <Button text="{appTxts>/products.deleteRow}" id="btnDeleteRows" press=".deleteRow('tableItemsDelete','ETDELETE')" type="Emphasized" />

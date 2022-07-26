@@ -6,44 +6,50 @@
         justifyContent="Center"
         width="100%">
         <VBox width="33%" class="sapUiTinyMargins">
-            <Label text="Tipo de cita" labelFor="currency"/>
+            <RadioButtonGroup id="rbgOpciones" select="onSelectRBOption">
+                <RadioButton text="{appTxts>/quotes.secos}" selected="true" />
+                <RadioButton text="{appTxts>/quotes.frescos}" />
+            </RadioButtonGroup>
+            <Label text="{appTxts>/quotes.quoteType}" labelFor="currency"/>
             <Select
+                id="sTipoCita"
                 items="{
                         path: 'appoinmentsCatalogs>/ETIPOCITANAV/results',
                         sorter: { path: 'Name' }
                     }"
-                >
+                change = "onChangeSelectTipoCita">
                 <items>
                     <core:Item key="{appoinmentsCatalogs>ZNumcita}" text="{appoinmentsCatalogs>ZTipocita}" />
                 </items>
             </Select>
-            <Label text="Total de bultos" labelFor="currency"/>
+            <Label text="{appTxts>/quotes.totalpackages}" labelFor="currency"/>
             <Input width="auto" />
-            <Label text="Tarimas"/>
+            <Label text="{appTxts>/quotes.platforms}"/>
             <Input width="auto" />
         </VBox>
         <VBox width="33%"  class="sapUiTinyMargins">
-            <Label text="Tipo de unidad:" />
+            <Label text="{appTxts>/quotes.unitType}" />
             <Select
+                id="sTipoUnidad"
                  items="{
                         path: 'appoinmentsCatalogs>/ETIPOUNIDADNAV/results'
                     }"
-                >
+                change = "onChangeSelectTipoUnidad">
                 <items>
                     <core:Item key="{appoinmentsCatalogs>ZNumunidad}" text="{appoinmentsCatalogs>ZTipounidad}" />
                 </items>
             </Select>
-            <Label text="Tipo de producto" />
-                <Input
-                    id="productTypeC"
-                    placeholder="{appTxts>/quotes.productType}"
-                    showSuggestion="true"
-                    valueHelpOnly="false"
-                    showValueHelp="true"
-                    width="auto"
-                    valueHelpRequest="helpProductType(true)"
-                    />
-            <Label text="Transportista" />
+            <Label text="{appTxts>/quotes.productType}" />
+            <Input
+                id="productTypeC"
+                placeholder="{appTxts>/quotes.productType}"
+                showSuggestion="true"
+                valueHelpOnly="false"
+                showValueHelp="true"
+                width="auto"
+                valueHelpRequest="helpProductType(true)"
+                suggestionItemSelected="onSelectProductType"/>
+            <Label text="{appTxts>/quotes.carrier}" />
             <Input id="packagesNo" width="auto" change=".hasOnlyNumbers" />
             
         </VBox>

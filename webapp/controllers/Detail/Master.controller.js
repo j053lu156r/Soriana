@@ -9,8 +9,9 @@ sap.ui.define([
     "sap/ui/core/routing/History",
     "sap/ui/core/routing/Router",
     "demo/models/BaseModel",
-    'sap/f/library'
-], function (jQuery, Fragment, Controller, UploadCollectionParameter, History, PDFViewer, JSONModel, fioriLibrary) {
+    "sap/f/library",
+    "sap/ui/core/BusyIndicator"
+], function (jQuery, Fragment, Controller, UploadCollectionParameter, History, PDFViewer, JSONModel, fioriLibrary, BusyIndicator) {
     "use strict";
 
     var tipoUpload = "";
@@ -38,6 +39,9 @@ sap.ui.define([
             }, this);
         },
         searchData: function () {
+            if (!this.hasAccess(2)) {
+                return false;
+            }
             var bContinue = false;
             if (!oModel.getModel()) {
                 oModel.initModel();
@@ -55,7 +59,7 @@ sap.ui.define([
             if (vLifnr != null && vLifnr != "") {
                 bContinue = true;
             } else {
-                sap.m.MessageBox.error("El campo proveedor es obligatorio.");
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.supplierSelectError"));
             }
 
             if (bContinue) {
@@ -64,7 +68,7 @@ sap.ui.define([
                         bContinue = true;
                     } else {
                         bContinue = false;
-                        sap.m.MessageBox.error("Debe ingresar al menos un criterio de busqueda.");
+                        sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.searchFieldsEmpty"));
                     }
                 } else {
                     bContinue = true;
@@ -118,6 +122,9 @@ sap.ui.define([
             }
         },
         openUploadDialog: function () {
+            if (!this.hasAccess(3)) {
+                return false;
+            }
             if (!this._uploadDialog2) {
                 this._uploadDialog2 = sap.ui.xmlfragment("uploadInvoice", "demo.fragments.UploadInvoice", this);
                 this.getView().addDependent(this._uploadDialog2);
@@ -131,13 +138,16 @@ sap.ui.define([
             }
         },
         documentUploadPress: function(){
+            var that = this;
             var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoice", "fileUploader");
             var uploadList = sap.ui.core.Fragment.byId("uploadInvoice", "logUploadList");
             var uploadBox = sap.ui.core.Fragment.byId("uploadInvoice", "uploadBox");
             var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+            sap.ui.core.BusyIndicator.show(0);
 
             if (!oFileUploader.getValue()) {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/helpDocs.uploader.nodata"));
+                sap.ui.core.BusyIndicator.hide();
                 return;
             }
 
@@ -156,8 +166,8 @@ sap.ui.define([
             }
 
             var file = oFileUploader.oFileUpload.files[0];
-
             var reader = new FileReader();
+
             reader.onload = function (evn) {
                 var obj = {};
                 var parts = evn.target.result.split(",");
@@ -167,6 +177,7 @@ sap.ui.define([
                 var response = cfdiModel.create("/ECfdiSet ", objRequest);
 
                 if (response != null) {
+                    sap.ui.core.BusyIndicator.hide();
                     uploadBox.setVisible(false);
                     if (response.Log != null) {
                         uploadList.setVisible(true);
@@ -179,6 +190,87 @@ sap.ui.define([
             };
             reader.readAsDataURL(file);
         },
+
+        openUploadDialog2: function () {
+            var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+            if (!this.hasAccess(3)) {
+                return false;
+            }
+            if (vLifnr !== undefined && vLifnr !== null){
+                if (!this._uploadDialog3) {
+                    this._uploadDialog3 = sap.ui.xmlfragment("uploadInvoiceTest", "demo.fragments.UploadInvoice2", this);
+                    this.getView().addDependent(this._uploadDialog3);
+                }
+                this._uploadDialog3.open();
+            } else {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/clarifications.noSupplier"));
+            }
+        },
+        onCloseDialogUpload2: function () {
+            if (this._uploadDialog3) {
+                this._uploadDialog3.destroy();
+                this._uploadDialog3 = null;
+            }
+        },
+        documentUploadPress2: function(){
+            var that = this;
+            var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+            var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoiceTest", "fileUploaderTest");
+            sap.ui.core.BusyIndicator.show(0);
+
+            if (!oFileUploader.getValue()) {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/helpDocs.uploader.nodata"));
+                sap.ui.core.BusyIndicator.hide();
+                return;
+            }
+
+            var file = oFileUploader.oFileUpload.files[0];
+            var reader2 = new FileReader();
+
+            reader2.onload = function (evn) {
+                var strXML = evn.target.result;  
+                
+                var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' + 
+                    'xmlns:tem="http://tempuri.org/"><soapenv:Header/><soapenv:Body><tem:RecibeCFDPortal>' + 
+                    '<tem:XMLCFD><![CDATA[' + strXML + ']]></tem:XMLCFD><tem:proveedor>' + vLifnr + 
+                    '</tem:proveedor></tem:RecibeCFDPortal></soapenv:Body></soapenv:Envelope>';
+                
+                $.ajax({
+                    async: true,
+                    url: "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboPortal.asmx",
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/xml",
+                        "Access-Control-Allow-Origin": "*"
+                    },
+                    data: body,
+                    success: function(response) {
+                        sap.ui.core.BusyIndicator.hide();
+                        that.onCloseDialogUpload2();
+                        oFileUploader.clear();
+                        var oXMLModel = new sap.ui.model.xml.XMLModel();  
+                        oXMLModel.setXML(response.getElementsByTagName("RecibeCFDPortalResult")[0].textContent);
+                        var oXml = oXMLModel.getData();
+                        var status = oXml.getElementsByTagName("AckErrorApplication")[0].attributes[5].nodeValue;
+                        if (status == "ACCEPTED") {
+                            sap.m.MessageBox.success(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendSuccess"));
+                        } else {
+                            var strError = oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent;
+                            strError = strError.replaceAll(";","\n\n");
+                            sap.m.MessageBox.error(strError);
+                        }
+                    },
+                    error: function(request, status, err) {
+                        sap.ui.core.BusyIndicator.hide();
+                        that.onCloseDialogUpload2();
+                        oFileUploader.clear();
+                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendError"));
+                    }
+                });
+            };
+            reader2.readAsText(file);
+        },
+        
         filtrado: function (evt) {
             var filterCustomer = [];
             var query = evt.getParameter("query");

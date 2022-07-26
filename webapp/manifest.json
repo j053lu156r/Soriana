@@ -29,7 +29,17 @@
         "sourceTemplate": {
             "id": "servicecatalog.connectivityComponentForManifest",
             "version": "0.0.0"
-        }
+        },
+
+		"dataSources": {
+			"migoRemote": {
+				"uri": "https://port8080-workspaces-ws-x4zxg.us10.trial.applicationstudio.cloud.sap/sap/opu/odata/sap/ZOSP_MMIM_MIGO_DOC_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0"
+				}
+			}
+		}
     },
     "sap.ui": {
         "technology": "UI5",
@@ -194,12 +204,9 @@
                 "uri": "localService/mockdata/notifModel.json",
                 "preload": true
             },
-            "aportacionesModel": {
-                "type": "sap.ui.model.json.JSONModel",
-                "settings": {},
-                "uri": "localService/mockdata/aportacionesModel.json",
-                "preload": true
-            }
+			"migoModel": {
+				"dataSource": "migoRemote"
+			}
         },
         "routing": {
             "config": {
@@ -377,6 +384,14 @@
                         "detailCompl"
 					]
 				},
+                {
+					"pattern": "masterFactoring",
+					"name": "masterFactoring",
+					"target": [
+                        "masterFactoring",
+                        "detailFactoring"
+					]
+				},
 				{
 					"pattern": "detailCompl/{document}/{layout}",
 					"name": "detailCompl",
@@ -385,6 +400,110 @@
 						"detailCompl"
 					]
 				},
+                {
+                    "pattern": "detailComplPagos/{document}/{layout}/{sociedad}/{ejercicio}/{fecha}",
+                    "name": "detailComplPagos",
+                    "target": [
+                        "masterCompl",
+                        "detailComplPagos"
+                    ]
+                },
+                {
+                    "pattern": "detailFactoring/{document}/{layout}/{sociedad}/{ejercicio}/{fecha}",
+                    "name": "detailFactoring",
+                    "target": [
+                        "masterFactoring",
+                        "detailFactoring"
+                    ]
+                },
+                {
+                    "pattern": "detailAcuerdos/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{fecha}",
+                    "name": "detailAcuerdos",
+                    "target": [
+                        "masterCompl",
+                        "detailComplPagos",
+                        "detailAcuerdos"
+                    ]
+                },
+                {
+                    "pattern": "detailAportacionesComplemento/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{fecha}",
+                    "name": "detailAportacionesComplemento",
+                    "target": [
+                        "masterCompl",
+                        "detailComplPagos",
+                        "detailAportacionesComplemento"
+                    ]
+                },
+                {
+                    "pattern": "detailAportacionesFactoraje/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{fecha}",
+                    "name": "detailAportacionesFactoraje",
+                    "target": [
+                        "masterFactoring",
+                        "detailFactoring",
+                        "detailAportacionesFactoraje"
+                    ]
+                },
+                {
+                    "pattern": "detailAcuerdosAS/{layout}/{document}/{sociedad}/{ejercicio}/{doc}",
+                    "name": "detailAcuerdosAS",
+                    "target": [
+                        "EstadoCuenta",
+                         "detailAcuerdosAS"
+                    ]
+                },
+                {
+
+                    "pattern": "detailDetailAcuEC/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{tda}",
+                    "name": "detailDetailAcuEC",
+                    "target": [
+                        "EstadoCuenta",
+                        "detailAcuerdosAS",
+                        "detailDetailAcuEC"
+                    ]
+                },
+                {
+                    "pattern": "detailDetailAcuCP/{layout}/{sociedad}/{document}/{ejercicio}/{doc}/{tda}",
+                    "name": "detailDetailAcuCP",
+                    "target": [
+                        "detailDetailAcuCP"
+                    ],
+                    "layout": "EndColumnFullScreen"
+                },
+                {
+                    "pattern": "detailDetailAcuFA/{layout}/{sociedad}/{document}/{ejercicio}/{doc}/{tda}",
+                    "name": "detailDetailAcuFA",
+                    "target": [
+                        "detailDetailAcuFA"
+                    ],
+                    "layout": "EndColumnFullScreen"
+                },
+                {
+                    "pattern": "detailAcuerdosFactoraje/{layout}/{document}/{sociedad}/{ejercicio}/{doc}",
+                    "name": "detailAcuerdosFactoraje",
+                    "target": [
+
+                        "masterFactoring",
+                        "detailFactoring",
+                        "detailAcuerdosFactoraje"
+
+                    ]
+                },
+                {
+                    "pattern": "EstadoCuentaReporte/{layout}/{document}/{proveedor}/{serie}/{fecha}",
+                    "name": "EstadoCuentaReporte",
+                    "target": [
+                        "EstadoCuenta",
+                         "EstadoCuentaReporte"
+                    ]
+                },
+                {
+                    "pattern": "detailAportacionesAS/{layout}/{document}/{view}",
+                    "name": "detailAportacionesAS",
+                    "target": [
+                        "EstadoCuenta",
+                         "detailAportacionesAccount"
+                    ]
+                },
                 {
                     "name": "EstadoCuenta",
                     "pattern": "EstadoCuenta",
@@ -422,7 +541,7 @@
                         "masterFacSoriana" , "detailFacSoriana"
                     ]
                 },
-                {    
+                {
                     "name": "masterHelpDocs",
                     "pattern": "masterHelpDocs",
                     "target": [
@@ -441,6 +560,29 @@
                     "pattern": "detailDevo/{layout}/{xblnr}/{lifnr}/{ebeln}",
                     "target": [
                         "masterDevoluciones" , "detailDevo"
+                    ]
+                },
+                {
+                    "name": "detailDevoEstadoCuenta",
+                    "pattern": "detailDevoEstadoCuenta/{layout}/{xblnr}/{lifnr}/{ebeln}",
+                    "target": [
+                        "EstadoCuenta" , "detailDevoEstadoC"
+                    ]
+                },
+                {
+                    "name": "detailDevoComplemento",
+                    "pattern": "detailDevoComplemento/{layout}/{xblnr}/{lifnr}/{ebeln}",
+                    "target": [
+                        "masterCompl",
+                        "detailComplPagos" , "detailDevoComplemento"
+                    ]
+                },
+                {
+                    "name": "detailDevoFactoraje",
+                    "pattern": "detailDevoFactoraje/{layout}/{xblnr}/{lifnr}/{ebeln}",
+                    "target": [
+                        "masterFactoring",
+                        "detailFactoring" , "detailDevoFactoraje"
                     ]
                 },
                 {
@@ -467,7 +609,7 @@
                 },
                 {
                     "name": "detailRemission",
-                    "pattern": "detailRemission/{layout}/{document}",
+                    "pattern": "detailRemission/{layout}/{document}/{folio}",
                     "target": [
                         "masterRemission",
                         "detailRemission"
@@ -484,7 +626,40 @@
                     "name": "masterAportaciones",
                     "pattern": "masterAportaciones",
                     "target": [
-                        "masterAportaciones"
+                        "masterAportaciones",
+                        "detailAportaciones"
+                    ]
+                },
+                {
+					"pattern": "detailAportaciones/{layout}/{folio}/{concepto}/{gerencia}/{importe}",
+					"name": "detailAportaciones",
+					"target": [
+                        "masterAportaciones",
+						"detailAportaciones"
+					]
+				},
+                {
+                    "pattern": "detailDetailAporta/{layout}/{folio}/{concepto}/{gerencia}/{importe}",
+                    "name": "detailDetailAporta",
+                    "target": [
+                        "masterAportaciones",
+						"detailAportaciones",
+                        "detailDetailAporta"
+                    ]
+                },
+                {
+                    "name": "masterAcuerdos",
+                    "pattern": "masterAcuerdos",
+                    "target": [
+                        "masterAcuerdos"
+                    ]
+                },
+                {
+                    "pattern": "detailDetailAcu/{layout}/{sociedad}/{documento}/{ejercicio}/{tienda}",
+                    "name": "detailDetailAcu",
+                    "target": [
+                        "masterAcuerdos",
+                        "detailDetailAcu"
                     ]
                 },
                 {
@@ -508,6 +683,23 @@
                     "target": [
                         "masterQuotes",
                         "detailQuotes"
+                    ]
+                },
+                {
+                    "name": "masterVisorNotas",
+                    "pattern": "masterVisorNotas",
+                    "target": [
+                        "masterVisorNotas",
+                        "detailVisorNotas"
+                    ]
+                },
+                {
+
+                    "name": "detailVisorNotas",
+                    "pattern": "detailVisorNotas/{layout}/{Mblnr}/{Mjahr}/{Ebeln}/{Lifnr}/{BudatMkpf}/{Werks}/{Xblnr}/{XblnrFact}",
+                    "target": [
+                        "masterVisorNotas",
+                        "detailVisorNotas"
                     ]
                 }
             ],
@@ -576,6 +768,12 @@
                     "controlId": "app",
                     "viewPath": "demo.views.Statement"
                 },
+                "EstadoCuentaReporte": {
+                    "viewType": "XML",
+                    "viewName": "DetailReporte",
+                     "controlAggregation": "midColumnPages",
+                     "viewPath": "demo.views.Statement"
+                 },
                 "masterRelease":{
                     "viewName": "Master",
                     "viewPath": "demo.views.MiBandeja.Releases",
@@ -596,9 +794,24 @@
                     "viewPath": "demo.views.ComplPago",
                     "controlAggregation": "beginColumnPages"
 				},
+                "masterFactoring": {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.Factoraje",
+                    "controlAggregation": "beginColumnPages"
+				},
 				"detailCompl": {
                     "viewName": "Detail",
                     "viewPath": "demo.views.ComplPago",
+                    "controlAggregation": "midColumnPages"
+                },
+                "detailComplPagos": {
+                    "viewName": "DetallePago",
+                    "viewPath": "demo.views.ComplPago",
+                    "controlAggregation": "midColumnPages"
+                },
+                "detailFactoring": {
+                    "viewName": "DetalleFactoraje",
+                    "viewPath": "demo.views.Factoraje",
                     "controlAggregation": "midColumnPages"
                 },
                 "masterCfdi": {
@@ -666,7 +879,7 @@
                     "viewName": "Master",
                     "viewPath": "demo.views.FacSoriana",
                     "controlAggregation": "beginColumnPages"
-                }, 
+                },
                 "detailFacSoriana" : {
                     "viewName": "Detail",
                     "viewPath": "demo.views.FacSoriana" , "controlAggregation": "midColumnPages"
@@ -680,10 +893,22 @@
                     "viewName": "Master",
                     "viewPath": "demo.views.Devoluciones",
                     "controlAggregation": "beginColumnPages"
-                }, 
+                },
                 "detailDevo" : {
                     "viewName": "Detail",
                     "viewPath": "demo.views.Devoluciones" , "controlAggregation": "midColumnPages"
+                },
+                "detailDevoEstadoC" : {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.DevolucionesAlt" , "controlAggregation": "midColumnPages"
+                },
+                "detailDevoComplemento" : {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.DevolucionesAlt" , "controlAggregation": "endColumnPages"
+                },
+                "detailDevoFactoraje" : {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.DevolucionesAlt" , "controlAggregation": "endColumnPages"
                 },
                 "Dashboard": {
                     "viewName": "Master",
@@ -699,10 +924,10 @@
                     "viewName": "Master",
                     "viewPath": "demo.views.Remissions",
                     "controlAggregation": "beginColumnPages"
-                }, 
+                },
                 "detailRemission" : {
                     "viewName": "Detail",
-                    "viewPath": "demo.views.Remissions" , 
+                    "viewPath": "demo.views.Remissions" ,
                     "controlAggregation": "midColumnPages"
                 },
                 "masterIncidencias" : {
@@ -714,6 +939,71 @@
                     "viewName": "Master",
                     "viewPath": "demo.views.Aportaciones",
                     "controlAggregation": "beginColumnPages"
+                },
+                "detailAportaciones": {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.Aportaciones",
+                    "controlAggregation": "midColumnPages"
+                },
+                "detailDetailAporta": {
+                    "viewName": "DetailDetail",
+                    "viewPath": "demo.views.Aportaciones",
+                    "controlAggregation": "endColumnPages"
+                },
+                "detailAportacionesAccount": {
+                    "viewName": "DetailDetailAS",
+                    "viewPath": "demo.views.Aportaciones",
+                    "controlAggregation": "midColumnPages"
+                },
+                "detailAportacionesComplemento": {
+                    "viewName": "DetailDetailAS",
+                    "viewPath": "demo.views.Aportaciones",
+                    "controlAggregation": "endColumnPages"
+                },
+                "detailAportacionesFactoraje": {
+                    "viewName": "DetailDetailAS",
+                    "viewPath": "demo.views.Aportaciones",
+                    "controlAggregation": "endColumnPages"
+                },
+                "masterAcuerdos" : {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailDetailAcu": {
+                    "viewName": "DetailDetail",
+                    "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "midColumnPages"
+                },
+                "detailAcuerdos": {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "endColumnPages"
+                },
+                "detailAcuerdosFactoraje": {
+                    "viewName": "DetailFactoraje",
+                    "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "endColumnPages"
+                },
+                "detailAcuerdosAS": {
+                    "viewName": "DetailAS",
+                    "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "midColumnPages"
+                },
+                "detailDetailAcuEC": {
+                    "viewName": "DetailDetailEC",
+                    "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "endColumnPages"
+                },
+                "detailDetailAcuCP": {
+                    "viewName": "DetailDetailCP",
+                    "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "endColumnPages"
+                },
+                "detailDetailAcuFA": {
+                    "viewName": "DetailDetailFA",
+                    "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "endColumnPages"
                 },
                 "Products": {
                     "viewName": "Master",
@@ -727,7 +1017,17 @@
                 },
                 "detailQuotes" : {
                     "viewName": "Detail",
-                    "viewPath": "demo.views.Quotes" , 
+                    "viewPath": "demo.views.Quotes" ,
+                    "controlAggregation": "midColumnPages"
+                },
+                "masterVisorNotas":{
+                    "viewName": "Master",
+                    "viewPath": "demo.views.VisorNotasEntrada",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailVisorNotas" : {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.VisorNotasEntrada" ,
                     "controlAggregation": "midColumnPages"
                 }
             }

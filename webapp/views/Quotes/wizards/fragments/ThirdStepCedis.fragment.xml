@@ -2,6 +2,97 @@
   xmlns="sap.m"
   xmlns:core="sap.ui.core"
 >
-<VBox>
-</VBox>
+    <VBox>
+        <Panel visible="{	path: 'TemporalModel>/generalData/cedisType',
+                                formatter: '.formatter.isSeco'
+                            }">
+            <Table mode="MultiSelect" id="tableWizardOrderPreview" 
+                items="" selectionChange=".selectChange">
+                    <columns>
+                        <Column>
+                            <Text text="{appTxts>/quotes.order}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </Column>
+                        <Column>
+                            <Text text="{appTxts>/quotes.startShipment}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </Column>
+                        <Column>
+                            <Text text="{appTxts>/quotes.endShipment}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </Column>
+                        <Column>
+                            <Text text="{appTxts>/quotes.prevQuotes}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </Column>
+                        <Column>
+                            <Text text="{appTxts>/quotes.pendingPos}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </Column>
+                        <Column>
+                            <Text text="{appTxts>/quotes.appointPos}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <ObjectIdentifier text=""/>
+                                <ObjectIdentifier text=""/>
+                                <ObjectIdentifier text=""/>                                                       
+                                <ObjectIdentifier text=""/>
+                                <ObjectIdentifier text=""/>
+                                <Input enabled="false"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+        </Panel>
+        
+        <Panel visible="{	path: 'TemporalModel>/generalData/cedisType',
+                                formatter: '.formatter.isFresco'
+                            }">
+            <Table mode="MultiSelect" id="tableWizardOrderPositionPreview" 
+                items="" selectionChange=".selectChange">
+                <columns>
+                    <Column mergeDuplicates="true">
+                        <header>
+                            <Text text="{appTxts>/quotes.order}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </header>
+                    </Column>
+                    <Column>
+                        <header>
+                            <Text text="{appTxts>/quotes.startShipment}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </header>
+                    </Column>
+                    <Column>
+                        <header>
+                            <Text text="{appTxts>/quotes.endShipment}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </header>
+                    </Column>
+                    <Column>
+                        <header>
+                            <Text text="{appTxts>/quotes.prevQuotes}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </header>
+                    </Column>
+                    <Column>
+                        <header>
+                            <Text text="{appTxts>/quotes.pendingPos}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </header>
+                    </Column>
+                    <Column>
+                        <header>
+                            <Text text="{appTxts>/quotes.appointPos}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </header>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <ObjectIdentifier text=""/>
+                            <ObjectIdentifier text=""/>
+                            <ObjectIdentifier text=""/>                                                       
+                            <ObjectIdentifier text=""/>
+                            <ObjectIdentifier text=""/>
+                            <Input enabled="false"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </Panel>
+    </VBox>
 </core:FragmentDefinition>

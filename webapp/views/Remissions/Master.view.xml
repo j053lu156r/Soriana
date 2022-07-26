@@ -37,8 +37,7 @@ xmlns:core="sap.ui.core"
                     <fb:FilterBar id="filterBar"  header="Header"
 		                reset="onReset" search="searchData" clear="onClear" cancel="onCancel" 
 		                filtersDialogClosed = "onFiltersDialogClosed"
-		                showRestoreButton="false" showClearButton="false" useToolbar="false"
-                        >
+		                showRestoreButton="false" showClearButton="false" useToolbar="false">
 			
                         <fb:filterGroupItems>
                             <fb:FilterGroupItem groupName="F1" name="Feha aviso" label="{appTxts>/rem.remDate}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
@@ -64,18 +63,36 @@ xmlns:core="sap.ui.core"
 
                             <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="Folio" label="{appTxts>/rem.folio}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="true">
                                 <fb:control>
-                                    <Input type="Text" id="folio"/>
+                                    <Input id="folio" liveChange="onFolioChange"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
 
-                            <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="A1" label="{appTxts>/order.title}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="true">
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="Folio2" label="{appTxts>/rem.folio2}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="true">
                                 <fb:control>
-                                    <Input type="Text" id="order"/>
+                                    <Input id="folio2" liveChange="onFolio2Change"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
 
-                        </fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="A1" label="{appTxts>/rem.order}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input type="Number" id="order" liveChange="onOrderChange"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
 
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="A2" label="{appTxts>/rem.order2}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input type="Number" id="order2" liveChange="onOrder2Change"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="tipos" label="{appTxts>/rem.filters.tipo}" labelTooltip="Tooltip GroupItem Example" visibleInFilterBar="true">
+                                <fb:control>
+                                    <ComboBox id="cboxTipo" items="{TipoEntregaModel>/tipoEntrega}" selectedKey="0">
+                                        <core:Item key="{TipoEntregaModel>id}" text="{TipoEntregaModel>tipo}" />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
 	                </fb:FilterBar>
                 </f:content>
             </f:DynamicPageHeader>
@@ -93,8 +110,7 @@ xmlns:core="sap.ui.core"
                         <ToolbarSpacer/>
                         <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
                         press=".buildExportTable"
-                        visible="{= ${tableRemissions>/EFREMNAV/results/length} > 0}"
-                        />
+                        visible="{= ${tableRemissions>/EFREMNAV/results/length} > 0}" />
                         <Select 
                             visible="{= ${tableRemissions>/EFREMNAV/Paginated/results/length} > 0 }"
                             change=".paginateValue(${$parameters>/selectedItem}, 'tableRemissions', '/EFREMNAV')">
@@ -144,12 +160,14 @@ xmlns:core="sap.ui.core"
                         </header>
                         <footer/>
                     </Column>
+                    <!--
                     <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                         <header>
                         <Text text="{appTxts>/rem.cancelStatus}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                         </header>
                         <footer/>
-                    </Column>             
+                    </Column>   
+                    -->          
 				</columns>
 				<items>
 					<ColumnListItem type="Navigation" press="onListItemPress">
@@ -161,7 +179,7 @@ xmlns:core="sap.ui.core"
                             <Text text="{tableRemissions>Ztipoaviso}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <Text text="{tableRemissions>Zstatus}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <Text text="{tableRemissions>Ztipoentreg}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                            <Text text="{tableRemissions>ZstatusCan}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <!--<Text text="{tableRemissions>ZstatusCan}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>-->
 						</cells>
 					</ColumnListItem>
 				</items>

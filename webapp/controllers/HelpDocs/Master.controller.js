@@ -18,7 +18,9 @@ sap.ui.define([
         onInit: function () {
             this._pdfViewer = new PDFViewer();
             this.getView().addDependent(this._pdfViewer);
-
+            this.strUrl = "";
+            this.strType = "";
+            this.strName = "";
             this.oRouter = this.getOwnerComponent().getRouter();
             this.getView().addEventDelegate({
                 onAfterShow: function (oEvent) {
@@ -65,6 +67,9 @@ sap.ui.define([
             );
         },
         newHelpDoc: function () {
+            if(!this.hasAccess(22)){
+                return
+            }
             if (!this._uploadDialog2) {
                 this._uploadDialog2 = sap.ui.xmlfragment("newHelpDocFragment", "demo.views.HelpDocs.NewHelpDocs", this);
                 this.getView().addDependent(this._uploadDialog2);
@@ -86,6 +91,33 @@ sap.ui.define([
             minDate.setDate(date.getDate() - 30);
             datarange.setSecondDateValue(date);
             datarange.setDateValue(minConsultDate);
+        },
+        handleDownloadPress: function (){
+            //var file1 = sap.ui.core.Fragment.byId("imageViewFragment", "image2").getValue();
+            var _fileurl = this.buildBlob(this.strUrl, this.strType);
+            var filename1 = "archivo";
+            if (this.strName != null){
+                var parts = this.strName.split(".");
+                filename1 = parts[0];
+
+            }
+            var lenparts = parts.length;
+            var fileextension = "";
+            
+            switch (this.strType) {               
+                case 'image/png':
+                   fileextension = "png";
+                    break;                    
+                case 'image/jpeg':
+                    fileextension = "jpg";
+                    break;                    
+                default:
+                    fileextension = "jpg";
+                    break;
+            }
+           
+            sap.ui.core.util.File.save(_fileurl,filename1, fileextension, this.strType);
+
         },
         handleUploadPress: function () {
             var that = this;
@@ -137,21 +169,57 @@ sap.ui.define([
             if (response != null) {
                 var result = response.getProperty("/results/0");
                 if (result.ESuccess == "X") {
-                    this.downloadAttach(result.EsVdoca.Zdocvalue64, result.EsVdoca.Zdoctype);
+                    this.downloadAttach(result.EsVdoca.Zdocvalue64, result.EsVdoca.Zdoctype, result.EsVdoca.Zarchivo);
                 } else {
                     sap.m.MessageBox.error(result.EMessage);
                 }
             }
         },
-        downloadAttach: function (url, type) {
+        downloadAttach: function (url, type,namefile) {
+            this.strName = namefile;
             switch (type) {
                 case 'application/pdf':
                     this.pdfView(url, type);
                     break;
+                case 'image/png':
+                    this.strUrl = url;
+                    this.strType = type;
+                    this.viewImage(url, type,namefile);
+                    break;                    
+                case 'image/jpeg':
+                    this.strUrl = url;
+                    this.strType = type;
+                    this.viewImage(url, type,namefile);
+                    break;                    
+    
                 default:
                     var _fileurl = this.buildBlobUrl(url, type);
                     sap.m.URLHelper.redirect(_fileurl, true);
                     break;
+            }
+        },
+        viewImage: function (url,type,namefile) {
+           /* if(!this.hasAccess(22)){
+                return
+            }*/
+            this.strUrl = url;
+            this.strType = type;
+            this.strName = namefile;
+            var that = this;
+            if (!this._uploadDialog3) {
+                this._uploadDialog3 = sap.ui.xmlfragment("imageViewFragment", "demo.views.HelpDocs.ImageView", this);
+                this.getView().addDependent(this._uploadDialog3);
+            }
+            //var img="data:image/png;base64,"+<blob-content>
+            var img = this.buildBlobUrl(url);
+            sap.ui.core.Fragment.byId("imageViewFragment", "image1").setSrc(url);
+            
+            this._uploadDialog3.open();
+        },
+        onCloseImageDialog: function () {
+            if (this.viewImage) {
+                this._uploadDialog3.destroy();
+                this._uploadDialog3 = null;
             }
         },
         pdfView: function (url, type) {
@@ -177,6 +245,9 @@ sap.ui.define([
             jQuery.sap.addUrlWhitelist("blob"); // register blob url as whitelist
         },
         deleteHelpDoc: function (docId, docDescript) {
+            if(!this.hasAccess(23)){
+                return
+            }
             var that = this;
             var msg = this.getOwnerComponent().getModel("appTxts").getProperty("/helpDocs.deleteConfirm");
             sap.m.MessageBox.confirm(msg, {

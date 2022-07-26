@@ -2,6 +2,7 @@
 	controllerName="demo.controllers.MiBandeja.Master"
 	xmlns="sap.m"
     xmlns:f="sap.f"
+    xmlns:fb="sap.ui.comp.filterbar"
     xmlns:x="sap.uxap"
     xmlns:vbm="sap.ui.vbm"
     xmlns:core="sap.ui.core"
@@ -22,11 +23,33 @@
 				backgroundDesign= "Solid"
 				showNavButton="false"
 				navButtonPress=".onPressMasterBack">
-				<subHeader >
-                    <Toolbar>
-                        <SearchField id="releaseSearch" placeholder="{appTxts>/global.search}" width="100%" change=".searchRelease" />
-                    </Toolbar>
-                </subHeader>
+				
+                 <fb:FilterBar id="filterBar"  header="Header"
+		                reset="onReset" search="searchDataUser" clear="onClear" cancel="onCancel" 
+		                filtersDialogClosed = "onFiltersDialogClosed"
+		                showRestoreButton="false" showClearButton="false" useToolbar="false">
+			
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="{appTxts>/global.date}" mandatory="true" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <DateRangeSelection id="dateRange" required="false"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                             <fb:FilterGroupItem groupName="__$INTERNAL$" name="B" label="{appTxts>/release.subject}" mandatory="true" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="subject" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                        </fb:filterGroupItems>
+
+	                </fb:FilterBar>
+
+
+                   
+                    
+               
                 <content>
                     <VBox>
                         <Table sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
@@ -136,7 +159,19 @@
                             <core:Icon size="2rem" src="{path: 'tableHelpDocs>Zdoctype', formatter: '.setIconAttach'}" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" />
                             <VBox  class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" width="100%" >
                                 <Link text="{tableHelpDocs>Zdescrip}" press=".selectHelpDoc(${tableHelpDocs>Idarchivo})"/>
-                                <Label text="{tableHelpDocs>Zarchivo}"/>
+                                <Label text="{tableHelpDocs>Zarchivo}"/>                                
+                                <Text text="{
+path: 'tableHelpDocs>Zfecha',
+type: 'sap.ui.model.odata.type.DateTimeOffset',
+constraints: {
+precision: 3,
+v4: true
+},
+formatOptions: {
+pattern: 'yyyy.MM.dd - hh:mm:ss'
+}
+}"
+/>
                             </VBox>
                             <Button icon="sap-icon://download" tooltip="{appTxts>/global.download}" class="sapUiSmallMarginBegin sapUiSmallMarginEnd sapUiSmallMarginTopBottom" press=".selectHelpDoc(${tableHelpDocs>Idarchivo})" ></Button>
                         </HBox>
@@ -350,7 +385,7 @@
 		<masterPages>
 			<Page
 				id="master"
-				title="Mi Bandeja"
+				title="{appTxts>/global.inbox}"
                 showNavButton="false"
 				backgroundDesign= "List">
 				<List  itemPress=".onListItemPress">

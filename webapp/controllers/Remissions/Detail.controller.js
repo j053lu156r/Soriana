@@ -37,12 +37,12 @@ sap.ui.define([
         handleFullScreen: function () {
             this.bFocusFullScreenButton = true;
             var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
-            this.oRouter.navTo("detailRemission", { layout: sNextLayout, document: this._document });
+            this.oRouter.navTo("detailRemission", { layout: sNextLayout, document: this._document, folio: this._folio});
         },
         handleExitFullScreen: function () {
             this.bFocusFullScreenButton = true;
             var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
-            this.oRouter.navTo("detailRemission", { layout: sNextLayout, document: this._document });
+            this.oRouter.navTo("detailRemission", { layout: sNextLayout, document: this._document, folio: this._folio});
         },
         handleClose: function () {
             var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
@@ -50,10 +50,12 @@ sap.ui.define([
         },
         _onDocumentMatched: function (oEvent) {
             this._document = oEvent.getParameter("arguments").document || this._document || "0";
+            this._folio = oEvent.getParameter("arguments").folio;
             this._lifnr = this.getConfigModel().getProperty("/supplierInputKey");
+            //let oHeaderRem = this.getOwnerComponent().getModel("tableRemissionDetail");
+            //let folio = oHeaderRem.getProperty("/Eremh/Zremfolio")
 
-            var url =
-                `/HdrAvisoSet?$expand=EFREMNAV,ETREMDNAV&$filter=IOption eq '2' and ILifnr eq '${this._lifnr}' and IZremision eq '${this._document}'`;
+            var url = `/HdrAvisoSet?$expand=EFREMNAV,ETREMDNAV&$filter=IOption eq '2' and ILifnr eq '${this._lifnr}' and IZremision eq '${this._document}' and IZremfolio eq '${this._folio}'`;
             var dueModel = oModel.getJsonModel(url);
 
             var ojbResponse = dueModel.getProperty("/results/0");
@@ -234,6 +236,7 @@ sap.ui.define([
             }
         },
         printLabels: function () {
+            
             if (!this._uploadDialog2) {
                 this._uploadDialog2 = sap.ui.xmlfragment("printBoxesLabels", "demo.views.Remissions.fragments.LabelsRemission", this);
                 this.getView().addDependent(this._uploadDialog2);
@@ -251,19 +254,20 @@ sap.ui.define([
 
             if (positions.ETREMDNAV.results != null) {
 
-                var cajsTarimas = this.groupByAuto(positions.ETREMDNAV.results, "Cajtar");
-
+                var cajsTarimas = this.groupByAuto(positions.ETREMDNAV.results, "Cajtar")
+                console.log(cajsTarimas)
                 var cajTarIndex = 1;
                 for (const key in cajsTarimas) {
 
                     cajsTarimas[key].forEach(function (item) {
+                        console.log(item)
                         html += '<div style="padding:5px;display:inline; margin:5px;border:1px solid #999999;text-align:center;">' +
                             `<p style="width:100%;font-size: smaller;">${positions.Eremh.Zremision}</p>` +
                             `<p style="width:100%;font-size: smaller;">${this.getConfigModel().getProperty("/supplierInput")}</p>` +
                             `<p style="width:100%;font-size: smaller;">${item.Werks} - ${item.Name1}</p>` +
                             `<p style="width:100%;font-weight:bold;font-size: smaller;">${item.Maktx}</p>` +
                             '<svg class="barcode"' +
-                            `jsbarcode-value="${item.Ean11}"` +
+                            `jsbarcode-value="${item.Cajtar}"` +
                             'jsbarcode-textmargin="0"' +
                             'jsbarcode-fontoptions="bold">' +
                             '</svg>' +

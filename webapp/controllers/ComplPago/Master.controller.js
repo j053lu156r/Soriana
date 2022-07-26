@@ -1,5 +1,7 @@
 sap.ui.define([
     //"jquery.sap.global",
+    "sap/ui/export/library",
+    "sap/ui/export/Spreadsheet",
     "sap/ui/core/Fragment",
     "demo/controllers/BaseController",
     "sap/m/UploadCollectionParameter",
@@ -9,79 +11,210 @@ sap.ui.define([
     "sap/ui/core/routing/History",
     "sap/ui/core/routing/Router",
     "demo/models/BaseModel",
-    'sap/f/library'
-], function (Fragment, Controller, UploadCollectionParameter, History, PDFViewer, JSONModel, fioriLibrary) {
+    'sap/f/library',
+    
+], function (exportLibrary, Spreadsheet, Fragment, Controller, UploadCollectionParameter, History, PDFViewer, JSONModel, fioriLibrary) {
     "use strict";
-
+    var EdmType = exportLibrary.EdmType;
     var tipoUpload;
     var regulaArchivos;
     var oModel = new this.ComplPagoModel();
     var cfdiModel = new this.CfdiModel();
-
+    var that = "";
     var sUri = "/sap/opu/odata/sap/ZOSP_PYMNT_CMPL_SRV/";
 
 
     return Controller.extend("demo.controllers.ComplPago.Master", {
         onInit: function () {
+            that = this;
+
             this.getView().addEventDelegate({
                 onAfterShow: function (oEvent) {
                     //this.setDaterangeMaxMin();
                     //var barModel = this.getConfigModel();
                     //barModel.setProperty("/barVisible", true);
-                    this.clearFilters();
+                    // this.clearFilters();
                     this.getConfigModel().setProperty("/updateFormatsSingle", "xml");
                     this.getOwnerComponent().setModel(new JSONModel(), "Documentos");
-                    
+
                 }
             }, this);
+
+           
         },
-        clearFilters: function(){
+        onAfterRendering: function () {
+            var Fecha = new Date();
+
+            Fecha = (Fecha.getTime() - (1000 * 60 * 60 * 24 * 5))
+
+            that.getView().byId("dateRange").setDateValue(new Date(Fecha));
+            that.getView().byId("dateRange").setSecondDateValue(new Date());
+
+          
+            that.oModel = new JSONModel({
+                column1:true,
+                column2:true,
+                column3:true,
+                column4:true,
+                column5:true,
+                column6:true,
+                column65:true,
+                column7:true,
+                column8:true,
+                column9:true,
+                column10:true,
+                column11:true,
+
+              
+            })
+            that.getView().setModel(that.oModel);
+            that.TableVisible()
+        },
+        TableVisible: function () {
+         
+
+            that.getView().byId("column1").setVisible(that.getView().getModel().getProperty("/column1"));
+            that.getView().byId("column2").setVisible(that.getView().getModel().getProperty("/column2"));
+            that.getView().byId("column3").setVisible(that.getView().getModel().getProperty("/column3"));
+          that.getView().byId("column4").setVisible(that.getView().getModel().getProperty("/column4"));
+            that.getView().byId("column5").setVisible(that.getView().getModel().getProperty("/column5"));
+            that.getView().byId("column6").setVisible(that.getView().getModel().getProperty("/column6"));
+            that.getView().byId("column65").setVisible(that.getView().getModel().getProperty("/column65"));
+            that.getView().byId("column7").setVisible(that.getView().getModel().getProperty("/column7"));
+            that.getView().byId("column8").setVisible(that.getView().getModel().getProperty("/column8"));
+            that.getView().byId("column9").setVisible(that.getView().getModel().getProperty("/column9"));
+            that.getView().byId("column10").setVisible(that.getView().getModel().getProperty("/column10"));
+            that.getView().byId("column11").setVisible(that.getView().getModel().getProperty("/column11"));
+           
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+        },
+     
+
+        clearFilters: function () {
             this.getView().byId("dateRange").setValue('');
             this.getView().byId("documentTxt").setValue('');
         },
         searchData: function () {
-            //if ( !oModel.getModel() )  oModel.initModel();
 
-            
-                let dateRange = this.getView().byId("dateRange");
-                let documentTxt = this.getView().byId("documentTxt");
+            if (!this.hasAccess(9)) {
+                return
+            }
+            if(that.getView().byId("dateRange").getValue()===""){
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/pay.msgPopErrSe'));
+                return false;
+            }
 
-                let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
+            let documentTxt = this.getView().byId("documentTxt");
 
-                if (proveedor_LIFNR == null || proveedor_LIFNR == "") {
-                    sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/helpDocs.uploader.noProvider"));
-                    return;
-                }
-                //let proveedor_LIFNR = "96008";
-                // format[AAAAMMDD] (2020101)
-                let IStartdate = this.buildSapDate(dateRange.getDateValue());
-                //let IStartdate = "01012020";
-                // format[AAAAMMDD] (2020101)
-                let IEnddate = this.buildSapDate(dateRange.getSecondDateValue());
-                //let IEnddate = "31122020";
-                let IAugbl = documentTxt.getValue();
+            let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
 
-                let filtros = `$filter= IOption eq '2' and  ILifnr eq '${proveedor_LIFNR}' and IStartdate eq '${IStartdate}'  and IEnddate eq '${IEnddate}'`;
+            if (proveedor_LIFNR == null || proveedor_LIFNR == "") {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/helpDocs.uploader.noProvider"));
+                return;
+            }
 
 
-                if (IAugbl != '') filtros += ` and IAugbl eq '${IAugbl}'`;
+
+            var auxFilters = [];
 
 
-                let url = `HeaderPYMNTCSet?$expand=EPYMNTDOCSNAV,EPYMNTPRGRMNAV&${filtros}&$format=json`;
 
-                let oODataJSONModel = this.getOdata(sUri);
+            var FechaI = that.getView().byId("dateRange").getDateValue();
+            var FechaF = that.getView().byId("dateRange").getSecondDateValue();
+            let dateRange = this.getView().byId("dateRange");
 
-                let oDataJSONModel = this.getOdataJsonModel(url, oODataJSONModel);
-                let dataJSON = oDataJSONModel.getJSON();
-                let Datos = JSON.parse(dataJSON);
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "IStartdate",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: this.buildSapDate(dateRange.getDateValue())
+               // value1: FechaI.toISOString().slice(0, 10) + 'T00:00:00',
+              
+            })
 
-                var Documentos = { Detalles: { results: [...Datos.results[0].EPYMNTDOCSNAV.results] } };
-            
+            )
+             
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "IEnddate",
+                operator: sap.ui.model.FilterOperator.EQ,
+              value1:this.buildSapDate(dateRange.getSecondDateValue()) 
+            //    value1: FechaF.toISOString().slice(0, 10) + 'T00:00:00'
+            })
+
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "ILifnr",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: proveedor_LIFNR
+            })
+
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "IOption",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: '2'
+            })
+
+            )
+
+            if (this.getView().byId("documentTxt").getValue() !== "") {
 
 
-            this.getOwnerComponent().setModel(new JSONModel(Documentos), "Documentos");
 
-            this.paginate("Documentos", "/Detalles", 1, 0);
+      
+                auxFilters.push(new sap.ui.model.Filter({
+                    path: 'IAugbl',
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: this.getView().byId("documentTxt").getValue()
+                })
+                )
+            }
+
+
+            var model = "ZOSP_PYMNT_CMPL_SRV";
+            var entity = "HeaderPYMNTCSet";
+            var expand = ['EPYMNTDOCSNAV', 'EPYMNTPRGRMNAV'];
+            var filter = auxFilters;
+            var select = "";
+
+            sap.ui.core.BusyIndicator.show();
+            that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
+                sap.ui.core.BusyIndicator.hide();
+                var arrT=[];
+                var data = _GEToDataV2Response.data.results;
+               console.log(data)
+             for(var x =0;x<data.length;x++){
+
+                   if (!(data[x].IAugbl.startsWith('58') )&&!(data[x].IAugbl.startsWith('59')) ){
+                    arrT.push(data[x])
+             }
+            }
+           
+            if(arrT.length>0){
+                var Documentos = { Detalles: { results: [...arrT[0].EPYMNTDOCSNAV.results] } };
+
+
+                that.getOwnerComponent().setModel(new JSONModel(Documentos), "Documentos");
+
+                that.paginate("Documentos", "/Detalles", 1, 0);
+            }
+               
+
+            });
+
+
+
         },
         generateFile: function (oEvent) {
             let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
@@ -113,6 +246,8 @@ sap.ui.define([
 
             let oDataJSONModel = this.getOdataJsonModel(url, oODataJSONModel);
             let dataJSON = oDataJSONModel.getJSON();
+
+          
             let Datos = JSON.parse(dataJSON);
 
 
@@ -156,74 +291,39 @@ sap.ui.define([
 
             return renglones;
         },
-        buildExportTable: function () {
-            var texts = this.getOwnerComponent().getModel("appTxts");
+        formatAvailableToIcon: function (bAvailable) {
+           
+            switch (bAvailable) {
+                case 'X':
+                    return "sap-icon://message-error";
+                    break;
+                    case 'Y':
+                    return "sap-icon://message-success";
+                    break;
+                default:
+                    return "sap-icon://less";
+                    break;
 
-            var columns = [
-                {
-                    name: texts.getProperty("/pay.headerCompanyUPC"),
-                    template: {
-                        content: "{Butxt}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/pay.headerPaymentTypeUPC"),
-                    template: {
-                        content: "{Text2}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/pay.headerDocumentUPC"),
-                    template: {
-                        content: "{Vblnr}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/pay.headerLimitDateUPC"),
-                    template: {
-                        content: "{Laufd}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/pay.headerAmountUPC"),
-                    template: {
-                        content: "{Rbetr}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/pay.headerNC"),
-                    template: {
-                        content: "{Nc}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/pay.headerCP") + ' 03',
-                    template: {
-                        content: "{Cp03}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/pay.headerCP") + ' 17S',
-                    template: {
-                        content: "{Cp17s}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/pay.headerCP") + ' 17R',
-                    template: {
-                        content: "{Cp17r}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/pay.headerEstatusUPC"),
-                    template: {
-                        content: "{Rzawe}"
-                    }
-                }
-            ];
-
-            this.exportxls('Documentos', '/Detalles/results', columns);
+            }
+            return bAvailable ? "sap-icon://accept" : "sap-icon://decline";
         },
+        formatStatusIcon: function (bAvailable) {
+          
+            switch (bAvailable) {
+                case 'Y':
+                    return "#008000";
+                    break;
+                    case 'X':
+                        return "#FF0000";
+                        break;
+                default:
+                    return "";
+                    break;
+
+            }
+
+        },
+
         onExit: function () {
             if (this._oDialog) {
                 this._oDialog.destroy();
@@ -246,11 +346,19 @@ sap.ui.define([
             }
         },
         openUploadDialog: function () {
-            if (!this._uploadDialog2) {
-                this._uploadDialog2 = sap.ui.xmlfragment("uploadInvoice", "demo.fragments.UploadInvoice", this);
-                this.getView().addDependent(this._uploadDialog2);
+            var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+            if (!this.hasAccess(10)) {
+                return
             }
-            this._uploadDialog2.open();
+            if (vLifnr !== undefined && vLifnr !== null){
+                if (!this._uploadDialog2) {
+                    this._uploadDialog2 = sap.ui.xmlfragment("uploadInvoice", "demo.fragments.UploadInvoice", this);
+                    this.getView().addDependent(this._uploadDialog2);
+                }
+                this._uploadDialog2.open();
+            } else {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/clarifications.noSupplier"));
+            }
         },
         onCloseDialogUpload: function () {
             if (this._uploadDialog2) {
@@ -258,7 +366,25 @@ sap.ui.define([
                 this._uploadDialog2 = null;
             }
         },
+        onParentClicked: function (oEvent) {
+            var bSelected = oEvent.getParameter("selected");
+            this.oModel.setData({
+                column1:bSelected,
+                column2:bSelected,
+                column3:bSelected,
+                column4:bSelected,
+                column5:bSelected,
+                column6:bSelected,
+                column65:bSelected,
+                column7:bSelected,
+                column8:bSelected,
+                column9:bSelected,
+                column10:bSelected,
+                column11:bSelected,
+            });
+        },
         documentUploadPress: function () {
+            /*
             var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoice", "fileUploader");
             var uploadList = sap.ui.core.Fragment.byId("uploadInvoice", "logUploadList");
             var uploadBox = sap.ui.core.Fragment.byId("uploadInvoice", "uploadBox");
@@ -306,6 +432,64 @@ sap.ui.define([
                 oFileUploader.clear();
             };
             reader.readAsDataURL(file);
+            */
+
+           var that = this;
+           var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+           var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoice", "fileUploader");
+           sap.ui.core.BusyIndicator.show(0);
+
+           if (!oFileUploader.getValue()) {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/helpDocs.uploader.nodata"));
+                sap.ui.core.BusyIndicator.hide();
+                return;
+            }
+
+            var file = oFileUploader.oFileUpload.files[0];
+            var reader2 = new FileReader();
+
+            reader2.onload = function (evn) {
+                var strXML = evn.target.result;  
+                
+                var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' + 
+                    'xmlns:tem="http://tempuri.org/"><soapenv:Header/><soapenv:Body><tem:RecibeCFDPortal>' + 
+                    '<tem:XMLCFD><![CDATA[' + strXML + ']]></tem:XMLCFD><tem:proveedor>' + vLifnr + 
+                    '</tem:proveedor></tem:RecibeCFDPortal></soapenv:Body></soapenv:Envelope>';
+                
+                $.ajax({
+                    async: true,
+                    url: "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboPortal.asmx",
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/xml",
+                        "Access-Control-Allow-Origin": "*"
+                    },
+                    data: body,
+                    success: function(response) {
+                        sap.ui.core.BusyIndicator.hide();
+                        that.onCloseDialogUpload();
+                        oFileUploader.clear();
+                        var oXMLModel = new sap.ui.model.xml.XMLModel();  
+                        oXMLModel.setXML(response.getElementsByTagName("RecibeCFDPagoResult")[0].textContent);
+                        var oXml = oXMLModel.getData();
+                        var status = oXml.getElementsByTagName("AckErrorApplication")[0].attributes[5].nodeValue;
+                        if (status == "ACCEPTED") {
+                            sap.m.MessageBox.success(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendSuccess"));
+                        } else {
+                            var strError = oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent;
+                            strError = strError.replaceAll(";","\n\n");
+                            sap.m.MessageBox.error(strError);
+                        }
+                    },
+                    error: function(request, status, err) {
+                        sap.ui.core.BusyIndicator.hide();
+                        that.onCloseDialogUpload();
+                        oFileUploader.clear();
+                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendError"));
+                    }
+                });
+            };
+            reader2.readAsText(file);
         },
         delFact: function (oEvent) {
             sap.ui.getCore().setModel(null, "deliverTable");
@@ -419,6 +603,298 @@ sap.ui.define([
             minDate.setDate(date.getDate() - 30);
             datarange.setSecondDateValue(date);
             datarange.setDateValue(minConsultDate);
+        },
+        onDocumentPress: function (oEvent) {
+         
+            let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
+            let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
+
+            let registro = results[posicion];
+       
+
+            this.getOwnerComponent().getRouter().navTo("detailComplPagos",
+                {
+                    layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+                    document: registro.Vblnr,
+                    sociedad: registro.Bukrs,
+                    ejercicio: registro.Gjahr,
+                    fecha: registro.Augdt
+                    // lifnr: docResult.Lifnr
+                }, true);
+
+
+
+        },
+
+        ///JP 05/07
+
+
+        createColumnConfig: function () {
+
+            var oModel = that.getView().getModel("Documentos").getData().Detalles.Paginated.results,
+                aCols = [];
+          
+            var texts = this.getOwnerComponent().getModel("appTxts");
+
+            aCols.push({
+                label: texts.getProperty("/pay.headerCompanyUPC"),
+                type: EdmType.String,
+                property: 'Butxt'
+            });
+
+
+            aCols.push({
+                label: texts.getProperty("/pay.headerPaymentTypeUPC"),
+                type: EdmType.String,
+                property: 'Text2'
+            });
+
+
+            aCols.push({
+                label: texts.getProperty("/pay.headerDocumentUPC"),
+                type: EdmType.String,
+                property: 'Vblnr'
+            });
+
+
+
+
+            aCols.push({
+                label: texts.getProperty("/pay.headerLimitDateUPC"),
+                type: EdmType.String,
+                property: 'Laufd'
+            });
+
+
+
+            aCols.push({
+                label: texts.getProperty("/pay.headerAmountUPC"),
+                type: EdmType.String,
+                property: 'Rbetr'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/pay.headerNCMC"),
+                type: EdmType.String,
+                property: 'Nc_mc'
+
+
+            });
+
+            aCols.push({
+                label: texts.getProperty("/pay.headerNC"),
+                type: EdmType.String,
+                property: 'Nc'
+
+
+            });
+
+            aCols.push({
+                label: texts.getProperty("/pay.headerCP") + ' 03',
+                type: EdmType.String,
+                property: 'Cp03'
+            });
+            //****
+            aCols.push({
+                label: texts.getProperty("/pay.headerCP") + ' 17S',
+                type: EdmType.String,
+                property: 'Cp17s'
+            });
+            aCols.push({
+                label: texts.getProperty("/pay.headerCP") + ' 17R',
+                type: EdmType.String,
+                property: 'Cp17r'
+            });
+            aCols.push({
+                label: texts.getProperty("/pay.headerEstatusUPC"),
+                type: EdmType.String,
+                property: 'Rzawe'
+            });
+
+
+
+            return aCols;
+        },
+        //exporta excel
+        buildExportTable: function () {
+            var aCols, oRowBinding, oSettings, oSheet, oTable, that = this;
+
+            if (!that._oTable) {
+                that._oTable = this.byId('complPagoList');
+            }
+
+            oTable = that._oTable;
+
+            oRowBinding = oTable.getBinding().oList;
+
+            aCols = that.createColumnConfig();
+
+            oSettings = {
+                workbook: {
+                    columns: aCols,
+                    hierarchyLevel: 'Level'
+                },
+                dataSource: oRowBinding,
+                fileName: 'Complemento de Pago ',
+                worker: false // We need to disable worker because we are using a MockServer as OData Service
+            };
+
+            oSheet = new Spreadsheet(oSettings);
+            oSheet.build().finally(function () {
+                oSheet.destroy();
+            });
+        },
+
+        generateFileMasivo: function (oEvent) {
+            if(this.byId("complPagoList").getSelectedIndices().length<1){
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/pay.Message'));
+                return
+            }
+           // var posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
+            var results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
+            var registro = results;
+           
+            var aIndices = this.byId("complPagoList").getSelectedIndices();
+         
+            for(var x =0;x<aIndices.length;x++){
+               
+          
+            var Laufd = String(registro[aIndices[x]].Laufd).replace(/-/g, "");
+            var Augdt = String(registro[aIndices[x]].Augdt).replace(/-/g, "");
+           
+var auxFilters=[];
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "IOption",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: '3'
+            })
+            )
+
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "ILaufd",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: Laufd
+            })
+            )
+
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'ILaufi',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: registro[aIndices[x]].Laufi
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'IBukrs',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: registro[aIndices[x]].Bukrs
+            })
+            )
+
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'ILifnr',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: registro[aIndices[x]].Lifnr
+            })
+            )
+
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'IGjahr',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: registro[aIndices[x]].Gjahr
+            })
+            )
+
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'IVblnr',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: registro[aIndices[x]].Vblnr
+            })
+            )
+
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'IAugdt',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: Augdt
+            })
+            )
+
+
+
+            var model = "ZOSP_PYMNT_CMPL_SRV";
+            var entity = "HeaderPYMNTCSet";
+            var expand = ["ETXTHDRNAV", "ETXTTOTALNAV", "ETXTTAXNAV", "ETXTFACTPROVNAV", "ETXTFACTSORNAV", "ETXTDISCOUNTNAV", "ETXTAGREEMENTNAV"];
+            var filter = auxFilters;
+            var select = "";
+
+            sap.ui.core.BusyIndicator.show();
+         that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
+                sap.ui.core.BusyIndicator.hide();
+                var Datos = _GEToDataV2Response.data;
+                
+               
+            var Encabezado = Object.values(Datos.results[0].ETXTHDRNAV.results[0]).slice(1).join('\t');
+            var Totales = Datos.results[0].ETXTTOTALNAV.results;
+            var Impuestos = Datos.results[0].ETXTTAXNAV.results;
+            var FacturasProveedor = Datos.results[0].ETXTFACTPROVNAV.results;
+            var FacturasSoriana = Datos.results[0].ETXTFACTSORNAV.results;
+            var Descuentos = Datos.results[0].ETXTDISCOUNTNAV.results;
+            var Agreement = Datos.results[0].ETXTAGREEMENTNAV.results;
+
+
+            var aArchivo = [
+                Encabezado
+            ];
+
+            aArchivo = aArchivo.concat(that.generaRenglonesArchivo(Totales));
+            aArchivo = aArchivo.concat(that.generaRenglonesArchivo(Impuestos))
+            aArchivo = aArchivo.concat(that.generaRenglonesArchivo(FacturasProveedor))
+            aArchivo = aArchivo.concat(that.generaRenglonesArchivo(FacturasSoriana))
+            aArchivo = aArchivo.concat(that.generaRenglonesArchivo(Descuentos))
+            aArchivo = aArchivo.concat(that.generaRenglonesArchivo(Agreement))
+
+
+
+            var ContenidoArchivo = aArchivo.join("\n");
+
+
+            var nombreArchivo = String(Datos.results[0].IBukrs + "_" + Datos.results[0].IGjahr + "_" + Datos.results[0].IVblnr + " -Comp Pago");
+
+            //this.exportxls('Archivo', '/Detalles/results', columns, typeExport);
+
+            sap.ui.core.util.File.save(ContenidoArchivo, nombreArchivo, "txt", "text/plain", "utf-8", false);
+
+            });
+
+
         }
+
+
+        },
+        ConfigTable: function () {
+            var that = this;
+            var oDialog = that.getView().byId("dinamicTableCP");
+
+            // create dialog lazily
+            if (!oDialog) {
+                // create dialog via fragment factory
+                oDialog = sap.ui.xmlfragment(that.getView().getId(), "demo.views.ComplPago.fragment.optionCP", this);
+                that.getView().addDependent(oDialog);
+                that.getView().byId("dinamicTableCP").addStyleClass(that.getOwnerComponent().getContentDensityClass());
+
+            }
+
+            oDialog.open();
+        },
+        ClosepopUp: function () {
+            var that = this;
+            that.TableVisible();
+            that.getView().byId("dinamicTableCP").close();
+        },
+
+       
+
+
+
+
     });
 });

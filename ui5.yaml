@@ -1,6 +1,6 @@
 specVersion: '1.0'
 metadata:
-  name: 'sendfac'
+  name: 'ZSENDFAC'
 type: application
 resources:
   configuration:
@@ -14,7 +14,8 @@ server:
       ignoreCertError: true # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
       backend:
       - path: /sap/opu/odata
-        url: https://ppqas.soriana.com
+        url: https://ppqas.soriana.com/ # QAS
+        #url: http://azdevgtwsq01.soriana.com:8000/ # DEV
       ui5:
         path: 
         - /resources

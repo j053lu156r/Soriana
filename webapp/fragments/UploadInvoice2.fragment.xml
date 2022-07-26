@@ -1,0 +1,49 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+    xmlns:u="sap.ui.unified"
+	xmlns:core="sap.ui.core">
+    <Dialog title="{appTxts>/iupload.title}" class="sapUiContentPadding">
+            <HBox id="uploadBoxTest" alignContent="Center" alignItems="Center">
+                <u:FileUploader
+                id="fileUploaderTest"
+                name="myFileUpload"
+                tooltip="{appTxts>/helpDocs.uploader.tooltip}"
+                uploadComplete="handleUploadComplete2"
+                change="handleValueChange2"
+                style="Emphasized"
+                fileType="{configSite>/updateFormatsSingle}"
+                placeholder="{appTxts>/helpDocs.uploader.placeholder}">
+                    <u:parameters>
+                        <u:FileUploaderParameter
+                            name="Accept-CH"
+                            value="Viewport-Width"/>
+                        <u:FileUploaderParameter
+                            name="Accept-CH"
+                            value="Width"/>
+                        <u:FileUploaderParameter
+                            name="Accept-CH-Lifetime"
+                            value="86400"/>
+                    </u:parameters>
+                </u:FileUploader>
+                <Button id="realizaConsultaTest" text="{appTxts>/notifications.save}" press="documentUploadPress2" class="sapUiSmallMarginBegin"/>
+            </HBox>
+            <VBox>
+                <List
+                    id="logUploadListTest"
+                    mode="None"
+                    items="{
+                        path: '/Log/results'
+                    }"
+                    visible="false">
+                    <items>
+                        <StandardListItem
+                            title="{Description}"
+                            highlight="{path:'Sts', formatter: '.defineHighlight'}" />
+                    </items>
+                </List>
+            </VBox>
+        <buttons>
+            <Button id="closeDialogTest" text="{appTxts>/date.close}" press="onCloseDialogUpload2"/>
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

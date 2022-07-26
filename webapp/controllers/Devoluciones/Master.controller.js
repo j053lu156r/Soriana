@@ -28,6 +28,10 @@ sap.ui.define([
             }, this);
         },
         searchData: function () {
+            if (!this.hasAccess(25)) {
+                return false;
+            }
+
             var bContinue = false;
 
             if (!oModel.getModel()) {
@@ -53,12 +57,12 @@ sap.ui.define([
             var vZfolagrup = this.getView().byId('zfolagrup').getValue();
             var vZfolfedex = this.getView().byId('zfolfedex').getValue();
             var vZfechreg = this.getView().byId('zfechreg').getValue();
-            var vAnulada = this.getView().byId('anul').getSelected();
+            //var vAnulada = this.getView().byId('anul').getSelected();
 
             if (vLifnr != null && vLifnr != "") {
                 bContinue = true;
             } else {
-                sap.m.MessageBox.error("El campo proveedor es obligatorio.");
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.supplierSelectError"));
             }
 
             if (bContinue) {
@@ -69,7 +73,7 @@ sap.ui.define([
                                 if (vZfolagrup == "") {
                                     if (vZfolfedex == "") {
                                         bContinue = false;
-                                        sap.m.MessageBox.error("Debe ingresar al menos un criterio de busqueda.");
+                                        sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.searchFieldsEmpty"));
                                     } else {
                                         bContinue = true;
                                     }
@@ -122,9 +126,11 @@ sap.ui.define([
                     url += " and IZfolfedex eq '" + vZfolfedex + "'";
                 }
 
+                /*
                 if (vAnulada != "") {
                     url += " and IAnul eq 'X'";
                 }
+                */
 
                 var dueModel = oModel.getJsonModel(url);
                 if (dueModel != null) {
@@ -141,6 +147,9 @@ sap.ui.define([
         onExit: function () {
         },
         codeButton: function () {
+            if (!this.hasAccess(35)) {
+                return false;
+            }
 
             var oItems = this.byId("tableHeader").getSelectedItems();
             var texts = this.getOwnerComponent().getModel("appTxts");
@@ -190,8 +199,11 @@ sap.ui.define([
             }
         },
         printButton: function () {
-
+            if (!this.hasAccess(36)) {
+                return false;
+            }
             var oItems = this.byId("tableHeader").getSelectedItems();
+            console.log(oItems)
             //var oItems = this.this.getOwnerComponent().setModel(new JSONModel(ojbResponse),"tableHeaderDevo").getSelectedItems()         
             var texts = this.getOwnerComponent().getModel("appTxts");
 
@@ -204,6 +216,7 @@ sap.ui.define([
 
                     oItems.forEach(function (item) {
                         var lItem = item.getBindingContext("tableHeaderDevo").getObject();
+                        console.log(lItem)
                         var obj = {};
                         obj.Ebeln = lItem.Ebeln;
                         obj.Xblnr = lItem.Xblnr;
@@ -220,9 +233,11 @@ sap.ui.define([
 
                     });
 
+                    console.log(url)
                     var dueModelprint = oModel.getJsonModel(url);
                     if (dueModelprint != null) {
                         var ojbResponse = dueModelprint.getProperty("/results/0");
+                        console.log(ojbResponse)
 
                         if (!this._uploadDialog2) {
                             this._uploadDialog2 = sap.ui.xmlfragment("printGroupFragment", "demo.views.Devoluciones.fragments.GroupCode", this);

@@ -1,6 +1,7 @@
 jQuery.sap.require("sap.ui.core.util.Export");
 jQuery.sap.require("sap.ui.core.util.ExportTypeCSV");
 sap.ui.define([
+    'sap/ui/export/Spreadsheet',
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/routing/History",
     "sap/ui/core/routing/HashChanger",
@@ -12,8 +13,9 @@ sap.ui.define([
     "sap/ui/core/UIComponent",
     "sap/ui/core/util/Export",
     "sap/ui/core/util/ExportTypeCSV",
-    "demo/models/BaseModel"
-], function (Controller, History, HashChanger, Filter, FilterOperator, Fragment, UIComponent, Device) {
+    "demo/models/BaseModel",
+    "sap/ui/model/json/JSONModel",
+], function (Spreadsheet, Controller, History, HashChanger, Filter, FilterOperator, Fragment, MessageBox, UIComponent, Device, JSONModel) {
     "use strict";
     var oUser = new this.UserModel();
     var inboxModel = new this.MyInbox();
@@ -45,8 +47,7 @@ sap.ui.define([
         },
         onRoutePatternMatched: function (event) {
             var vView = event.getParameter("name");
-
-            if (!oUser.getModel() || oUser.getModel() === undefined && vView != 'ConfirmUser') {
+            if ((!oUser.getModel() || oUser.getModel() === undefined) && vView != 'ConfirmUser') {
                 this.getOwnerComponent().getRouter().navTo("appHome", {}, true);
             }
         },
@@ -128,10 +129,10 @@ sap.ui.define([
                     d = d.substring(6, 8).concat('-').concat(d.substring(4, 6)).concat('-').concat(d.substring(0, 4));
                 }
             }
-            /*            
+            /*
                     if (s){
-                        return s.replace(/^(\d{4})-(\d{2})-(\d{2})$/g,'$3-$2-$1');  
-                    }         
+                        return s.replace(/^(\d{4})-(\d{2})-(\d{2})$/g,'$3-$2-$1');
+                    }
             */
             return d;
         },
@@ -278,7 +279,8 @@ sap.ui.define([
         },
         onValueHelpRequest: function () {
             var oView = this.getView();
-
+            oUser
+            this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({}), "tableItemsUsers");
             if (!this._pValueHelpDialog) {
                 this._pValueHelpDialog = sap.ui.core.Fragment.load({
                     id: oView.getId(),
@@ -290,13 +292,30 @@ sap.ui.define([
                 });
             }
             this._pValueHelpDialog.then(function (oDialog) {
-                // Create a filter for the binding
-                //oDialog.getBinding("items").filter([new Filter("Name", FilterOperator.Contains, sInputValue)]);
-                // Open ValueHelpDialog filtered by the input's value
+                oDialog._oCancelButton.setProperty('text', oView.getModel("appTxts").getProperty("/global.btnCancel"));
                 oDialog.open();
             });
         },
+        onValueHelpRequestquitar: function () {
+            var oView = this.getView();
+            this.getConfigModel().setProperty("/supplierInput",null);
+            this.getConfigModel().setProperty("/supplierInputKey",null);
+            this.getConfigModel().setProperty("/supplierTitle",null);
+        /*    if (!this._pValueHelpDialog) {
+                this._pValueHelpDialog = sap.ui.core.Fragment.load({
+                    id: oView.getId(),
+                    name: "demo.fragments.SupplierSelect",
+                    controller: this
+                }).then(function (oDialog) {
+                    oView.addDependent(oDialog);
+                    return oDialog;
+                });
+            }
+            this._pValueHelpDialog.then(function (oDialog) {
 
+                oDialog.open();
+            });*/
+        },
         onValueHelpSearch: function (oEvent) {
             var sValue = oEvent.getParameter("value");
             var usrModel = this.getOwnerComponent().getModel("userdata");
@@ -310,16 +329,37 @@ sap.ui.define([
         },
 
         onValueHelpClose: function (oEvent) {
+            console.log("ON LIFNR SELECTION")
             var oSelectedItem = oEvent.getParameter("selectedItem");
+
+            var descBloqueo = ""
+
+             var oReg  = oEvent.getParameter("selectedItem").getBindingContext("userdata").getObject()
+
+
+            //console.log(oEvent.getParameter("selectedItem").getBindingContext("userdata").getObject())
+
+            var bloqueo = oReg ? oReg.BloqueoFlag : ""
+
+        if(bloqueo === "X"){
+
+            descBloqueo="[Bloqueo de pago]"
+
+        }
+
             oEvent.getSource().getBinding("items").filter([]);
 
             if (!oSelectedItem) {
                 return;
             }
 
+
+             this.getConfigModel().setProperty("/supplierStatus", descBloqueo);
+
+
             var detSupp = this.detailSupplier(oSelectedItem.getTitle());
 
-            this.setActiveLifnr(oSelectedItem.getTitle(), oSelectedItem.getDescription(), detSupp.Impflag);
+            this.setActiveLifnr(oSelectedItem.getTitle(), oSelectedItem.getDescription() + descBloqueo, detSupp.Impflag);
 
         },
         setActiveLifnr: function (key, description, importation) {
@@ -356,19 +396,32 @@ sap.ui.define([
             var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
             var userFunctions = this.getOwnerComponent().getModel('userdata').getProperty("/ETROLUSUANAV/results");
             var hasCollab = this.getOwnerComponent().getModel('userdata').getProperty("/Esusdata/Zusuasor");
+            var roluser = this.getOwnerComponent().getModel('userdata').getProperty("/ERol");
+
+
+
 
             sectionsModel.forEach(function (section) {
                 section.tiles.forEach(function (t) {
                     t.functions.forEach(function (f) {
                         var strFunction = f.idFunction;
-                        if (hasCollab) {
-                            if (strFunction != null) {
-                                var funcValue = userFunctions.find(element => element.Idfuncion == strFunction.toString().padStart(6, "000000"));
+                        var rolesPermitidos = f.roles;
+                        var continuar = true;
+                        if (rolesPermitidos != null){
+                             continuar = rolesPermitidos.includes(roluser);
+                        }
+                        if (continuar){
+                            if (hasCollab) {
+                                if (strFunction != null) {
+                                    var funcValue = userFunctions.find(element => element.Idfuncion == strFunction.toString().padStart(6, "000000"));
+
+                                }
+                            } else {
+                                if (strFunction != null) {
+                                    var funcValue = userFunctions.find(element => element.Idfuncion == strFunction.toString().padStart(6, "000000") && element.Lifnr == vLifnr);
+                                }
                             }
-                        } else {
-                            if (strFunction != null) {
-                                var funcValue = userFunctions.find(element => element.Idfuncion == strFunction.toString().padStart(6, "000000") && element.Lifnr == vLifnr);
-                            }
+
                         }
 
                         if (funcValue != null) {
@@ -410,7 +463,7 @@ sap.ui.define([
             var txtModel = this.getOwnerComponent().getModel('appTxts');
             return txtModel.getProperty(title);
         },
-        formatTranslate: function (title, idTile) {
+       formatTranslate: function (title, idTile) {
             var finalTitle = this.defineTileTitle(title, idTile);
             var txtModel = this.getOwnerComponent().getModel('appTxts');
             return txtModel.getProperty(finalTitle);
@@ -510,7 +563,7 @@ sap.ui.define([
             return bValid;
         },
         hasOnlyNumbers: function (oEvent) {
-            
+
 
             this.validateOnlyNumbers(oEvent);
         },
@@ -557,6 +610,16 @@ sap.ui.define([
 
             return bAccess;
         },
+        frmBtnDesvVisible: function (esvisible, usr1) {
+            //var confiSite = this.getOwnerComponent().getModel("configSite");
+           // var disp = confiSite.getProperty("/barVisible");
+           if (esvisible && usr1 != "" && usr1 != undefined && usr1 !== null){
+            var seve = true;
+           }
+
+            return ((esvisible && usr1 !== null && usr1 !== "" && usr1 !== undefined));
+            // return ((chgUsrRol == '0001' || chgUsrRol == '0005') && usrRol != '0005');
+        },
         setConfigModel: function () {
             if (!this.getOwnerComponent().getModel("configSite")) {
                 var obj = {
@@ -564,9 +627,14 @@ sap.ui.define([
                     "barVisible": false
                 };
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(obj), "configSite");
+                var countmails = this.getInboxCount();
+                this.getOwnerComponent().getModel("configSite").setProperty("/inboxMetric", countmails);
             }
+            var countmails = this.getInboxCount();
+            this.getOwnerComponent().getModel("configSite").setProperty("/inboxMetric", countmails);
         },
         getConfigModel: function () {
+
             return this.getOwnerComponent().getModel("configSite");
         },
         paginate: function (modelName, pTable, iterator, startRow) {
@@ -747,6 +815,16 @@ sap.ui.define([
             var blob = new Blob([byteArray.buffer], { type: type });
             return URL.createObjectURL(blob);
         },
+        buildBlob: function (url, type) {
+            var parts = url.split(",");
+            var decodedPdfContent = atob(parts[1]);
+            var byteArray = new Uint8Array(decodedPdfContent.length)
+            for (var i = 0; i < decodedPdfContent.length; i++) {
+                byteArray[i] = decodedPdfContent.charCodeAt(i);
+            }
+            var blob = new Blob([byteArray.buffer], { type: type });
+            return (blob);
+        },
         findFunName: function (funct) {
             var fNames = this.getOwnerComponent().getModel("funNames").getProperty("/results");
             var changeI = funct.toString();
@@ -803,6 +881,26 @@ sap.ui.define([
             };
             reader.readAsDataURL(file);
         },
+        getInboxCount:  function () {
+
+
+            var countMails = 0;
+
+            if (this.getOwnerComponent().getModel("userdata") != null) {
+                var vMail = this.getOwnerComponent().getModel("userdata").getProperty("/IMail");
+            var response = inboxModel.getJsonModel(
+                `/headInboxSet?$expand=ETINBOXUNAV&$filter=IOption eq '2' and IMail eq '${vMail}'`);
+                if (response != null) {
+                    var objResponse = response.getProperty("/results/0/ETINBOXUNAV/results");
+                    //countMails= objResponse.getData().length;
+                     countMails =  parseInt(response.getProperty("/results/0/ENmes"),10);
+                    }
+
+
+            }
+        return countMails;
+        },
+
         getStatus: function () {
             var oView = this.getView();
 
@@ -922,6 +1020,142 @@ sap.ui.define([
             } else {
                 this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "searchLocations");
             }
+        },
+        /*Juan Pacheco Nueva forma de llamar los odata*/
+        _GEToDataV2: function(model, entity, filter,  expand,) {
+            var oModel2 = "/sap/opu/odata/sap/"+model;
+            var that = this;
+			let entidad = "/" + entity;
+
+			return new Promise(function(fnResolve, fnReject) {
+
+                var oModel = new sap.ui.model.odata.ODataModel(oModel2);
+				oModel.read(entidad, {
+				filters: filter,
+                urlParameters: {
+                    "$expand":expand,
+
+                  },
+                  //381970
+					success: function(oData, oResponse) {
+
+						fnResolve(oResponse);
+					},
+					error: function(error) {
+                        console.log(error)
+						sap.ui.core.BusyIndicator.hide();
+						MessageBox.error("Error: " + error.responseJSON.error.message, {
+							icon: MessageBox.Icon.ERROR,
+							title: "Error"
+						});
+						fnReject(new Error(error.message));
+					}
+				});
+			});
+		},
+
+
+        /*OPulido version de  _GEToDataV2 de Juan Pacheco  */
+
+        _GetODataV2: function(model, entity, filter,  expand,) {
+            var oModel2 = "/sap/opu/odata/sap/"+model;
+            var that = this;
+            let entidad = "/" + entity;
+
+            return new Promise(function(fnResolve, fnReject) {
+
+                var oModel = new sap.ui.model.odata.v2.ODataModel(oModel2);
+                oModel.setUseBatch(false);
+                oModel.read(entidad, {
+                    filters: filter,
+                     urlParameters: {
+                        "$expand":expand,
+
+                    },
+                    //381970
+                    success: function(oData, oResponse) {
+
+                        fnResolve(oResponse);
+                    },
+                    error: function(error) {
+                        console.log(error)
+                        sap.ui.core.BusyIndicator.hide();
+                        MessageBox.error("Error: " + error.responseJSON.error.message, {
+                            icon: MessageBox.Icon.ERROR,
+                            title: "Error"
+                        });
+                        fnReject(new Error(error.message));
+                    }
+                });
+            });
+        },
+
+
+
+        _GEToDataV2ajax: function(url) {
+
+            return new Promise((fnResolve, fnReject) => {
+
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8; IEEE754Compatible=true",
+                    success: function(dataResponse) {
+                        fnResolve(dataResponse);
+                    },
+                    error: function(error, status, err) {
+                        sap.ui.core.BusyIndicator.hide();
+                        console.log("error",error)
+                        /*MessageBox.error(error.responseText.replaceAll("\n",""), {
+                            icon: MessageBox.Icon.ERROR,
+                            title: err
+                        });*/
+                        fnReject(new Error(error));
+                    }
+                });
+            });
+        },
+
+        _POSToDataV2: function(model, entity, aData) {
+            var oModel2 = "/sap/opu/odata/sap/"+model;
+            var that = this;
+
+            console.log(oModel2)
+			return new Promise(function(fnResolve, fnReject) {
+
+                $.ajax({
+					url: oModel2+entity,
+					type: "POST",
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    data:aData,
+					success: function(dataResponse) {
+						fnResolve(dataResponse);
+					},
+					error: function(error, status, err) {
+						sap.ui.core.BusyIndicator.hide();
+						console.log("error",error)
+						/*MessageBox.error(error.responseText.replaceAll("\n",""), {
+							icon: MessageBox.Icon.ERROR,
+							title: err
+						});*/
+						fnReject(new Error(error));
+					}
+				});
+			});
+		},
+
+        buildExcelSpreadSheet: function(columns, rowData, name){
+            var oSettings = {
+				workbook: { columns: columns },
+				dataSource: rowData,
+                fileName: name
+			};
+
+            var oSheet = new Spreadsheet(oSettings);
+            oSheet.build().then( function() {})
+            .finally(oSheet.destroy);
         }
     });
 });

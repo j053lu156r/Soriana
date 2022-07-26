@@ -1,12 +1,12 @@
 <mvc:View 
-displayBlock="true" 
-xmlns:f="sap.f" 
-xmlns:mvc="sap.ui.core.mvc"
-xmlns:fb="sap.ui.comp.filterbar" 
-xmlns:vm="sap.ui.comp.variants" 
-xmlns="sap.m"
-xmlns:t="sap.ui.table"
-xmlns:core="sap.ui.core" 
+    displayBlock="true" 
+    xmlns:f="sap.f" 
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar" 
+    xmlns:vm="sap.ui.comp.variants" 
+    xmlns="sap.m"
+    xmlns:t="sap.ui.table"
+    xmlns:core="sap.ui.core" 
 	 controllerName="demo.controllers.Orders.Master" height="100%">
 	<f:DynamicPage  
 		class="sapUiContentPadding">
@@ -19,7 +19,7 @@ xmlns:core="sap.ui.core"
                 </f:heading>
                 <f:actions>
                     <ToolbarSpacer/>
-                    <Button text="{appTxts>/order.uploadFile}" type="Emphasized" press="openUploadDialog"/>
+                    <Button visible="false" text="{appTxts>/order.uploadFile}" type="Emphasized" press="openUploadDialog"/>
                 </f:actions>                
             </f:DynamicPageTitle>
         </f:title>

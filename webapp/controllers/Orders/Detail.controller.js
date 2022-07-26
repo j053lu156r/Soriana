@@ -1,11 +1,17 @@
 sap.ui.define([
+    "sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator",
     "sap/ui/model/json/JSONModel",
     "demo/controllers/BaseController",
-    "sap/ui/core/mvc/Controller"
-], function (JSONModel, Controller) {
+    'sap/ui/export/library'
+], function (Filter, FilterOperator, JSONModel, Controller, exportLibrary) {
     "use strict";
 
     var oModel = new this.Pedidostemp();
+    var oEdiModel = new this.ModelEDI();
+    var oTermsModel = new this.ModelTC();
+    var EdmType = exportLibrary.EdmType;
+
     return Controller.extend("demo.controllers.Orders.Detail", {
         onInit: function () {
             var oExitButton = this.getView().byId("exitFullScreenBtn"),
@@ -13,6 +19,11 @@ sap.ui.define([
 
             this.oRouter = this.getOwnerComponent().getRouter();
             this.oModel = this.getOwnerComponent().getModel();
+            this.txtTermsCond = this.getView().byId("txtTermsCond");
+            this.txtTermsCond2 = this.getView().byId("txtTermsCond2");
+            this.txtTermsCond3 = this.getView().byId("txtTermsCond3");
+            this.ediModel = new sap.ui.model.odata.v2.ODataModel(oEdiModel.sUrl);
+            this.termModel = new sap.ui.model.odata.v2.ODataModel(oTermsModel.sUrl);
 
             this.oRouter.getRoute("detailOrders").attachPatternMatched(this._onDocumentMatched, this);
 
@@ -75,6 +86,7 @@ sap.ui.define([
 
             this.paginate("tableDetailMoves", "/Oekponav", 1, 0);
             this.paginate("tableDetailMoves", "/OEKKOADVRNAV", 1, 0);
+            this.getTermsCons();
         },
         formatSatusOrder: function (status) {
             if (status) {
@@ -104,173 +116,139 @@ sap.ui.define([
             this.onCloseDialog();
         },
         buildExcel: function(){
-        
-            var columns = [
-                {
-                    name: "Pedidos",
-                    template: {
-                        content: "{Ebeln}"
-                    }
-                },
-                {
-                    name: "Posicion",
-                    template: {
-                        content: "{Ebelp}"
-                    }
-                },
-                {
-                    name: this.getOwnerComponent().getModel("appTxts").getProperty("/order.assorment"),
-                    template: {
-                        content: this.getOwnerComponent().getModel("tableDetailMoves").getProperty( "/OEKKONAV/results/0/Telf1")
-                    }
-                },                
-                {
-                    name: "Estatus",
-                    template: {
-                        content: this.formatSatusOrder(this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0/Elikz" ) )
-                    }
-                },
-                {
-                    name: this.getOwnerComponent().getModel("appTxts").getProperty("/order.shipmentbegin"),
-                    template: {
-                        content: this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0/Kdatb")
-                    }
-                },
-                {
-                    name: this.getOwnerComponent().getModel("appTxts").getProperty("/order.shipmentend"),
-                    template: {
-                        content: this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0/Kdate")
-                    }
-                },
-                {
-                    name: this.getOwnerComponent().getModel("appTxts").getProperty("/order.date"),
-                    template: {
-                        content: this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0/Bedat")
-                    }
-                },
-                {
-                    name: "Proveedor",
-                   template: {
-                        content: this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0/Lifnr") 
-                    }
-                },
-                {
-                    name: "Monto Total",
-                    template: {
-                        content: this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0/Netwr") 
-                    }
-                },
-                {
-                    name: "Moneda",
-                    template: {
-                        content: this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0/Waers")
-                    }
-                },
-               {
-                    name: "Precio Unitario",
-                    template: {
-                        content: "{Netpr}"
-                    }
-                },
-                {
-                    name: "Moneda",
-                    template: {
-                        content: "{Waers}"
-                    }
-                },                
-               {
-                    name: "Monto Posicion",
-                    template: {
-                        content: "{Brtwr}"
-                    }
-                },
-                {
-                    name: "Moneda",
-                    template: {
-                        content: "{Waers}"
-                    }
-                },               
-                {
-                    name: "Fecha entrega",
-                    template: {
-                        content: this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0/Eindt")                        
-                    }
-                },
-                {
-                    name: "Codigo de Barras",
-                    template: {
-                        content: "{Ean11}"
-                    }
-                },
-                {
-                    name: "Descripcion",
-                    template: {
-                        content: "{Txz01}"
-                    }
-                },
-                {
-                    name: "Cantidad",
-                    template: {
-                        content: "{Menge}"
-                    }
-                },
-                {
-                    name: "Unidad de Medida",
-                    template: {
-                        content: "{Meins}"
-                    }
-                },               
-                {
-                    name: "Cantidad Entregada",
-                    template: {
-                        content: "{Centregada}"
-                    }
-                },
-                {
-                    name: "Unidad de Medida",
-                    template: {
-                        content: "{Meins}"
-                    }
-                },                
-                {
-                    name: "Cantidad Restante",
-                    template: {
-                        content: "{Cresta}"
-                    }
-                },
-                {
-                    name: "Unidad de Medida",
-                    template: {
-                        content: "{Meins}"
-                    }
-                },                
-                {
-                    name: "Sucursal",
-                    template: {
-                        content: "{Werks}"
-                    }
-                },  
-                {
-                    name: "Nombre Sucursal",
-                    template: {
-                        content: "{Name1}"
-                    }
-                },                                                  
-               {
-                    name: "Capacidad de empaque",
-                    template: {
-                        content: "{Cempaque}"
-                    }
-                },
-                {
-                    name: "Unidad de Medida",
-                    template: {
-                        content: "{Cempumb}"
-                    }
-                },                                  
-            ];
 
-            this.exportxls('tableDetailMoves', '/Oekponav/results', columns);
+            var oModel = this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0");
+            var columns = this.createColumnConfig();
+            var aDataPosiciones = this.createData();
+            var name = 'Detalle Pedido ' + oModel.Ebeln + '.xlsx';
+
+            this.buildExcelSpreadSheet(columns, aDataPosiciones, name);
+        },
+
+        createColumnConfig: function() {
+			return [
+				{
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.supplierNum"),
+                    type: EdmType.Number,
+					property: 'Lifnr'
+				},
+				{
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.order"),
+                    type: EdmType.Number,
+					property: 'Ebeln'
+				},
+				{
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.orderDate"),
+					property: 'Bedat'
+				},
+				{
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.warehouseCode"),
+                    type: EdmType.String,
+					property: 'Werks'
+				},
+                {
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.warehouseDesc"),
+                    type: EdmType.String,
+                    width: 40,
+					property: 'Name1'
+				},
+				{
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.fechaEmbarque"),
+					property: 'Kdate'
+				},
+                {
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.fechaEndEmbarque"),
+					property: 'Kdatb'
+				},
+                {
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.paymentLimit"),
+                    type: EdmType.String,
+					property: 'Zterm'
+				},
+                {
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.quantity"),
+                    type: EdmType.Currency,
+                    unitProperty: 'Meins',
+					property: 'Menge',
+                    displayUnit: true,
+                    width: 25
+				},
+                {
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.code"),
+					property: 'Ean11',
+                    width: 15
+				},
+                {
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.price"),
+                    type: EdmType.Currency,
+                    unitProperty: 'Waers',
+					property: 'Netpr',
+                    displayUnit: true,
+                    width: 25
+				},
+                {
+					label: this.getOwnerComponent().getModel("appTxts").getProperty("/order.excel.description"),
+					property: 'Txz01',
+                    type: EdmType.String,
+                    width:40
+				}];
+		},
+
+        createData: function(){
+            var oCabecera = this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0");
+            var aPosiciones = this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/Oekponav/results");
+
+            aPosiciones.forEach(function(posicion) {
+                posicion.Lifnr = oCabecera.Lifnr;
+                posicion.Bedat = oCabecera.Bedat;
+                posicion.Kdate = oCabecera.Kdate;
+                posicion.Kdatb = oCabecera.Kdatb;
+                posicion.Zterm = oCabecera.Zterm;
+            });
+
+            return aPosiciones;
+        },
+        downloadEDI: function(oEvent){
+            var that = this;
+            var aFilters = [];
+            aFilters.push(new Filter("Ebeln", FilterOperator.EQ, this._document));
+
+            this.ediModel.read("/EdiFileSet", {
+                filters: aFilters,
+                success: function(response){
+                    console.log(response)
+                    if(response.results.length > 0){
+                        var base64Data = response.results[0].Datar;
+                        const linkSource = `data:text/plain;charset=utf-8;base64,${base64Data}`;
+                        const downloadLink = document.createElement("a");
+                        downloadLink.href = linkSource;
+                        downloadLink.download = `EDI_${that._document}.txt`;
+                        downloadLink.click();
+                    } else {
+                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/order.ediEmptyError"));
+                    }
+                }, 
+                error: function(error){
+                    sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/order.downEdiError"));
+                }
+            });
+        },
+
+        getTermsCons: function(oEvent){
+            var that = this;
+            this.termModel.read("/TxtTermCondSet", {
+                success: function(response){
+                    console.log(response)
+                    var text = "Los Términos y Condiciones específicos de esta Orden de Compra y los genéricos del Convenio Comercial publicados en el Portal del Proveedor en el sitio www.soriana.com prevalecerán frente a cualquier acuerdo previo y serán extensivos para las subsidiarias y/o afiliadas de Tiendas Soriana, S.A. de C.V. y/o Organización Soriana, S.A.B. de C.V. " + 
+                    "El incumplimiento en el nivel de servicio comprometido bajo esta Orden de Compra dará lugar a una penalización equivalente al importe que resulte de restar al Precio de Venta de Soriana el Precio de Costo de los Productos no surtidos a partir del día siguiente de la Fecha Fin de Embarque, que podrá deducir Soriana sin mayor trámite de los adeudos que se registren en favor de";
+                    that.txtTermsCond.setText(text);
+                    that.txtTermsCond2.setText(text);
+                    that.txtTermsCond3.setText(text);
+                }, 
+                error: function(error){
+                    sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/order.termconsError"));
+                }
+            });
         }
     });
 });

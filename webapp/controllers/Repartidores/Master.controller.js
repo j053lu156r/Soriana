@@ -31,6 +31,9 @@ sap.ui.define([
             this.configFilterLanguage(this.getView().byId("filterBar"));
         },
         searchData: function () {
+            if (!this.hasAccess(27)) {
+                return false;
+            }
             var bContinue = true;
 
             if (!oModel.getModel()) {
@@ -95,6 +98,7 @@ sap.ui.define([
             datarange.setDateValue(minConsultDate);
         },
         onListItemPress: function (oEvent) {
+         
             var resource = oEvent.getSource().getBindingContext("RepartidoresHdr").getPath(),
                 line = resource.split("/").slice(-1).pop();
 
@@ -105,14 +109,92 @@ sap.ui.define([
 
             this.getOwnerComponent().setModel(new JSONModel(status), "catalogStatus");
 
-            this.createButton(docResult, true);
+            this.modifyButton(docResult, true);
         },
-        createButton: function (Results , selected) {
+        modifyButton: function (Results , selected) {
+            if (!this.hasAccess(39)) {
+                return false;
+            }
+
             var texts = this.getOwnerComponent().getModel("appTxts");
             var that = this;
 
             this._createDialog = sap.ui.xmlfragment("CreateDealersFragment", "demo.views.Repartidores.fragments.CreateDealersFragment", this);
             this.getView().addDependent(this._createDialog);
+
+            var status = {
+                "Status": [
+                    {
+                        "description": "Activo"
+                    },
+                    {
+                        "description": "Baja"
+                    }
+                ]
+            };
+
+            this.getOwnerComponent().setModel(new JSONModel(status), "catalogStatus");
+            
+
+            var UserModel = this.getOwnerComponent().getModel("userdata");
+            var userRol = UserModel.getProperty("/ERol");
+            var editable = false;
+            var oDRS2 = sap.ui.core.Fragment.byId("CreateDealersFragment", "fcad");            
+                 oDRS2.setMinDate(new Date()); 
+            var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");           
+            if(vLifnr == null || vLifnr == ""){
+                        sap.m.MessageBox.error(texts.getProperty("/rep.tooltipsupplier"));
+                        return false;
+            }
+
+            if (userRol != null && userRol == "0001" || userRol == "0002" || userRol == "0005"){
+                editable =  true;
+            }
+            //Solo Determinados usuarios pueden modificar estos campos
+                //sap.ui.core.Fragment.byId("CreateDealersFragment", "supplier").setValue(Results.Lifnr).setEditable(editable).setVisible(editable);
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "supplier").setEditable(editable).setVisible(editable);
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "lblSupplier").setVisible(editable);
+                
+            if (selected){
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "name").setValue(Results.Repartidor).setEditable(editable);
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "key").setValue(Results.Clave).setEditable(editable);
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "fcad").setValue(Results.Endda).setEditable(editable);
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "status").setValue(Results.Zactivo); 
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "Id").setValue(Results.Usua);               
+
+                if(editable){
+                    sap.ui.core.Fragment.byId("CreateDealersFragment", "modifyDialog").setVisible(true);
+                    sap.ui.core.Fragment.byId("CreateDealersFragment", "saveDialog").setVisible(false);
+                }
+                
+            }
+            else{
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "status").setValue("Activo").setEditable(false);
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "modifyDialog").setVisible(false);
+            }
+            this._createDialog.setTitle(texts.getProperty("/rep.modifydealer"));
+            
+            this._createDialog.open();
+        },
+        createButton: function (Results , selected) {
+            if (!this.hasAccess(37)) {
+                return false;
+            }                       
+                      
+            var texts = this.getOwnerComponent().getModel("appTxts");
+
+            var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");           
+            if(vLifnr == null || vLifnr == ""){
+                sap.m.MessageBox.error(texts.getProperty("/rep.tooltipsupplier"));
+                return false;
+            }
+            
+            var that = this;
+
+            this._createDialog = sap.ui.xmlfragment("CreateDealersFragment", "demo.views.Repartidores.fragments.CreateDealersFragment", this);
+            this.getView().addDependent(this._createDialog);
+            var oDRS2 = sap.ui.core.Fragment.byId("CreateDealersFragment", "fcad");            
+            oDRS2.setMinDate(new Date()); 
 
             var status = {
                 "Status": [
@@ -135,7 +217,8 @@ sap.ui.define([
                 editable =  true;
             }
             //Solo Determinados usuarios pueden modificar estos campos
-                sap.ui.core.Fragment.byId("CreateDealersFragment", "supplier").setValue(Results.Lifnr).setEditable(editable).setVisible(editable);
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "supplier").setEditable(editable).setVisible(editable);
+                //sap.ui.core.Fragment.byId("CreateDealersFragment", "supplier").setValue(Results.Lifnr).setEditable(editable).setVisible(editable);
                 sap.ui.core.Fragment.byId("CreateDealersFragment", "lblSupplier").setVisible(editable);
 
             if (selected){
@@ -155,10 +238,14 @@ sap.ui.define([
                 sap.ui.core.Fragment.byId("CreateDealersFragment", "status").setValue("Activo").setEditable(false);
                 sap.ui.core.Fragment.byId("CreateDealersFragment", "modifyDialog").setVisible(false);
             }
-            
+            this._createDialog.setTitle(texts.getProperty("/rep.create"));
             this._createDialog.open();
         },
         deleteButton: function () {
+            if (!this.hasAccess(38)) {
+                return false;
+            }
+
             var oItems = this.byId("tableRepartidores").getSelectedItems();
             var texts = this.getOwnerComponent().getModel("appTxts");
 
@@ -200,6 +287,7 @@ sap.ui.define([
                         if (dueModelcode.ESuccess == 'X'){ 
 
                             sap.m.MessageBox.success(texts.getProperty("/rep.success"));
+
                         }
                         else{
                             sap.m.MessageBox.error(dueModelcode.EMessage + texts.getProperty("/rep.error"));
@@ -220,6 +308,18 @@ sap.ui.define([
         onModify: function(){
             this.callUri("3"); 
         },
+        handleChange: function (oEvent) {
+			var sFrom = oEvent.getParameter("from"),
+				//sTo = oEvent.getParameter("to"),
+				bValid = oEvent.getParameter("valid"),
+				oEventSource = oEvent.getSource();
+			if (bValid) {
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "status").setValue("Activo");
+				//oEventSource.setValueState(ValueState.None);
+			} else {
+				oEventSource.setValueState(ValueState.Error);
+			}
+		},
         clearFilters : function(){
             this.getView().byId("repartidorInput").setValue("");
             this.getView().byId("supplierInput").setValue("");
@@ -241,15 +341,18 @@ sap.ui.define([
             }
 
             if(vName == null || vName == ""){
-                sap.m.MessageBox.error(dueModelcode.EMessage + texts.getProperty("/rep.noName"));
+                sap.m.MessageBox.error( texts.getProperty("/rep.noName"));
+                return false;
             }
 
             if(vKey == null || vKey == ""){
-                sap.m.MessageBox.error(dueModelcode.EMessage + texts.getProperty("/rep.noKey"));
+                sap.m.MessageBox.error( texts.getProperty("/rep.noKey"));
+                return false;
             }
 
             if(vFcad == null || vFcad == ""){
-                sap.m.MessageBox.error(dueModelcode.EMessage + texts.getProperty("/rep.noFcad"));
+                sap.m.MessageBox.error(texts.getProperty("/rep.noFcad"));
+                return false;
             }
 
             //Fechas de vigencia
@@ -261,6 +364,7 @@ sap.ui.define([
                 "ITDMODIFYNAV" : []
             };
 
+            
             var obj = {};
 
                 if (Ioption == "3"){

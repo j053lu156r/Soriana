@@ -74,8 +74,20 @@ xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants" xmlns="sap.m" x
                         <VBox  class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" width="100%" >
                             <Link text="{tableHelpDocs>Zdescrip}" press=".selectHelpDoc(${tableHelpDocs>Idarchivo})"/>
                             <Label text="{tableHelpDocs>Zarchivo}"/>
+                            <Text text="{
+path: 'tableHelpDocs>Zfecha',
+type: 'sap.ui.model.odata.type.DateTimeOffset',
+constraints: {
+precision: 3,
+v4: true
+},
+formatOptions: {
+pattern: 'yyyy.MM.dd - hh:mm:ss'
+}
+}"
+/>
                         </VBox>
-                        <Button icon="sap-icon://delete" tooltip="{appTxts>/global.download}" class="sapUiSmallMarginBegin sapUiSmallMarginEnd sapUiSmallMarginTopBottom" press=".deleteHelpDoc(${tableHelpDocs>Idarchivo}, ${tableHelpDocs>Zdescrip})" ></Button>
+                        <Button icon="sap-icon://delete" tooltip="{appTxts>/products.deleteRow}" class="sapUiSmallMarginBegin sapUiSmallMarginEnd sapUiSmallMarginTopBottom" press=".deleteHelpDoc(${tableHelpDocs>Idarchivo}, ${tableHelpDocs>Zdescrip})" ></Button>
                     </HBox>
                 </CustomListItem>
                 </List>

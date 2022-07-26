@@ -27,8 +27,13 @@ sap.ui.define([
                     this.clearFilds();
                 }
             }, this);
+            this.configFilterLanguage(this.getView().byId("filterBar"));
+            this.getConfigModel().setProperty("/updateFormatsSingle", "xls,xlsx");
         },
         searchData: function () {
+            if(!this.hasAccess(30)){
+                return
+            }
             this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(),
                 "tableQuotesModel");
 
@@ -326,6 +331,22 @@ sap.ui.define([
             ];
 
             this.exportxls('tableQuotesModel', '/ECITASCONSNAV/results', columns);
+        },
+        openUploadDialog: function () {
+            if (!this._uploadDialog) {
+                this._uploadDialog = sap.ui.xmlfragment("demo.views.Quotes.UploadQuote", this);
+                this.getView().addDependent(this._uploadDialog);
+            }
+            this._uploadDialog.open();
+        },
+        onCloseDialogUpload: function () {
+            if (this._uploadDialog) {
+                this._uploadDialog.destroy();
+                this._uploadDialog = null;
+            }
+        },
+        btnValidateFile: function (){
+            console.log("Upload file");
         }
     });
 });

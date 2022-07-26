@@ -21,8 +21,8 @@ sap.ui.define([
             this.configUploadSet( this.getView().byId("attachmentDocuments") );
             var oUploadSet = this.getView().byId("attachmentDocuments");
 
-            oUploadSet.attachAfterItemRemoved(this.onDeleteAttach.bind(this));
-            oUploadSet.attachAfterItemAdded(this.addAttach.bind(this));
+         oUploadSet.attachAfterItemRemoved(this.onDeleteAttach.bind(this));
+          oUploadSet.attachAfterItemAdded(this.addAttach.bind(this));
             
             this.clearFields();
 			this.oRouter = this.getOwnerComponent().getRouter();
@@ -51,9 +51,18 @@ sap.ui.define([
 				});
             }, this);
 
-            
-            
-            
+           
+        },
+        Formato:function(value){
+            const numero = Number(value);
+            const formateado = numero.toLocaleString("en");
+         
+            if( this.modo == 'new' ){
+                this.getView().byId('reclaimedImport').setEditable(true)
+                this.getView().byId('reclaimedImport').setEnabled(true)
+            }
+
+return formateado
         },
         addAttach: function (oEvent) {
             var that = this;
@@ -144,9 +153,28 @@ sap.ui.define([
             //itemName;
         },
         guardaAclara : function(){
-
+            var Model=this.getView().getModel('Aclaracion').getData();
             if( this.validaCampos() === false ){
                 return false;
+            }
+            console.log(Model)
+            //Model.Obsgen2
+            console.log(this.getView().byId("comments").getValue())
+            console.log(Model.Obsgen2)
+            if(this.getView().byId("comments").getValue() !== Model.Obsgen2){
+                console.log("entro")
+                console.log(this.getView().byId("comments").getValue().includes(Model.Obsgen2))     // false
+               if (!this.getView().byId("comments").getValue().includes(Model.Obsgen2)){
+                var text= Model.Obsgen2+'\n '+Model.Obsgen;
+                console.log(text)
+               }else{
+                var text= Model.Obsgen//+'\n '+Model.Obsgen.split(Model.Obsgen2 [1]);
+                console.log(text)
+
+               }
+               Model.Obsgen=text
+
+               // Model.Obsgen= Model.Obsgen2+'\n '+this.getView().byId("comments").getValue()
             }
 
             
@@ -155,14 +183,14 @@ sap.ui.define([
             let invoice             = this.getView().byId("invoice").getValue().trim();
             let sourceDocument      = this.getView().byId("sourceDocument").getValue().trim();
             let reclaimedImport     = this.getView().byId("reclaimedImport").getValue();
-            let reclaimedTax        = this.getView().byId("reclaimedTax").getValue();
-            let comments            = this.getView().byId("comments").getValue();
+            //let reclaimedTax        = this.getView().byId("reclaimedTax").getValue();
+            let comments            = Model.Obsgen;//this.getView().byId("comments").getValue();
             let folio               = (parseInt( this._document, 10) == 0) ? '' : this._document;
             let status              = this.getView().byId("status").getSelectedKey();
             let tipo                = clarificationType.getSelectedKey();
             let proveedor_LIFNR     = this.getConfigModel().getProperty("/supplierInputKey") ;
             let analyst             = this.getView().byId("analyst").getSelectedKey();
-            let paymentDocument     = this.getView().byId("paymentDocument").getValue();
+//let paymentDocument     = this.getView().byId("paymentDocument").getValue();
             let distributionCenter  = this.getView().byId("distributionCenter").getValue();
             let recibo              = this.getView().byId("receipt").getValue();
             let Gjahr               = this.getView().byId("Gjahr").getValue();
@@ -178,10 +206,10 @@ sap.ui.define([
                 "IFactura": invoice,
                 "ICendis": distributionCenter,
                 "ITacla": tipo,
-                "IMonrec": reclaimedImport,
-                "IIvarec": reclaimedTax,
+                "IMonrec": reclaimedImport.replace(/\,/g, ""),
+                //"IIvarec": reclaimedTax,
                 "IObsgen": comments, 
-                "INoDoc": paymentDocument,
+                "INoDoc": "",//paymentDocument,
                 "IDocori" : sourceDocument,
                 "IAnalista":analyst,
                 "IStatus": status,
@@ -195,36 +223,47 @@ sap.ui.define([
                 if( String(objRelease.INoDoc).trim() != '' ){
                     objRelease["IMonacl"] = this.getView().byId("clarifiedAmount").getValue().trim();
                     objRelease["IIvaacl"] = this.getView().byId("clarifiedTax").getValue().trim();
-                    //objRelease["INoDoc"] = this.getView().byId("paymentDocument").getValue().trim();
+                  
                     let fechaVencimiento = this.getView().byId("expirationDate").getDateValue();
                     objRelease["IFecven"] = fechaVencimiento.getFullYear() + '-' + String( '0' + (fechaVencimiento.getMonth() + 1) ).substr(-2) + '-' + String( '0' + fechaVencimiento.getDate() ).substr(-2)
                     //objRelease["IFecven"] = this.getView().byId("expirationDate").getValueFormat("yyyy-MM-dd");
                 }
                 
             }  
+            console.log(JSON.stringify(objRelease))
+      
+            var model = "ZOSP_ACLARA_SRV";
+            var entity = "/EAclaHdrSet";
+            var json2 = JSON.stringify(objRelease);
+            var that=this;
             
-            let modelAclaraciones = new Aclaraciones();
-
-            var response = modelAclaraciones.create("/EAclaHdrSet", objRelease);
-
-            
-
-            if (response != null) {
-                if (response.ESuccess == "X") {
-                    let msg = (folio != '')? this.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.msgUpdated') : this.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.msgSaved') + ' ' + response.IFolio;
-                    sap.m.MessageBox.success( msg, {
-                        actions: [sap.m.MessageBox.Action.CLOSE],
-                        emphasizedAction: sap.m.MessageBox.Action.CLOSE,
-                        onClose: function (sAction) {
-                            this.goToMainReleases();
-                        }.bind(this)
-                    });
+           that._POSToDataV2(model, entity, json2 ).then(function (_GEToDataV2Response) {
+                sap.ui.core.BusyIndicator.hide();
+                console.log(JSON.stringify(objRelease))
+                var response = _GEToDataV2Response.d;
+              
+                if (response != null) {
+                    if (response.ESuccess == "X") {
+                        let msg = (folio != '')? that.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.msgUpdated') : that.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.msgSaved') + ' ' + response.IFolio;
+                        sap.m.MessageBox.success( msg, {
+                            actions: [sap.m.MessageBox.Action.CLOSE],
+                            emphasizedAction: sap.m.MessageBox.Action.CLOSE,
+                            onClose: function (sAction) {
+                                that.goToMainReleases();
+                            }
+                        });
+                    } else {
+                        sap.m.MessageBox.error( response.EMessage );
+                    }
                 } else {
-                    sap.m.MessageBox.error( response.EMessage );
+                    sap.m.MessageBox.error("No se pudo conectar con el servidor, intente nuevamente.");
                 }
-            } else {
-                sap.m.MessageBox.error("No se pudo conectar con el servidor, intente nuevamente.");
-            }
+
+
+              
+            });
+       
+
 
 
         },
@@ -232,36 +271,34 @@ sap.ui.define([
             this.handleClose();
         },
         clearFields : function(){
-            this.getView().byId("clarificationType").setEnabled(true).setEditable(true);
+           
+      this.getView().byId("clarificationType").setEnabled(true).setEditable(true);
             this.getView().byId("sourceDocument").setEnabled(true).setEditable(true);
             this.getView().byId("invoice").setEnabled(true).setEditable(true);
             this.getView().byId("comments").setEnabled(true).setEditable(true);
             this.getView().byId("analyst").setEnabled(true).setEditable(true);
             
-            this.getView().byId("paymentDocument").setEnabled(true).setEditable(true);
+            //this.getView().byId("paymentDocument").setEnabled(true).setEditable(true);
             
             this.getView().byId("validateSourceDocument").setEnabled(true);
             this.getView().byId("validateInvoice").setEnabled( true );
             this.getView().byId("distributionCenterDescription").setEnabled(true).setVisible(true);
             this.getView().byId("receipt").setEnabled(true).setVisible(true).setEditable(true);
-            //this.getView().byId("status").setEnabled(true);
+          
             
             
             this.getView().byId("btnGuardar").setEnabled(true).setVisible(true);
-            //this.getView().byId("btnUploadFiles").setEnabled(true).setVisible(true);
+          
 
             this.getView().byId("helpDocsList").destroyItems();
-            // sap.ui.core.Fragment.byId("uploadFilesFragment", "attachmentDocuments").removeAllItems();
-            // sap.ui.core.Fragment.byId("uploadFilesFragment", "attachmentDocuments").removeAllIncompleteItems();
-            // sap.ui.core.Fragment.byId("uploadFilesFragment", "attachmentDocuments").destroyItems();
-            // sap.ui.core.Fragment.byId("uploadFilesFragment", "attachmentDocuments").destroyIncompleteItems();
+         
             this.getView().byId("attachmentDocuments").setUploadEnabled( true );
             this.getView().byId("attachmentDocuments").removeAllItems();
             this.getView().byId("attachmentDocuments").removeAllIncompleteItems();
             this.getView().byId("attachmentDocuments").destroyItems();
             this.getView().byId("attachmentDocuments").destroyIncompleteItems();
 
-            
+          
             
             this.getOwnerComponent().setModel(new JSONModel(), "nRelease");
 
@@ -367,7 +404,7 @@ sap.ui.define([
             this.getView().byId("sourceDocument").setValue(objDatos.DocOrig);
             this.getView().byId("reclaimedImport").setValue(objDatos.MonRec);
             this.getView().byId("invoice").setValue(objDatos.Factura);
-            this.getView().byId("reclaimedTax").setValue(objDatos.IvaRec);
+          //  this.getView().byId("reclaimedTax").setValue(objDatos.IvaRec);
             this.getView().byId("distributionCenter").setValue(objDatos.Tienda);
             this.getView().byId("comments").setValue(objDatos.Obsgen);
             this.getView().byId("status").setValue(objDatos.Estatus);
@@ -381,7 +418,7 @@ sap.ui.define([
 
             
             this.getView().byId("analyst").setSelectedKey(objDatos.Analista);
-            this.getView().byId("paymentDocument").setValue(objDatos.NoDoc);
+            //this.getView().byId("paymentDocument").setValue(objDatos.NoDoc);
         },
         validaCampos : function(){
             let valid = true;
@@ -418,6 +455,10 @@ sap.ui.define([
                 this.getView().byId('status').setValueState( sap.ui.core.ValueState.Error );
             }
 
+            if( this.getView().byId('receipt').getValue() == '' && this.getView().byId("clarificationType").getSelectedKey()==='PF'){
+                valid = false;
+                this.getView().byId('receipt').setValueState( sap.ui.core.ValueState.Error );
+            }
             //Se quita la obligatoriedad del centro de distribución por solicitud de Omar vía WhatsApp 26/10/2021 21:54
             /*if( this.getView().byId('distributionCenter').getValue().trim() == '' || this.getView().byId('distributionCenter').getValueState() !== sap.ui.core.ValueState.Success ){
                 valid = false;
@@ -441,6 +482,7 @@ sap.ui.define([
 
 
             let files = this.getOwnerComponent().getModel("nRelease").getProperty("/attach");
+        
             
             if ( this.modo == 'new' && (files == null || files == undefined || files.length === 0) ){
                 sap.m.MessageBox.warning( this.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.msgNoFileAttach') );
@@ -539,7 +581,9 @@ sap.ui.define([
                 }*/
                 
                 Aclaracion.modo = this.modo;
-                
+                Aclaracion.MonRec= this.Formato(Aclaracion.MonRec)
+                console.log(Aclaracion)
+
                 
                 this.getView().byId('dateCreation').setDateValue(new Date(Aclaracion.FAlta+"T00:00:00"));
                 if( Aclaracion.FVenc != '' ) this.getView().byId('expirationDate').setDateValue(new Date(Aclaracion.FVenc+"T00:00:00"));
@@ -558,8 +602,10 @@ sap.ui.define([
                     // this.getView().byId('clarificationType').setValueState( sap.ui.core.ValueState.Success );
                 }
                     
+              
                 this.bloquearCampos( this.modo, Aclaracion.Estatus );
-                
+
+            
             }
             else
                 this.clearFields();
@@ -567,17 +613,56 @@ sap.ui.define([
             
             
         },
+        ValidarValor:function(){
+            var that=this;
+           var Model=this.getView().getModel('Aclaracion').getData();
+           console.log(Model)
+           /** */
+           var MAcla=Number(Model.MonAcla.replace(',',''));
+           var Mrecl=Number(Model.MonRec.replace(',',''));
+          
+if (MAcla > Mrecl){
+    sap.m.MessageBox.error( this.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.validacionNum') );
+    this.getView().byId('clarifiedAmount').setValue();
+
+}else{
+ 
+    
+    var regex, num;
+    num = Model.MonAcla.split(".")[0];
+    var dec=Model.MonAcla.split(".")[1];
+    console.warn(num, dec)
+    regex = /(\.\d+)|\B(?=(\d{3})+(?!\d))/g;
+    num = num.toString().replace(regex, ",");
+
+   // return num;
+   if(dec!==undefined){
+    num=num+'.'+ dec;
+   }
+   this.getView().byId('clarifiedAmount').setValue(num);
+}
+
+
+
+
+        },
+     
+       
         bloquearCampos: function( modo, Estatus ){
-            
+            var Model=this.getView().getModel('Aclaracion').getData();
+          
                 let Controles = this.getView().getControlsByFieldGroupId('aclaracion');
 
                 for (let i = 0; i < Controles.length; i++) {
                     const element = Controles[i];
-                    if( typeof element.setEditable == 'function' ) 
+                
+                    if( typeof element.setEditable == 'function' &&  (!(element.sId.includes("clarifiedAmount"))&& Model.descripcionEstatus!== "CONCLUIDA")) 
+                      
                         element.setEditable( false ).setEnabled( false );
-                    else if( typeof element.setEnabled == 'function' )
+                        
+                    else if( typeof element.setEnabled == 'function' && (!(element.sId.includes("clarifiedAmount"))&& Model.descripcionEstatus!== "CONCLUIDA")) 
                         element.setEnabled( false );
-                    else if( typeof element.setUploadEnabled == 'function' )
+                    else if( typeof element.setUploadEnabled == 'function' &&  (!(element.sId.includes("clarifiedAmount"))&& Model.descripcionEstatus!== "CONCLUIDA")) 
                         element.setUploadEnabled( false )
                 }
 
@@ -591,8 +676,13 @@ sap.ui.define([
                 
 
             if( modo === "edit" ) {
-
+                console.log(Model)
+                Model.Obsgen2=Model.Obsgen
                 //this.getView().byId("analyst").setEnabled(true).setEditable(true);
+
+
+
+
                 switch (Estatus) {
                     case "B":
                         this.getView().byId("clarificationType").setEnabled(true).setEditable(true);
@@ -601,22 +691,32 @@ sap.ui.define([
                     case "C":
                         let ComboStatus = this.getView().byId("status");
                         ComboStatus.setEnabled(true).setEditable(true);
-                        this.getView().byId("paymentDocument").setEnabled(true).setEditable(true);
+                      //  this.getView().byId("paymentDocument").setEnabled(true).setEditable(true);
                         this.getView().byId("comments").setEnabled(true).setEditable(true);
-                        this.getView().byId("validatePaymentDocument").setEnabled(true);
+                       // this.getView().byId("validatePaymentDocument").setEnabled(true);
                         ComboStatus.getItemByKey('A').setEnabled( false );
                         ComboStatus.getItemByKey('B').setEnabled( false );
                         
                         break;
                     case "D":
+                        
+                       // let ComboStatus = this.getView().byId("status");
+                     
+                      //  this.getView().byId("paymentDocument").setEnabled(true).setEditable(true);
                         this.getView().byId("comments").setEnabled(true).setEditable(true);
+                       // this.getView().byId("validatePaymentDocument").setEnabled(true);
+                       this.getView().byId("status").setEnabled(true);
+                       this.getView().byId("status").setEditable(true);
+                        ComboStatus.getItemByKey('A').setEnabled( false );
+                        ComboStatus.getItemByKey('B').setEnabled( false );
+                     //   this.getView().byId("comments").setEnabled(true).setEditable(true);
                         break;
                     case "E":
                         this.getView().byId("status").setEnabled(true).setEditable(true);
-                        this.getView().byId("paymentDocument").setEnabled(true).setEditable(true);
+                    //    this.getView().byId("paymentDocument").setEnabled(true).setEditable(true);
                         this.getView().byId("comments").setEnabled(true).setEditable(true);
                         this.getView().byId("clarificationType").setEnabled(true).setEditable(true);
-                        this.getView().byId("validatePaymentDocument").setEnabled(true);
+                      //  this.getView().byId("validatePaymentDocument").setEnabled(true);
                         this.getView().byId("analyst").setEnabled(true).setEditable(true);
                         ComboStatus.getItemByKey('A').setEnabled(false);
                         ComboStatus.getItemByKey('B').setEnabled(false);
@@ -626,9 +726,9 @@ sap.ui.define([
                         break;
                     case "G":
                         this.getView().byId("status").setEnabled(true).setEditable(true);
-                        this.getView().byId("paymentDocument").setEnabled(true).setEditable(true);
+                      //  this.getView().byId("paymentDocument").setEnabled(true).setEditable(true);
                         this.getView().byId("comments").setEnabled(true).setEditable(true);
-                        this.getView().byId("validatePaymentDocument").setEnabled(true);
+                   //     this.getView().byId("validatePaymentDocument").setEnabled(true);
                         ComboStatus.getItemByKey('A').setEnabled(false);
                         ComboStatus.getItemByKey('B').setEnabled(false);
                         ComboStatus.getItemByKey('C').setEnabled(false);
@@ -646,6 +746,7 @@ sap.ui.define([
                 this.getView().byId("btnGuardar").setEnabled(false).setVisible(false);
                 //this.getView().byId("btnUploadFiles").setEnabled(false).setVisible(false);
             }
+          
             
            
         },
@@ -681,17 +782,53 @@ sap.ui.define([
                 return false;
             }
 
-            let montoReclamado = Datos.results[0].ZDocOri.results[0].Monrec ;
+          
+            var tipo_Doc= Datos.results[0].ZDocOri.results[0].Descripcion.split(" ")[0]
+            
+
+var TAclara=this.getView().getModel("catalogos").getData().Tipos.results;
+
+var ArrT=[];
+            if (tipo_Doc==='RE'){
+                for(var x =0;x<TAclara.length;x++){
+                    if(TAclara[x].TipAcla==="CD"||TAclara[x].TipAcla==="FI"||TAclara[x].TipAcla==="PF"){
+                        ArrT.push(TAclara[x])
+                    }
+
+                }
+                
+            }
+            if (tipo_Doc==='KD'){
+                for(var x =0;x<TAclara.length;x++){
+                    if(TAclara[x].TipAcla==="AP"||TAclara[x].TipAcla==="DC"||TAclara[x].TipAcla==="FC"||TAclara[x].TipAcla==="NS"){
+                        ArrT.push(TAclara[x])
+                    }
+
+                }
+            }
+            if (tipo_Doc==='RA'){
+                for(var x =0;x<TAclara.length;x++){
+                    if(TAclara[x].TipAcla==="CC"||TAclara[x].TipAcla==="DC"||TAclara[x].TipAcla==="FC"||TAclara[x].TipAcla==="UP"){
+                        ArrT.push(TAclara[x])
+                    }
+
+                } 
+            }
+
+            this.getOwnerComponent().setModel(new JSONModel(ArrT), "TipoAclara");
+
+
+            let montoReclamado =this.Formato( Datos.results[0].ZDocOri.results[0].Monrec) ;
             let ivaReclamado   = Datos.results[0].ZDocOri.results[0].Ivarec ;
             let Xblnr   = Datos.results[0].ZDocOri.results[0].Xblnr ;
             let Werks = Datos.results[0].ZDocOri.results[0].Werks ;
-            let Sucursal = Datos.results[0].ZDocOri.results[0].Descripcion ;
+            let Sucursal = Datos.results[0].ZDocOri.results[0].Descripcion.slice(2);
             let Gjahr = Datos.results[0].ZDocOri.results[0].Gjahr;
             let Recibo = Datos.results[0].ZDocOri.results[0].Recibo;
 
             inputsourceDocument.setValueState(sap.ui.core.ValueState.Success);
             this.getView().byId('reclaimedImport').setValue(montoReclamado);
-            this.getView().byId('reclaimedTax').setValue(ivaReclamado);
+         ///   this.getView().byId('reclaimedTax').setValue(ivaReclamado);
             this.getView().byId('invoice').setValue(Xblnr).setValueState(sap.ui.core.ValueState.Success);
             this.getView().byId('distributionCenter').setValue(Werks).setValueState(sap.ui.core.ValueState.Success);
             this.getView().byId('distributionCenterDescription').setValue(Sucursal).setValueState(sap.ui.core.ValueState.Success);
@@ -724,18 +861,61 @@ sap.ui.define([
                 inputInvoice.setValueState(sap.ui.core.ValueState.Error);
                 return false;
             }
+            var tipo_Doc= Datos.results[0].ZRefFac.results[0].Descripcion.split(" ")[0]
+            
 
-            let montoReclamado = Datos.results[0].ZRefFac.results[0].Monrec ;
+            var TAclara=this.getView().getModel("catalogos").getData().Tipos.results;
+
+            var ArrT=[];
+            if (tipo_Doc==='RE'){
+                for(var x =0;x<TAclara.length;x++){
+                    if(TAclara[x].TipAcla==="CD"||TAclara[x].TipAcla==="FI"||TAclara[x].TipAcla==="PF"){
+                        ArrT.push(TAclara[x])
+                    }
+
+                }
+                
+            }
+            if (tipo_Doc==='KD'){
+                for(var x =0;x<TAclara.length;x++){
+                    if(TAclara[x].TipAcla==="AP"||TAclara[x].TipAcla==="DC"||TAclara[x].TipAcla==="FC"||TAclara[x].TipAcla==="NS"){
+                        ArrT.push(TAclara[x])
+                    }
+
+                }
+            }
+            if (tipo_Doc==='RA'){
+                for(var x =0;x<TAclara.length;x++){
+                    if(TAclara[x].TipAcla==="CC"||TAclara[x].TipAcla==="DC"||TAclara[x].TipAcla==="FC"||TAclara[x].TipAcla==="UP"){
+                        ArrT.push(TAclara[x])
+                    }
+
+                } 
+            }
+            if (tipo_Doc==='KE'){
+                for(var x =0;x<TAclara.length;x++){
+                    if(TAclara[x].TipAcla==="PF"){
+                        ArrT.push(TAclara[x])
+                    }
+
+                } 
+            }
+
+            this.getOwnerComponent().setModel(new JSONModel(ArrT), "TipoAclara");
+
+
+            let montoReclamado =this.Formato( Datos.results[0].ZRefFac.results[0].Monrec) ;
+            ///let montoReclamado = Datos.results[0].ZRefFac.results[0].Monrec ;
             let ivaReclamado   = Datos.results[0].ZRefFac.results[0].Ivarec ;
             let sourceDocument   = Datos.results[0].ZRefFac.results[0].Belnr ;
             let Werks = Datos.results[0].ZRefFac.results[0].Werks ;
-            let Sucursal = Datos.results[0].ZRefFac.results[0].Descripcion ;
+            let Sucursal = Datos.results[0].ZRefFac.results[0].Descripcion.slice(2) ;
             let Gjahr = Datos.results[0].ZRefFac.results[0].Gjahr;
             let Recibo = Datos.results[0].ZRefFac.results[0].Recibo;
 
             inputInvoice.setValueState(sap.ui.core.ValueState.Success);
             this.getView().byId('reclaimedImport').setValue(montoReclamado);
-            this.getView().byId('reclaimedTax').setValue(ivaReclamado);
+            //this.getView().byId('reclaimedTax').setValue(ivaReclamado);
             this.getView().byId('sourceDocument').setValue(sourceDocument).setValueState(sap.ui.core.ValueState.Success);
             this.getView().byId('distributionCenter').setValue(Werks).setValueState(sap.ui.core.ValueState.Success);
             this.getView().byId('distributionCenterDescription').setValue(Sucursal).setValueState(sap.ui.core.ValueState.Success);
@@ -743,7 +923,7 @@ sap.ui.define([
             this.getView().byId('receipt').setValue(Recibo);
             
         },
-        validatePaymentDocument : function(oEvent){
+       /* validatePaymentDocument : function(oEvent){
             let inputInvoice = this.getView().byId('paymentDocument');
 
             if( inputInvoice.getValue().trim() == '' ){
@@ -787,7 +967,7 @@ sap.ui.define([
             if( expirationDate != '' ) this.getView().byId('expirationDate').setDateValue(new Date(expirationDate + "T00:00:00"));
             
             
-        },
+        },*/
         loadAnalyst: function(oControlEvent){
 
             

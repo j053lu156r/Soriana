@@ -310,7 +310,7 @@
 							validated="true"
 							title="Verificación">
 								<form:SimpleForm
-										title="1. Remisión"
+										title="1. {appTxts>/rem.title}"
 										minWidth="1024"
 										editable="false"
                                         layout="ColumnLayout"
@@ -322,7 +322,7 @@
 										<Label text="Proveedor"/>
 										<Text  text="{reviewModel>/Remision/columnas/0/Proveedor}"/>
 										<Label text="Remision"/>
-										<Input  value="{reviewModel>/Remision/columnas/0/Remision}" change=".changeRemission" maxLength="10"/>
+										<Input  value="{reviewModel>/Remision/columnas/0/Remision}" change=".changeRemission" maxLength="20"/>
                                         <Label text="Consecutivo"/>
 										<Text  text="{reviewModel>/Remision/columnas/0/Consecutivo}"/>
                                         <Label text="Fecha Remision"/>
@@ -608,7 +608,7 @@
 					<Button text="{appTxts>/rem.back}" visible="{/backButtonVisible}" press="onDialogBackButton" />
 					<Button text="{appTxts>/rem.next}" type="Emphasized" enabled="{/nextButtonEnabled}" visible="{/nextButtonVisible}" press="onDialogNextButton" />
 					<Button text="{appTxts>/rem.review}" type="Emphasized" enabled="{/reviewButtonEnabled}" visible="{/reviewButtonVisible}" press="onDialogNextButton" />
-					<Button text="{appTxts>/rem.finish}" type="Emphasized" visible="{/finishButtonVisible}" press="handleWizardSubmit" />
+					<Button text="{appTxts>/rem.finish}" type="Emphasized" visible="{/finishButtonVisible}" press="handleWizardSubmitAviso" />
 					<Button	text="{appTxts>/rem.cancel}" type="Transparent" press="onCloseWizard"/>
 				</OverflowToolbar>
 			</f:footer>

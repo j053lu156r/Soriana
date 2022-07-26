@@ -11,19 +11,7 @@
             <Text
                 textAlign="Begin" class="sapUiLargeMarginBeginEnd sapUiSmallMarginTopBottom messageMenu"
                 text="{appTxts>/tiles.message}" />
-        <OverflowToolbar style="Clear" class="datePickerTiles">
-            <ToolbarSpacer />
-            <Button
-                ariaHasPopup="Dialog"
-                tooltip="Open Date Range Selection"
-                icon="sap-icon://appointment-2"
-                type="Transparent"
-                press=".openDateRangeSelection" />
-            <DateRangeSelection
-                id="HiddenDRS"
-                hideInput="true"
-                change=".changeDateHandler" />
-        </OverflowToolbar>
+      
 		<f:GridContainer 
             id="demoGrid"
             snapToRow="false"
@@ -52,10 +40,10 @@
 				</f:header>
 				<f:content>
 					<List showSeparators="None" items="{path: 'tilesModel>tiles', templateShareable:false}" >
-						<CustomListItem type="Navigation" press="onTilePress" class="sapUiSmallMargin menuTile" visible="{path: 'tilesModel>id', formatter: '.hasTileVisible' }">
+						<CustomListItem type="Navigation" press="onTilePress" class="sapUiSmallMargin menuTile" visible="{path: 'tilesModel>id', formatter: '.hasTileVisible' }" >
 							<HBox alignItems="Center" justifyContent="SpaceBetween">
 								<Title level="H3" text="{parts: ['tilesModel>title', 'tilesModel>id'], formatter: '.formatTranslate'}" class="sapUiMediumMarginBegin sapUiTinyMarginTopBottom itemListMenu" />
-                                <custm:TileNumeric icon="{tilesModel>icon}" metric="{ path: 'tilesModel>numeric' }" class="sapUiSmallMarginBottom" visible="{path: 'tilesModel>id', formatter: '.hasTileVisible' }" />
+                                <core:Icon src="{tilesModel>icon}" class=" sapMNCMediumFontSize sapMNCIconImage sapUiIcon">	</core:Icon>
 							</HBox>
 						</CustomListItem>
 					</List>
