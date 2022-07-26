@@ -112,6 +112,16 @@ sap.ui.define([
             }
 
 
+
+            //checbox
+
+            let partidasFiltro = this.getView().byId("checkPartidas");
+
+            if(partidasFiltro.getSelected()){
+                partidasFiltro.setSelected(false);
+            }
+
+
             if (proveedor_LIFNR == null || proveedor_LIFNR == "") {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.supplierSelectError"));
                 return false;
@@ -154,8 +164,6 @@ sap.ui.define([
             TDatos.results[0].Detalles = {
                 results: [...Detalles]
             };
-
-
             delete TDatos.results[0].Citms;
             delete TDatos.results[0].Oitms;
 
@@ -1250,9 +1258,43 @@ sap.ui.define([
 
             if (results.Xblnr == "") {
                 return
-            }
+            }   
+        },
+            onTableGrouping : function(oEvent) {
+             console.log(oEvent.getSource().getSelected());
 
 
+             //Actualizar datos despues de tratar informacion 
+             // let totalRegistros = parseInt( this.getOwnerComponent().getModel('totales').getProperty('/Detalles/results/length'), 10);
+
+
+
+            if(oEvent.getSource().getSelected()){
+
+
+          
+            var jsonModelT = this.getOwnerComponent().getModel('totales')
+            console.log(jsonModelT)
+            var registros =  jsonModelT.getProperty('/Detalles/results')
+            console.log(registros)
+
+            const arr2 = registros.filter(d => d.Augbl === '');
+            jsonModelT.setProperty('/Detalles/results',arr2)
+            
+            //jsonModelT.setData(JSONT);
+            //this.getOwnerComponent().setModel(jsonModelT, "totales");
+            this.paginate("totales", "/Detalles", 1, 0);
+
+}else {
+    this.searchData()
+}
+
+
+
+
+        },
+
+	});
             var serieOriginal = results.Xblnr
             var serieNonumbers = serieOriginal.replace(/[0-9]/g, '');
 
