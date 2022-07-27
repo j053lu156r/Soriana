@@ -384,14 +384,25 @@ sap.ui.define([
                 sap.ui.core.BusyIndicator.hide();
                 var data = _GEToDataV2Response.data.results;
 
-                console.log(data)
+
                 let Detalles = [...data[0].Citms.results, ...data[0].Oitms.results];
 
                 var cleanedArray =  Detalles.filter(obj => !obj.Belnr.startsWith("58") && !obj.Belnr.startsWith("59"));
+console.log(cleanedArray)
+
+                var clanedDateArray  = cleanedArray.filter(obj => {
+
+                    const date = new Date(obj.Budat.replace(/-/g, '\/'));
+
+
+                    return   date < new Date()
+                });
+
+               console.log(clanedDateArray)
 
 
                 data[0].Detalles = {
-                    results: [...cleanedArray]
+                    results: [...clanedDateArray]
                 };
 
 
@@ -400,7 +411,7 @@ sap.ui.define([
                 jsonModelT.setData(JSONT);
                 //filtrar totales y crear modelo grupal
 
-                let auxArray = [...cleanedArray]
+                let auxArray = [...clanedDateArray]
 
                 var groupedMovs = that.groupArrayOfObjects(auxArray, "DescripcionGpo");
                 var nestedMovs = []
