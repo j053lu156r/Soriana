@@ -139,10 +139,13 @@ idXblnr2: true
 
             var auxFilters = [];
 
-
-
-            var FechaI = that.getView().byId("dateRange").getDateValue();
-            var FechaF = that.getView().byId("dateRange").getSecondDateValue();
+if (that.getView().byId("dateRange").getValue().split("-")[1].trim() === that.getView().byId("dateRange").getValue().split("-")[0].trim()){
+    var FechaI = that.getView().byId("dateRange").getDateValue();
+    var FechaF = that.getView().byId("dateRange").getDateValue();
+}else{
+    var FechaI = that.getView().byId("dateRange").getDateValue();
+    var FechaF = that.getView().byId("dateRange").getSecondDateValue();
+}
 
 
             auxFilters.push(new sap.ui.model.Filter({
