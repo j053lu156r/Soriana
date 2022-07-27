@@ -299,7 +299,7 @@ sap.ui.define([
             reader.readAsDataURL(currentFile);
         },
 
-        handleUploadPressChangePrice: async function () {
+        async handleUploadPressChangePrice () {
 
 
             let archivo = this.getOwnerComponent().getModel('ITEXT64').getProperty('/attach');
@@ -373,7 +373,7 @@ sap.ui.define([
 
         },
 
-        handleUploadPressDelete: async function () {
+        async handleUploadPressDelete  () {
             let archivo = this.getOwnerComponent().getModel('ITEXT64Delete').getProperty('/attach');
             if (archivo.length == 1) {
                 let objRequest = {
@@ -1863,19 +1863,28 @@ sap.ui.define([
             this.getView().setModel(new JSONModel(dataModel), modelName);
         },
 
-        saveChangePrice: function () {
+        async saveChangePrice () {
+
             let that = this;
             let items = this.getView().getModel('ETMODIFY').getProperty('/results');
             let letter = this.getOwnerComponent().getModel("LETTERx64").getProperty("/attach");
+            let filename = this.byId("fileUploaderLetter").getValue()
             let destinatario = this.byId("inputDestinatario").getValue();
             if (items.length > 0 && destinatario != null && destinatario.trim() != "" && letter.length > 0) {
-                MessageBox.confirm("Desea enviar los registros para cambio de precio?", function () {
+                MessageBox.confirm("Desea enviar los registros para cambio de precio?", async function () {
 
                     for (let i = 0; i < items.length; i++)
                         delete items[i].index;
 
                     let objRequest = {
                         IOption: "11",
+                        IvString: letter[0].IText64,
+                        IvFilename: filename,
+                        ITRECIPIENT:[
+                          {
+                            Email: destinatario
+                          }
+                        ],
                         ETMODIFY: [...items],
                         ETDPRINT: [{
                             //Uniquer:'',
@@ -1890,10 +1899,23 @@ sap.ui.define([
                             "Docnum": "",
                             "Adver": "",
                             "Error": "",
-
                         }]
-                    }
-                    var response = Model.create("/HdrcatproSet", objRequest);
+                    };
+
+                    // var response = Model.create("/HdrcatproSet", objRequest);
+
+                    sap.ui.core.BusyIndicator.show();
+
+                    let response = null;
+
+                    await that._PostODataV2Async(_oDataModel, _oDataEntity, objRequest).then(resp => {
+
+                        response = resp.data;
+                        sap.ui.core.BusyIndicator.hide();
+
+                    }).catch(error => {
+                        console.error(error);
+                    });
 
                     if (response != null) {
                         if (response.ESuccess === 'X') {
