@@ -216,16 +216,27 @@ sap.ui.define([
 
 
         },
+
         generateFile: function (oEvent) {
             let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
             let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
 
             let registro = results[posicion];
-            let Laufd = String(registro.Laufd).replace(/-/g, "");
-            let Augdt = String(registro.Augdt).replace(/-/g, "");
+           var Datos;
+          for(var x=0;x<10;x++){
+           
 
+         
+          //  Fecha = (Fecha.getTime() - (1000 * 60 * 60 * 24 * 5))
+            let LaufdT = String(new Date(new Date(registro.Augdt+ 'T00:00:00').getTime() - (1000 * 60 * 60 * 24 * x)))
+           // let LaufdT2 = String(new Date(new Date(registro.Augdt+ 'T00:00:00').getTime() + (1000 * 60 * 60 * 24 * 10)))
+  
+            let Laufd = new Date(LaufdT).toISOString().slice(0,10).replace(/-/g, "");
+          //  let Laufd2 = new Date(LaufdT2).toISOString().slice(0,10).replace(/-/g, "");
+            let Augdt=String(registro.Augdt).replace(/-/g, "");
             let url = `HeaderPYMNTCSet?$expand=ETXTHDRNAV,ETXTTOTALNAV,ETXTTAXNAV,ETXTFACTPROVNAV,ETXTFACTSORNAV,ETXTDISCOUNTNAV,ETXTAGREEMENTNAV&$filter= IOption eq '3' and 
-            ILaufd eq '${Laufd}' and 
+            ILaufd ge '${Laufd}' and
+            
             ILaufi eq '${registro.Laufi}' and 
             IBukrs eq '${registro.Bukrs}' and 
             ILifnr eq '${registro.Lifnr}' and 
@@ -233,14 +244,7 @@ sap.ui.define([
             IVblnr eq '${registro.Vblnr}' and 
             IAugdt eq '${Augdt}'&$format=json`;
 
-            /*let url = `HeaderPYMNTCSet?$expand=ETXTHDRNAV,ETXTTOTALNAV,ETXTTAXNAV,ETXTFACTPROVNAV,ETXTFACTSORNAV,ETXTDISCOUNTNAV,ETXTAGREEMENTNAV&$filter= IOption eq '3' and
-            ILaufd eq '20200429' and
-            ILaufi eq 'PPDL' and
-            IBukrs eq '2001' and
-            ILifnr eq '96008' and
-            IGjahr eq '2020' and
-            IVblnr eq '1500001807' and
-            IAugdt eq '20200429'&$format=json`;*/
+         
 
             let oODataJSONModel = this.getOdata(sUri);
 
@@ -248,9 +252,16 @@ sap.ui.define([
             let dataJSON = oDataJSONModel.getJSON();
 
 
-            let Datos = JSON.parse(dataJSON);
+            let Datos2 = JSON.parse(dataJSON);
+          
+        
+            if(Datos2.results[0].ETXTFACTPROVNAV.results.length!==0){
+                x=100;
+                Datos=Datos2;
+            
+            }
 
-
+        }
 
             let Encabezado = Object.values(Datos.results[0].ETXTHDRNAV.results[0]).slice(1).join('\t');
             let Totales = Datos.results[0].ETXTTOTALNAV.results;
@@ -281,6 +292,7 @@ sap.ui.define([
             //this.exportxls('Archivo', '/Detalles/results', columns, typeExport);
 
             sap.ui.core.util.File.save(ContenidoArchivo, nombreArchivo, "txt", "text/plain", "utf-8", false);
+             
         },
         generaRenglonesArchivo: function (Array) {
 
