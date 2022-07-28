@@ -36,6 +36,8 @@ sap.ui.define([
 
             this.oRouter.getRoute("EstadoCuentaReporte").attachPatternMatched(this._onDocumentMatched, this);
 
+            this.oRouter.getRoute("ComplementoReporteMC").attachPatternMatched(this._onDocumentMatched, this);
+
 
             console.log('on reporte estado cuenta init-----')
 
@@ -112,7 +114,7 @@ sap.ui.define([
                         content: "{DocCompra}"
                     }
                 }
-               
+
             ];
 
             columns = []
@@ -143,7 +145,7 @@ sap.ui.define([
 
             }
 
-            
+
             this.exportxls('MejorCondHdr', '/', columns);
         },
 
@@ -166,7 +168,7 @@ sap.ui.define([
             //		"detailAcuerdosAS");
 
 
-            //consume el servicio para obtener los docuemntos 
+            //consume el servicio para obtener los docuemntos
 
             this.searchData()
 
@@ -175,7 +177,7 @@ sap.ui.define([
         },
 
 
-        //HANDLE WINDOW EVENTS 
+        //HANDLE WINDOW EVENTS
 
         handleFullScreen: function () {
             var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(2);
@@ -203,7 +205,8 @@ sap.ui.define([
         handleClose: function () {
             console.log('on hanlde close')
             var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
-            this.oRouter.navTo("EstadoCuenta", {});
+           // this.oRouter.navTo("EstadoCuenta", {});
+            this.onBackPreviousView()
         },
 
          padLeadingZeros: function(num, size) {
@@ -211,6 +214,11 @@ sap.ui.define([
             while (s.length < size) s = "0" + s;
             return s;
         },
+
+
+
+
+
 
         formatDate: function (d) {
             //get the month

@@ -185,7 +185,7 @@
                                                 <m:Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableDetailMoves>/Oekponav/Paginated/iterator}, ${tableDetailMoves>/Oekponav/Paginated/initRow}, 'tableDetailMoves', '/Oekponav')" enabled="{= ${tableDetailMoves>/Oekponav/Paginated/iterator} !== 1}" />
                                                 <m:Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableDetailMoves>/Oekponav/Paginated/iterator}, ${tableDetailMoves>/Oekponav/Paginated/endRow}, 'tableDetailMoves', '/Oekponav')" enabled="{= ${tableDetailMoves>/Oekponav/Paginated/endRow} !== ${tableDetailMoves>/Oekponav/results/length}}" />
                                         </m:OverflowToolbar>
-                                        <m:Text id="txtTermsCond" textAlign="Center" visible="false"/>
+                                        <m:Text id="txtTermsCond" textAlign="Center"/>
                                         </m:VBox>
                                         </m:content>
                                     </m:IconTabFilter>
@@ -254,7 +254,7 @@ Inicio de CAMBIO BORTA 27.07.2021 Se solicita indicar valores en columnas y no e
                                                 <m:Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableDetailMoves>/Oekponav/Paginated/iterator}, ${tableDetailMoves>/Oekponav/Paginated/initRow}, 'tableDetailMoves', '/Oekponav')" enabled="{= ${tableDetailMoves>/Oekponav/Paginated/iterator} !== 1}" />
                                                 <m:Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableDetailMoves>/Oekponav/Paginated/iterator}, ${tableDetailMoves>/Oekponav/Paginated/endRow}, 'tableDetailMoves', '/Oekponav')" enabled="{= ${tableDetailMoves>/Oekponav/Paginated/endRow} !== ${tableDetailMoves>/Oekponav/results/length}}" />
                                             </m:OverflowToolbar>
-                                            <m:Text id="txtTermsCond2" textAlign="Center" visible="false"/>
+                                            <m:Text id="txtTermsCond2" textAlign="Center"/>
                                             </m:VBox>
                                         </m:content>
                                     </m:IconTabFilter>
@@ -329,7 +329,7 @@ Inicio de CAMBIO BORTA 27.07.2021 Se solicita indicar valores en columnas y no e
                                     <m:Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableDetailMoves>/OEKKOADVRNAV/Paginated/iterator}, ${tableDetailMoves>/OEKKOADVRNAV/Paginated/initRow}, 'tableDetailMoves', '/OEKKOADVRNAV')" enabled="{= ${tableDetailMoves>/OEKKOADVRNAV/Paginated/iterator} !== 1}" />
                                     <m:Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableDetailMoves>/OEKKOADVRNAV/Paginated/iterator}, ${tableDetailMoves>/OEKKOADVRNAV/Paginated/endRow}, 'tableDetailMoves', '/OEKKOADVRNAV')" enabled="{= ${tableDetailMoves>/OEKKOADVRNAV/Paginated/endRow} !== ${tableDetailMoves>/OEKKOADVRNAV/results/length}}" />
                             </m:OverflowToolbar>
-                            <m:Text id="txtTermsCond3" textAlign="Center" visible="false"/>
+                            <m:Text id="txtTermsCond3" textAlign="Center"/>
                             </m:VBox>
 						</blocks>
 					</ObjectPageSubSection>

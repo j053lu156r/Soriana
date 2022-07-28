@@ -5,11 +5,14 @@ sap.ui.define([
     "sap/m/MessageBox",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
-    "demo/models/formatterCatPrd"
-], function (BaseController, JSONModel, Fragment, MessageBox, Filter, FilterOperator, formatterCatPrd) {
+    "demo/models/formatterCatPrd",
+    "sap/ui/core/BusyIndicator"
+], function (BaseController, JSONModel, Fragment, MessageBox, Filter, FilterOperator, formatterCatPrd, BusyIndicator) {
     "use strict";
 
     var sUri = "/sap/opu/odata/sap/ZOSP_CATPRO_SRV/";
+    var _oDataModel = "ZOSP_CATPRO_SRV";
+    var _oDataEntity = "HdrcatproSet";
 
     var Model = new Productos();
     var NotifAltaMas = new NotifAltaMasiva();
@@ -17,12 +20,12 @@ sap.ui.define([
     var swProveedorEnGS1 = false;
     var swProveedorExcluido = false;
     var _selectedEanType = {};
-    var _testingSteps = true; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
+    var _invalidCostoNuevo = {};
+    var _testingSteps = (document.location.hostname.slice(-4) == '.sap');//true; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
 
     return BaseController.extend("demo.controllers.Products.Master", {
         formatterCatPrd: formatterCatPrd,
         onInit: function () {
-
             this.getView().addEventDelegate({
                 onBeforeShow: function (oEvent) {
                     this.getOwnerComponent().setModel(new JSONModel(), "Paises");
@@ -36,12 +39,11 @@ sap.ui.define([
                     this.getOwnerComponent().getModel("ITARTVAR").setProperty("/results", []);
                     this.getCatalogos();
                     this.clearFilters();
+                    this.setInitialDates();
                 }
             }, this);
-
             this.configFilterLanguage(this.getView().byId("filterBar"));
             this.setInitialDates();
-
         },
 
         async getGS1ProductData() {
@@ -152,9 +154,9 @@ sap.ui.define([
         },
 
         getCatalogos: function () {
-            try {
 
-                var url = `/HdrcatproSet?$expand=ETTART,ETCOUNTRYNAV,ETCODENAV,ETBRANDSNAV,ETTCARCV,ETUWEIG,ETULONG,ETUVOL,ETUNM,ETGPOART,ETLABEL,ETFORMAT,ETOUTSTRAT,ETBONUS&$filter=IOption eq '4'`;
+            try {
+                var url = `/HdrcatproSet?$expand=ETTART,ETCOUNTRYNAV,ETCODENAV,ETBRANDSNAV,ETTCARCV,ETUWEIG,ETULONG,ETUVOL,ETUNM,ETLABEL,ETFORMAT,ETOUTSTRAT,ETBONUS&$filter=IOption eq '4'`;
                 Model.getJsonModelAsync(url, function (response, that) {
                     let Paises = [];
                     const catPaises = response.getProperty('/results/0/ETCOUNTRYNAV/results');
@@ -168,7 +170,7 @@ sap.ui.define([
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/UnidadVolumen', response.getProperty('/results/0/ETUVOL'));
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/UnidadPeso', response.getProperty('/results/0/ETUWEIG'));
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/Caracteristicas', response.getProperty('/results/0/ETTCARCV'));
-                    that.getOwnerComponent().getModel("Catalogos").setProperty('/GrupoArticulos', response.getProperty('/results/0/ETGPOART'));
+                    //that.getOwnerComponent().getModel("Catalogos").setProperty('/GrupoArticulos', response.getProperty('/results/0/ETGPOART'));
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/NegotiatedFormat', response.getProperty('/results/0/ETFORMAT'));
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/TiposEtiqueta', response.getProperty('/results/0/ETLABEL'));
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/EstrategiaSalida', response.getProperty('/results/0/ETOUTSTRAT'));
@@ -193,7 +195,6 @@ sap.ui.define([
                     sap.m.MessageBox.error("No se lograron obtener los datos del proveedor registrado en GS1.");
                 }, this);
 
-
                 let urlDivision = `HdrcatproSet?$expand=ETJERARQUIANAV&$filter=IOption eq '21'`;
                 Model.getJsonModelAsync(urlDivision, function (response, that) {
                     that.getOwnerComponent().getModel("Catalogos").setProperty('/Divisiones', response.getProperty('/results/0/ETJERARQUIANAV'));
@@ -201,20 +202,19 @@ sap.ui.define([
                     sap.m.MessageBox.error("No se lograron obtener las divisiones");
                 }, this);
 
-                let urlCompras = `HdrcatproSet?$expand=ETGPOCOMPRAS&$filter=IOption eq '22'`;
-                Model.getJsonModelAsync(urlCompras, function (response, that) {
-                    that.getOwnerComponent().getModel("Catalogos").setProperty('/GrupoCompras', response.getProperty('/results/0/ETGPOCOMPRAS'));
-                }, function () {
-                    sap.m.MessageBox.error("No se lograron obtener los grupos de compras");
-                }, this);
-
+                // let urlCompras = `HdrcatproSet?$expand=ETGPOCOMPRAS&$filter=IOption eq '22'`;
+                // Model.getJsonModelAsync(urlCompras, function (response, that) {
+                //     that.getOwnerComponent().getModel("Catalogos").setProperty('/GrupoCompras', response.getProperty('/results/0/ETGPOCOMPRAS'));
+                // }, function () {
+                //     sap.m.MessageBox.error("No se lograron obtener los grupos de compras");
+                // }, this);
 
             } catch (error) {
                 console.error(" Get Catalogos Error ", error);
             }
         },
 
-        addAttach: function (oEvt) {
+        addAttachChangeTxt: function (oEvt) {
 
             let viewModel = this.getView().getModel("ETMODIFY");
 
@@ -237,9 +237,36 @@ sap.ui.define([
                     'attach': []
                 };
 
+                that.getOwnerComponent().setModel(new JSONModel(ITEXT64), "LETTERx64");
                 ITEXT64.attach.push(oFile);
                 that.getOwnerComponent().setModel(new JSONModel(ITEXT64), "ITEXT64");
+
             }
+            reader.readAsDataURL(currentFile);
+        },
+
+        addAttachLetter(oControlEvent) {
+
+            let aFiles = oControlEvent.getParameters().files;
+
+            let currentFile = aFiles[0];
+            let that = this;
+
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                let oFile = {};
+                oFile.IText64 = e.target.result;
+
+                let ITEXT64 = {
+                    'attach': []
+                };
+
+                ITEXT64.attach.push(oFile);
+
+                that.getOwnerComponent().setModel(new JSONModel(ITEXT64), "LETTERx64");
+
+            };
+
             reader.readAsDataURL(currentFile);
         },
 
@@ -272,7 +299,9 @@ sap.ui.define([
             reader.readAsDataURL(currentFile);
         },
 
-        handleUploadPress: function () {
+        async handleUploadPressChangePrice () {
+
+
             let archivo = this.getOwnerComponent().getModel('ITEXT64').getProperty('/attach');
             if (archivo.length == 1) {
 
@@ -292,9 +321,19 @@ sap.ui.define([
                         }
                     ]
                 }
-                var response = Model.create("/HdrcatproSet", objRequest);
 
-                console.log("respuesta opcion 16", response);
+                sap.ui.core.BusyIndicator.show();
+
+                let response = null;
+
+                await this._PostODataV2Async(_oDataModel, _oDataEntity, objRequest).then(resp => {
+
+                    response = resp.data;
+                    sap.ui.core.BusyIndicator.hide();
+
+                }).catch(error => {
+                    console.error(error);
+                });
 
                 if (response != null) {
                     if (response.ESuccess == "X") {
@@ -334,7 +373,7 @@ sap.ui.define([
 
         },
 
-        handleUploadPressDelete: function () {
+        async handleUploadPressDelete  () {
             let archivo = this.getOwnerComponent().getModel('ITEXT64Delete').getProperty('/attach');
             if (archivo.length == 1) {
                 let objRequest = {
@@ -351,7 +390,18 @@ sap.ui.define([
                         }
                     ]
                 }
-                var response = Model.create("/HdrcatproSet", objRequest);
+
+                sap.ui.core.BusyIndicator.show();
+                let response = null;
+
+                await this._PostODataV2Async(_oDataModel, _oDataEntity, objRequest).then(resp => {
+
+                    response = resp.data;
+                    sap.ui.core.BusyIndicator.hide();
+
+                }).catch(error => {
+                    console.error(error);
+                });
 
                 if (response != null) {
                     if (response.ESuccess == "X") {
@@ -422,10 +472,6 @@ sap.ui.define([
         },
         searchData: function () {
 
-            /* falto dar de alta este codigo, lo dejo preparado if (!this.hasAccess()) {
-                 return false;
-             }*/
-
             if (!this.hasAccess(46)) {
                 return false;
             }
@@ -434,60 +480,70 @@ sap.ui.define([
             //var comboStatus = this.getView().byId("comboStatus");
             var inputFolioTxt = this.getView().byId("inputFolioTxt");
 
-
             let folio = inputFolioTxt.getValue().trim();
-            //let folio = "0000000943";
-            //let status = comboStatus.getSelectedKey();
-            //let status = 'A';
 
-            //let proveedor_LIFNR = 21;
             let proveedor_LIFNR = (this.getConfigModel().getProperty("/supplierInputKey") != undefined) ? this.getConfigModel().getProperty("/supplierInputKey") : '';
             // format[AAAAMMDD] (2020101)
             let IStartdate = this.buildSapDate(dateRange.getDateValue());
             // format[AAAAMMDD] (2020101)
             let IEnddate = this.buildSapDate(dateRange.getSecondDateValue());
-            //let IIdusua = this.getOwnerComponent().getModel("userdata").getProperty('/EIdusua');
-            //let IIdusua = '';
-            //console.log(this.getOwnerComponent().getModel("userdata").getJSON());
 
-            if (folio.trim() === '' && proveedor_LIFNR == '' && dateRange.getValue() == '') {
+            if (proveedor_LIFNR == '' || (folio.trim() === '' && dateRange.getValue() == '')) {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/products.msgNoFilter'));
                 return false;
             }
 
-            let filtros = [`IOption eq '2'`];
+            let filtros = [];
 
-            filtros.push(`IUniqr eq '${folio}'`);
+            filtros.push(new sap.ui.model.Filter({
+                path: "IOption",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: '2'
+            })
+            )
+
 
             if (folio != '') {
-                filtros.push(`ISdate eq '' and IFdate eq ''`);
+
+                filtros.push(new sap.ui.model.Filter({
+                    path: "IUniqr",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: folio
+                })
+                );
+            } else {
+
+                filtros.push(new sap.ui.model.Filter({
+                    path: "ISdate",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: IStartdate
+                })
+                );
+
+                filtros.push(new sap.ui.model.Filter({
+                    path: "IFdate",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: IEnddate
+                })
+                );
             }
-            else {
-                filtros.push(`ISdate eq '${IStartdate}' and IFdate eq '${IEnddate}'`);
-                // if (status != '') filtros.push(`IStatus eq '${status}'`);
-            }
 
-            // if (String(IIdusua).trim() != '') filtros.push(`IIdusua eq '${IIdusua}'`);
+            filtros.push(new sap.ui.model.Filter({
+                path: "ILifnr",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: proveedor_LIFNR
+            })
+            );
 
-            //if (proveedor_LIFNR != '' && !this.getView().byId("colSor").getSelected() ) 
-            filtros.push(`ILifnr eq '${proveedor_LIFNR}'`);
-
-
-            filtros = filtros.join(' and ');
-
-            // let url = `HeaderPYMNTCSet?$expand=EPYMNTDOCSNAV,EPYMNTPRGRMNAV&$filter= IOption eq '2' and ILifnr eq '${proveedor_LIFNR}' and IStartdate eq '${IStartdate}'  and IEnddate eq '${IEnddate}'&$format=json`;
-            let url = `HdrcatproSet?$expand=ETPRICNAV&$filter=${filtros}&$format=json`;
-
-
-            let oODataJSONModel = this.getOdata(sUri);
-
-            let oDataJSONModel = this.getOdataJsonModel(url, oODataJSONModel);
-            let dataJSON = oDataJSONModel.getJSON();
-            let Datos = JSON.parse(dataJSON);
-
-            this.getOwnerComponent().setModel(new JSONModel(Datos.results[0]), "Folios");
-
-            this.paginate("Folios", "/ETPRICNAV", 1, 0);
+            sap.ui.core.BusyIndicator.show();
+            let that = this;
+            this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["ETPRICNAV"], "").then(resp => {
+                that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "Folios");
+                that.paginate("Folios", "/ETPRICNAV", 1, 0);
+                sap.ui.core.BusyIndicator.hide();
+            }).catch(error => {
+                console.error(error);
+            });
         },
 
         clearFilters: function () {
@@ -504,6 +560,7 @@ sap.ui.define([
             tablaPrincipal.setVisibleRowCount(totalRegistros < valorSeleccinado ? totalRegistros : valorSeleccinado);
             this.paginateValue(selectedItem, modelName, `/${tableName}`);
         },
+
         buildExportTable: function () {
             var texts = this.getOwnerComponent().getModel("appTxts");
 
@@ -559,6 +616,72 @@ sap.ui.define([
             ];
 
             this.exportxls('Folios', '/ETPRICNAV/results', columns);
+        },
+
+        buildExportTableCostos() {
+            let texts = this.getOwnerComponent().getModel("appTxts");
+            let columns = [
+                {
+                    label: texts.getProperty("/products.organizePrice"),
+                    property: "OrgCompras"
+                },
+                {
+                    label: texts.getProperty("/products.centerPrice"),
+                    property: "Centro"
+                },
+                {
+                    label: texts.getProperty("/products.codePrice"),
+                    property: "Codigoean"
+                },
+                {
+                    label: texts.getProperty("/products.descriptionPrice"),
+                    property: "Descrip"
+                },
+                {
+                    label: texts.getProperty("/products.costPrice"),
+                    property: "Costobant"
+                },
+                {
+                    label: texts.getProperty("/products.normalDiscount"),
+                    property: "DNormal"
+                },
+                {
+                    label: texts.getProperty("/products.additionalDiscount"),
+                    property: "DAdicional"
+                },
+                {
+                    label: texts.getProperty("/products.discountEarlyPay"),
+                    property: "DPronto"
+                },
+                {
+                    label: texts.getProperty("/products.subtitleBonusType") + '(%)',
+                    property: "PDBonif"
+                },
+                {
+                    label: texts.getProperty("/products.subtitleBonusType") + '($)',
+                    property: "PDBonif"
+                },
+                {
+                    label: texts.getProperty("/products.CostDiff"),
+                    property: "PDifCos"
+                },
+                {
+                    label: texts.getProperty("/products.CompCentral"),
+                    property: "PComCen"
+                },
+                {
+                    label: texts.getProperty("/products.CargoCosto") + '(%)',
+                    property: "PCargoC"
+                },
+                {
+                    label: texts.getProperty("/products.CargoCosto") + '($)',
+                    property: "MCargoC"
+                }
+            ]
+
+            let results = this.getOwnerComponent().getModel("ETMODIFY").getProperty("/Paginated/results")
+            this.buildExcelSpreadSheet(columns, results, "CostosActuales.xlsx");
+
         },
 
         //alta masiva
@@ -653,11 +776,6 @@ sap.ui.define([
             try {
                 var oView = this.getView();
 
-                //var that = this;
-
-                // if (this.getConfigModel().getProperty("/supplierInputKey") != null && this.getConfigModel().getProperty("/supplierInputKey") != "") {
-                // if( true ){
-
                 // create Dialog
                 if (!this._cpDialog) {
                     this._cpDialog = Fragment.load({
@@ -678,26 +796,18 @@ sap.ui.define([
                     oDialog.open();
                 });
 
-                // }
-                // else
-                // sap.m.MessageBox.error("Debe selecionar un proveedor para continuar.");
-
             } catch (err) {
                 sap.m.MessageBox.error("Ocurrió una excepción al inicializar un nuevo folio.");
                 console.error(err);
             }
         },
+
         deleteProducts: function () {
             if (!this.hasAccess(44)) {
                 return false;
             }
             try {
                 var oView = this.getView();
-
-                //var that = this;
-
-                // if (this.getConfigModel().getProperty("/supplierInputKey") != null && this.getConfigModel().getProperty("/supplierInputKey") != "") {
-                // if( true ){
 
                 // create Dialog
                 if (!this._dpDialog) {
@@ -771,10 +881,11 @@ sap.ui.define([
             }
         },
 
-         validateCstBrutNuevo(oControlEvent) {
+        validateCstBrutNuevo(oControlEvent) {
 
             let cbn = oControlEvent.getParameter('value');
             let cba = oControlEvent.getSource().data("cba");
+            let ean = oControlEvent.getSource().data("ean");
 
             let splited_quant = cbn.split('.');
 
@@ -783,15 +894,27 @@ sap.ui.define([
                 if (splited_quant[1].length > 2) {
                     oControlEvent.getSource().setValueState(sap.ui.core.ValueState.Warning);
                     oControlEvent.getSource().setValueStateText("Maximo 2 decimales");
+                    _invalidCostoNuevo.valid = false;
+                    _invalidCostoNuevo.identifier = ean;
 
-                }else if ((parseFloat(cba) * 2) < parseFloat(cbn)) {
+                } else if ((parseFloat(cba) * 2) < parseFloat(cbn)) {
                     oControlEvent.getSource().setValueState(sap.ui.core.ValueState.Warning);
                     oControlEvent.getSource().setValueStateText("No puede haber un incremento del 100% del costo bruto actual!");
-                    
-                }else {
+                    _invalidCostoNuevo.valid = false;
+                    _invalidCostoNuevo.identifier = ean;
+
+                } else {
                     oControlEvent.getSource().setValueState(sap.ui.core.ValueState.None);
-                } 
+
+                    if (!_invalidCostoNuevo.valid && _invalidCostoNuevo.identifier == ean) {
+                        _invalidCostoNuevo.valid = true;
+                        _invalidCostoNuevo.identifier = null;
+                    }
+
+                }
             }
+
+            this.byId("btnSaveChangePriceRow").setEnabled(_invalidCostoNuevo.valid);
         },
 
         validateBarCode: function () {
@@ -936,7 +1059,7 @@ sap.ui.define([
             this._handleMessageBoxOpen(this.getOwnerComponent().getModel("appTxts").getProperty('/products.msgCancelNewProduct'), "warning");
         },
 
-        _handleMessageBoxOpen: function (sMessage, sMessageBoxType) {
+        _handleMessageBoxOpen: async function (sMessage, sMessageBoxType) {
 
             MessageBox[sMessageBoxType](sMessage, {
 
@@ -966,11 +1089,14 @@ sap.ui.define([
                                 "ITIMGART": [...imagesToAttach]
                             };
 
-                            // console.log(" >>>>>>> CREATING PRDUCT String: ", JSON.stringify(createObjReq));
-
-                            // ** Nota Model.create(endpoint,data) No trabaja ni con callback ni con promesa Solo recepcion syncrona
-
-                            let resp = Model.create("/HdrcatproSet", createObjReq);
+                            sap.ui.core.BusyIndicator.show();
+                            let resp = null;
+                            await this._PostODataV2Async(_oDataModel, _oDataEntity, createObjReq).then(response => {
+                                resp = response.data;
+                                sap.ui.core.BusyIndicator.hide();
+                            }).catch(error => {
+                                console.error(error);
+                            });
 
                             if (resp.ESuccess) {
 
@@ -1226,19 +1352,6 @@ sap.ui.define([
                 this.getView().byId('contentUnit').setValueState(sap.ui.core.ValueState.None);
             }
 
-
-            // Código de venta
-            // if (ModelFolio.getProperty('/CodVent') == undefined || ModelFolio.getProperty('/CodVent').trim() == '') {
-            //     validated = false;
-            //     this.getView().byId('salesCode').setValueState(sap.ui.core.ValueState.Error);
-            // }
-            // else {
-            //     // let content = this.getView().byId("salesCode").getValue();
-            //     // this.getOwnerComponent().getModel("FolioToShow").setProperty("/CodVent", content);
-            //     this.getView().byId('salesCode').setValueState(sap.ui.core.ValueState.None);
-            // }
-
-
             // Unidad de medida de venta
             if (ModelFolio.getProperty('/UndMventa') == undefined || ModelFolio.getProperty('/UndMventa').trim() == '') {
                 validated = false;
@@ -1247,17 +1360,6 @@ sap.ui.define([
             else {
                 this.getView().byId('salesUnit').setValueState(sap.ui.core.ValueState.None);
             }
-
-            // Codigo unidad de compra
-            // if (ModelFolio.getProperty('/CodCompra') == undefined || ModelFolio.getProperty('/CodCompra').trim() == '') {
-            //     validated = false;
-            //     this.getView().byId('purchaseUnitCode').setValueState(sap.ui.core.ValueState.Error);
-            // }
-            // else {
-            //     // let content = this.getView().byId("purchaseUnitCode").getValue();
-            //     // this.getOwnerComponent().getModel("FolioToShow").setProperty("/CodCompra", content);
-            //     this.getView().byId('purchaseUnitCode').setValueState(sap.ui.core.ValueState.None);
-            // }
 
             // Unidad de compra
             if (ModelFolio.getProperty('/UndCompra') == undefined || ModelFolio.getProperty('/UndCompra').trim() == '') {
@@ -1321,8 +1423,6 @@ sap.ui.define([
                 if (rowPresentacion.CodVent == undefined || rowPresentacion.CodVent.trim() == '') {
                     validated = false;
                 }
-                // if( rowPresentacion.index == undefined || rowPresentacion.index.trim() == '' )
-                // validated = false;
 
                 if (rowPresentacion.CaracTalla == undefined || rowPresentacion.CaracTalla.trim() == '') {
                     validated = false;
@@ -1502,7 +1602,6 @@ sap.ui.define([
 
             const Folio = JSON.parse(this.getOwnerComponent().getModel("Folio").getJSON());
 
-            // if (Folio.CapEmbar == undefined || Folio.CapEmbar.trim() == '') validated = false;
             if (Folio.UndBon == undefined || Folio.UndBon.trim() == '') validated = false;
             if (Folio.CostoB == undefined || Folio.CostoB.trim() == '') validated = false;
             if (Folio.CostNUCompra == undefined || Folio.CostNUCompra.trim() == '') validated = false;
@@ -1587,6 +1686,7 @@ sap.ui.define([
             if (!oselectedItem)
                 return;
             this.getOwnerComponent().getModel("FolioToShow").setProperty("/GrupoArt", oselectedItem.getText());
+            this.fetchProdBase_categroria(oControlEvent);
         },
 
         getTallasColores: function () {
@@ -1648,9 +1748,7 @@ sap.ui.define([
             }
 
             this.getOwnerComponent().getModel('Folio').setProperty("/ProdBase", oSelectedItem.getObject().DescLinea);
-            //this.getOwnerComponent().getModel('Folio').setProperty("/EanUpcBase", oSelectedItem.getObject().NumLinea);
             this.getOwnerComponent().getModel('FolioToShow').setProperty("/ProdBase", oSelectedItem.getObject().DescLinea);
-            // this.getOwnerComponent().getModel('FolioToShow').setProperty("/PurGroup", oSelectedItem.getObject().DescGcom);
 
         },
 
@@ -1697,7 +1795,6 @@ sap.ui.define([
         addOptionalInfo: function () {
 
             var presentacion = {
-                //index: '',
                 Taltam: "",
                 CaracCsa: "",
                 CaracTalla: "",
@@ -1766,17 +1863,28 @@ sap.ui.define([
             this.getView().setModel(new JSONModel(dataModel), modelName);
         },
 
-        saveChangePrice: function () {
+        async saveChangePrice () {
+
             let that = this;
             let items = this.getView().getModel('ETMODIFY').getProperty('/results');
-            if (items.length > 0) {
-                MessageBox.confirm("Desea enviar los registros para cambio de precio?", function () {
+            let letter = this.getOwnerComponent().getModel("LETTERx64").getProperty("/attach");
+            let filename = this.byId("fileUploaderLetter").getValue()
+            let destinatario = this.byId("inputDestinatario").getValue();
+            if (items.length > 0 && destinatario != null && destinatario.trim() != "" && letter.length > 0) {
+                MessageBox.confirm("Desea enviar los registros para cambio de precio?", async function () {
 
                     for (let i = 0; i < items.length; i++)
                         delete items[i].index;
 
                     let objRequest = {
                         IOption: "11",
+                        IvString: letter[0].IText64,
+                        IvFilename: filename,
+                        ITRECIPIENT:[
+                          {
+                            Email: destinatario
+                          }
+                        ],
                         ETMODIFY: [...items],
                         ETDPRINT: [{
                             //Uniquer:'',
@@ -1791,16 +1899,26 @@ sap.ui.define([
                             "Docnum": "",
                             "Adver": "",
                             "Error": "",
-
                         }]
-                    }
-                    var response = Model.create("/HdrcatproSet", objRequest);
-                    console.log("Respuesta del save", response);
+                    };
 
+                    // var response = Model.create("/HdrcatproSet", objRequest);
+
+                    sap.ui.core.BusyIndicator.show();
+
+                    let response = null;
+
+                    await that._PostODataV2Async(_oDataModel, _oDataEntity, objRequest).then(resp => {
+
+                        response = resp.data;
+                        sap.ui.core.BusyIndicator.hide();
+
+                    }).catch(error => {
+                        console.error(error);
+                    });
 
                     if (response != null) {
                         if (response.ESuccess === 'X') {
-                            //let msg = that.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.msgUpdated') ;
                             const msg = "Se han generado correctamente los cambios de precio.";
                             sap.m.MessageBox.success(msg, {
                                 actions: [sap.m.MessageBox.Action.CLOSE],
@@ -1818,10 +1936,11 @@ sap.ui.define([
                     } else {
                         sap.m.MessageBox.error("No se pudo conectar con el servidor, intente nuevamente.");
                     }
+
                 })
             }
             else
-                MessageBox.warning('No existen registros para cambio de precios.')
+                MessageBox.warning('Debe capturar el destinatario y la carta compromiso. \r\n Y almenos un regsitro para el cambio de costo')
         },
 
         saveDelete: function () {
@@ -1837,7 +1956,6 @@ sap.ui.define([
                 return false;
             }
 
-            // let items = this.getView().getModel('ETDELETE').getProperty('/results');
             if (items.length > 0) {
                 MessageBox.confirm("Desea enviar los registros para baja de productos?", function (oAction) {
                     if (oAction === MessageBox.Action.OK) {
@@ -2114,7 +2232,7 @@ sap.ui.define([
 
             if (children) {
                 this.getOwnerComponent().getModel("Catalogos").setProperty('/GerenCategoria', children);
-                this.byId("ComboCatMgmt").setEditable(true);
+                //this.byId("ComboCatMgmt").setEditable(true);
             }
         },
 
@@ -2137,7 +2255,7 @@ sap.ui.define([
 
             if (children) {
                 this.getOwnerComponent().getModel("Catalogos").setProperty('/Categoria', children);
-                this.byId("ComboCategory").setEditable(true);
+                //this.byId("ComboCategory").setEditable(true);
             }
         },
 
@@ -2152,7 +2270,8 @@ sap.ui.define([
             this.byId("ComboSubSegmento").setEditable(false);
             this.byId("ComboSubSegmento").setValue("");
 
-            let catKey = oControlEvent.getParameter('selectedItem').getKey();
+            let catKey = this.byId("ComboCategory").getSelectedKey(); //oControlEvent.getParameter('selectedItem').getKey();
+
             let children = await this.fetchHierarchyChildren(catKey);
 
             if (children) {
@@ -2193,13 +2312,17 @@ sap.ui.define([
         },
 
         async fetchHierarchyChildren(key) {
+
+            sap.ui.core.BusyIndicator.show();
             let children = null;
             let urlDivision = `HdrcatproSet?$expand=ETJERARQUIANODO&$filter=IOption eq '21' and IParent eq '${key}'`;
             await Model.getJsonModelAsync(urlDivision, async function (response, that) {
                 children = await response.getProperty('/results/0/ETJERARQUIANODO');
+                sap.ui.core.BusyIndicator.hide();
             }, function () {
                 sap.m.MessageBox.error("No se lograron obtener los datos");
             }, this, false); //retirar false para volverlo asyncrono
+
             return children;
         },
 
@@ -2280,6 +2403,129 @@ sap.ui.define([
                 sap.m.MessageBox.error(resp.ETRETURN.results[0].Message);
             }
 
+        },
+
+        async fetchProdBase_categroria(oControlEvent) {
+
+            let shoppgrp = this.getOwnerComponent().getModel('Folio').getProperty("/PurGroup");
+            let grupArt = this.byId("productGroup").getSelectedKey();
+
+            if (!shoppgrp && !grupArt)
+                return;
+
+            let entity = `HierarchySet(Ekgrp='${shoppgrp}',Matkl='${grupArt}')`;
+
+            sap.ui.core.BusyIndicator.show();
+            let response = null
+            await this._GetODataV2(_oDataModel, entity, [], [], "").then(resp => {
+                response = resp.data;
+                sap.ui.core.BusyIndicator.hide();
+            }).catch(error => {
+                console.error(error);
+            });
+
+            this.getOwnerComponent().getModel('Folio').setProperty("/ProdBase", response.Hnode04);
+            this.getOwnerComponent().getModel('FolioToShow').setProperty("/ProdBase", response.Hlevel04);
+            this.byId("ComboDivision").setValue(response.Hlevel02);
+            this.byId("ComboDivision").setSelectedKey(response.Hnode02);
+            this.byId("ComboCatMgmt").setValue(response.Hlevel03);
+            this.byId("ComboCatMgmt").setSelectedKey(response.Hnode03);
+            this.byId("ComboCategory").setValue(response.Hlevel04);
+            this.byId("ComboCategory").setSelectedKey(response.Hnode04);
+            this.byId("ComboCategory").fireSelectionChange();
+
+        },
+
+        onShoppingGroupRequest(oControlEvent) {
+
+            this.getOwnerComponent().getModel('Folio').setProperty("/GrupArt", null);
+            this.getOwnerComponent().getModel('FolioToShow').setProperty("/GrupArt", null);
+            this.byId("productGroup").setValue(null);
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/GrupoArticulos', null);
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/GrupoCompras', null);
+
+            var oView = this.getView();
+            if (!this._pSearchShoppingGroup) {
+                this._pSearchShoppingGroup = sap.ui.core.Fragment.load({
+                    id: oView.getId(),
+                    name: "demo.views.Products.fragments.SearchShoppingGroup",
+                    controller: this
+                }).then(function (oDialog) {
+                    oView.addDependent(oDialog);
+                    return oDialog;
+                });
+            }
+            this._pSearchShoppingGroup.then(function (oDialog) {
+                oDialog.open();
+            });
+
+        },
+
+        async searchShoppingGroup(oControlEvent) {
+
+            let searchTxt = oControlEvent.getParameter("value");
+
+            if (searchTxt == null || searchTxt == "")
+                return;
+
+            let filters = [];
+            filters.push(this.generateFilter("IOption", '22'));
+            filters.push(this.generateFilter("IEknam", searchTxt));
+
+            sap.ui.core.BusyIndicator.show();
+            let response = []
+            await this._GetODataV2(_oDataModel, _oDataEntity, filters, ["ETGPOCOMPRAS"], "").then(resp => {
+                response = resp.data;
+                sap.ui.core.BusyIndicator.hide();
+            }).catch(error => {
+                console.error(error);
+            });
+
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/GrupoCompras', response.results[0].ETGPOCOMPRAS);
+        },
+
+        onShoppingGroupClose(oEvent) {
+            let oSelectedContexts = oEvent.getParameter("selectedContexts");
+            let oSelectedItem = oEvent.getParameter("selectedItem");
+
+            oSelectedItem = oSelectedContexts.find(element => element.getObject().Ekgrp == oSelectedItem.getDescription());
+
+            if (!oSelectedItem)
+                return;
+
+            this.getOwnerComponent().getModel('Folio').setProperty("/PurGroup", oSelectedItem.getObject().Ekgrp);
+            this.getOwnerComponent().getModel('FolioToShow').setProperty("/PurGroup", oSelectedItem.getObject().Eknam);
+            this.searchArtGroup();
+
+        },
+
+        async searchArtGroup() {
+            let shoppingGroup = this.getOwnerComponent().getModel('Folio').getProperty("/PurGroup");
+            if (!shoppingGroup)
+                return
+
+            let filters = [];
+            filters.push(this.generateFilter("IOption", '23'));
+            filters.push(this.generateFilter("IEkgrp", shoppingGroup));
+
+            sap.ui.core.BusyIndicator.show();
+            let response = []
+            await this._GetODataV2(_oDataModel, _oDataEntity, filters, ["ETGPOART"], "").then(resp => {
+                response = resp.data;
+                sap.ui.core.BusyIndicator.hide();
+            }).catch(error => {
+                console.error(error);
+            });
+
+            this.getOwnerComponent().getModel("Catalogos").setProperty('/GrupoArticulos', response.results[0].ETGPOART);
+        },
+
+        generateFilter(paramName, paramValue) {
+            return new sap.ui.model.Filter({
+                path: paramName,
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: paramValue
+            });
         }
 
     })

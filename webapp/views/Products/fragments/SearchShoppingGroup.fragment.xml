@@ -1,0 +1,14 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog
+		id="ShoppingGroupDialog"
+		title="{appTxts>/products.shoppingGroup}"
+		items="{Catalogos>/GrupoCompras/results}"
+		search=".searchShoppingGroup"
+		confirm=".onShoppingGroupClose"
+		cancel=".onShoppingGroupClose"
+        >
+		<StandardListItem
+			title="{Catalogos>Eknam}"
+			description="{Catalogos>Ekgrp}" />
+	</SelectDialog>
+</core:FragmentDefinition>

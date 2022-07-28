@@ -75,6 +75,8 @@ sap.ui.define([
                 });
             }
             this._oTable = this.byId("idGroupTable");
+            this._oTablev2 = this.byId("detailsStatementList");
+
 
         },
         searchData: function () {
@@ -292,7 +294,7 @@ sap.ui.define([
             let desde_LV_ZHASTA = this.buildSapDate(todayDate);
 
 
-            let doc_BELNR = documentoInput.getValue();
+            let doc_BELNR = ''//documentoInput.getValue();
 
             //checbox validaciones
 
@@ -314,7 +316,7 @@ sap.ui.define([
 
 
 
-            var filtroBusqueda = filterInput.getSelectedKey()
+            var filtroBusqueda = '' // filterInput.getSelectedKey()
             var queryFiltro = ""
 
 
@@ -390,14 +392,25 @@ sap.ui.define([
                 sap.ui.core.BusyIndicator.hide();
                 var data = _GEToDataV2Response.data.results;
 
-                console.log(data)
+
                 let Detalles = [...data[0].Citms.results, ...data[0].Oitms.results];
 
                 var cleanedArray =  Detalles.filter(obj => !obj.Belnr.startsWith("58") && !obj.Belnr.startsWith("59"));
+console.log(cleanedArray)
+
+                var clanedDateArray  = cleanedArray.filter(obj => {
+
+                    const date = new Date(obj.Budat.replace(/-/g, '\/'));
+
+
+                    return   date < new Date()
+                });
+
+               console.log(clanedDateArray)
 
 
                 data[0].Detalles = {
-                    results: [...cleanedArray]
+                    results: [...clanedDateArray]
                 };
 
 
@@ -406,7 +419,7 @@ sap.ui.define([
                 jsonModelT.setData(JSONT);
                 //filtrar totales y crear modelo grupal
 
-                let auxArray = [...cleanedArray]
+                let auxArray = [...clanedDateArray]
 
                 var groupedMovs = that.groupArrayOfObjects(auxArray, "DescripcionGpo");
                 var nestedMovs = []
@@ -491,12 +504,6 @@ sap.ui.define([
 
         },
 
-
-        subtractYears: function (numOfYears, date = new Date()) {
-            date.setFullYear(date.getFullYear() - numOfYears);
-
-            return date;
-        },
 
 
         groupArrayOfObjects: function (list, key) {
@@ -804,10 +811,12 @@ sap.ui.define([
                 this.byId("typeDocColumn").setVisible(true);
 
                 this.byId("dateColumn").setVisible(true);
+                this.byId("dateVColumn").setVisible(true);
+
                 this.byId("amountColumn").setVisible(true);
                 this.byId("mCondicionColumn").setVisible(true);
                 this.byId("bloqueoColumn").setVisible(true);
-                this.byId("conciliacionColumn").setVisible(true);
+                this.byId("conciliacionColumn").setVisible(false);
 
                 this.byId("tipoMovColumn").setVisible(true);
 
@@ -820,6 +829,13 @@ sap.ui.define([
 
 
                 this.byId("verReporteColumn").setVisible(true);
+
+                //folio y sucursal
+                this.byId("sucursalColumn").setVisible(true);
+                this.byId("folio2Column").setVisible(true);
+
+
+
 
 
             } else {
@@ -834,6 +850,8 @@ sap.ui.define([
                 this.byId("typeDocColumn").setVisible(false);
 
                 this.byId("dateColumn").setVisible(false);
+                this.byId("dateVColumn").setVisible(false);
+
                 this.byId("amountColumn").setVisible(false);
                 this.byId("mCondicionColumn").setVisible(false);
 
@@ -851,6 +869,11 @@ sap.ui.define([
                 this.byId("verReporteColumn").setVisible(false);
 
 
+
+                //folio y sucursal
+                this.byId("sucursalColumn").setVisible(false);
+                this.byId("folio2Column").setVisible(false);
+
             }
 
             // Set the new aggregation
@@ -859,6 +882,14 @@ sap.ui.define([
 
             //   var tableModel = this.getOwnerComponent().getModel("GroupedTotales")
             //    this._oTable.setModel(tableModel)
+
+
+            this._oTablev2.bindRows({
+                path: sPath,
+            })
+
+            console.log( this._oTablev2)
+
             this._pTemplate.then(function (oTemplate) {
                 var sorter = [new sap.ui.model.Sorter("IdNumGpo")]
 
@@ -870,6 +901,118 @@ sap.ui.define([
 
         },
 
+        conceptoSelect: function (oEvent){
+
+            console.log(
+                "on condepto select"
+            )
+            let sPath = oEvent.getSource().getBindingContext("GroupedTotales").getPath();
+
+           // var sPath = oEvent.getParameter("listItem").getBindingContextPath();
+
+            console.log(sPath)
+            var aPath = sPath.split("/");
+            var sPathEnd = sPath.split("/").reverse()[1];
+            var sCurrentCrumb = aPath[aPath.length - 2];
+            console.log("current path", sCurrentCrumb)
+
+            if (sPathEnd !== this.aCrumbs[this.aCrumbs.length - 1]) {
+                var oBreadCrumb = this.byId("breadcrumb");
+                var sPrevNode = aPath[aPath.length - 2];
+                var iCurNodeIndex = this.aCrumbs.indexOf(sPrevNode) + 1;
+
+                console.log("currentNOde", iCurNodeIndex)
+
+                var oLink = new Link({
+                    text: "{GroupedTotales>name}",
+                    press: [sPath + "/" + this.aCrumbs[iCurNodeIndex], this.onBreadcrumbPress, this]
+                });
+
+                oLink.bindElement({
+                    path: "GroupedTotales>" + sPath
+                });
+                oBreadCrumb.addLink(oLink);
+            }
+
+            // If we're on a leaf, remember the selections;
+            // otherwise navigate
+            if (sCurrentCrumb === this.aCrumbs[this.aCrumbs.length - 1]) {
+                var oSelectionInfo = {};
+                // var bSelected = oEvent.getParameter("selected");
+                // oEvent.getParameter("listItems").forEach(function (oItem) {
+                //     oSelectionInfo[oItem.getBindingContext().getPath()] = bSelected;
+                // });
+                //  this._updateOrder(oSelectionInfo);
+
+                console.log('on documnt press', oEvent);
+                console.log(sPath)
+                //let posicion = oEvent.getSource().getBindingContext("GroupedTotales").getPath().split("/").pop();
+                let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(sPath);
+
+
+                //            let totalRegistros = parseInt( this.getOwnerComponent().getModel('totales').getProperty('/Detalles/results/length'), 10);
+
+                var sociedad = this.getOwnerComponent().getModel('GroupedTotales').getProperty('/Bukrs')
+                // var ejercicio = this.getOwnerComponent().getModel('totales').getProperty('/Gjahr')
+
+
+                var ejercicio2 = results.Budat
+                var ejercicio = ejercicio2.substr(0, 4) ? ejercicio2.substr(0, 4) : ""
+
+                console.log(this.getOwnerComponent().getModel('totales'))
+                var tcode = results.Tcode
+                console.log(sociedad, ejercicio, tcode)
+                var doc = results.Belnr
+                var acuerdosTCodes = ['MEB4', 'WLF4', 'MEB2', 'MEB0', 'WLF2', 'ZMMFILACUERDO', 'WFL5']
+                var aportacionesTCodes = ['Z_APORTACIONES']
+
+
+                if ((acuerdosTCodes.includes(tcode) && doc.startsWith('510')) || (tcode == "" && !(doc.startsWith("1700") && results.Xblnr))) {
+
+                    console.log('on detailAcuerdosAS')
+
+
+                    this.getOwnerComponent().getRouter().navTo("detailAcuerdosAS", {
+                        layout: sap.f.LayoutType.MidColumnFullScreen,
+                        document: results.Belnr,
+                        sociedad: sociedad,
+                        ejercicio: ejercicio,
+                        doc: results.Xblnr ? results.Xblnr : 'NA',
+                        // zbukr: docResult.Zbukr,
+                        // lifnr: docResult.Lifnr
+                    }, true);
+
+                } else if (aportacionesTCodes.includes(tcode) || (doc.startsWith("1700") && results.Xblnr)) {
+
+                    console.log('on detailAportacionesAS')
+
+                    //camvuar  docuemnto con cual se va consultar
+
+                    this.getOwnerComponent().getRouter().navTo("detailAportacionesAS", {
+                        layout: sap.f.LayoutType.MidColumnFullScreen,
+                        document: results.Xblnr,
+                        view: 'EstadoCuenta',
+                        //ejercicio: ejercicio,
+                        //doc: results.Belnr,
+                        // zbukr: docResult.Zbukr,
+                        // lifnr: docResult.Lifnr
+                    }, true);
+
+                }
+
+
+            } else {
+                var modelName = "GroupedTotales>"
+                var sNewPath = [sPath, this._nextCrumb(sCurrentCrumb)].join("/");
+
+                this._setAggregation(modelName + sNewPath);
+
+                console.log("new spath", sNewPath);
+            }
+        },
+
+
+        //HANDLE SELECION  v1
 
         handleSelection: function (oEvent) {
 
@@ -931,7 +1074,7 @@ sap.ui.define([
                 var tcode = results.Tcode
                 console.log(sociedad, ejercicio, tcode)
                 var doc = results.Belnr
-                var acuerdosTCodes = ['WEB4', 'WLF4', 'MEB2', 'MEB0', 'WLF2', 'ZMMFILACUERDO', 'WFL5']
+                var acuerdosTCodes = ['MEB4', 'WLF4', 'MEB2', 'MEB0', 'WLF2', 'ZMMFILACUERDO', 'WFL5']
                 var aportacionesTCodes = ['Z_APORTACIONES']
 
 
@@ -1005,8 +1148,8 @@ sap.ui.define([
             let totalRegistros = parseInt(this.getOwnerComponent().getModel('totales').getProperty('/Detalles/results/length'), 10);
             let valorSeleccinado = parseInt(selectedItem.getKey(), 10);
 
-            let tablaPrincipal = this.getView().byId("detailsStatementList");
-            tablaPrincipal.setVisibleRowCount(totalRegistros < valorSeleccinado ? totalRegistros : valorSeleccinado);
+           // let tablaPrincipal = this.getView().byId("detailsStatementList");
+           // tablaPrincipal.setVisibleRowCount(totalRegistros < valorSeleccinado ? totalRegistros : valorSeleccinado);
             this.paginateValue(selectedItem, 'totales', '/Detalles');
         },
         buildExportTable: function () {
@@ -1131,7 +1274,7 @@ sap.ui.define([
             this.exportxls('totales', '/Detalles/results', columns);
         },
         onMarkerPress: function (oEvent) {
-            MessageToast.show(oEvent.getParameter("additionalInfo") + "");
+           // MessageToast.show(oEvent.getParameter("additionalInfo") + "");
         },
         formatDateTime: (oDateTime, outputFormat, inputFormat) => {
 
@@ -1238,9 +1381,9 @@ sap.ui.define([
                     document: results.Xblnr,
                     view: 'EstadoCuenta',
                     //ejercicio: ejercicio,
-                    //doc: results.Belnr,
-                    // zbukr: docResult.Zbukr,
-                    // lifnr: docResult.Lifnr
+                    belnr: doc,
+                    bukrs: sociedad,
+                    gjahr: ejercicio
                 }, true);
 
             }
@@ -1313,7 +1456,7 @@ sap.ui.define([
                 fecha: results.Budat
                 // zbukr: docResult.Zbukr,
                 // lifnr: docResult.Lifnr
-            }, true);
+            }, false);
         },
         hasReport: function (mc) {
             return Math.abs(mc) > 0 ? true : false

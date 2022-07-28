@@ -1,13 +1,13 @@
-<mvc:View displayBlock="true" 
-xmlns:f="sap.f" 
+<mvc:View displayBlock="true"
+xmlns:f="sap.f"
 xmlns:mvc="sap.ui.core.mvc"
-xmlns:fb="sap.ui.comp.filterbar" 
-xmlns:vm="sap.ui.comp.variants" 
+xmlns:fb="sap.ui.comp.filterbar"
+xmlns:vm="sap.ui.comp.variants"
 xmlns="sap.m"
 xmlns:t="sap.ui.table"
-xmlns:core="sap.ui.core" 
+xmlns:core="sap.ui.core"
 	 controllerName="demo.controllers.PaymentPlan.Master" height="100%">
-	<f:DynamicPage  
+	<f:DynamicPage
 		class="sapUiContentPadding">
         <!-- DynamicPage Title -->
         <f:title>
@@ -17,8 +17,8 @@ xmlns:core="sap.ui.core"
                     </vm:VariantManagement>
                 </f:heading>
 
-                 
-                
+
+
             </f:DynamicPageTitle>
         </f:title>
         <!-- DynamicPage Header -->
@@ -26,11 +26,11 @@ xmlns:core="sap.ui.core"
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
                     <fb:FilterBar id="filterBar"  header="Header"
-		                reset="onReset" search="searchData" clear="onClear" cancel="onCancel" 
+		                reset="onReset" search="searchData" clear="onClear" cancel="onCancel"
 		                filtersDialogClosed = "onFiltersDialogClosed"
 		                showRestoreButton="false" showClearButton="false" useToolbar="false">
-			
-                      
+
+
                         <fb:filterGroupItems>
                             <!---->
                             <fb:FilterGroupItem visible="false" groupName="F1" name="Feha Pago" label="{appTxts>/plan.dateProg}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
@@ -66,10 +66,10 @@ xmlns:core="sap.ui.core"
                                         </items>
                                     </ComboBox>
                                 </fb:control>
-                            </fb:FilterGroupItem> --> 
+                            </fb:FilterGroupItem> -->
 <!--FIN CAMBIO BORTA 11.08.2021 - Se solicita quitar el filreo CLIENTE, ya que no tiene funcionalidad-->
 
-                            <fb:FilterGroupItem groupName="__$INTERNAL$" groupTitle="Group1" name="Pago" label="Pagos" labelTooltip="Tooltip GroupItem Example" partOfCurrentVariant="true" visibleInFilterBar="true">
+                            <fb:FilterGroupItem visible="false" groupName="__$INTERNAL$" groupTitle="Group1" name="Pago" label="Pagos" labelTooltip="Tooltip GroupItem Example" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
                                     <Input type="Text" id="docno"/>
                                 </fb:control>
@@ -83,16 +83,16 @@ xmlns:core="sap.ui.core"
         </f:header>
 		<f:content>
             <VBox>
-			<Table visible="false" sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
+			<Table visible="false" sticky="HeaderToolbar,InfoToolbar,ColumnHeaders"
             noDataText="{appTxts>/plan.noData}"
             id="complPagoList"
-            alternateRowColors="true" 
+            alternateRowColors="true"
             items="{path: 'tableItemsPayPlan>/TBLPAYS/Paginated/results', sorter : { path : 'Belnr', descending : true }}">
                 <headerToolbar>
                     <OverflowToolbar>
                         <Title text="{appTxts>/plan.title} ({tableItemsPayPlan>/TBLPAYS/results/length})" />
                         <ToolbarSpacer/>
-                        <Select 
+                        <Select
                             visible="{= ${tableItemsPayPlan>/TBLPAYS/Paginated/results/length} > 0 }"
                             change=".paginateValue(${$parameters>/selectedItem}, 'tableItemsPayPlan', '/TBLPAYS')">
                             <items>
@@ -138,7 +138,7 @@ xmlns:core="sap.ui.core"
 								xmlns="sap.m"
 								number="{parts: [{path: 'tableItemsPayPlan>Rbetr'}, {path: 'tableItemsPayPlan>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
 								unit="{tableItemsPayPlan>Waers}" emphasized="false" state="None"/>
-							<Text text="{path: 'tableItemsPayPlan>Valut', formatter: '.ReverseDate'}"  
+							<Text text="{path: 'tableItemsPayPlan>Valut', formatter: '.ReverseDate'}"
                                  width="auto" maxLines="1" wrapping="false" textAlign="Begin"
 								textDirection="Inherit"/>
 						</cells>

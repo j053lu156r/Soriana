@@ -9,6 +9,9 @@
 	<Text text="{=  (${GroupedTotales>Pendt} === true) ? 'Pendiente' : ( ${GroupedTotales>Belnr} === ${GroupedTotales>Augbl} ? 'Pago' : 'Contabilizado'  ) }" wrapping="false" />
 
 
+	<Text text="{GroupedTotales>Sucursal}" wrapping="false" />
+	<Text text="{GroupedTotales>Folio}" wrapping="false" />
+
 	<ObjectIdentifier titlePress="onDocumentPress" titleActive="true" title="{GroupedTotales>Belnr}" wrapping="false" />
 
 	<Text text="{GroupedTotales>Xblnr}" wrapping="false" />

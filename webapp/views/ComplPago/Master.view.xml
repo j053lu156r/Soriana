@@ -1,13 +1,13 @@
-<mvc:View 
-    displayBlock   = "true" 
-    xmlns:f        = "sap.f" 
+<mvc:View
+    displayBlock   = "true"
+    xmlns:f        = "sap.f"
     xmlns:mvc      = "sap.ui.core.mvc"
-    xmlns:fb       = "sap.ui.comp.filterbar" 
-    xmlns:vm       = "sap.ui.comp.variants" 
-    xmlns          = "sap.m" 
+    xmlns:fb       = "sap.ui.comp.filterbar"
+    xmlns:vm       = "sap.ui.comp.variants"
+    xmlns          = "sap.m"
     xmlns:core     = "sap.ui.core"
     xmlns:t="sap.ui.table"
-	controllerName = "demo.controllers.ComplPago.Master" 
+	controllerName = "demo.controllers.ComplPago.Master"
     height         = "100%">
 
 	<f:DynamicPage class="sapUiContentPadding">
@@ -20,11 +20,14 @@
                 </f:heading>
                 <f:actions>
                     <ToolbarSpacer/>
+                    <!--
                     <Button
                         text  = "{appTxts>/pay.cfdi}"
                         type  = "Emphasized"
                         press = "openUploadDialog"
                     />
+                    -->
+                    <Button text="{appTxts>/pay.cfdi}" type="Emphasized" press="openUploadDialog2"/>
                 </f:actions>
             </f:DynamicPageTitle>
         </f:title>
@@ -33,25 +36,25 @@
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
-                    <fb:FilterBar 
+                    <fb:FilterBar
                         id                  = "filterBar"
                         header              = "Header"
-		                reset               = "onReset" 
-                        search              = "searchData" 
-                        clear               = "onClear" 
-                        cancel              = "onCancel" 
+		                reset               = "onReset"
+                        search              = "searchData"
+                        clear               = "onClear"
+                        cancel              = "onCancel"
 		                filtersDialogClosed = "onFiltersDialogClosed"
-		                showRestoreButton   = "false" 
-                        showClearButton     = "false" 
+		                showRestoreButton   = "false"
+                        showClearButton     = "false"
                         useToolbar          = "false">
 
                         <fb:filterGroupItems>
 
-                            <fb:FilterGroupItem 
-                                groupName    = "__$INTERNAL$" 
-                                groupTitle   = "Group1" 
-                                name         = "C" 
-                                label        = "{appTxts>/pay.doc}" 
+                            <fb:FilterGroupItem
+                                groupName    = "__$INTERNAL$"
+                                groupTitle   = "Group1"
+                                name         = "C"
+                                label        = "{appTxts>/pay.doc}"
                                 labelTooltip = "{appTxts>/pay.doc}"
                                 visibleInFilterBar   = "true">
                                 <fb:control>
@@ -59,25 +62,25 @@
                                 </fb:control>
                             </fb:FilterGroupItem>
 
-                            <fb:FilterGroupItem 
+                            <fb:FilterGroupItem
                                 groupName            = "__$INTERNAL$"
                                 name                 = "A"
-                                label                = "{appTxts>/pay.date}" 
-                                mandatory            = "true" 
-                                partOfCurrentVariant = "true" 
+                                label                = "{appTxts>/pay.date}"
+                                mandatory            = "true"
+                                partOfCurrentVariant = "true"
                                 visibleInFilterBar   = "true">
                                 <fb:control>
                                     <DateRangeSelection id="dateRange" change="onChange" required="false"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
-                            
-                            <fb:FilterGroupItem 
-                                groupName            = "__$INTERNAL$" 
-                                name                 = "B" 
+
+                            <fb:FilterGroupItem
+                                groupName            = "__$INTERNAL$"
+                                name                 = "B"
                                 mandatory            = "true"
-                                label                = "{appTxts>/pay.supplier}" 
-                                labelTooltip         = "Tooltip Example" 
-                                partOfCurrentVariant = "true" 
+                                label                = "{appTxts>/pay.supplier}"
+                                labelTooltip         = "Tooltip Example"
+                                partOfCurrentVariant = "true"
                                 visibleInFilterBar   = "true">
                                 <fb:control>
                                     <Input id="supplierInput" placeholder="{appTxts>/pay.supplier}" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}">
@@ -94,10 +97,10 @@
         <!-- DynamicPage Content -->
 		<f:content>
             <VBox>
-                <t:Table 
-                    noData         ="{appTxts>/pay.merchandise}" 
+                <t:Table
+                    noData         ="{appTxts>/pay.merchandise}"
                     id                 ="complPagoList"
-                    alternateRowColors ="true" 
+                    alternateRowColors ="true"
                     rows              ="{Documentos>/Detalles/Paginated/results}"
                     enableColumnReordering = "false"
                     enableSelectAll="true"
@@ -122,31 +125,31 @@
                         </OverflowToolbar>
                     </t:extension>
                     <t:columns>
-                        <t:Column 
-                            width           = "13%" 
+                        <t:Column
+                            width           = "13%"
                             hAlign          = "Left" id="column1" sortProperty="Butxt" filterProperty="Butxt">
                             <Label text="{appTxts>/pay.headerCompany}" />
                             <t:template>
                                 <Text text="{Documentos>Butxt}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column 
-                            width  = "auto" id="column2" sortProperty="Text2" filterProperty="Text2">
+                        <t:Column
+                            width  = "auto" id="column2" sortProperty="Text2" visible="false" filterProperty="Text2">
                             <Label text="{appTxts>/pay.headerPaymentType}" />
                             <t:template>
                                 <Text text="{Documentos>Text2}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column 
-                            width           = "15%" 
+                        <t:Column
+                            width           = "15%"
                             hAlign          = "Left" id="column3" sortProperty="Vblnr" filterProperty="Vblnr">
                             <Label text="{appTxts>/pay.headerDocument}" />
                             <t:template>
                                 <ObjectIdentifier titlePress="onDocumentPress" titleActive="true" title="{Documentos>Vblnr}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column 
-                            width           = "5%" 
+                        <t:Column
+                            width           = "5%"
                             hAlign          = "Center" id="column4">
                             <Label text="{appTxts>/pay.headerFile}" />
                             <t:template>
@@ -154,9 +157,9 @@
                                <Button icon="sap-icon://document-text" type="Transparent" press="generateFile" ></Button>
                             </t:template>
                         </t:Column>
-                        <t:Column 
-                            width           = "7%" 
-                            hAlign          = "Center"  
+                        <t:Column
+                            width           = "7%"
+                            hAlign          = "Center"
                             id              = "column5"  sortProperty="Augdt" filterProperty="Augdt">
                             <Label text="{appTxts>/pay.headerLimitDate}" />
                             <t:template>
@@ -164,8 +167,8 @@
                             </t:template>
                         </t:Column>
                         <t:Column
-                            width           = "12%" 
-                            hAlign          = "Center" 
+                            width           = "12%"
+                            hAlign          = "Center"
                             id              = "column6" sortProperty="Rbetr" filterProperty="Rbetr">
                             <Label text="{appTxts>/pay.headerAmount}" />
                             <t:template>
@@ -173,12 +176,12 @@
                                         number="{parts: [{path: 'Documentos>Rbetr'}, {path: 'Documentos>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{Documentos>Waers}" emphasized="false" state="None" textAlign="Right"/>
                             </t:template>
                         </t:Column>
-                               <t:Column 
-                            width           = "5%" 
-                            hAlign          = "Center" 
+                               <t:Column
+                            width           = "5%"
+                            hAlign          = "Center"
                             id              = "column65" sortProperty="Nc_mc" filterProperty="Nc_mc">
                             <Label text="{appTxts>/pay.headerNCMC}" />
-                            	
+
                             <t:template>
                                 <core:Icon src="{
 								path: 'Documentos>Nc_mc',
@@ -190,12 +193,12 @@
 
                             </t:template>
                         </t:Column>
-                        <t:Column 
-                            width           = "5%" 
-                            hAlign          = "Center" 
+                        <t:Column
+                            width           = "5%"
+                            hAlign          = "Center"
                             id              = "column7" sortProperty="Nc" filterProperty="Nc">
                             <Label text="{appTxts>/pay.headerNC}" />
-                            	
+
                             <t:template>
                                 <core:Icon src="{
 								path: 'Documentos>Nc',
@@ -206,15 +209,15 @@
 							}"/>
 
                             </t:template>
-                        </t:Column> 
-                    
-                        <t:Column 
-                            width           = "5%" 
-                            hAlign          = "Center" 
+                        </t:Column>
+
+                        <t:Column
+                            width           = "5%"
+                            hAlign          = "Center"
                             id              = "column8" sortProperty="Cp03" filterProperty="Cp03">
                             <Label text="{appTxts>/pay.headerCP} 03" />
                             <t:template>
-                                
+
                                 <core:Icon src="{
 								path: 'Documentos>Cp03',
 								formatter: '.formatAvailableToIcon'
@@ -224,13 +227,13 @@
 							}"/>
                             </t:template>
                         </t:Column>
-                        <t:Column 
-                            width           = "5%" 
-                            hAlign          = "Center" 
+                        <t:Column
+                            width           = "5%"
+                            hAlign          = "Center"
                             id              = "column9" sortProperty="Cp17s" filterProperty="Cp17s">
                             <Label text="{appTxts>/pay.headerCP} 17S" />
                             <t:template>
-                                
+
                                  <core:Icon src="{
 								path: 'Documentos>Cp17s',
 								formatter: '.formatAvailableToIcon'
@@ -240,9 +243,9 @@
 							}"/>
                             </t:template>
                         </t:Column>
-                        <t:Column 
-                            width           = "5%" 
-                            hAlign          = "Center" 
+                        <t:Column
+                            width           = "5%"
+                            hAlign          = "Center"
                             id              = "column10" sortProperty="Cp17r" filterProperty="Cp17r">
                             <Label text="{appTxts>/pay.headerCP} 17R" />
                             <t:template>
@@ -257,9 +260,9 @@
 
                             </t:template>
                         </t:Column>
-                        <t:Column 
-                            width           = "5%" 
-                            hAlign          = "Center" 
+                        <t:Column
+                            width           = "5%"
+                            hAlign          = "Center"
                             id              = "column11" sortProperty="Rzawe" filterProperty="Rzawe">
                             <Label text="{appTxts>/pay.headerEstatus}" />
                             <t:template>

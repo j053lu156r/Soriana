@@ -96,6 +96,21 @@ sap.ui.define([
             this.getOwnerComponent().getRouter().navTo("tile", { layout: sLayout }, true /*no history*/);
             //}
         },
+        onBackPreviousView: function (oEvent) {
+            var oHistory, sPreviousHash;
+            oHistory = History.getInstance();
+            sPreviousHash = oHistory.getPreviousHash();
+
+            var sLayout = sap.f.LayoutType.OneColumn;
+
+            this.onExit();
+            if (sPreviousHash !== undefined) {
+                window.history.go(-1);
+            } else {
+            this.getOwnerComponent().getRouter().navTo("tile", { layout: sLayout }, true /*no history*/);
+            }
+        },
+
         formatDate: function (v) {
             if (v) {
                 jQuery.sap.require("sap.ui.core.format.DateFormat");
@@ -716,7 +731,7 @@ sap.ui.define([
             exportType || (exportType = new sap.ui.core.util.ExportTypeCSV({
                 separatorChar: "\t",
                 mimeType: "application/vnd.ms-excel",
-                charset: "utf-8",
+                charset: "UTF-8",
                 fileExtension: "xls"
             }));
 
@@ -1090,7 +1105,34 @@ sap.ui.define([
             });
         },
 
+        /*Mparra version de  _PostoDataV2 de Juan Pacheco  */
 
+        _PostODataV2Async: function(model, entity, data) {
+            var oModel2 = "/sap/opu/odata/sap/"+model;
+            var that = this;
+            let entidad = "/" + entity;
+
+            return new Promise(function(fnResolve, fnReject) {
+
+                var oModel = new sap.ui.model.odata.v2.ODataModel(oModel2);
+                oModel.setUseBatch(false);
+                oModel.create(entidad, data,{
+                    success: function(oData, oResponse) {
+
+                        fnResolve(oResponse);
+                    },
+                    error: function(error) {
+                        console.log(error)
+                        sap.ui.core.BusyIndicator.hide();
+                        MessageBox.error("Error: " + error.responseJSON.error.message, {
+                            icon: MessageBox.Icon.ERROR,
+                            title: "Error"
+                        });
+                        fnReject(new Error(error.message));
+                    }
+                });
+            });
+        },
 
         _GEToDataV2ajax: function(url) {
 

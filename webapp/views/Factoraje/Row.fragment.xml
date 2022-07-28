@@ -13,6 +13,9 @@
                   wrapping="false"/>
 
 
+            <Text text="{GroupedFactoraje>Sucursal}" wrapping="false" />
+            <Text text="{GroupedFactoraje>Folio}" wrapping="false" />
+
             <ObjectIdentifier titlePress="_onDocumentPress" titleActive="true"  title="{GroupedFactoraje>Belnr}" wrapping="false"/>
 
 

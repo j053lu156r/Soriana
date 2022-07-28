@@ -82,7 +82,7 @@ sap.ui.define([
 					name: "demo.views.ComplPago.Row"
 				});
 			}
-			this._oTable = this.byId("idGroupTable");
+			this._oTable = this.byId("detailsStatementList");
 
 			/*
 						[oExitButton, oEnterButton].forEach(function (oButton) {
@@ -382,10 +382,10 @@ console.log(TDatos)
 			// If we're at the leaf end, turn off navigation
 			var sPathEnd = sPath.split("/").reverse()[0];
 			if (sPathEnd === this.aCrumbs[this.aCrumbs.length - 1]) {
-				this._oTable.setMode("None");
+			//	this._oTable.setMode("None");
 				//  this.byId("weightColumn").setVisible(true);
 				// this.byId("dimensionsColumn").setVisible(true);
-				this._oTable.setMode("SingleSelectMaster");
+			//	this._oTable.setMode("SingleSelectMaster");
 
 
 				this.byId("statusColumn").setVisible(true);
@@ -398,7 +398,7 @@ console.log(TDatos)
 				this.byId("amountColumn").setVisible(true);
 				this.byId("mCondicionColumn").setVisible(true);
 				this.byId("bloqueoColumn").setVisible(true);
-				this.byId("conciliacionColumn").setVisible(true);
+				this.byId("conciliacionColumn").setVisible(false);
 				this.byId("tipoMovColumn").setVisible(true);
 
 				//totles
@@ -409,13 +409,23 @@ console.log(TDatos)
 				this.byId("creditColumn").setVisible(false);
 				this.byId("costoColumn").setVisible(false);
 
+				//folio y sucursal
+				this.byId("sucursalColumn").setVisible(true);
+				this.byId("folio2Column").setVisible(true);
+
+
+				this.byId("sumFooter").setVisible(false);
+
+
+
+				this.byId("verReporteColumn").setVisible(true);
 
 
 
 
 
 			} else {
-				this._oTable.setMode("SingleSelectMaster");
+				//this._oTable.setMode("SingleSelectMaster");
 
 				this.byId("statusColumn").setVisible(false);
 				this.byId("folioColumn").setVisible(false);
@@ -440,6 +450,14 @@ console.log(TDatos)
 				this.byId("costoColumn").setVisible(true);
 
 
+				this.byId("verReporteColumn").setVisible(false);
+
+				//folio y sucursal
+				this.byId("sucursalColumn").setVisible(false);
+				this.byId("folio2Column").setVisible(false);
+
+
+				this.byId("sumFooter").setVisible(true);
 
 
 
@@ -450,15 +468,20 @@ console.log(TDatos)
 			console.log('SET agregation spath', sPath)
 
 
-			//   var tableModel = this.getOwnerComponent().getModel("GroupedTotales")
-			//    this._oTable.setModel(tableModel)
+			this._oTable.bindRows({
+				path: sPath,
+			})
+
+
+			/*
+
 			this._pTemplate.then(function (oTemplate) {
 
 				this._oTable.bindAggregation("items", sPath, oTemplate);
 
 			}.bind(this));
 
-
+*/
 
 
 
@@ -467,13 +490,15 @@ console.log(TDatos)
 
 
 
-		handleSelection: function (oEvent) {
+		conceptoSelect: function (oEvent) {
 
 			console.log(
 				"on condepto select"
 
 			)
-			var sPath = oEvent.getParameter("listItem").getBindingContextPath();
+			//var sPath = oEvent.getParameter("listItem").getBindingContextPath();
+			let sPath = oEvent.getSource().getBindingContext("GroupedTotales").getPath();
+
 
 			console.log(sPath)
 			var aPath = sPath.split("/");
@@ -663,6 +688,48 @@ console.log(TDatos)
 
 
 		},
+
+		//OPEN REPORT
+		onPressReporte: function (oEvent) {
+			console.info(oEvent)
+			var path = oEvent.getSource().getBindingContext("GroupedTotales").getPath();
+			console.log(path);
+			let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(path);
+			let proveedor = this.getConfigModel().getProperty("/supplierInputKey")
+
+			console.log(results);
+
+			if (results.Xblnr == "") {
+				return
+			}
+
+
+			var serieOriginal = results.Xblnr
+			var serieNonumbers = serieOriginal.replace(/[0-9]/g, '');
+
+			var serie = serieNonumbers.replace('-', '')
+			var folio = serieOriginal.replace(/\D/g, '')
+
+
+			console.log('serie numbers',serieNonumbers)
+			console.log('serie',serie)
+			console.log('folio',folio)
+
+
+			this.getOwnerComponent().getRouter().navTo("ComplementoReporteMC", {
+				layout: sap.f.LayoutType.EndColumnFullScreen,
+				document: folio,
+				proveedor: proveedor,
+				serie: serieNonumbers,
+				fecha: results.Budat
+				// zbukr: docResult.Zbukr,
+				// lifnr: docResult.Lifnr
+			}, false);
+		},
+		hasReport: function (mc) {
+			return Math.abs(mc) > 0 ? true : false
+		},
+
 
 
 		//HAANDLE OPEN ACUERDOS
