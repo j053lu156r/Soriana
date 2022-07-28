@@ -163,7 +163,7 @@
                             <Label text="{appTxts>/pay.headerAmount}" />
                             <t:template>
                                 <ObjectNumber
-                                        number="{parts: [{path: 'Documentos>Rbetr'}, {path: 'Documentos>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{Documentos>Waers}" emphasized="false" state="None" textAlign="Right"/>
+                                        number="{parts: [{path: 'Documentos>Dmbtr'}, {path: 'Documentos>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{Documentos>Waers}" emphasized="false" state="None" textAlign="Right"/>
                             </t:template>
                         </t:Column>
                         <!--
