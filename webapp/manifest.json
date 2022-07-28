@@ -497,7 +497,16 @@
                     ]
                 },
                 {
-                    "pattern": "detailAportacionesAS/{layout}/{document}/{view}",
+                    "pattern": "ComplementoReporteMC/{layout}/{document}/{proveedor}/{serie}/{fecha}",
+                    "name": "ComplementoReporteMC",
+                    "target": [
+                        "masterCompl",
+                        "detailComplPagos",
+                        "ComplementoReporteMC"
+                    ]
+                },
+                {
+                    "pattern": "detailAportacionesAS/{layout}/{document}/{view}/{belnr}/{bukrs}/{gjahr}",
                     "name": "detailAportacionesAS",
                     "target": [
                         "EstadoCuenta",
@@ -774,6 +783,12 @@
                      "controlAggregation": "midColumnPages",
                      "viewPath": "demo.views.Statement"
                  },
+                "ComplementoReporteMC": {
+                    "viewType": "XML",
+                    "viewName": "DetailReporte",
+                    "controlAggregation": "endColumnPages",
+                    "viewPath": "demo.views.Statement"
+                },
                 "masterRelease":{
                     "viewName": "Master",
                     "viewPath": "demo.views.MiBandeja.Releases",

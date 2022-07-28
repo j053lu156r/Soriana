@@ -1,12 +1,16 @@
 sap.ui.define([
     "sap/ui/model/json/JSONModel",
-    "demo/controllers/BaseController"
-], function (JSONModel, Controller) {
+    "demo/controllers/BaseController",
+    "sap/m/PDFViewer"
+], function (JSONModel, Controller, PDFViewer) {
     "use strict";
 
     var oModel = new this.Aportaciones();
     return Controller.extend("demo.controllers.Aportaciones.DetailDetailAS", {
         onInit: function () {
+            this._pdfViewer = new PDFViewer();
+			this.getView().addDependent(this._pdfViewer);
+            
             var oExitButton = this.getView().byId("exitFullScreenBtn"),
                 oEnterButton = this.getView().byId("enterFullScreenBtn");
 
@@ -321,6 +325,18 @@ console.log(objResponse);
 
 
             });
+        },
+
+        onPressPDF: function () {
+            var oModel = this.getOwnerComponent().getModel("AportaDetDet");
+            var oData = oModel.getData();
+
+            var sServiceURL = this.oModel.sServiceUrl;
+			var sSource = sServiceURL + "AportaFilesSet('" + oData.Uuid + "')/$value";
+			this._pdfViewer.setSource(sSource);
+			this._pdfViewer.setTitle("CFDI");
+			this._pdfViewer.open();
         }
+        
     });
 });

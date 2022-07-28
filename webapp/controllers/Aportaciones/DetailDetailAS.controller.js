@@ -1,12 +1,16 @@
 sap.ui.define([
     "sap/ui/model/json/JSONModel",
-    "demo/controllers/BaseController"
-], function (JSONModel, Controller) {
+    "demo/controllers/BaseController",
+    "sap/m/PDFViewer"
+], function (JSONModel, Controller, PDFViewer) {
     "use strict";
 
     var oModel = new this.Aportaciones();
     return Controller.extend("demo.controllers.Aportaciones.DetailDetailAS", {
         onInit: function () {
+            this._pdfViewer = new PDFViewer();
+			this.getView().addDependent(this._pdfViewer);
+
             var oExitButton = this.getView().byId("exitFullScreenBtn"),
                 oEnterButton = this.getView().byId("enterFullScreenBtn");
 
@@ -136,11 +140,25 @@ sap.ui.define([
             this._folio = oEvent.getParameter("arguments").document || this._folio || "0";
             this._layout = oEvent.getParameter("arguments").layout || this._layout || "0";
             this._view = oEvent.getParameter("arguments").view || this._view || "0";
+            this._bukrs =  oEvent.getParameter("arguments").bukrs || this._bukrs || "0";
+            this._belnr =  oEvent.getParameter("arguments").belnr || this._belnr || "0";
+            this._gjahr =  oEvent.getParameter("arguments").gjahr || this._gjahr || "0";
+
+
 
 
             var url = "AportaSet?$expand=AportaDet&$filter=IOption eq '1'";;
             if (this._folio != "" && this._folio != null) {
                 url += " and IFolio eq '" + this._folio + "'";
+            }
+            if (this._bukrs != "" && this._bukrs != null) {
+                url += " and IBukrs eq '" + this._bukrs + "'";
+            }
+            if (this._belnr != "" && this._belnr != null) {
+                url += " and IBelnr eq '" + this._belnr + "'";
+            }
+            if (this._gjahr != "" && this._gjahr != null) {
+                url += " and IGjahr eq '" + this._gjahr + "'";
             }
 
             //this.getView().byId('ObjectPageLayout').setBusy(true);
@@ -348,9 +366,18 @@ console.log(objResponse);
 
 
             });
+        },
+
+        onPressPDF: function () {
+            var oModel = this.getOwnerComponent().getModel("AportaDetDet");
+            var oData = oModel.getData();
+
+            var sServiceURL = this.oModel.sServiceUrl;
+			var sSource = sServiceURL + "AportaFilesSet('" + oData.Uuid + "')/$value";
+			this._pdfViewer.setSource(sSource);
+			this._pdfViewer.setTitle("CFDI");
+			this._pdfViewer.open();
         }
-
-
 
     });
 });

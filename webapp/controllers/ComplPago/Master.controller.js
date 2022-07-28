@@ -12,7 +12,7 @@ sap.ui.define([
     "sap/ui/core/routing/Router",
     "demo/models/BaseModel",
     'sap/f/library',
-    
+
 ], function (exportLibrary, Spreadsheet, Fragment, Controller, UploadCollectionParameter, History, PDFViewer, JSONModel, fioriLibrary) {
     "use strict";
     var EdmType = exportLibrary.EdmType;
@@ -40,7 +40,7 @@ sap.ui.define([
                 }
             }, this);
 
-           
+
         },
         onAfterRendering: function () {
             var Fecha = new Date();
@@ -50,10 +50,10 @@ sap.ui.define([
             that.getView().byId("dateRange").setDateValue(new Date(Fecha));
             that.getView().byId("dateRange").setSecondDateValue(new Date());
 
-          
+
             that.oModel = new JSONModel({
                 column1:true,
-                column2:true,
+                column2:false,
                 column3:true,
                 column4:true,
                 column5:true,
@@ -65,13 +65,13 @@ sap.ui.define([
                 column10:true,
                 column11:true,
 
-              
+
             })
             that.getView().setModel(that.oModel);
             that.TableVisible()
         },
         TableVisible: function () {
-         
+
 
             that.getView().byId("column1").setVisible(that.getView().getModel().getProperty("/column1"));
             that.getView().byId("column2").setVisible(that.getView().getModel().getProperty("/column2"));
@@ -85,22 +85,22 @@ sap.ui.define([
             that.getView().byId("column9").setVisible(that.getView().getModel().getProperty("/column9"));
             that.getView().byId("column10").setVisible(that.getView().getModel().getProperty("/column10"));
             that.getView().byId("column11").setVisible(that.getView().getModel().getProperty("/column11"));
-           
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         },
-     
+
 
         clearFilters: function () {
             this.getView().byId("dateRange").setValue('');
@@ -140,15 +140,15 @@ sap.ui.define([
                 operator: sap.ui.model.FilterOperator.EQ,
                 value1: this.buildSapDate(dateRange.getDateValue())
                // value1: FechaI.toISOString().slice(0, 10) + 'T00:00:00',
-              
+
             })
 
             )
-             
+
             auxFilters.push(new sap.ui.model.Filter({
                 path: "IEnddate",
                 operator: sap.ui.model.FilterOperator.EQ,
-              value1:this.buildSapDate(dateRange.getSecondDateValue()) 
+              value1:this.buildSapDate(dateRange.getSecondDateValue())
             //    value1: FechaF.toISOString().slice(0, 10) + 'T00:00:00'
             })
 
@@ -172,7 +172,7 @@ sap.ui.define([
 
 
 
-      
+
                 auxFilters.push(new sap.ui.model.Filter({
                     path: 'IAugbl',
                     operator: sap.ui.model.FilterOperator.EQ,
@@ -200,7 +200,7 @@ sap.ui.define([
                     arrT.push(data[x])
              }
             }
-           
+
             if(arrT.length>0){
                 var Documentos = { Detalles: { results: [...arrT[0].EPYMNTDOCSNAV.results] } };
 
@@ -209,23 +209,34 @@ sap.ui.define([
 
                 that.paginate("Documentos", "/Detalles", 1, 0);
             }
-               
+
 
             });
 
 
 
         },
+
         generateFile: function (oEvent) {
             let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
             let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
 
             let registro = results[posicion];
-            let Laufd = String(registro.Laufd).replace(/-/g, "");
-            let Augdt = String(registro.Augdt).replace(/-/g, "");
+           var Datos;
+          for(var x=0;x<10;x++){
+           
 
+         
+          //  Fecha = (Fecha.getTime() - (1000 * 60 * 60 * 24 * 5))
+            let LaufdT = String(new Date(new Date(registro.Augdt+ 'T00:00:00').getTime() - (1000 * 60 * 60 * 24 * x)))
+           // let LaufdT2 = String(new Date(new Date(registro.Augdt+ 'T00:00:00').getTime() + (1000 * 60 * 60 * 24 * 10)))
+  
+            let Laufd = new Date(LaufdT).toISOString().slice(0,10).replace(/-/g, "");
+          //  let Laufd2 = new Date(LaufdT2).toISOString().slice(0,10).replace(/-/g, "");
+            let Augdt=String(registro.Augdt).replace(/-/g, "");
             let url = `HeaderPYMNTCSet?$expand=ETXTHDRNAV,ETXTTOTALNAV,ETXTTAXNAV,ETXTFACTPROVNAV,ETXTFACTSORNAV,ETXTDISCOUNTNAV,ETXTAGREEMENTNAV&$filter= IOption eq '3' and 
-            ILaufd eq '${Laufd}' and 
+            ILaufd ge '${Laufd}' and
+            
             ILaufi eq '${registro.Laufi}' and 
             IBukrs eq '${registro.Bukrs}' and 
             ILifnr eq '${registro.Lifnr}' and 
@@ -233,24 +244,24 @@ sap.ui.define([
             IVblnr eq '${registro.Vblnr}' and 
             IAugdt eq '${Augdt}'&$format=json`;
 
-            /*let url = `HeaderPYMNTCSet?$expand=ETXTHDRNAV,ETXTTOTALNAV,ETXTTAXNAV,ETXTFACTPROVNAV,ETXTFACTSORNAV,ETXTDISCOUNTNAV,ETXTAGREEMENTNAV&$filter= IOption eq '3' and 
-            ILaufd eq '20200429' and 
-            ILaufi eq 'PPDL' and 
-            IBukrs eq '2001' and 
-            ILifnr eq '96008' and 
-            IGjahr eq '2020' and 
-            IVblnr eq '1500001807' and 
-            IAugdt eq '20200429'&$format=json`;*/
+         
 
             let oODataJSONModel = this.getOdata(sUri);
 
             let oDataJSONModel = this.getOdataJsonModel(url, oODataJSONModel);
             let dataJSON = oDataJSONModel.getJSON();
 
+
+            let Datos2 = JSON.parse(dataJSON);
           
-            let Datos = JSON.parse(dataJSON);
+        
+            if(Datos2.results[0].ETXTFACTPROVNAV.results.length!==0){
+                x=100;
+                Datos=Datos2;
+            
+            }
 
-
+        }
 
             let Encabezado = Object.values(Datos.results[0].ETXTHDRNAV.results[0]).slice(1).join('\t');
             let Totales = Datos.results[0].ETXTTOTALNAV.results;
@@ -281,6 +292,7 @@ sap.ui.define([
             //this.exportxls('Archivo', '/Detalles/results', columns, typeExport);
 
             sap.ui.core.util.File.save(ContenidoArchivo, nombreArchivo, "txt", "text/plain", "utf-8", false);
+             
         },
         generaRenglonesArchivo: function (Array) {
 
@@ -292,7 +304,7 @@ sap.ui.define([
             return renglones;
         },
         formatAvailableToIcon: function (bAvailable) {
-           
+
             switch (bAvailable) {
                 case 'X':
                     return "sap-icon://message-error";
@@ -308,7 +320,7 @@ sap.ui.define([
             return bAvailable ? "sap-icon://accept" : "sap-icon://decline";
         },
         formatStatusIcon: function (bAvailable) {
-          
+
             switch (bAvailable) {
                 case 'Y':
                     return "#008000";
@@ -360,11 +372,91 @@ sap.ui.define([
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/clarifications.noSupplier"));
             }
         },
+        openUploadDialog2: function () {
+            var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+            if (!this.hasAccess(10)) {
+                return
+            }
+            if (vLifnr !== undefined && vLifnr !== null){
+                if (!this._uploadDialog3) {
+                    this._uploadDialog3 = sap.ui.xmlfragment("uploadInvoiceTest", "demo.fragments.UploadInvoice2", this);
+                    this.getView().addDependent(this._uploadDialog3);
+                }
+                this._uploadDialog3.open();
+            } else {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/clarifications.noSupplier"));
+            }
+        },
+        onCloseDialogUpload2: function () {
+            if (this._uploadDialog3) {
+                this._uploadDialog3.destroy();
+                this._uploadDialog3 = null;
+            }
+        },
         onCloseDialogUpload: function () {
             if (this._uploadDialog2) {
                 this._uploadDialog2.destroy();
                 this._uploadDialog2 = null;
             }
+        },
+        documentUploadPress2: function(){
+            var that = this;
+           var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+           var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoiceTest", "fileUploaderTest");
+           sap.ui.core.BusyIndicator.show(0);
+
+           if (!oFileUploader.getValue()) {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/helpDocs.uploader.nodata"));
+                sap.ui.core.BusyIndicator.hide();
+                return;
+            }
+
+            var file = oFileUploader.oFileUpload.files[0];
+            var reader2 = new FileReader();
+
+            reader2.onload = function (evn) {
+                var strXML = evn.target.result;
+
+                var body = '<?xml version="1.0" encoding="utf-8"?>' +
+                    '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
+                    'xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><RecibeCFDPortal xmlns="http://tempuri.org/">' +
+                    '<XMLCFD><![CDATA[' + strXML + ']]></XMLCFD><proveedor>' + vLifnr + '</proveedor>' +
+                    '</RecibeCFDPortal></soap:Body></soap:Envelope>';
+
+                $.ajax({
+                    async: true,
+                    url: "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboPortal.asmx",
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/xml",
+                        "Access-Control-Allow-Origin": "*"
+                    },
+                    data: body,
+                    success: function(response) {
+                        sap.ui.core.BusyIndicator.hide();
+                        that.onCloseDialogUpload2();
+                        oFileUploader.clear();
+                        var oXMLModel = new sap.ui.model.xml.XMLModel();
+                        oXMLModel.setXML(response.getElementsByTagName("RecibeCFDPortalResult")[0].textContent);
+                        var oXml = oXMLModel.getData();
+                        var status = oXml.getElementsByTagName("AckErrorApplication")[0].attributes[5].nodeValue;
+                        if (status == "ACCEPTED") {
+                            sap.m.MessageBox.success(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendSuccess"));
+                        } else {
+                            var strError = oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent;
+                            strError = strError.replaceAll(";","\n\n");
+                            sap.m.MessageBox.error(strError);
+                        }
+                    },
+                    error: function(request, status, err) {
+                        sap.ui.core.BusyIndicator.hide();
+                        that.onCloseDialogUpload2();
+                        oFileUploader.clear();
+                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendError"));
+                    }
+                });
+            };
+            reader2.readAsText(file);
         },
         onParentClicked: function (oEvent) {
             var bSelected = oEvent.getParameter("selected");
@@ -384,7 +476,7 @@ sap.ui.define([
             });
         },
         documentUploadPress: function () {
-            /*
+
             var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoice", "fileUploader");
             var uploadList = sap.ui.core.Fragment.byId("uploadInvoice", "logUploadList");
             var uploadBox = sap.ui.core.Fragment.byId("uploadInvoice", "uploadBox");
@@ -432,64 +524,6 @@ sap.ui.define([
                 oFileUploader.clear();
             };
             reader.readAsDataURL(file);
-            */
-
-           var that = this;
-           var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
-           var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoice", "fileUploader");
-           sap.ui.core.BusyIndicator.show(0);
-
-           if (!oFileUploader.getValue()) {
-                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/helpDocs.uploader.nodata"));
-                sap.ui.core.BusyIndicator.hide();
-                return;
-            }
-
-            var file = oFileUploader.oFileUpload.files[0];
-            var reader2 = new FileReader();
-
-            reader2.onload = function (evn) {
-                var strXML = evn.target.result;  
-                
-                var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' + 
-                    'xmlns:tem="http://tempuri.org/"><soapenv:Header/><soapenv:Body><tem:RecibeCFDPortal>' + 
-                    '<tem:XMLCFD><![CDATA[' + strXML + ']]></tem:XMLCFD><tem:proveedor>' + vLifnr + 
-                    '</tem:proveedor></tem:RecibeCFDPortal></soapenv:Body></soapenv:Envelope>';
-                
-                $.ajax({
-                    async: true,
-                    url: "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboPortal.asmx",
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "text/xml",
-                        "Access-Control-Allow-Origin": "*"
-                    },
-                    data: body,
-                    success: function(response) {
-                        sap.ui.core.BusyIndicator.hide();
-                        that.onCloseDialogUpload();
-                        oFileUploader.clear();
-                        var oXMLModel = new sap.ui.model.xml.XMLModel();  
-                        oXMLModel.setXML(response.getElementsByTagName("RecibeCFDPagoResult")[0].textContent);
-                        var oXml = oXMLModel.getData();
-                        var status = oXml.getElementsByTagName("AckErrorApplication")[0].attributes[5].nodeValue;
-                        if (status == "ACCEPTED") {
-                            sap.m.MessageBox.success(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendSuccess"));
-                        } else {
-                            var strError = oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent;
-                            strError = strError.replaceAll(";","\n\n");
-                            sap.m.MessageBox.error(strError);
-                        }
-                    },
-                    error: function(request, status, err) {
-                        sap.ui.core.BusyIndicator.hide();
-                        that.onCloseDialogUpload();
-                        oFileUploader.clear();
-                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendError"));
-                    }
-                });
-            };
-            reader2.readAsText(file);
         },
         delFact: function (oEvent) {
             sap.ui.getCore().setModel(null, "deliverTable");
@@ -605,12 +639,12 @@ sap.ui.define([
             datarange.setDateValue(minConsultDate);
         },
         onDocumentPress: function (oEvent) {
-         
+
             let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
             let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
 
             let registro = results[posicion];
-       
+
 
             this.getOwnerComponent().getRouter().navTo("detailComplPagos",
                 {
@@ -633,7 +667,7 @@ sap.ui.define([
 
             var oModel = that.getView().getModel("Documentos").getData().Detalles.Paginated.results,
                 aCols = [];
-          
+
             var texts = this.getOwnerComponent().getModel("appTxts");
 
             aCols.push({
@@ -753,15 +787,15 @@ sap.ui.define([
            // var posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
             var results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
             var registro = results;
-           
+
             var aIndices = this.byId("complPagoList").getSelectedIndices();
-         
+
             for(var x =0;x<aIndices.length;x++){
-               
-          
+
+
             var Laufd = String(registro[aIndices[x]].Laufd).replace(/-/g, "");
             var Augdt = String(registro[aIndices[x]].Augdt).replace(/-/g, "");
-           
+
 var auxFilters=[];
             auxFilters.push(new sap.ui.model.Filter({
                 path: "IOption",
@@ -830,8 +864,8 @@ var auxFilters=[];
          that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
                 sap.ui.core.BusyIndicator.hide();
                 var Datos = _GEToDataV2Response.data;
-                
-               
+
+
             var Encabezado = Object.values(Datos.results[0].ETXTHDRNAV.results[0]).slice(1).join('\t');
             var Totales = Datos.results[0].ETXTTOTALNAV.results;
             var Impuestos = Datos.results[0].ETXTTAXNAV.results;
@@ -891,7 +925,7 @@ var auxFilters=[];
             that.getView().byId("dinamicTableCP").close();
         },
 
-       
+
 
 
 

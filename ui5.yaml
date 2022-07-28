@@ -15,6 +15,7 @@ server:
       backend:
       - path: /sap/opu/odata
         url: https://ppqas.soriana.com/ # QAS
+        #url: http://azqasgtwsq01.soriana.com:8000 # QAS VPN
         #url: http://azdevgtwsq01.soriana.com:8000/ # DEV
       ui5:
         path: 

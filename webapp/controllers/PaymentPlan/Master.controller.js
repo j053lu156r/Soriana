@@ -137,38 +137,41 @@ sap.ui.define([
                 });
 
 
+
+
+
                 var sortedAsc = [...arr1].sort(
                     (objA, objB) => Number(objA.date) - Number(objB.date),
                 );
 
                 console.log(sortedAsc)
 
-                //se obtiene la fecha limite 
+                //se obtiene la fecha limite
 
-                // 1.- se saca el ltimo registro y se saca el proxmo viernes 
+                // 1.- se saca el ltimo registro y se saca el proxmo viernes
 
                 // var lastDate = sortedAsc.reverse()[0].Laufd;
 
-                // 2.- obtener   ultimo viernes 
-                /* si  la ultima fecha de los registros es menor o igual a la fecha de hoy 
+                // 2.- obtener   ultimo viernes
+                /* si  la ultima fecha de los registros es menor o igual a la fecha de hoy
 
-                sacar el proximo vienres a partir de la fehca de hoy si es mayor usar la fucnion de obtner viernes 
+                sacar el proximo vienres a partir de la fehca de hoy si es mayor usar la fucnion de obtner viernes
 
 
                 */
 
                 //NOTA
 
-                /**Si ya tenog la fhca generar fecha de corte sacando el proximo viernes y generar fecha de corte en base a eso  
-                 * 
-                 * 
-                 * si la fehca de corte es inferiror a la de hoy colocar al proximo viernes como fecha de corte sino al proximo vienes apartir de su fecha 
-                 * 
+                /**Si ya tenog la fhca generar fecha de corte sacando el proximo viernes y generar fecha de corte en base a eso
+                 *
+                 *
+                 * si la fehca de corte es inferiror a la de hoy colocar al proximo viernes como fecha de corte sino al proximo vienes apartir de su fecha
+                 *
                  */
 
 
 
-                //3.- setear fecha de corte en cada registro 
+                //3.- setear fecha de corte en cada registro
 
                 for (var index in sortedAsc) {
 
@@ -181,19 +184,20 @@ sap.ui.define([
 
                     if(Number(paymentDate)>Number(currentDate)){
                          lastNextFriday = this.getNextDayOfWeek(new Date(sortedAsc[index].Laufd.replace(/-/g, '\/')), 5)
-  
+
                     }else{
                          lastNextFriday = this.getNextDayOfWeek(new Date(), 5)
 
                     }
 
 
-                   
+
                     sortedAsc[index].fechaCorte = dateFormat.format(lastNextFriday)
                 }
 
 
-                //4.- agrupar por fecha de corte 
+                //4.- agrupar por fecha de corte
+
 
 
 
@@ -205,7 +209,7 @@ sap.ui.define([
                 var acumulado = 0;
 
 
-                //generar totales 
+                //generar totales
 
                 for (let x in groupedMovs) {
 
@@ -238,7 +242,7 @@ sap.ui.define([
 
 
 
-                //update model 
+                //update model
 
                 var totalCostos = nestedMovs.reduce(function (_this, val) {
                     var current = Number(val.cost)
@@ -346,7 +350,7 @@ sap.ui.define([
 
 
 
-        //MANAGE DATES 
+        //MANAGE DATES
 
         getDaysBetweenDates: function (start, end, dayName) {
             var result = [];
@@ -438,20 +442,20 @@ sap.ui.define([
 				this._oTable.setMode("SingleSelectMaster");
 
 
-                
+
 				this.byId("paymentDocColumn").setVisible(true);
 				this.byId("clientColumn").setVisible(true);
 				this.byId("amountColumn").setVisible(true);
 				this.byId("datePayColumn").setVisible(true);
 
-				 
-				//totales 
- 
+
+				//totales
+
 				this.byId("dateCorte").setVisible(false);
 				this.byId("saldoCorte").setVisible(false);
 				this.byId("saldoAcumulado").setVisible(false);
- 
-				
+
+
 
 
 
@@ -459,19 +463,19 @@ sap.ui.define([
 			} else {
 				this._oTable.setMode("SingleSelectMaster");
 
-			
+
                 this.byId("paymentDocColumn").setVisible(false);
 				this.byId("clientColumn").setVisible(false);
 				this.byId("amountColumn").setVisible(false);
 				this.byId("datePayColumn").setVisible(false);
-				 
-				//totales 
- 
+
+				//totales
+
 				this.byId("dateCorte").setVisible(true);
 				this.byId("saldoCorte").setVisible(true);
 				this.byId("saldoAcumulado").setVisible(true);
- 
-				
+
+
 
 
 
@@ -537,11 +541,11 @@ sap.ui.define([
 				console.log(sPath)
 				//let posicion = oEvent.getSource().getBindingContext("GroupedTotales").getPath().split("/").pop();
 				let results = this.getOwnerComponent().getModel("GroupedDates").getProperty(sPath);
-	
+
 				console.log(results)
 				//let registro = results[posicion];
 				//console.log(registro)
-			
+
 	/*
 				 this.getOwnerComponent().getRouter().navTo("detailAcuerdos",
 					{
