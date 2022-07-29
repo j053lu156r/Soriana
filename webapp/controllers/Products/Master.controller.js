@@ -21,7 +21,7 @@ sap.ui.define([
     var swProveedorExcluido = false;
     var _selectedEanType = {};
     var _invalidCostoNuevo = {};
-    var _testingSteps = (document.location.hostname.slice(-4) == '.sap');//true; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
+    var _testingSteps = (document.location.hostname.slice(-4) == '.sap');// cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
 
     return BaseController.extend("demo.controllers.Products.Master", {
         formatterCatPrd: formatterCatPrd,
@@ -1902,8 +1902,6 @@ sap.ui.define([
                         }]
                     };
 
-                    // var response = Model.create("/HdrcatproSet", objRequest);
-
                     sap.ui.core.BusyIndicator.show();
 
                     let response = null;
@@ -1919,12 +1917,11 @@ sap.ui.define([
 
                     if (response != null) {
                         if (response.ESuccess === 'X') {
-                            const msg = "Se han generado correctamente los cambios de precio.";
+                            const msg = "Se han generado correctamente la solicitud de cambiode costos.";
                             sap.m.MessageBox.success(msg, {
                                 actions: [sap.m.MessageBox.Action.CLOSE],
                                 emphasizedAction: sap.m.MessageBox.Action.CLOSE,
                                 onClose: function (sAction) {
-                                    // that._oWizard.close();
                                     this.closeDialog('changePriceDialog');
                                 }.bind(that)
                             });
@@ -1971,7 +1968,21 @@ sap.ui.define([
                                 "Error": ""
                             }]
                         }
-                        var response = Model.create("/HdrcatproSet", objRequest);
+                        
+                        //var response = Model.create("/HdrcatproSet", objRequest); 
+                        
+                        sap.ui.core.BusyIndicator.show();
+
+                        let response = null;
+    
+                        await that._PostODataV2Async(_oDataModel, _oDataEntity, objRequest).then(resp => {
+    
+                            response = resp.data;
+                            sap.ui.core.BusyIndicator.hide();
+    
+                        }).catch(error => {
+                            console.error(error);
+                        });
 
                         if (response != null) {
                             if (response.ESuccess === 'X') {
