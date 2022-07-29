@@ -397,9 +397,9 @@ console.log(cleanedArray)
                    //IdNumTipomov: "11"
 
                    if(obj.DescripcionGpo === ""){
-                        obj.DescripcionGpo= "DEFAULT"
+                        obj.DescripcionGpo= "AJUSTE DE FACTURAS"
                         obj.IdNumGpo= "9"
-                        obj.DescTipomov= "DEFAULT"
+                        obj.DescTipomov= "CARGOS DIVERSOS"
                         obj.IdNumTipomov= "65"
                    }
 
