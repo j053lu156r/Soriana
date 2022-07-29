@@ -20,12 +20,14 @@
                 </f:heading>
                 <f:actions>
                     <ToolbarSpacer/>
+                    <!--
                     <Button
                         text  = "{appTxts>/pay.cfdi}"
                         type  = "Emphasized"
                         press = "openUploadDialog"
                     />
-                    <Button text="Validaciones fiscales" type="Emphasized" press="openUploadDialog2"/>
+                    -->
+                    <Button text="{appTxts>/pay.cfdi}" type="Emphasized" press="openUploadDialog2"/>
                 </f:actions>
             </f:DynamicPageTitle>
         </f:title>
