@@ -126,7 +126,8 @@ sap.ui.define([
         backLogin: function () {
             sap.ui.getCore().setModel(null, "logon");
             //window.history.replaceState({}, document.title, "/sap/bc/ui5_ui5/sap/zportalprisma/sendfac/webcontent/" + "index.html");
-            this.getOwnerComponent().getRouter().navTo("appHome", {}, true /*no history*/);
+            location.reload();
+            //this.getOwnerComponent().getRouter().navTo("appHome", {}, true /*no history*/);
         }
     });
 
