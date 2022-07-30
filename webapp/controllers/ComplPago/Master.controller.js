@@ -425,7 +425,8 @@ sap.ui.define([
 
                 $.ajax({
                     async: true,
-                    url: "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboPortal.asmx",
+                    //url: "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboPortal.asmx", //QAS
+                    url: "https://enviodocumentos.soriana.com/RecibeCFD/wseDocReciboPortal.asmx", //PRO
                     method: "POST",
                     headers: {
                         "Content-Type": "text/xml",
