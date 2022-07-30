@@ -301,7 +301,6 @@ sap.ui.define([
 
         async handleUploadPressChangePrice () {
 
-
             let archivo = this.getOwnerComponent().getModel('ITEXT64').getProperty('/attach');
             if (archivo.length == 1) {
 
@@ -451,7 +450,7 @@ sap.ui.define([
         },
 
         duplicarValorInicial: function () {
-            const that = this;
+            let that = this;
             MessageBox.confirm('Desea asignar el valor de la primer fila a todos los registros existentes?', function (oAction) {
                 if (oAction === MessageBox.Action.OK) {
                     const modelData = that.getOwnerComponent().getModel('ETDELETE').getData();
@@ -1059,7 +1058,7 @@ sap.ui.define([
             this._handleMessageBoxOpen(this.getOwnerComponent().getModel("appTxts").getProperty('/products.msgCancelNewProduct'), "warning");
         },
 
-        _handleMessageBoxOpen: async function (sMessage, sMessageBoxType) {
+        async _handleMessageBoxOpen (sMessage, sMessageBoxType) {
 
             MessageBox[sMessageBoxType](sMessage, {
 
@@ -1635,7 +1634,7 @@ sap.ui.define([
             return valid;
         },
 
-        calcularCostNetCom: async function (oControlEvent) {
+        async calcularCostNetCom (oControlEvent) {
 
             let ValueState = sap.ui.core.ValueState.None;
 
@@ -1940,7 +1939,7 @@ sap.ui.define([
                 MessageBox.warning('Debe capturar el destinatario y la carta compromiso. \r\n Y almenos un regsitro para el cambio de costo')
         },
 
-        saveDelete: function () {
+        async saveDelete () {
             let that = this;
 
             const items = this.getView().getModel('ETDELETE').getProperty('/results');
@@ -1954,7 +1953,7 @@ sap.ui.define([
             }
 
             if (items.length > 0) {
-                MessageBox.confirm("Desea enviar los registros para baja de productos?", function (oAction) {
+                MessageBox.confirm("Desea enviar los registros para baja de productos?", async function (oAction) {
                     if (oAction === MessageBox.Action.OK) {
                         let objRequest = {
                             IOption: "12",
