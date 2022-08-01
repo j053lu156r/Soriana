@@ -223,6 +223,17 @@ function EnvioCfdi() {
 EnvioCfdi.prototype = Object.create(BaseModel.prototype);
 EnvioCfdi.prototype.contructor = EnvioCfdi;
 
+//Envio Validaciones fiscales
+function ValidacionesFiscales() {
+    var params = {};
+    params.sUrl = "/RecibeCFD/wseDocReciboPortal.asmx";
+    params.sModel = "validacionesFiscales";
+    BaseModel.call(this, params);
+}
+
+ValidacionesFiscales.prototype = Object.create(BaseModel.prototype);
+ValidacionesFiscales.prototype.contructor = ValidacionesFiscales;
+
 //Plan de pagos
 function PaymentPlan() {
     var params = {};

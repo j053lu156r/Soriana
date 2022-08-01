@@ -17,6 +17,8 @@ sap.ui.define([
     var tipoUpload = "";
     var oModel = new this.EnvioCfdi();
     var cfdiModel = new this.CfdiModel();
+    var oValidFiscales = new this.ValidacionesFiscales();
+    var fiscalUrl = "";
 
     return Controller.extend("demo.controllers.Detail.Master", {
         onInit: function () {
@@ -37,6 +39,7 @@ sap.ui.define([
                     this.getConfigModel().setProperty("/updateFormatsSingle", "xml");
                 }
             }, this);
+            this.fiscalModel = new sap.ui.model.odata.v2.ODataModel(oValidFiscales.sUrl);
         },
         searchData: function () {
             if (!this.hasAccess(2)) {
@@ -237,7 +240,8 @@ sap.ui.define([
                 
                 $.ajax({
                     async: true,
-                    url: "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboPortal.asmx",
+                    url: "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboPortal.asmx", //QAS
+                    //url: "https://enviodocumentos.soriana.com/RecibeCFD/wseDocReciboPortal.asmx", //PRO
                     method: "POST",
                     headers: {
                         "Content-Type": "text/xml",
@@ -307,7 +311,17 @@ sap.ui.define([
             var year = results[line].Gjahr;
 
             this.getOwnerComponent().getRouter().navTo("detailCfdi", { layout: oNextUIState.layout, document: document, year: year }, true);
-        }
+        },
 
+        onGetFiscalUrl: function(oEvent){
+            this.fiscalModel.read("", {
+                success: function(response){
+                    console.log(response)
+                }, 
+                error: function(error){
+                    sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.getUrlError"));
+                }
+            });
+        }
     });
 });
