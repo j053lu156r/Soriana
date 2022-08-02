@@ -330,9 +330,9 @@ console.log(objResponse);
         onPressPDF: function () {
             var oModel = this.getOwnerComponent().getModel("AportaDetDet");
             var oData = oModel.getData();
-
-            var sServiceURL = this.oModel.sServiceUrl;
+            var sServiceURL = "/sap/opu/odata/sap/ZOSP_APORTA_SRV/";
 			var sSource = sServiceURL + "AportaFilesSet('" + oData.Uuid + "')/$value";
+
 			this._pdfViewer.setSource(sSource);
 			this._pdfViewer.setTitle("CFDI");
 			this._pdfViewer.open();

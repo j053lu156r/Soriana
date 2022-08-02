@@ -391,6 +391,17 @@ sap.ui.define([
 console.log(cleanedArray)
 
                 var clanedDateArray  = cleanedArray.filter(obj => {
+                   // DescripcionGpo: "PAGO FACTURA"
+                   //IdNumGpo: "1"
+                   //DescTipomov: "PAGO FACTURAS"
+                   //IdNumTipomov: "11"
+
+                   if(obj.DescripcionGpo === ""){
+                        obj.DescripcionGpo= "AJUSTE DE FACTURAS"
+                        obj.IdNumGpo= "9"
+                        obj.DescTipomov= "CARGOS DIVERSOS"
+                        obj.IdNumTipomov= "65"
+                   }
 
                     const date = new Date(obj.Budat.replace(/-/g, '\/'));
 

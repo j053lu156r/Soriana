@@ -1,23 +1,16 @@
 sap.ui.define([
-    "jquery.sap.global",
-    "sap/ui/core/Fragment",
     "demo/controllers/BaseController",
-    "sap/m/UploadCollectionParameter",
-    "sap/ui/core/mvc/Controller",
-    "sap/ui/model/json/JSONModel",
-    "sap/ui/core/routing/History",
     "sap/m/MessageBox",
-    "sap/ui/core/routing/Router",
-    "demo/models/BaseModel",
-    'sap/f/library'
-], function (jQuery, Fragment, Controller, UploadCollectionParameter, JSONModel, History, fioriLibrary, MessageBox) {
+    "sap/m/PDFViewer"
+], function (Controller, MessageBox, PDFViewer) {
     "use strict";
 
     var oModel = new this.Acuerdos();
     return Controller.extend("demo.controllers.Acuerdos.Master", {
         onInit: function () {
-            /*this._pdfViewer = new PDFViewer();
-            this.getView().addDependent(this._pdfViewer);*/
+            this._pdfViewer = new PDFViewer();
+            this.getView().addDependent(this._pdfViewer);
+
             this.getView().addEventDelegate({
                 onAfterShow: function (oEvent) {
                     var barModel = this.getOwnerComponent().getModel();
@@ -195,6 +188,17 @@ sap.ui.define([
 
                 }, true);
 
+        },
+
+        onPressPDF: function () {
+            var oModel = this.getOwnerComponent().getModel("AcuerdosHdr");
+            var oData = oModel.getData();
+            var sServiceURL = "/sap/opu/odata/sap/ZOSP_ACUERDOS_SRV/";
+			var sSource = sServiceURL + "AcuerdosFilesSet('" + oData.UUID + "')/$value";
+
+			this._pdfViewer.setSource(sSource);
+			this._pdfViewer.setTitle("CFDI");
+			this._pdfViewer.open();
         }
 
     });
