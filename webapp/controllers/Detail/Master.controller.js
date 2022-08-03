@@ -244,7 +244,8 @@ sap.ui.define([
                     //url: "https://enviodocumentos.soriana.com/RecibeCFD/wseDocReciboPortal.asmx", //PRO
                     method: "POST",
                     headers: {
-                        "Content-Type": "text/xml",
+                       // "Content-Type": "text/xml",
+                       "Content-Type": "text/xml; charset=utf-8",
                         "Access-Control-Allow-Origin": "*"
                     },
                     data: body,

@@ -225,6 +225,10 @@ EnvioCfdi.prototype.contructor = EnvioCfdi;
 
 //Envio Validaciones fiscales
 function ValidacionesFiscales() {
+
+    var host = window.location.host; 
+    console.log(host);
+
     var params = {};
     params.sUrl = "/RecibeCFD/wseDocReciboPortal.asmx";
     params.sModel = "validacionesFiscales";
