@@ -123,9 +123,7 @@ sap.ui.define([
 
             if (respObj != null) {
                 if (respObj.EAccallow == "X") {
-
                     respObj.IMail = logon_user_value;
-
                     oLogonJSONModel.setData(respObj);
                     bLogon = true;
                 } else {
