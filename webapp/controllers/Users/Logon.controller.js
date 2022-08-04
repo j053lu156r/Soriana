@@ -93,14 +93,37 @@ sap.ui.define([
                 return;
             }
 
+            var objRequest = {
+                "IOption": "14",
+                "IMail": logon_user_value,
+                "IPass": logon_pass_value,
+                "ETROLUSUANAV": [],
+                "ETUSUAPROVNAV": [],
+                "ETSUPPSNAV": []
+            };
+
+            var expresion = /[\"\b\f\n\r\t\\\']/gi;
+            var array_regex = logon_pass_value.match(expresion);
+
+            if (array_regex !== null){
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel('appTxts').getProperty("/logon.regexError"));
+                return
+            }
+
+            /*
+            var response = oModel.getJsonModel("/headerAdmSet?$expand=ETROLUSUANAV,ETUSUAPROVNAV,ETNOMPROVNAV,ETSUPPSNAV&$filter= IOption eq '14' and IMail eq '" + logon_user_value + "' and IPass eq '" + logon_pass_value + "'");
+            var respObj = response.getProperty("/results/0");
+            console.log(respObj)
+            */
+
+            var respObj = oModel.create("/headerAdmSet", objRequest);
+            
             var oLogonJSONModel = new sap.ui.model.json.JSONModel();
             var bLogon = false;
 
-
-            var response = oModel.getJsonModel("/headerAdmSet?$expand=ETROLUSUANAV,ETUSUAPROVNAV,ETNOMPROVNAV,ETSUPPSNAV&$filter= IOption eq '14' and IMail eq '" + logon_user_value + "' and IPass eq '" + logon_pass_value + "'");
-            var respObj = response.getProperty("/results/0");
             if (respObj != null) {
                 if (respObj.EAccallow == "X") {
+                    respObj.IMail = logon_user_value;
                     oLogonJSONModel.setData(respObj);
                     bLogon = true;
                 } else {
@@ -121,7 +144,6 @@ sap.ui.define([
                     var suppDetails = oLogonJSONModel.getProperty("/ETUSUAPROVNAV/results").find(element => element.Lifnr == vLifnr);
                     vSuppName = suppDetails.Name;
                 }
-
                 this.setActiveLifnr(vLifnr, vSuppName);
                 this.getRouter().navTo("tile");
             }
@@ -208,6 +230,15 @@ sap.ui.define([
             var pass1 = sap.ui.getCore().byId("pass1").getValue();
             var pass2 = sap.ui.getCore().byId("pass2").getValue();
             var verfc = sap.ui.getCore().byId("verifyCode").getValue();
+
+            var expresion = /[\"\b\f\n\r\t\\\']/gi;
+            var array_regex = pass1.match(expresion);
+            var array_regex2 = pass2.match(expresion);
+
+            if (array_regex !== null || array_regex2 !== null){
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel('appTxts').getProperty("/logon.regexError"));
+                return
+            }
 
             if (pass1.length <= 0 || pass1.length < 8) {
                 sap.m.MessageBox.warning(this.getOwnerComponent().getModel('appTxts').getProperty("/logonCon.noPass"));
