@@ -239,9 +239,28 @@ sap.ui.define([
 
 				var cleanedArray = Detalles  //Detalles.filter(obj => !obj.Belnr.startsWith("58") && !obj.Belnr.startsWith("59"));
 
+				var clanedDateArray  = cleanedArray.filter(obj => {
+					// DescripcionGpo: "PAGO FACTURA"
+					//IdNumGpo: "1"
+					//DescTipomov: "PAGO FACTURAS"
+					//IdNumTipomov: "11"
+
+					if(obj.DescripcionGpo === ""){
+						obj.DescripcionGpo= "AJUSTE DE FACTURAS"
+						obj.IdNumGpo= "9"
+						obj.DescTipomov= "CARGOS DIVERSOS"
+						obj.IdNumTipomov= "65"
+					}
+
+
+
+					return   true
+				});
+
+
 
 				data[0].Detalles = {
-					results: [...cleanedArray]
+					results: [...clanedDateArray]
 				};
 
 
@@ -250,7 +269,7 @@ sap.ui.define([
 				jsonModelT.setData(JSONT);
 				//filtrar totales y crear modelo grupal
 
-				let auxArray = [...cleanedArray]
+				let auxArray = [...clanedDateArray]
 
 
 				var sumaAux = auxArray.reduce(function (_this, val) {

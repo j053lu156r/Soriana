@@ -471,7 +471,7 @@
                                 <m:Text text="{GroupedTotales>Budat}" wrapping="false"/>
                             </template>
                         </Column>
-                        <Column sortProperty="fechaTesoreria" id="dateColumn"
+                        <Column sortProperty="FechaTesoreria" id="dateColumn"
                                 width="5rem">
                             <m:Label text="{appTxts>/clarifications.expirationDate}"/>
                             <template>
