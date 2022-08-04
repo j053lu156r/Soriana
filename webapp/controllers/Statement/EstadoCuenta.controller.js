@@ -388,7 +388,6 @@ sap.ui.define([
                 let Detalles = [...data[0].Citms.results, ...data[0].Oitms.results];
 
                 var cleanedArray =  Detalles.filter(obj => !obj.Belnr.startsWith("58") && !obj.Belnr.startsWith("59"));
-console.log(cleanedArray)
 
                 var clanedDateArray  = cleanedArray.filter(obj => {
                    // DescripcionGpo: "PAGO FACTURA"
@@ -409,7 +408,6 @@ console.log(cleanedArray)
                     return   date < new Date()
                 });
 
-               console.log(clanedDateArray)
 
 
                 data[0].Detalles = {
