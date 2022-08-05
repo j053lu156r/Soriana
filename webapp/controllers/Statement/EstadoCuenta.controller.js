@@ -39,6 +39,8 @@ sap.ui.define([
                     this.getView().setModel(oModel);*/
                     this.clearFilters();
                     this.getOwnerComponent().setModel(new JSONModel(), "totales");
+                    this.getOwnerComponent().setModel(new JSONModel(), "GroupedTotales");
+
 
                     var oModel = new JSONModel({
                         filtros: [{
