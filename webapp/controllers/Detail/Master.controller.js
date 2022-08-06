@@ -245,7 +245,7 @@ sap.ui.define([
                     headers: {
                        // "Content-Type": "text/xml",
                        "Content-Type": "text/xml; charset=utf-8",
-                        "Access-Control-Allow-Origin": "*"
+                       "Access-Control-Allow-Origin": "*"
                     },
                     data: body,
                     success: function(response) {
@@ -256,12 +256,12 @@ sap.ui.define([
                         oXMLModel.setXML(response.getElementsByTagName("RecibeCFDPortalResult")[0].textContent);
                         var oXml = oXMLModel.getData();
                         var status = oXml.getElementsByTagName("AckErrorApplication")[0].attributes[5].nodeValue;
+                        var strResponse = oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent;
+                        strResponse = strResponse.replaceAll(";","\n\n");
                         if (status == "ACCEPTED") {
-                            sap.m.MessageBox.success(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendSuccess"));
+                            sap.m.MessageBox.success(strResponse);
                         } else {
-                            var strError = oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent;
-                            strError = strError.replaceAll(";","\n\n");
-                            sap.m.MessageBox.error(strError);
+                            sap.m.MessageBox.error(strResponse);
                         }
                     },
                     error: function(request, status, err) {

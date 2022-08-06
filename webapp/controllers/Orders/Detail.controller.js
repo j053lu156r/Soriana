@@ -224,6 +224,12 @@ sap.ui.define([
                         downloadLink.href = linkSource;
                         downloadLink.download = `EDI_${that._document}.txt`;
                         downloadLink.click();
+                        
+                        /*
+                        var base64Data = "TsO6bWVybyBkZSBwcm92ZWVkb3IJTsO6bWVybyBkZSBwZWRpZG8JRmVjaGEgZGVsIHBlZGlkbwlUaWVuZGEJRmVjIEluaSBFbWIJRmVjIEZpbiBFbWIJUGxhem8gZGUgcGFnbw0KMDAwMDIwODcyOQkwMDEzMDAwMDAzCTIwMjAxMjIzCTAwMDAwMDAwCTAwMDAwMDAwCUMwMDENCg0KTnVtLiBQcm92LglOdW0uIFBlZGlkbwlOdW0uIFRpZW5kYQlDb2RpZ28JVW5pQ29tCURlc2MuQXJ0Lg0KMDAwMDIwODcyOQkwMDEzMDAwMDAzCTAxMzMJCQlSQURJTw0K";
+                        var decoded = decodeURIComponent(escape(atob(base64Data)));
+                        console.log(decoded);
+                        */
                     } else {
                         sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/order.ediEmptyError"));
                     }
