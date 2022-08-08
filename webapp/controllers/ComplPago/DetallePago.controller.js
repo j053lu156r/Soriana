@@ -187,8 +187,32 @@ console.log(TDatos)
 
 			let Detalles = [...TDatos.results[0].Citms.results, ...TDatos.results[0].Oitms.results];
 
-			TDatos.results[0].Detalles = {
-				results: [...Detalles]
+
+				var cleanedArray = Detalles  //Detalles.filter(obj => !obj.Belnr.startsWith("58") && !obj.Belnr.startsWith("59"));
+
+				var clanedDateArray  = cleanedArray.filter(obj => {
+					// DescripcionGpo: "PAGO FACTURA"
+					//IdNumGpo: "1"
+					//DescTipomov: "PAGO FACTURAS"
+					//IdNumTipomov: "11"
+
+					if(obj.DescripcionGpo === ""){
+						obj.DescripcionGpo= "AJUSTE DE FACTURAS"
+						obj.IdNumGpo= "9"
+						obj.DescTipomov= "CARGOS DIVERSOS"
+						obj.IdNumTipomov= "65"
+					}
+
+
+
+					return   true
+				});
+
+
+
+
+				TDatos.results[0].Detalles = {
+				results: [...cleanedArray]
 			};
 
 			delete TDatos.results[0].Citms;
@@ -206,7 +230,7 @@ console.log(TDatos)
 
 			//filtrar totales y crear modelo grupal
 
- 			let auxArray = [...Detalles]
+ 			let auxArray = [...cleanedArray]
 
 
 
