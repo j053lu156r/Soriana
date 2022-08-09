@@ -463,6 +463,7 @@ sap.ui.define([
 
             oEvent.getSource().getBinding("items").filter([oFilter]);
         },
+
         advanceFilter: function (usrModel, sValue) {
             var oLogon = new UserModel();
             var sMail = usrModel.getProperty("/IMail");
@@ -474,6 +475,7 @@ sap.ui.define([
                 this.getOwnerComponent().getModel('userdata').setProperty("/ETUSUAPROVNAV", suppliers);
             }
         },
+        
         formatTranslate: function (title) {
             var txtModel = this.getOwnerComponent().getModel('appTxts');
             return txtModel.getProperty(title);

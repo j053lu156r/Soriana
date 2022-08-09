@@ -17,6 +17,8 @@ sap.ui.define([
     var tipoUpload = "";
     var oModel = new this.EnvioCfdi();
     var cfdiModel = new this.CfdiModel();
+    var oValidFiscales = new this.ValidacionesFiscales();
+    var fiscalUrl = "";
 
     return Controller.extend("demo.controllers.Detail.Master", {
         onInit: function () {
@@ -37,6 +39,7 @@ sap.ui.define([
                     this.getConfigModel().setProperty("/updateFormatsSingle", "xml");
                 }
             }, this);
+            this.fiscalModel = new sap.ui.model.odata.v2.ODataModel(oValidFiscales.sUrl);
         },
         searchData: function () {
             if (!this.hasAccess(2)) {
@@ -237,11 +240,12 @@ sap.ui.define([
                 
                 $.ajax({
                     async: true,
-                    url: "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboPortal.asmx",
+                    url: oValidFiscales.sUrl,
                     method: "POST",
                     headers: {
-                        "Content-Type": "text/xml",
-                        "Access-Control-Allow-Origin": "*"
+                       // "Content-Type": "text/xml",
+                       "Content-Type": "text/xml; charset=utf-8",
+                       "Access-Control-Allow-Origin": "*"
                     },
                     data: body,
                     success: function(response) {
@@ -252,12 +256,12 @@ sap.ui.define([
                         oXMLModel.setXML(response.getElementsByTagName("RecibeCFDPortalResult")[0].textContent);
                         var oXml = oXMLModel.getData();
                         var status = oXml.getElementsByTagName("AckErrorApplication")[0].attributes[5].nodeValue;
+                        var strResponse = oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent;
+                        strResponse = strResponse.replaceAll(";","\n\n");
                         if (status == "ACCEPTED") {
-                            sap.m.MessageBox.success(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendSuccess"));
+                            sap.m.MessageBox.success(strResponse);
                         } else {
-                            var strError = oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent;
-                            strError = strError.replaceAll(";","\n\n");
-                            sap.m.MessageBox.error(strError);
+                            sap.m.MessageBox.error(strResponse);
                         }
                     },
                     error: function(request, status, err) {
@@ -307,7 +311,17 @@ sap.ui.define([
             var year = results[line].Gjahr;
 
             this.getOwnerComponent().getRouter().navTo("detailCfdi", { layout: oNextUIState.layout, document: document, year: year }, true);
-        }
+        },
 
+        onGetFiscalUrl: function(oEvent){
+            this.fiscalModel.read("", {
+                success: function(response){
+                    console.log(response)
+                }, 
+                error: function(error){
+                    sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.getUrlError"));
+                }
+            });
+        }
     });
 });

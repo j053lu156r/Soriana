@@ -93,7 +93,7 @@
                     noData         ="{appTxts>/pay.merchandise}"
                     id                 ="complPagoList"
                     alternateRowColors ="true"
-                    rows              ="{Documentos>/Detalles/Paginated/results}"
+                    rows              ="{Documentos>/Detalles/results}"
                     enableColumnReordering = "false"
                     enableSelectAll="false"
                     selectionMode="Single"
@@ -103,6 +103,7 @@
                             <Title id="title" text="{appTxts>/pay.paylist}"/>
                             <ToolbarSpacer/>
                             <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${Documentos>/Detalles/Paginated/results/length} > 0}" />
+                           <!--
                             <Select visible="{= ${Documentos>/Detalles/Paginated/results/length} > 0 }" change=".paginateValue(${$parameters>/selectedItem}, 'Documentos', '/Detalles')">
                                 <items>
                                     <core:Item key="10" text="10"/>
@@ -111,11 +112,13 @@
                                     <core:Item key="100" text="100"/>
                                 </items>
                             </Select>
+                            -->
                         </OverflowToolbar>
                     </t:extension>
                     <t:columns>
                         <t:Column
-                            width           = "auto"
+                                sortProperty="Butxt" filterProperty="Butxt"
+                            width           = "20%"
                             hAlign          = "Left">
                             <Label text="{appTxts>/pay.headerCompany}" />
                             <t:template>
@@ -123,6 +126,7 @@
                             </t:template>
                         </t:Column>
                         <t:Column visible="false"
+                                  sortProperty="Text2" filterProperty="Text2"
                             width           = "15%" >
                             <Label text="{appTxts>/pay.headerPaymentType}" />
                             <t:template>
@@ -130,7 +134,8 @@
                             </t:template>
                         </t:Column>
                         <t:Column
-                            width           = "15%"
+                                sortProperty="Vblnr" filterProperty="Vblnr"
+                            width           = "25%"
                             hAlign          = "Left" >
                             <Label text="{appTxts>/pay.headerDocument}" />
                             <t:template>
@@ -148,6 +153,7 @@
                         </t:Column>
                         -->
                         <t:Column
+                                sortProperty="Laufd" filterProperty="Laufd"
                             width           = "15%"
                             hAlign          = "Center"
                             id              = "column5">
@@ -157,13 +163,14 @@
                             </t:template>
                         </t:Column>
                         <t:Column
+                                sortProperty="Dmbtr"
                             width           = "15%"
                             hAlign          = "Center"
                             id              = "column6">
                             <Label text="{appTxts>/pay.headerAmount}" />
                             <t:template>
                                 <ObjectNumber
-                                        number="{parts: [{path: 'Documentos>Rbetr'}, {path: 'Documentos>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{Documentos>Waers}" emphasized="false" state="None" textAlign="Right"/>
+                                        number="{parts: [{path: 'Documentos>Dmbtr'}, {path: 'Documentos>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{Documentos>Waers}" emphasized="false" state="None" textAlign="Right"/>
                             </t:template>
                         </t:Column>
                         <!--
@@ -236,12 +243,14 @@
 
                     </t:columns>
                 </t:Table>
+                <!--
                 <OverflowToolbar visible="{= ${Documentos>/Detalles/Paginated/results/length} > 0 }">
                     <Text text="{Documentos>/Detalles/Paginated/initRow} - {Documentos>/Detalles/Paginated/endRow} {appTxts>/pagination.of} {Documentos>/Detalles/results/length}" />
                     <ToolbarSpacer/>
                     <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${Documentos>/Detalles/Paginated/iterator}, ${Documentos>/Detalles/Paginated/initRow}, 'Documentos', '/Detalles')" enabled="{= ${Documentos>/Detalles/Paginated/iterator} !== 1}" />
                     <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${Documentos>/Detalles/Paginated/iterator}, ${Documentos>/Detalles/Paginated/endRow}, 'Documentos', '/Detalles')" enabled="{= ${Documentos>/Detalles/Paginated/endRow} !== ${Documentos>/Detalles/results/length}}" />
                 </OverflowToolbar>
+                -->
             </VBox>
 		</f:content>
 	</f:DynamicPage>

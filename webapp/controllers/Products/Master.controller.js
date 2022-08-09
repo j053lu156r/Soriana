@@ -21,7 +21,7 @@ sap.ui.define([
     var swProveedorExcluido = false;
     var _selectedEanType = {};
     var _invalidCostoNuevo = {};
-    var _testingSteps = (document.location.hostname.slice(-4) == '.sap');//true; // cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
+    var _testingSteps = (document.location.hostname.slice(-4) == '.sap');// cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
 
     return BaseController.extend("demo.controllers.Products.Master", {
         formatterCatPrd: formatterCatPrd,
@@ -301,7 +301,6 @@ sap.ui.define([
 
         async handleUploadPressChangePrice () {
 
-
             let archivo = this.getOwnerComponent().getModel('ITEXT64').getProperty('/attach');
             if (archivo.length == 1) {
 
@@ -451,7 +450,7 @@ sap.ui.define([
         },
 
         duplicarValorInicial: function () {
-            const that = this;
+            let that = this;
             MessageBox.confirm('Desea asignar el valor de la primer fila a todos los registros existentes?', function (oAction) {
                 if (oAction === MessageBox.Action.OK) {
                     const modelData = that.getOwnerComponent().getModel('ETDELETE').getData();
@@ -1059,7 +1058,7 @@ sap.ui.define([
             this._handleMessageBoxOpen(this.getOwnerComponent().getModel("appTxts").getProperty('/products.msgCancelNewProduct'), "warning");
         },
 
-        _handleMessageBoxOpen: async function (sMessage, sMessageBoxType) {
+        async _handleMessageBoxOpen (sMessage, sMessageBoxType) {
 
             MessageBox[sMessageBoxType](sMessage, {
 
@@ -1635,7 +1634,7 @@ sap.ui.define([
             return valid;
         },
 
-        calcularCostNetCom: async function (oControlEvent) {
+        async calcularCostNetCom (oControlEvent) {
 
             let ValueState = sap.ui.core.ValueState.None;
 
@@ -1902,8 +1901,6 @@ sap.ui.define([
                         }]
                     };
 
-                    // var response = Model.create("/HdrcatproSet", objRequest);
-
                     sap.ui.core.BusyIndicator.show();
 
                     let response = null;
@@ -1919,12 +1916,11 @@ sap.ui.define([
 
                     if (response != null) {
                         if (response.ESuccess === 'X') {
-                            const msg = "Se han generado correctamente los cambios de precio.";
+                            const msg = "Se han generado correctamente la solicitud de cambiode costos.";
                             sap.m.MessageBox.success(msg, {
                                 actions: [sap.m.MessageBox.Action.CLOSE],
                                 emphasizedAction: sap.m.MessageBox.Action.CLOSE,
                                 onClose: function (sAction) {
-                                    // that._oWizard.close();
                                     this.closeDialog('changePriceDialog');
                                 }.bind(that)
                             });
@@ -1943,7 +1939,7 @@ sap.ui.define([
                 MessageBox.warning('Debe capturar el destinatario y la carta compromiso. \r\n Y almenos un regsitro para el cambio de costo')
         },
 
-        saveDelete: function () {
+        async saveDelete () {
             let that = this;
 
             const items = this.getView().getModel('ETDELETE').getProperty('/results');
@@ -1957,7 +1953,7 @@ sap.ui.define([
             }
 
             if (items.length > 0) {
-                MessageBox.confirm("Desea enviar los registros para baja de productos?", function (oAction) {
+                MessageBox.confirm("Desea enviar los registros para baja de productos?", async function (oAction) {
                     if (oAction === MessageBox.Action.OK) {
                         let objRequest = {
                             IOption: "12",
@@ -1971,7 +1967,21 @@ sap.ui.define([
                                 "Error": ""
                             }]
                         }
-                        var response = Model.create("/HdrcatproSet", objRequest);
+                        
+                        //var response = Model.create("/HdrcatproSet", objRequest); 
+                        
+                        sap.ui.core.BusyIndicator.show();
+
+                        let response = null;
+    
+                        await that._PostODataV2Async(_oDataModel, _oDataEntity, objRequest).then(resp => {
+    
+                            response = resp.data;
+                            sap.ui.core.BusyIndicator.hide();
+    
+                        }).catch(error => {
+                            console.error(error);
+                        });
 
                         if (response != null) {
                             if (response.ESuccess === 'X') {
