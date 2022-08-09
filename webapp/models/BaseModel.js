@@ -223,6 +223,24 @@ function EnvioCfdi() {
 EnvioCfdi.prototype = Object.create(BaseModel.prototype);
 EnvioCfdi.prototype.contructor = EnvioCfdi;
 
+//Envio Validaciones fiscales
+function ValidacionesFiscales() {
+
+    var host = window.location.host; 
+    if (host !== "socios.soriana.com"){
+        url = "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboPortal.asmx" //QAS
+    } else {
+        url = "https://enviodocumentos.soriana.com/RecibeCFD/wseDocReciboPortal.asmx" //PRO
+    }
+    var params = {};
+    params.sUrl = url;
+    params.sModel = "validacionesFiscales";
+    BaseModel.call(this, params);
+}
+
+ValidacionesFiscales.prototype = Object.create(BaseModel.prototype);
+ValidacionesFiscales.prototype.contructor = ValidacionesFiscales;
+
 //Plan de pagos
 function PaymentPlan() {
     var params = {};
@@ -378,7 +396,7 @@ function DashboardModel() {
 DashboardModel.prototype = Object.create(BaseModel.prototype);
 DashboardModel.prototype.constructor = DevoZipModel;
 
-//Model paraaviso anticipado
+//Model para aviso anticipado
 function Remissions() {
     var params = {};
     params.sUrl = "/sap/opu/odata/sap/ZOSP_AVISO_ANT_SRV/";

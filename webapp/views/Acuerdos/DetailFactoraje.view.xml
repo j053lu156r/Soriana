@@ -120,6 +120,12 @@
                     <OverflowToolbar>
                         <Title text="{appTxts>/acuerdos.title} ({AcuerdosHdr>/AcuerdosDet/results/length})" />
                         <ToolbarSpacer/>
+                        <OverflowToolbarButton type="Transparent" 
+                            icon="sap-icon://pdf-attachment" 
+                            press="onPressPDF" 
+                            id="pdfCFDIBtn" 
+                            tooltip="CFDI" 
+                            visible="{= ${AcuerdosHdr>/UUID} === undefined || ${AcuerdosHdr>/UUID} === '' ? false : true }"/>
                         <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}"
                             press=".buildExportTable"
                             visible="{= ${AcuerdosHdr>/AcuerdosDet/results/length} > 0}"
