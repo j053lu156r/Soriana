@@ -120,7 +120,7 @@
                         <t:Column width="auto" id="idErfmg" visible="true" sortProperty="Erfmg" filterProperty="Erfmg">
                             <m:Label text="{appTxts>/visor.quantity}" />
                             <t:template>
-                                <m:Text text="{DetallePosiciones>Erfmg}" wrapping="false"/>
+                                <m:Text text="{DetallePosiciones>Erfmg} {DetallePosiciones>Erfme}" wrapping="false"/>
                             </t:template>
                         </t:Column>
       <t:Column width="auto" id="idMenge" visible="true" sortProperty="Umrez"  filterProperty="Umrez">
@@ -132,7 +132,7 @@
                           <t:Column width="auto" id="idFconver" visible="true" sortProperty="Menge"  filterProperty="Menge">
                             <m:Label text="{appTxts>/visor.Fconver}" />
                             <t:template>
-                                <m:Text text="{DetallePosiciones>Menge}" wrapping="false"/>
+                                <m:Text text="{DetallePosiciones>Menge} {DetallePosiciones>Meins}" wrapping="false"/>
                             </t:template>
                         </t:Column>
                      <!--   <t:Column width="auto" id="id" visible="true" sortProperty="Erfme" filterProperty="Erfme">
