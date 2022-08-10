@@ -1081,7 +1081,7 @@ sap.ui.define([
             let aParams = {
                 "$expand": expand
             };
-            if (top !== null && skip !== null && top !== ""){
+            if (top !== null && skip !== null && top !== "" && top !== undefined && skip !== undefined){
                 aParams["$top"] = top;
                 aParams["skip"] = skip;
             }
