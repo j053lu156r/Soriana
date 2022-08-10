@@ -30,7 +30,7 @@
         <footer>
             <Bar id="footerBar" design="Footer">
                 <contentLeft>
-                    <Text text="v.2.14.7" class="footerFeed sapUiTinyMarginBegin"/>
+                    <Text text="v.2.14.8" class="footerFeed sapUiTinyMarginBegin"/>
                 </contentLeft>
                 <contentMiddle>
                     <Text text="{appTxts>/global.footer.feed}" id="text9" class="footerFeed"/>
