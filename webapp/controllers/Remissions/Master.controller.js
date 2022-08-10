@@ -108,18 +108,18 @@ sap.ui.define([
 
                 if (file.type == "text/xml") {
                     //strip off the data uri prefix
-                    let strXML = atob(evn.target.result.replace('data:text/xml;base64,',''));
-                    var oXMLModel = new sap.ui.model.xml.XMLModel();  
+                    let strXML = atob(evn.target.result.replace('data:text/xml;base64,', ''));
+                    var oXMLModel = new sap.ui.model.xml.XMLModel();
                     oXMLModel.setXML(strXML);
                     var oXml = oXMLModel.getData();
 
                     var x = oXml.getElementsByTagName("cfdi:Comprobante"); //Nodo
-                    if(x.length > 0){
+                    if (x.length > 0) {
                         sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/rem.uploader.cfdiError"));
                         return;
                     }
                 }
-                
+
                 if (file.type == "text/xml") {
                     var parts = evn.target.result.split(",");
                     objRequest.Cfdi = parts[1];
@@ -130,13 +130,13 @@ sap.ui.define([
                         type: 'binary'
                     });
                     workbook.SheetNames.forEach(function (sheetName) {
-                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName], {raw: false});
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName], { raw: false });
                         var json_object = XL_row_object;
-                        obj[sheetName] = { "columnas":  json_object};
+                        obj[sheetName] = { "columnas": json_object };
                     });
                     objRequest.Cfdi = JSON.stringify(obj);
                 }
-                
+
                 var response = avisoModel.create("/ECfdiSet ", objRequest);
 
                 /*
@@ -169,7 +169,7 @@ sap.ui.define([
                     }
                 });
                 */
-                
+
                 if (response != null) {
                     uploadBox.setVisible(false);
                     if (response.Log != null) {
@@ -209,37 +209,103 @@ sap.ui.define([
             var bFilterPriority = false;
             var callService = true;
 
-            var url = `/HdrAvisoSet?$expand=EFREMNAV,ETREMDNAV&$filter=IOption eq '1' and ILifnr eq '${vLifnr}'`;
+
+            let filtros = [];
+
+            filtros.push(new sap.ui.model.Filter({
+                path: "IOption",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: "1"
+            })
+            );
+
+            filtros.push(new sap.ui.model.Filter({
+                path: "ILifnr",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: vLifnr
+            })
+            );
 
             // Validar Folios
             // Si el folio 1 trae datos y el folio 2 trae datos
-            if (vFolio != "" && vFolio2 != ""){
-               url += ` and IZremision eq '${vFolio}' and IZremision2 eq '${vFolio2}'`;
-               bFilterPriority = true;
+            if (vFolio != "" && vFolio2 != "") {
+
+                filtros.push(new sap.ui.model.Filter({
+                    path: "IZremision",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: vFolio
+                })
+                );
+
+                filtros.push(new sap.ui.model.Filter({
+                    path: "IZremision2",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: vFolio2
+                })
+                );
+
+                bFilterPriority = true;
             } else if (vFolio == "" && vFolio2 != "") {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.folioEmpty"));
                 callService = false;
             } else if (vFolio != "" && vFolio2 == "") {
-                url += ` and IZremision eq '${vFolio}'`;
+
+                filtros.push(new sap.ui.model.Filter({
+                    path: "IZremision",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: vFolio
+                })
+                );
                 bFilterPriority = true;
             }
 
             if (bFilterPriority == false) {
                 if (startDate != "" && endDate != "") {
-                    url += ` and ISfechrem eq '${startDate}' and IFfechrem eq '${endDate}'`;
+                    filtros.push(new sap.ui.model.Filter({
+                        path: "ISfechrem",
+                        operator: sap.ui.model.FilterOperator.EQ,
+                        value1: startDate
+                    })
+                    );
+                    filtros.push(new sap.ui.model.Filter({
+                        path: "IFfechrem",
+                        operator: sap.ui.model.FilterOperator.EQ,
+                        value1: endDate
+                    })
+                    );
                 }
             }
 
-            if (tipo != 0){
-                url += ` and ITipoentrega eq '${tipo}'`;
+            if (tipo != 0) {
+
+                filtros.push(new sap.ui.model.Filter({
+                    path: "ITipoentrega",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: tipo
+                })
+                );
             }
 
             // Validar pedidios
             // Si el pedido 1 trae datos y el pedido 2 trae datos
-            if (vEbeln != "" && vEbeln2 != ""){
+            if (vEbeln != "" && vEbeln2 != "") {
                 // Validar que el pedido 1 sea menor que el 2
-                if (vEbeln < vEbeln2){
-                    url += ` and IEbeln eq '${vEbeln}' and IEbeln2 eq '${vEbeln2}'`;
+                if (vEbeln < vEbeln2) {
+
+                    filtros.push(new sap.ui.model.Filter({
+                        path: "IEbeln",
+                        operator: sap.ui.model.FilterOperator.EQ,
+                        value1: vEbeln
+                    })
+                    );
+
+                    filtros.push(new sap.ui.model.Filter({
+                        path: "IEbeln2",
+                        operator: sap.ui.model.FilterOperator.EQ,
+                        value1: vEbeln2
+                    })
+                    );
+
                 } else {
                     sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.orderErrorValue"));
                     callService = false;
@@ -248,25 +314,34 @@ sap.ui.define([
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.orderEmpty"));
                 callService = false;
             } else if (vEbeln != "" && vEbeln2 == "") {
-                url += ` and IEbeln eq '${vEbeln}'`;
+
+                filtros.push(new sap.ui.model.Filter({
+                    path: "IEbeln",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: vEbeln
+                })
+                );
             }
 
-            if (callService){
-                var dueModel = oRemisions.getJsonModel(url);
+            if (callService) {
 
-                var ojbResponse = dueModel.getProperty("/results/0");
-                var dueCompModel = ojbResponse.EFREMNAV.results;
+                sap.ui.core.BusyIndicator.show();
 
-                if(dueCompModel.length == 0){
-                    sap.m.MessageBox.information(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.tableEmpty"));
-                }
-                
-                this.getOwnerComponent().setModel(new JSONModel(ojbResponse),
-                    "tableRemissions");
-    
-                this.paginate("tableRemissions", "/EFREMNAV", 1, 0);
+                let that = this;
+
+                this._GetODataV2("ZOSP_AVISO_ANT_SRV", "HdrAvisoSet", filtros, ["EFREMNAV", "ETREMDNAV"], "").then(resp => {
+                    if (resp.data.results[0].EFREMNAV.results.length == 0) {
+                        sap.m.MessageBox.information(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.tableEmpty"));
+                    }
+                    that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "tableRemissions");
+                    that.paginate("tableRemissions", "/EFREMNAV", 1, 0);
+                    sap.ui.core.BusyIndicator.hide();
+                }).catch(error => {
+                    console.error(error);
+                });
             }
         },
+
         onListItemPress: function (oEvent) {
             var resource = oEvent.getSource().getBindingContext("tableRemissions").getPath(),
                 line = resource.split("/").slice(-1).pop(),
@@ -277,7 +352,7 @@ sap.ui.define([
 
             var document = results[line].Zremision;
             var folio = objectRem.Zremfolio;
-            this.getOwnerComponent().getRouter().navTo("detailRemission", { layout: sap.f.LayoutType.MidColumnFullScreen, document: document, folio: folio}, true);
+            this.getOwnerComponent().getRouter().navTo("detailRemission", { layout: sap.f.LayoutType.MidColumnFullScreen, document: document, folio: folio }, true);
         },
         buildExportTable: function () {
             var texts = this.getOwnerComponent().getModel("appTxts");
@@ -330,55 +405,55 @@ sap.ui.define([
             this.exportxls('tableRemissions', '/EFREMNAV/results', columns);
         },
 
-        setCurrentWeek: function(){
+        setCurrentWeek: function () {
             var now = new Date;
             var startDay = 0; //0=sunday, 1=monday etc.
             var d = now.getDay(); //get the current day
-            var weekStart = new Date(now.valueOf() - (d<=0 ? 7-startDay:d-startDay)*86400000); //rewind to start day
-            var weekEnd = new Date(weekStart.valueOf() + 6*86400000); //add 6 days to get last day
+            var weekStart = new Date(now.valueOf() - (d <= 0 ? 7 - startDay : d - startDay) * 86400000); //rewind to start day
+            var weekEnd = new Date(weekStart.valueOf() + 6 * 86400000); //add 6 days to get last day
 
             var oDateRange = this.getView().byId("dateOrder");
             oDateRange.setDateValue(weekStart);
             oDateRange.setSecondDateValue(weekEnd);
         },
 
-        onFolioChange: function(oEvent){
-            if (oEvent.getParameter("value") == ""){
+        onFolioChange: function (oEvent) {
+            if (oEvent.getParameter("value") == "") {
                 var folio2 = this.inptFolio2.getValue();
-                if (folio2 != ""){
+                if (folio2 != "") {
                     sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.folioEmpty"));
                     this.inptFolio2.setValue("");
                 }
             }
         },
 
-        onFolio2Change: function(oEvent){
-            if (oEvent.getParameter("value") != ""){
+        onFolio2Change: function (oEvent) {
+            if (oEvent.getParameter("value") != "") {
                 var folio = this.inptFolio.getValue();
                 // Validar que el Folio 1 no esté vacio
-                if (folio == ""){
+                if (folio == "") {
                     sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.folioEmpty"));
                     this.inptFolio2.setValue("");
                 }
             }
         },
 
-        onOrderChange: function(oEvent){
-            if (oEvent.getParameter("value") == ""){
+        onOrderChange: function (oEvent) {
+            if (oEvent.getParameter("value") == "") {
                 var order2 = this.inptOrder2.getValue();
                 // Validar que la orden 1 no esté vacia
-                if (order2 != ""){
+                if (order2 != "") {
                     sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.orderEmpty"));
                     this.inptOrder2.setValue("");
                 }
             }
         },
 
-        onOrder2Change: function(oEvent){
-            if (oEvent.getParameter("value") != ""){
+        onOrder2Change: function (oEvent) {
+            if (oEvent.getParameter("value") != "") {
                 var order = this.inptOrder.getValue();
                 // Validar que la orden 1 no esté vacia
-                if (order == ""){
+                if (order == "") {
                     sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/rem.filters.orderEmpty"));
                     this.inptOrder2.setValue("");
                 }
