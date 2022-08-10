@@ -20,6 +20,8 @@ sap.ui.define([
     var dIdCxP = "";
     var regulaArchivos = true;
     var cfdiModel = new this.CfdiModel();
+    var _oDataModel = "ZOSP_DEVO_NC_SRV_01";
+    var _oDataEntity = "notCreditSet";
     return Controller.extend("demo.controllers.Orders.Master", {
         onInit: function () {
             this._pdfViewer = new PDFViewer();
@@ -39,7 +41,9 @@ sap.ui.define([
             this.configFilterLanguage(this.getView().byId("filterBar"));
         },
         searchData: function () {
+            sap.ui.core.BusyIndicator.show(0);
             if (!this.hasAccess(1)) {
+                sap.ui.core.BusyIndicator.hide();
                 return false;
             }
 
@@ -76,6 +80,7 @@ sap.ui.define([
             if (vLifnr != null && vLifnr != "") {
                 bContinue = true;
             } else {
+                sap.ui.core.BusyIndicator.hide();
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.supplierSelectError"));
             }
 
@@ -87,6 +92,7 @@ sap.ui.define([
                         bContinue = true;
                     } else {
                         bContinue = false;
+                        sap.ui.core.BusyIndicator.hide();
                         sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.searchFieldsEmpty"));
                     }
                 } else {
@@ -95,42 +101,40 @@ sap.ui.define([
             }
 
             if (bContinue) {
+               var aFilter = [];
+               aFilter.push(new sap.ui.model.Filter("IOption", sap.ui.model.FilterOperator.EQ, "4"));
+               aFilter.push(new sap.ui.model.Filter("ILifnr", sap.ui.model.FilterOperator.EQ, vLifnr));
 
-                var url = "/notCreditSet?$expand=OEKKONAV&$filter=IOption eq '4' and ILifnr eq '" + vLifnr + "'";
-                if (vEbeln != "") {
-                    url += " and IEbeln eq '" + vEbeln + "'";
-                }
-                // Solicitan quitar filtro Cliente - BORTA 27.07.2021
-                /* if (vBukrs != "") {
-                     url += " and IBukrs eq '" + vBukrs + "'";
-                 }*/
-                if (delivStartDate != "" && delivEndDate != "") {
-                    url += " and IKdatb eq '" + delivStartDate + "' and IKdate eq '" + delivEndDate + "'";
-                }
-                if (orderStartDate != "" && orderEndDate != "") {
-                    url += " and IFini eq '" + orderStartDate + "' and IFfin eq '" + orderEndDate + "'";
-                }
-                if (startDate != "" && endDate != "") {
-                    url += " and IEindt eq '" + startDate + "' and IEindf eq '" + endDate + "'";
-                }
-                if (vClosedOrders != null && vClosedOrders) {
-                    url += " and IClose eq 'X'";
-                }
+               if (vEbeln != "") {
+                   aFilter.push(new sap.ui.model.Filter("IEbeln", sap.ui.model.FilterOperator.EQ, vEbeln));
+               }
+               if (delivStartDate != "" && delivEndDate != "") {
+                   aFilter.push(new sap.ui.model.Filter("IKdatb", sap.ui.model.FilterOperator.EQ, delivStartDate));
+                   aFilter.push(new sap.ui.model.Filter("IKdate", sap.ui.model.FilterOperator.EQ, delivEndDate));
+               }
+               if (orderStartDate != "" && orderEndDate != "") {
+                   aFilter.push(new sap.ui.model.Filter("IFini", sap.ui.model.FilterOperator.EQ, orderStartDate));
+                   aFilter.push(new sap.ui.model.Filter("IFfin", sap.ui.model.FilterOperator.EQ, orderEndDate));
+               }
+               if (startDate != "" && endDate != "") {
+                   aFilter.push(new sap.ui.model.Filter("IEindt", sap.ui.model.FilterOperator.EQ, startDate));
+                   aFilter.push(new sap.ui.model.Filter("IEindf", sap.ui.model.FilterOperator.EQ, endDate));
+               }
+               if (vClosedOrders != null && vClosedOrders) {
+                   aFilter.push(new sap.ui.model.Filter("IClose", sap.ui.model.FilterOperator.EQ, "X"));
+               }
 
-                url += "&$top=5&skip=5";
-
-                var dueModel = oModel.getJsonModel(url);
-
-                var ojbResponse = dueModel.getProperty("/results/0");
-                var dueCompModel = ojbResponse.OEKKONAV.results;
-                console.log(dueModel);
-
-                this.getOwnerComponent().setModel(new JSONModel(ojbResponse),
-                    "tableItemsOrders");
-
-                this.paginate("tableItemsOrders", "/OEKKONAV", 1, 0);
+               let that = this;
+               let top = 5, skip = 5;
+               this._GetODataV2(_oDataModel, _oDataEntity, aFilter, ["OEKKONAV"], top, skip).then(resp => {
+                   var ojbResponse = resp.data.results[0];
+                   this.getOwnerComponent().setModel(new JSONModel(ojbResponse), "tableItemsOrders");
+                   this.paginate("tableItemsOrders", "/OEKKONAV", 1, 0);
+                   sap.ui.core.BusyIndicator.hide();
+               }).catch(error => {
+                   sap.ui.core.BusyIndicator.hide();
+               });
             }
-
         },
         onExit: function () {
             if (this._uploadDialog2) {
