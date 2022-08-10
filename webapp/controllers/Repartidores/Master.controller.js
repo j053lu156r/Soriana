@@ -46,27 +46,48 @@ sap.ui.define([
 
             if (bContinue) {
 
-                if(vLifnr == null){
+                let filtros = [];
+
+                if (vLifnr == null) {
                     vLifnr = "";
                 }
 
-                var url = "HrdDealersSet?$expand=ETDEALERSNAV&$filter= IOption eq '4' and ILifnr eq '" + vLifnr + "'"; // Se debe validar que el usuario este activo
-                ;
+                filtros.push(new sap.ui.model.Filter({
+                    path: "IOption",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: "4"
+                })
+                );
+
+                filtros.push(new sap.ui.model.Filter({
+                    path: "ILifnr",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: vLifnr
+                })
+                );
 
                 if (vUser != "") {
-                    url += " and IName eq '" + vUser + "'";
+
+                    filtros.push(new sap.ui.model.Filter({
+                        path: "IName",
+                        operator: sap.ui.model.FilterOperator.EQ,
+                        value1: vUser
+                    })
+                    );
                 }
 
-                var dueModel = oModel.getJsonModel(url);
+                sap.ui.core.BusyIndicator.show();
 
-                var ojbResponse = dueModel.getProperty("/results/0");
+                let that = this;
 
-                console.log(dueModel);
+                this._GetODataV2("ZOSP_DEALERS_SRV", "HrdDealersSet", filtros, ["ETDEALERSNAV"], "").then(resp => {
+                    that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "RepartidoresHdr");
+                    that.paginate("RepartidoresHdr", "/ETDEALERSNAV", 1, 0);
+                    sap.ui.core.BusyIndicator.hide();
+                }).catch(error => {
+                    console.error(error);
+                });
 
-                this.getOwnerComponent().setModel(new JSONModel(ojbResponse),
-                    "RepartidoresHdr");
-
-                this.paginate("RepartidoresHdr", "/ETDEALERSNAV", 1, 0);
             }
 
         },
@@ -98,7 +119,7 @@ sap.ui.define([
             datarange.setDateValue(minConsultDate);
         },
         onListItemPress: function (oEvent) {
-         
+
             var resource = oEvent.getSource().getBindingContext("RepartidoresHdr").getPath(),
                 line = resource.split("/").slice(-1).pop();
 
@@ -111,7 +132,7 @@ sap.ui.define([
 
             this.modifyButton(docResult, true);
         },
-        modifyButton: function (Results , selected) {
+        modifyButton: function (Results, selected) {
             if (!this.hasAccess(39)) {
                 return false;
             }
@@ -134,67 +155,67 @@ sap.ui.define([
             };
 
             this.getOwnerComponent().setModel(new JSONModel(status), "catalogStatus");
-            
+
 
             var UserModel = this.getOwnerComponent().getModel("userdata");
             var userRol = UserModel.getProperty("/ERol");
             var editable = false;
-            var oDRS2 = sap.ui.core.Fragment.byId("CreateDealersFragment", "fcad");            
-                 oDRS2.setMinDate(new Date()); 
-            var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");           
-            if(vLifnr == null || vLifnr == ""){
-                        sap.m.MessageBox.error(texts.getProperty("/rep.tooltipsupplier"));
-                        return false;
+            var oDRS2 = sap.ui.core.Fragment.byId("CreateDealersFragment", "fcad");
+            oDRS2.setMinDate(new Date());
+            var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+            if (vLifnr == null || vLifnr == "") {
+                sap.m.MessageBox.error(texts.getProperty("/rep.tooltipsupplier"));
+                return false;
             }
 
-            if (userRol != null && userRol == "0001" || userRol == "0002" || userRol == "0005"){
-                editable =  true;
+            if (userRol != null && userRol == "0001" || userRol == "0002" || userRol == "0005") {
+                editable = true;
             }
             //Solo Determinados usuarios pueden modificar estos campos
-                //sap.ui.core.Fragment.byId("CreateDealersFragment", "supplier").setValue(Results.Lifnr).setEditable(editable).setVisible(editable);
-                sap.ui.core.Fragment.byId("CreateDealersFragment", "supplier").setEditable(editable).setVisible(editable);
-                sap.ui.core.Fragment.byId("CreateDealersFragment", "lblSupplier").setVisible(editable);
-                
-            if (selected){
+            //sap.ui.core.Fragment.byId("CreateDealersFragment", "supplier").setValue(Results.Lifnr).setEditable(editable).setVisible(editable);
+            sap.ui.core.Fragment.byId("CreateDealersFragment", "supplier").setEditable(editable).setVisible(editable);
+            sap.ui.core.Fragment.byId("CreateDealersFragment", "lblSupplier").setVisible(editable);
+
+            if (selected) {
                 sap.ui.core.Fragment.byId("CreateDealersFragment", "name").setValue(Results.Repartidor).setEditable(editable);
                 sap.ui.core.Fragment.byId("CreateDealersFragment", "key").setValue(Results.Clave).setEditable(editable);
                 sap.ui.core.Fragment.byId("CreateDealersFragment", "fcad").setValue(Results.Endda).setEditable(editable);
-                sap.ui.core.Fragment.byId("CreateDealersFragment", "status").setValue(Results.Zactivo); 
-                sap.ui.core.Fragment.byId("CreateDealersFragment", "Id").setValue(Results.Usua);               
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "status").setValue(Results.Zactivo);
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "Id").setValue(Results.Usua);
 
-                if(editable){
+                if (editable) {
                     sap.ui.core.Fragment.byId("CreateDealersFragment", "modifyDialog").setVisible(true);
                     sap.ui.core.Fragment.byId("CreateDealersFragment", "saveDialog").setVisible(false);
                 }
-                
+
             }
-            else{
+            else {
                 sap.ui.core.Fragment.byId("CreateDealersFragment", "status").setValue("Activo").setEditable(false);
                 sap.ui.core.Fragment.byId("CreateDealersFragment", "modifyDialog").setVisible(false);
             }
             this._createDialog.setTitle(texts.getProperty("/rep.modifydealer"));
-            
+
             this._createDialog.open();
         },
-        createButton: function (Results , selected) {
+        createButton: function (Results, selected) {
             if (!this.hasAccess(37)) {
                 return false;
-            }                       
-                      
+            }
+
             var texts = this.getOwnerComponent().getModel("appTxts");
 
-            var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");           
-            if(vLifnr == null || vLifnr == ""){
+            var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+            if (vLifnr == null || vLifnr == "") {
                 sap.m.MessageBox.error(texts.getProperty("/rep.tooltipsupplier"));
                 return false;
             }
-            
+
             var that = this;
 
             this._createDialog = sap.ui.xmlfragment("CreateDealersFragment", "demo.views.Repartidores.fragments.CreateDealersFragment", this);
             this.getView().addDependent(this._createDialog);
-            var oDRS2 = sap.ui.core.Fragment.byId("CreateDealersFragment", "fcad");            
-            oDRS2.setMinDate(new Date()); 
+            var oDRS2 = sap.ui.core.Fragment.byId("CreateDealersFragment", "fcad");
+            oDRS2.setMinDate(new Date());
 
             var status = {
                 "Status": [
@@ -213,28 +234,28 @@ sap.ui.define([
             var userRol = UserModel.getProperty("/ERol");
             var editable = false;
 
-            if (userRol != null && userRol == "0001" || userRol == "0002" || userRol == "0005"){
-                editable =  true;
+            if (userRol != null && userRol == "0001" || userRol == "0002" || userRol == "0005") {
+                editable = true;
             }
             //Solo Determinados usuarios pueden modificar estos campos
-                sap.ui.core.Fragment.byId("CreateDealersFragment", "supplier").setEditable(editable).setVisible(editable);
-                //sap.ui.core.Fragment.byId("CreateDealersFragment", "supplier").setValue(Results.Lifnr).setEditable(editable).setVisible(editable);
-                sap.ui.core.Fragment.byId("CreateDealersFragment", "lblSupplier").setVisible(editable);
+            sap.ui.core.Fragment.byId("CreateDealersFragment", "supplier").setEditable(editable).setVisible(editable);
+            //sap.ui.core.Fragment.byId("CreateDealersFragment", "supplier").setValue(Results.Lifnr).setEditable(editable).setVisible(editable);
+            sap.ui.core.Fragment.byId("CreateDealersFragment", "lblSupplier").setVisible(editable);
 
-            if (selected){
+            if (selected) {
                 sap.ui.core.Fragment.byId("CreateDealersFragment", "name").setValue(Results.Repartidor).setEditable(editable);
                 sap.ui.core.Fragment.byId("CreateDealersFragment", "key").setValue(Results.Clave).setEditable(editable);
                 sap.ui.core.Fragment.byId("CreateDealersFragment", "fcad").setValue(Results.Endda).setEditable(editable);
-                sap.ui.core.Fragment.byId("CreateDealersFragment", "status").setValue(Results.Zactivo); 
-                sap.ui.core.Fragment.byId("CreateDealersFragment", "Id").setValue(Results.Usua);               
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "status").setValue(Results.Zactivo);
+                sap.ui.core.Fragment.byId("CreateDealersFragment", "Id").setValue(Results.Usua);
 
-                if(editable){
+                if (editable) {
                     sap.ui.core.Fragment.byId("CreateDealersFragment", "modifyDialog").setVisible(true);
                     sap.ui.core.Fragment.byId("CreateDealersFragment", "saveDialog").setVisible(false);
                 }
-                
+
             }
-            else{
+            else {
                 sap.ui.core.Fragment.byId("CreateDealersFragment", "status").setValue("Activo").setEditable(false);
                 sap.ui.core.Fragment.byId("CreateDealersFragment", "modifyDialog").setVisible(false);
             }
@@ -251,48 +272,48 @@ sap.ui.define([
 
             if (oItems.length > 0) {
 
-            var uriTable = {
-                "IOption" : "3",
-                "ITDMODIFYNAV" : []
-            };
+                var uriTable = {
+                    "IOption": "3",
+                    "ITDMODIFYNAV": []
+                };
 
-            var obj = {};
-            var UserModel = this.getOwnerComponent().getModel("userdata");
-            var userId = UserModel.getProperty("/EIdusua");
+                var obj = {};
+                var UserModel = this.getOwnerComponent().getModel("userdata");
+                var userId = UserModel.getProperty("/EIdusua");
 
-            var that = this;
+                var that = this;
 
                 oItems.forEach(function (item) {
                     var lItem = item.getBindingContext("RepartidoresHdr").getObject();
-                    var d = lItem.Endda.toString();   
-                    
+                    var d = lItem.Endda.toString();
+
                     var vEndda = d.substring(0, 4).concat(d.substring(5, 7)).concat(d.substring(8, 10));
 
-                    if(lItem.Zactivo != null){
+                    if (lItem.Zactivo != null) {
                         lItem.Zactivo = "B";
-                    }                   
+                    }
 
                     obj.Usua = lItem.Usua, // No.Repartidor
-                    obj.Repartidor = lItem.Repartidor,
-                    obj.Clave = lItem.Clave,
-                    obj.Endda = vEndda,
-                    obj.Zactivo = lItem.Zactivo, 
-                    obj.Aenam = userId, // Usuario que modifica el registro
-                    uriTable.ITDMODIFYNAV.push(obj);
+                        obj.Repartidor = lItem.Repartidor,
+                        obj.Clave = lItem.Clave,
+                        obj.Endda = vEndda,
+                        obj.Zactivo = lItem.Zactivo,
+                        obj.Aenam = userId, // Usuario que modifica el registro
+                        uriTable.ITDMODIFYNAV.push(obj);
                     obj = {};
                 });
 
-                    var dueModelcode = oModel.create("/HrdDealersSet", uriTable);
-                    if (dueModelcode != null) {
-                        if (dueModelcode.ESuccess == 'X'){ 
+                var dueModelcode = oModel.create("/HrdDealersSet", uriTable);
+                if (dueModelcode != null) {
+                    if (dueModelcode.ESuccess == 'X') {
 
-                            sap.m.MessageBox.success(texts.getProperty("/rep.success"));
+                        sap.m.MessageBox.success(texts.getProperty("/rep.success"));
 
-                        }
-                        else{
-                            sap.m.MessageBox.error(dueModelcode.EMessage + texts.getProperty("/rep.error"));
-                        }
                     }
+                    else {
+                        sap.m.MessageBox.error(dueModelcode.EMessage + texts.getProperty("/rep.error"));
+                    }
+                }
             }
         },
         onSave: function (Ioption) {
@@ -305,26 +326,26 @@ sap.ui.define([
                 this._createDialog = undefined;
             }
         },
-        onModify: function(){
-            this.callUri("3"); 
+        onModify: function () {
+            this.callUri("3");
         },
         handleChange: function (oEvent) {
-			var sFrom = oEvent.getParameter("from"),
-				//sTo = oEvent.getParameter("to"),
-				bValid = oEvent.getParameter("valid"),
-				oEventSource = oEvent.getSource();
-			if (bValid) {
+            var sFrom = oEvent.getParameter("from"),
+                //sTo = oEvent.getParameter("to"),
+                bValid = oEvent.getParameter("valid"),
+                oEventSource = oEvent.getSource();
+            if (bValid) {
                 sap.ui.core.Fragment.byId("CreateDealersFragment", "status").setValue("Activo");
-				//oEventSource.setValueState(ValueState.None);
-			} else {
-				oEventSource.setValueState(ValueState.Error);
-			}
-		},
-        clearFilters : function(){
+                //oEventSource.setValueState(ValueState.None);
+            } else {
+                oEventSource.setValueState(ValueState.Error);
+            }
+        },
+        clearFilters: function () {
             this.getView().byId("repartidorInput").setValue("");
             this.getView().byId("supplierInput").setValue("");
         },
-        callUri: function(Ioption){
+        callUri: function (Ioption) {
             var UserModel = this.getOwnerComponent().getModel("userdata");
             var userId = UserModel.getProperty("/EIdusua");
 
@@ -336,21 +357,21 @@ sap.ui.define([
             var vId = sap.ui.core.Fragment.byId("CreateDealersFragment", "Id").getValue();
 
             var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
-            if(vLifnr == null || vLifnr == ""){
+            if (vLifnr == null || vLifnr == "") {
                 vLifnr = sap.ui.core.Fragment.byId("CreateDealersFragment", "supplier").getValue();
             }
 
-            if(vName == null || vName == ""){
-                sap.m.MessageBox.error( texts.getProperty("/rep.noName"));
+            if (vName == null || vName == "") {
+                sap.m.MessageBox.error(texts.getProperty("/rep.noName"));
                 return false;
             }
 
-            if(vKey == null || vKey == ""){
-                sap.m.MessageBox.error( texts.getProperty("/rep.noKey"));
+            if (vKey == null || vKey == "") {
+                sap.m.MessageBox.error(texts.getProperty("/rep.noKey"));
                 return false;
             }
 
-            if(vFcad == null || vFcad == ""){
+            if (vFcad == null || vFcad == "") {
                 sap.m.MessageBox.error(texts.getProperty("/rep.noFcad"));
                 return false;
             }
@@ -360,63 +381,63 @@ sap.ui.define([
 
             var uriTable = {
                 "IOption": Ioption,
-                "ITRECORDNAV": [] ,
-                "ITDMODIFYNAV" : []
+                "ITRECORDNAV": [],
+                "ITDMODIFYNAV": []
             };
 
-            
+
             var obj = {};
 
-                if (Ioption == "3"){
-                    if(vStatus != null){
-                        switch(vStatus){
-                            case "Activo":
-                                vStatus = "A";
-                                break;
-                            case "Baja":
-                                vStatus = "B";
-                                break;
-                        }
+            if (Ioption == "3") {
+                if (vStatus != null) {
+                    switch (vStatus) {
+                        case "Activo":
+                            vStatus = "A";
+                            break;
+                        case "Baja":
+                            vStatus = "B";
+                            break;
                     }
+                }
 
-                    obj.Usua = vId,
+                obj.Usua = vId,
                     obj.Repartidor = vName,
                     obj.Clave = vKey,
                     obj.Endda = startDate;
-                    obj.Zactivo = vStatus, 
-                    obj.Aenam = userId, 
-                    uriTable.ITDMODIFYNAV.push(obj);                    
-                }
+                obj.Zactivo = vStatus,
+                    obj.Aenam = userId,
+                    uriTable.ITDMODIFYNAV.push(obj);
+            }
 
-                if (Ioption == "2"){
-                    obj.Repartidor = vName,
+            if (Ioption == "2") {
+                obj.Repartidor = vName,
                     obj.Clave = vKey,
                     obj.Aenam = userId,
                     obj.Endda = startDate;
-                    obj.Lifnr = vLifnr,
+                obj.Lifnr = vLifnr,
                     uriTable.ITRECORDNAV.push(obj);
-                }                
+            }
 
             var dueModelcode = oModel.create("/HrdDealersSet", uriTable);
-                if (dueModelcode != null) {
-                    if (dueModelcode.ESuccess == 'X'){ 
+            if (dueModelcode != null) {
+                if (dueModelcode.ESuccess == 'X') {
 
-                        sap.m.MessageBox.success(texts.getProperty("/rep.success"));
-                    }
-                    else{
-                        sap.m.MessageBox.error(dueModelcode.EMessage + texts.getProperty("/rep.error"));
-                    }
+                    sap.m.MessageBox.success(texts.getProperty("/rep.success"));
                 }
-                if (this._createDialog) {
-                    this._createDialog.close();
-                    this._createDialog.destroy();
-                    this._createDialog = undefined;
+                else {
+                    sap.m.MessageBox.error(dueModelcode.EMessage + texts.getProperty("/rep.error"));
                 }
+            }
+            if (this._createDialog) {
+                this._createDialog.close();
+                this._createDialog.destroy();
+                this._createDialog = undefined;
+            }
         },
         buildExportTable: function () {
             var texts = this.getOwnerComponent().getModel("appTxts");
             var columns = [
-                 {
+                {
                     name: texts.getProperty("/rep.number"),
                     template: {
                         content: "{Usua}"
@@ -457,7 +478,7 @@ sap.ui.define([
                     template: {
                         content: "{Zactivo}"
                     }
-                },                
+                },
             ];
 
             this.exportxls('RepartidoresHdr', '/ETDEALERSNAV/results', columns);
