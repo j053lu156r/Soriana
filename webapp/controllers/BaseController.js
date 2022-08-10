@@ -1074,10 +1074,17 @@ sap.ui.define([
 
         /*OPulido version de  _GEToDataV2 de Juan Pacheco  */
 
-        _GetODataV2: function(model, entity, filter,  expand,) {
+        _GetODataV2: function(model, entity, filter,  expand, top, skip) {
             var oModel2 = "/sap/opu/odata/sap/"+model;
             var that = this;
             let entidad = "/" + entity;
+            let aParams = {
+                "$expand": expand
+            };
+            if (top !== null && skip !== null && top !== ""){
+                aParams["$top"] = top;
+                aParams["skip"] = skip;
+            }
 
             return new Promise(function(fnResolve, fnReject) {
 
@@ -1085,13 +1092,9 @@ sap.ui.define([
                 oModel.setUseBatch(false);
                 oModel.read(entidad, {
                     filters: filter,
-                     urlParameters: {
-                        "$expand":expand,
-
-                    },
+                     urlParameters: aParams,
                     //381970
                     success: function(oData, oResponse) {
-
                         fnResolve(oResponse);
                     },
                     error: function(error) {
