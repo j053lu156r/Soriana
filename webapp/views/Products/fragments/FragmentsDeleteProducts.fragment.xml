@@ -18,7 +18,7 @@
 
             <f:content>
 
-                <IconTabBar id="idIconTabBarNoIcons" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
+                <IconTabBar id="idIconTabBarNoIconsDelete" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
                     <items>
                         <IconTabFilter text="{appTxts>/products.massiveLabel}" key="massive">
                             <VBox>
