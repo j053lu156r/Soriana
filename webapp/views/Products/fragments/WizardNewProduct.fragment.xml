@@ -1,461 +1,388 @@
-<core:FragmentDefinition  controllerName="demo.controllers.Products.Master"
-	xmlns="sap.m"
-	xmlns:core="sap.ui.core"
-	xmlns:f="sap.f"
-	xmlns:form="sap.ui.layout.form"
-	xmlns:u="sap.ui.unified"
+<core:FragmentDefinition controllerName="demo.controllers.Products.Master"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:u="sap.ui.unified"
     xmlns:l="sap.ui.layout"
     xmlns:upload="sap.m.upload"
-	xmlns:layout="sap.ui.layout">
+    xmlns:layout="sap.ui.layout">
 
-	<Dialog
-		id="wizardDialog"
-		showHeader="false"
-		verticalScrolling="false"
-		contentHeight="95%"
-		contentWidth="96%">
-		<f:DynamicPage
-			stickySubheaderProvider="CreateProductWizard"
-			toggleHeaderOnTitleClick="false"
-			class="sapUiNoContentPadding"
-			showFooter="true">
-			<f:title>
-				<f:DynamicPageTitle>
-					<f:heading>
-						<Title text="{appTxts>/products.newProduct}"/>
-					</f:heading>
-				</f:DynamicPageTitle>
-			</f:title>
+    <Dialog id="wizardDialog" showHeader="false" verticalScrolling="false" contentHeight="95%" contentWidth="96%">
+        <f:DynamicPage stickySubheaderProvider="CreateProductWizard" toggleHeaderOnTitleClick="false" class="sapUiNoContentPadding" showFooter="true">
+            <f:title>
+                <f:DynamicPageTitle>
+                    <f:heading>
+                        <Title text="{appTxts>/products.newProduct}"/>
+                    </f:heading>
+                </f:DynamicPageTitle>
+            </f:title>
 
-			<f:content>
-				<Wizard id="CreateProductWizard"
-						class="sapUiResponsivePadding--header sapUiResponsivePadding--content"
-						showNextButton="false"
-                        stepActivate=".onStepActivate"
-                        navigationChange="hardStepChange"
-						renderMode="Page">
-					<WizardStep id="ProductTypeStep"
-								title="{appTxts>/products.titleTabGeneralData}"
-								validated="false"
-                                complete="productTypeComplete"
-								>
-						<MessageStrip class="sapUiSmallMarginBottom"
-								text="{appTxts>/products.msgTabGeneralData}"
-								showIcon="true"/>
+            <f:content>
+                <Wizard id="CreateProductWizard" class="sapUiResponsivePadding--header sapUiResponsivePadding--content" showNextButton="false" stepActivate=".onStepActivate" navigationChange="hardStepChange" renderMode="Page">
+                    <WizardStep id="ProductTypeStep" title="{appTxts>/products.titleTabGeneralData}" validated="false" complete="productTypeComplete">
+                        <MessageStrip class="sapUiSmallMarginBottom" text="{appTxts>/products.msgTabGeneralData}" showIcon="true"/>
 
-						<MessageStrip class="sapUiSmallMarginBottom"
-								text="{appTxts>/products.msgCheckAviability}"
-								showIcon="true"/>
-						<VBox class="sapUiSmallMargin"
-								alignItems="Center"
-								justifyContent="Center"
-								width="100%">
-                                <form:Form id="FormChangeColumn_oneGroup234"
-                                    editable="true">
-                                    <form:layout>
-                                        <form:ColumnLayout
-                                            columnsM="2"
-                                            columnsL="3"
-                                            columnsXL="3"
-                                        />
-                                    </form:layout>
-                                    <form:formContainers>
-                                        <form:FormContainer>
-                                            <form:formElements>
-                                                <form:FormElement label="{appTxts>/products.code}">
-                                                    <form:fields>
-                                                        <Input editable="false" value="" id="codeGS1" />
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.codeType}">
-                                                    <form:fields>
-                                                        <ComboBox required="true" selectedKey="{Folio>/EanUpcType}" id="codeType" items="{
+                        <MessageStrip class="sapUiSmallMarginBottom" text="{appTxts>/products.msgCheckAviability}" showIcon="true"/>
+                        <VBox class="sapUiSmallMargin" alignItems="Center" justifyContent="Center" width="100%">
+                            <form:Form id="FormChangeColumn_oneGroup234" editable="true">
+                                <form:layout>
+                                    <form:ColumnLayout columnsM="2" columnsL="3" columnsXL="3" />
+                                </form:layout>
+                                <form:formContainers>
+                                    <form:FormContainer>
+                                        <form:formElements>
+                                            <form:FormElement label="{appTxts>/products.code}">
+                                                <form:fields>
+                                                    <Input editable="false" value="" id="codeGS1" />
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.codeType}">
+                                                <form:fields>
+                                                    <ComboBox required="true" selectedKey="{Folio>/EanUpcType}" id="codeType" items="{
                                                                     path : 'Catalogos>/TipoCodigo/results'
                                                                 }" selectionChange="codeTypeChange">
-                                                            <items>
-                                                                <core:Item key="{Catalogos>Numtp}" text="{Catalogos>Ntbez}"/>
-                                                            </items>
-                                                        </ComboBox>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.barCode}">
-                                                    <form:fields>
-                                                        <Input required="true" id="barCode" type="Number" value="{Folio>/CodEan}" editable="false" liveChange="validateBarCodeLength" />
-                                                        <Button id="btnValidateDataSupplierGS1" press=".validateBarCode" icon="sap-icon://check-availability" text="">
-                                                            <layoutData>
-                                                                <form:ColumnElementData cellsSmall="1" cellsLarge="1" />
-                                                            </layoutData>
-                                                        </Button>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                
-                                                <form:FormElement label="{appTxts>/products.productType}">
-                                                    <form:fields>
-                                                        <ComboBox selectedKey="{Folio>/TipArt}" required="true" change="changePrecioSugerido" id="productType" items="{
+                                                        <items>
+                                                            <core:Item key="{Catalogos>Numtp}" text="{Catalogos>Ntbez}"/>
+                                                        </items>
+                                                    </ComboBox>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.barCode}">
+                                                <form:fields>
+                                                    <Input required="true" id="barCode" type="Number" value="{Folio>/CodEan}" editable="false" liveChange="validateBarCodeLength" />
+                                                    <Button id="btnValidateDataSupplierGS1" press=".validateBarCode" icon="sap-icon://check-availability" text="">
+                                                        <layoutData>
+                                                            <form:ColumnElementData cellsSmall="1" cellsLarge="1" />
+                                                        </layoutData>
+                                                    </Button>
+                                                </form:fields>
+                                            </form:FormElement>
+
+                                            <form:FormElement label="{appTxts>/products.productType}">
+                                                <form:fields>
+                                                    <ComboBox selectedKey="{Folio>/TipArt}" required="true" change="changePrecioSugerido" id="productType" items="{
                                                                     path : 'Catalogos>/TiposProducto/results'
                                                                 }" editable="{ValidBarCode>/value}">
-                                                            <items>
-                                                                <core:Item key="{Catalogos>Mtart}" text="{Catalogos>Mtbez}"/>
-                                                            </items>
-                                                        </ComboBox>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.shoppingGroup}">
-                                                    <form:fields>
-                                                        <Input id="shoppingGroupInput" required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onShoppingGroupRequest" value="{FolioToShow>/PurGroup}" editable="{ValidBarCode>/value}"/>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.productGroup}">
-                                                    <form:fields>
-                                                        <ComboBox selectedKey="{Folio>/GrupArt}" id="productGroup" items="{
+                                                        <items>
+                                                            <core:Item key="{Catalogos>Mtart}" text="{Catalogos>Mtbez}"/>
+                                                        </items>
+                                                    </ComboBox>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.shoppingGroup}">
+                                                <form:fields>
+                                                    <Input id="shoppingGroupInput" required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onShoppingGroupRequest" value="{FolioToShow>/PurGroup}" editable="{ValidBarCode>/value}"/>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.productGroup}">
+                                                <form:fields>
+                                                    <ComboBox selectedKey="{Folio>/GrupArt}" id="productGroup" items="{
                                                                     path : 'Catalogos>/GrupoArticulos/results'
-                                                                }"
-                                                                selectionChange="changeGrupArt" editable="{ValidBarCode>/value}">
-                                                            <items>
-                                                                <core:Item key="{Catalogos>GrupoArt}" text="{Catalogos>DescGart}"/>
-                                                            </items>
-                                                        </ComboBox>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.baseProduct}">
-                                                    <form:fields>
-                                                        <Input required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onBaseProductRequest" id="baseProduct" value="{FolioToShow>/ProdBase}" editable="false"/>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.supplier}">
-                                                    <form:fields>
-                                                        <Input required="true"  id="supplierInputFolio"  valueHelpOnly="true" editable="false" enabled="true"  value="{configSite>/supplierInput}" />
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.brand}">
-                                                    <form:fields>
-                                                        <Input required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onBrandRequest" value="{FolioToShow>/Marca}"  id="brand" editable="{ValidBarCode>/value}"/>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.country}">
-                                                    <form:fields>
-                                                        <Input
-                                                            id="country"
-                                                            textFormatMode="Value"
-                                                            showSuggestion="true"
-                                                            showValueHelp="true"
-                                                            valueHelpRequest=".onValueCountryRequest"
-                                                            suggestionItems="{Paises>/results}"
-                                                            selectedKey="{Folio>/Pais}"
-                                                            suggestionItemSelected=".onSuggestionCountryItemSelected"
-                                                            editable="{ValidBarCode>/value}"
-                                                            required="true" >
-                                                            <suggestionItems>
-                                                                <core:ListItem
-                                                                    key="{Paises>Land1}" text="{Paises>Landx50}"
-                                                                    additionalText="{Paises>Landx50}" />
-                                                            </suggestionItems>
-                                                        </Input>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.model}">
-                                                    <form:fields>
-                                                        <Input value="{Folio>/Modelo}" id="model" editable="{ValidBarCode>/value}" />
-                                                    </form:fields>
-                                                </form:FormElement>
+                                                                }" selectionChange="changeGrupArt" editable="{ValidBarCode>/value}">
+                                                        <items>
+                                                            <core:Item key="{Catalogos>GrupoArt}" text="{Catalogos>DescGart}"/>
+                                                        </items>
+                                                    </ComboBox>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.baseProduct}">
+                                                <form:fields>
+                                                    <Input required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onBaseProductRequest" id="baseProduct" value="{FolioToShow>/ProdBase}" editable="false"/>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.supplier}">
+                                                <form:fields>
+                                                    <Input required="true" id="supplierInputFolio" valueHelpOnly="true" editable="false" enabled="true" value="{configSite>/supplierInput}" />
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.brand}">
+                                                <form:fields>
+                                                    <Input required="true" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="onBrandRequest" value="{FolioToShow>/Marca}" id="brand" editable="{ValidBarCode>/value}"/>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.country}">
+                                                <form:fields>
+                                                    <Input id="country" textFormatMode="Value" showSuggestion="true" showValueHelp="true" valueHelpRequest=".onValueCountryRequest" suggestionItems="{Paises>/results}" selectedKey="{Folio>/Pais}" suggestionItemSelected=".onSuggestionCountryItemSelected" editable="{ValidBarCode>/value}" required="true">
+                                                        <suggestionItems>
+                                                            <core:ListItem key="{Paises>Land1}" text="{Paises>Landx50}" additionalText="{Paises>Landx50}" />
+                                                        </suggestionItems>
+                                                    </Input>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.model}">
+                                                <form:fields>
+                                                    <Input value="{Folio>/Modelo}" id="model" editable="{ValidBarCode>/value}" />
+                                                </form:fields>
+                                            </form:FormElement>
 
-                                                <form:FormElement label="{appTxts>/products.description}">
-                                                    <form:fields>
-                                                        <Input required="true" value="{Folio>/DescrArt}" id="description" editable="{ValidBarCode>/value}"/>
-                                                    </form:fields>
-                                                </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.description}">
+                                                <form:fields>
+                                                    <Input required="true" value="{Folio>/DescrArt}" id="description" editable="{ValidBarCode>/value}"/>
+                                                </form:fields>
+                                            </form:FormElement>
 
-                                                <form:FormElement label="{appTxts>/products.mainFeatureTxt}">
-                                                    <form:fields>
-                                                        <Input value="{Folio>/Descripcion}" id="featureMain" editable="{ValidBarCode>/value}"/>
-                                                    </form:fields>
-                                                </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.mainFeatureTxt}">
+                                                <form:fields>
+                                                    <Input value="{Folio>/Descripcion}" id="featureMain" editable="{ValidBarCode>/value}"/>
+                                                </form:fields>
+                                            </form:FormElement>
 
-                                                <form:FormElement label="{appTxts>/products.feature2}">
-                                                    <form:fields>
-                                                        <Input value="{Folio>/Carac2}" id="feature2" editable="{ValidBarCode>/value}"/>
-                                                    </form:fields>
-                                                </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.feature2}">
+                                                <form:fields>
+                                                    <Input value="{Folio>/Carac2}" id="feature2" editable="{ValidBarCode>/value}"/>
+                                                </form:fields>
+                                            </form:FormElement>
 
-                                                <form:FormElement label="{appTxts>/products.feature3}">
-                                                    <form:fields>
-                                                        <Input value="{Folio>/Carac3}" id="feature3" editable="{ValidBarCode>/value}"/>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.labelType}">
-                                                    <form:fields>
-                                                        <ComboBox selectedKey="{Folio>/TipEtq}" id="labelType" items="{
+                                            <form:FormElement label="{appTxts>/products.feature3}">
+                                                <form:fields>
+                                                    <Input value="{Folio>/Carac3}" id="feature3" editable="{ValidBarCode>/value}"/>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.labelType}">
+                                                <form:fields>
+                                                    <ComboBox selectedKey="{Folio>/TipEtq}" id="labelType" items="{
                                                                     path : 'Catalogos>/TiposEtiqueta/results'
                                                                 }" editable="{ValidBarCode>/value}">
-                                                            <items>
-                                                                <core:Item key="{Catalogos>Labelkey}" text="{Catalogos>Descr}"/>
-                                                            </items>
-                                                        </ComboBox>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.exitStrategy}">
-                                                    <form:fields>
-                                                        <ComboBox selectedKey="{Folio>/EstSalida}" required="true" id="exitStrategy" items="{
+                                                        <items>
+                                                            <core:Item key="{Catalogos>Labelkey}" text="{Catalogos>Descr}"/>
+                                                        </items>
+                                                    </ComboBox>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.exitStrategy}">
+                                                <form:fields>
+                                                    <ComboBox selectedKey="{Folio>/EstSalida}" required="true" id="exitStrategy" items="{
                                                                     path : 'Catalogos>/EstrategiaSalida/results'
                                                                 }" editable="{ValidBarCode>/value}">
-                                                            <items>
-                                                                <core:Item key="{Catalogos>Strategykey}" text="{Catalogos>Descr}"/>
-                                                            </items>
-                                                        </ComboBox>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <!--form:FormElement label="{appTxts>/products.endOfValidity}">
+                                                        <items>
+                                                            <core:Item key="{Catalogos>Strategykey}" text="{Catalogos>Descr}"/>
+                                                        </items>
+                                                    </ComboBox>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <!--form:FormElement label="{appTxts>/products.endOfValidity}">
                                                     <form:fields>
                                                         <Input required="true" type="Text" value="{Folio>/FechFinv}" id="endOfValidity"/>
                                                     </form:fields>
                                                 </form:FormElement-->
-                                                <form:FormElement label="{appTxts>/products.negotiatedFormat}">
-                                                    <form:fields>
-                                                        <ComboBox selectedKey="{Folio>/ForNegoc}" required="true" id="negotiatedFormat" items="{
+                                            <form:FormElement label="{appTxts>/products.negotiatedFormat}">
+                                                <form:fields>
+                                                    <ComboBox selectedKey="{Folio>/ForNegoc}" required="true" id="negotiatedFormat" items="{
                                                                     path : 'Catalogos>/NegotiatedFormat/results'
                                                                 }" editable="{ValidBarCode>/value}">
-                                                            <items>
-                                                                <core:Item key="{Catalogos>Formatkey}" text="{Catalogos>Descr}"/>
-                                                            </items>
-                                                        </ComboBox>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                            </form:formElements>
-                                        </form:FormContainer>
-                                    </form:formContainers>
-                                </form:Form>
-						</VBox>
-					</WizardStep>
+                                                        <items>
+                                                            <core:Item key="{Catalogos>Formatkey}" text="{Catalogos>Descr}"/>
+                                                        </items>
+                                                    </ComboBox>
+                                                </form:fields>
+                                            </form:FormElement>
+                                        </form:formElements>
+                                    </form:FormContainer>
+                                </form:formContainers>
+                            </form:Form>
+                        </VBox>
+                    </WizardStep>
 
-                    <WizardStep 
-                        id="SalesHierarchyStep"
-                        validated="true"
-                        title="{appTxts>/products.titleTabSalesHierarchy}"
-                        complete="validateSalesHierarchy">
-						<VBox class="sapUiSmallMargin"
-								alignItems="Center"
-								justifyContent="Center"
-								width="100%">
-                                <form:Form id="formSaleHierarchy"
-                                    editable="true">
-                                    <form:layout>
-                                        <form:ColumnLayout
-                                            columnsM="2"
-                                            columnsL="3"
-                                            columnsXL="3"
-                                        />
-                                    </form:layout>
-                                    <form:formContainers>
-                                        <form:FormContainer>
-                                            <form:formElements>
-                                                <form:FormElement  label="{appTxts>/products.labelDivision}">
-                                                    <form:fields>
-                                                        <ComboBox required="true" id="ComboDivision" items="{
+                    <WizardStep id="SalesHierarchyStep" validated="true" title="{appTxts>/products.titleTabSalesHierarchy}" complete="validateSalesHierarchy">
+                        <VBox class="sapUiSmallMargin" alignItems="Center" justifyContent="Center" width="100%">
+                            <form:Form id="formSaleHierarchy" editable="true">
+                                <form:layout>
+                                    <form:ColumnLayout columnsM="2" columnsL="3" columnsXL="3" />
+                                </form:layout>
+                                <form:formContainers>
+                                    <form:FormContainer>
+                                        <form:formElements>
+                                            <form:FormElement label="{appTxts>/products.labelDivision}">
+                                                <form:fields>
+                                                    <ComboBox required="true" id="ComboDivision" items="{
                                                                     path : 'Catalogos>/Divisiones/results'
                                                                 }" selectionChange="onDivisionChange" value="{/HieDivision}" editable="false">
-                                                            <items>
-                                                                <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
-                                                            </items>
-                                                        </ComboBox>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement  label="{appTxts>/products.labelCatMgmt}">
-                                                    <form:fields>
-                                                        <ComboBox required="true" id="ComboCatMgmt" items="{
+                                                        <items>
+                                                            <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
+                                                        </items>
+                                                    </ComboBox>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.labelCatMgmt}">
+                                                <form:fields>
+                                                    <ComboBox required="true" id="ComboCatMgmt" items="{
                                                                     path : 'Catalogos>/GerenCategoria/results'
                                                                 }" selectionChange="onCatMgmtChange" editable="false" value="{/HieCatMgmt}">
-                                                            <items>
-                                                                <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
-                                                            </items>
-                                                        </ComboBox>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement  label="{appTxts>/products.labelCategory}">
-                                                    <form:fields>
-                                                        <ComboBox required="true" id="ComboCategory" items="{
+                                                        <items>
+                                                            <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
+                                                        </items>
+                                                    </ComboBox>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.labelCategory}">
+                                                <form:fields>
+                                                    <ComboBox required="true" id="ComboCategory" items="{
                                                                     path : 'Catalogos>/Categoria/results'
                                                                 }" selectionChange="onCatChange" editable="false" value="{/HieCategory}">
-                                                            <items>
-                                                                <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
-                                                            </items>
-                                                        </ComboBox>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement  label="{appTxts>/products.labelSubCategory}">
-                                                    <form:fields>
-                                                        <ComboBox required="true" id="ComboSubCategory" items="{
+                                                        <items>
+                                                            <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
+                                                        </items>
+                                                    </ComboBox>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.labelSubCategory}">
+                                                <form:fields>
+                                                    <ComboBox required="true" id="ComboSubCategory" items="{
                                                                     path : 'Catalogos>/SubCategoria/results'
                                                                 }" selectionChange="onSubCatChange" editable="false" value="{/HieSubCat}">
-                                                            <items>
-                                                                <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
-                                                            </items>
-                                                        </ComboBox>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement  label="{appTxts>/products.labelSegment}">
-                                                    <form:fields>
-                                                        <ComboBox required="true" id="ComboSegmento" items="{
+                                                        <items>
+                                                            <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
+                                                        </items>
+                                                    </ComboBox>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.labelSegment}">
+                                                <form:fields>
+                                                    <ComboBox required="true" id="ComboSegmento" items="{
                                                                     path : 'Catalogos>/Segmento/results'
                                                                 }" selectionChange="onSegmentCange" editable="false" value="{/HieSegment}">
-                                                            <items>
-                                                                <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
-                                                            </items>
-                                                        </ComboBox>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement  label="{appTxts>/products.labelSubSegment}">
-                                                    <form:fields>
-                                                        <ComboBox required="true" id="ComboSubSegmento" selectedKey="{Folio>/Jerarquia}" items="{
+                                                        <items>
+                                                            <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
+                                                        </items>
+                                                    </ComboBox>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.labelSubSegment}">
+                                                <form:fields>
+                                                    <ComboBox required="true" id="ComboSubSegmento" selectedKey="{Folio>/Jerarquia}" items="{
                                                                     path : 'Catalogos>/SubSegmento/results'
                                                                 }" editable="false">
-                                                            <items>
-                                                                <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
-                                                            </items>
-                                                        </ComboBox>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                            </form:formElements>
-                                        </form:FormContainer>
-                                    </form:formContainers>
-                                </form:Form>
+                                                        <items>
+                                                            <core:Item key="{Catalogos>Nodo}" text="{Catalogos>Denominacion}"/>
+                                                        </items>
+                                                    </ComboBox>
+                                                </form:fields>
+                                            </form:FormElement>
+                                        </form:formElements>
+                                    </form:FormContainer>
+                                </form:formContainers>
+                            </form:Form>
                         </VBox>
-                        </WizardStep>
-                    
-					<WizardStep id="ProductPresentation"
-								validated="true"
-								title="{appTxts>/products.titleTabPresentation}"
-								complete="activateProductPresentation">
-						<Text text="{appTxts>/products.msgComptData}"/>
-						<VBox class="sapUiSmallMargin"
-								alignItems="Center"
-								justifyContent="Center"
-								width="100%">
-                                <form:Form id="formPresentation"
-                                    editable="true">
-                                    <form:layout>
-                                        <form:ColumnLayout
-                                            columnsM="2"
-                                            columnsL="3"
-                                            columnsXL="3"
-                                        />
-                                    </form:layout>
-                                    <form:formContainers>
-                                        <form:FormContainer>
-                                            <form:formElements>
-                                                <form:FormElement  label="{appTxts>/products.labelPresentation}">
-                                                    <form:fields>
-                                                        <ComboBox required="true" selectedKey="{Folio>/Present}" id="presentation" items="{
+                    </WizardStep>
+
+                    <WizardStep id="ProductPresentation" validated="true" title="{appTxts>/products.titleTabPresentation}" complete="activateProductPresentation">
+                        <Text text="{appTxts>/products.msgComptData}"/>
+                        <VBox class="sapUiSmallMargin" alignItems="Center" justifyContent="Center" width="100%">
+                            <form:Form id="formPresentation" editable="true">
+                                <form:layout>
+                                    <form:ColumnLayout columnsM="2" columnsL="3" columnsXL="3" />
+                                </form:layout>
+                                <form:formContainers>
+                                    <form:FormContainer>
+                                        <form:formElements>
+                                            <form:FormElement label="{appTxts>/products.labelPresentation}">
+                                                <form:fields>
+                                                    <ComboBox required="true" selectedKey="{Folio>/Present}" id="presentation" items="{
                                                                     path : 'Catalogos>/Presentaciones/results'
                                                                 }">
-                                                            <items>
-                                                                <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Descpres}"/>
-                                                            </items>
-                                                        </ComboBox>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.labelContent}">
-                                                    <form:fields>
-                                                        <Input required="true" id="content" value="{Folio>/Contenido}"  type="Number" editable="{ValidBarCode>/gs1Finded}"/>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.labelUnitMeasure}">
-                                                    <form:fields>
-                                                        <ComboBox required="true" selectedKey="{Folio>/UndCont}" id="contentUnit" items="{
-                                                                    path : 'Catalogos>/UnidadMedida/results'
-                                                                }" >
-                                                            <items>
-                                                                <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
-                                                            </items>
-                                                        </ComboBox>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.salesCode}">
-                                                    <form:fields>
-                                                        <Input id="salesCode" value="{Folio>/CodVent}" type="Number" liveChange="validateBarCodeLength"/>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.salesUnitMeasure}">
-                                                    <form:fields>
-                                                        <ComboBox required="true" selectedKey="{Folio>/UndMventa}" id="salesUnit" items="{
+                                                        <items>
+                                                            <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Descpres}"/>
+                                                        </items>
+                                                    </ComboBox>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.labelContent}">
+                                                <form:fields>
+                                                    <Input required="true" id="content" value="{Folio>/Contenido}" type="Number" editable="{ValidBarCode>/gs1Finded}"/>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.labelUnitMeasure}">
+                                                <form:fields>
+                                                    <ComboBox required="true" selectedKey="{Folio>/UndCont}" id="contentUnit" items="{
                                                                     path : 'Catalogos>/UnidadMedida/results'
                                                                 }">
-                                                            <items>
-                                                                <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
-                                                            </items>
-                                                        </ComboBox>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.purchaseUnitCode}">
-                                                    <form:fields>
-                                                        <Input  value="{Folio>/CodCompra}" id="purchaseUnitCode" type="Number" liveChange="validateBarCodeLength"/>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.purchaseUnit}">
-                                                    <form:fields>
-                                                        <ComboBox selectedKey="{Folio>/UndCompra}" required="true" id="purchaseUnit" items="{
+                                                        <items>
+                                                            <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
+                                                        </items>
+                                                    </ComboBox>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.salesCode}">
+                                                <form:fields>
+                                                    <Input id="salesCode" value="{Folio>/CodVent}" type="Number" liveChange="validateBarCodeLength"/>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.salesUnitMeasure}">
+                                                <form:fields>
+                                                    <ComboBox required="true" selectedKey="{Folio>/UndMventa}" id="salesUnit" items="{
                                                                     path : 'Catalogos>/UnidadMedida/results'
                                                                 }">
-                                                            <items>
-                                                                <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
-                                                            </items>
-                                                        </ComboBox>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.packingCapacity}">
-                                                    <form:fields>
-                                                        <Input required="true" value="{Folio>/CapEmpaq}" id="boardingCapacity" type="Number"/>
-                                                    </form:fields>
-                                                </form:FormElement>
+                                                        <items>
+                                                            <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
+                                                        </items>
+                                                    </ComboBox>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.purchaseUnitCode}">
+                                                <form:fields>
+                                                    <Input value="{Folio>/CodCompra}" id="purchaseUnitCode" type="Number" liveChange="validateBarCodeLength"/>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.purchaseUnit}">
+                                                <form:fields>
+                                                    <ComboBox selectedKey="{Folio>/UndCompra}" required="true" id="purchaseUnit" items="{
+                                                                    path : 'Catalogos>/UnidadMedida/results'
+                                                                }">
+                                                        <items>
+                                                            <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
+                                                        </items>
+                                                    </ComboBox>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.packingCapacity}">
+                                                <form:fields>
+                                                    <Input required="true" value="{Folio>/CapEmpaq}" id="boardingCapacity" type="Number"/>
+                                                </form:fields>
+                                            </form:FormElement>
 
-                                                <form:FormElement label="{appTxts>/products.colorFlavArom}">
-                                                    <form:fields>
-                                                        <Input value="{Folio>/CaracCsa}" id="qualities"/>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                <form:FormElement label="{appTxts>/products.size}">
-                                                    <form:fields>
-                                                        <Input value="{Folio>/Taltam}" id="size"/>
-                                                    </form:fields>
-                                                </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.colorFlavArom}">
+                                                <form:fields>
+                                                    <Input value="{Folio>/CaracCsa}" id="qualities"/>
+                                                </form:fields>
+                                            </form:FormElement>
+                                            <form:FormElement label="{appTxts>/products.size}">
+                                                <form:fields>
+                                                    <Input value="{Folio>/Taltam}" id="size"/>
+                                                </form:fields>
+                                            </form:FormElement>
 
-                                                <form:FormElement label="{appTxts>/products.artWithVarients}">
-                                                    <form:fields>
-                                                        <CheckBox id="variants" select=".changeVariants" /> 
-                                                    </form:fields>
-                                                </form:FormElement>
-                                                
-                                                <form:FormElement visible="false" id="characteristicFormElement" label="{appTxts>/products.artWithVarients}">
-                                                    <form:fields>
-                                                        <ComboBox selectedKey="{Folio>/VariantArt}" id="characteristic" items="{
+                                            <form:FormElement label="{appTxts>/products.artWithVarients}">
+                                                <form:fields>
+                                                    <CheckBox id="variants" select=".changeVariants" />
+                                                </form:fields>
+                                            </form:FormElement>
+
+                                            <form:FormElement visible="false" id="characteristicFormElement" label="{appTxts>/products.artWithVarients}">
+                                                <form:fields>
+                                                    <ComboBox selectedKey="{Folio>/VariantArt}" id="characteristic" items="{
                                                                     path : 'Catalogos>/Caracteristicas/results'
-                                                                }"> 
-                                                            <items>
-                                                                <core:Item key="{Catalogos>Caracteristica}" text="{Catalogos>Caracteristica}"/>
-                                                            </items>
-                                                        </ComboBox>
-                                                    </form:fields>
-                                                </form:FormElement>
-                                            </form:formElements>
-                                        </form:FormContainer>
-                                    </form:formContainers>
-                                </form:Form>
-						</VBox>
-					</WizardStep>
-					<WizardStep id="VariantStep"
-								validated="true"
-								complete="completeValidateVariantStep"
-								title="{appTxts>/products.titleTabVariants}">
-						<VBox>
-                            <Table mode="MultiSelect" id="tableWizardVariants"
-                                items="{ path : 'ITARTVAR>/results'}">
+                                                                }">
+                                                        <items>
+                                                            <core:Item key="{Catalogos>Caracteristica}" text="{Catalogos>Caracteristica}"/>
+                                                        </items>
+                                                    </ComboBox>
+                                                </form:fields>
+                                            </form:FormElement>
+                                        </form:formElements>
+                                    </form:FormContainer>
+                                </form:formContainers>
+                            </form:Form>
+                        </VBox>
+                    </WizardStep>
+                    <WizardStep id="VariantStep" validated="true" complete="completeValidateVariantStep" title="{appTxts>/products.titleTabVariants}">
+                        <VBox>
+                            <Table mode="MultiSelect" id="tableWizardVariants" items="{ path : 'ITARTVAR>/results'}">
                                 <headerToolbar>
                                     <OverflowToolbar>
                                         <ToolbarSpacer/>
-                                        
-                                        <Select 
-                                            id="paginatedWizardVariants"
-                                            visible="{= ${ITARTVAR>/Paginated/results/length} > 0 }"
-                                            change=".paginar(${$parameters>/selectedItem}, 'ITARTVAR', '', 'tableWizardVariants')">
+
+                                        <Select id="paginatedWizardVariants" visible="{= ${ITARTVAR>/Paginated/results/length} > 0 }" change=".paginar(${$parameters>/selectedItem}, 'ITARTVAR', '', 'tableWizardVariants')">
                                             <items>
                                                 <core:Item key="10" text="10"/>
                                                 <core:Item key="20" text="20"/>
@@ -480,23 +407,23 @@
                                     </Column>
                                     <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <header>
-                                        <Text text="EAN/UPC" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                            <Text text="EAN/UPC" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </header>
                                         <footer/>
                                     </Column>
                                     <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <header>
-                                        <Text text="{appTxts>/products.packagingCode}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                            <Text text="{appTxts>/products.packagingCode}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </header>
                                         <footer/>
                                     </Column>
                                     <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <header>
-                                        <Text text="{appTxts>/products.proportion}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                            <Text text="{appTxts>/products.proportion}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </header>
                                         <footer/>
                                     </Column>
-                                                    
+
                                 </columns>
                                 <items>
                                     <ColumnListItem press="onListItemPress">
@@ -506,7 +433,7 @@
                                             <Input value="{ITARTVAR>CodVent}" change=".changeQty" liveChange="validateBarCodeLength"></Input>
                                             <Input value="{ITARTVAR>CodCompra}" change=".changeQty" liveChange="validateBarCodeLength"></Input>
                                             <Input value="{ITARTVAR>Proporcion}" change=".changeQty"></Input>
-                                            
+
                                         </cells>
                                     </ColumnListItem>
                                 </items>
@@ -519,24 +446,15 @@
                             </OverflowToolbar>
                             <Button text="{appTxts>/products.deleteButton}" id="newVariantDelete" press=".deleteRow('tableWizardVariants', 'ITARTVAR')" type="Emphasized" />
                         </VBox>
-					</WizardStep>
-					<WizardStep id="DimensionsStep"
-								complete="validateCompleteStepDimensions"
-								validated="true"
-								title="{appTxts>/products.titleTabDimensions}">
+                    </WizardStep>
+                    <WizardStep id="DimensionsStep" complete="validateCompleteStepDimensions" validated="true" title="{appTxts>/products.titleTabDimensions}">
                         <VBox class="sapUiSmallMargin">
-                            <form:SimpleForm
-                                    editable="true"
-                                    layout="ResponsiveGridLayout"
-                                    columnsXL="3"
-                                    columnsL="2"
-                                    columnsM="2"
-                                    singleContainerFullSize="false">
+                            <form:SimpleForm editable="true" layout="ResponsiveGridLayout" columnsXL="3" columnsL="2" columnsM="2" singleContainerFullSize="false">
                                 <form:content>
 
                                     <core:Title text="{appTxts>/products.subTitleBoardingPerPurchase}" />
                                     <Label text="{appTxts>/products.tall}" />
-                                    <Input id="EcAlto" value="{Folio>/EcAlto}" type="Number" required="true" liveChange="calcularECVolumen"  editable="{ValidBarCode>/gs1Finded}"/>
+                                    <Input id="EcAlto" value="{Folio>/EcAlto}" type="Number" required="true" liveChange="calcularECVolumen" editable="{ValidBarCode>/gs1Finded}"/>
                                     <Label text="{appTxts>/products.width}" />
                                     <Input id="EcAncho" value="{Folio>/EcAncho}" type="Number" required="true" liveChange="calcularECVolumen" editable="{ValidBarCode>/gs1Finded}"/>
                                     <Label text="{appTxts>/products.deep}" />
@@ -556,7 +474,7 @@
                                         </items>
                                     </ComboBox>
                                     <Label text="{appTxts>/products.grossWeight}" />
-                                    <Input id="EcPbruto" value="{Folio>/EcPbruto}"  type="Number" required="true" editable="{ValidBarCode>/gs1Finded}"/>
+                                    <Input id="EcPbruto" value="{Folio>/EcPbruto}" type="Number" required="true" editable="{ValidBarCode>/gs1Finded}"/>
                                     <Label text="{appTxts>/products.netWeight}" />
                                     <Input id="EcPneto" value="{Folio>/EcPneto}" type="Number" required="true" editable="{ValidBarCode>/gs1Finded}"/>
                                     <Label text="{appTxts>/products.weightUnit}" />
@@ -611,39 +529,15 @@
                                 </form:content>
                             </form:SimpleForm>
                         </VBox>
-					</WizardStep>
-                    <WizardStep id="Discounts"
-								activate="pricingActivate"
-								complete="validateDiscounts"
-								validated="false"
-								title="{appTxts>/products.titleTabDiscounts}">
+                    </WizardStep>
+                    <WizardStep id="Discounts" activate="pricingActivate" complete="validateDiscounts" validated="false" title="{appTxts>/products.titleTabDiscounts}">
 
-						<MessageStrip class="sapUiSmallMarginBottom"
-								text="{appTxts>/products.msgTapDiscounts}"
-								showIcon="true"/>
+                        <MessageStrip class="sapUiSmallMarginBottom" text="{appTxts>/products.msgTapDiscounts}" showIcon="true"/>
 
-						<MessageStrip class="sapUiSmallMarginBottom"
-								text="{appTxts>/products.msgTapDiscountsWarning}"
-								showIcon="true"/>
-                                
+                        <MessageStrip class="sapUiSmallMarginBottom" text="{appTxts>/products.msgTapDiscountsWarning}" showIcon="true"/>
+
                         <VBox class="sapUiSmallMargin">
-                            <form:SimpleForm
-                                    editable="true"
-                                    layout="ResponsiveGridLayout"
-                                    title="{appTxts>/products.subtitleData}"
-                                    labelSpanXL="4"
-                                    labelSpanL="4"
-                                    labelSpanM="4"
-                                    labelSpanS="12"
-                                    adjustLabelSpan="false"
-                                    emptySpanXL="0"
-                                    emptySpanL="0"
-                                    emptySpanM="0"
-                                    emptySpanS="0"
-                                    columnsXL="3"
-                                    columnsL="2"
-                                    columnsM="2"
-                                    singleContainerFullSize="false">
+                            <form:SimpleForm editable="true" layout="ResponsiveGridLayout" title="{appTxts>/products.subtitleData}" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="2" columnsM="2" singleContainerFullSize="false">
                                 <form:content>
 
                                     <core:Title text="{appTxts>/products.subtitleDiscounts}" />
@@ -652,11 +546,11 @@
                                     <Input id="DscNormal" value="{Folio>/DscNormal}" type="Number" placeholder="{appTxts>/products.porcentajetxt}" liveChange="calcularCostNetCom" />
 
                                     <Label text="{appTxts>/products.normalDiscount2}" />
-                                    <Input id="DscNormal2" value="{Folio>/DscNormal2}"  type="Number" placeholder="{appTxts>/products.porcentajetxt}" liveChange="calcularCostNetCom" />
+                                    <Input id="DscNormal2" value="{Folio>/DscNormal2}" type="Number" placeholder="{appTxts>/products.porcentajetxt}" liveChange="calcularCostNetCom" />
 
                                     <Label text="{appTxts>/products.normalDiscount3}" />
                                     <Input id="DscNormal3" value="{Folio>/DscNormal3}" type="Number" placeholder="{appTxts>/products.porcentajetxt}" liveChange="calcularCostNetCom" />
-                                    
+
                                     <Label text="{appTxts>/products.additionalDiscount}" />
                                     <Input id="DscAdicional" value="{Folio>/DscAdicional}" type="Number" placeholder="{appTxts>/products.porcentajetxt}" liveChange="calcularCostNetCom" />
 
@@ -673,11 +567,11 @@
                                     </ComboBox>
 
                                     <Label text="{appTxts>/products.bonusValue}" />
-                                    <Input id="ValBoni" value="{Folio>/ValBoni}" type="Number" placeholder="{appTxts>/products.porcentajetxt}"  liveChange="calcularCostNetCom" visible="false"/>
+                                    <Input id="ValBoni" value="{Folio>/ValBoni}" type="Number" placeholder="{appTxts>/products.porcentajetxt}" liveChange="calcularCostNetCom" visible="false"/>
 
                                     <Label text="{appTxts>/products.bonusUnits}" />
-                                    <Input id="UnisBonif"  value="{Folio>/ValBoni}" type="Number"  visible="false"/>
-                                    
+                                    <Input id="UnisBonif" value="{Folio>/ValBoni}" type="Number" visible="false"/>
+
 
                                     <core:Title text="{appTxts>/products.titlePurchaseCosts}" />
                                     <Label text="{appTxts>/products.grossCost}" />
@@ -685,405 +579,345 @@
                                     <Label text="{appTxts>/products.packingCapacity}" />
                                     <Input id="CapEmpaq2" value="{Folio>/CapEmpaq}" type="Number" required="true" editable="false" liveChange="calcularCostNetVen"/>
                                     <Label text="{appTxts>/products.netCostPurchaseUnit}" />
-                                    <Input id="CostNetComp" value="{Folio>/CostNUCompra}"  type="Number" required="true" editable="false"/>
+                                    <Input id="CostNetComp" value="{Folio>/CostNUCompra}" type="Number" required="true" editable="false"/>
                                     <Label text="{appTxts>/products.netCostUnitOfSale}" />
                                     <Input id="CostNetVen" value="{Folio>/CostNUVenta}" type="Number" required="true" editable="false"/>
                                     <Label text="{appTxts>/products.suggestedPrice}" />
                                     <Input id="PSug" value="{Folio>/PSug}" type="Number" required="true"/>
                                     <Label text="{appTxts>/products.maxPublicPrice}" />
                                     <Input id="MaxPubPrice" value="{Folio>/PSug}" type="Number" required="true"/>
-                                    
+
                                 </form:content>
                             </form:SimpleForm>
                         </VBox>
-					</WizardStep>
+                    </WizardStep>
 
                     <!-- Upload Images Step -->
-                    <WizardStep 
-                        id="ImagesStep"
-						complete="onImageStepComplete"
-						validated="true"
-						title="{appTxts>/products.titleTabImages}">
+                    <WizardStep id="ImagesStep" complete="onImageStepComplete" validated="true" title="{appTxts>/products.titleTabImages}">
 
                         <Text text="{appTxts>/products.msgImgs}"/>
 
-                        <upload:UploadSet 
-                            id="ImageUploadSet" 
-                            instantUpload="false" 
-                            showIcons="false"
-                            uploadEnabled="true" 
-                            terminationEnabled="true" 
-                            fileTypes="jpg" 
-                            maxFileNameLength="20" 
-                            maxFileSize="0.3" 
-                            items="{path:'FolioImages>/items', templateShareable: false}" 
-                            multiple="true"
-                            mode="MultiSelect"
-                            afterItemAdded="imageAfterAddedTriggered"
-                            afterItemRemoved="imageRemovedTriggered"
-                        >
+                        <upload:UploadSet id="ImageUploadSet" instantUpload="false" showIcons="false" uploadEnabled="true" terminationEnabled="true" fileTypes="jpg" maxFileNameLength="20" maxFileSize="0.3" items="{path:'FolioImages>/items', templateShareable: false}" multiple="true" mode="MultiSelect" afterItemAdded="imageAfterAddedTriggered" afterItemRemoved="imageRemovedTriggered">
                             <upload:toolbar>
-                                        <OverflowToolbar>
-                                             <Label text="{appTxts>/products.numImages}"/>
-                                             <Text id="imagesCounter" text="0"/> 
-                                             <ToolbarSpacer/>
-                                             
-                                            <Link
-                                                text="{appTxts>/products.linkGuiaImg}"
-                                                target="_blank"
-                                                href="./assets/GUIAS/GUIA_imagenes.pdf" />
+                                <OverflowToolbar>
+                                    <Label text="{appTxts>/products.numImages}"/>
+                                    <Text id="imagesCounter" text="0"/>
+                                    <ToolbarSpacer/>
 
-                                        </OverflowToolbar>
+                                    <Link text="{appTxts>/products.linkGuiaImg}" target="_blank" href="./assets/GUIAS/GUIA_imagenes.pdf" />
+
+                                </OverflowToolbar>
                             </upload:toolbar>
 
                             <upload:items>
-                                <upload:UploadSetItem 
-                                    fileName="{FolioImages>fileName}" 
-                                    mediaType="{FolioImages>mediaType}" 
-                                    url="{FolioImages>url}" 
-                                    thumbnailUrl="{FolioImages>thumbnailUrl}" 
-                                    uploadState="{FolioImages>uploadState}">
-                                    
+                                <upload:UploadSetItem fileName="{FolioImages>fileName}" mediaType="{FolioImages>mediaType}" url="{FolioImages>url}" thumbnailUrl="{FolioImages>thumbnailUrl}" uploadState="{FolioImages>uploadState}">
+
                                 </upload:UploadSetItem>
                             </upload:items>
                         </upload:UploadSet>
-								
-					</WizardStep>
+
+                    </WizardStep>
 
                     <!-- Review Step -->
-					<WizardStep id="ReviewPage"
-							activate="reviewActivate"
-							complete="reviewComplete"
-							validated="true"
-							title="{appTxts>/products.titleReviewPage}">
-								<form:SimpleForm
-										title="{appTxts>/products.titleGeneralDta}"
-										minWidth="1024"
-										editable="false"
-										layout="ResponsiveGridLayout">
-									<form:content>
-										<Label text="{appTxts>/products.barCode}"/>
-										<Text text="{Folio>/CodEan}" />
-                                        
-                                        <Label text="{appTxts>/products.baseProduct}"/>
-                                        <Text text="{FolioToShow>/ProdBase}" />
-
-                                        <Label text="{appTxts>/products.productType}"/>
-                                        <Text text="{FolioToShow>/TipArt}" />
-
-                                        <Label text="{appTxts>/products.shoppingGroup}"/>
-                                        <Text text="{FolioToShow>/PurGroup}" />
-
-                                        <Label text="{appTxts>/products.productGroup}"/>
-                                        <Text text="{FolioToShow>/GrupArt}" />
-
-                                        <Label text="{appTxts>/products.supplier}"/>
-                                        <Text text="{configSite>/supplierInput}" />
-
-                                        <Label text="{appTxts>/products.brand}"/>
-                                        <Text text="{FolioToShow>/Marca}" />
-
-                                        <Label text="{appTxts>/products.codeType}"/>
-                                        <Text text="{FolioToShow>/EanUpcType}" />
-
-                                        <Label text="{appTxts>/products.country}"/>
-                                        <Text text="{FolioToShow>/Pais}" />
-
-                                        <Label text="{appTxts>/products.model}"/>
-                                        <Text text="{FolioToShow>/Modelo}" />
-
-                                        <Label text="{appTxts>/products.description}"/>
-                                        <Text text="{FolioToShow>/DescrArt}" />
-
-                                        <Label text="{appTxts>/products.mainFeatureTxt}"/>
-                                        <Text text="{FolioToShow>/Descripcion}" />
-
-                                        <Label text="{appTxts>/products.feature2}"/>
-                                        <Text text="{FolioToShow>/Carac2}" />
-
-                                        <Label text="{appTxts>/products.feature3}"/>
-                                        <Text text="{FolioToShow>/Carac3}" />
-
-                                        <Label text="{appTxts>/products.labelType}"/>
-                                        <Text text="{FolioToShow>/TipEtq}" />
-
-                                        <Label text="{appTxts>/products.exitStrategy}"/>
-                                        <Text text="{FolioToShow>/EstSalida}" />
-
-                                        <Label text="{appTxts>/products.negotiatedFormat}"/>
-                                        <Text text="{FolioToShow>/ForNegoc}" />										
-
-                                        <!-- TERMINA REVIEW 1 -->
-										
-									</form:content>
-								</form:SimpleForm>
-
-								<form:SimpleForm
-										title="{appTxts>/products.titleHierarchy}"
-										minWidth="1024"
-										editable="false"
-										layout="ResponsiveGridLayout">
-									<form:content>
-                                        
-                                        <Label text="{appTxts>/products.labelDivision}"/>
-                                        <Text text="{/HieDivision}" />
-                                        
-                                        <Label text="{appTxts>/products.labelCatMgmt}"/>
-                                        <Text text="{/HieCatMgmt}" />
-                                        
-                                        <Label text="{appTxts>/products.labelCategory}"/>
-                                        <Text text="{/HieCategory}" />
-                                        
-                                        <Label text="{appTxts>/products.labelSubCategory}"/>
-                                        <Text text="{/HieSubCat}" />
-                                        
-                                        <Label text="{appTxts>/products.labelSegment}"/>
-                                        <Text text="{/HieSegment}" />
-                                        
-                                        <Label text="{appTxts>/products.labelSubSegment}"/>
-                                        <Text text="{FolioToShow>/Jerarquia}" />
-									
-                                        <!-- TERMINA REVIEW 2 -->
-										
-									</form:content>
-								</form:SimpleForm>
-
-								<form:SimpleForm
-										title="{appTxts>/products.titleProductPresen}"
-										minWidth="1024"
-										editable="false"
-										layout="ResponsiveGridLayout">
-									<form:content>
+                    <WizardStep id="ReviewPage" activate="reviewActivate" complete="reviewComplete" validated="true" title="{appTxts>/products.titleReviewPage}">
+                        <form:SimpleForm title="{appTxts>/products.titleGeneralDta}" minWidth="1024" editable="false" layout="ResponsiveGridLayout">
+                            <form:content>
+                                <Label text="{appTxts>/products.barCode}"/>
+                                <Text text="{Folio>/CodEan}" />
 
-										<Label text="{appTxts>/products.labelPresentation}"/>
-										<Text text="{FolioToShow>/Present}"/>
+                                <Label text="{appTxts>/products.baseProduct}"/>
+                                <Text text="{FolioToShow>/ProdBase}" />
 
-										<Label text="{appTxts>/products.labelContent}"/>
-										<Text text="{FolioToShow>/Contenido}"/>
+                                <Label text="{appTxts>/products.productType}"/>
+                                <Text text="{FolioToShow>/TipArt}" />
 
-										<Label text="{appTxts>/products.labelUnitMeasure}"/>
-										<Text text="{FolioToShow>/UndCont}"/>
+                                <Label text="{appTxts>/products.shoppingGroup}"/>
+                                <Text text="{FolioToShow>/PurGroup}" />
 
-										<Label text="{appTxts>/products.salesCode}"/>
-										<Text text="{FolioToShow>/CodVent}"/>
+                                <Label text="{appTxts>/products.productGroup}"/>
+                                <Text text="{FolioToShow>/GrupArt}" />
 
-										<Label text="{appTxts>/products.salesUnitMeasure}"/>
-										<Text text="{FolioToShow>/UndMventa}"/>
+                                <Label text="{appTxts>/products.supplier}"/>
+                                <Text text="{configSite>/supplierInput}" />
 
-										<Label text="{appTxts>/products.purchaseUnitCode}"/>
-										<Text text="{FolioToShow>/CodCompra}"/>
+                                <Label text="{appTxts>/products.brand}"/>
+                                <Text text="{FolioToShow>/Marca}" />
 
-										<Label text="{appTxts>/products.purchaseUnit}"/>
-										<Text text="{FolioToShow>/UndCompra}"/>
+                                <Label text="{appTxts>/products.codeType}"/>
+                                <Text text="{FolioToShow>/EanUpcType}" />
 
-										<Label text="{appTxts>/products.packingCapacity}"/>
-										<Text text="{FolioToShow>/CapEmpaq}"/>
+                                <Label text="{appTxts>/products.country}"/>
+                                <Text text="{FolioToShow>/Pais}" />
 
-										<Label text="{appTxts>/products.artWithVarients}"/>
-										<Text text="{FolioToShow>/VariantArt}"/>
+                                <Label text="{appTxts>/products.model}"/>
+                                <Text text="{FolioToShow>/Modelo}" />
 
-										<Label text="{appTxts>/products.colorFlavArom}"/>
-										<Text text="{FolioToShow>/CaracCsa}"/>
+                                <Label text="{appTxts>/products.description}"/>
+                                <Text text="{FolioToShow>/DescrArt}" />
 
-										<Label text="{appTxts>/products.size}"/>
-										<Text text="{FolioToShow>/Taltam}"/>
+                                <Label text="{appTxts>/products.mainFeatureTxt}"/>
+                                <Text text="{FolioToShow>/Descripcion}" />
 
-										<Label text="{appTxts>/products.characteristicVariant}"/>
-										<Text text="{FolioToShow>/VariantArt}"/>
+                                <Label text="{appTxts>/products.feature2}"/>
+                                <Text text="{FolioToShow>/Carac2}" />
 
-                                         <!-- TERMINA SEGUNDO REVIEW -->
-									</form:content>
-								</form:SimpleForm>
+                                <Label text="{appTxts>/products.feature3}"/>
+                                <Text text="{FolioToShow>/Carac3}" />
 
-								<form:SimpleForm
-										title="{appTxts>/products.titleDimensions}"
-										minWidth="1024"
-										editable="false"
-										layout="ResponsiveGridLayout">
-									<form:content>
+                                <Label text="{appTxts>/products.labelType}"/>
+                                <Text text="{FolioToShow>/TipEtq}" />
 
-                                    <core:Title text="{appTxts>/products.subtitlePurchasePresen}" />
+                                <Label text="{appTxts>/products.exitStrategy}"/>
+                                <Text text="{FolioToShow>/EstSalida}" />
 
-                                    <Label text="{appTxts>/products.tall}" />
-                                    <Text text="{FolioToShow>/EcAlto}"/>
+                                <Label text="{appTxts>/products.negotiatedFormat}"/>
+                                <Text text="{FolioToShow>/ForNegoc}" />
 
-                                    <Label text="{appTxts>/products.width}" />
-                                    <Text text="{FolioToShow>/EcAncho}" />
+                                <!-- TERMINA REVIEW 1 -->
 
-                                    <Label text="{appTxts>/products.deep}" />
-                                    <Text text="{FolioToShow>/EcProfundo}" />
+                            </form:content>
+                        </form:SimpleForm>
 
-                                    <Label text="{appTxts>/products.msgExpressedIn}" />
-                                    <Text text="{FolioToShow>/EcUndaap}"  />
+                        <form:SimpleForm title="{appTxts>/products.titleHierarchy}" minWidth="1024" editable="false" layout="ResponsiveGridLayout">
+                            <form:content>
 
-                                    <Label text="{appTxts>/products.volume}" />
-                                    <Text text="{FolioToShow>/EcVolumen}" />
+                                <Label text="{appTxts>/products.labelDivision}"/>
+                                <Text text="{/HieDivision}" />
 
-                                    <Label text="{appTxts>/products.volumeUnit}" />
-                                    <Text text="{FolioToShow>/EcUndvol}" />
+                                <Label text="{appTxts>/products.labelCatMgmt}"/>
+                                <Text text="{/HieCatMgmt}" />
 
-                                    <Label text="{appTxts>/products.grossWeight}" />
-                                    <Text text="{FolioToShow>/EcPbruto}"  />
+                                <Label text="{appTxts>/products.labelCategory}"/>
+                                <Text text="{/HieCategory}" />
 
-                                    <Label text="{appTxts>/products.netWeight}" />
-                                    <Text text="{FolioToShow>/EcPneto}" />
+                                <Label text="{appTxts>/products.labelSubCategory}"/>
+                                <Text text="{/HieSubCat}" />
 
-                                    <Label text="{appTxts>/products.weightUnit}" />
-                                    <Text text="{FolioToShow>/EcUndp}" />
+                                <Label text="{appTxts>/products.labelSegment}"/>
+                                <Text text="{/HieSegment}" />
 
-                                    <core:Title text="{appTxts>/products.subtitlesalesPresen}" />
-                                    <Label text="{appTxts>/products.tall}" />
-                                    <Text text="{FolioToShow>/PvAlto}" />
+                                <Label text="{appTxts>/products.labelSubSegment}"/>
+                                <Text text="{FolioToShow>/Jerarquia}" />
 
-                                    <Label text="{appTxts>/products.width}" />
-                                    <Text text="{FolioToShow>/PvAncho}" />
+                                <!-- TERMINA REVIEW 2 -->
 
-                                    <Label text="{appTxts>/products.deep}" />
-                                    <Text text="{FolioToShow>/PvProfundo}" />
+                            </form:content>
+                        </form:SimpleForm>
 
-                                    <Label text="{appTxts>/products.msgExpressedIn}" />
-                                    <Text text="{FolioToShow>/PvUndaap}"  />
+                        <form:SimpleForm title="{appTxts>/products.titleProductPresen}" minWidth="1024" editable="false" layout="ResponsiveGridLayout">
+                            <form:content>
 
-                                    <Label text="{appTxts>/products.volume}" />
-                                    <Text text="{FolioToShow>/PvVolumen}"/>
+                                <Label text="{appTxts>/products.labelPresentation}"/>
+                                <Text text="{FolioToShow>/Present}"/>
 
-                                    <Label text="{appTxts>/products.volumeUnit}" />
-                                    <Text text="{FolioToShow>/PvUndvol}"/>
+                                <Label text="{appTxts>/products.labelContent}"/>
+                                <Text text="{FolioToShow>/Contenido}"/>
 
-                                    <Label text="{appTxts>/products.grossWeight}" />
-                                    <Text text="{FolioToShow>/PvPbruto}" />
+                                <Label text="{appTxts>/products.labelUnitMeasure}"/>
+                                <Text text="{FolioToShow>/UndCont}"/>
 
-                                    <Label text="{appTxts>/products.netWeight}" />
-                                    <Text text="{FolioToShow>/PvPneto}"/>
+                                <Label text="{appTxts>/products.salesCode}"/>
+                                <Text text="{FolioToShow>/CodVent}"/>
 
-                                    <Label text="{appTxts>/products.weightUnit}" />
-                                    <Text text="{FolioToShow>/PvUndp}"/>
+                                <Label text="{appTxts>/products.salesUnitMeasure}"/>
+                                <Text text="{FolioToShow>/UndMventa}"/>
 
-                                    <core:Title text="{appTxts>/products.capPerPallet}" />
+                                <Label text="{appTxts>/products.purchaseUnitCode}"/>
+                                <Text text="{FolioToShow>/CodCompra}"/>
 
-                                    <Label text="{appTxts>/products.palletCode}" />
-                                    <Text text="{FolioToShow>/CodTarima}" />
+                                <Label text="{appTxts>/products.purchaseUnit}"/>
+                                <Text text="{FolioToShow>/UndCompra}"/>
 
-                                    <Label text="{appTxts>/products.boxesByContent}" />
-                                    <Text text="{FolioToShow>/CajasTend}" />
+                                <Label text="{appTxts>/products.packingCapacity}"/>
+                                <Text text="{FolioToShow>/CapEmpaq}"/>
 
-                                    <Label text="{appTxts>/products.stretchedByPlatform}" />
-                                    <Text text="{FolioToShow>/TendTarima}" />
+                                <Label text="{appTxts>/products.artWithVarients}"/>
+                                <Text text="{FolioToShow>/VariantArt}"/>
 
-                                    <Label text="{appTxts>/products.boxesPerPallet}" />
-                                    <Text text="{FolioToShow>/CajasTarima}" />
+                                <Label text="{appTxts>/products.colorFlavArom}"/>
+                                <Text text="{FolioToShow>/CaracCsa}"/>
 
-									</form:content>
+                                <Label text="{appTxts>/products.size}"/>
+                                <Text text="{FolioToShow>/Taltam}"/>
 
-								</form:SimpleForm>
+                                <Label text="{appTxts>/products.characteristicVariant}"/>
+                                <Text text="{FolioToShow>/VariantArt}"/>
 
-								<form:SimpleForm
-										title="{appTxts>/products.titleDisBonusCosts}"
-										minWidth="1024"
-										editable="false"
-										layout="ResponsiveGridLayout">
-									<form:content>
+                                <!-- TERMINA SEGUNDO REVIEW -->
+                            </form:content>
+                        </form:SimpleForm>
 
-                                    <core:Title text="{appTxts>/products.subtitleDiscounts}" />
+                        <form:SimpleForm title="{appTxts>/products.titleDimensions}" minWidth="1024" editable="false" layout="ResponsiveGridLayout">
+                            <form:content>
 
-                                    <Label text="{appTxts>/products.normalDiscount}" />
-                                    <Text text="{FolioToShow>/DscNormal}" />
+                                <core:Title text="{appTxts>/products.subtitlePurchasePresen}" />
 
-                                    <Label text="{appTxts>/products.normalDiscount2}" />
-                                    <Text text="{FolioToShow>/DscNormal2}"  />
+                                <Label text="{appTxts>/products.tall}" />
+                                <Text text="{FolioToShow>/EcAlto}"/>
 
-                                    <Label text="{appTxts>/products.normalDiscount3}" />
-                                    <Text text="{FolioToShow>/DscNormal3}"  />
-                                    
-                                    <Label text="{appTxts>/products.additionalDiscount}" />
-                                    <Text text="{FolioToShow>/DscAdicional}" />
+                                <Label text="{appTxts>/products.width}" />
+                                <Text text="{FolioToShow>/EcAncho}" />
 
-                                    <Label text="{appTxts>/products.discountEarlyPay}" />
-                                    <Text text="{FolioToShow>/DscPpago}"  />
+                                <Label text="{appTxts>/products.deep}" />
+                                <Text text="{FolioToShow>/EcProfundo}" />
 
-                                    <core:Title text="{appTxts>/products.titleBonus}" />
+                                <Label text="{appTxts>/products.msgExpressedIn}" />
+                                <Text text="{FolioToShow>/EcUndaap}" />
 
-                                    <Label text="{appTxts>/products.subtitleBonusType}" />
-                                    <Text text="{FolioToShow>/UndBon}" />
+                                <Label text="{appTxts>/products.volume}" />
+                                <Text text="{FolioToShow>/EcVolumen}" />
 
-                                    <Label id="BonValue1" text="{appTxts>/products.bonusValue}" />
-                                    <Text id="BonValue2" text="{FolioToShow>/ValBoni}" />
+                                <Label text="{appTxts>/products.volumeUnit}" />
+                                <Text text="{FolioToShow>/EcUndvol}" />
 
-                                    <Label id="BonUnits1" text="{appTxts>/products.bonusUnits}" />
-                                    <Text id="BonUnits2" text="{FolioToShow>/ValBoni}" />
-                                    
-                                    <core:Title text="{appTxts>/products.titlePurchaseCosts}" />
+                                <Label text="{appTxts>/products.grossWeight}" />
+                                <Text text="{FolioToShow>/EcPbruto}" />
 
-                                    <Label text="{appTxts>/products.grossCost}" />
-                                    <Text text="{FolioToShow>/CostoB}" />
+                                <Label text="{appTxts>/products.netWeight}" />
+                                <Text text="{FolioToShow>/EcPneto}" />
 
-                                    <Label text="{appTxts>/products.packingCapacity}" />
-                                    <Text text="{FolioToShow>/CapEmpaq}" />
+                                <Label text="{appTxts>/products.weightUnit}" />
+                                <Text text="{FolioToShow>/EcUndp}" />
 
-                                    <Label text="{appTxts>/products.netCostPurchaseUnit}" />
-                                    <Text text="{FolioToShow>/CostNUCompra}" />
+                                <core:Title text="{appTxts>/products.subtitlesalesPresen}" />
+                                <Label text="{appTxts>/products.tall}" />
+                                <Text text="{FolioToShow>/PvAlto}" />
 
-                                    <Label text="{appTxts>/products.netCostUnitOfSale}" />
-                                    <Text text="{FolioToShow>/CostNUVenta}" />
+                                <Label text="{appTxts>/products.width}" />
+                                <Text text="{FolioToShow>/PvAncho}" />
 
-                                    <Label id="PSug1" text="{appTxts>/products.suggestedPrice}" />
-                                    <Text id="PSug2" text="{FolioToShow>/PSug}" />
+                                <Label text="{appTxts>/products.deep}" />
+                                <Text text="{FolioToShow>/PvProfundo}" />
 
-                                    <Label id="MaxPubPrice1" text="{appTxts>/products.maxPublicPrice}" />
-                                    <Text id="MaxPubPrice2" text="{FolioToShow>/PSug}" />
-                                    
-									</form:content>
-								</form:SimpleForm>
+                                <Label text="{appTxts>/products.msgExpressedIn}" />
+                                <Text text="{FolioToShow>/PvUndaap}" />
 
-                                <form:SimpleForm
-										title="{appTxts>/products.titleImages}"
-										minWidth="1024"
-										editable="false"
-										layout="ResponsiveGridLayout">
-                                        <form:content>
+                                <Label text="{appTxts>/products.volume}" />
+                                <Text text="{FolioToShow>/PvVolumen}"/>
 
-                                            <f:GridList
-                                                id="gridList"
-                                                items="{FolioImages>/items}">
-                                                <f:GridListItem>
-                                                    <VBox class="sapUiSmallMargin">
-                                                        <layoutData>
-                                                            <FlexItemData growFactor="1" shrinkFactor="0" /> <!-- Don't shrink below minimum size. Fill space if available. -->
-                                                        </layoutData>
+                                <Label text="{appTxts>/products.volumeUnit}" />
+                                <Text text="{FolioToShow>/PvUndvol}"/>
 
-                                                        <Title text="{FolioImages>mProperties/fileName}" wrapping="true" />
-                                                        <Image
-                                                            src="{
+                                <Label text="{appTxts>/products.grossWeight}" />
+                                <Text text="{FolioToShow>/PvPbruto}" />
+
+                                <Label text="{appTxts>/products.netWeight}" />
+                                <Text text="{FolioToShow>/PvPneto}"/>
+
+                                <Label text="{appTxts>/products.weightUnit}" />
+                                <Text text="{FolioToShow>/PvUndp}"/>
+
+                                <core:Title text="{appTxts>/products.capPerPallet}" />
+
+                                <Label text="{appTxts>/products.palletCode}" />
+                                <Text text="{FolioToShow>/CodTarima}" />
+
+                                <Label text="{appTxts>/products.boxesByContent}" />
+                                <Text text="{FolioToShow>/CajasTend}" />
+
+                                <Label text="{appTxts>/products.stretchedByPlatform}" />
+                                <Text text="{FolioToShow>/TendTarima}" />
+
+                                <Label text="{appTxts>/products.boxesPerPallet}" />
+                                <Text text="{FolioToShow>/CajasTarima}" />
+
+                            </form:content>
+
+                        </form:SimpleForm>
+
+                        <form:SimpleForm title="{appTxts>/products.titleDisBonusCosts}" minWidth="1024" editable="false" layout="ResponsiveGridLayout">
+                            <form:content>
+
+                                <core:Title text="{appTxts>/products.subtitleDiscounts}" />
+
+                                <Label text="{appTxts>/products.normalDiscount}" />
+                                <Text text="{FolioToShow>/DscNormal}" />
+
+                                <Label text="{appTxts>/products.normalDiscount2}" />
+                                <Text text="{FolioToShow>/DscNormal2}" />
+
+                                <Label text="{appTxts>/products.normalDiscount3}" />
+                                <Text text="{FolioToShow>/DscNormal3}" />
+
+                                <Label text="{appTxts>/products.additionalDiscount}" />
+                                <Text text="{FolioToShow>/DscAdicional}" />
+
+                                <Label text="{appTxts>/products.discountEarlyPay}" />
+                                <Text text="{FolioToShow>/DscPpago}" />
+
+                                <core:Title text="{appTxts>/products.titleBonus}" />
+
+                                <Label text="{appTxts>/products.subtitleBonusType}" />
+                                <Text text="{FolioToShow>/UndBon}" />
+
+                                <Label id="BonValue1" text="{appTxts>/products.bonusValue}" />
+                                <Text id="BonValue2" text="{FolioToShow>/ValBoni}" />
+
+                                <Label id="BonUnits1" text="{appTxts>/products.bonusUnits}" />
+                                <Text id="BonUnits2" text="{FolioToShow>/ValBoni}" />
+
+                                <core:Title text="{appTxts>/products.titlePurchaseCosts}" />
+
+                                <Label text="{appTxts>/products.grossCost}" />
+                                <Text text="{FolioToShow>/CostoB}" />
+
+                                <Label text="{appTxts>/products.packingCapacity}" />
+                                <Text text="{FolioToShow>/CapEmpaq}" />
+
+                                <Label text="{appTxts>/products.netCostPurchaseUnit}" />
+                                <Text text="{FolioToShow>/CostNUCompra}" />
+
+                                <Label text="{appTxts>/products.netCostUnitOfSale}" />
+                                <Text text="{FolioToShow>/CostNUVenta}" />
+
+                                <Label id="PSug1" text="{appTxts>/products.suggestedPrice}" />
+                                <Text id="PSug2" text="{FolioToShow>/PSug}" />
+
+                                <Label id="MaxPubPrice1" text="{appTxts>/products.maxPublicPrice}" />
+                                <Text id="MaxPubPrice2" text="{FolioToShow>/PSug}" />
+
+                            </form:content>
+                        </form:SimpleForm>
+
+                        <form:SimpleForm title="{appTxts>/products.titleImages}" minWidth="1024" editable="false" layout="ResponsiveGridLayout">
+                            <form:content>
+
+                                <f:GridList id="gridList" items="{FolioImages>/items}">
+                                    <f:GridListItem>
+                                        <VBox class="sapUiSmallMargin">
+                                            <layoutData>
+                                                <FlexItemData growFactor="1" shrinkFactor="0" />
+                                                <!-- Don't shrink below minimum size. Fill space if available. -->
+                                            </layoutData>
+
+                                            <Title text="{FolioImages>mProperties/fileName}" wrapping="true" />
+                                            <Image src="{
                                                                 path: 'FolioImages>mProperties/url'
-                                                            }"
-                                                            width="100%"
-                                                            height="100%"
-                                                            alt="{FolioImages>mProperties/fileName}"
-                                                            class="sapUiTinyMarginTop"/>
-                                                    </VBox>
-                                                </f:GridListItem>
-                                            </f:GridList>
-                                        
-                                        </form:content>
-                                </form:SimpleForm>
-					</WizardStep>
-				</Wizard>
-			</f:content>
+                                                            }" width="100%" height="100%" alt="{FolioImages>mProperties/fileName}" class="sapUiTinyMarginTop"/>
+                                        </VBox>
+                                    </f:GridListItem>
+                                </f:GridList>
 
-			<f:footer>
-				<OverflowToolbar>
-                    <CheckBox text="{appTxts>/products.confirmationMssg}"  class="" selected="false" select="selectAgree" visible="{/checkConfirmation}"/>
-					<ToolbarSpacer/>
-					<Button text="{appTxts>/products.previous}" visible="{/backButtonVisible}" press="onDialogBackButton" />
-					<Button text="{appTxts>/products.nextStep}" type="Emphasized" enabled="{/nextButtonEnabled}" visible="{/nextButtonVisible}" press="onDialogNextButton" />
-					<Button text="{appTxts>/products.buttonReview}" type="Emphasized" visible="{/reviewButtonVisible}" press="onDialogNextButton" />
-					<Button id="FinishBtn" text="{appTxts>/products.finish}" type="Emphasized" visible="{/finishButtonVisible}" press="handleWizardSubmit" enabled="false"/>
-					<Button	text="{appTxts>/products.cancel}" type="Transparent" press="handleWizardCancel"/>
-				</OverflowToolbar>
-                
-			</f:footer>
-		</f:DynamicPage>
+                            </form:content>
+                        </form:SimpleForm>
+                    </WizardStep>
+                </Wizard>
+            </f:content>
 
-	</Dialog>
-            
+            <f:footer>
+                <OverflowToolbar>
+                    <CheckBox text="{appTxts>/products.confirmationMssg}" class="" selected="false" select="selectAgree" visible="{/checkConfirmation}"/>
+                    <ToolbarSpacer/>
+                    <Button text="{appTxts>/products.previous}" visible="{/backButtonVisible}" press="onDialogBackButton" />
+                    <Button text="{appTxts>/products.nextStep}" type="Emphasized" enabled="{/nextButtonEnabled}" visible="{/nextButtonVisible}" press="onDialogNextButton" />
+                    <Button text="{appTxts>/products.buttonReview}" type="Emphasized" visible="{/reviewButtonVisible}" press="onDialogNextButton" />
+                    <Button id="FinishBtn" text="{appTxts>/products.finish}" type="Emphasized" visible="{/finishButtonVisible}" press="handleWizardSubmit" enabled="false"/>
+                    <Button text="{appTxts>/products.cancel}" type="Transparent" press="handleWizardCancel"/>
+                </OverflowToolbar>
+
+            </f:footer>
+        </f:DynamicPage>
+
+    </Dialog>
+
 </core:FragmentDefinition>
