@@ -20,6 +20,7 @@ sap.ui.define([
     var regulaArchivos;
     var oModel = new this.ComplPagoModel();
     var cfdiModel = new this.CfdiModel();
+    var oValidFiscales = new this.ValidacionesFiscales();
     var that = "";
     var sUri = "/sap/opu/odata/sap/ZOSP_PYMNT_CMPL_SRV/";
 
@@ -425,8 +426,7 @@ sap.ui.define([
 
                 $.ajax({
                     async: true,
-                    url: "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboPortal.asmx", //QAS
-                    //url: "https://enviodocumentos.soriana.com/RecibeCFD/wseDocReciboPortal.asmx", //PRO
+                    url: oValidFiscales.sUrl,
                     method: "POST",
                     headers: {
                         "Content-Type": "text/xml; charset=utf-8",
