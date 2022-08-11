@@ -19,7 +19,7 @@
 
             <f:content>
 
-                <IconTabBar id="idIconTabBarNoIcons" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
+                <IconTabBar id="idIconTabBarNoIconsChange" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
                     <items>
                         <IconTabFilter text="{appTxts>/products.massiveLabel}" key="massive">
 
