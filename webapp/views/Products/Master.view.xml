@@ -10,18 +10,18 @@
     xmlns:html="http://www.w3.org/1999/xhtml"
     controllerName ="demo.controllers.Products.Master">
 
-     <html:style>
+    <html:style>
       .sapContrast.sapMCbBg, .sapContrast .sapMCbBg {
          background-color: white !important;
       }
       .sapContrast.sapMLabel, .sapContrast .sapMLabel{
           color: black !important;
       }
-   </html:style>
-    
+    </html:style>
+
     <f:DynamicPage class="sapUiContentPadding">
         <!-- DynamicPage Title -->
-        
+
         <f:title>
             <f:DynamicPageTitle backgroundDesign="Transparent">
                 <f:heading>
@@ -29,22 +29,10 @@
                 </f:heading>
                 <f:actions>
                     <ToolbarSpacer/>
-                    <Button
-                            text="{appTxts>/products.massiveRegister}"
-                            type="Emphasized"
-                            press="massiveRegisterBatch"/>
-                    <Button
-                            text="{appTxts>/products.newProduct}"
-                            type="Emphasized"
-                            press="newProduct"/>
-                    <Button
-                            text="{appTxts>/products.changePriceTxt}"
-                            type="Emphasized"
-                            press="changePriceProduct"/>
-                    <Button
-                            text="{appTxts>/products.deleteProductsTxt}"
-                            type="Emphasized"
-                            press="deleteProducts"/>
+                    <Button text="{appTxts>/products.massiveRegister}" type="Emphasized" press="massiveRegisterBatch"/>
+                    <Button text="{appTxts>/products.newProduct}" type="Emphasized" press="newProduct"/>
+                    <Button text="{appTxts>/products.changePriceTxt}" type="Emphasized" press="changePriceProduct"/>
+                    <Button text="{appTxts>/products.deleteProductsTxt}" type="Emphasized" press="deleteProducts"/>
                 </f:actions>
             </f:DynamicPageTitle>
         </f:title>
@@ -74,10 +62,7 @@
                                 partOfCurrentVariant = "true" 
                                 visibleInFilterBar   = "true">
                                 <fb:control>
-                                    <Input
-                                        id="inputFolioTxt"
-                                        placeholder="{appTxts>/products.folio}"
-                                         />
+                                    <Input id="inputFolioTxt" placeholder="{appTxts>/products.folio}" />
                                 </fb:control>
                             </fb:FilterGroupItem>
 
@@ -130,9 +115,7 @@
                                 partOfCurrentVariant = "true" 
                                 visibleInFilterBar   = "true">
                                 <fb:control>
-                                    <MessageStrip
-                                            text="{appTxts>/products.msgMyProducts}"
-                                            showIcon="true"/>
+                                    <MessageStrip text="{appTxts>/products.msgMyProducts}" showIcon="true"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
 
@@ -151,9 +134,8 @@
                     alternateRowColors      ="true" 
                     rows                    ="{Folios>/ETPRICNAV/Paginated/results}"
                     enableColumnReordering  = "false"
-                    enableSelectAll         ="false"
-                    visibleRowCount="10"
-                    selectionMode           ="None">  
+                    enableSelectAll         ="false" visibleRowCount="10"
+                    selectionMode           ="None">
                     <t:extension>
                         <OverflowToolbar style="Clear">
                             <Title id="title" text="{appTxts>/state.detail} ({Folios>/ETPRICNAV/results/length})"/>
@@ -231,7 +213,7 @@
                             </t:template>
                         </t:Column> -->
                     </t:columns>
-                    
+
                 </t:Table>
 
                 <OverflowToolbar visible="{= ${Folios>/ETPRICNAV/Paginated/results/length} > 0 }">
