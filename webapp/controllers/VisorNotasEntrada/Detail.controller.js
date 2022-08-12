@@ -119,7 +119,10 @@ if (ModeloN.XblnrFact==='0.1'){
                         Mjahr: data[x].Mjahr ,
                         Zeile: data[x].Zeile ,
                         Umrez:data[x].Umrez ,
-                        Fconver: (Number(data[x].Menge)/Number(data[x].Erfmg))
+                        Fconver: (Number(data[x].Menge)/Number(data[x].Erfmg)),
+                        Ctotal:data[x].Menge +" "+data[x].Meins,
+                        CPiezas:data[x].Erfmg+" "+data[x].Erfme
+
                     })
                 }
               
@@ -216,18 +219,19 @@ if (ModeloN.XblnrFact==='0.1'){
             aCols.push({
                 label: texts.getProperty("/visor.quantity"),
                 type: EdmType.String,
-                property: 'Erfmg'
+                property: 'CPiezas'
             });
 
             aCols.push({
-                label: texts.getProperty("/visor.Fconver"),
+                label: texts.getProperty("/visor.capacidad"),
                 type: EdmType.String,
                 property: 'Fconver'
             });
             aCols.push({
-                label: texts.getProperty("/visor.capacidad"),
+                label: texts.getProperty("/visor.Fconver"),
                 type: EdmType.String,
-                property: 'Menge'
+                property: 'Ctotal',
+             
             });
 
 
