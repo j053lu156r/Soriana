@@ -11,9 +11,7 @@ sap.ui.define([
             this.getView().addEventDelegate({
                 onBeforeShow: function (oEvent) {
                     // this.setDaterangeMaxMin();
-
-                    //this.getData();
-
+                    //  this.getData();
                     // this.generaGrafica();
                 }
             }, this);
@@ -147,16 +145,13 @@ sap.ui.define([
                     string = "Lifnr";
                     break;
             }
-
-            var groupProvider = this.groupByAuto(oItems.ETLOGFNAV.results, string);
-
+            var groupProvider = this.groupBySum(oItems.ETTLIFNAV.results);
             for (const provider in groupProvider) {
                 var obj = {};
                 obj.provider = provider;
                 obj.value = groupProvider[provider];
                 Data.Segmentos.push(obj);
             }
-
             this.getOwnerComponent().setModel(new JSONModel(Data), "segmentos");
         },
         groupByAuto: function (data, key) {
@@ -166,6 +161,17 @@ sap.ui.define([
                 groups[data[i][key]].push(data[i]);
             }
             return groups;
+        },
+
+        groupBySum: function(data){
+            var obj = {}, sumN1 = 0, sumN3 = 0;
+            for (var i in data){
+                sumN1 += parseInt(data[i].N1,10);
+                sumN3 += parseInt(data[i].N3,10);
+            }
+            obj.Aprobado = sumN3;
+            obj.Incidencias = sumN1;
+            return obj;
         },
 
         clearFilters: function () {
