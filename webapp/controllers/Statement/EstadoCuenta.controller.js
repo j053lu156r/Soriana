@@ -334,13 +334,13 @@ sap.ui.define([
 
             )
 
-            auxFilters.push(new sap.ui.model.Filter({
+         /*   auxFilters.push(new sap.ui.model.Filter({
                     path: "Datei",
                     operator: sap.ui.model.FilterOperator.EQ,
                     value1: desde_LV_ZDESDE
                 })
 
-            )
+            )*/
 
             auxFilters.push(new sap.ui.model.Filter({
                     path: "Datei",

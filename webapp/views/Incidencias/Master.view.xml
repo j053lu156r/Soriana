@@ -70,7 +70,7 @@
                             <f:layoutS>
                                 <f:GridContainerSettings rowSize="70px" columnSize="90vw" gap="8px" />
                             </f:layoutS>
-
+                            
                             <f:Card>
                                 <f:layoutData>
                                     <f:GridContainerItemLayoutData minRows="2" columns="3" />
@@ -112,7 +112,7 @@
                                 </f:content>
                             </f:Card>
 
-                            <f:Card>
+                            <f:Card visible="false">
                                 <f:layoutData>
                                     <f:GridContainerItemLayoutData minRows="2" columns="3" />
                                 </f:layoutData>
@@ -202,7 +202,7 @@
                                 <f:content>
                                     <VBox width="100%">
                                         <OverflowToolbar id="otb2">
-                                            <RadioButtonGroup id="rbgInc" columns="3"  select="getSegments">                                               
+                                            <RadioButtonGroup id="rbgInc" columns="3"  select="getSegments" visible="false">                                               
                                                 <RadioButton text="{appTxts>/incidencias.xstat}"  />
                                                 <RadioButton text="{appTxts>/incidencias.xsupp}" />
                                             </RadioButtonGroup>
@@ -218,8 +218,8 @@
                                                     <mc:segments>
                                                        <mc:InteractiveDonutChartSegment 
                                                         label="{segmentos>provider}" 
-                                                        value= '{segmentos>value/length}'
-                                                        displayedValue="{segmentos>value/length}"/>
+                                                        value= '{segmentos>value}'
+                                                        displayedValue="{segmentos>value}"/>
                                                     </mc:segments>
                                                 </mc:InteractiveDonutChart>
                                             </items>

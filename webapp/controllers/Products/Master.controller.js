@@ -6,7 +6,7 @@ sap.ui.define([
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "demo/models/formatterCatPrd",
-    "sap/ui/core/BusyIndicator"
+    "sap/ui/core/BusyIndicator",
 ], function (BaseController, JSONModel, Fragment, MessageBox, Filter, FilterOperator, formatterCatPrd, BusyIndicator) {
     "use strict";
 
