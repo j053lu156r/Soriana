@@ -118,6 +118,7 @@ sap.ui.define([
             this.onCloseDialog();
         },
         buildExcel: function(){
+            /*
             var that = this;
             var aFilters = [];
             aFilters.push(new Filter("Ebeln", FilterOperator.EQ, this._document));
@@ -135,14 +136,13 @@ sap.ui.define([
                    sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/order.xlsError"));
                 }
             });
-            /*
+            */
             var oModel = this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0");
             var columns = this.createColumnConfig();
             var aDataPosiciones = this.createData();
             var name = 'Detalle Pedido ' + oModel.Ebeln + '.xlsx';
 
             this.buildExcelSpreadSheet(columns, aDataPosiciones, name);
-            */
         },
 
         createColumnConfig: function() {
