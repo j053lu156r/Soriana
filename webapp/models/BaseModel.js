@@ -531,3 +531,14 @@ function ModelTC() {
 
 ModelTC.prototype = Object.create(BaseModel.prototype);
 ModelTC.prototype.constructor = ModelTC;
+
+//Model Excel Pedidos
+function ModelXlsPedidos() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZSOP_PEDIDO_EXCEL_SRV/";
+    params.sModel = "xlsPedidosModel";
+    BaseModel.call(this, params);
+}
+
+ModelXlsPedidos.prototype = Object.create(BaseModel.prototype);
+ModelXlsPedidos.prototype.constructor = ModelXlsPedidos;
