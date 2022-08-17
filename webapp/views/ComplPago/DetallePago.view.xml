@@ -141,7 +141,7 @@
 						<Column  filterType="sap.ui.model.type.Integer" filterProperty="Belnr" sortProperty="Belnr" id="folioColumn" width="20%">
 							<m:Label text="{appTxts>/state.folio}" />
 							<template>
-								<m:ObjectIdentifier titlePress="onDocumentPress" titleActive="true" title="{GroupedTotales>Belnr}"  />
+								<m:ObjectIdentifier titlePress="onDocumentPress" titleActive="{= ${GroupedTotales>IdNumTipomov} !== '12'}" title="{GroupedTotales>Belnr}"  />
 							</template>
 						</Column>
 						<Column  sortProperty="Xblnr" filterProperty="Xblnr"  id="referenceColumn" width="20%">
