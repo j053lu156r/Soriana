@@ -175,7 +175,7 @@ sap.ui.define([
                             this.getOwnerComponent().setModel(new JSONModel(dueModelcode),
                                 "tablecode");
                             console.log(dueModelcode);
-
+                            this.searchData();
                             sap.m.MessageBox.success(texts.getProperty("/devo.success"));
                         }
                         else {
