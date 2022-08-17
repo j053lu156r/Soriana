@@ -94,7 +94,7 @@ sap.ui.define([
             this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "headerDetail");
 
             var url = "/HrdReturnsSet?$expand=ETDTDEVNAV,ETFDEVNAV,ITDFAGR&$filter= IOption eq '3' and IEbeln eq '" + this._Ebeln + "'"
-                    + " and IXblnr eq '" + this._Xblnr + "'"
+                    + " and ILifnr eq '" + this._lifnr + "' and IXblnr eq '" + this._Xblnr + "'"
 
 
             var dueModel = oModel.getJsonModel(url);
