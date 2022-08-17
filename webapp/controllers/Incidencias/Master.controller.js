@@ -240,7 +240,7 @@ sap.ui.define([
                     property: "Mensaje"
                 },
                 {
-                    label: texts.getProperty("/incidencias.messages"),
+                    label: texts.getProperty("/incidencias.message"),
                     property: "Descripcion1"
                 },
                 {

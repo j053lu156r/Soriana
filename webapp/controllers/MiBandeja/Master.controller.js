@@ -209,7 +209,6 @@ sap.ui.define([
         },
         selectHelpDoc: function (docInv) {
             var response = inboxModel.getJsonModel(`/headInboxSet?$expand=ETDOCANAV&$filter= IOption eq '11' and IIdhp eq '${docInv}'`);
-
             if (response != null) {
                 var result = response.getProperty("/results/0");
                 if (result.ESuccess == "X") {
