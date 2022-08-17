@@ -20,7 +20,7 @@
             <ObjectPageDynamicHeaderTitle>
                 <expandedHeading>
                     <m:Title
-                      text="{= ${path: 'devoDetail>/ETFDEVNAV/results/0/Zfolagrup'} === '' ? ${appTxts>/devo.folioDevo} : ${appTxts>/devo.Code} } : {= ${path: 'devoDetail>/ETFDEVNAV/results/0/Zfolagrup'} === '' ? ${headerDetail>/Xblnr} : ${path: 'devoDetail>/ETFDEVNAV/results/0/Zfolagrup'} }" 
+                      text="{appTxts>/devo.folioDevo} : {headerDetail>/Xblnr}" 
                       wrapping="true" class="sapUiSmallMarginEnd"/>                    
                 </expandedHeading>                
 
