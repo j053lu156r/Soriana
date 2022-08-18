@@ -701,7 +701,10 @@ console.log(TDatos)
 			});
 
 			this.getView().setModel(new JSONModel({
-					"document": this._document
+					"document": this._document,
+				    "fecha": this._fecha,
+					"currency": "MXN",
+
 				}),
 				"detailComplPagos");
 
