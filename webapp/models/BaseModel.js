@@ -440,6 +440,28 @@ function Acuerdos() {
 Acuerdos.prototype = Object.create(BaseModel.prototype);
 Acuerdos.prototype.constructor = Acuerdos;//Model Acuerdos
 
+//Model ACcapturados Bolentin a venta
+function ACcapturados() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOS_AC_CAPTURADOS_SRV/";
+    params.sModel = "ACcapturadosModel";
+    BaseModel.call(this, params);
+}
+
+ACcapturados.prototype = Object.create(BaseModel.prototype);
+ACcapturados.prototype.constructor = ACcapturados;//Model ACcapturados
+
+//Model Polizas Bolentin a venta
+function Polizas() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOS_FI_DOCUMENTS_SRV/";
+    params.sModel = "polizasModel";
+    BaseModel.call(this, params);
+}
+
+Polizas.prototype = Object.create(BaseModel.prototype);
+Polizas.prototype.constructor = Polizas;//Model Polizas
+
 //MOdel REporte  Mejor Condicion 
 
 //Model Acuerdos
