@@ -710,6 +710,41 @@
                         "masterVisorNotas",
                         "detailVisorNotas"
                     ]
+                },
+                {
+                    "name": "masterBoletinVta",
+                    "pattern": "masterBoletinVta",
+                    "target": [
+                        "masterBoletinVta"
+                    ]
+                },
+                {
+                    "name": "detailBoletinVta",
+                    "pattern": "detailBoletinVta/{layout}/{promotion}/{vendor}/{promDescription}/{IntenalClass}",
+                    "target": [
+                        "detailBoletinVta"
+                    ]
+                },
+                {
+                    "name": "detailBoletinVtaCentros",
+                    "pattern": "detailBoletinVtaCentros/{layout}/{promotion}/{vendor}/{promDescription}/{IntenalClass}",
+                    "target": [
+                        "detailBoletinVtaCentros"
+                    ]
+                },
+                {
+                    "name": "BoletinVtaPolizas",
+                    "pattern": "BoletinVtaPolizas/{company}/{document}/{year}",
+                    "target": [
+                        "BoletinVtaPolizas"
+                    ]
+                },
+                {
+                    "name": "detailCargoBoletinVta",
+                    "pattern": "detailCargoBoletinVta/{layout}/{Company}/{Agreement}/{Vendor}/{DateCreated}",
+                    "target": [
+                        "detailCargoBoletinVta"
+                    ]
                 }
             ],
             "targets": {
@@ -1043,6 +1078,31 @@
                 "detailVisorNotas" : {
                     "viewName": "Detail",
                     "viewPath": "demo.views.VisorNotasEntrada" ,
+                    "controlAggregation": "midColumnPages"
+                },
+                "masterBoletinVta" : {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.BoletinVta",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailBoletinVta" : {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.BoletinVta",
+                    "controlAggregation": "midColumnPages"
+                },
+                "detailBoletinVtaCentros" : {
+                    "viewName": "DetailCentro",
+                    "viewPath": "demo.views.BoletinVta",
+                    "controlAggregation": "endColumnPages"
+                },
+                "BoletinVtaPolizas" : {
+                    "viewName": "Polizas",
+                    "viewPath": "demo.views.BoletinVta",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailCargoBoletinVta" : {
+                    "viewName": "DetailCargo",
+                    "viewPath": "demo.views.BoletinVta",
                     "controlAggregation": "midColumnPages"
                 }
             }
