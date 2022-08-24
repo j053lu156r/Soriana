@@ -65,10 +65,12 @@ sap.ui.define([
                 }
             );
 		},
+        
 		handleClose: function () {
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
 			this.oRouter.navTo("masterBoletinVta");
 		},
+
 		_onDocumentMatched: function (oEvent) {
 			
             this._promotion = oEvent.getParameter("arguments").promotion || this._promotion || "0";

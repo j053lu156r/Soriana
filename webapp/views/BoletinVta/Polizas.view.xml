@@ -15,10 +15,10 @@
         <f:header>
             <f:DynamicPageHeader id="DPH" pinnable="true">
                 <f:content>
-                    <OverflowToolbar class="sapUiMediumMarginTop">
+                    <!-- <OverflowToolbar class="sapUiMediumMarginTop">
                     <ToolbarSpacer/>
                         <Button icon="sap-icon://decline" type="Transparent" press="onClose" tooltip="Cerrar"/>
-                    </OverflowToolbar>
+                    </OverflowToolbar> -->
                     <fb:FilterBar id="filterBar"  header="Header" 
 		                reset="onReset" search="searchData" clear="clearFilters" cancel="onCancel" 
 		                filtersDialogClosed = "onFiltersDialogClosed"
@@ -95,7 +95,7 @@
                         -->
                         <Button id="BTNC" icon="sap-icon://monitor-payments" text="{appTxts>/polizas.detCargo}" 
                             press=".onDebitDetail"
-                            visible="{= ${acuTotDetModel>/Agreement} > 0}"
+                            visible="{= ${PolizasHdr>/length} > 0}"
                         />
                         <Button id="BTNE" icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
                             press=".buildExportTable"
