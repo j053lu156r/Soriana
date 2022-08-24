@@ -376,7 +376,7 @@ sap.ui.define([
 
             var model = "ZOSP_STATEMENT_SRV_01";
             var entity = "EStmtHdrSet";
-            var expand = ['Citms', 'Oitms'];
+            var expand = ['Oitms'];
             var filter = auxFilters;
             var select = "";
             sap.ui.core.BusyIndicator.show();
@@ -387,7 +387,7 @@ sap.ui.define([
                 var data = _GEToDataV2Response.data.results;
 
 
-                let Detalles = [...data[0].Citms.results, ...data[0].Oitms.results];
+                let Detalles = [...data[0].Oitms.results];
 
                 var cleanedArray =  Detalles.filter(obj => !obj.Belnr.startsWith("58") && !obj.Belnr.startsWith("59"));
 
@@ -1328,6 +1328,7 @@ sap.ui.define([
                 xblnr: results.Foliodescuento,
                 lifnr: Lifnr,
                 ebeln: results.Ebeln
+                console.log()
                 // zbukr: docResult.Zbukr,
                 // lifnr: docResult.Lifnr
             }, true);
