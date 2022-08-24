@@ -1328,7 +1328,6 @@ sap.ui.define([
                 xblnr: results.Foliodescuento,
                 lifnr: Lifnr,
                 ebeln: results.Ebeln
-                console.log()
                 // zbukr: docResult.Zbukr,
                 // lifnr: docResult.Lifnr
             }, true);
