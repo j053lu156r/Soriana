@@ -40,41 +40,58 @@ sap.ui.define([
             //var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(2);
 			this.bFocusFullScreenButton = true;
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
-            sNextLayout = sap.f.LayoutType.TwoColumnsMidExpanded;
+            //sNextLayout = sap.f.LayoutType.TwoColumnsMidExpanded;
 			this.oRouter.navTo("detailCargoBoletinVta", 
                 {
                     layout: sNextLayout, 
                     Company: this._Company,
                     Vendor: this._Vendor,
                     Agreement: this._Agreement,
-                    DateCreated: this._DateCreated
+                    DateCreated: this._DateCreated,
+                    document: this._document,
+                    year: this._year
                 }
             );
 		},
 		handleExitFullScreen: function () {
 			this.bFocusFullScreenButton = true;
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
-            sNextLayout = sap.f.LayoutType.TwoColumnsMidExpanded;
+            //sNextLayout = sap.f.LayoutType.TwoColumnsMidExpanded;
 			this.oRouter.navTo("detailCargoBoletinVta", 
                 {
                     layout: sNextLayout, 
                     Company: this._Company,
                     Vendor: this._Vendor,
                     Agreement: this._Agreement,
-                    DateCreated: this._DateCreated
+                    DateCreated: this._DateCreated,
+                    document: this._document,
+                    year: this._year
                 }
             );
 		},
+
 		handleClose: function () {
-			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
-			this.oRouter.navTo("BoletinVtaPolizas");
+			
+			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
+            sNextLayout = sap.f.LayoutType.TwoColumnsMidExpanded;
+			this.oRouter.navTo("masterBoletinVtaPolizas",
+            {
+                layout: sNextLayout,
+                company: this._Company,
+                document: this._document,
+                year : this._year,
+
+            }, true);
 		},
+
 		_onDocumentMatched: function (oEvent) {
 			
             this._Company = oEvent.getParameter("arguments").Company || this._Company || "0";
             this._Vendor = oEvent.getParameter("arguments").Vendor || this._Vendor || "0";
             this._Agreement = oEvent.getParameter("arguments").Agreement || this._Agreement || "0";
             this._DateCreated = oEvent.getParameter("arguments").DateCreated || this._DateCreated || "0";
+            this._document = oEvent.getParameter("arguments").document || this._document || "0";
+            this._year = oEvent.getParameter("arguments").year || this._year || "0";
 
             var headerDeatil = {
                 "Company": this._Company,

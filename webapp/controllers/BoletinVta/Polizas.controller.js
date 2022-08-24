@@ -17,20 +17,20 @@
                 this.oRouter = this.getOwnerComponent().getRouter();
                 this.oModel = this.getOwnerComponent().getModel();
     
-                this.oRouter.getRoute("BoletinVtaPolizas").attachPatternMatched(this._onDocumentMatched, this);
+                //this.oRouter.getRoute("masterBoletinVtaPolizas").attachPatternMatched(this._onDocumentMatched, this);
 
                 this.getView().addEventDelegate({
                     onAfterShow: function (oEvent) {
                         var barModel = this.getOwnerComponent().getModel();
                         barModel.setProperty("/barVisible", true);
-                        //this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "PolizasHdr");
-                        //this.clearFilters();
+                        this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "PolizasHdr");
+                        this.clearFilters();
                     }
                 }, this);
                 this.configFilterLanguage(this.getView().byId("filterBar"));
             },
 
-            _onDocumentMatched: function (oEvent) {
+            /*_onDocumentMatched: function (oEvent) {
 			
                 var _company = oEvent.getParameter("arguments").company || _company || "0";
                 var _dopcument = oEvent.getParameter("arguments").document || _document || "0";
@@ -45,7 +45,7 @@
                     this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "PolizasHdr");
                     this.clearFilters(); 
                 }
-            },
+            },*/
 
             searchData: function () {
                 var texts = this.getOwnerComponent().getModel("appTxts");
@@ -138,6 +138,9 @@
                 //var odata = this.getOwnerComponent().getModel("acuTotDetModel");
                 //var results = odata.getProperty("/");
 
+                var documento = this.getView().byId('documentoInput').getValue();
+                var ejercicio = this.getView().byId('ejercicioInput').getValue();
+
                 var odata = this.getOwnerComponent().getModel("PolizasHdr");
                 var results = odata.getProperty("/");
                 var docResult = results[0]; 
@@ -148,7 +151,9 @@
                         Company: docResult.Bukrs,
                         Agreement: docResult.Knuma,
                         Vendor : docResult.Lifnr,
-                        DateCreated: docResult.Lifnr
+                        DateCreated: docResult.Erdat,
+                        document: documento,
+                        year: ejercicio,
 
                     }, true);
 

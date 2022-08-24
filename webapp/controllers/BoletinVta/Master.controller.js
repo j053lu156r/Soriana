@@ -212,7 +212,7 @@ sap.ui.define([
 			var readurl = "/promFilesSet(Promotion='" + docResult.Promotion + "',Vendor='" + docResult.Vendor + "')";
 			oSaveData.setHeaders({
 				"X-Requested-With": "X",
-                "slug": docResult.Promotion + "|" + docResult.Vendor + "|" + file.name
+                "slug": docResult.Promotion + "|" + docResult.Vendor + "|" + file.name + "|" + file.type
 			}); 
 
             oSaveData.create("/promFilesSet", promFile, null, function () {
@@ -400,9 +400,9 @@ sap.ui.define([
         },
 
         onFinancialView: function(){
-            this.getOwnerComponent().getRouter().navTo("BoletinVtaPolizas",
+            this.getOwnerComponent().getRouter().navTo("BoletinVtaDetailPolizas",
                 {
-                    //layout: sap.f.LayoutType.ButtonbeginColumnPages,
+                    layout: sap.f.LayoutType.TwoColumnsMidExpanded,
                     company: "2001",
                     document: "5100011100",
                     year: "2022"
@@ -410,9 +410,6 @@ sap.ui.define([
         },
         
         _approve: function (line) {
-            //var texts = this.getOwnerComponent().getModel("appTxts");
-            /*var resource = oEvent.getSource().getBindingContext("AportacionesHdr").getPath(),
-                line = resource.split("/").slice(-1).pop();*/
 
             var aportaModel = this.getOwnerComponent().getModel("AportacionesHdr");
             var results = aportaModel.getProperty("/AportaDet/Paginated/results");
