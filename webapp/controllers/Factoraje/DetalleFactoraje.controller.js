@@ -236,8 +236,27 @@ sap.ui.define([
 
 				console.log(data)
 				let Detalles = [...data[0].Citms.results];
+				let retencionAforo =  Detalles.find(({ZdocAforo}) => ZdocAforo.startsWith('60'));
+
+				console.log("get aforo",retencionAforo)
+
+				if(retencionAforo){
+					var aforoRegis = {...retencionAforo}
+					aforoRegis.DescripcionGpo= "RETENCIÓN AFORO"
+					aforoRegis.IdNumGpo= "82"
+					aforoRegis.DescTipomov= "PROTECCIÓN POR FACTORAJE"
+					aforoRegis.IdNumTipomov= "82"
+					aforoRegis.Belnr = aforoRegis.ZdocAforo
+					aforoRegis.Wrbtr= retencionAforo.RetencionAforo * -1
+
+					Detalles.push(aforoRegis)
+				}
 
 				var cleanedArray = Detalles  //Detalles.filter(obj => !obj.Belnr.startsWith("58") && !obj.Belnr.startsWith("59"));
+
+
+
+
 
 				var clanedDateArray  = cleanedArray.filter(obj => {
 					// DescripcionGpo: "PAGO FACTURA"
