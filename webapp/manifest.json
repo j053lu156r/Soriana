@@ -489,7 +489,7 @@
                     ]
                 },
                 {
-                    "pattern": "EstadoCuentaReporte/{layout}/{document}/{proveedor}/{serie}/{fecha}",
+                    "pattern": "EstadoCuentaReporte/{layout}/{document}/{proveedor}/:serie:/{fecha}",
                     "name": "EstadoCuentaReporte",
                     "target": [
                         "EstadoCuenta",
@@ -497,7 +497,7 @@
                     ]
                 },
                 {
-                    "pattern": "ComplementoReporteMC/{layout}/{document}/{proveedor}/{serie}/{fecha}",
+                    "pattern": "ComplementoReporteMC/{layout}/{document}/{proveedor}/:serie:/{fecha}",
                     "name": "ComplementoReporteMC",
                     "target": [
                         "masterCompl",
