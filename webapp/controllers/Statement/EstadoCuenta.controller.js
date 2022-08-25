@@ -1158,12 +1158,18 @@ sap.ui.define([
         buildExportTable: function () {
             var texts = this.getOwnerComponent().getModel("appTxts");
             let Encabezado = this.getOwnerComponent().getModel("totales");
-            var columns = [{
-                name: texts.getProperty("/state.accountUPC"),
-                template: {
-                    content: Encabezado.getProperty("/periodo")
+            console.log(Encabezado)
+             var columns = [{
+                  name: texts.getProperty("/aportaciones.concepto"),
+                 template: {
+                    content:  "{IdNumTipomov} {DescTipomov}"
                 }
+
+
             },
+
+                 /*
+
                 {
                     name: texts.getProperty("/state.nameUPC"),
                     template: {
@@ -1182,6 +1188,7 @@ sap.ui.define([
                         content: Encabezado.getProperty("/Bankl")
                     }
                 },*/
+              /*
                 {
                     name: texts.getProperty("/state.banknumberUPC"),
                     template: {
@@ -1194,6 +1201,8 @@ sap.ui.define([
                         content: Encabezado.getProperty("/Totfac")
                     }
                 },
+                 */
+
                 {
                     name: texts.getProperty("/state.totalUPC"),
                     template: {
