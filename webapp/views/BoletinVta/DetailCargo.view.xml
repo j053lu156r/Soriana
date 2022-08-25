@@ -168,12 +168,11 @@
 								<m:items>
 									<m:ColumnListItem >
 										<m:cells>
-                                            <m:ObjectIdentifier title="{debitDet>Material}" 
-                                                text="{debitDet>Agreement}" />
+                                            <m:ObjectIdentifier title="{debitDet>Agreement}"/>
                                             <m:ObjectIdentifier title="{debitDet>Material}"
-                                                text="{debitDet>MakDescription}" />
+                                                text="{debitDet>MatDescription}" />
                                             <m:ObjectIdentifier title="{debitDet>Forum}"
-                                                text="{debitDet>ForumDescription}" />
+                                                text="{debitDet>ForumDescrition}" />
                                             <m:ObjectIdentifier
                                                 text="{debitDet>MaterialDoc}" />
                                             <m:ObjectIdentifier

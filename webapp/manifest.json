@@ -733,15 +733,22 @@
                     ]
                 },
                 {
-                    "name": "BoletinVtaPolizas",
-                    "pattern": "BoletinVtaPolizas/{company}/{document}/{year}",
+                    "name": "masterBoletinVtaPolizas",
+                    "pattern": "masterBoletinVtaPolizas",
                     "target": [
-                        "BoletinVtaPolizas"
+                        "masterBoletinVtaPolizas"
+                    ]
+                },
+                {
+                    "name": "BoletinVtaDetailPolizas",
+                    "pattern": "BoletinVtaDetailPolizas/{layout}/{company}/{document}/{year}",
+                    "target": [
+                        "BoletinVtaDetailPolizas"
                     ]
                 },
                 {
                     "name": "detailCargoBoletinVta",
-                    "pattern": "detailCargoBoletinVta/{layout}/{Company}/{Agreement}/{Vendor}/{DateCreated}",
+                    "pattern": "detailCargoBoletinVta/{layout}/{Company}/{Agreement}/{Vendor}/{DateCreated}/{document}/{year}",
                     "target": [
                         "detailCargoBoletinVta"
                     ]
@@ -1095,10 +1102,15 @@
                     "viewPath": "demo.views.BoletinVta",
                     "controlAggregation": "endColumnPages"
                 },
-                "BoletinVtaPolizas" : {
+                "masterBoletinVtaPolizas" : {
                     "viewName": "Polizas",
                     "viewPath": "demo.views.BoletinVta",
                     "controlAggregation": "beginColumnPages"
+                },
+                "BoletinVtaDetailPolizas" : {
+                    "viewName": "DetailPolizas",
+                    "viewPath": "demo.views.BoletinVta",
+                    "controlAggregation": "midColumnPages"
                 },
                 "detailCargoBoletinVta" : {
                     "viewName": "DetailCargo",
