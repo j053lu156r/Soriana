@@ -747,6 +747,13 @@
                     ]
                 },
                 {
+                    "name": "BoletinVtaDetailPolizasL3",
+                    "pattern": "BoletinVtaDetailPolizas/{layout}/{company}/{document}/{year}",
+                    "target": [
+                        "BoletinVtaDetailPolizasNivel3"
+                    ]
+                },
+                {
                     "name": "detailCargoBoletinVta",
                     "pattern": "detailCargoBoletinVta/{layout}/{Company}/{Agreement}/{Vendor}/{DateCreated}/{document}/{year}",
                     "target": [
@@ -1111,6 +1118,11 @@
                     "viewName": "DetailPolizas",
                     "viewPath": "demo.views.BoletinVta",
                     "controlAggregation": "midColumnPages"
+                },
+                "BoletinVtaDetailPolizasNivel3" : {
+                    "viewName": "DetailPolizas",
+                    "viewPath": "demo.views.BoletinVta",
+                    "controlAggregation": "endColumnPages"
                 },
                 "detailCargoBoletinVta" : {
                     "viewName": "DetailCargo",
