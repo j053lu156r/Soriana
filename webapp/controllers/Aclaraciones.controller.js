@@ -139,10 +139,30 @@ if (that.getView().byId("supplierInput").getValue()===""){
             console.log(this.getView().byId("dateRangeAcl").getDateValue())
     var Fecha= new Date();
   
-    Fecha = (Fecha.getTime() - (1000*60*60*24*90))
+    Fecha = (Fecha.getTime() - (1000*60*60*24*60))
   
  this.getView().byId("dateRangeAcl").setDateValue(new Date(Fecha));
  this.getView().byId("dateRangeAcl").setSecondDateValue(new Date());
+},
+onChange:function(){
+    
+  
+   
+  var fecha_inicio= this.getView().byId("dateRangeAcl").getDateValue();
+  var fecha_fin=this.getView().byId("dateRangeAcl").getSecondDateValue();
+ var Fecha = (fecha_inicio.getTime() - fecha_fin.getTime())
+ console.log((Math.round(Fecha / (1000*60*60*24)))*-1)
+ if ((Math.round(Fecha / (1000*60*60*24)))*-1 > 60){
+    sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.ValidacionMens'));
+    var Fecha= new Date();
+  
+    Fecha = (Fecha.getTime() - (1000*60*60*24*30))
+    this.getView().byId("dateRangeAcl").setDateValue(new Date(Fecha));
+ this.getView().byId("dateRangeAcl").setSecondDateValue(new Date());
+    return false;
+    
+
+ }
 },
         ConfigTable: function() {
             var that= this;
@@ -351,6 +371,8 @@ if (that.getView().byId("supplierInput").getValue()===""){
 
             this.getOwnerComponent().getRouter().navTo("detailAclaracion", { layout: fioriLibrary.LayoutType.MidColumnFullScreen, document: results[line].Folio, modo: 'view', tipo: results[line].TipAcla }, true);
 
+
+            
         },
         editClarification: function (oEvent) {
             if (!this.hasAccess(20)) {
