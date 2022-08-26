@@ -173,7 +173,7 @@
                                             showIcons="true" 
                                             uploadEnabled="true" 
                                             terminationEnabled="false" 
-                                            fileTypes="xml,pdf,zip,rar,xls,xlsx" 
+                                            fileTypes="xml,pdf,zip,rar,xls,xlsx,doc,docx,txt" 
                                             maxFileNameLength="15" 
                                             maxFileSize="5" 
                                             selectionChanged="onChangeUpload" 
