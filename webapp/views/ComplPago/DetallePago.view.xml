@@ -175,9 +175,9 @@
 						</Column>
 
 						<Column   id="verReporteColumn" width="20%">
-							<m:Label text="Reporte MC" />
+							<m:Label text="Reporte VC" />
 							<template>
-								<m:Button text="Ver reporte MC" press=".onPressReporte" icon="sap-icon://expense-report" type="Default" visible="{path:'GroupedTotales>MCondicion', formatter:'.hasReport'}" />
+								<m:Button text="Ver reporte VC" press=".onPressReporte" icon="sap-icon://expense-report" type="Default" visible="{path:'GroupedTotales>MCondicion', formatter:'.hasReport'}" />
 							</template>
 						</Column>
 
