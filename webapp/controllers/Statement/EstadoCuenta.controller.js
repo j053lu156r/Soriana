@@ -1400,15 +1400,22 @@ sap.ui.define([
 
                 //camvuar  docuemnto con cual se va consultar
 
-                this.getOwnerComponent().getRouter().navTo("detailAportacionesAS", {
-                    layout: sap.f.LayoutType.MidColumnFullScreen,
-                    document: results.Xblnr,
-                    view: 'EstadoCuenta',
-                    //ejercicio: ejercicio,
-                    belnr: doc,
-                    bukrs: sociedad,
-                    gjahr: ejercicio
-                }, true);
+                if(results.LifnrAportacion !== "") {
+
+
+                    this.getOwnerComponent().getRouter().navTo("detailAportacionesAS", {
+                        layout: sap.f.LayoutType.MidColumnFullScreen,
+                        document: results.Xblnr,
+                        view: 'EstadoCuenta',
+                        //ejercicio: ejercicio,
+                        belnr: doc,
+                        bukrs: sociedad,
+                        gjahr: ejercicio
+                    }, true);
+
+                }
+
+
 
             }
 
