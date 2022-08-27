@@ -672,6 +672,21 @@
                     ]
                 },
                 {
+                    "name": "masterAcuerdosNS",
+                    "pattern": "masterAcuerdosNS",
+                    "target": [
+                        "masterAcuerdosNS"
+                    ]
+                },
+                {
+                    "pattern": "detailDetailAcuNS/{layout}/{sociedad}/{documento}/{ejercicio}/{tienda}",
+                    "name": "detailDetailAcuNS",
+                    "target": [
+                        "masterAcuerdosNS",
+                        "detailDetailAcuNS"
+                    ]
+                },
+                {
                     "name": "Products",
                     "pattern": "Products",
                     "target": [
@@ -1068,6 +1083,16 @@
                     "viewName": "DetailDetailFA",
                     "viewPath": "demo.views.Acuerdos",
                     "controlAggregation": "endColumnPages"
+                },
+                "masterAcuerdosNS" : {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.AcuerdosNS",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailDetailAcuNS": {
+                    "viewName": "DetailDetail",
+                    "viewPath": "demo.views.AcuerdosNS",
+                    "controlAggregation": "midColumnPages"
                 },
                 "Products": {
                     "viewName": "Master",

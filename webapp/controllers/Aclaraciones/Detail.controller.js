@@ -627,6 +627,22 @@ return formateado
                 Aclaracion.MonRec= this.Formato(Aclaracion.MonRec)
                 console.log(Aclaracion)
 
+                this.getView().byId("dateCreation").setEnabled(true)
+                 this.getView().byId("supplierInput").setEnabled(true)
+                 this.getView().byId("clarificationType").setEnabled(true)
+                 this.getView().byId("distributionCenter").setEnabled(true)
+                 this.getView().byId("distributionCenterDescription").setEnabled(true)
+                 this.getView().byId("status").setEnabled(true)
+                 this.getView().byId("analyst").setEnabled(true)
+                 this.getView().byId("sourceDocument").setEnabled(true)
+                 this.getView().byId("invoice").setEnabled(true)
+                 this.getView().byId("receipt").setEnabled(true)
+                 this.getView().byId("reclaimedImport").setEnabled(true)
+                 this.getView().byId("clarifiedAmount").setEnabled(true)
+                 this.getView().byId("clarifiedTax").setEnabled(true)
+                 this.getView().byId("expirationDate").setEnabled(true)
+                 this.getView().byId("comments").setEnabled(true)
+
                 
                 this.getView().byId('dateCreation').setDateValue(new Date(Aclaracion.FAlta+"T00:00:00"));
                 if( Aclaracion.FVenc != '' ) this.getView().byId('expirationDate').setDateValue(new Date(Aclaracion.FVenc+"T00:00:00"));
@@ -717,7 +733,7 @@ if (MAcla > Mrecl){
                 
             }*/
                 
-
+console.log(modo)
             if( modo === "edit" ) {
                 console.log(Model)
                 Model.Obsgen2=Model.Obsgen
@@ -787,8 +803,80 @@ if (MAcla > Mrecl){
                 
             }
             else{
+                console.log(this.getView().getModel("Aclaracion"))
+                var tipAcl=this.getView().getModel("Aclaracion").getData().TipAcla
+                var TAclara=this.getView().getModel("catalogos").getData().Tipos.results;
+                var Analista=this.getView().getModel("catalogos").getData().Analistas.results;
+                var tipAnalista=this.getView().getModel("Aclaracion").getData().Analista
+                
+                var ArrT=[];
+             
+                    for(var x =0;x<TAclara.length;x++){
+                        if(TAclara[x].TipAcla===tipAcl){
+                            ArrT.push(TAclara[x])
+                        }
+    
+                    } 
+               
+    
+                this.getOwnerComponent().setModel(new JSONModel(ArrT), "TipoAclara");
+                console.log(this.getView().getModel("TipoAclara"))
+
+                var ArrT2=[];
+             
+                for(var x =0;x<Analista.length;x++){
+                    if(Analista[x].TipAcla===tipAnalista){
+                        ArrT2.push(Analista[x])
+                    }
+
+                } 
+                console.log(ArrT2);
+                if( ArrT2.length===0){
+                this.getView().byId("analyst").setSelectedKey(tipAnalista)
+                this.getView().byId("analyst").setValue(tipAnalista)
+                }
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              
+                 this.getView().byId("dateCreation").setEnabled(false)
+                 this.getView().byId("supplierInput").setEnabled(false)
+                 this.getView().byId("clarificationType").setEnabled(false)
+                 this.getView().byId("distributionCenter").setEnabled(false)
+                 this.getView().byId("distributionCenterDescription").setEnabled(false)
+                 this.getView().byId("status").setEnabled(false)
+                 this.getView().byId("analyst").setEnabled(false)
+                 this.getView().byId("sourceDocument").setEnabled(false)
+                 this.getView().byId("invoice").setEnabled(false)
+                 this.getView().byId("receipt").setEnabled(false)
+                 this.getView().byId("reclaimedImport").setEnabled(false)
+                 this.getView().byId("clarifiedAmount").setEnabled(false)
+                 this.getView().byId("clarifiedTax").setEnabled(false)
+                 this.getView().byId("expirationDate").setEnabled(false)
+                 this.getView().byId("comments").setEnabled(false)
+
+                
                 this.getView().byId("btnGuardar").setEnabled(false).setVisible(false);
                 //this.getView().byId("btnUploadFiles").setEnabled(false).setVisible(false);
+                console.log(Model)
+                Model.Obsgen2=Model.Obsgen
+
+
+
+
+
             }
           
             
@@ -844,10 +932,10 @@ if (MAcla > Mrecl){
 
           
             var tipo_Doc= Datos.results[0].ZDocOri.results[0].Descripcion.split(" ")[0]
-            
+            console.log(tipo_Doc)
 
 var TAclara=this.getView().getModel("catalogos").getData().Tipos.results;
-
+console.log(TAclara)
 var ArrT=[];
             if (tipo_Doc==='RE'){
                 for(var x =0;x<TAclara.length;x++){
@@ -857,6 +945,14 @@ var ArrT=[];
 
                 }
                 
+            }
+            if (tipo_Doc==='KG'){
+                for(var x =0;x<TAclara.length;x++){
+                    if(TAclara[x].TipAcla==="DF"){
+                        ArrT.push(TAclara[x])
+                    }
+
+                }
             }
             if (tipo_Doc==='KD'){
                 for(var x =0;x<TAclara.length;x++){
