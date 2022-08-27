@@ -991,15 +991,25 @@ sap.ui.define([
 
                     //camvuar  docuemnto con cual se va consultar
 
-                    this.getOwnerComponent().getRouter().navTo("detailAportacionesAS", {
-                        layout: sap.f.LayoutType.MidColumnFullScreen,
-                        document: results.Xblnr,
-                        view: 'EstadoCuenta',
-                        //ejercicio: ejercicio,
-                        //doc: results.Belnr,
-                        // zbukr: docResult.Zbukr,
-                        // lifnr: docResult.Lifnr
-                    }, true);
+                    if(results.LifnrAportacion !== "") {
+
+                        this.getOwnerComponent().getRouter().navTo("detailAportacionesAS", {
+                            layout: sap.f.LayoutType.MidColumnFullScreen,
+                            document: results.Xblnr,
+                            view: 'EstadoCuenta',
+                            //ejercicio: ejercicio,
+                            //doc: results.Belnr,
+                            // zbukr: docResult.Zbukr,
+                            // lifnr: docResult.Lifnr
+                        }, true);
+
+                    }else{
+                        console.log('sin campo lifnr_aportacion')
+                        MessageToast.show("Sin aportación");
+
+                    }
+
+
 
                 }
 
@@ -1383,6 +1393,8 @@ sap.ui.define([
                 }, true);
 
             } else if (aportacionesTCodes.includes(tcode) || (doc.startsWith("1700") && results.Xblnr)) {
+
+
 
                 console.log('on detailAportacionesAS')
 
