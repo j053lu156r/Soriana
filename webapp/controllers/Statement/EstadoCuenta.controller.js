@@ -1025,9 +1025,9 @@ sap.ui.define([
         },
 
 
-        //HANDLE SELECION  v1
+        //HANDLE SELECION  v1 NO SE USA
 
-        handleSelection: function (oEvent) {
+        ____handleSelection: function (oEvent) {
 
             console.log(
                 "on condepto select"
@@ -1353,6 +1353,8 @@ sap.ui.define([
 
 
         },
+
+
         onDocumentPress: function (oEvent) {
 
             var path = oEvent.getSource().getBindingContext("GroupedTotales").getPath();
@@ -1375,6 +1377,7 @@ sap.ui.define([
             var doc = results.Belnr
             var acuerdosTCodes = ['MEB4', 'WLF4', 'MEB2', 'MEB0', 'WLF2', 'ZMMFILACUERDO', 'WFL5']
             var aportacionesTCodes = ['Z_APORTACIONES']
+            var boletinVentasTCodes = ['ZMM_ACUERDOS_LIQUI']
 
 
             if ((acuerdosTCodes.includes(tcode) && doc.startsWith('510')) || (tcode == "" && !(doc.startsWith("1700") && results.Xblnr))) {
@@ -1413,7 +1416,20 @@ sap.ui.define([
                         gjahr: ejercicio
                     }, true);
 
+                }else{
+                    MessageToast.show("Sin aportación");
                 }
+            } else if (boletinVentasTCodes.includes(tcode) || tcode === ''){
+                console.log('on boletin vtz')
+
+                // navega a pantalla de boltines * revisar condiciones de apertura , conseguir esenarios
+                this.getOwnerComponent().getRouter().navTo("BoletinVtaDetailPolizas", {
+                    layout: sap.f.LayoutType.MidColumnFullScreen,
+                  //  document: results.Xblnr,
+                    document: doc,
+                    company: sociedad,
+                    year: ejercicio
+                }, false);
 
 
 

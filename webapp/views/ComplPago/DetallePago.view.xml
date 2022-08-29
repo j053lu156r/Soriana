@@ -168,7 +168,7 @@
 							</template>
 						</Column>
 						<Column sortProperty="MCondicion"  id="mCondicionColumn" width="20%">
-							<m:Label text="Mejor Condición" />
+							<m:Label text="{appTxts>/reporte.headerTitulo}" />
 							<template>
 								<m:Text text="{GroupedTotales>MCondicion}" wrapping="false" />
 							</template>
