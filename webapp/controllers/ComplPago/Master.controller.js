@@ -64,7 +64,7 @@ sap.ui.define([
                 column8:true,
                 column9:true,
                 column10:true,
-                column11:true,
+                column11:false,
 
 
             })
@@ -225,13 +225,13 @@ sap.ui.define([
             let registro = results[posicion];
            var Datos;
           for(var x=0;x<10;x++){
-           
 
-         
+
+
           //  Fecha = (Fecha.getTime() - (1000 * 60 * 60 * 24 * 5))
             let LaufdT = String(new Date(new Date(registro.Augdt+ 'T00:00:00').getTime() - (1000 * 60 * 60 * 24 * x)))
            // let LaufdT2 = String(new Date(new Date(registro.Augdt+ 'T00:00:00').getTime() + (1000 * 60 * 60 * 24 * 10)))
-  
+
             let Laufd = new Date(LaufdT).toISOString().slice(0,10).replace(/-/g, "");
           //  let Laufd2 = new Date(LaufdT2).toISOString().slice(0,10).replace(/-/g, "");
             let Augdt=String(registro.Augdt).replace(/-/g, "");
@@ -245,7 +245,7 @@ sap.ui.define([
             IVblnr eq '${registro.Vblnr}' and 
             IAugdt eq '${Augdt}'&$format=json`;
 
-         
+
 
             let oODataJSONModel = this.getOdata(sUri);
 
@@ -254,12 +254,12 @@ sap.ui.define([
 
 
             let Datos2 = JSON.parse(dataJSON);
-          
-        
+
+
             if(Datos2.results[0].ETXTFACTPROVNAV.results.length!==0){
                 x=100;
                 Datos=Datos2;
-            
+
             }
 
         }
@@ -293,7 +293,7 @@ sap.ui.define([
             //this.exportxls('Archivo', '/Detalles/results', columns, typeExport);
 
             sap.ui.core.util.File.save(ContenidoArchivo, nombreArchivo, "txt", "text/plain", "utf-8", false);
-             
+
         },
         generaRenglonesArchivo: function (Array) {
 

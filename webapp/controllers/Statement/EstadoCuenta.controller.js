@@ -376,7 +376,7 @@ sap.ui.define([
 
             var model = "ZOSP_STATEMENT_SRV_01";
             var entity = "EStmtHdrSet";
-            var expand = ['Citms', 'Oitms'];
+            var expand = ['Oitms'];
             var filter = auxFilters;
             var select = "";
             sap.ui.core.BusyIndicator.show();
@@ -387,7 +387,7 @@ sap.ui.define([
                 var data = _GEToDataV2Response.data.results;
 
 
-                let Detalles = [...data[0].Citms.results, ...data[0].Oitms.results];
+                let Detalles = [...data[0].Oitms.results];
 
                 var cleanedArray =  Detalles.filter(obj => !obj.Belnr.startsWith("58") && !obj.Belnr.startsWith("59"));
 
@@ -991,15 +991,25 @@ sap.ui.define([
 
                     //camvuar  docuemnto con cual se va consultar
 
-                    this.getOwnerComponent().getRouter().navTo("detailAportacionesAS", {
-                        layout: sap.f.LayoutType.MidColumnFullScreen,
-                        document: results.Xblnr,
-                        view: 'EstadoCuenta',
-                        //ejercicio: ejercicio,
-                        //doc: results.Belnr,
-                        // zbukr: docResult.Zbukr,
-                        // lifnr: docResult.Lifnr
-                    }, true);
+                    if(results.LifnrAportacion !== "") {
+
+                        this.getOwnerComponent().getRouter().navTo("detailAportacionesAS", {
+                            layout: sap.f.LayoutType.MidColumnFullScreen,
+                            document: results.Xblnr,
+                            view: 'EstadoCuenta',
+                            //ejercicio: ejercicio,
+                            //doc: results.Belnr,
+                            // zbukr: docResult.Zbukr,
+                            // lifnr: docResult.Lifnr
+                        }, true);
+
+                    }else{
+                        console.log('sin campo lifnr_aportacion')
+                        MessageToast.show("Sin aportación");
+
+                    }
+
+
 
                 }
 
@@ -1158,12 +1168,18 @@ sap.ui.define([
         buildExportTable: function () {
             var texts = this.getOwnerComponent().getModel("appTxts");
             let Encabezado = this.getOwnerComponent().getModel("totales");
-            var columns = [{
-                name: texts.getProperty("/state.accountUPC"),
-                template: {
-                    content: Encabezado.getProperty("/periodo")
+            console.log(Encabezado)
+             var columns = [{
+                  name: texts.getProperty("/aportaciones.concepto"),
+                 template: {
+                    content:  "{IdNumTipomov} {DescTipomov}"
                 }
+
+
             },
+
+                 /*
+
                 {
                     name: texts.getProperty("/state.nameUPC"),
                     template: {
@@ -1182,6 +1198,7 @@ sap.ui.define([
                         content: Encabezado.getProperty("/Bankl")
                     }
                 },*/
+              /*
                 {
                     name: texts.getProperty("/state.banknumberUPC"),
                     template: {
@@ -1194,6 +1211,8 @@ sap.ui.define([
                         content: Encabezado.getProperty("/Totfac")
                     }
                 },
+                 */
+
                 {
                     name: texts.getProperty("/state.totalUPC"),
                     template: {
@@ -1375,19 +1394,28 @@ sap.ui.define([
 
             } else if (aportacionesTCodes.includes(tcode) || (doc.startsWith("1700") && results.Xblnr)) {
 
+
+
                 console.log('on detailAportacionesAS')
 
                 //camvuar  docuemnto con cual se va consultar
 
-                this.getOwnerComponent().getRouter().navTo("detailAportacionesAS", {
-                    layout: sap.f.LayoutType.MidColumnFullScreen,
-                    document: results.Xblnr,
-                    view: 'EstadoCuenta',
-                    //ejercicio: ejercicio,
-                    belnr: doc,
-                    bukrs: sociedad,
-                    gjahr: ejercicio
-                }, true);
+                if(results.LifnrAportacion !== "") {
+
+
+                    this.getOwnerComponent().getRouter().navTo("detailAportacionesAS", {
+                        layout: sap.f.LayoutType.MidColumnFullScreen,
+                        document: results.Xblnr,
+                        view: 'EstadoCuenta',
+                        //ejercicio: ejercicio,
+                        belnr: doc,
+                        bukrs: sociedad,
+                        gjahr: ejercicio
+                    }, true);
+
+                }
+
+
 
             }
 

@@ -92,7 +92,7 @@
                 <t:Table selectionMode="None" noData="{appTxts>/acuerdos.noData}" id="tableAcuerdos" rows="{MejorCondHdr>/}">
                     <t:extension>
                         <OverflowToolbar>
-                            <Title text="Reporte Mejor Condición" />
+                            <Title text="Validación de condiciones" />
                             <ToolbarSpacer/>
 
                             <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${MejorCondHdr>/length} > 0}" />

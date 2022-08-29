@@ -10,6 +10,7 @@ sap.ui.define([
     var oModel = new this.Pedidostemp();
     var oEdiModel = new this.ModelEDI();
     var oTermsModel = new this.ModelTC();
+    var oXlsModel = new this.ModelXlsPedidos();
     var EdmType = exportLibrary.EdmType;
 
     return Controller.extend("demo.controllers.Orders.Detail", {
@@ -24,6 +25,7 @@ sap.ui.define([
             this.txtTermsCond3 = this.getView().byId("txtTermsCond3");
             this.ediModel = new sap.ui.model.odata.v2.ODataModel(oEdiModel.sUrl);
             this.termModel = new sap.ui.model.odata.v2.ODataModel(oTermsModel.sUrl);
+            this.xlsModel = new sap.ui.model.odata.v2.ODataModel(oXlsModel.sUrl);
 
             this.oRouter.getRoute("detailOrders").attachPatternMatched(this._onDocumentMatched, this);
 
@@ -116,13 +118,24 @@ sap.ui.define([
             this.onCloseDialog();
         },
         buildExcel: function(){
-
-            var oModel = this.getOwnerComponent().getModel("tableDetailMoves").getProperty("/OEKKONAV/results/0");
-            var columns = this.createColumnConfig();
-            var aDataPosiciones = this.createData();
-            var name = 'Detalle Pedido ' + oModel.Ebeln + '.xlsx';
-
-            this.buildExcelSpreadSheet(columns, aDataPosiciones, name);
+            
+            var that = this;
+            var aFilters = [];
+            aFilters.push(new Filter("Ebeln", FilterOperator.EQ, this._document));
+            this.xlsModel.read("/EnvExcelSet", {
+                filters: aFilters,
+                success: function(response){
+                    var base64Data = response.results[0].Excel;
+                    const linkSource = `data:application/vnd.ms-excel;charset=utf-8;base64,${base64Data}`;
+                    const downloadLink = document.createElement("a");
+                    downloadLink.href = linkSource;
+                    downloadLink.download = `Excel_Pedido_${that._document}.xls`;
+                    downloadLink.click();
+                }, 
+               error: function(error){
+                   sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/order.xlsError"));
+                }
+            });
         },
 
         createColumnConfig: function() {
@@ -224,12 +237,6 @@ sap.ui.define([
                         downloadLink.href = linkSource;
                         downloadLink.download = `EDI_${that._document}.txt`;
                         downloadLink.click();
-                        
-                        /*
-                        var base64Data = "TsO6bWVybyBkZSBwcm92ZWVkb3IJTsO6bWVybyBkZSBwZWRpZG8JRmVjaGEgZGVsIHBlZGlkbwlUaWVuZGEJRmVjIEluaSBFbWIJRmVjIEZpbiBFbWIJUGxhem8gZGUgcGFnbw0KMDAwMDIwODcyOQkwMDEzMDAwMDAzCTIwMjAxMjIzCTAwMDAwMDAwCTAwMDAwMDAwCUMwMDENCg0KTnVtLiBQcm92LglOdW0uIFBlZGlkbwlOdW0uIFRpZW5kYQlDb2RpZ28JVW5pQ29tCURlc2MuQXJ0Lg0KMDAwMDIwODcyOQkwMDEzMDAwMDAzCTAxMzMJCQlSQURJTw0K";
-                        var decoded = decodeURIComponent(escape(atob(base64Data)));
-                        console.log(decoded);
-                        */
                     } else {
                         sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/order.ediEmptyError"));
                     }

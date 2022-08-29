@@ -153,7 +153,7 @@
                             hAlign          = "Left" id="column3" sortProperty="Vblnr" filterProperty="Vblnr">
                             <Label text="{appTxts>/pay.headerDocument}" />
                             <t:template>
-                                <ObjectIdentifier titlePress="onDocumentPress" titleActive="true" title="{Documentos>Vblnr}" wrapping="false"/>
+                                <ObjectIdentifier  titlePress="onDocumentPress" titleActive="true" title="{Documentos>Vblnr}" wrapping="false"/>
                             </t:template>
                         </t:Column>
                         <t:Column

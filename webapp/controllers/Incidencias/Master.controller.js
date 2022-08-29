@@ -11,13 +11,16 @@ sap.ui.define([
             this.getView().addEventDelegate({
                 onBeforeShow: function (oEvent) {
                     // this.setDaterangeMaxMin();
-
-                    //this.getData();
-
+                    //  this.getData();
                     // this.generaGrafica();
                 }
             }, this);
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.getRoute("masterIncidencias").attachMatched(this._onRouteMatched, this);
         },
+        _onRouteMatched: function (oEvent) {
+			this.clearData();
+		},
         getData: function (oControlEvent) {
 
             this.clearFilters();
@@ -106,7 +109,6 @@ sap.ui.define([
                 }
 
                 if (bContinue) {
-
                     sap.ui.core.BusyIndicator.show();
                     let that = this;
                     this._GetODataV2("ZOSP_INDASHBOARD_SRV", "HdrInSet", filtros, ["ETLOGFNAV", "ETTLIFNAV", "ETCFDINAV"], "").then(resp => {
@@ -117,7 +119,6 @@ sap.ui.define([
                     }).catch(error => {
                         console.error(error);
                     });
-
                 }
                 else {
                     sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.searchFieldsEmpty"));
@@ -147,16 +148,13 @@ sap.ui.define([
                     string = "Lifnr";
                     break;
             }
-
-            var groupProvider = this.groupByAuto(oItems.ETLOGFNAV.results, string);
-
+            var groupProvider = this.groupBySum(oItems.ETTLIFNAV.results);
             for (const provider in groupProvider) {
                 var obj = {};
                 obj.provider = provider;
                 obj.value = groupProvider[provider];
                 Data.Segmentos.push(obj);
             }
-
             this.getOwnerComponent().setModel(new JSONModel(Data), "segmentos");
         },
         groupByAuto: function (data, key) {
@@ -166,6 +164,17 @@ sap.ui.define([
                 groups[data[i][key]].push(data[i]);
             }
             return groups;
+        },
+
+        groupBySum: function(data){
+            var obj = {}, sumN1 = 0, sumN3 = 0;
+            for (var i in data){
+                sumN1 += parseInt(data[i].N1,10);
+                sumN3 += parseInt(data[i].N3,10);
+            }
+            obj.Aprobado = sumN3;
+            obj.Incidencias = sumN1;
+            return obj;
         },
 
         clearFilters: function () {
@@ -204,57 +213,57 @@ sap.ui.define([
         },
         buildExcel: function () {
             var texts = this.getOwnerComponent().getModel("appTxts");
+            var data = this.getOwnerComponent().getModel("Incidencias").getProperty("/ETLOGFNAV/results");
             var columns = [
                 {
-                    name: texts.getProperty("/incidencias.uuid"),
-                    template: {
-                        content: "{Uuid}"
-                    }
+                    label: texts.getProperty("/incidencias.uuid"),
+                    property: "Uuid"
                 },
                 {
-                    name: texts.getProperty("/incidencias.vendor"),
-                    template: {
-                        content: "{Lifnr}"
-                    }
+                    label: texts.getProperty("/incidencias.vendor"),
+                    property: "Lifnr"
                 },
                 {
-                    name: texts.getProperty("/incidencias.vendor"),
-                    template: {
-                        content: "{Nlifnr}"
-                    }
+                    label: texts.getProperty("/incidencias.vendorName"),
+                    property: "Nlifnr"
                 },
                 {
-                    name: texts.getProperty("/incidencias.date"),
-                    template: {
-                        content: "{Fecha}"
-                    }
+                    label: texts.getProperty("/incidencias.date"),
+                    property: "Fecha"
                 },
                 {
-                    name: texts.getProperty("/incidencias.hour"),
-                    template: {
-                        content: "{Hora}"
-                    }
+                    label: texts.getProperty("/incidencias.hour"),
+                    property: "Hora"
                 },
                 {
-                    name: texts.getProperty("/incidencias.message"),
-                    template: {
-                        content: "{Mensaje}"
-                    }
+                    label: texts.getProperty("/incidencias.messageN"),
+                    property: "Mensaje"
                 },
                 {
-                    name: texts.getProperty("/incidencias.desc1"),
-                    template: {
-                        content: "{Descripcion1}"
-                    }
+                    label: texts.getProperty("/incidencias.message"),
+                    property: "Descripcion1"
                 },
                 {
-                    name: texts.getProperty("/incidencias.status"),
-                    template: {
-                        content: "{Estatus}"
-                    }
+                    label: texts.getProperty("/incidencias.status"),
+                    property: "Estatus"
                 },
             ];
-            this.exportxls('Incidencias', '/ETLOGFNAV/results', columns);
+            this.buildExcelSpreadSheet(columns, data, "Incidencias.xlsx")
+        },
+        clearData: function(){
+            var incModel = this.getOwnerComponent().getModel("Incidencias");
+            var segModel = this.getOwnerComponent().getModel("segmentos");
+            var dateRange = this.getView().byId("dateRange");
+            if(incModel !== undefined){
+                incModel.setProperty("/ENfacr", 0);
+                incModel.setProperty("/ENtr", 0);
+                incModel.setProperty("/EN3", 0);
+                incModel.setProperty("/EN2", 0);
+                incModel.setProperty("/EN1", 0);
+                incModel.setProperty("/ETTLIFNAV/results", []);
+                segModel.setProperty("/Segmentos", {});
+                dateRange.setValue(null);
+            }
         }
     });
 });
