@@ -469,6 +469,7 @@ sap.ui.define([
                 }
             })
         },
+
         searchData: function () {
 
             if (!this.hasAccess(46)) {
@@ -499,8 +500,7 @@ sap.ui.define([
                 operator: sap.ui.model.FilterOperator.EQ,
                 value1: '2'
             })
-            )
-
+            );
 
             if (folio != '') {
 
@@ -537,6 +537,7 @@ sap.ui.define([
             sap.ui.core.BusyIndicator.show();
             let that = this;
             this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["ETPRICNAV"], "").then(resp => {
+                console.log(" RESP : " , resp.data);                
                 that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "Folios");
                 that.paginate("Folios", "/ETPRICNAV", 1, 0);
                 sap.ui.core.BusyIndicator.hide();
