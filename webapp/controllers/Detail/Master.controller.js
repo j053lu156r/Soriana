@@ -162,7 +162,7 @@ sap.ui.define([
 
             var objRequest = {
                 "Lifnr": vLifnr,
-                "Type": "I",
+                "Type": "A",
                 "Log" : [ {"Uuid": "", "Description": "", "Sts": "" }]
             };
 
