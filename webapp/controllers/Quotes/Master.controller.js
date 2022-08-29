@@ -10,17 +10,19 @@ sap.ui.define([
     "use strict";
 
     var cModel2 = new this.Citas2();
+    var _oDataModel = "ZOSP_CITAS_ADM_SRV";
+    var _oDataEntity = "MainSet";
+
     return Controller.extend("demo.controllers.Quotes.Master", {
 
         onInit: function () {
-
+            this.setInitialDates();
             this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "quoteConfigModel");
             this.getView().addEventDelegate({
                 onAfterShow: function (oEvent) {
                     if (this.getView().getModel("appoinmentsCatalogs") == null) {
                         this.getCatalogs();
                     }
-
                     this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(),
                         "tableQuotesModel");
 
@@ -30,27 +32,33 @@ sap.ui.define([
             this.configFilterLanguage(this.getView().byId("filterBar"));
             this.getConfigModel().setProperty("/updateFormatsSingle", "xls,xlsx");
         },
+
+        setInitialDates() {
+            let dateRange = this.getView().byId("quotedateRange");
+            let todayDate = new Date();
+            let firstDay = new Date(todayDate.getFullYear(), todayDate.getMonth(), 1);
+            let lastDay = new Date(todayDate.getFullYear(), todayDate.getMonth() + 1, 0);
+            dateRange.setDateValue(firstDay);
+            dateRange.setSecondDateValue(lastDay);
+        },
+
         searchData: function () {
-            if(!this.hasAccess(30)){
+
+            if (!this.hasAccess(30)) {
                 return
             }
+
             this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(),
                 "tableQuotesModel");
 
             var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
-            var vFolio = this.getView().byId("quoteFolioInput").getValue();
-            var vFechaRegCita = this.getView().byId("dateRange");
+            var vFolioIni = this.getView().byId("quoteFolioIniInput").getValue();
+            var vFolioFin = this.getView().byId("quoteFolioFinInput").getValue();
+            var vFechaRegCita = this.getView().byId("quotedateRange");
 
             //Fechas de entrega
             var vIniDate = this.buildSapDate(vFechaRegCita.getDateValue());
             var vEndDate = this.buildSapDate(vFechaRegCita.getSecondDateValue());
-            var vTipoCita = this.getView().byId("quoteType").getValue();
-            var vStatus = this.getView().byId("quoteStatus").getValue();
-            var vTipoUnidad = this.getView().byId("quoteUnitType").getValue();
-            var vTipoProduct = this.getView().byId("productType").getValue();
-            var vPedido = this.getView().byId("orderInput").getValue();
-            var vTurno = this.getView().byId("quoteTurn").getSelectedKey();
-            var vBranch = this.getView().byId("branchInput").getValue();
 
             //Validamos si el proveedor existe
             if (vLifnr == null
@@ -60,81 +68,76 @@ sap.ui.define([
             }
 
             // Validamos si hay datos validos
-
-            if ((vFolio == null || vFolio == "")
+            if ((vFolioIni == null || vFolioIni == "")
                 && (vIniDate == null || vIniDate == "" && vEndDate == null || vEndDate == "")) {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/quotes.noFolioDates"));
                 return;
             }
 
-            // Construimos la url
-            var url = `/HeaderCITASSet?$expand=ECITASCONSNAV&$filter= IOption eq '2'`;
-            url += ` and IZproveedor eq '${vLifnr}' `;
+            let filtros = [];
 
-            if (vFolio != null && vFolio != "") {
-                url += ` and IZfolioCita eq '${vFolio}'`;
+            filtros.push(new sap.ui.model.Filter({
+                path: "Action",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: '1'
+            })
+            );
+            
+            filtros.push(new sap.ui.model.Filter({
+                path: "Proveedor",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: vLifnr
+            })
+            );
+
+            if (vFolioIni != null && vFolioIni != ""
+                && vFolioFin != null && vFolioFin != "") {
+                filtros.push(new sap.ui.model.Filter({
+                    path: "Folioini",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: vFolioIni
+                })
+                );
+                filtros.push(new sap.ui.model.Filter({
+                    path: "Foliofin",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: vFolioFin
+                })
+                );
             }
 
             if (vIniDate != null && vIniDate != ""
                 && vEndDate != null && vEndDate != "") {
-                url += ` and IZfechaRegIni eq '${vIniDate}' and IZfechaRegFin eq '${vEndDate}'`;
+
+                filtros.push(new sap.ui.model.Filter({
+                    path: "Fechaini",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: vIniDate
+                })
+                );
+
+                filtros.push(new sap.ui.model.Filter({
+                    path: "Fechafin",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: vEndDate
+                })
+                );
             }
 
-            if (vTipoCita != null
-                && vTipoCita != "") {
-                url += ` and IZtipoCita eq '${vTipoCita}'`;
-            }
-
-            if (vStatus != null
-                && vStatus != "") {
-                url += ` and IZstatus eq '${vStatus}'`;
-            }
-
-            if (vTipoUnidad != null
-                && vTipoUnidad != "") {
-                url += ` and IZtipoUnidad eq '${vTipoUnidad}'`;
-            }
-
-            if (vTipoProduct != null
-                && vTipoProduct != "") {
-                url += ` and IZtipoProd eq '${vTipoProduct}'`;
-            }
-
-            if (vPedido != null
-                && vPedido != "") {
-                url += ` and IZpedido eq '${vPedido}'`;
-            }
-
-            if (vTurno != null
-                && vTurno != "") {
-                url += ` and IZturno eq '${vTurno}'`;
-            }
-
-            if (vBranch != null
-                && vBranch != "") {
-                url += ` and IZsucursal eq '${vBranch}'`;
-            }
-
-            var dueModel = cModel2.getJsonModel(url);
-
-            if (dueModel != null) {
-                var ojbResponse = dueModel.getProperty("/results/0");
-
-                if (ojbResponse != null) {
-                    var dates = ojbResponse.ECITASCONSNAV.results.map(function (x) { return new Date(x.Zfecharegcita); })
-
-                    var earliest = new Date(Math.min.apply(null, dates));
-                    this.getOwnerComponent().getModel("quoteConfigModel").setProperty("/startDate", earliest);
-
-                    this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(ojbResponse),
-                        "tableQuotesModel");
-
-                    this.paginate("tableQuotesModel", "/ECITASCONSNAV", 1, 0);
-                }
-            }
+            sap.ui.core.BusyIndicator.show();
+            let that = this;
+            this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASCAB"], "").then(resp => {
+                that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(resp.data.results[0]), "tableQuotesModel");
+                that.paginate("tableQuotesModel", "/CTCITASCAB", 1, 0);
+                sap.ui.core.BusyIndicator.hide();
+            }).catch(error => {
+                sap.ui.core.BusyIndicator.hide();
+                console.error(error);
+            });
         },
+
         clearFilds: function () {
-            this.getView().byId("quoteFolioInput").setValue("");
+            // this.getView().byId("quoteFolioInput").setValue("");
             this.getView().byId("dateRange").setValue("");
             this.getView().byId("quoteType").setValue("");
             this.getView().byId("quoteStatus").setValue("");
@@ -345,7 +348,7 @@ sap.ui.define([
                 this._uploadDialog = null;
             }
         },
-        btnValidateFile: function (){
+        btnValidateFile: function () {
             console.log("Upload file");
         }
     });
