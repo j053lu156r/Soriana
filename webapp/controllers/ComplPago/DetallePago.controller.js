@@ -579,10 +579,11 @@ console.log(TDatos)
         var acuerdosTCodes = ['MEB4','WLF4','MEB2','MEB0','WLF2','ZMMFILACUERDO','WFL5','MEB4']
 
         var aportacionesTCodes = ['Z_APORTACIONES']
+		var boletinVentasTCodes = ['ZMM_ACUERDOS_LIQUI']
 
 
 
-        console.log(acuerdosTCodes.includes(tcode))
+				console.log(acuerdosTCodes.includes(tcode))
         console.log(doc)
         console.log(results.Foliodescuento)
 
@@ -618,9 +619,21 @@ console.log(TDatos)
 					   // lifnr: docResult.Lifnr
 					}, true);
 
+					} else if (boletinVentasTCodes.includes(tcode) || tcode === ''){
+			console.log('on boletin vtz')
+
+			// navega a pantalla de boltines * revisar condiciones de apertura , conseguir esenarios
+			this.getOwnerComponent().getRouter().navTo("BoletinVtaDetailPolizas", {
+				layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
+				//  document: results.Xblnr,
+				document: doc,
+				company: sociedad,
+				year: ejercicio
+			}, false);
 
 
-					}
+
+		}
 
 
 
