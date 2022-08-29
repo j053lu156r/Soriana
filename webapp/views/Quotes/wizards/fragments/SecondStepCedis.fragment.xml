@@ -10,8 +10,8 @@
             <headerToolbar>
             <OverflowToolbar>
                 <ToolbarSpacer/>
-                <Input id="searchOrders" width="auto" textAlign="Initial" placeholder="{appTxts>/quotes.search}" 
-                    type="Number" showValueHelp="true" valueHelpIconSrc="sap-icon://search"/>
+                <!-- <Input id="searchOrders" width="auto" textAlign="Initial" placeholder="{appTxts>/quotes.search}" 
+                    type="Number" showValueHelp="true" valueHelpIconSrc="sap-icon://search"/> -->
                 </OverflowToolbar>
             </headerToolbar>
             <columns>

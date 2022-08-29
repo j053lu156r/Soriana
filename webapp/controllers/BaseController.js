@@ -1111,7 +1111,6 @@ sap.ui.define([
         },
 
         /*Mparra version de  _PostoDataV2 de Juan Pacheco  */
-
         _PostODataV2Async: function(model, entity, data) {
             var oModel2 = "/sap/opu/odata/sap/"+model;
             var that = this;
