@@ -249,7 +249,6 @@ sap.ui.define([
                     url: oValidFiscales.sUrl,
                     method: "POST",
                     headers: {
-                       // "Content-Type": "text/xml",
                        "Content-Type": "text/xml; charset=utf-8",
                        "Access-Control-Allow-Origin": "*"
                     },

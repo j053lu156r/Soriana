@@ -324,9 +324,13 @@ sap.ui.define([
                 sap.ui.core.BusyIndicator.show();
 
                 let response = null;
+                let headers = {
+                    "X-Requested-With" : "X",
+                    "Content-Type": "application/json;charset=utf-8"
+                };
 
-                await this._PostODataV2Async(_oDataModel, _oDataEntity, objRequest).then(resp => {
-
+                await this._PostODataV2Async(_oDataModel, _oDataEntity, objRequest, headers).then(resp => {
+                    console.log(resp)
                     response = resp.data;
                     sap.ui.core.BusyIndicator.hide();
 
@@ -2382,7 +2386,7 @@ sap.ui.define([
         },
 
         sendDataForNotification() {
-
+            let that = this;
             let fileMassive = this.byId("fileUploaderMassiveReg").getValue();
             let comprasMail = this.byId("correoInput").getValue();
 
@@ -2405,14 +2409,31 @@ sap.ui.define([
                 ]
             };
 
-            let resp = NotifAltaMas.create("/HeaderSet", createObjReq);
+           $.ajax({
+                async: true,
+                url: NotifAltaMas.sUrl + "HeaderSet",
+                method: "POST",
+                headers: {
+                    "X-Requested-With" : "X",
+                    "Content-Type": "application/json;charset=utf-8"
+                },
+                "data": JSON.stringify(createObjReq),
+                success: function(resp) {
+                    var status = resp.getElementsByTagName("d:EvSendStatus")[0].textContent;
+                    var message = resp.getElementsByTagName("d:Message")[0].textContent;
+                    var folio = resp.getElementsByTagName("d:EvFolio")[0].textContent;
 
-            if (resp.EvSendStatus == "OK") {
-                sap.m.MessageBox.success("Folio: " + resp.EvFolio);
-                this.closeDialog('massiveRegisterDialog');
-            } else {
-                sap.m.MessageBox.error(resp.ETRETURN.results[0].Message);
-            }
+                    if (status == "ERROR") {
+                        sap.m.MessageBox.error(message);
+                    } else {
+                        sap.m.MessageBox.success("Folio: " + folio);
+                        that.closeDialog('massiveRegisterDialog');
+                    }
+                },
+                error: function(resp, status, err) {
+                    sap.m.MessageBox.error(resp.ETRETURN.results[0].Message);
+                }
+            });
 
         },
 
