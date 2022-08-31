@@ -162,7 +162,7 @@ sap.ui.define([
 
             var objRequest = {
                 "Lifnr": vLifnr,
-                "Type": "I",
+                "Type": "A",
                 "Log" : [ {"Uuid": "", "Description": "", "Sts": "" }]
             };
 
@@ -249,7 +249,6 @@ sap.ui.define([
                     url: oValidFiscales.sUrl,
                     method: "POST",
                     headers: {
-                       // "Content-Type": "text/xml",
                        "Content-Type": "text/xml; charset=utf-8",
                        "Access-Control-Allow-Origin": "*"
                     },
