@@ -406,7 +406,7 @@
                         </t:Column>
                         <t:Column sortProperty="TeSalida/MejorTotal" width="6rem" hAlign="Left">
 
-                            <Text text="Total MC" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="Total VC" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
                                 <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/MejorTotal'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
 
