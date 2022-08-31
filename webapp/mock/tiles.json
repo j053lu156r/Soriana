@@ -260,6 +260,21 @@
                             "idFunction": 11
                         }
                     ]
+                },
+                {
+                    "id": "0009",
+                    "title": "/tiles.titleFi.0009.ValidacionCondi",
+                    "subHeader": "",
+                    "icon": "sap-icon://collections-management",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterValidacionCondicion",
+                    "functions": [
+                        {
+                            "idFunction": 11
+                        }
+                    ]
                 }
             ]
         },
