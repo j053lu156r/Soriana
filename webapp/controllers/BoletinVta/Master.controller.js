@@ -228,22 +228,6 @@ sap.ui.define([
 
 				sap.m.MessageBox.alert("Ocurrio un error al grabar el archivo.");
 			});
-
-            /*
-			oSaveData.update(readurl, promFile, null, function (response) {
-                promData[currentRow].Status = "1";
-                var oPromModel = new sap.ui.model.json.JSONModel();
-				oPromModel.setData(promData);
-				that.getOwnerComponent().setModel(oPromModel, "promocionesHdr");
-				MessageBox.success("Archivo grabado exitosamente");
-				that.onCloseDialogUpload();
-				
-			}, function () {
-				//docsData.documentItem[index].StatusIcon = "sap-icon://error";
-                sap.m.MessageBox.alert("Ocurrio un error al grabar el archivo.");
-			});
-
-            */
 		},
 
         clearFilters: function () {
@@ -294,45 +278,12 @@ sap.ui.define([
             this.exportxls('promocionesHdr', 'promocionesHdr', columns);
         },
         onPressAccept: function (oEvent) {
-            /*this.ConfirmApprove = false;
-            this._ConfirmDialog(oEvent);
-            
-            if (!this.ConfirmApprove){ 
-                return; 
-            }*/
-
-            //var texts = this.getOwnerComponent().getModel("appTxts");
+ 
             var resource = oEvent.getSource().getBindingContext("promocionesHdr").getPath(),
                 line = resource.split("/").slice(-1).pop();
 
             this._confirmDialog(line);
 
-            /*var aportaModel = this.getOwnerComponent().getModel("AportacionesHdr");
-            var results = aportaModel.getProperty("/AportaDet/Paginated/results");
-
-            var docResult = results[line];
-
-
-            var url = "AportaSet?$expand=AportaDet&$filter=IOption eq '2'";
-            ;
-
-            url += " and IEstatus eq '4'";
-
-            if (docResult.Folio != "" && docResult.Folio != null) {
-                url += " and IFolio eq '" + docResult.Folio + "'";
-            }
-
-            var dueModel = oModel.getJsonModel(url);
-            var ojbResponse = dueModel.getProperty("/results/0");
-
-            if (ojbResponse.EError == "X") {
-                MessageBox.error(ojbResponse.EDescripEvent);
-            } else {
-                docResult.Zestatus = "4";
-                aportaModel.setProperty("/AportaDet/Paginated/results", results);
-                //MessageBox.success(texts.getProperty("/aportaciones.aprobada"));
-                MessageBox.success(ojbResponse.EDescripEvent);
-            }*/
         },
 
         _confirmDialog: function (line) {
@@ -342,18 +293,18 @@ sap.ui.define([
             if (!this.oApproveDialog) {
                 this.oApproveDialog = new sap.m.Dialog({
                     type: DialogType.Message,
-                    title: texts.getProperty("/aportaciones.confirmar"),
-                    content: new sap.m.Text({ text: texts.getProperty("/aportaciones.txtConfirmar") }),
+                    title: texts.getProperty("/foliosCap.confirm"),
+                    content: new sap.m.Text({ text: texts.getProperty("/foliosCap.confirm") }),
                     beginButton: new sap.m.Button({
                         type: ButtonType.Emphasized,
-                        text: texts.getProperty("/aportaciones.aprobar"),
+                        text: texts.getProperty("/foliosCap.aprobar"),
                         press: function () {
                             this.oApproveDialog.close();
                             this._approve(this._line_approve);
                         }.bind(this)
                     }),
                     endButton: new sap.m.Button({
-                        text: texts.getProperty("/aportaciones.cancelar"),
+                        text: texts.getProperty("/foliosCap.cancelar"),
                         press: function () {
                             this.oApproveDialog.close();
                         }.bind(this)
@@ -399,7 +350,7 @@ sap.ui.define([
             );
         },
 
-        onFinancialView: function(){
+        /* onFinancialView: function(){
             this.getOwnerComponent().getRouter().navTo("BoletinVtaDetailPolizas",
                 {
                     layout: sap.f.LayoutType.TwoColumnsMidExpanded,
@@ -407,43 +358,43 @@ sap.ui.define([
                     document: "5100011100",
                     year: "2022"
                 });
-        },
+        }, */
         
         _approve: function (line) {
 
-            var aportaModel = this.getOwnerComponent().getModel("AportacionesHdr");
-            var results = aportaModel.getProperty("/AportaDet/Paginated/results");
+            var that = this;
+            var promData = this.getOwnerComponent().getModel("promocionesHdr");
+            var results = promData.getProperty("/");
             var docResult = results[line];
-
-            var url = "AportaSet?$expand=AportaDet&$filter=IOption eq '2' and IEstatus eq '4'";
-
-            if (docResult.Folio != "" && docResult.Folio != null) {
-                url += " and IFolio eq '" + docResult.Folio + "'";
-            }
-
-            /*var dueModel = oModel.getJsonModel(url);
-            var ojbResponse = dueModel.getProperty("/results/0");*/
             
-            this.getView().byId('tableAportaciones').setBusy(true);
-            oModel.getJsonModelAsync(
+            var url = "aproveArrangementSet(Promotion='" + docResult.Promotion +"',Vendor='" + docResult.Vendor + "')";
+
+            this.getView().byId('tablePromociones').setBusy(true);
+            oPModel.getJsonModelAsync(
                 url,
                 function (jsonModel, parent) {
-                    var objResponse = jsonModel.getProperty("/results/0");
-                    parent.getView().byId('tableAportaciones').setBusy(false);
+                    var objResponse = jsonModel.getProperty("/");
 
                     if (objResponse != null) {
-                        if (objResponse.EError == "X") {
-                            MessageBox.error(objResponse.EDescripEvent);
+                        
+                        if (objResponse.Status === "A") {
+                            sap.m.MessageBox.information(objResponse.Message);
+                            var promData = that.getOwnerComponent().getModel("promocionesHdr").getData();
+                            promData[line].Status = "2";
+                            var oPromModel = new sap.ui.model.json.JSONModel();
+                            oPromModel.setData(promData);
+                            that.getOwnerComponent().setModel(oPromModel, "promocionesHdr");
+                            parent.getView().byId('tablePromociones').setBusy(false);
+
                         } else {
-                            docResult.Descest = "Autorizado Proveedor";
-                            docResult.Zestatus = "4";
-                            aportaModel.setProperty("/AportaDet/Paginated/results", results);
-                            MessageBox.success(objResponse.EDescripEvent);
+                            sap.m.MessageBox.error(objResponse.Message);
                         }
+                        
                     }
+                    parent.getView().byId('tablePromociones').setBusy(false);
                 },
                 function (parent) {
-                    parent.getView().byId('tableAportaciones').setBusy(false);
+                    parent.getView().byId('tablePromociones').setBusy(false);
                 },
                 this
             );
