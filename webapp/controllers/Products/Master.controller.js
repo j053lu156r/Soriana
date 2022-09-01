@@ -301,6 +301,8 @@ sap.ui.define([
 
         async handleUploadPressChangePrice () {
 
+            //this.testToken();
+
             let archivo = this.getOwnerComponent().getModel('ITEXT64').getProperty('/attach');
             if (archivo.length == 1) {
 
@@ -331,12 +333,11 @@ sap.ui.define([
                 };
 
                 await this._PostODataV2Async(_oDataModel, _oDataEntity, objRequest, headers).then(resp => {
-                    console.log(resp)
-                    response = resp.data;
+                    response = resp.d;
                     sap.ui.core.BusyIndicator.hide();
 
                 }).catch(error => {
-                    console.error(error);
+                    console.log(error);
                 });
 
                 if (response != null) {
@@ -400,11 +401,11 @@ sap.ui.define([
 
                 await this._PostODataV2Async(_oDataModel, _oDataEntity, objRequest).then(resp => {
 
-                    response = resp.data;
+                    response = resp.d;
                     sap.ui.core.BusyIndicator.hide();
 
                 }).catch(error => {
-                    console.error(error);
+                    console.log(error);
                 });
 
                 if (response != null) {
@@ -1097,10 +1098,10 @@ sap.ui.define([
                             sap.ui.core.BusyIndicator.show();
                             let resp = null;
                             await this._PostODataV2Async(_oDataModel, _oDataEntity, createObjReq).then(response => {
-                                resp = response.data;
+                                resp = response.d;
                                 sap.ui.core.BusyIndicator.hide();
                             }).catch(error => {
-                                console.error(error);
+                                console.log(error);
                             });
 
                             if (resp.ESuccess) {
@@ -1913,16 +1914,16 @@ sap.ui.define([
 
                     await that._PostODataV2Async(_oDataModel, _oDataEntity, objRequest).then(resp => {
 
-                        response = resp.data;
+                        response = resp.d;
                         sap.ui.core.BusyIndicator.hide();
 
                     }).catch(error => {
-                        console.error(error);
+                        console.log(error);
                     });
 
                     if (response != null) {
                         if (response.ESuccess === 'X') {
-                            const msg = "Se han generado correctamente la solicitud de cambiode costos.";
+                            const msg = "Se han generado correctamente la solicitud de cambio de costos.";
                             sap.m.MessageBox.success(msg, {
                                 actions: [sap.m.MessageBox.Action.CLOSE],
                                 emphasizedAction: sap.m.MessageBox.Action.CLOSE,
@@ -1982,11 +1983,11 @@ sap.ui.define([
     
                         await that._PostODataV2Async(_oDataModel, _oDataEntity, objRequest).then(resp => {
     
-                            response = resp.data;
+                            response = resp.d;
                             sap.ui.core.BusyIndicator.hide();
     
                         }).catch(error => {
-                            console.error(error);
+                            console.log(error);
                         });
 
                         if (response != null) {
@@ -2558,6 +2559,21 @@ sap.ui.define([
                 path: paramName,
                 operator: sap.ui.model.FilterOperator.EQ,
                 value1: paramValue
+            });
+        },
+
+        testToken: function(){
+            $.ajax({
+                url: this.sUri,
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8; IEEE754Compatible=true",
+                success: function(dataResponse) {
+                    console.log(dataResponse);
+                },
+                error: function(error, status, err) {
+                    console.log(error);
+                }
             });
         }
 
