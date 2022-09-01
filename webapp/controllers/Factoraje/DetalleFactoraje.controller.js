@@ -826,7 +826,7 @@ sap.ui.define([
 
 		//HAANDLE OPEN ACUERDOS
 
-		_onDocumentPress: function (oEvent) {
+		onDocumentPress: function (oEvent) {
 			console.log('on documnt press', oEvent);
 			let posicion = oEvent.getSource().getBindingContext("GroupedFactoraje").getPath() ;
 			let results = this.getOwnerComponent().getModel("GroupedFactoraje").getProperty(posicion);
