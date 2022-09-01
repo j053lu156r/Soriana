@@ -118,12 +118,14 @@ sap.ui.define([
                         var totBonus = objResponse.reduce((a, b) => +a + (+b["Bonus"] || 0), 0);
                         var totIVA = objResponse.reduce((a, b) => +a + (+b["Tax"] || 0), 0);
                         var totIEPS = objResponse.reduce((a, b) => +a + (+b["Ieps"] || 0), 0);
+                        var TotDistQty = objResponse.reduce((a, b) => +a + (+b["DistQty"] || 0), 0);
                         var totalAcuDet = {
                             "TotCost": Number(totCost.toFixed(2)),
                             "TotPrice": Number(totPrice.toFixed(2)),
                             "TotBonus": Number(totBonus.toFixed(2)),
                             "TotIVA": Number(totIVA.toFixed(2)),
-                            "TotIEPS": Number(totIEPS.toFixed(2))
+                            "TotIEPS": Number(totIEPS.toFixed(2)),
+                            "TotDistQty": Number(TotDistQty.toFixed(3))
                         };
                         parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(totalAcuDet), 
                             "debTotDetModel");
@@ -145,74 +147,68 @@ sap.ui.define([
             var texts = this.getOwnerComponent().getModel("appTxts");
             var columns = [
                  {
-                    name: texts.getProperty("/aportaciones.un"),
+                    name: texts.getProperty("/PolizadetCargo.Agreement"),
                     template: {
-                        content: "{Werks}"
+                        content: "{Agreement}"
                     }
                 },
                 {
-                    name: texts.getProperty("/aportaciones.tienda"),
+                    name: texts.getProperty("/PolizadetCargo.Material"),
                     template: {
-                        content: "{Namew}"
+                        content: "{Material}"
                     }
                 },
                 {
-                    name: texts.getProperty("/aportaciones.sku"),
+                    name: texts.getProperty("/PolizadetCargo.MatDescription"),
                     template: {
-                        content: "{Matnr}"
+                        content: "{MatDescription}"
                     }
                 },
                 {
-                    name: texts.getProperty("/aportaciones.articulo"),
+                    name: texts.getProperty("/PolizadetCargo.Centro"),
                     template: {
-                        content: "{Maktx}"
+                        content: "{Forum}"
                     }
                 },
                 {
-                    name: texts.getProperty("/aportaciones.piezas"),
+                    name: texts.getProperty("/PolizadetCargo.CentroNombre"),
                     template: {
-                        content: "{Zcantidad}"
-                    }
-                },
-                /*{
-                    name: texts.getProperty("/aportaciones.vtaNeta"),
-                    template: {
-                        content: "{Zbonificacion}"
-                    }
-                },*/
-                {
-                    name: texts.getProperty("/aportaciones.bonif"),
-                    template: {
-                        content: "{Zbonificacion}"
+                        content: "{ForumDescrition}"
                     }
                 },
                 {
-                    name: texts.getProperty("/aportaciones.iva"),
+                    name: texts.getProperty("/PolizadetCargo.Posicion"),
                     template: {
-                        content: "{Ziva}"
+                        content: "{MatdocPosition}"
                     }
                 },
                 {
-                    name: texts.getProperty("/aportaciones.ieps"),
+                    name: texts.getProperty("/PolizadetCargo.DistQty"),
                     template: {
-                        content: "{Zieps}"
+                        content: "{DistQty}"
                     }
                 },
                 {
-                    name: texts.getProperty("/aportaciones.total"),
+                    name: texts.getProperty("/PolizadetCargo.bonus"),
                     template: {
-                        content: "{Ztotal}"
+                        content: "{Bonus}"
                     }
                 },
                 {
-                    name: texts.getProperty("/aportaciones.aporta"),
+                    name: texts.getProperty("/PolizadetCargo.IVA}"),
                     template: {
-                        content: "{Zaportacion}"
+                        content: "{Tax}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/PolizadetCargo.IEPS"),
+                    template: {
+                        content: "{Ieps}"
                     }
                 }
             ];
 
-            this.exportxls('AportacionesDet', '/AportaDetalle/results', columns);
+            this.exportxls('debitDet', '/', columns);
         }
 	});
 });

@@ -28,14 +28,7 @@
 								</m:FlexBox>
 							</m:FlexBox>
 						</snappedHeading>
-                        <!-- <expandedContent>
-                            <m:Text text="{promotionDetModel>/Description}"/>
-                        </expandedContent>
-                        <snappedContent>
-                            <m:Text text="{promotionDetModel>/Description}"/>
-                        </snappedContent> -->
 						<navigationActions>
-                            <!-- <m:OverflowToolbarButton type="Transparent" icon="sap-icon://receipt" press="handleReceipt"/> -->
 							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
 							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
 							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/>
@@ -59,7 +52,7 @@
                                             <m:ToolbarSpacer/>
                                             <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
                                                 press=".buildExportTable"
-                                                visible="{= ${promotionDet>/length} > 0}"
+                                                visible="{= ${debitDet>/length} > 0}"
                                             />
                                         </m:OverflowToolbar>
                                     </m:headerToolbar>
@@ -76,19 +69,22 @@
                                     </m:Column>
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
-                                            <m:Text text="{appTxts>/PolizadetCargo.Centro=Centro}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                            <m:Text text="{appTxts>/PolizadetCargo.Centro}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </m:header>
                                     </m:Column>
+                                    <!--
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
                                             <m:Text text="{appTxts>/PolizadetCargo.DocMat}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </m:header>
                                     </m:Column>
+                                    -->
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
                                             <m:Text text="{appTxts>/PolizadetCargo.Posicion}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </m:header>
                                     </m:Column>
+                                    <!--
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
                                             <m:Text text="{appTxts>/PolizadetCargo.Vendor}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -120,6 +116,21 @@
                                                     formatOptions: {showMeasure: false}
                                                         }"
                                                 unit="{debitDet>Currency}" />
+                                        </m:footer>
+                                    </m:Column>
+                                    -->
+                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:header>
+                                            <m:Text text="{appTxts>/PolizadetCargo.DistQty}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </m:header>
+                                        <m:footer>
+                                            <m:ObjectNumber id="OBNQ"
+                                                number="{
+                                                    parts:[{path:'debTotDetModel>/TotDistQty'},{path:'debitDet>uom'}],
+                                                    type: 'sap.ui.model.type.Unit',
+                                                    formatOptions: {showMeasure: false}
+                                                        }"
+                                                unit="{debitDet>uom}" />
                                         </m:footer>
                                     </m:Column>
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
@@ -173,10 +184,13 @@
                                                 text="{debitDet>MatDescription}" />
                                             <m:ObjectIdentifier title="{debitDet>Forum}"
                                                 text="{debitDet>ForumDescrition}" />
+                                            <!--
                                             <m:ObjectIdentifier
                                                 text="{debitDet>MaterialDoc}" />
+                                            -->
                                             <m:ObjectIdentifier
                                                 text="{debitDet>MatdocPosition}" />
+                                            <!--
                                             <m:ObjectIdentifier title="{debitDet>Vendor}"
                                                 text="{debitDet>VendorName}" />
                                             <m:ObjectNumber
@@ -192,6 +206,25 @@
                                                 emphasized="true"
                                                 number="{
                                                     parts:[{path:'debitDet>Price'},{path:'CurrencyCode'}],
+                                                    type: 'sap.ui.model.type.Currency',
+                                                    formatOptions: {showMeasure: false}
+                                                        }"
+                                                unit="{debitDet>Currency}'"
+                                                state="Success" />
+                                            -->
+                                            <m:ObjectNumber
+                                                emphasized="true"
+                                                number="{
+                                                    parts:[{path:'debitDet>DistQty'},{path:'uom'}],
+                                                    type: 'sap.ui.model.type.Unit',
+                                                    formatOptions: {showMeasure: false}
+                                                        }"
+                                                unit="{debitDet>uom}'"
+                                                state="Success" />
+                                            <m:ObjectNumber
+                                                emphasized="true"
+                                                number="{
+                                                    parts:[{path:'debitDet>Bonus'},{path:'CurrencyCode'}],
                                                     type: 'sap.ui.model.type.Currency',
                                                     formatOptions: {showMeasure: false}
                                                         }"
@@ -215,27 +248,7 @@
                                                         }"
                                                 unit="{debitDet>Currency}'"
                                                 state="Success" />
-                                            <!--
-                                            <m:ObjectIdentifier
-                                                text="{
-                                                    path: 'AportacionesDet>Zieps',
-                                                    type: 'sap.ui.model.type.Float'
-                                                    }" />
-                                            <m:ObjectNumber
-                                                emphasized="true"
-                                                number="{
-                                                    parts:[{path:'AportacionesDet>Ztotal'},{path:'CurrencyCode'}],
-                                                    type: 'sap.ui.model.type.Currency',
-                                                    formatOptions: {showMeasure: false}
-                                                        }"
-                                                unit="MXN"
-                                                state="Success" />
-                                            <m:ObjectIdentifier
-                                                text="{
-                                                    path: 'AportacionesDet>Zaportacion',
-                                                    type: 'sap.ui.model.type.Float'
-                                                    }" />
-                                            -->
+                                            
 										</m:cells>
 									</m:ColumnListItem>
 								</m:items>
