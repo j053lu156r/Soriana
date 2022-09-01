@@ -188,7 +188,34 @@ console.log(TDatos)
 			let Detalles = [...TDatos.results[0].Citms.results, ...TDatos.results[0].Oitms.results];
 
 
+
+			//fix aforo
+
+
+
+
+
+
+
+
 				var cleanedArray = Detalles  //Detalles.filter(obj => !obj.Belnr.startsWith("58") && !obj.Belnr.startsWith("59"));
+
+				var sumaAux1 = cleanedArray.reduce(function (_this, val) {
+
+					var current = val.Agrupacion === '1' ? Number(val.Wrbtr) : 0
+					var total = _this + current
+					return  total
+				}, 0);
+
+
+				var sumaAux2 = cleanedArray.reduce(function (_this, val) {
+
+					var current = val.Agrupacion === '2' ? Number(val.Wrbtr) : 0
+					var total = _this + current
+					return  total
+				}, 0);
+
+
 
 				var clanedDateArray  = cleanedArray.filter(obj => {
 					// DescripcionGpo: "PAGO FACTURA"
@@ -196,12 +223,24 @@ console.log(TDatos)
 					//DescTipomov: "PAGO FACTURAS"
 					//IdNumTipomov: "11"
 
-					if(obj.DescripcionGpo === ""){
+					if(obj.DescripcionGpo === "" && obj.Agrupacion === "1" ){
 						obj.DescripcionGpo= "AJUSTE DE FACTURAS"
 						obj.IdNumGpo= "9"
 						obj.DescTipomov= "CARGOS DIVERSOS"
 						obj.IdNumTipomov= "65"
 					}
+
+					else if(obj.DescripcionGpo === "" && obj.Agrupacion === "3" ) {
+						obj.DescripcionGpo= "RETENCION POR AFORO"
+						obj.IdNumGpo= "AF"
+						obj.DescTipomov= "RETENCION POR AFORO"
+						obj.IdNumTipomov= ""
+						obj.Wrbtr = Math.abs(sumaAux2)-Math.abs(sumaAux1)-Math.abs(obj.Wrbtr)
+
+
+					}
+
+
 
 
 
@@ -235,11 +274,12 @@ console.log(TDatos)
 
 
 			var sumaAux = auxArray.reduce(function (_this, val) {
-				//console.log(val.Wrbtr)
+				console.log(val.Wrbtr)
 				var current = Number(val.Wrbtr)
 				var total = _this + current
 				return  total
 			}, 0);
+
 
 
 
