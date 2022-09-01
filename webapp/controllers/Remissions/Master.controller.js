@@ -139,37 +139,6 @@ sap.ui.define([
 
                 var response = avisoModel.create("/ECfdiSet ", objRequest);
 
-                /*
-                var auth = "Ul9GRUxJUEVHUzpTdHJhdGVneTIwMjI=";
-                var oModel = new sap.ui.model.odata.ODataModel(wsModel.sUrl);
-                oModel.setHeaders({
-                    "Authorization": "Basic " + auth,
-                    "X-CSRF-Token": "Fetch"
-                });
-                oModel.read("$metadata");
-                var token = oModel.getSecurityToken();
-
-                $.ajax({
-                    async: true,
-                    url: avisoModel.sUrl + "ECfdiSet",
-                    method: "POST",
-                    headers: {
-                        "X-CSRF-Token" : token,
-                        "Authorization": "Basic " + auth,
-                        "Content-Type": "application/json;charset=utf-8"
-                    },
-                    "data": objRequest,
-                    success: function(response) {
-                        console.log(response)
-                    },
-                    error: function(request, status, err) {
-                        console.log(request)
-                        console.log(status)
-                        console.log(err)
-                    }
-                });
-                */
-
                 if (response != null) {
                     uploadBox.setVisible(false);
                     if (response.Log != null) {

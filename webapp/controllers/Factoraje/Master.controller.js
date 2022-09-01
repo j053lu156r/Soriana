@@ -510,7 +510,7 @@ sap.ui.define([
         onDocumentPress: function(oEvent){
             console.log('on documnt press',oEvent);
             let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
-            let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
+            let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/results");
 
             let registro = results[posicion];
             console.log(registro)

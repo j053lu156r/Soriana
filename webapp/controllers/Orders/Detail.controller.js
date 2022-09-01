@@ -118,7 +118,7 @@ sap.ui.define([
             this.onCloseDialog();
         },
         buildExcel: function(){
-            
+            console.log("Expotar excel!!!!")
             var that = this;
             var aFilters = [];
             aFilters.push(new Filter("Ebeln", FilterOperator.EQ, this._document));

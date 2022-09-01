@@ -823,9 +823,10 @@ sap.ui.define([
 		},
 
 
+
 		//HAANDLE OPEN ACUERDOS
 
-		_onDocumentPress: function (oEvent) {
+		onDocumentPress: function (oEvent) {
 			console.log('on documnt press', oEvent);
 			let posicion = oEvent.getSource().getBindingContext("GroupedFactoraje").getPath() ;
 			let results = this.getOwnerComponent().getModel("GroupedFactoraje").getProperty(posicion);
@@ -842,6 +843,9 @@ sap.ui.define([
 			var doc = results.Belnr
 
 			var aportacionesTCodes = ['Z_APORTACIONES']
+			var boletinVentasTCodes = ['ZMM_ACUERDOS_LIQUI']
+
+
 
 			//logica para enviar a Aportaciones o a Acuerdos
 			console.log((( tcode !== "" &&  tcode.match("(ZMMFILACUERDO|MEB|WLF).*")  &&  doc.startsWith('51')) || ((tcode === "" && !( doc.startsWith("170") ) &&  results.Foliodescuento ))   ) )
@@ -881,8 +885,17 @@ sap.ui.define([
 
 
 
-			}else{
+			} else if (boletinVentasTCodes.includes(tcode) || tcode === ''){
+				console.log('on boletin vtz')
 
+				// navega a pantalla de boltines * revisar condiciones de apertura , conseguir esenarios
+				this.getOwnerComponent().getRouter().navTo("BoletinVtaDetailPolizas", {
+					layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
+					//  document: results.Xblnr,
+					document: doc,
+					company: sociedad,
+					year: ejercicio
+				}, false);
 
 
 

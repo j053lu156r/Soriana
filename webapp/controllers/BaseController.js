@@ -1111,32 +1111,26 @@ sap.ui.define([
         },
 
         /*Mparra version de  _PostoDataV2 de Juan Pacheco  */
-
-        _PostODataV2Async: function(model, entity, data) {
+        _PostODataV2Async: function(model, entity, data, headers) {
             var oModel2 = "/sap/opu/odata/sap/"+model;
-            var that = this;
-            let entidad = "/" + entity;
+			return new Promise(function(fnResolve, fnReject) {
 
-            return new Promise(function(fnResolve, fnReject) {
-
-                var oModel = new sap.ui.model.odata.v2.ODataModel(oModel2);
-                oModel.setUseBatch(false);
-                oModel.create(entidad, data,{
-                    success: function(oData, oResponse) {
-
-                        fnResolve(oResponse);
-                    },
-                    error: function(error) {
-                        console.log(error)
-                        sap.ui.core.BusyIndicator.hide();
-                        MessageBox.error("Error: " + error.responseJSON.error.message, {
-                            icon: MessageBox.Icon.ERROR,
-                            title: "Error"
-                        });
-                        fnReject(new Error(error.message));
-                    }
-                });
-            });
+                $.ajax({
+					url: oModel2 + "/" + entity,
+					type: "POST",
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    headers: headers,
+                    data: JSON.stringify(data),
+					success: function(dataResponse) {
+						fnResolve(dataResponse);
+					},
+					error: function(error, status, err) {
+						sap.ui.core.BusyIndicator.hide();
+						fnReject(new Error(error));
+					}
+				});
+			});
         },
 
         _GEToDataV2ajax: function(url) {

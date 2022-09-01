@@ -1,0 +1,148 @@
+<mvc:View displayBlock="true"
+    xmlns:f="sap.f"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:unified="sap.ui.unified"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core" controllerName="demo.controllers.Quotes.Master" height="100%">
+
+    <f:DynamicPage class="spUiContentPadding">
+        <f:title>
+            <f:DynamicPageTitle backgroundDesign="Transparent">
+                <f:heading>
+                    <vm:VariantManagement standardItemText="{appTxts>/quotes.quotes}">
+                    </vm:VariantManagement>
+                </f:heading>
+                <!-- <f:actions>
+                    <ToolbarSpacer/>
+                    <Button text="{appTxts>/quotes.uploadQuote}" type="Emphasized" press="openUploadDialog"/>
+                </f:actions> -->
+                <f:actions>
+                    <ToolbarSpacer/>
+                    <Button text="{appTxts>/quotes.createQuote}" type="Emphasized" press=".createQuote"/>
+                </f:actions>
+            </f:DynamicPageTitle>
+        </f:title>
+
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <fb:FilterBar id="filterBar" header="Header" reset="onReset" search="searchData" clear="clearFilters" cancel="onCancel" 
+		                filtersDialogClosed = "onFiltersDialogClosed" showRestoreButton="false" showClearButton="false" useToolbar="false">
+
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab" label="{appTxts>/quotes.supplier}" mandatory="true" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="supplierInput" placeholder="{appTxts>/quotes.supplier}" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}">
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="{appTxts>/quotes.quoteFolio}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="quoteFolioInput" placeholder="{appTxts>/quotes.quoteFolio}" showSuggestion="true">
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <!-- <fb:FilterGroupItem groupName="F1" groupTitle="Fechas" name="Fecha de entrega" label="{appTxts>/quotes.quoteDate}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <DateRangeSelection id="dateRange" required="false"/>
+                                </fb:control>
+                            </fb:FilterGroupItem> -->
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Tipo cita" label="{appTxts>/quotes.quoteType}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="false">
+                                <fb:control>
+                                    <ComboBox id="quoteType" items="{
+                                                path: 'appoinmentsCatalogs>/ETIPOCITANAV/results',
+                                                sorter: { path: 'Name' }
+                                            }">
+                                        <core:Item key="{appoinmentsCatalogs>ZNumcita}" text="{appoinmentsCatalogs>ZTipocita}" />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Product type" label="{appTxts>/quotes.productType}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="false">
+                                <fb:control>
+                                    <Input id="productType" placeholder="{appTxts>/quotes.productType}" showSuggestion="true" valueHelpOnly="false" showValueHelp="true" valueHelpRequest="helpProductType(false)" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Turn" label="{appTxts>/quotes.turn}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="false">
+                                <fb:control>
+                                    <ComboBox id="quoteTurn" items="{
+                                                path: 'appoinmentsCatalogs>/ETIPOTURNONAV/results'
+                                            }">
+                                        <core:Item key="{appoinmentsCatalogs>ZNumturno}" text="{appoinmentsCatalogs>ZTipoturno}" />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Status" label="{appTxts>/quotes.quoteStatus}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="false">
+                                <fb:control>
+                                    <ComboBox id="quoteStatus" items="{
+                                                path: 'appoinmentsCatalogs>/ETIPOSTATUSNAV/results'
+                                            }">
+                                        <core:Item key="{appoinmentsCatalogs>ZNumstatus}" text="{appoinmentsCatalogs>ZTipostatus}" />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Tipo unidad" label="{appTxts>/quotes.unitType}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="false">
+                                <fb:control>
+                                    <ComboBox id="quoteUnitType" items="{
+                                                path: 'appoinmentsCatalogs>/ETIPOUNIDADNAV/results'
+                                            }">
+                                        <core:Item key="{appoinmentsCatalogs>ZNumunidad}" text="{appoinmentsCatalogs>ZTipounidad}" />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="A2" label="{appTxts>/quotes.order}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="false">
+                                <fb:control>
+                                    <Input id="orderInput" placeholder="{appTxts>/quotes.order}" showSuggestion="true">
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Sucursal" label="{appTxts>/quotes.branch}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="false">
+                                <fb:control>
+                                    <Input id="branchInput" placeholder="{appTxts>/quotes.branch}" showSuggestion="true" valueHelpOnly="false" showValueHelp="true" valueHelpRequest="helpBranch">
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+
+                    </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
+            <VBox>
+                <PlanningCalendar id="PC1" startDate="{path: '/startDate'}" viewKey="A" rows="{path: '/people'}" appointmentsVisualization="Filled" appointmentSelect="handleAppointmentSelect" showEmptyIntervalHeaders="false">
+                    <toolbarContent>
+                        <Title text="Agenda" titleStyle="H4"/>
+                    </toolbarContent>
+                    <views>
+                        <PlanningCalendarView key="A" intervalType="Hour" description="hours view" intervalsS="12" intervalsM="12" intervalsL="12" showSubIntervals="false">
+                        </PlanningCalendarView>
+                    </views>
+                    <rows>
+                        <PlanningCalendarRow icon="{pic}" title="{name}" text="{role}" nonWorkingDays="{freeDays}" nonWorkingHours= "{freeHours}" appointments="{path : 'appointments', templateShareable: false}" intervalHeaders="{path: 'headers', templateShareable: false}">
+                            <appointments>
+                                <unified:CalendarAppointment startDate="{start}" endDate="{end}" icon="{pic}" title="{title}" text="{info}" type="{type}" tentative="{tentative}">
+                                </unified:CalendarAppointment>
+                            </appointments>
+                            <intervalHeaders>
+                                <unified:CalendarAppointment startDate="{start}" endDate="{end}" icon="{pic}" title="{title}" type="{type}">
+                                </unified:CalendarAppointment>
+                            </intervalHeaders>
+                        </PlanningCalendarRow>
+                    </rows>
+                </PlanningCalendar>
+            </VBox>
+        </f:content>
+    </f:DynamicPage>
+
+</mvc:View>

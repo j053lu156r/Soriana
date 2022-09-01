@@ -642,10 +642,11 @@ sap.ui.define([
         onDocumentPress: function (oEvent) {
 
             let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
-            let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
+            let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/results");
 
             let registro = results[posicion];
 
+            console.log(registro)
 
             this.getOwnerComponent().getRouter().navTo("detailComplPagos",
                 {

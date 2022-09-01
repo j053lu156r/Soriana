@@ -672,6 +672,21 @@
                     ]
                 },
                 {
+                    "name": "masterAcuerdosNS",
+                    "pattern": "masterAcuerdosNS",
+                    "target": [
+                        "masterAcuerdosNS"
+                    ]
+                },
+                {
+                    "pattern": "detailDetailAcuNS/{layout}/{sociedad}/{documento}/{ejercicio}/{tienda}",
+                    "name": "detailDetailAcuNS",
+                    "target": [
+                        "masterAcuerdosNS",
+                        "detailDetailAcuNS"
+                    ]
+                },
+                {
                     "name": "Products",
                     "pattern": "Products",
                     "target": [
@@ -747,10 +762,24 @@
                     ]
                 },
                 {
+                    "name": "BoletinVtaDetailPolizasL3",
+                    "pattern": "BoletinVtaDetailPolizas/{layout}/{company}/{document}/{year}",
+                    "target": [
+                        "BoletinVtaDetailPolizasNivel3"
+                    ]
+                },
+                {
                     "name": "detailCargoBoletinVta",
                     "pattern": "detailCargoBoletinVta/{layout}/{Company}/{Agreement}/{Vendor}/{DateCreated}/{document}/{year}",
                     "target": [
                         "detailCargoBoletinVta"
+                    ]
+                },
+                {
+                    "name": "masterValidacionCondicion",
+                    "pattern": "masterValidacionCondicion",
+                    "target": [
+                        "masterValidacionCondicion"
                     ]
                 }
             ],
@@ -1062,6 +1091,16 @@
                     "viewPath": "demo.views.Acuerdos",
                     "controlAggregation": "endColumnPages"
                 },
+                "masterAcuerdosNS" : {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.AcuerdosNS",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailDetailAcuNS": {
+                    "viewName": "DetailDetail",
+                    "viewPath": "demo.views.AcuerdosNS",
+                    "controlAggregation": "midColumnPages"
+                },
                 "Products": {
                     "viewName": "Master",
                     "controlAggregation": "beginColumnPages",
@@ -1112,11 +1151,25 @@
                     "viewPath": "demo.views.BoletinVta",
                     "controlAggregation": "midColumnPages"
                 },
+                "BoletinVtaDetailPolizasNivel3" : {
+                    "viewName": "DetailPolizas",
+                    "viewPath": "demo.views.BoletinVta",
+                    "controlAggregation": "endColumnPages"
+                },
                 "detailCargoBoletinVta" : {
                     "viewName": "DetailCargo",
                     "viewPath": "demo.views.BoletinVta",
                     "controlAggregation": "midColumnPages"
+                },
+                "masterValidacionCondicion": {
+                    "viewType": "XML",
+                    "viewName": "MasterValidaciones",
+                    "controlAggregation": "beginColumnPages",
+                 
+                    "viewPath":  "demo.views.ValidacionCondiciones"
                 }
+                
+              
             }
         },
         "contentDensities": {
