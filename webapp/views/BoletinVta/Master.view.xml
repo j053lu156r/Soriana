@@ -77,10 +77,10 @@
                     <OverflowToolbar id="_IDGenOverflowToolbar1">
                         <Title id="_IDGenTitle1" text="{appTxts>/foliosCap.title} ({promocionesHdr>/length})" />
                         <ToolbarSpacer id="_IDGenToolbarSpacer1"/>
-
+                        <!--
                         <Button id="_IDGenButton1a" icon="sap-icon://customer-financial-fact-sheet" text="Polizas" 
                         press=".onFinancialView" />
-                        
+                        -->
                         <Button id="_IDGenButton1" icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
                         press=".buildExportTable"
                         visible="{= ${promocionesHdr>/length} > 0}"
