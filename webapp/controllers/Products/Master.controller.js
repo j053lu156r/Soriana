@@ -326,7 +326,8 @@ sap.ui.define([
                 let response = null;
                 let headers = {
                     "X-Requested-With" : "X",
-                    "Content-Type": "application/json;charset=utf-8"
+                    "Content-Type": "application/json;charset=utf-8",
+                    "Accept": "application/json, text/javascript, */*;q=0.01"
                 };
 
                 await this._PostODataV2Async(_oDataModel, _oDataEntity, objRequest, headers).then(resp => {

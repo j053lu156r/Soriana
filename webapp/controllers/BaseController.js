@@ -1116,12 +1116,12 @@ sap.ui.define([
 			return new Promise(function(fnResolve, fnReject) {
 
                 $.ajax({
-					url: oModel2+entity,
+					url: oModel2 + "/" + entity,
 					type: "POST",
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
                     headers: headers,
-                    data: data,
+                    data: JSON.stringify(data),
 					success: function(dataResponse) {
 						fnResolve(dataResponse);
 					},
