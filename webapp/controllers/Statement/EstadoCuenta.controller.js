@@ -1174,7 +1174,7 @@ sap.ui.define([
             let Encabezado = this.getOwnerComponent().getModel("totales");
             console.log(Encabezado)
              var columns = [{
-                  name: texts.getProperty("/aportaciones.concepto"),
+                  name: texts.getProperty("/aportaciones.concepto").toUpperCase(),
                  template: {
                     content:  "{IdNumTipomov} {DescTipomov}"
                 }
@@ -1293,14 +1293,14 @@ sap.ui.define([
                     }
                 },
                  {
-                     name: texts.getProperty("/clarifications.expirationDate"),
+                     name: texts.getProperty("/clarifications.expirationDate").toUpperCase(),
                      template: {
                          content: "{FechaTesoreria}"
                      }
                  },
                 {
                     type: sap.ui.export.EdmType.Currency,
-                    name: texts.getProperty("/state.amount"),
+                    name: texts.getProperty("/state.amount").toUpperCase(),
                      template: {
                         content: "{Wrbtr}"
                     }
@@ -1309,13 +1309,13 @@ sap.ui.define([
 
                 //se agrego validacion y bloqueaado
                  {
-                     name: texts.getProperty("/reporte.headerTitulo"),
+                     name: texts.getProperty("/reporte.headerTitulo").toUpperCase(),
                      template: {
                          content: "{MCondicion}"
                      }
                  },
                  {
-                     name: "Bloqueado",
+                     name: "BLOQUEADO",
                      template: {
                          content: "{BloqueoFlag}"
                      }
