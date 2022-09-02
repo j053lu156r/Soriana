@@ -203,7 +203,7 @@ console.log(TDatos)
 				var sumaAux1 = cleanedArray.reduce(function (_this, val) {
 
 					var current = val.Agrupacion === '1' ? Number(val.Wrbtr) : 0
-					var total = _this + current
+					var total = _this + Number(current)
 					return  total
 				}, 0);
 
@@ -211,7 +211,7 @@ console.log(TDatos)
 				var sumaAux2 = cleanedArray.reduce(function (_this, val) {
 
 					var current = val.Agrupacion === '2' ? Number(val.Wrbtr) : 0
-					var total = _this + current
+					var total = _this + Number(current)
 					return  total
 				}, 0);
 
@@ -235,7 +235,7 @@ console.log(TDatos)
 						obj.IdNumGpo= "AF"
 						obj.DescTipomov= "RETENCION POR AFORO"
 						obj.IdNumTipomov= ""
-						obj.Wrbtr = Math.abs(sumaAux2)-Math.abs(sumaAux1)-Math.abs(obj.Wrbtr)
+						obj.Wrbtr =  (Number(sumaAux2)+Number(sumaAux1)+Number(obj.Wrbtr)) *-1
 
 
 					}
