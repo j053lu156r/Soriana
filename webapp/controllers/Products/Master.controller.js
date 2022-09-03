@@ -2410,22 +2410,25 @@ sap.ui.define([
                 "ETRETURN": [
                 ]
             };
+            sap.ui.core.BusyIndicator.show();
 
            $.ajax({
                 async: true,
                 url: NotifAltaMas.sUrl + "HeaderSet",
                 method: "POST",
+                //dataType: 'json',
                 headers: {
                     "X-Requested-With" : "X",
                     "Content-Type": "application/json;charset=utf-8"
                 },
                 "data": JSON.stringify(createObjReq),
                 success: function(resp) {
+                    sap.ui.core.BusyIndicator.hide();
                     var status = resp.getElementsByTagName("d:EvSendStatus")[0].textContent;
-                    var message = resp.getElementsByTagName("d:Message")[0].textContent;
                     var folio = resp.getElementsByTagName("d:EvFolio")[0].textContent;
 
-                    if (status == "ERROR") {
+                    if (status != "OK") {
+                        var message = resp.getElementsByTagName("d:Message")[0].textContent;
                         sap.m.MessageBox.error(message);
                     } else {
                         sap.m.MessageBox.success("Folio: " + folio);
@@ -2433,6 +2436,7 @@ sap.ui.define([
                     }
                 },
                 error: function(resp, status, err) {
+                    sap.ui.core.BusyIndicator.hide();
                     sap.m.MessageBox.error(resp.ETRETURN.results[0].Message);
                 }
             });

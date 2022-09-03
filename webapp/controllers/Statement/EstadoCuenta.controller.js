@@ -238,7 +238,7 @@ sap.ui.define([
 
             var totalGeneral = me.truncate(totalD, 2) - me.truncate(totalC, 2)
 
-
+            totalGeneral = totalGeneral -.01
             var jsonModelG = new JSONModel({
                 "Hierarchy": {
                     "movimientos": nestedMovs,
@@ -475,6 +475,8 @@ sap.ui.define([
 
                 var totalGeneral = that.truncate(totalD, 2) - that.truncate(totalC, 2)
 
+                totalGeneral = (totalGeneral - .01)
+
 
                 var jsonModelG = new JSONModel({
                     "Hierarchy": {
@@ -703,8 +705,10 @@ sap.ui.define([
                 }, 0);
 
 
+
                 var totalGeneral = that.truncate(totalD, 2) - that.truncate(totalC, 2)
 
+                totalGeneral = totalGeneral -.01
 
                 var jsonModelG = new JSONModel({
                     "Hierarchy": {
@@ -1170,7 +1174,7 @@ sap.ui.define([
             let Encabezado = this.getOwnerComponent().getModel("totales");
             console.log(Encabezado)
              var columns = [{
-                  name: texts.getProperty("/aportaciones.concepto"),
+                  name: texts.getProperty("/aportaciones.concepto").toUpperCase(),
                  template: {
                     content:  "{IdNumTipomov} {DescTipomov}"
                 }
@@ -1212,7 +1216,7 @@ sap.ui.define([
                     }
                 },
                  */
-
+/*
                 {
                     name: texts.getProperty("/state.totalUPC"),
                     template: {
@@ -1225,18 +1229,25 @@ sap.ui.define([
                         content: Encabezado.getProperty("/Totdsc")
                     }
                 },*/
+                 /*
                 {
                     name: texts.getProperty("/state.totalNoteUPC"),
                     template: {
                         content: Encabezado.getProperty("/Totnoc")
                     }
                 },
+
+                  */
+                 /*
                 {
                     name: texts.getProperty("/state.commissionsUPC"),
                     template: {
                         content: Encabezado.getProperty("/Totcm")
                     }
                 },
+
+                  */
+                 /*
                 {
                     name: texts.getProperty("/state.balanceUPC"),
                     template: {
@@ -1249,6 +1260,8 @@ sap.ui.define([
                         content: Encabezado.getProperty("/Banks")
                     }
                 },
+
+                  */
                 {
                     name: texts.getProperty("/state.statusUPC"),
                     template: {
@@ -1279,18 +1292,34 @@ sap.ui.define([
                         content: "{Budat}"
                     }
                 },
+                 {
+                     name: texts.getProperty("/clarifications.expirationDate").toUpperCase(),
+                     template: {
+                         content: "{FechaTesoreria}"
+                     }
+                 },
                 {
-                    name: texts.getProperty("/state.amountUPC"),
-                    template: {
+                    type: sap.ui.export.EdmType.Currency,
+                    name: texts.getProperty("/state.amount").toUpperCase(),
+                     template: {
                         content: "{Wrbtr}"
                     }
+
                 },
-                {
-                    name: texts.getProperty("/state.conciliationUPC"),
-                    template: {
-                        content: "{Augbl}"
-                    }
-                }
+
+                //se agrego validacion y bloqueaado
+                 {
+                     name: texts.getProperty("/reporte.headerTitulo").toUpperCase(),
+                     template: {
+                         content: "{MCondicion}"
+                     }
+                 },
+                 {
+                     name: "BLOQUEADO",
+                     template: {
+                         content: "{BloqueoFlag}"
+                     }
+                 }
             ];
 
             this.exportxls('totales', '/Detalles/results', columns);
@@ -1417,7 +1446,7 @@ sap.ui.define([
                     }, true);
 
                 }else{
-                    MessageToast.show("Sin aportación");
+                    MessageToast.show("Sin detalle");
                 }
             } else if (boletinVentasTCodes.includes(tcode) || tcode === ''){
                 console.log('on boletin vtz')
