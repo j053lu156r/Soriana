@@ -125,75 +125,51 @@ sap.ui.define([
 
             var texts = this.getOwnerComponent().getModel("appTxts");
             var columns = [
+                {
+                    name: texts.getProperty("/foliosCap.promocion"),
+                    template: {
+                        content: "{Promotion}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/foliosCap.supplier"),
+                    template: {
+                        content: "{Vendor}"
+                    }
+                },
                  {
-                    name: texts.getProperty("/aportaciones.un"),
+                    name: texts.getProperty("/foliosCapDet.Material"),
                     template: {
-                        content: "{Werks}"
+                        content: "{Material}"
                     }
                 },
                 {
-                    name: texts.getProperty("/aportaciones.tienda"),
+                    name: texts.getProperty("/foliosCapDet.MatDescription"),
                     template: {
-                        content: "{Namew}"
+                        content: "{Description}"
                     }
                 },
                 {
-                    name: texts.getProperty("/aportaciones.sku"),
+                    name: texts.getProperty("/foliosCapDet.SalesUnit"),
                     template: {
-                        content: "{Matnr}"
+                        content: "{SalesUnit}"
                     }
                 },
                 {
-                    name: texts.getProperty("/aportaciones.articulo"),
+                    name: texts.getProperty("/foliosCapDet.planQty"),
                     template: {
-                        content: "{Maktx}"
+                        content: "{QtyPlan}"
                     }
                 },
                 {
-                    name: texts.getProperty("/aportaciones.piezas"),
+                    name: texts.getProperty("/foliosCapDet.planPrice"),
                     template: {
-                        content: "{Zcantidad}"
-                    }
-                },
-                /*{
-                    name: texts.getProperty("/aportaciones.vtaNeta"),
-                    template: {
-                        content: "{Zbonificacion}"
-                    }
-                },*/
-                {
-                    name: texts.getProperty("/aportaciones.bonif"),
-                    template: {
-                        content: "{Zbonificacion}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/aportaciones.iva"),
-                    template: {
-                        content: "{Ziva}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/aportaciones.ieps"),
-                    template: {
-                        content: "{Zieps}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/aportaciones.total"),
-                    template: {
-                        content: "{Ztotal}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/aportaciones.aporta"),
-                    template: {
-                        content: "{Zaportacion}"
+                        content: "{PlanPrice}"
                     }
                 }
             ];
 
-            this.exportxls('AportacionesDet', '/AportaDetalle/results', columns);
+            this.exportxls('promotionDet', '/', columns);
         },
 
         handleReceipt: function () {

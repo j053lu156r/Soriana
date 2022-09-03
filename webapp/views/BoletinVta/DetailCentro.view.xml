@@ -77,7 +77,7 @@
                                     </m:Column>
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
-                                            <m:Text text="{foliosCapCenter.ClassCat}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                            <m:Text text="{appTxts>/foliosCapCenter.ClassCat}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </m:header>
                                     </m:Column>
                                     <!--
