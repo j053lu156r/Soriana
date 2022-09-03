@@ -201,7 +201,7 @@
                     }
                 ];
     
-                this.exportxls('PolizasHdr', '/PolizasDet/results', columns);
+                this.exportxls('PolizasHdr', '/', columns);
             },
     
             onPressPDF: function () {

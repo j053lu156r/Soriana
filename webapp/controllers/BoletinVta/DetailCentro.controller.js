@@ -119,88 +119,32 @@ sap.ui.define([
             var texts = this.getOwnerComponent().getModel("appTxts");
             var columns = [
                  {
-                    name: texts.getProperty("/aportaciones.un"),
+                    name: texts.getProperty("/foliosCapCenter.plant"),
                     template: {
-                        content: "{Werks}"
+                        content: "{Plant}"
                     }
                 },
                 {
-                    name: texts.getProperty("/aportaciones.tienda"),
+                    name: texts.getProperty("/PolizadetCargo.CentroNombre"),
                     template: {
-                        content: "{Namew}"
+                        content: "{Name1}"
                     }
                 },
                 {
-                    name: texts.getProperty("/aportaciones.sku"),
+                    name: texts.getProperty("/foliosCapCenter.Class"),
                     template: {
-                        content: "{Matnr}"
+                        content: "{ClassDesc}"
                     }
                 },
                 {
-                    name: texts.getProperty("/aportaciones.articulo"),
+                    name: texts.getProperty("/foliosCapCenter.ClassCat"),
                     template: {
-                        content: "{Maktx}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/aportaciones.piezas"),
-                    template: {
-                        content: "{Zcantidad}"
-                    }
-                },
-                /*{
-                    name: texts.getProperty("/aportaciones.vtaNeta"),
-                    template: {
-                        content: "{Zbonificacion}"
-                    }
-                },*/
-                {
-                    name: texts.getProperty("/aportaciones.bonif"),
-                    template: {
-                        content: "{Zbonificacion}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/aportaciones.iva"),
-                    template: {
-                        content: "{Ziva}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/aportaciones.ieps"),
-                    template: {
-                        content: "{Zieps}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/aportaciones.total"),
-                    template: {
-                        content: "{Ztotal}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/aportaciones.aporta"),
-                    template: {
-                        content: "{Zaportacion}"
+                        content: "{ClassCat}"
                     }
                 }
             ];
 
-            this.exportxls('AportacionesDet', '/AportaDetalle/results', columns);
-        },
-
-        handleReceipt: function () {
-            
-            this.oRouter.navTo("detailDetailAporta",
-                {
-                    layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
-                    folio: this._folio, 
-                    concepto: this._concepto,
-                    gerencia: this._gerencia,
-                    importe: this._importe
-                }
-            );            
-
+            this.exportxls('promotionCenterDet', '/', columns);
         }
 	});
 });

@@ -238,44 +238,44 @@ sap.ui.define([
             var texts = this.getOwnerComponent().getModel("appTxts");
             var columns = [
                 {
-                    name: texts.getProperty("foliosCap.promocion"),
+                    name: texts.getProperty("/foliosCap.promocion"),
                     template: {
                         content: "{Promotion}"
                     }
                 },
                 {
-                    name: texts.getProperty("foliosCap.promDes"),
+                    name: texts.getProperty("/foliosCap.promDes"),
                     template: {
                         content: "{Description}"
                     }
                 },
                 {
-                    name: texts.getProperty("foliosCap.currency"),
+                    name: texts.getProperty("/foliosCap.currency"),
                     template: {
                         content: "{CurrencyProm}"
                     }
                 },
                 {
-                    name: texts.getProperty("foliosCap.dateFrom"),
+                    name: texts.getProperty("/foliosCap.dateFrom"),
                     template: {
                         content: "{EarliestDate}"
                     }
                 },
                 {
-                    name: texts.getProperty("foliosCap.dateTo"),
+                    name: texts.getProperty("/foliosCap.dateTo"),
                     template: {
                         content: "{LatestDate}"
                     }
                 },
                 {
-                    name: texts.getProperty("foliosCap.promClass"),
+                    name: texts.getProperty("/foliosCap.promClass"),
                     template: {
                         content: "{PromClass}"
                     }
                 },
             ];
 
-            this.exportxls('promocionesHdr', 'promocionesHdr', columns);
+            this.exportxls('promocionesHdr', '/', columns);
         },
         onPressAccept: function (oEvent) {
  
@@ -366,8 +366,11 @@ sap.ui.define([
             var promData = this.getOwnerComponent().getModel("promocionesHdr");
             var results = promData.getProperty("/");
             var docResult = results[line];
+
+            var vIuser = this.getOwnerComponent().getModel("userdata").getProperty("/IMail");
             
-            var url = "aproveArrangementSet(Promotion='" + docResult.Promotion +"',Vendor='" + docResult.Vendor + "')";
+            var url = "aproveArrangementSet(Promotion='" + docResult.Promotion +"',Vendor='" + docResult.Vendor + "'" +
+                      ",PortaUser='" + vIuser + "')";
 
             this.getView().byId('tablePromociones').setBusy(true);
             oPModel.getJsonModelAsync(

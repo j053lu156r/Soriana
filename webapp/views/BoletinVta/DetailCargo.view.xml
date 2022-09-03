@@ -24,7 +24,7 @@
 							<m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Center">
 								<m:FlexBox wrap="NoWrap" fitContainer="true" alignItems="Center" class="sapUiTinyMarginEnd">
 									<f:Avatar src="../../../../../../../{products>ProductPicUrl}" displaySize="S" displayShape="Square" class="sapUiTinyMarginEnd"/>
-									<m:Title text="{promotionDetModel>/promotion}" wrapping="true" class="sapUiTinyMarginEnd"/>
+									<m:Title text="{appTxts>/foliosCap.promocion} {debTotDetModel>/Promotion}" wrapping="true" class="sapUiTinyMarginEnd"/>
 								</m:FlexBox>
 							</m:FlexBox>
 						</snappedHeading>
