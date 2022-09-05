@@ -20,6 +20,7 @@ sap.ui.define([
     var regulaArchivos;
     var oModel = new this.ComplPagoModel();
     var cfdiModel = new this.CfdiModel();
+    var oValidFiscales = new this.ValidacionesFiscales();
     var that = "";
     var sUri = "/sap/opu/odata/sap/ZOSP_PYMNT_CMPL_SRV/";
 
@@ -63,7 +64,7 @@ sap.ui.define([
                 column8:true,
                 column9:true,
                 column10:true,
-                column11:true,
+                column11:false,
 
 
             })
@@ -224,13 +225,13 @@ sap.ui.define([
             let registro = results[posicion];
            var Datos;
           for(var x=0;x<10;x++){
-           
 
-         
+
+
           //  Fecha = (Fecha.getTime() - (1000 * 60 * 60 * 24 * 5))
             let LaufdT = String(new Date(new Date(registro.Augdt+ 'T00:00:00').getTime() - (1000 * 60 * 60 * 24 * x)))
            // let LaufdT2 = String(new Date(new Date(registro.Augdt+ 'T00:00:00').getTime() + (1000 * 60 * 60 * 24 * 10)))
-  
+
             let Laufd = new Date(LaufdT).toISOString().slice(0,10).replace(/-/g, "");
           //  let Laufd2 = new Date(LaufdT2).toISOString().slice(0,10).replace(/-/g, "");
             let Augdt=String(registro.Augdt).replace(/-/g, "");
@@ -244,7 +245,7 @@ sap.ui.define([
             IVblnr eq '${registro.Vblnr}' and 
             IAugdt eq '${Augdt}'&$format=json`;
 
-         
+
 
             let oODataJSONModel = this.getOdata(sUri);
 
@@ -253,12 +254,12 @@ sap.ui.define([
 
 
             let Datos2 = JSON.parse(dataJSON);
-          
-        
+
+
             if(Datos2.results[0].ETXTFACTPROVNAV.results.length!==0){
                 x=100;
                 Datos=Datos2;
-            
+
             }
 
         }
@@ -292,7 +293,7 @@ sap.ui.define([
             //this.exportxls('Archivo', '/Detalles/results', columns, typeExport);
 
             sap.ui.core.util.File.save(ContenidoArchivo, nombreArchivo, "txt", "text/plain", "utf-8", false);
-             
+
         },
         generaRenglonesArchivo: function (Array) {
 
@@ -425,8 +426,7 @@ sap.ui.define([
 
                 $.ajax({
                     async: true,
-                    url: "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboPortal.asmx", //QAS
-                    //url: "https://enviodocumentos.soriana.com/RecibeCFD/wseDocReciboPortal.asmx", //PRO
+                    url: oValidFiscales.sUrl,
                     method: "POST",
                     headers: {
                         "Content-Type": "text/xml; charset=utf-8",
@@ -642,10 +642,11 @@ sap.ui.define([
         onDocumentPress: function (oEvent) {
 
             let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
-            let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
+            let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/results");
 
             let registro = results[posicion];
 
+            console.log(registro)
 
             this.getOwnerComponent().getRouter().navTo("detailComplPagos",
                 {

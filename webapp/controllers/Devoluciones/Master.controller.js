@@ -15,6 +15,8 @@ sap.ui.define([
     "use strict";
 
     var oModel = new this.Devoluciones();
+    var _oDataModel = "ZOSP_RETURNS_SRV";
+    var _oDataEntity = "HrdReturnsSet";
     return Controller.extend("demo.controllers.Devoluciones.Master", {
         onInit: function () {
             this.getView().addEventDelegate({
@@ -28,7 +30,9 @@ sap.ui.define([
             }, this);
         },
         searchData: function () {
+            sap.ui.core.BusyIndicator.show(0);
             if (!this.hasAccess(25)) {
+                sap.ui.core.BusyIndicator.hide();
                 return false;
             }
 
@@ -62,6 +66,7 @@ sap.ui.define([
             if (vLifnr != null && vLifnr != "") {
                 bContinue = true;
             } else {
+                sap.ui.core.BusyIndicator.hide();
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.supplierSelectError"));
             }
 
@@ -73,6 +78,7 @@ sap.ui.define([
                                 if (vZfolagrup == "") {
                                     if (vZfolfedex == "") {
                                         bContinue = false;
+                                        sap.ui.core.BusyIndicator.hide();
                                         sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.searchFieldsEmpty"));
                                     } else {
                                         bContinue = true;
@@ -96,52 +102,39 @@ sap.ui.define([
             }
 
             if (bContinue) {
-
-                var url = "/HrdReturnsSet?$expand=ETDTDEVNAV,ETFDEVNAV,ITDFAGR&$filter= IOption eq '2' and ILifnr eq '" + vLifnr + "'";
+                var aFilter = [];
+                aFilter.push(new sap.ui.model.Filter("IOption", sap.ui.model.FilterOperator.EQ, "2"));
+                aFilter.push(new sap.ui.model.Filter("ILifnr", sap.ui.model.FilterOperator.EQ, vLifnr));
 
                 if (vXblnr != "") {
-                    url += " and IXblnr eq '" + vXblnr + "'";
+                    aFilter.push(new sap.ui.model.Filter("IXblnr", sap.ui.model.FilterOperator.EQ, vXblnr));
                 }
-
                 if (startDate != "" && endDate != "") {
-                    url += " and IBudats eq '" + startDate + "'";
-                    url += " and IBudatf eq '" + endDate + "'";
+                    aFilter.push(new sap.ui.model.Filter("IBudats", sap.ui.model.FilterOperator.EQ, startDate));
+                    aFilter.push(new sap.ui.model.Filter("IBudatf", sap.ui.model.FilterOperator.EQ, endDate));
                 }
-
-
                 if (zfechregStartDate != "" && zfechregEndtDate != "") {
-                    url += " and IRdates eq '" + zfechregStartDate + "'";
-                    url += " and IRdatef eq '" + zfechregEndDate + "'";
+                    aFilter.push(new sap.ui.model.Filter("IRdates", sap.ui.model.FilterOperator.EQ, zfechregStartDate));
+                    aFilter.push(new sap.ui.model.Filter("IRdatef", sap.ui.model.FilterOperator.EQ, zfechregEndDate));
                 }
-
                 if (vWerks != "") {
-                    url += " and IWerks eq '" + vWerks + "'";
+                    aFilter.push(new sap.ui.model.Filter("IWerks", sap.ui.model.FilterOperator.EQ, vWerks));
                 }
-
                 if (vZfolagrup != "") {
-                    url += " and IZfolagrup eq '" + vZfolagrup + "'";
+                    aFilter.push(new sap.ui.model.Filter("IZfolagrup", sap.ui.model.FilterOperator.EQ, vZfolagrup));
                 }
-
                 if (vZfolfedex != "") {
-                    url += " and IZfolfedex eq '" + vZfolfedex + "'";
+                    aFilter.push(new sap.ui.model.Filter("IZfolfedex", sap.ui.model.FilterOperator.EQ, vZfolfedex));
                 }
-
-                /*
-                if (vAnulada != "") {
-                    url += " and IAnul eq 'X'";
-                }
-                */
-
-                var dueModel = oModel.getJsonModel(url);
-                if (dueModel != null) {
-                    var ojbResponse = dueModel.getProperty("/results/0");
-
-                    this.getOwnerComponent().setModel(new JSONModel(ojbResponse),
-                        "tableHeaderDevo");
-
-                    this.paginate('tableHeaderDevo', '/ETFDEVNAV', 1, 0); // Cambiar por tabla de salida
-                    console.log(dueModel);
-                }
+                
+                this._GetODataV2(_oDataModel, _oDataEntity, aFilter, ["ETDTDEVNAV","ETFDEVNAV","ITDFAGR"]).then(resp => {
+                    var ojbResponse = resp.data.results[0];
+                    this.getOwnerComponent().setModel(new JSONModel(ojbResponse),"tableHeaderDevo");
+                    this.paginate('tableHeaderDevo', '/ETFDEVNAV', 1, 0);
+                    sap.ui.core.BusyIndicator.hide();
+                }).catch(error => {
+                    sap.ui.core.BusyIndicator.hide();
+                });
             }
         },
         onExit: function () {
@@ -182,7 +175,7 @@ sap.ui.define([
                             this.getOwnerComponent().setModel(new JSONModel(dueModelcode),
                                 "tablecode");
                             console.log(dueModelcode);
-
+                            this.searchData();
                             sap.m.MessageBox.success(texts.getProperty("/devo.success"));
                         }
                         else {

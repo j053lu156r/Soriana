@@ -92,7 +92,7 @@
                 <t:Table selectionMode="None" noData="{appTxts>/acuerdos.noData}" id="tableAcuerdos" rows="{MejorCondHdr>/}">
                     <t:extension>
                         <OverflowToolbar>
-                            <Title text="Reporte Mejor Condición" />
+                            <Title text="Validación de condiciones" />
                             <ToolbarSpacer/>
 
                             <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${MejorCondHdr>/length} > 0}" />
@@ -406,7 +406,7 @@
                         </t:Column>
                         <t:Column sortProperty="TeSalida/MejorTotal" width="6rem" hAlign="Left">
 
-                            <Text text="Total MC" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="Total VC" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <t:template>
                                 <ObjectNumber number="{parts: [{path: 'MejorCondHdr>TeSalida/MejorTotal'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
 

@@ -19,6 +19,8 @@ sap.ui.define([
     var cfdiModel = new this.CfdiModel();
     var oValidFiscales = new this.ValidacionesFiscales();
     var fiscalUrl = "";
+    var _oDataModel = "ZOSP_CFDI_SRV_04";
+    var _oDataEntity = "HeaderCFDISet";
 
     return Controller.extend("demo.controllers.Detail.Master", {
         onInit: function () {
@@ -42,7 +44,9 @@ sap.ui.define([
             this.fiscalModel = new sap.ui.model.odata.v2.ODataModel(oValidFiscales.sUrl);
         },
         searchData: function () {
+            sap.ui.core.BusyIndicator.show(0);
             if (!this.hasAccess(2)) {
+                sap.ui.core.BusyIndicator.hide();
                 return false;
             }
             var bContinue = false;
@@ -62,6 +66,7 @@ sap.ui.define([
             if (vLifnr != null && vLifnr != "") {
                 bContinue = true;
             } else {
+                sap.ui.core.BusyIndicator.hide();
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.supplierSelectError"));
             }
 
@@ -71,6 +76,7 @@ sap.ui.define([
                         bContinue = true;
                     } else {
                         bContinue = false;
+                        sap.ui.core.BusyIndicator.hide();
                         sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/global.searchFieldsEmpty"));
                     }
                 } else {
@@ -79,27 +85,27 @@ sap.ui.define([
             }
 
             if (bContinue) {
-                var url = "/HeaderCFDISet?$expand=EMTDCNAV&$filter=IOption eq '3' and ILifnr eq '" + vLifnr + "'";
-
+                var aFilter = [];
+                aFilter.push(new sap.ui.model.Filter("IOption", sap.ui.model.FilterOperator.EQ, "3"));
+                aFilter.push(new sap.ui.model.Filter("ILifnr", sap.ui.model.FilterOperator.EQ, vLifnr));
 
                 if (vXblnr != "") {
-                    url += " and IXblnr eq '" + vXblnr + "'";
+                    aFilter.push(new sap.ui.model.Filter("IXblnr", sap.ui.model.FilterOperator.EQ, vXblnr));
                 }
 
                 if (startDate != "" && endDate != "") {
-                    url += " and IStartdate eq '" + startDate + "'" + " and IEnddate eq '" + endDate + "'";
+                    aFilter.push(new sap.ui.model.Filter("IStartdate", sap.ui.model.FilterOperator.EQ, startDate));
+                    aFilter.push(new sap.ui.model.Filter("IEnddate", sap.ui.model.FilterOperator.EQ, endDate));
                 }
 
-
-                var dueModel = oModel.getJsonModel(url);
-
-                var ojbResponse = dueModel.getProperty("/results/0");
-                var dueCompModel = ojbResponse.EMTDCNAV.results;
-
-                this.getOwnerComponent().setModel(new JSONModel(ojbResponse),
-                    "tableItemsCfdi");
-
-                this.paginate('tableItemsCfdi', '/EMTDCNAV', 1, 0);
+               this._GetODataV2(_oDataModel, _oDataEntity, aFilter, ["EMTDCNAV"]).then(resp => {
+                   var ojbResponse = resp.data.results[0];
+                   this.getOwnerComponent().setModel(new JSONModel(ojbResponse), "tableItemsCfdi");
+                   this.paginate('tableItemsCfdi', '/EMTDCNAV', 1, 0);
+                   sap.ui.core.BusyIndicator.hide();
+               }).catch(error => {
+                   sap.ui.core.BusyIndicator.hide();
+               });
             }
 
         },
@@ -156,7 +162,7 @@ sap.ui.define([
 
             var objRequest = {
                 "Lifnr": vLifnr,
-                "Type": "I",
+                "Type": "A",
                 "Log" : [ {"Uuid": "", "Description": "", "Sts": "" }]
             };
 
@@ -243,7 +249,6 @@ sap.ui.define([
                     url: oValidFiscales.sUrl,
                     method: "POST",
                     headers: {
-                       // "Content-Type": "text/xml",
                        "Content-Type": "text/xml; charset=utf-8",
                        "Access-Control-Allow-Origin": "*"
                     },

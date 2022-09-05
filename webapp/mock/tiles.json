@@ -260,6 +260,21 @@
                             "idFunction": 11
                         }
                     ]
+                },
+                {
+                    "id": "0009",
+                    "title": "/tiles.titleFi.0009.ValidacionCondi",
+                    "subHeader": "",
+                    "icon": "sap-icon://collections-management",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterValidacionCondicion",
+                    "functions": [
+                        {
+                            "idFunction": 11
+                        }
+                    ]
                 }
             ]
         },
@@ -517,6 +532,21 @@
                     ]
                 },
                 {
+                    "id": "0044",
+                    "title": "/tiles.acuerdosNS",
+                    "subHeader": "",
+                    "icon": "sap-icon://customer-order-entry",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterAcuerdosNS",
+                    "functions": [
+                        {
+                            "idFunction": 52
+                        }
+                    ]
+                },
+                {
                     "id": "0034",
                     "title": "/tiles.aportaciones",
                     "subHeader": "",
@@ -543,6 +573,21 @@
                     "functions": [
                         {
                             "idFunction": 53
+                        }
+                    ]
+                },
+                {
+                    "id": "0040",
+                    "title": "/tiles.PolizasboletinVta",
+                    "subHeader": "",
+                    "icon": "sap-icon://my-sales-order",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterBoletinVtaPolizas",
+                    "functions": [
+                        {
+                            "idFunction": 54
                         }
                     ]
                 }

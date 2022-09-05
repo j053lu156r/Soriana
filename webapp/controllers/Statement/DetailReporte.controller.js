@@ -152,7 +152,7 @@ sap.ui.define([
         _onDocumentMatched: function (oEvent) {
             this._document = oEvent.getParameter("arguments").document || this._document || "0";
             this._proveedor = oEvent.getParameter("arguments").proveedor || this._proveedor || "0";
-            this._serie = oEvent.getParameter("arguments").serie || this._serie || "0";
+            this._serie = oEvent.getParameter("arguments").serie || this._serie || "";
             this._fecha = oEvent.getParameter("arguments").fecha || this._fecha || "0";
 
 

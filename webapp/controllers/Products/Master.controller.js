@@ -6,7 +6,7 @@ sap.ui.define([
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "demo/models/formatterCatPrd",
-    "sap/ui/core/BusyIndicator"
+    "sap/ui/core/BusyIndicator",
 ], function (BaseController, JSONModel, Fragment, MessageBox, Filter, FilterOperator, formatterCatPrd, BusyIndicator) {
     "use strict";
 
@@ -301,6 +301,8 @@ sap.ui.define([
 
         async handleUploadPressChangePrice () {
 
+            //this.testToken();
+
             let archivo = this.getOwnerComponent().getModel('ITEXT64').getProperty('/attach');
             if (archivo.length == 1) {
 
@@ -324,14 +326,18 @@ sap.ui.define([
                 sap.ui.core.BusyIndicator.show();
 
                 let response = null;
+                let headers = {
+                    "X-Requested-With" : "X",
+                    "Content-Type": "application/json;charset=utf-8",
+                    "Accept": "application/json, text/javascript, */*;q=0.01"
+                };
 
-                await this._PostODataV2Async(_oDataModel, _oDataEntity, objRequest).then(resp => {
-
-                    response = resp.data;
+                await this._PostODataV2Async(_oDataModel, _oDataEntity, objRequest, headers).then(resp => {
+                    response = resp.d;
                     sap.ui.core.BusyIndicator.hide();
 
                 }).catch(error => {
-                    console.error(error);
+                    console.log(error);
                 });
 
                 if (response != null) {
@@ -395,11 +401,11 @@ sap.ui.define([
 
                 await this._PostODataV2Async(_oDataModel, _oDataEntity, objRequest).then(resp => {
 
-                    response = resp.data;
+                    response = resp.d;
                     sap.ui.core.BusyIndicator.hide();
 
                 }).catch(error => {
-                    console.error(error);
+                    console.log(error);
                 });
 
                 if (response != null) {
@@ -469,6 +475,7 @@ sap.ui.define([
                 }
             })
         },
+
         searchData: function () {
 
             if (!this.hasAccess(46)) {
@@ -499,8 +506,7 @@ sap.ui.define([
                 operator: sap.ui.model.FilterOperator.EQ,
                 value1: '2'
             })
-            )
-
+            );
 
             if (folio != '') {
 
@@ -537,6 +543,7 @@ sap.ui.define([
             sap.ui.core.BusyIndicator.show();
             let that = this;
             this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["ETPRICNAV"], "").then(resp => {
+                console.log(" RESP : " , resp.data);                
                 that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "Folios");
                 that.paginate("Folios", "/ETPRICNAV", 1, 0);
                 sap.ui.core.BusyIndicator.hide();
@@ -1091,10 +1098,10 @@ sap.ui.define([
                             sap.ui.core.BusyIndicator.show();
                             let resp = null;
                             await this._PostODataV2Async(_oDataModel, _oDataEntity, createObjReq).then(response => {
-                                resp = response.data;
+                                resp = response.d;
                                 sap.ui.core.BusyIndicator.hide();
                             }).catch(error => {
-                                console.error(error);
+                                console.log(error);
                             });
 
                             if (resp.ESuccess) {
@@ -1907,16 +1914,16 @@ sap.ui.define([
 
                     await that._PostODataV2Async(_oDataModel, _oDataEntity, objRequest).then(resp => {
 
-                        response = resp.data;
+                        response = resp.d;
                         sap.ui.core.BusyIndicator.hide();
 
                     }).catch(error => {
-                        console.error(error);
+                        console.log(error);
                     });
 
                     if (response != null) {
                         if (response.ESuccess === 'X') {
-                            const msg = "Se han generado correctamente la solicitud de cambiode costos.";
+                            const msg = "Se han generado correctamente la solicitud de cambio de costos.";
                             sap.m.MessageBox.success(msg, {
                                 actions: [sap.m.MessageBox.Action.CLOSE],
                                 emphasizedAction: sap.m.MessageBox.Action.CLOSE,
@@ -1976,11 +1983,11 @@ sap.ui.define([
     
                         await that._PostODataV2Async(_oDataModel, _oDataEntity, objRequest).then(resp => {
     
-                            response = resp.data;
+                            response = resp.d;
                             sap.ui.core.BusyIndicator.hide();
     
                         }).catch(error => {
-                            console.error(error);
+                            console.log(error);
                         });
 
                         if (response != null) {
@@ -2381,7 +2388,7 @@ sap.ui.define([
         },
 
         sendDataForNotification() {
-
+            let that = this;
             let fileMassive = this.byId("fileUploaderMassiveReg").getValue();
             let comprasMail = this.byId("correoInput").getValue();
 
@@ -2404,14 +2411,31 @@ sap.ui.define([
                 ]
             };
 
-            let resp = NotifAltaMas.create("/HeaderSet", createObjReq);
+           $.ajax({
+                async: true,
+                url: NotifAltaMas.sUrl + "HeaderSet",
+                method: "POST",
+                headers: {
+                    "X-Requested-With" : "X",
+                    "Content-Type": "application/json;charset=utf-8"
+                },
+                "data": JSON.stringify(createObjReq),
+                success: function(resp) {
+                    var status = resp.getElementsByTagName("d:EvSendStatus")[0].textContent;
+                    var message = resp.getElementsByTagName("d:Message")[0].textContent;
+                    var folio = resp.getElementsByTagName("d:EvFolio")[0].textContent;
 
-            if (resp.EvSendStatus == "OK") {
-                sap.m.MessageBox.success("Folio: " + resp.EvFolio);
-                this.closeDialog('massiveRegisterDialog');
-            } else {
-                sap.m.MessageBox.error(resp.ETRETURN.results[0].Message);
-            }
+                    if (status == "ERROR") {
+                        sap.m.MessageBox.error(message);
+                    } else {
+                        sap.m.MessageBox.success("Folio: " + folio);
+                        that.closeDialog('massiveRegisterDialog');
+                    }
+                },
+                error: function(resp, status, err) {
+                    sap.m.MessageBox.error(resp.ETRETURN.results[0].Message);
+                }
+            });
 
         },
 
@@ -2535,6 +2559,21 @@ sap.ui.define([
                 path: paramName,
                 operator: sap.ui.model.FilterOperator.EQ,
                 value1: paramValue
+            });
+        },
+
+        testToken: function(){
+            $.ajax({
+                url: this.sUri,
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8; IEEE754Compatible=true",
+                success: function(dataResponse) {
+                    console.log(dataResponse);
+                },
+                error: function(error, status, err) {
+                    console.log(error);
+                }
             });
         }
 

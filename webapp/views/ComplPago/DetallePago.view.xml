@@ -45,10 +45,8 @@
 			<f:DynamicPageHeader pinnable="true">
 				<layout:HorizontalLayout allowWrapping="true">
 					<layout:VerticalLayout class="sapUiMediumMarginEnd">
-						<ObjectAttribute title="{appTxts>/pay.form}" text=""/>
-						<ObjectAttribute title="{appTxts>/pay.headerLimitDate}" text=""/>
-						<ObjectAttribute title="{appTxts>/pay.datePay}" text=""/>
-						<ObjectAttribute title="{appTxts>/state.currency}" text=""/>
+ 						<ObjectAttribute title="{appTxts>/pay.headerLimitDate}" text="{detailComplPagos>/fecha}"/>
+ 						<ObjectAttribute title="{appTxts>/state.currency}" text="{detailComplPagos>/currency}"/>
 					</layout:VerticalLayout>
 
 
@@ -141,7 +139,7 @@
 						<Column  filterType="sap.ui.model.type.Integer" filterProperty="Belnr" sortProperty="Belnr" id="folioColumn" width="20%">
 							<m:Label text="{appTxts>/state.folio}" />
 							<template>
-								<m:ObjectIdentifier titlePress="onDocumentPress" titleActive="true" title="{GroupedTotales>Belnr}"  />
+								<m:ObjectIdentifier titlePress="onDocumentPress" titleActive="{= ${GroupedTotales>IdNumTipomov} !== '12'}" title="{GroupedTotales>Belnr}"  />
 							</template>
 						</Column>
 						<Column  sortProperty="Xblnr" filterProperty="Xblnr"  id="referenceColumn" width="20%">
@@ -170,16 +168,16 @@
 							</template>
 						</Column>
 						<Column sortProperty="MCondicion"  id="mCondicionColumn" width="20%">
-							<m:Label text="Mejor Condición" />
+							<m:Label text="{appTxts>/reporte.headerTitulo}" />
 							<template>
 								<m:Text text="{GroupedTotales>MCondicion}" wrapping="false" />
 							</template>
 						</Column>
 
 						<Column   id="verReporteColumn" width="20%">
-							<m:Label text="Reporte MC" />
+							<m:Label text="Reporte VC" />
 							<template>
-								<m:Button text="Ver reporte MC" press=".onPressReporte" icon="sap-icon://expense-report" type="Default" visible="{path:'GroupedTotales>MCondicion', formatter:'.hasReport'}" />
+								<m:Button text="Ver reporte VC" press=".onPressReporte" icon="sap-icon://expense-report" type="Default" visible="{path:'GroupedTotales>MCondicion', formatter:'.hasReport'}" />
 							</template>
 						</Column>
 

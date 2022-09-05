@@ -76,6 +76,7 @@ sap.ui.define([
         },
         sendLogin() {
             var that = this;
+            
             var logon_user = this.getView().byId("logon_user");
             var logon_pass = this.getView().byId("logon_pass");
             var logon_user_value = logon_user.getValue();

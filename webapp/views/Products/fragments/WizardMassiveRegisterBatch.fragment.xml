@@ -1,76 +1,47 @@
-<core:FragmentDefinition  controllerName="demo.controllers.Products.Master"
-	xmlns="sap.m"
-	xmlns:core="sap.ui.core"
-	xmlns:f="sap.f"
-	xmlns:form="sap.ui.layout.form"
-	xmlns:u="sap.ui.unified"
+<core:FragmentDefinition controllerName="demo.controllers.Products.Master"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:u="sap.ui.unified"
     xmlns:l="sap.ui.layout"
-	xmlns:layout="sap.ui.layout">
-	<Dialog
-		id="massiveRegisterDialog"
-		showHeader="false"
-		verticalScrolling="false"
-		contentHeight="70%"
-		contentWidth="45%"
-        >
-		<f:DynamicPage
-			toggleHeaderOnTitleClick="false"
-			showFooter="true">
-			<f:title>
-				<f:DynamicPageTitle>
-					<f:heading>
-						<Title text="{appTxts>/products.titleMassiveRegister}"/>
-					</f:heading>
-				</f:DynamicPageTitle>
-			</f:title>
+    xmlns:layout="sap.ui.layout">
+    <Dialog id="massiveRegisterDialog" showHeader="false" verticalScrolling="false" contentHeight="70%" contentWidth="45%">
+        <f:DynamicPage toggleHeaderOnTitleClick="false" showFooter="true">
+            <f:title>
+                <f:DynamicPageTitle>
+                    <f:heading>
+                        <Title text="{appTxts>/products.titleMassiveRegister}"/>
+                    </f:heading>
+                </f:DynamicPageTitle>
+            </f:title>
 
-        <f:content>
-		<l:VerticalLayout>
+            <f:content>
+                <l:VerticalLayout>
 
-                    <MessageStrip class="sapUiSmallMarginBottom"
-								text="{appTxts>/products.messageStripMassiveReg}"
-								showIcon="true"/>
+                    <MessageStrip class="sapUiSmallMarginBottom" text="{appTxts>/products.messageStripMassiveReg}" showIcon="true"/>
 
-                                <Link
-                                                text="{appTxts>/products.linkGuideMassive}"
-                                                target="_blank"
-                                                href="./assets/GUIAS/Guia_Alta_Masiva.pdf" 
-                                                class="sapUiSmallMarginBottom"/>
+                    <Link text="{appTxts>/products.linkGuideMassive}" target="_blank" href="./assets/GUIAS/Guia_Alta_Masiva.pdf" class="sapUiSmallMarginBottom"/>
 
-                                <Link
-                                                text="{appTxts>/products.linkFormatMassive}"
-                                                target="_blank"
-                                                href="./assets/GUIAS/Formato_Alta_Masiva.xlsx"
-                                                class="sapUiSmallMarginBottom" />
+                    <Link text="{appTxts>/products.linkFormatMassive}" target="_blank" href="./assets/GUIAS/Formato_Alta_Masiva.xlsx" class="sapUiSmallMarginBottom" />
 
-        <Label text="{appTxts>/products.personalBuyerEmail}" labelFor="correoInput" />
-		<Input
-			id="correoInput"
-			placeholder="{appTxts>/products.enterEmailplaceholder}"
-            type="Email"
-            liveChange="changeBuyerEmail"
-			>
-		</Input>
+                    <Label text="{appTxts>/products.personalBuyerEmail}" labelFor="correoInput" />
+                    <Input id="correoInput" placeholder="{appTxts>/products.enterEmailplaceholder}" type="Email" liveChange="changeBuyerEmail">
+                    </Input>
 
-        <Label text="{appTxts>/products.fileUploaderMassiveReg}" labelFor="fileUploaderMassiveReg" class="sapUiSmallMarginTop"/>
+                    <Label text="{appTxts>/products.fileUploaderMassiveReg}" labelFor="fileUploaderMassiveReg" class="sapUiSmallMarginTop"/>
 
-		<u:FileUploader
-			id="fileUploaderMassiveReg"
-			name="myFileUpload"
-			tooltip="{appTxts>/products.toolTipUpload}"
-            fileType="xlsx"
-            change="changeFileMassiveReg"
-            />
-            </l:VerticalLayout>
+                    <u:FileUploader id="fileUploaderMassiveReg" name="myFileUpload" tooltip="{appTxts>/products.toolTipUpload}" fileType="xlsx" change="changeFileMassiveReg" />
+                </l:VerticalLayout>
             </f:content>
 
-			<f:footer>
-				<OverflowToolbar>
-                    <Button id="finishMassive"	text="{appTxts>/products.massiveSend}" type="Emphasized" press="sendDataForNotification" enabled="false"/>
+            <f:footer>
+                <OverflowToolbar>
+                    <Button id="finishMassive" text="{appTxts>/products.massiveSend}" type="Emphasized" press="sendDataForNotification" enabled="false"/>
                     <ToolbarSpacer/>
-                    <Button	text="{appTxts>/products.cancel}" type="Emphasized" press=".closeDialog('massiveRegisterDialog')"/>
+                    <Button text="{appTxts>/products.cancel}" type="Emphasized" press=".closeDialog('massiveRegisterDialog')"/>
                 </OverflowToolbar>
-			</f:footer>
-		</f:DynamicPage>
-	</Dialog>
+            </f:footer>
+        </f:DynamicPage>
+    </Dialog>
 </core:FragmentDefinition>
