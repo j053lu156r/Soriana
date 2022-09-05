@@ -25,72 +25,25 @@ sap.ui.define([
 
             this.VisibleTable();
         },
-      
+
         searchData2: function () {
             var that = this;
             var url = "/sap/opu/odata/sap/ZOSP_MEJOR_COND_REP_SRV/RepMejorCondSet";
             if (this.getView().byId("supplierInput").getValue() !== "") {
-               
-                url=url+"?$filter=(IAcre eq '"+(this.getView().byId("supplierInput").getValue().split("-")[0].trim()).padStart(10, 0)+"'"
-            }else{
-                
-                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/ValCondi.ErrorPRoveedor'));
-                return
-            }
-           
-            if (that.getView().byId("IDSerie").getValue() !== "") {
-                url=url+ "and ISerie eq '"+that.getView().byId("IDSerie").getValue()+"'"
-            }
-            if (that.getView().byId("IDFolio").getValue()!=="") {
-                url=url+ " and IFolio eq '"+that.getView().byId("IDFolio").getValue()+"'"
-            }
-            if (that.getView().byId("dateRange").getValue() !== "") {
-                if (that.getView().byId("dateRange").getValue().split("-")[1].trim() === that.getView().byId("dateRange").getValue().split("-")[0].trim()) {
-                    var FechaI = that.getView().byId("dateRange").getDateValue();
-                    var FechaF = that.getView().byId("dateRange").getDateValue();
-                } else {
-                    var FechaI = that.getView().byId("dateRange").getDateValue();
-                    var FechaF = that.getView().byId("dateRange").getSecondDateValue();
-                }
-                url=url+ "and (IFe ge '"+FechaI.toISOString().slice(0, 10).replaceAll('-', '') +"' and IFe le '"+FechaF.toISOString().slice(0, 10).replaceAll('-', '') +"')"
-            }   
-            url=url+')'
-           // /sap/opu/odata/sap/ZOSP_MEJOR_COND_REP_SRV/RepMejorCondSet?$filter=(IAcre eq '0000229732' and ISerie eq 'B' and IFolio eq '81987' and (IFe ge '20220706' and IFe le '20220730'))
 
-console.log(url)
-            sap.ui.core.BusyIndicator.show();
-            that. _GEToDataV2ajax(url).then(function (_GEToDataV2Response) {
-                sap.ui.core.BusyIndicator.hide();
-                console.log(_GEToDataV2Response)
-                var data = _GEToDataV2Response.d.results;
-               
-                var auxJsonModel = new sap.ui.model.json.JSONModel(data);
-                that.getView().setModel(auxJsonModel, 'ModelValidacion');
-            });
-
-        },
-
-        searchData: function () {
-            var that = this;
-            // /sap/opu/odata/sap/ZOSP_MEJOR_COND_REP_SRV/RepMejorCondSet?$filter=(IAcre eq '0000229732' and ISerie eq 'B' and IFolio eq '81987' and IFe eq '20220706')
-            var auxFilters = [];
-            if (this.getView().byId("supplierInput").getValue() !== "") {
-                var valor = "";
-
-                auxFilters.push(new sap.ui.model.Filter({
-                    path: "IAcre",
-                    operator: sap.ui.model.FilterOperator.EQ,
-                    value1: this.getView().byId("supplierInput").getValue().split("-")[1].trim()
-                })
-                )
+                url = url + "?$filter=(IAcre eq '" + (this.getView().byId("supplierInput").getValue().split("-")[0].trim()).padStart(10, 0) + "'"
             } else {
 
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/ValCondi.ErrorPRoveedor'));
                 return
             }
 
-
-
+            if (that.getView().byId("IDSerie").getValue() !== "") {
+                url = url + "and ISerie eq '" + that.getView().byId("IDSerie").getValue() + "'"
+            }
+            if (that.getView().byId("IDFolio").getValue() !== "") {
+                url = url + " and IFolio eq '" + that.getView().byId("IDFolio").getValue() + "'"
+            }
             if (that.getView().byId("dateRange").getValue() !== "") {
                 if (that.getView().byId("dateRange").getValue().split("-")[1].trim() === that.getView().byId("dateRange").getValue().split("-")[0].trim()) {
                     var FechaI = that.getView().byId("dateRange").getDateValue();
@@ -99,58 +52,283 @@ console.log(url)
                     var FechaI = that.getView().byId("dateRange").getDateValue();
                     var FechaF = that.getView().byId("dateRange").getSecondDateValue();
                 }
-            //    url='RepMejorCondSet/(IFe ge '+FechaI +'and IFe le' + FechaF+')';
-                auxFilters.push(new sap.ui.model.Filter({
-                    path: "IFe",
-                    operator: sap.ui.model.FilterOperator.GE,
-                    value1: FechaI.toISOString().slice(0, 10) + 'T00:00:00'
-                   // value2: FechaF.toISOString().slice(0, 10) + 'T00:00:00'
-                 
-                })
-            )
-         /* auxFilters.push(new sap.ui.model.Filter({
-                path: "IFe",
-                operator: sap.ui.model.FilterOperator.LE,
-                value1: FechaF.toISOString().slice(0, 10) + 'T00:00:00'
-               
-            })
-        )*/
+                url = url + "and (IFe ge '" + FechaI.toISOString().slice(0, 10).replaceAll('-', '') + "' and IFe le '" + FechaF.toISOString().slice(0, 10).replaceAll('-', '') + "')"
             }
-            if (that.getView().byId("IDFolio").getValue() !== "") {
-                auxFilters.push(new sap.ui.model.Filter({
-                    path: "IFolio",
-                    operator: sap.ui.model.FilterOperator.EQ,
-                    value1: that.getView().byId("IDFolio").getValue()
-                })
-                )
+            url = url + ')'
+            // /sap/opu/odata/sap/ZOSP_MEJOR_COND_REP_SRV/RepMejorCondSet?$filter=(IAcre eq '0000229732' and ISerie eq 'B' and IFolio eq '81987' and (IFe ge '20220706' and IFe le '20220730'))
 
-            }
-            if (that.getView().byId("IDSerie").getValue() !== "") {
-                auxFilters.push(new sap.ui.model.Filter({
-                    path: "ISerie",
-                    operator: sap.ui.model.FilterOperator.EQ,
-                    value1: that.getView().byId("IDSerie").getValue()
-                })
-                )
-
-            }
-
-            var model = "ZOSP_MEJOR_COND_REP_SRV";
-            var entity = "RepMejorCondSet";
-            var expand = "";
-            var filter = auxFilters;
-            var select = "";
-console.log(filter)
+          
             sap.ui.core.BusyIndicator.show();
-            that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
+            that._GEToDataV2ajax(url).then(function (_GEToDataV2Response) {
                 sap.ui.core.BusyIndicator.hide();
-                var data = _GEToDataV2Response.data.results;
-                console.log(data)
+
+                function onlyUnique(value, index, self) {
+                    return self.indexOf(value) === index;
+                }
+               
+                var data = _GEToDataV2Response.d.results;
+             
+                var oSLocation = data.map(function (e) {
+                    return e.TeSalida.DocCompra;
+                }).filter(onlyUnique).map(function (e, i) {
+                    return {
+                        key: i,
+                        value: e
+                    };
+                });
+              
+                var arrt = []
+               
+                
+                for (var x = 0; x < oSLocation.length; x++) {
+                    var CantidadSap = 0;
+                    var Cantidad = 0;
+                    var MejorCantidad = 0;
+                    var MejorPrecio = 0;
+                    var PrecioUnSi = 0;
+                    var PrecCDescSap = 0;
+                    var ImporteSap = 0;
+                    var ImporteTotal = 0;
+                    var MejorSubtotal = 0;
+                    var ImpuestosSap = 0;
+                    var ImpuestosFact = 0;
+                    var ImpuestosTotal = 0;
+                    var ImpTotCImpSap = 0;
+                    var ImporteTotCi = 0;
+                    var MejorTotal = 0;
+                    var NcargoMc = 0;
+                    var NcargoImpMc = 0;
+                    var NcargoTotMc = 0;
+                     var DocCompra=0;
+
+
+                    
+                    for (var y = 0; y < data.length; y++) {
+
+                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
+                            CantidadSap = CantidadSap + Number(data[y].TeSalida.CantidadSap);
+                        }
+                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
+                            Cantidad = Cantidad + Number(data[y].TeSalida.Cantidad);
+                        }
+                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
+                            MejorCantidad = MejorCantidad + Number(data[y].TeSalida.MejorCantidad);
+                        }
+                        
+                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
+                            PrecCDescSap = PrecCDescSap + Number(data[y].TeSalida.PrecCDescSap);
+                        }
+
+                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
+                            PrecioUnSi = PrecioUnSi + Number(data[y].TeSalida.PrecioUnSi);
+                        }
+                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
+                            MejorPrecio = MejorPrecio + Number(data[y].TeSalida.MejorPrecio);
+                        }
+
+                      
+                        
+                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
+                            ImporteSap = ImporteSap + Number(data[y].TeSalida.ImporteSap);
+                        }
+                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
+                            ImporteTotal = ImporteTotal + Number(data[y].TeSalida.ImporteTotal);
+                        }
+                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
+                            MejorSubtotal = MejorSubtotal + Number(data[y].TeSalida.MejorSubtotal);
+                        }
+                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
+                            ImpuestosSap = ImpuestosSap + Number(data[y].TeSalida.ImpuestosSap);
+                        }
+                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
+                            ImpuestosFact = ImpuestosFact + Number(data[y].TeSalida.ImpuestosFact);
+                        }
+
+                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
+                            ImpuestosTotal = ImpuestosTotal + Number(data[y].TeSalida.ImpuestosTotal);
+                        }
+
+                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
+                            ImpTotCImpSap = ImpTotCImpSap + Number(data[y].TeSalida.ImpTotCImpSap);
+                        }
+
+                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
+                            ImporteTotCi = ImporteTotCi + Number(data[y].TeSalida.ImporteTotCi);
+                        }
+
+                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
+                            MejorTotal = MejorTotal + Number(data[y].TeSalida.MejorTotal);
+                        }
+
+                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
+                            NcargoMc = NcargoMc + Number(data[y].TeSalida.NcargoMc);
+                        }
+                        //
+                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
+                            NcargoImpMc = NcargoImpMc + Number(data[y].TeSalida.NcargoImpMc);
+                        }
+
+                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
+                            NcargoTotMc = NcargoTotMc + Number(data[y].TeSalida.NcargoTotMc);
+                        }
+                        DocCompra=oSLocation[x].value;
+
+                    }
+
+                
+                  
+                  
+                   
+                    var ARRT = {
+                        EMsj: "",
+                        IAcre: "",
+                        ICmsu: "",
+                        IDocmat: "",
+                        IEsta: "",
+                        IFe: "",
+                        IFolio: "",
+                        INe: "",
+                        IPedi: "",
+                        ISerie: "",
+                        TeSalida: {
+                            Cantidad: Cantidad.toFixed(2),
+                            CantidadSap: CantidadSap.toFixed(2),
+                            Cmsucfol: "",
+                            DescEstat: "",
+                            DocCargo: "",
+                            DocCompra: DocCompra,
+                            DocFactura: "",
+                            DocMaterial: "",
+                            EanUpc: "",
+                            Estatus: "",
+                            FechaRegSap: "",
+                            FecharSap: "",
+                            FolionEntrada: "",
+                            ImpTotCImpSap: ImpTotCImpSap.toFixed(2),
+                            ImporteSap: ImporteSap.toFixed(2),
+                            ImporteTotCi: ImporteTotCi.toFixed(2),
+                            ImporteTotal: ImporteTotal.toFixed(2),
+                            ImpuestosFact: ImpuestosFact.toFixed(2),
+                            ImpuestosSap: ImpuestosSap.toFixed(2),
+                            ImpuestosTotal: ImpuestosTotal.toFixed(2),
+                            Lifnr: "",
+                            Material: "",
+                            MaterialSap: "",
+                            MejorCantidad: MejorCantidad.toFixed(2),
+                            MejorPrecio: MejorPrecio.toFixed(2),
+                            MejorSubtotal: MejorSubtotal.toFixed(2),
+                            MejorTotal: MejorTotal.toFixed(2),
+                            NcargoImpMc:NcargoImpMc.toFixed(2),
+                            NcargoMc: NcargoMc.toFixed(2),
+                            NcargoTotMc: NcargoTotMc.toFixed(2),
+                            Posicion: "",
+                            PrecCDescSap: PrecCDescSap.toFixed(2),
+                            PrecioUnSi: PrecioUnSi.toFixed(2),
+                            Serfol: "",
+                            UmedidaPSap: "",
+                            Unidad: "",
+                        }
+                    }
+                   
+                    data.push(ARRT)
+
+
+
+                }
+                data.sort(function (a, b) {
+                    if (a.TeSalida.DocCompra > b.TeSalida.DocCompra) {
+                      return 1;
+                    }
+                    if (a.TeSalida.DocCompra < b.TeSalida.DocCompra) {
+                      return -1;
+                    }
+                  
+                    return 0;
+                  });
                 var auxJsonModel = new sap.ui.model.json.JSONModel(data);
                 that.getView().setModel(auxJsonModel, 'ModelValidacion');
             });
 
         },
+
+        /*  searchData: function () {
+              var that = this;
+              // /sap/opu/odata/sap/ZOSP_MEJOR_COND_REP_SRV/RepMejorCondSet?$filter=(IAcre eq '0000229732' and ISerie eq 'B' and IFolio eq '81987' and IFe eq '20220706')
+              var auxFilters = [];
+              if (this.getView().byId("supplierInput").getValue() !== "") {
+                  var valor = "";
+  
+                  auxFilters.push(new sap.ui.model.Filter({
+                      path: "IAcre",
+                      operator: sap.ui.model.FilterOperator.EQ,
+                      value1: this.getView().byId("supplierInput").getValue().split("-")[1].trim()
+                  })
+                  )
+              } else {
+  
+                  sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/ValCondi.ErrorPRoveedor'));
+                  return
+              }
+  
+  
+  
+              if (that.getView().byId("dateRange").getValue() !== "") {
+                  if (that.getView().byId("dateRange").getValue().split("-")[1].trim() === that.getView().byId("dateRange").getValue().split("-")[0].trim()) {
+                      var FechaI = that.getView().byId("dateRange").getDateValue();
+                      var FechaF = that.getView().byId("dateRange").getDateValue();
+                  } else {
+                      var FechaI = that.getView().byId("dateRange").getDateValue();
+                      var FechaF = that.getView().byId("dateRange").getSecondDateValue();
+                  }
+          
+                  auxFilters.push(new sap.ui.model.Filter({
+                      path: "IFe",
+                      operator: sap.ui.model.FilterOperator.GE,
+                      value1: FechaI.toISOString().slice(0, 10) + 'T00:00:00'
+                      // value2: FechaF.toISOString().slice(0, 10) + 'T00:00:00'
+  
+                  })
+                  )
+                 
+              }
+              if (that.getView().byId("IDFolio").getValue() !== "") {
+                  auxFilters.push(new sap.ui.model.Filter({
+                      path: "IFolio",
+                      operator: sap.ui.model.FilterOperator.EQ,
+                      value1: that.getView().byId("IDFolio").getValue()
+                  })
+                  )
+  
+              }
+              if (that.getView().byId("IDSerie").getValue() !== "") {
+                  auxFilters.push(new sap.ui.model.Filter({
+                      path: "ISerie",
+                      operator: sap.ui.model.FilterOperator.EQ,
+                      value1: that.getView().byId("IDSerie").getValue()
+                  })
+                  )
+  
+              }
+  
+            
+  
+              var model = "ZOSP_MEJOR_COND_REP_SRV";
+              var entity = "RepMejorCondSet";
+              var expand = "";
+              var filter = auxFilters;
+              var select = "";
+              console.log(filter)
+              sap.ui.core.BusyIndicator.show();
+              that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
+                  sap.ui.core.BusyIndicator.hide();
+                  var data = _GEToDataV2Response.data.results;
+                  console.log(data)
+                 
+                  var auxJsonModel = new sap.ui.model.json.JSONModel(data);
+                  that.getView().setModel(auxJsonModel, 'ModelValidacion');
+              });
+  
+          },*/
         VisibleTable: function () {
 
             var that = this;
@@ -414,31 +592,31 @@ console.log(filter)
             //L
             aCols.push({
                 label: texts.getProperty("/ValCondi.cantidadRecibo"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/CantidadSap'
             });
             //M
             aCols.push({
                 label: texts.getProperty("/ValCondi.costoRecibo"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/PrecCDescSap'
             });
             //N
             aCols.push({
                 label: texts.getProperty("/ValCondi.subtotalRecibo"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImporteSap'
             });
             //O
             aCols.push({
                 label: texts.getProperty("/ValCondi.impuestosRecibo"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImpuestosSap'
             });
             //P
             aCols.push({
                 label: texts.getProperty("/ValCondi.totalRecibo"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImpTotCImpSap'
             });
             //Q
@@ -469,79 +647,79 @@ console.log(filter)
             //U
             aCols.push({
                 label: texts.getProperty("/ValCondi.cantidadCFDI"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/Cantidad'
             });
             //V
             aCols.push({
                 label: texts.getProperty("/ValCondi.costoCFDI"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/PrecioUnSi'
             });
             //W
             aCols.push({
                 label: texts.getProperty("/ValCondi.subtotalCFDI"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImporteTotal'
             });
             //X
             aCols.push({
                 label: texts.getProperty("/ValCondi.impuestosCFDI"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImpuestosFact'
             });
             //Y
             aCols.push({
                 label: texts.getProperty("/ValCondi.totalCFDI"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImporteTotCi'
             });
             //Z
             aCols.push({
                 label: texts.getProperty("/ValCondi.cantidadMC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/MejorCantidad'
             });
             //AA
             aCols.push({
                 label: texts.getProperty("/ValCondi.costoMC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/MejorPrecio'
             });
             //BB
             aCols.push({
                 label: texts.getProperty("/ValCondi.subtotalMC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/MejorSubtotal'
             });
             //CC
             aCols.push({
                 label: texts.getProperty("/ValCondi.impuestosMC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImpuestosTotal'
             });
             //DD
             aCols.push({
                 label: texts.getProperty("/ValCondi.totalMC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/MejorTotal'
             });
             //EE
             aCols.push({
                 label: texts.getProperty("/ValCondi.subtotalNC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/NcargoMc'
             });
             //FF
             aCols.push({
                 label: texts.getProperty("/ValCondi.impuestosNC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/NcargoImpMc'
             });
             //GG
             aCols.push({
                 label: texts.getProperty("/ValCondi.totalNC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/NcargoTotMc'
             });
             //HH
@@ -593,83 +771,7 @@ console.log(filter)
             });
         },
 
-        /*
-        getToken: function () {
-            console.log("getToken")
-            //Consulta
-            var id = null;
-            $.ajax({
-                type: 'GET',
-                url: '/sap/opu/odata/sap/ZOSP_CATPRO_SRV/?$format=xml',
-
-                headers: {
-                    "X-CSRF-Token": "Fetch"
-                },
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                async: false,
-                success: function (dataR, textStatus, jqXHR) {
-                    id = jqXHR.getResponseHeader('X-CSRF-Token');
-                    Console.log(id)
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    id = jqXHR.getResponseHeader('X-CSRF-Token');
-                    console.log(id)
-                }
-            });
-            return id;
-        },
-
-post2:function(){
-    var arrjson={
-        "IOption": "16",
-        "ITEXT64":[{"IText64":"data:text/plain;base64,MzI0Njk5CU9SRUYJMDAwMwk3NTAxNTg5OTEwMDA5CTkwDQozMjQ2OTkJT1JFRgkwMDAzCTc1MDE1ODk5NDAwMDYJOTANCjMyNDY5OQlPUkVGCTAwMDMJNzUwMTU4OTkyMDAwOAk5MA0K"}],
-        "ETMODIFY": [
-            {
-                "OrgCompras": "",
-                "Lifnr": "",
-                "Codigoean": "",
-                "Costobnuevo": "",
-                "Material":""
-            }
-        ],
-        "ETDPRINT": [{
-            "Prinbr": "",
-            "EanUpcBase": "",
-            "HazardDescript": "",
-            "DesNormal": "",
-            "UndDn": "",
-            "CostBruto": "",
-            "UndCb": "",
-            "Zfechenv": "",
-            "Docnum": "",
-            "Adver": "",
-            "Error": ""
-        }
-    ]
-};
-    $.ajax({
-        type: 'POST',
-        url: '/sap/opu/odata/sap/ZOSP_CATPRO_SRV/HdrcatproSet',
-        headers: {
-            "X-CSRF-Token": this.getToken()
-        },
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        async: true,
-        data: JSON.stringify(arrjson),
-        success: function (dataR, textStatus, jqXHR) {
-       console.log(dataR)
-
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-          console.log(jqXHR)
-        }
-    });
-},
-
-
-*/
+       
 
 
     });
