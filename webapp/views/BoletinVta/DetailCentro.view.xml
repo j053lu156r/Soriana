@@ -104,7 +104,7 @@
                                     </m:Column> -->
 								</m:columns>
 								<m:items>
-									<m:ColumnListItem >
+									<m:ColumnListItem type="Navigation" press="onListItemPress">
 										<m:cells>
                                             <m:ObjectIdentifier title="{promotionCenterDet>Plant}" 
                                                 text="{promotionCenterDet>Name1}" />

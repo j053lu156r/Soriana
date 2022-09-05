@@ -577,6 +577,21 @@
                     ]
                 },
                 {
+                    "id": "0041",
+                    "title": "/tiles.boletinVtaProveedor",
+                    "subHeader": "",
+                    "icon": "sap-icon://my-sales-order",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterBoletinVtaProv",
+                    "functions": [
+                        {
+                            "idFunction": 53
+                        }
+                    ]
+                },
+                {
                     "id": "0040",
                     "title": "/tiles.PolizasboletinVta",
                     "subHeader": "",
