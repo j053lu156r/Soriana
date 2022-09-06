@@ -1172,6 +1172,7 @@ sap.ui.define([
         buildExportTable: function () {
             var texts = this.getOwnerComponent().getModel("appTxts");
             var data = this.formatStatus(this.getOwnerComponent().getModel("totales").getProperty("/Detalles/results"), texts);
+            console.log(data)
 
             var columns = [
                 {
@@ -1183,6 +1184,16 @@ sap.ui.define([
                 {
                     label: texts.getProperty("/state.statusUPC").toUpperCase(),
                     property: "status",
+                    width: 15
+                },
+                {
+                    label: texts.getProperty("/state.xlsx.folio").toUpperCase(),
+                    property: "Folio",
+                    width: 15
+                },
+                {
+                    label: texts.getProperty("/state.xlsx.sucursal").toUpperCase(),
+                    property: "Sucursal",
                     width: 15
                 },
                 {
