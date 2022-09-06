@@ -211,8 +211,9 @@ sap.ui.define([
                 aCols = [];
 
             var texts = this.getOwnerComponent().getModel("appTxts");
-            //A
-            aCols.push({
+           
+             //A
+             aCols.push({
                 label: texts.getProperty("/reporte.headerOrden"),
                 type: EdmType.String,
                 property: 'TeSalida/DocCompra'
@@ -280,31 +281,31 @@ sap.ui.define([
             //L
             aCols.push({
                 label: texts.getProperty("/reporte.cantidadRecibo"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/CantidadSap'
             });
             //M
             aCols.push({
                 label: texts.getProperty("/reporte.costoRecibo"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/PrecCDescSap'
             });
             //N
             aCols.push({
                 label: texts.getProperty("/reporte.subtotalRecibo"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImporteSap'
             });
             //O
             aCols.push({
                 label: texts.getProperty("/reporte.impuestosRecibo"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImpuestosSap'
             });
             //P
             aCols.push({
                 label: texts.getProperty("/reporte.totalRecibo"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImpTotCImpSap'
             });
             //Q
@@ -335,79 +336,79 @@ sap.ui.define([
             //U
             aCols.push({
                 label: texts.getProperty("/reporte.cantidadCFDI"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/Cantidad'
             });
             //V
             aCols.push({
                 label: texts.getProperty("/reporte.costoCFDI"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/PrecioUnSi'
             });
             //W
             aCols.push({
                 label: texts.getProperty("/reporte.subtotalCFDI"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImporteTotal'
             });
             //X
             aCols.push({
                 label: texts.getProperty("/reporte.impuestosCFDI"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImpuestosFact'
             });
             //Y
             aCols.push({
                 label: texts.getProperty("/reporte.totalCFDI"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImporteTotCi'
             });
             //Z
             aCols.push({
                 label: texts.getProperty("/reporte.cantidadMC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/MejorCantidad'
             });
             //AA
             aCols.push({
                 label: texts.getProperty("/reporte.costoMC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/MejorPrecio'
             });
             //BB
             aCols.push({
                 label: texts.getProperty("/reporte.subtotalMC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/MejorSubtotal'
             });
             //CC
             aCols.push({
                 label: texts.getProperty("/reporte.impuestosMC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImpuestosTotal'
             });
             //DD
             aCols.push({
                 label: texts.getProperty("/reporte.totalMC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/MejorTotal'
             });
             //EE
             aCols.push({
                 label: texts.getProperty("/reporte.subtotalNC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/NcargoMc'
             });
             //FF
             aCols.push({
                 label: texts.getProperty("/reporte.impuestosNC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/NcargoImpMc'
             });
             //GG
             aCols.push({
                 label: texts.getProperty("/reporte.totalNC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/NcargoTotMc'
             });
             //HH

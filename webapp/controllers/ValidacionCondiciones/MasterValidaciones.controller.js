@@ -67,9 +67,39 @@ sap.ui.define([
                 }
                
                 var data = _GEToDataV2Response.d.results;
-             
-                var oSLocation = data.map(function (e) {
-                    return e.TeSalida.DocCompra;
+               
+                const unicos3 = [];
+
+                for(var indice = 0; indice < data.length; indice++) {
+                
+                  const persona = data[indice];
+                  let esDuplicado = false;
+                  for(var i = 0; i < unicos3.length; i++) {
+              
+                    if (Number(unicos3[i].TeSalida.FolionEntrada) === Number(persona.TeSalida.FolionEntrada) && Number(unicos3[i].TeSalida.Posicion) === Number(persona.TeSalida.Posicion) ) {
+                      esDuplicado = true;
+                      break;
+                    }
+                  }
+                  
+                  if (!esDuplicado) {
+                    unicos3.push(persona);
+                  }
+                }
+
+                unicos3.sort(function (a, b) {
+                    if (Number(a.TeSalida.FolionEntrada) > Number(b.TeSalida.FolionEntrada)) {
+                      return 1;
+                    }
+                    if (Number(a.TeSalida.FolionEntrada) < Number(b.TeSalida.FolionEntrada)) {
+                      return -1;
+                    }
+                  
+                    return 0;
+                  });
+               
+                var Unicos = unicos3.map(function (e) {
+                    return e.TeSalida.FolionEntrada;
                 }).filter(onlyUnique).map(function (e, i) {
                     return {
                         key: i,
@@ -77,258 +107,131 @@ sap.ui.define([
                     };
                 });
               
-                var arrt = []
-               
-                
-                for (var x = 0; x < oSLocation.length; x++) {
-                    var CantidadSap = 0;
-                    var Cantidad = 0;
-                    var MejorCantidad = 0;
-                    var MejorPrecio = 0;
-                    var PrecioUnSi = 0;
-                    var PrecCDescSap = 0;
-                    var ImporteSap = 0;
-                    var ImporteTotal = 0;
-                    var MejorSubtotal = 0;
-                    var ImpuestosSap = 0;
-                    var ImpuestosFact = 0;
-                    var ImpuestosTotal = 0;
-                    var ImpTotCImpSap = 0;
-                    var ImporteTotCi = 0;
-                    var MejorTotal = 0;
-                    var NcargoMc = 0;
-                    var NcargoImpMc = 0;
-                    var NcargoTotMc = 0;
-                     var DocCompra=0;
+      
+            for (var x = 0; x < Unicos.length; x++) {
+                var CantidadSap = 0;
+                var Cantidad = 0;
+                var MejorCantidad = 0;
+                var MejorPrecio = 0;
+                var PrecioUnSi = 0;
+                var PrecCDescSap = 0;
+                var ImporteSap = 0;
+                var ImporteTotal = 0;
+                var MejorSubtotal = 0;
+                var ImpuestosSap = 0;
+                var ImpuestosFact = 0;
+                var ImpuestosTotal = 0;
+                var ImpTotCImpSap = 0;
+                var ImporteTotCi = 0;
+                var MejorTotal = 0;
+                var NcargoMc = 0;
+                var NcargoImpMc = 0;
+                var NcargoTotMc = 0;
+                 var FolionEntrada=0;
 
-
-                    
-                    for (var y = 0; y < data.length; y++) {
-
-                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
-                            CantidadSap = CantidadSap + Number(data[y].TeSalida.CantidadSap);
-                        }
-                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
-                            Cantidad = Cantidad + Number(data[y].TeSalida.Cantidad);
-                        }
-                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
-                            MejorCantidad = MejorCantidad + Number(data[y].TeSalida.MejorCantidad);
-                        }
-                        
-                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
-                            PrecCDescSap = PrecCDescSap + Number(data[y].TeSalida.PrecCDescSap);
-                        }
-
-                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
-                            PrecioUnSi = PrecioUnSi + Number(data[y].TeSalida.PrecioUnSi);
-                        }
-                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
-                            MejorPrecio = MejorPrecio + Number(data[y].TeSalida.MejorPrecio);
-                        }
-
-                      
-                        
-                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
-                            ImporteSap = ImporteSap + Number(data[y].TeSalida.ImporteSap);
-                        }
-                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
-                            ImporteTotal = ImporteTotal + Number(data[y].TeSalida.ImporteTotal);
-                        }
-                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
-                            MejorSubtotal = MejorSubtotal + Number(data[y].TeSalida.MejorSubtotal);
-                        }
-                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
-                            ImpuestosSap = ImpuestosSap + Number(data[y].TeSalida.ImpuestosSap);
-                        }
-                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
-                            ImpuestosFact = ImpuestosFact + Number(data[y].TeSalida.ImpuestosFact);
-                        }
-
-                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
-                            ImpuestosTotal = ImpuestosTotal + Number(data[y].TeSalida.ImpuestosTotal);
-                        }
-
-                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
-                            ImpTotCImpSap = ImpTotCImpSap + Number(data[y].TeSalida.ImpTotCImpSap);
-                        }
-
-                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
-                            ImporteTotCi = ImporteTotCi + Number(data[y].TeSalida.ImporteTotCi);
-                        }
-
-                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
-                            MejorTotal = MejorTotal + Number(data[y].TeSalida.MejorTotal);
-                        }
-
-                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
-                            NcargoMc = NcargoMc + Number(data[y].TeSalida.NcargoMc);
-                        }
-                        //
-                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
-                            NcargoImpMc = NcargoImpMc + Number(data[y].TeSalida.NcargoImpMc);
-                        }
-
-                        if (data[y].TeSalida.DocCompra === oSLocation[x].value) {
-                            NcargoTotMc = NcargoTotMc + Number(data[y].TeSalida.NcargoTotMc);
-                        }
-                        DocCompra=oSLocation[x].value;
-
-                    }
 
                 
-                  
-                  
-                   
-                    var ARRT = {
-                        EMsj: "",
-                        IAcre: "",
-                        ICmsu: "",
-                        IDocmat: "",
-                        IEsta: "",
-                        IFe: "",
-                        IFolio: "",
-                        INe: "",
-                        IPedi: "",
-                        ISerie: "",
-                        TeSalida: {
-                            Cantidad: Cantidad.toFixed(2),
-                            CantidadSap: CantidadSap.toFixed(2),
-                            Cmsucfol: "",
-                            DescEstat: "",
-                            DocCargo: "",
-                            DocCompra: DocCompra,
-                            DocFactura: "",
-                            DocMaterial: "",
-                            EanUpc: "",
-                            Estatus: "",
-                            FechaRegSap: "",
-                            FecharSap: "",
-                            FolionEntrada: "",
-                            ImpTotCImpSap: ImpTotCImpSap.toFixed(2),
-                            ImporteSap: ImporteSap.toFixed(2),
-                            ImporteTotCi: ImporteTotCi.toFixed(2),
-                            ImporteTotal: ImporteTotal.toFixed(2),
-                            ImpuestosFact: ImpuestosFact.toFixed(2),
-                            ImpuestosSap: ImpuestosSap.toFixed(2),
-                            ImpuestosTotal: ImpuestosTotal.toFixed(2),
-                            Lifnr: "",
-                            Material: "",
-                            MaterialSap: "",
-                            MejorCantidad: MejorCantidad.toFixed(2),
-                            MejorPrecio: MejorPrecio.toFixed(2),
-                            MejorSubtotal: MejorSubtotal.toFixed(2),
-                            MejorTotal: MejorTotal.toFixed(2),
-                            NcargoImpMc:NcargoImpMc.toFixed(2),
-                            NcargoMc: NcargoMc.toFixed(2),
-                            NcargoTotMc: NcargoTotMc.toFixed(2),
-                            Posicion: "",
-                            PrecCDescSap: PrecCDescSap.toFixed(2),
-                            PrecioUnSi: PrecioUnSi.toFixed(2),
-                            Serfol: "",
-                            UmedidaPSap: "",
-                            Unidad: "",
-                        }
+                for (var y = 0; y < unicos3.length; y++) {
+
+                    if (unicos3[y].TeSalida.FolionEntrada === Unicos[x].value) {
+                        CantidadSap = CantidadSap + Number(unicos3[y].TeSalida.CantidadSap);
+                        Cantidad = Cantidad + Number(unicos3[y].TeSalida.Cantidad);
+                        MejorCantidad = MejorCantidad + Number(unicos3[y].TeSalida.MejorCantidad);
+                        PrecCDescSap = PrecCDescSap + Number(unicos3[y].TeSalida.PrecCDescSap);
+                        PrecioUnSi = PrecioUnSi + Number(unicos3[y].TeSalida.PrecioUnSi);
+                        MejorPrecio = MejorPrecio + Number(unicos3[y].TeSalida.MejorPrecio);
+                        ImporteSap = ImporteSap + Number(unicos3[y].TeSalida.ImporteSap);
+                        ImporteTotal = ImporteTotal + Number(unicos3[y].TeSalida.ImporteTotal);
+                        MejorSubtotal = MejorSubtotal + Number(unicos3[y].TeSalida.MejorSubtotal);
+                        ImpuestosSap = ImpuestosSap + Number(unicos3[y].TeSalida.ImpuestosSap);
+                        ImpuestosFact = ImpuestosFact + Number(unicos3[y].TeSalida.ImpuestosFact);
+                        ImpuestosTotal = ImpuestosTotal + Number(unicos3[y].TeSalida.ImpuestosTotal);
+                        ImpTotCImpSap = ImpTotCImpSap + Number(unicos3[y].TeSalida.ImpTotCImpSap);
+                        ImporteTotCi = ImporteTotCi + Number(unicos3[y].TeSalida.ImporteTotCi);
+                        MejorTotal = MejorTotal + Number(unicos3[y].TeSalida.MejorTotal);
+                        NcargoMc = NcargoMc + Number(unicos3[y].TeSalida.NcargoMc);
+                        NcargoImpMc = NcargoImpMc + Number(unicos3[y].TeSalida.NcargoImpMc);
+                        NcargoTotMc = NcargoTotMc + Number(unicos3[y].TeSalida.NcargoTotMc);
                     }
-                   
-                    data.push(ARRT)
 
-
+                    FolionEntrada=Unicos[x].value;
 
                 }
-                data.sort(function (a, b) {
-                    if (a.TeSalida.DocCompra > b.TeSalida.DocCompra) {
-                      return 1;
+                var ARRT = {
+                    EMsj: "P",
+                    IAcre: "",
+                    ICmsu: "",
+                    IDocmat: "",
+                    IEsta: "",
+                    IFe: "",
+                    IFolio: "",
+                    INe: "",
+                    IPedi: "",
+                    ISerie: "",
+                    TeSalida: {
+                        Cantidad: Cantidad.toFixed(2),
+                        CantidadSap: CantidadSap.toFixed(2),
+                        Cmsucfol: "",
+                        DescEstat: "",
+                        DocCargo: "",
+                        DocCompra: "",
+                        DocFactura: "",
+                        DocMaterial: "",
+                        EanUpc: "",
+                        Estatus: "",
+                        FechaRegSap: "",
+                        FecharSap: "",
+                        FolionEntrada:FolionEntrada,
+                        ImpTotCImpSap: ImpTotCImpSap.toFixed(2),
+                        ImporteSap: ImporteSap.toFixed(2),
+                        ImporteTotCi: ImporteTotCi.toFixed(2),
+                        ImporteTotal: ImporteTotal.toFixed(2),
+                        ImpuestosFact: ImpuestosFact.toFixed(2),
+                        ImpuestosSap: ImpuestosSap.toFixed(2),
+                        ImpuestosTotal: ImpuestosTotal.toFixed(2),
+                        Lifnr: "",
+                        Material: "",
+                        MaterialSap: "",
+                        MejorCantidad: MejorCantidad.toFixed(2),
+                        MejorPrecio: MejorPrecio.toFixed(2),
+                        MejorSubtotal: MejorSubtotal.toFixed(2),
+                        MejorTotal: MejorTotal.toFixed(2),
+                        NcargoImpMc:NcargoImpMc.toFixed(2),
+                        NcargoMc: NcargoMc.toFixed(2),
+                        NcargoTotMc: NcargoTotMc.toFixed(2),
+                        Posicion: "",
+                        PrecCDescSap: PrecCDescSap.toFixed(2),
+                        PrecioUnSi: PrecioUnSi.toFixed(2),
+                        Serfol: "",
+                        UmedidaPSap: "",
+                        Unidad: "",
                     }
-                    if (a.TeSalida.DocCompra < b.TeSalida.DocCompra) {
-                      return -1;
-                    }
-                  
-                    return 0;
-                  });
-                var auxJsonModel = new sap.ui.model.json.JSONModel(data);
+                }
+               
+                unicos3.push(ARRT)
+
+
+
+            }
+
+        unicos3.sort(function (a, b) {
+            if (Number(a.TeSalida.FolionEntrada) > Number(b.TeSalida.FolionEntrada)) {
+              return 1;
+            }
+            if (Number(a.TeSalida.FolionEntrada) < Number(b.TeSalida.FolionEntrada)) {
+              return -1;
+            }
+          
+            return 0;
+          });
+
+                var auxJsonModel = new sap.ui.model.json.JSONModel(unicos3);
                 that.getView().setModel(auxJsonModel, 'ModelValidacion');
             });
 
         },
 
-        /*  searchData: function () {
-              var that = this;
-              // /sap/opu/odata/sap/ZOSP_MEJOR_COND_REP_SRV/RepMejorCondSet?$filter=(IAcre eq '0000229732' and ISerie eq 'B' and IFolio eq '81987' and IFe eq '20220706')
-              var auxFilters = [];
-              if (this.getView().byId("supplierInput").getValue() !== "") {
-                  var valor = "";
-  
-                  auxFilters.push(new sap.ui.model.Filter({
-                      path: "IAcre",
-                      operator: sap.ui.model.FilterOperator.EQ,
-                      value1: this.getView().byId("supplierInput").getValue().split("-")[1].trim()
-                  })
-                  )
-              } else {
-  
-                  sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/ValCondi.ErrorPRoveedor'));
-                  return
-              }
-  
-  
-  
-              if (that.getView().byId("dateRange").getValue() !== "") {
-                  if (that.getView().byId("dateRange").getValue().split("-")[1].trim() === that.getView().byId("dateRange").getValue().split("-")[0].trim()) {
-                      var FechaI = that.getView().byId("dateRange").getDateValue();
-                      var FechaF = that.getView().byId("dateRange").getDateValue();
-                  } else {
-                      var FechaI = that.getView().byId("dateRange").getDateValue();
-                      var FechaF = that.getView().byId("dateRange").getSecondDateValue();
-                  }
-          
-                  auxFilters.push(new sap.ui.model.Filter({
-                      path: "IFe",
-                      operator: sap.ui.model.FilterOperator.GE,
-                      value1: FechaI.toISOString().slice(0, 10) + 'T00:00:00'
-                      // value2: FechaF.toISOString().slice(0, 10) + 'T00:00:00'
-  
-                  })
-                  )
-                 
-              }
-              if (that.getView().byId("IDFolio").getValue() !== "") {
-                  auxFilters.push(new sap.ui.model.Filter({
-                      path: "IFolio",
-                      operator: sap.ui.model.FilterOperator.EQ,
-                      value1: that.getView().byId("IDFolio").getValue()
-                  })
-                  )
-  
-              }
-              if (that.getView().byId("IDSerie").getValue() !== "") {
-                  auxFilters.push(new sap.ui.model.Filter({
-                      path: "ISerie",
-                      operator: sap.ui.model.FilterOperator.EQ,
-                      value1: that.getView().byId("IDSerie").getValue()
-                  })
-                  )
-  
-              }
-  
-            
-  
-              var model = "ZOSP_MEJOR_COND_REP_SRV";
-              var entity = "RepMejorCondSet";
-              var expand = "";
-              var filter = auxFilters;
-              var select = "";
-              console.log(filter)
-              sap.ui.core.BusyIndicator.show();
-              that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
-                  sap.ui.core.BusyIndicator.hide();
-                  var data = _GEToDataV2Response.data.results;
-                  console.log(data)
-                 
-                  var auxJsonModel = new sap.ui.model.json.JSONModel(data);
-                  that.getView().setModel(auxJsonModel, 'ModelValidacion');
-              });
-  
-          },*/
+       
         VisibleTable: function () {
 
             var that = this;
