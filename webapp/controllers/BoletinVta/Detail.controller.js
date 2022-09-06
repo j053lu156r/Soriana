@@ -107,9 +107,9 @@ sap.ui.define([
 
             this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "promotionDetModel");
             
-            var url = "promMaterialListByPlant?$filter=Promotion eq '" + this._promotion + "' and Vendor eq '" + 
-                      this._vendor + "' and Plant eq '" + this._plant + "'";
-                        
+            var url = "promMaterialListByPlantSet?$filter=Promotion eq '" + this._promotion + "' and Vendor eq '" + 
+                    this._vendor + "' and Plant eq '" + this._plant + "'";
+                    
             this.getView().byId('promotionDetTable').setBusy(true);
             oModel.getJsonModelAsync(
                 url,
