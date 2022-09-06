@@ -125,7 +125,8 @@ sap.ui.define([
                             "TotBonus": Number(totBonus.toFixed(2)),
                             "TotIVA": Number(totIVA.toFixed(2)),
                             "TotIEPS": Number(totIEPS.toFixed(2)),
-                            "TotDistQty": Number(TotDistQty.toFixed(3))
+                            "TotDistQty": Number(TotDistQty.toFixed(3)),
+                            "Promotion": objResponse[0].Promotion
                         };
                         parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(totalAcuDet), 
                             "debTotDetModel");
@@ -146,6 +147,12 @@ sap.ui.define([
 
             var texts = this.getOwnerComponent().getModel("appTxts");
             var columns = [
+                {
+                    name: texts.getProperty("/foliosCap.promocion"),
+                    template: {
+                        content: "{Promotion}"
+                    }
+                },
                  {
                     name: texts.getProperty("/PolizadetCargo.Agreement"),
                     template: {
