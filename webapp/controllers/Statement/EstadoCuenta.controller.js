@@ -1172,7 +1172,7 @@ sap.ui.define([
         buildExportTable: function () {
             var texts = this.getOwnerComponent().getModel("appTxts");
             var data = this.formatStatus(this.getOwnerComponent().getModel("totales").getProperty("/Detalles/results"), texts);
-
+            console.log(data)
             var columns = [
                 {
                     label: texts.getProperty("/aportaciones.concepto").toUpperCase(),
@@ -1235,8 +1235,8 @@ sap.ui.define([
                 },
                 {
                     label: texts.getProperty("/state.bloqueado").toUpperCase(),
-                    property: "BloqueoFlag",
-                    width: 15
+                    property: "DescripcionBloqueo",
+                    width: 32
                 }
             ];
 
