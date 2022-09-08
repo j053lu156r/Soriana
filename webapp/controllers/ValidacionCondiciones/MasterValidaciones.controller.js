@@ -67,7 +67,7 @@ sap.ui.define([
                 }
                
                 var data = _GEToDataV2Response.d.results;
-               
+           
                 const unicos3 = [];
 
                 for(var indice = 0; indice < data.length; indice++) {
@@ -76,7 +76,7 @@ sap.ui.define([
                   let esDuplicado = false;
                   for(var i = 0; i < unicos3.length; i++) {
               
-                    if (Number(unicos3[i].TeSalida.FolionEntrada) === Number(persona.TeSalida.FolionEntrada) && Number(unicos3[i].TeSalida.Posicion) === Number(persona.TeSalida.Posicion) ) {
+                    if (Number(unicos3[i].TeSalida.Cmsucfol) === Number(persona.TeSalida.Cmsucfol) && Number(unicos3[i].TeSalida.Posicion) === Number(persona.TeSalida.Posicion) ) {
                       esDuplicado = true;
                       break;
                     }
@@ -86,20 +86,20 @@ sap.ui.define([
                     unicos3.push(persona);
                   }
                 }
-
-                unicos3.sort(function (a, b) {
-                    if (Number(a.TeSalida.FolionEntrada) > Number(b.TeSalida.FolionEntrada)) {
-                      return 1;
-                    }
-                    if (Number(a.TeSalida.FolionEntrada) < Number(b.TeSalida.FolionEntrada)) {
-                      return -1;
-                    }
+              
+                unicos3.sort((a, b) => {
+                        if(Number(a.TeSalida.Cmsucfol) === Number(b.TeSalida.Cmsucfol)) {
+                          return 0; 
+                        }
+                        if(Number(a.TeSalida.Cmsucfol)< Number(b.TeSalida.Cmsucfol)) {
+                          return -1;
+                        }
+                        return 1;
+                      });
                   
-                    return 0;
-                  });
-               
+             
                 var Unicos = unicos3.map(function (e) {
-                    return e.TeSalida.FolionEntrada;
+                    return e.TeSalida.Cmsucfol;
                 }).filter(onlyUnique).map(function (e, i) {
                     return {
                         key: i,
@@ -127,13 +127,15 @@ sap.ui.define([
                 var NcargoMc = 0;
                 var NcargoImpMc = 0;
                 var NcargoTotMc = 0;
-                 var FolionEntrada=0;
+                 var Cmsucfol=0;
 
 
                 
                 for (var y = 0; y < unicos3.length; y++) {
 
-                    if (unicos3[y].TeSalida.FolionEntrada === Unicos[x].value) {
+
+                    if (unicos3[y].TeSalida.Cmsucfol === Unicos[x].value) {
+                    
                         CantidadSap = CantidadSap + Number(unicos3[y].TeSalida.CantidadSap);
                         Cantidad = Cantidad + Number(unicos3[y].TeSalida.Cantidad);
                         MejorCantidad = MejorCantidad + Number(unicos3[y].TeSalida.MejorCantidad);
@@ -152,9 +154,10 @@ sap.ui.define([
                         NcargoMc = NcargoMc + Number(unicos3[y].TeSalida.NcargoMc);
                         NcargoImpMc = NcargoImpMc + Number(unicos3[y].TeSalida.NcargoImpMc);
                         NcargoTotMc = NcargoTotMc + Number(unicos3[y].TeSalida.NcargoTotMc);
+                        Cmsucfol=Unicos[x].value;
                     }
 
-                    FolionEntrada=Unicos[x].value;
+           
 
                 }
                 var ARRT = {
@@ -171,7 +174,7 @@ sap.ui.define([
                     TeSalida: {
                         Cantidad: Cantidad.toFixed(2),
                         CantidadSap: CantidadSap.toFixed(2),
-                        Cmsucfol: "",
+                        Cmsucfol: Cmsucfol,
                         DescEstat: "",
                         DocCargo: "",
                         DocCompra: "",
@@ -181,7 +184,7 @@ sap.ui.define([
                         Estatus: "",
                         FechaRegSap: "",
                         FecharSap: "",
-                        FolionEntrada:FolionEntrada,
+                        FolionEntrada:"",
                         ImpTotCImpSap: ImpTotCImpSap.toFixed(2),
                         ImporteSap: ImporteSap.toFixed(2),
                         ImporteTotCi: ImporteTotCi.toFixed(2),
@@ -213,18 +216,17 @@ sap.ui.define([
 
 
             }
-
-        unicos3.sort(function (a, b) {
-            if (Number(a.TeSalida.FolionEntrada) > Number(b.TeSalida.FolionEntrada)) {
-              return 1;
-            }
-            if (Number(a.TeSalida.FolionEntrada) < Number(b.TeSalida.FolionEntrada)) {
-              return -1;
-            }
-          
-            return 0;
-          });
-
+           
+            unicos3.sort((a, b) => {
+                if(a.TeSalida.Cmsucfol === b.TeSalida.Cmsucfol) {
+                  return 0; 
+                }
+                if(a.TeSalida.Cmsucfol< b.TeSalida.Cmsucfol) {
+                  return -1;
+                }
+                return 1;
+              });
+       
                 var auxJsonModel = new sap.ui.model.json.JSONModel(unicos3);
                 that.getView().setModel(auxJsonModel, 'ModelValidacion');
             });
@@ -465,7 +467,7 @@ sap.ui.define([
             //G
             aCols.push({
                 label: texts.getProperty("/ValCondi.refInterna"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/Cmsucfol'
             });
             //H
