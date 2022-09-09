@@ -281,6 +281,28 @@ sap.ui.define([
 			this._pdfViewer.setSource(sSource);
 			this._pdfViewer.setTitle("CFDI");
 			this._pdfViewer.open();
+        },
+
+        onPressXML: function () {
+            var oModel = this.getOwnerComponent().getModel("AcuerdosHdr");
+            var oData = oModel.getData();
+            var sServiceURL = "/sap/opu/odata/sap/ZOSP_ACUERDOS_SRV/";
+            var oModel =  new sap.ui.model.odata.ODataModel(sServiceURL);
+
+            oModel.read("/AcuerdosFilesSet('XML"+oData.UUID+"')/$value",{
+                method: "GET",
+                success: function(data,response) {
+             
+                    let fName = oData.UUID
+                    let fType = "application/xml";
+                    let fContent = response.body;
+
+                    sap.ui.core.util.File.save(fContent, fName, "xml", fType);
+                },
+                error: function(e) {
+                    MessageBox.error(e.message);
+                } 
+            });
         }
 
     });

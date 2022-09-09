@@ -168,10 +168,20 @@
                     "binding": "masterFacSoriana",
                     "functions": [
                         {
-                            "idFunction": 21
+                            "idFunction": 21,
+                            "roles": [
+                                "0001",
+                                "0004",
+                                "0005"
+                            ]
                         },
                         {
-                            "idFunction": 41
+                            "idFunction": 41,
+                            "roles": [
+                                "0001",
+                                "0004",
+                                "0005"
+                            ]
                         }
                     ]
                 },
