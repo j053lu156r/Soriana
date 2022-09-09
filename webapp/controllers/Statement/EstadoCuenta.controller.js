@@ -1171,7 +1171,7 @@ sap.ui.define([
         },
         buildExportTable: function () {
             var texts = this.getOwnerComponent().getModel("appTxts");
-            var data = this.formatStatus(this.getOwnerComponent().getModel("totales").getProperty("/Detalles/results"), texts);
+            var data = this.formatData(this.getOwnerComponent().getModel("totales").getProperty("/Detalles/results"), texts);
             console.log(data)
             var columns = [
                 {
@@ -1231,6 +1231,9 @@ sap.ui.define([
                 {
                     label: texts.getProperty("/reporte.headerTitulo").toUpperCase(),
                     property: "MCondicion",
+                    type: sap.ui.export.EdmType.Number,
+                    delimiter: true,
+                    scale: 2,
                     width: 32
                 },
                 {
@@ -1242,7 +1245,7 @@ sap.ui.define([
 
             this.buildExcelSpreadSheet(columns, data, "Estado de cuenta.xlsx");
         },
-        formatStatus: function(data, texts){
+        formatData: function(data, texts){
             data.forEach(function(element) {
                 if(element.Pendt === true){
                     element.status = texts.getProperty("/state.xlsx.statusPend");
@@ -1250,6 +1253,10 @@ sap.ui.define([
                     element.status = texts.getProperty("/state.xlsx.statusPago");
                 } else {
                     element.status = texts.getProperty("/state.xlsx.statusCont");
+                }
+
+                if(element.MCondicion !== '0.00') {
+                    element.MCondicion = "-" + element.MCondicion
                 }
             });
             return data;
