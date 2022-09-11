@@ -28,6 +28,12 @@
                         id="pdfCFDIBtn" 
                         tooltip="CFDI" 
                         visible="{= ${AportaDetDet>/Xblnr}.substr(0,1) === 'P' ? true : false }"/>
+                    <m:OverflowToolbarButton type="Transparent"
+                        icon="sap-icon://attachment-html"
+                        press="onPressXML"
+                        id="xmlCFDIBtn"
+                        tooltip="XML"
+                        visible="{= ${AportaDetDet>/Xblnr}.substr(0,1) === 'P' ? true : false }"/>
                     <m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/endColumn/fullScreen} !== null }"/>
 					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/endColumn/exitFullScreen} !== null }"/>
 					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close end column" visible="true"/>
