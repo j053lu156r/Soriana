@@ -170,7 +170,7 @@
 						<Column sortProperty="MCondicion"  id="mCondicionColumn" width="20%">
 							<m:Label text="{appTxts>/reporte.headerTitulo}" />
 							<template>
-								<m:Text text="{GroupedTotales>MCondicion}" wrapping="false" />
+								<m:Text text="{= ${GroupedTotales>MCondicion} === '0.00' ? ${GroupedTotales>MCondicion} : - ${GroupedTotales>MCondicion} }" wrapping="false" />
 							</template>
 						</Column>
 
