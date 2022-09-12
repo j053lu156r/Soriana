@@ -150,6 +150,7 @@
                                 unit="MXN" />
                         </footer>
 					</Column>
+                    <!--
 					<Column id="CIva" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
 						<header>
 							<Text id="txtI" text="{appTxts>/polizas.iva}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -170,13 +171,14 @@
 						</header>
 						<footer/>
 					</Column>
+                    -->
 				</columns>
 				<items>
 					<ColumnListItem id="CItems">                    
 						<cells>
                             <ObjectIdentifier id="OIB"
                                 title="{PolizasHdr>Segment}" 
-                                titleActive="true"/>
+                                titleActive="false"/>
                             <ObjectNumber id="ONB"
                                 number="{
                                     parts:[{path:'PolizasHdr>Dmbtr'},{path:'CurrencyCode'}],
@@ -191,6 +193,7 @@
                                     formatOptions: {showMeasure: false}
                                         }"
                                 unit="MXN" />
+                            <!--
                             <ObjectNumber id="ONI2"
                                 number="{
                                     parts:[{path:'PolizasHdr>Wmwst'},{path:'CurrencyCode'}],
@@ -202,6 +205,7 @@
                                 number="{PolizasHdr>PDesc}"
                                 unit="{PolizasHdr>Waers}"
                                 state="Success" />
+                            -->
 						</cells>
 					</ColumnListItem>
 				</items>

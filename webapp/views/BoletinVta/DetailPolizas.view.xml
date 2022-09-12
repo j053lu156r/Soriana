@@ -100,6 +100,7 @@
                                             unit="MXN" />
                                     </m:footer>
                                 </m:Column>
+                                <!--
                                 <m:Column id="CIva" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                     <m:header>
                                         <m:Text id="txtI" text="{appTxts>/polizas.iva}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -120,13 +121,14 @@
                                     </m:header>
                                     <m:footer/>
                                 </m:Column>
+                                -->
                             </m:columns>
 								<m:items>
                                     <m:ColumnListItem id="CItems">                    
                                         <m:cells>
                                             <m:ObjectIdentifier id="OIB"
                                                 title="{PolizasHdr>Segment}" 
-                                                titleActive="true"/>
+                                                titleActive="false"/>
                                             <m:ObjectNumber id="ONB"
                                                 number="{
                                                     parts:[{path:'PolizasHdr>Dmbtr'},{path:'CurrencyCode'}],
@@ -141,6 +143,7 @@
                                                     formatOptions: {showMeasure: false}
                                                         }"
                                                 unit="MXN" />
+                                            <!--
                                             <m:ObjectNumber id="ONI2"
                                                 number="{
                                                     parts:[{path:'PolizasHdr>Wmwst'},{path:'CurrencyCode'}],
@@ -152,6 +155,7 @@
                                                 number="{PolizasHdr>PDesc}"
                                                 unit="{PolizasHdr>Waers}"
                                                 state="Success" />
+                                            -->
                                         </m:cells>
                                     </m:ColumnListItem>
                                 </m:items>

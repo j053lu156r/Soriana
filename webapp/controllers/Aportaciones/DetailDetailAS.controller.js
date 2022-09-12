@@ -1,8 +1,9 @@
 sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "demo/controllers/BaseController",
-    "sap/m/PDFViewer"
-], function (JSONModel, Controller, PDFViewer) {
+    "sap/m/PDFViewer",
+    "sap/m/MessageBox"
+], function (JSONModel, Controller, PDFViewer, MessageBox) {
     "use strict";
 
     var oModel = new this.Aportaciones();
@@ -377,6 +378,28 @@ console.log(objResponse);
 			this._pdfViewer.setSource(sSource);
 			this._pdfViewer.setTitle("CFDI");
 			this._pdfViewer.open();
+        },
+
+        onPressXML: function () {
+            var oModel = this.getOwnerComponent().getModel("AportaDetDet");
+            var oData = oModel.getData();
+            var sServiceURL = "/sap/opu/odata/sap/ZOSP_APORTA_SRV/";
+            var oModel =  new sap.ui.model.odata.ODataModel(sServiceURL);
+
+            oModel.read("/AportaFilesSet('XML"+oData.Uuid+"')/$value",{
+                method: "GET",
+                success: function(data,response) {
+             
+                    let fName = oData.Uuid
+                    let fType = "application/xml";
+                    let fContent = response.body;
+
+                    sap.ui.core.util.File.save(fContent, fName, "xml", fType);
+                },
+                error: function(e) {
+                    MessageBox.error(e.message);
+                } 
+            });
         }
 
     });
