@@ -23,6 +23,8 @@ sap.ui.define([
         pedidos: []
     };
 
+    var _oDataModelAppoimnet = "ZOSP_CITAS_ADM_SRV";
+    var _oDataEntityAppoiment = "MainSet";
     var _oDataModelOC = "ZOSP_DEVO_NC_SRV_01";
     var _oDataEntityOC = "notCreditSet";
 
@@ -78,7 +80,7 @@ sap.ui.define([
             this.handleButtonsVisibility();
             dataTempModel = new JSONModel(dataTemp);
             this.getView().setModel(dataTempModel, "TemporalModel");
-            dataTempModel.setProperty("/generalData/cedisType", this.getView().byId("rbgOpciones").getSelectedIndex());
+            // dataTempModel.setProperty("/generalData/cedisType", this.getView().byId("rbgOpciones").getSelectedIndex());
             dataTempModel.setProperty("/generalData/tipoCita", this.getView().byId("sTipoCita").getSelectedKey());
             dataTempModel.setProperty("/generalData/tipoUnidad", this.getView().byId("sTipoUnidad").getSelectedKey());
         },
@@ -116,9 +118,61 @@ sap.ui.define([
             this._oWizard.previousStep();
             this.handleButtonsVisibility();
         },
+
         onCloseWizard: function () {
             this._handleMessageBoxOpen(this.getView().getModel("appTxts").getProperty("/quotes.discardButton"), "warning");
         },
+
+        async handleWizardSubmit () {
+            
+            sap.m.MessageBox["confirm"](this.getView().getModel("appTxts").getProperty("/quotes.submitAppoinment"), {
+                actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+                onClose: async function (oAction) {
+                    if (oAction === sap.m.MessageBox.Action.YES) {
+
+                        this._oWizard.discardProgress(this._oWizard.getSteps()[0]);
+                        this.byId("wizardDialog").destroy();
+                        this._pDialog = null;
+                        this._oWizard = null;
+
+                        let appoimentModel = JSON.parse(this.getOwnerComponent().getModel("ActionCita").getJSON());
+                            
+                        let createObjReq = {
+                              "ETCITANUEVA":[
+                                appoimentModel
+                                // {
+                                //           "Ebeln":"0000000099",
+                                //           "Ebelp":"00002",
+                                //           "Matnr":"000000000000000001",
+                                //           "Citado":"12345678.123",
+                                //           "FechaCita":"2022-01-31",
+                                //           "HoraIni":"01:01:01",
+                                //           "HoraFin":"23:59:59",
+                                //           "Anden":"1234567890",
+                                //           "TipoCita":"aZ"
+                                //         }
+                              ],
+                              "ETRETURN":[]
+                            };
+
+                        sap.ui.core.BusyIndicator.show();
+                        let resp = null;
+
+                        await this._PostODataV2Async(_oDataModelAppoimnet, _oDataEntityAppoiment, createObjReq).then(response => {
+                            resp = response.d;
+                            sap.ui.core.BusyIndicator.hide();
+                        }).catch(error => {
+                            console.log(error);
+                        });
+
+                        this.getView().setModel(new JSONModel(), "tableWizardOrderPosition");
+                        this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "ActionCita");
+
+                    }
+                }.bind(this)
+            });
+        },
+
         _handleMessageBoxOpen: function (sMessage, sMessageBoxType) {
             sap.m.MessageBox[sMessageBoxType](sMessage, {
                 actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
@@ -129,10 +183,12 @@ sap.ui.define([
                         this._pDialog = null;
                         this._oWizard = null;
                         this.getView().setModel(new JSONModel(), "tableWizardOrderPosition");
+                        this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "ActionCita");
                     }
                 }.bind(this)
             });
         },
+
         searchOrders: function (date) {
 
             let filtros = [];
@@ -140,7 +196,7 @@ sap.ui.define([
             filtros.push(new sap.ui.model.Filter({
                 path: "IOption",
                 operator: sap.ui.model.FilterOperator.EQ,
-                value1: '4'
+                value1: '7'
             })
             );
 
@@ -152,18 +208,18 @@ sap.ui.define([
             );
 
             filtros.push(new sap.ui.model.Filter({
-                path: "IFfin",
+                path: "IKdatb",
                 operator: sap.ui.model.FilterOperator.EQ,
-                value1: date
+                value1: `${date}`
             })
             );
 
             sap.ui.core.BusyIndicator.show();
             let that = this;
-            this._GetODataV2(_oDataModelOC, _oDataEntityOC, filtros, ["OEKKONAV"], "").then(resp => {
-                console.log(" RESP : " , resp);                
-                // that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "Folios");
-                // that.paginate("Folios", "/ETPRICNAV", 1, 0);
+            this._GetODataV2(_oDataModelOC, _oDataEntityOC, filtros, ["ETOC"], "").then(resp => {
+                console.log(" RESP : " , resp.data.results[0]);                
+                 that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "Pedidos");
+                 that.paginate("Pedidos", "/ETOC", 1, 0);
                 sap.ui.core.BusyIndicator.hide();
             }).catch(error => {
                 console.error(error);
@@ -194,6 +250,7 @@ sap.ui.define([
             //     sap.m.MessageBox.error(this.getView().getModel("appTxts").getProperty("/quotes.messageEmptyOrder"));
             // }
         },
+
         getDetailOrder: function () {
             var me = this;
             var urlPositions = `/Valida_citasSet?$expand=Po_validas&$filter=IOption eq '1' and IEbeln eq '${this._document}'`;
@@ -255,6 +312,7 @@ sap.ui.define([
             let dateSelected = source.getDateValue();
             this.searchOrders(this.buildSapDate(dateSelected));
             this.setAppoimentCalendar(dateSelected);
+            this.getOwnerComponent().getModel("ActionCita").setProperty("/FechaCita", this.buildSapDate(dateSelected));
         },
 
         setAppoimentCalendar(dateSelected){
@@ -315,10 +373,10 @@ sap.ui.define([
         handleIntervalSelect: function (oEvent) {
 
             var oPC = oEvent.getSource(),
-                oStartDate = oEvent.getParameter("startDate"),
-                oEndDate = oEvent.getParameter("endDate"),
+                oStartDate = oEvent.getParameter("startDate").toISOString(),
+                oEndDate = oEvent.getParameter("endDate").toISOString(),
                 oRow = oEvent.getParameter("row"),
-                oModel = this.getView().getModel(),
+                oModel = this.getOwnerComponent().getModel("Platforms"),
                 oData = oModel.getData(),
                 iIndex = -1;
 
@@ -339,12 +397,12 @@ sap.ui.define([
 
             if (oRow) {
                 iIndex = oPC.indexOfRow(oRow);
-                oData.people[iIndex].appointments.push(oAppointment);
+                oData.platforms[iIndex].appointments.push(oAppointment);
             } else {
                 aSelectedRows = oPC.getSelectedRows();
                 for (i = 0; i < aSelectedRows.length; i++) {
                     iIndex = oPC.indexOfRow(aSelectedRows[i]);
-                    oData.people[iIndex].appointments.push(oAppointment);
+                    oData.platforms[iIndex].appointments.push(oAppointment);
                 }
             }
 
@@ -367,5 +425,13 @@ sap.ui.define([
             }
             oAppointment.setSelected(false)
         },
+
+        selectPedido: function (oEvent) {
+            console.log("oEvent params : ", oEvent.getParameters());
+        },
+
+        captureQuntSummon: function (oEvent) {
+            console.log("oEvent params : ", oEvent.getParameters());
+        }
     });
 });

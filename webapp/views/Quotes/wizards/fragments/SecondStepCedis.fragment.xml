@@ -1,64 +1,66 @@
 <core:FragmentDefinition xmlns="sap.m"
-    xmlns:t="sap.ui.table"
     xmlns:m="sap.m"
     xmlns:core="sap.ui.core">
     <VBox>
         <Panel visible="{	path: 'TemporalModel>/generalData/cedisType',
                         formatter: '.formatter.isSeco'
                     }">
-            <t:TreeTable >
-                <!-- mode="MultiSelect" id="tableWizardOrder" items="" selectionChange=".selectChange"> -->
-                <t:extension>
+            <Table  mode="SingleSelect" id="tableWizardOrder" items="{Pedidos>/ETOC/Paginated/results}" selectionChange="selectPedido">
+                 <headerToolbar>
                     <OverflowToolbar>
                         <ToolbarSpacer/>
                         <!-- <Input id="searchOrders" width="auto" textAlign="Initial" placeholder="{appTxts>/quotes.search}" type="Number" showValueHelp="true" valueHelpIconSrc="sap-icon://search"/> -->
                     </OverflowToolbar>
-                </t:extension>
-                <t:columns>
-                    <t:Column>
+                </headerToolbar>
+                <columns>
+                    <Column>
                         <m:Text text="{appTxts>/quotes.order}" width="auto" />
-                    </t:Column>
-                    <t:Column>
+                    </Column>
+                    <Column>
                         <Text text="{appTxts>/quotes.itemLine}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                    </t:Column>
-                    <t:Column>
+                    </Column>
+                    <Column>
                         <Text text="{appTxts>/quotes.material}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                    </t:Column>
-                    <t:Column>
+                    </Column>
+                    <Column>
                         <Text text="{appTxts>/quotes.quantity}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                    </t:Column>
-                    <t:Column>
+                    </Column>
+                    <Column>
                         <Text text="{appTxts>/quotes.startShipment}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                    </t:Column>
-                    <t:Column>
+                    </Column>
+                    <Column>
                         <Text text="{appTxts>/quotes.endShipment}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                    </t:Column>
-                    <t:Column>
+                    </Column>
+                    <Column>
                         <Text text="{appTxts>/quotes.branch}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                    </t:Column>
-                    <t:Column>
+                    </Column>
+                    <Column>
                         <Text text="{appTxts>/quotes.received}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                    </t:Column>
-                    <t:Column>
+                    </Column>
+                    <Column>
                         <Text text="{appTxts>/quotes.toExhaust}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                    </t:Column>
-                </t:columns>
-                <!-- <items>
+                    </Column>
+                    <Column>
+                        <Text text="{appTxts>/quotes.quantitySummon}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                    </Column>
+                </columns>
+                <items>
                 <ColumnListItem>
                     <cells>
-                        <ObjectIdentifier text=""/>
-                        <ObjectIdentifier text=""/>
-                        <ObjectIdentifier text=""/>                                                       
-                        <ObjectIdentifier text=""/>
-                        <ObjectIdentifier text=""/>
-                        <ObjectIdentifier text=""/>
-                        <ObjectIdentifier text=""/>
-                        <ObjectIdentifier text=""/>
-                        <Input />
+                        <ObjectIdentifier text="{Pedidos>Ebeln}"/>
+                        <ObjectIdentifier text="{Pedidos>Matnr}"/>
+                        <ObjectIdentifier text="{Pedidos>Ean11}"/>                                                       
+                        <ObjectIdentifier text="{Pedidos>Menge}"/>
+                        <ObjectIdentifier text="{Pedidos>Kdatb}"/>
+                        <ObjectIdentifier text="{Pedidos>Kdate}"/>
+                        <ObjectIdentifier text="{Pedidos>Werks}"/>
+                        <ObjectIdentifier text="{Pedidos>MengeR}"/>
+                        <ObjectIdentifier text="{Pedidos>MengeR}"/>
+                        <Input change="captureQuntSummon" />
                     </cells>
                 </ColumnListItem>
-            </items> -->
-            </t:TreeTable>
+            </items>
+            </Table>
         </Panel>
 
 

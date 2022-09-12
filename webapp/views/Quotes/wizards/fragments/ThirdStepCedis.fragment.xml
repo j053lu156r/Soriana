@@ -4,7 +4,7 @@
   xmlns:core="sap.ui.core"
 >
             <VBox>
-                <PlanningCalendar id="appoinmentPC" viewKey="A" rows="{path: 'Platforms>/platforms'}" appointmentsVisualization="Filled" appointmentSelect="handleAppointmentSelect" showEmptyIntervalHeaders="false">
+                <PlanningCalendar id="appoinmentPC" viewKey="A" rows="{path: 'Platforms>/platforms'}" appointmentsVisualization="Filled" appointmentSelect="handleAppointmentSelect" intervalSelect="handleIntervalSelect" showEmptyIntervalHeaders="false">
                     <toolbarContent>
                         <Title text="Agenda" titleStyle="H4"/>
                     </toolbarContent>

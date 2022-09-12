@@ -18,11 +18,13 @@ sap.ui.define([
         onInit: function () {
             this.setInitialDates();
             this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "quoteConfigModel");
+            this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "ActionCita");
             this.getView().addEventDelegate({
                 onAfterShow: function (oEvent) {
-                    if (this.getView().getModel("appoinmentsCatalogs") == null) {
-                        this.getCatalogs();
-                    }
+                    this.getCatalogs();
+                    // if (this.getView().getModel("appoinmentsCatalogs") == null) {
+                    //     this.getCatalogs();
+                    // }
                     this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(),
                         "tableQuotesModel");
 
@@ -241,16 +243,48 @@ sap.ui.define([
         },
 
         onListItemPress: function (oEvent) {
+            this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "ActionCita");
+
             var resource = oEvent.getSource().getBindingContext("tableQuotesModel").getPath(),
                 line = resource.split("/").slice(-1).pop();
 
             var odata = this.getOwnerComponent().getModel("tableQuotesModel");
-            var results = odata.getProperty("/ECITASCONSNAV/Paginated/results");
+            var results = odata.getProperty("/CTCITASCAB/Paginated/results");
 
-            var document = results[line].ZfolioCita;
+            var document = results[line].Folio;
+
+            let filtros = [];
+
+            filtros.push(new sap.ui.model.Filter({
+                path: "Action",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: '2'
+            })
+            );
+
+            filtros.push(new sap.ui.model.Filter({
+                path: "Folioini",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: document
+            })
+            );
+
+            sap.ui.core.BusyIndicator.show();
+            let that = this;
+            this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASDET"], "").then(resp => {
+                console.log('DETALLE : ' , resp.data.results[0]);
+                
+                // that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(resp.data.results[0]), "tableQuotesModel");
+                // that.paginate("tableQuotesModel", "/CTCITASCAB", 1, 0);
+                sap.ui.core.BusyIndicator.hide();
+            }).catch(error => {
+                sap.ui.core.BusyIndicator.hide();
+                console.error(error);
+            });
+            
             /*var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(1);
             this.getOwnerComponent().getRouter().navTo("detailOrders", { layout: oNextUIState, document: document }, true);*/
-            this.getOwnerComponent().getRouter().navTo("detailQuotes", { layout: sap.f.LayoutType.MidColumnFullScreen, document: document }, true);
+            // this.getOwnerComponent().getRouter().navTo("detailQuotes", { layout: sap.f.LayoutType.MidColumnFullScreen, document: document }, true);
         },
 
         formatDateQuote: function (v) {

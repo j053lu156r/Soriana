@@ -11,13 +11,13 @@
                         path: 'appoinmentsCatalogs>/ETIPOCITANAV/results',
                         sorter: { path: 'Name' }
                     }"
-                change = "onChangeSelectTipoCita">
+                change = "onChangeSelectTipoCita" selectedKey="{ActionCita>/TipoCita}">
                 <items>
                     <core:Item key="{appoinmentsCatalogs>ZNumcita}" text="{appoinmentsCatalogs>ZTipocita}" />
                 </items>
             </Select>
             <Label text="{appTxts>/quotes.totalpackages}" />
-            <Input id="totalpackagesInput" class= "sapUiSmallMarginBottom" width="auto" change=".hasOnlyNumbers" type="Number"/>
+            <Input id="totalpackagesInput" class= "sapUiSmallMarginBottom" width="auto" change=".hasOnlyNumbers" type="Number" />
             <Label text="{appTxts>/quotes.platforms}"/>
             <Input id="platformsInput" class= "sapUiSmallMarginBottom" width="auto" change=".hasOnlyNumbers" type="Number" />
         </VBox>
