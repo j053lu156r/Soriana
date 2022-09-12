@@ -39,7 +39,7 @@ sap.ui.define([
 		handleFullScreen: function () {
             //var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(2);
 			this.bFocusFullScreenButton = true;
-			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
+			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/fullScreen");
             //sNextLayout = sap.f.LayoutType.TwoColumnsMidExpanded;
 			this.oRouter.navTo("detailBoletinVta", 
                 {
@@ -47,13 +47,16 @@ sap.ui.define([
                     promotion: this._promotion,
                     vendor: this._vendor,
                     promDescription: this._promDesciption,
-                    IntenalClass: this._IntenalClass
+                    IntenalClass: this._IntenalClass,
+                    plant: this._plant,
+                    plantName: this._plantName,
+                    origin: this._origin
                 }
             );
 		},
 		handleExitFullScreen: function () {
 			this.bFocusFullScreenButton = true;
-			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
+			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/exitFullScreen");
             //sNextLayout = sap.f.LayoutType.TwoColumnsMidExpanded;
 			this.oRouter.navTo("detailBoletinVta", 
                 {
@@ -61,14 +64,27 @@ sap.ui.define([
                     promotion: this._promotion,
                     vendor: this._vendor,
                     promDescription: this._promDesciption,
-                    IntenalClass: this._IntenalClass
+                    IntenalClass: this._IntenalClass,
+                    plant: this._plant,
+                    plantName: this._plantName,
+                    origin: this._origin
                 }
             );
 		},
         
 		handleClose: function () {
-			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
-			this.oRouter.navTo("masterBoletinVta");
+			//var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
+			//this.oRouter.navTo("masterBoletinVta");
+            this.oRouter.navTo("detailBoletinVtaCentros", 
+                {
+                    layout: sap.f.LayoutType.TwoColumnsMidExpanded, 
+                    promotion: this._promotion,
+                    vendor: this._vendor,
+                    promDescription: this._promDesciption,
+                    IntenalClass: this._IntenalClass,
+                    origin: this._origin
+                }
+            );
 		},
 
 		_onDocumentMatched: function (oEvent) {
@@ -77,18 +93,23 @@ sap.ui.define([
             this._vendor = oEvent.getParameter("arguments").vendor || this._vendor || "0";
             this._promDesciption = oEvent.getParameter("arguments").promDescription || this._promDesciption || "0";
             this._IntenalClass = oEvent.getParameter("arguments").IntenalClass || this._IntenalClass || "0";
+            this._plant = oEvent.getParameter("arguments").plant || this._plant || "0";
+            this._plantName = oEvent.getParameter("arguments").plantName || this._plantName || "0";
+            this._origin = oEvent.getParameter("arguments").origin || this._origin || "0";
 
             var headerDeatil = {
                 "promotion": this._promotion,
                 "vendor": this._vendor,
-                "Description": this._promDesciption
+                "Description": this._promDesciption,
+                "plant": this._plant,
+                "plantName": this._plantName
             };
 
             this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "promotionDetModel");
             
-            var url = "promMaterialListSet?$filter=Promotion eq '" + this._promotion + "' and Vendor eq '" + 
-                      this._vendor + "'";
-                        
+            var url = "promMaterialListByPlantSet?$filter=Promotion eq '" + this._promotion + "' and Vendor eq '" + 
+                    this._vendor + "' and Plant eq '" + this._plant + "'";
+                    
             this.getView().byId('promotionDetTable').setBusy(true);
             oModel.getJsonModelAsync(
                 url,
@@ -108,6 +129,7 @@ sap.ui.define([
             );
 		},
 
+        /*
         onDetailCenterPress: function (oEvent) {
 
             this.getOwnerComponent().getRouter().navTo("detailBoletinVtaCentros",
@@ -120,80 +142,57 @@ sap.ui.define([
                 }, true);
 
         },
+        */
 
         buildExportTable: function () {            
 
             var texts = this.getOwnerComponent().getModel("appTxts");
             var columns = [
+                {
+                    name: texts.getProperty("/foliosCap.promocion"),
+                    template: {
+                        content: "{Promotion}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/foliosCap.supplier"),
+                    template: {
+                        content: "{Vendor}"
+                    }
+                },
                  {
-                    name: texts.getProperty("/aportaciones.un"),
+                    name: texts.getProperty("/foliosCapDet.Material"),
                     template: {
-                        content: "{Werks}"
+                        content: "{Material}"
                     }
                 },
                 {
-                    name: texts.getProperty("/aportaciones.tienda"),
+                    name: texts.getProperty("/foliosCapDet.MatDescription"),
                     template: {
-                        content: "{Namew}"
+                        content: "{Description}"
                     }
                 },
                 {
-                    name: texts.getProperty("/aportaciones.sku"),
+                    name: texts.getProperty("/foliosCapDet.SalesUnit"),
                     template: {
-                        content: "{Matnr}"
+                        content: "{SalesUnit}"
                     }
                 },
                 {
-                    name: texts.getProperty("/aportaciones.articulo"),
+                    name: texts.getProperty("/foliosCapDet.planQty"),
                     template: {
-                        content: "{Maktx}"
+                        content: "{QtyPlan}"
                     }
                 },
                 {
-                    name: texts.getProperty("/aportaciones.piezas"),
+                    name: texts.getProperty("/foliosCapDet.planPrice"),
                     template: {
-                        content: "{Zcantidad}"
-                    }
-                },
-                /*{
-                    name: texts.getProperty("/aportaciones.vtaNeta"),
-                    template: {
-                        content: "{Zbonificacion}"
-                    }
-                },*/
-                {
-                    name: texts.getProperty("/aportaciones.bonif"),
-                    template: {
-                        content: "{Zbonificacion}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/aportaciones.iva"),
-                    template: {
-                        content: "{Ziva}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/aportaciones.ieps"),
-                    template: {
-                        content: "{Zieps}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/aportaciones.total"),
-                    template: {
-                        content: "{Ztotal}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/aportaciones.aporta"),
-                    template: {
-                        content: "{Zaportacion}"
+                        content: "{PlanPrice}"
                     }
                 }
             ];
 
-            this.exportxls('AportacionesDet', '/AportaDetalle/results', columns);
+            this.exportxls('promotionDet', '/', columns);
         },
 
         handleReceipt: function () {

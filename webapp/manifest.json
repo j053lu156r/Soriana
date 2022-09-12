@@ -734,15 +734,22 @@
                     ]
                 },
                 {
+                    "name": "masterBoletinVtaProv",
+                    "pattern": "masterBoletinVtaProv",
+                    "target": [
+                        "masterBoletinVtaProv"
+                    ]
+                },
+                {
                     "name": "detailBoletinVta",
-                    "pattern": "detailBoletinVta/{layout}/{promotion}/{vendor}/{promDescription}/{IntenalClass}",
+                    "pattern": "detailBoletinVta/{layout}/{promotion}/{vendor}/{promDescription}/{IntenalClass}/{plant}/{plantName}/{origin}",
                     "target": [
                         "detailBoletinVta"
                     ]
                 },
                 {
                     "name": "detailBoletinVtaCentros",
-                    "pattern": "detailBoletinVtaCentros/{layout}/{promotion}/{vendor}/{promDescription}/{IntenalClass}",
+                    "pattern": "detailBoletinVtaCentros/{layout}/{promotion}/{vendor}/{promDescription}/{IntenalClass}/{origin}",
                     "target": [
                         "detailBoletinVtaCentros"
                     ]
@@ -1131,15 +1138,20 @@
                     "viewPath": "demo.views.BoletinVta",
                     "controlAggregation": "beginColumnPages"
                 },
+                "masterBoletinVtaProv" : {
+                    "viewName": "MasterVendor",
+                    "viewPath": "demo.views.BoletinVta",
+                    "controlAggregation": "beginColumnPages"
+                },
                 "detailBoletinVta" : {
                     "viewName": "Detail",
                     "viewPath": "demo.views.BoletinVta",
-                    "controlAggregation": "midColumnPages"
+                    "controlAggregation": "endColumnPages"
                 },
                 "detailBoletinVtaCentros" : {
                     "viewName": "DetailCentro",
                     "viewPath": "demo.views.BoletinVta",
-                    "controlAggregation": "endColumnPages"
+                    "controlAggregation": "midColumnPages"
                 },
                 "masterBoletinVtaPolizas" : {
                     "viewName": "Polizas",

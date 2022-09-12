@@ -13,7 +13,7 @@ sap.ui.define([
 	var ButtonType = mobileLibrary.ButtonType;
 	var DialogType = mobileLibrary.DialogType;
     var currentRow;
-    return Controller.extend("demo.controllers.BoletinVta.Master", {
+    return Controller.extend("demo.controllers.BoletinVta.MasterVendor", {
         onInit: function () {
             //this.setDaterangeMaxMin();
             this._pdfViewer = new PDFViewer();
@@ -145,7 +145,7 @@ sap.ui.define([
                     vendor: docResult.Vendor,
                     promDescription: docResult.Description,
                     IntenalClass: docResult.InternalClass,
-                    origin: "buyer"
+                    origin: "vendor"
                 }, true);
 
         },

@@ -47,14 +47,14 @@ sap.ui.define([
                             filtro: 'belnr',
                             descripcion: 'Documento'
                         },
-                            {
-                                filtro: 'xblnr',
-                                descripcion: 'Factura'
-                            },
-                            {
-                                filtro: '',
-                                descripcion: ''
-                            }
+                        {
+                            filtro: 'xblnr',
+                            descripcion: 'Factura'
+                        },
+                        {
+                            filtro: '',
+                            descripcion: ''
+                        }
 
 
                         ]
@@ -246,7 +246,7 @@ sap.ui.define([
 
             var totalGeneral = me.truncate(totalD, 2) - me.truncate(totalC, 2)
 
-
+            totalGeneral = totalGeneral - .01
             var jsonModelG = new JSONModel({
                 "Hierarchy": {
                     "movimientos": nestedMovs,
@@ -327,26 +327,26 @@ sap.ui.define([
             var auxFilters = [];
 
             auxFilters.push(new sap.ui.model.Filter({
-                    path: "Lifnr",
-                    operator: sap.ui.model.FilterOperator.EQ,
-                    value1: proveedor_LIFNR
-                })
+                path: "Lifnr",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: proveedor_LIFNR
+            })
 
             )
 
-         /*   auxFilters.push(new sap.ui.model.Filter({
-                    path: "Datei",
-                    operator: sap.ui.model.FilterOperator.EQ,
-                    value1: desde_LV_ZDESDE
-                })
-
-            )*/
+            /*   auxFilters.push(new sap.ui.model.Filter({
+                       path: "Datei",
+                       operator: sap.ui.model.FilterOperator.EQ,
+                       value1: desde_LV_ZDESDE
+                   })
+   
+               )*/
 
             auxFilters.push(new sap.ui.model.Filter({
-                    path: "Datei",
-                    operator: sap.ui.model.FilterOperator.EQ,
-                    value1: desde_LV_ZHASTA
-                })
+                path: "Datei",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: desde_LV_ZHASTA
+            })
 
             )
 
@@ -355,22 +355,22 @@ sap.ui.define([
                 queryFiltro = ''
 
             } else if (filtroBusqueda == "belnr") {
-               // queryFiltro = `and belnr eq '${doc_BELNR}' `
+                // queryFiltro = `and belnr eq '${doc_BELNR}' `
                 auxFilters.push(new sap.ui.model.Filter({
-                        path: "belnr",
-                        operator: sap.ui.model.FilterOperator.EQ,
-                        value1: doc_BELNR
-                    })
+                    path: "belnr",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: doc_BELNR
+                })
 
                 )
 
             } else if (filtroBusqueda == "xblnr") {
-               // queryFiltro = `and xblnr eq '${doc_BELNR}' `
+                // queryFiltro = `and xblnr eq '${doc_BELNR}' `
                 auxFilters.push(new sap.ui.model.Filter({
-                        path: "xblnr",
-                        operator: sap.ui.model.FilterOperator.EQ,
-                        value1: doc_BELNR
-                    })
+                    path: "xblnr",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: doc_BELNR
+                })
 
                 )
 
@@ -379,7 +379,7 @@ sap.ui.define([
 
 
 
-           // let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}' ${queryFiltro} &$format=json`;
+            // let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}' ${queryFiltro} &$format=json`;
             //Xblnr
 
             var model = "ZOSP_STATEMENT_SRV_01";
@@ -397,25 +397,25 @@ sap.ui.define([
 
                 let Detalles = [...data[0].Oitms.results];
 
-                var cleanedArray =  Detalles.filter(obj => !obj.Belnr.startsWith("58") && !obj.Belnr.startsWith("59"));
+                var cleanedArray = Detalles.filter(obj => !obj.Belnr.startsWith("58") && !obj.Belnr.startsWith("59"));
 
-                var clanedDateArray  = cleanedArray.filter(obj => {
-                   // DescripcionGpo: "PAGO FACTURA"
-                   //IdNumGpo: "1"
-                   //DescTipomov: "PAGO FACTURAS"
-                   //IdNumTipomov: "11"
+                var clanedDateArray = cleanedArray.filter(obj => {
+                    // DescripcionGpo: "PAGO FACTURA"
+                    //IdNumGpo: "1"
+                    //DescTipomov: "PAGO FACTURAS"
+                    //IdNumTipomov: "11"
 
-                   if(obj.DescripcionGpo === ""){
-                        obj.DescripcionGpo= "AJUSTE DE FACTURAS"
-                        obj.IdNumGpo= "9"
-                        obj.DescTipomov= "CARGOS DIVERSOS"
-                        obj.IdNumTipomov= "65"
-                   }
+                    if (obj.DescripcionGpo === "") {
+                        obj.DescripcionGpo = "AJUSTE DE FACTURAS"
+                        obj.IdNumGpo = "9"
+                        obj.DescTipomov = "CARGOS DIVERSOS"
+                        obj.IdNumTipomov = "65"
+                    }
 
                     const date = new Date(obj.Budat.replace(/-/g, '\/'));
 
 
-                    return   date < new Date()
+                    return date < new Date()
                 });
 
 
@@ -483,6 +483,8 @@ sap.ui.define([
 
                 var totalGeneral = that.truncate(totalD, 2) - that.truncate(totalC, 2)
 
+                totalGeneral = (totalGeneral - .01)
+
 
                 var jsonModelG = new JSONModel({
                     "Hierarchy": {
@@ -493,7 +495,7 @@ sap.ui.define([
                         "totalT": that.truncate(totalGeneral, 2)
                     },
                     "Bukrs": data[0].Bukrs,
-                    "Lifnr":proveedor_LIFNR
+                    "Lifnr": proveedor_LIFNR
 
                 });
 
@@ -509,7 +511,7 @@ sap.ui.define([
 
 
 
-           // TDatos.results[0].periodo = "Del " + this.formatDateTime(dateRange.getDateValue(), 'dd/MM/YYYY') + " al " + this.formatDateTime(dateRange.getSecondDateValue(), 'dd/MM/YYYY');
+            // TDatos.results[0].periodo = "Del " + this.formatDateTime(dateRange.getDateValue(), 'dd/MM/YYYY') + " al " + this.formatDateTime(dateRange.getSecondDateValue(), 'dd/MM/YYYY');
 
 
 
@@ -580,26 +582,26 @@ sap.ui.define([
             let auxFilters = [];
 
             auxFilters.push(new sap.ui.model.Filter({
-                    path: "Lifnr",
-                    operator: sap.ui.model.FilterOperator.EQ,
-                    value1: proveedor_LIFNR
-                })
+                path: "Lifnr",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: proveedor_LIFNR
+            })
 
             )
 
             auxFilters.push(new sap.ui.model.Filter({
-                    path: "Datei",
-                    operator: sap.ui.model.FilterOperator.EQ,
-                    value1: desde_LV_ZDESDE
-                })
+                path: "Datei",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: desde_LV_ZDESDE
+            })
 
             )
 
             auxFilters.push(new sap.ui.model.Filter({
-                    path: "Datei",
-                    operator: sap.ui.model.FilterOperator.EQ,
-                    value1: desde_LV_ZHASTA
-                })
+                path: "Datei",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: desde_LV_ZHASTA
+            })
 
             )
 
@@ -610,20 +612,20 @@ sap.ui.define([
             } else if (filtroBusqueda == "belnr") {
                 // queryFiltro = `and belnr eq '${doc_BELNR}' `
                 auxFilters.push(new sap.ui.model.Filter({
-                        path: "belnr",
-                        operator: sap.ui.model.FilterOperator.EQ,
-                        value1: doc_BELNR
-                    })
+                    path: "belnr",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: doc_BELNR
+                })
 
                 )
 
             } else if (filtroBusqueda == "xblnr") {
                 // queryFiltro = `and xblnr eq '${doc_BELNR}' `
                 auxFilters.push(new sap.ui.model.Filter({
-                        path: "xblnr",
-                        operator: sap.ui.model.FilterOperator.EQ,
-                        value1: doc_BELNR
-                    })
+                    path: "xblnr",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: doc_BELNR
+                })
 
                 )
 
@@ -711,8 +713,10 @@ sap.ui.define([
                 }, 0);
 
 
+
                 var totalGeneral = that.truncate(totalD, 2) - that.truncate(totalC, 2)
 
+                totalGeneral = totalGeneral - .01
 
                 var jsonModelG = new JSONModel({
                     "Hierarchy": {
@@ -899,7 +903,7 @@ sap.ui.define([
                 path: sPath,
             })
 
-            console.log( this._oTablev2)
+            console.log(this._oTablev2)
 
             this._pTemplate.then(function (oTemplate) {
                 var sorter = [new sap.ui.model.Sorter("IdNumGpo")]
@@ -912,14 +916,14 @@ sap.ui.define([
 
         },
 
-        conceptoSelect: function (oEvent){
+        conceptoSelect: function (oEvent) {
 
             console.log(
                 "on condepto select"
             )
             let sPath = oEvent.getSource().getBindingContext("GroupedTotales").getPath();
 
-           // var sPath = oEvent.getParameter("listItem").getBindingContextPath();
+            // var sPath = oEvent.getParameter("listItem").getBindingContextPath();
 
             console.log(sPath)
             var aPath = sPath.split("/");
@@ -999,7 +1003,7 @@ sap.ui.define([
 
                     //camvuar  docuemnto con cual se va consultar
 
-                    if(results.LifnrAportacion !== "") {
+                    if (results.LifnrAportacion !== "") {
 
                         this.getOwnerComponent().getRouter().navTo("detailAportacionesAS", {
                             layout: sap.f.LayoutType.MidColumnFullScreen,
@@ -1011,7 +1015,7 @@ sap.ui.define([
                             // lifnr: docResult.Lifnr
                         }, true);
 
-                    }else{
+                    } else {
                         console.log('sin campo lifnr_aportacion')
                         MessageToast.show("Sin aportación");
 
@@ -1169,142 +1173,104 @@ sap.ui.define([
             let totalRegistros = parseInt(this.getOwnerComponent().getModel('totales').getProperty('/Detalles/results/length'), 10);
             let valorSeleccinado = parseInt(selectedItem.getKey(), 10);
 
-           // let tablaPrincipal = this.getView().byId("detailsStatementList");
-           // tablaPrincipal.setVisibleRowCount(totalRegistros < valorSeleccinado ? totalRegistros : valorSeleccinado);
+            // let tablaPrincipal = this.getView().byId("detailsStatementList");
+            // tablaPrincipal.setVisibleRowCount(totalRegistros < valorSeleccinado ? totalRegistros : valorSeleccinado);
             this.paginateValue(selectedItem, 'totales', '/Detalles');
         },
         buildExportTable: function () {
             var texts = this.getOwnerComponent().getModel("appTxts");
-            let Encabezado = this.getOwnerComponent().getModel("totales");
-            console.log(Encabezado)
-             var columns = [{
-                  name: texts.getProperty("/aportaciones.concepto"),
-                 template: {
-                    content:  "{IdNumTipomov} {DescTipomov}"
-                }
-
-
-            },
-
-                 /*
-
+            var data = this.formatData(this.getOwnerComponent().getModel("totales").getProperty("/Detalles/results"), texts);
+            console.log(data)
+            var columns = [
                 {
-                    name: texts.getProperty("/state.nameUPC"),
-                    template: {
-                        content: Encabezado.getProperty("/Name")
-                    }
+                    label: texts.getProperty("/aportaciones.concepto").toUpperCase(),
+                    property: ["IdNumTipomov" ,"DescTipomov"],
+                    template: "{0} {1}",
+                    width: 31
                 },
                 {
-                    name: texts.getProperty("/state.addressUPC"),
-                    template: {
-                        content: Encabezado.getProperty("/Address")
-                    }
-                },
-                /*{
-                    name: texts.getProperty("/state.banknameUPC"),
-                    template: {
-                        content: Encabezado.getProperty("/Bankl")
-                    }
-                },*/
-              /*
-                {
-                    name: texts.getProperty("/state.banknumberUPC"),
-                    template: {
-                        content: Encabezado.getProperty("/Bankn")
-                    }
+                    label: texts.getProperty("/state.statusUPC").toUpperCase(),
+                    property: "status",
+                    width: 15
                 },
                 {
-                    name: texts.getProperty("/state.invoicedUPC"),
-                    template: {
-                        content: Encabezado.getProperty("/Totfac")
-                    }
-                },
-                 */
-
-                {
-                    name: texts.getProperty("/state.totalUPC"),
-                    template: {
-                        content: Encabezado.getProperty("/Totpag")
-                    }
-                },
-                /*{
-                    name: texts.getProperty("/state.amountDiscountUPC"),
-                    template: {
-                        content: Encabezado.getProperty("/Totdsc")
-                    }
-                },*/
-                {
-                    name: texts.getProperty("/state.totalNoteUPC"),
-                    template: {
-                        content: Encabezado.getProperty("/Totnoc")
-                    }
+                    label: texts.getProperty("/state.xlsx.folio").toUpperCase(),
+                    property: "Folio",
+                    width: 15
                 },
                 {
-                    name: texts.getProperty("/state.commissionsUPC"),
-                    template: {
-                        content: Encabezado.getProperty("/Totcm")
-                    }
+                    label: texts.getProperty("/state.xlsx.sucursal").toUpperCase(),
+                    property: "Sucursal",
+                    width: 15
                 },
                 {
-                    name: texts.getProperty("/state.balanceUPC"),
-                    template: {
-                        content: Encabezado.getProperty("/Totsdo")
-                    }
+                    label: texts.getProperty("/state.folioUPC").toUpperCase(),
+                    property: "Belnr",
+                    width: 20
                 },
                 {
-                    name: texts.getProperty("/state.currencyUPC"),
-                    template: {
-                        content: Encabezado.getProperty("/Banks")
-                    }
+                    label: texts.getProperty("/state.referenceUPC").toUpperCase(),
+                    property: "Xblnr",
+                    width: 20
                 },
                 {
-                    name: texts.getProperty("/state.statusUPC"),
-                    template: {
-                        content: "{= (${Pendt} === true) ? 'Pendiente' : ( ${Belnr} === ${Augbl} ? 'Pago' : 'Contabilizado'  ) }"
-                    }
+                    label: texts.getProperty("/state.typeDocUPC").toUpperCase(),
+                    property: "Ltext",
+                    width: 22
                 },
                 {
-                    name: texts.getProperty("/state.folioUPC"),
-                    template: {
-                        content: "{Belnr}"
-                    }
+                    label: texts.getProperty("/state.dateUPC").toUpperCase(),
+                    property: "Budat",
+                    width: 22
                 },
                 {
-                    name: texts.getProperty("/state.referenceUPC"),
-                    template: {
-                        content: "{Xblnr}"
-                    }
+                    label: texts.getProperty("/clarifications.expirationDate").toUpperCase(),
+                    property: "FechaTesoreria",
+                    width: 22
                 },
                 {
-                    name: texts.getProperty("/state.typeDocUPC"),
-                    template: {
-                        content: "{Ltext}"
-                    }
+                    label: texts.getProperty("/state.amount").toUpperCase(),
+                    property: "Wrbtr",
+                    type: sap.ui.export.EdmType.Number,
+                    delimiter: true,
+                    scale: 2,
+                    width: 15
                 },
                 {
-                    name: texts.getProperty("/state.dateUPC"),
-                    template: {
-                        content: "{Budat}"
-                    }
+                    label: texts.getProperty("/reporte.headerTitulo").toUpperCase(),
+                    property: "MCondicion",
+                    type: sap.ui.export.EdmType.Number,
+                    delimiter: true,
+                    scale: 2,
+                    width: 32
                 },
                 {
-                    name: texts.getProperty("/state.amountUPC"),
-                    template: {
-                        content: "{Wrbtr}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/state.conciliationUPC"),
-                    template: {
-                        content: "{Augbl}"
-                    }
+                    label: texts.getProperty("/state.bloqueado").toUpperCase(),
+                    property: "DescripcionBloqueo",
+                    width: 32
                 }
             ];
 
-            this.exportxls('totales', '/Detalles/results', columns);
+            this.buildExcelSpreadSheet(columns, data, "Estado de cuenta.xlsx");
+        },
+        formatData: function(data, texts){
+            data.forEach(function(element) {
+                if(element.Pendt === true){
+                    element.status = texts.getProperty("/state.xlsx.statusPend");
+                } else if (element.Belnr === element.Augbl){
+                    element.status = texts.getProperty("/state.xlsx.statusPago");
+                } else {
+                    element.status = texts.getProperty("/state.xlsx.statusCont");
+                }
+
+                if(element.MCondicion !== '0.00') {
+                    element.MCondicion = "-" + element.MCondicion
+                }
+            });
+            return data;
         },
         onMarkerPress: function (oEvent) {
-           // MessageToast.show(oEvent.getParameter("additionalInfo") + "");
+            // MessageToast.show(oEvent.getParameter("additionalInfo") + "");
         },
         formatDateTime: (oDateTime, outputFormat, inputFormat) => {
 
@@ -1342,7 +1308,7 @@ sap.ui.define([
 
         },
 
-        onDocumentDevolucionPress: function (oEvent){
+        onDocumentDevolucionPress: function (oEvent) {
             var path = oEvent.getSource().getBindingContext("GroupedTotales").getPath();
             let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(path);
 
@@ -1411,7 +1377,7 @@ sap.ui.define([
 
                 //camvuar  docuemnto con cual se va consultar
 
-                if(results.LifnrAportacion !== "") {
+                if (results.LifnrAportacion !== "") {
 
 
                     this.getOwnerComponent().getRouter().navTo("detailAportacionesAS", {
@@ -1424,16 +1390,16 @@ sap.ui.define([
                         gjahr: ejercicio
                     }, true);
 
-                }else{
-                    MessageToast.show("Sin aportación");
+                } else {
+                    MessageToast.show("Sin detalle");
                 }
-            } else if (boletinVentasTCodes.includes(tcode) || tcode === ''){
+            } else if (boletinVentasTCodes.includes(tcode) || tcode === '') {
                 console.log('on boletin vtz')
 
                 // navega a pantalla de boltines * revisar condiciones de apertura , conseguir esenarios
                 this.getOwnerComponent().getRouter().navTo("BoletinVtaDetailPolizas", {
                     layout: sap.f.LayoutType.MidColumnFullScreen,
-                  //  document: results.Xblnr,
+                    //  document: results.Xblnr,
                     document: doc,
                     company: sociedad,
                     year: ejercicio

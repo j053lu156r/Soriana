@@ -168,10 +168,20 @@
                     "binding": "masterFacSoriana",
                     "functions": [
                         {
-                            "idFunction": 21
+                            "idFunction": 21,
+                            "roles": [
+                                "0001",
+                                "0004",
+                                "0005"
+                            ]
                         },
                         {
-                            "idFunction": 41
+                            "idFunction": 41,
+                            "roles": [
+                                "0001",
+                                "0004",
+                                "0005"
+                            ]
                         }
                     ]
                 },
@@ -570,6 +580,21 @@
                     "footer": "",
                     "type": "standard",
                     "binding": "masterBoletinVta",
+                    "functions": [
+                        {
+                            "idFunction": 53
+                        }
+                    ]
+                },
+                {
+                    "id": "0041",
+                    "title": "/tiles.boletinVtaProveedor",
+                    "subHeader": "",
+                    "icon": "sap-icon://my-sales-order",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterBoletinVtaProv",
                     "functions": [
                         {
                             "idFunction": 53

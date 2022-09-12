@@ -25,72 +25,25 @@ sap.ui.define([
 
             this.VisibleTable();
         },
-      
+
         searchData2: function () {
             var that = this;
             var url = "/sap/opu/odata/sap/ZOSP_MEJOR_COND_REP_SRV/RepMejorCondSet";
             if (this.getView().byId("supplierInput").getValue() !== "") {
-               
-                url=url+"?$filter=(IAcre eq '"+(this.getView().byId("supplierInput").getValue().split("-")[0].trim()).padStart(10, 0)+"'"
-            }else{
-                
-                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/ValCondi.ErrorPRoveedor'));
-                return
-            }
-           
-            if (that.getView().byId("IDSerie").getValue() !== "") {
-                url=url+ "and ISerie eq '"+that.getView().byId("IDSerie").getValue()+"'"
-            }
-            if (that.getView().byId("IDFolio").getValue()!=="") {
-                url=url+ " and IFolio eq '"+that.getView().byId("IDFolio").getValue()+"'"
-            }
-            if (that.getView().byId("dateRange").getValue() !== "") {
-                if (that.getView().byId("dateRange").getValue().split("-")[1].trim() === that.getView().byId("dateRange").getValue().split("-")[0].trim()) {
-                    var FechaI = that.getView().byId("dateRange").getDateValue();
-                    var FechaF = that.getView().byId("dateRange").getDateValue();
-                } else {
-                    var FechaI = that.getView().byId("dateRange").getDateValue();
-                    var FechaF = that.getView().byId("dateRange").getSecondDateValue();
-                }
-                url=url+ "and (IFe ge '"+FechaI.toISOString().slice(0, 10).replaceAll('-', '') +"' and IFe le '"+FechaF.toISOString().slice(0, 10).replaceAll('-', '') +"')"
-            }   
-            url=url+')'
-           // /sap/opu/odata/sap/ZOSP_MEJOR_COND_REP_SRV/RepMejorCondSet?$filter=(IAcre eq '0000229732' and ISerie eq 'B' and IFolio eq '81987' and (IFe ge '20220706' and IFe le '20220730'))
 
-console.log(url)
-            sap.ui.core.BusyIndicator.show();
-            that. _GEToDataV2ajax(url).then(function (_GEToDataV2Response) {
-                sap.ui.core.BusyIndicator.hide();
-                console.log(_GEToDataV2Response)
-                var data = _GEToDataV2Response.d.results;
-               
-                var auxJsonModel = new sap.ui.model.json.JSONModel(data);
-                that.getView().setModel(auxJsonModel, 'ModelValidacion');
-            });
-
-        },
-
-        searchData: function () {
-            var that = this;
-            // /sap/opu/odata/sap/ZOSP_MEJOR_COND_REP_SRV/RepMejorCondSet?$filter=(IAcre eq '0000229732' and ISerie eq 'B' and IFolio eq '81987' and IFe eq '20220706')
-            var auxFilters = [];
-            if (this.getView().byId("supplierInput").getValue() !== "") {
-                var valor = "";
-
-                auxFilters.push(new sap.ui.model.Filter({
-                    path: "IAcre",
-                    operator: sap.ui.model.FilterOperator.EQ,
-                    value1: this.getView().byId("supplierInput").getValue().split("-")[1].trim()
-                })
-                )
+                url = url + "?$filter=(IAcre eq '" + (this.getView().byId("supplierInput").getValue().split("-")[0].trim()).padStart(10, 0) + "'"
             } else {
 
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/ValCondi.ErrorPRoveedor'));
                 return
             }
 
-
-
+            if (that.getView().byId("IDSerie").getValue() !== "") {
+                url = url + "and ISerie eq '" + that.getView().byId("IDSerie").getValue() + "'"
+            }
+            if (that.getView().byId("IDFolio").getValue() !== "") {
+                url = url + " and IFolio eq '" + that.getView().byId("IDFolio").getValue() + "'"
+            }
             if (that.getView().byId("dateRange").getValue() !== "") {
                 if (that.getView().byId("dateRange").getValue().split("-")[1].trim() === that.getView().byId("dateRange").getValue().split("-")[0].trim()) {
                     var FechaI = that.getView().byId("dateRange").getDateValue();
@@ -99,58 +52,188 @@ console.log(url)
                     var FechaI = that.getView().byId("dateRange").getDateValue();
                     var FechaF = that.getView().byId("dateRange").getSecondDateValue();
                 }
-            //    url='RepMejorCondSet/(IFe ge '+FechaI +'and IFe le' + FechaF+')';
-                auxFilters.push(new sap.ui.model.Filter({
-                    path: "IFe",
-                    operator: sap.ui.model.FilterOperator.GE,
-                    value1: FechaI.toISOString().slice(0, 10) + 'T00:00:00'
-                   // value2: FechaF.toISOString().slice(0, 10) + 'T00:00:00'
-                 
-                })
-            )
-         /* auxFilters.push(new sap.ui.model.Filter({
-                path: "IFe",
-                operator: sap.ui.model.FilterOperator.LE,
-                value1: FechaF.toISOString().slice(0, 10) + 'T00:00:00'
-               
-            })
-        )*/
+                url = url + "and (IFe ge '" + FechaI.toISOString().slice(0, 10).replaceAll('-', '') + "' and IFe le '" + FechaF.toISOString().slice(0, 10).replaceAll('-', '') + "')"
             }
-            if (that.getView().byId("IDFolio").getValue() !== "") {
-                auxFilters.push(new sap.ui.model.Filter({
-                    path: "IFolio",
-                    operator: sap.ui.model.FilterOperator.EQ,
-                    value1: that.getView().byId("IDFolio").getValue()
-                })
-                )
+            url = url + ')'
+            // /sap/opu/odata/sap/ZOSP_MEJOR_COND_REP_SRV/RepMejorCondSet?$filter=(IAcre eq '0000229732' and ISerie eq 'B' and IFolio eq '81987' and (IFe ge '20220706' and IFe le '20220730'))
 
-            }
-            if (that.getView().byId("IDSerie").getValue() !== "") {
-                auxFilters.push(new sap.ui.model.Filter({
-                    path: "ISerie",
-                    operator: sap.ui.model.FilterOperator.EQ,
-                    value1: that.getView().byId("IDSerie").getValue()
-                })
-                )
-
-            }
-
-            var model = "ZOSP_MEJOR_COND_REP_SRV";
-            var entity = "RepMejorCondSet";
-            var expand = "";
-            var filter = auxFilters;
-            var select = "";
-console.log(filter)
+          
             sap.ui.core.BusyIndicator.show();
-            that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
+            that._GEToDataV2ajax(url).then(function (_GEToDataV2Response) {
                 sap.ui.core.BusyIndicator.hide();
-                var data = _GEToDataV2Response.data.results;
-                console.log(data)
-                var auxJsonModel = new sap.ui.model.json.JSONModel(data);
+
+                function onlyUnique(value, index, self) {
+                    return self.indexOf(value) === index;
+                }
+               
+                var data = _GEToDataV2Response.d.results;
+           
+                const unicos3 = [];
+
+                for(var indice = 0; indice < data.length; indice++) {
+                
+                  const persona = data[indice];
+                  let esDuplicado = false;
+                  for(var i = 0; i < unicos3.length; i++) {
+              
+                    if (Number(unicos3[i].TeSalida.Cmsucfol) === Number(persona.TeSalida.Cmsucfol) && Number(unicos3[i].TeSalida.Posicion) === Number(persona.TeSalida.Posicion) ) {
+                      esDuplicado = true;
+                      break;
+                    }
+                  }
+                  
+                  if (!esDuplicado) {
+                    unicos3.push(persona);
+                  }
+                }
+              
+                unicos3.sort((a, b) => {
+                        if(Number(a.TeSalida.Cmsucfol) === Number(b.TeSalida.Cmsucfol)) {
+                          return 0; 
+                        }
+                        if(Number(a.TeSalida.Cmsucfol)< Number(b.TeSalida.Cmsucfol)) {
+                          return -1;
+                        }
+                        return 1;
+                      });
+                  
+             
+                var Unicos = unicos3.map(function (e) {
+                    return e.TeSalida.Cmsucfol;
+                }).filter(onlyUnique).map(function (e, i) {
+                    return {
+                        key: i,
+                        value: e
+                    };
+                });
+              
+      
+            for (var x = 0; x < Unicos.length; x++) {
+                var CantidadSap = 0;
+                var Cantidad = 0;
+                var MejorCantidad = 0;
+                var MejorPrecio = 0;
+                var PrecioUnSi = 0;
+                var PrecCDescSap = 0;
+                var ImporteSap = 0;
+                var ImporteTotal = 0;
+                var MejorSubtotal = 0;
+                var ImpuestosSap = 0;
+                var ImpuestosFact = 0;
+                var ImpuestosTotal = 0;
+                var ImpTotCImpSap = 0;
+                var ImporteTotCi = 0;
+                var MejorTotal = 0;
+                var NcargoMc = 0;
+                var NcargoImpMc = 0;
+                var NcargoTotMc = 0;
+                 var Cmsucfol=0;
+
+
+                
+                for (var y = 0; y < unicos3.length; y++) {
+
+
+                    if (unicos3[y].TeSalida.Cmsucfol === Unicos[x].value) {
+                    
+                        CantidadSap = CantidadSap + Number(unicos3[y].TeSalida.CantidadSap);
+                        Cantidad = Cantidad + Number(unicos3[y].TeSalida.Cantidad);
+                        MejorCantidad = MejorCantidad + Number(unicos3[y].TeSalida.MejorCantidad);
+                        PrecCDescSap = PrecCDescSap + Number(unicos3[y].TeSalida.PrecCDescSap);
+                        PrecioUnSi = PrecioUnSi + Number(unicos3[y].TeSalida.PrecioUnSi);
+                        MejorPrecio = MejorPrecio + Number(unicos3[y].TeSalida.MejorPrecio);
+                        ImporteSap = ImporteSap + Number(unicos3[y].TeSalida.ImporteSap);
+                        ImporteTotal = ImporteTotal + Number(unicos3[y].TeSalida.ImporteTotal);
+                        MejorSubtotal = MejorSubtotal + Number(unicos3[y].TeSalida.MejorSubtotal);
+                        ImpuestosSap = ImpuestosSap + Number(unicos3[y].TeSalida.ImpuestosSap);
+                        ImpuestosFact = ImpuestosFact + Number(unicos3[y].TeSalida.ImpuestosFact);
+                        ImpuestosTotal = ImpuestosTotal + Number(unicos3[y].TeSalida.ImpuestosTotal);
+                        ImpTotCImpSap = ImpTotCImpSap + Number(unicos3[y].TeSalida.ImpTotCImpSap);
+                        ImporteTotCi = ImporteTotCi + Number(unicos3[y].TeSalida.ImporteTotCi);
+                        MejorTotal = MejorTotal + Number(unicos3[y].TeSalida.MejorTotal);
+                        NcargoMc = NcargoMc + Number(unicos3[y].TeSalida.NcargoMc);
+                        NcargoImpMc = NcargoImpMc + Number(unicos3[y].TeSalida.NcargoImpMc);
+                        NcargoTotMc = NcargoTotMc + Number(unicos3[y].TeSalida.NcargoTotMc);
+                        Cmsucfol=Unicos[x].value;
+                    }
+
+           
+
+                }
+                var ARRT = {
+                    EMsj: "P",
+                    IAcre: "",
+                    ICmsu: "",
+                    IDocmat: "",
+                    IEsta: "",
+                    IFe: "",
+                    IFolio: "",
+                    INe: "",
+                    IPedi: "",
+                    ISerie: "",
+                    TeSalida: {
+                        Cantidad: Cantidad.toFixed(2),
+                        CantidadSap: CantidadSap.toFixed(2),
+                        Cmsucfol: Cmsucfol,
+                        DescEstat: "",
+                        DocCargo: "",
+                        DocCompra: "",
+                        DocFactura: "",
+                        DocMaterial: "",
+                        EanUpc: "",
+                        Estatus: "",
+                        FechaRegSap: "",
+                        FecharSap: "",
+                        FolionEntrada:"",
+                        ImpTotCImpSap: ImpTotCImpSap.toFixed(2),
+                        ImporteSap: ImporteSap.toFixed(2),
+                        ImporteTotCi: ImporteTotCi.toFixed(2),
+                        ImporteTotal: ImporteTotal.toFixed(2),
+                        ImpuestosFact: ImpuestosFact.toFixed(2),
+                        ImpuestosSap: ImpuestosSap.toFixed(2),
+                        ImpuestosTotal: ImpuestosTotal.toFixed(2),
+                        Lifnr: "",
+                        Material: "",
+                        MaterialSap: "",
+                        MejorCantidad: MejorCantidad.toFixed(2),
+                        MejorPrecio: MejorPrecio.toFixed(2),
+                        MejorSubtotal: MejorSubtotal.toFixed(2),
+                        MejorTotal: MejorTotal.toFixed(2),
+                        NcargoImpMc:NcargoImpMc.toFixed(2),
+                        NcargoMc: NcargoMc.toFixed(2),
+                        NcargoTotMc: NcargoTotMc.toFixed(2),
+                        Posicion: "",
+                        PrecCDescSap: PrecCDescSap.toFixed(2),
+                        PrecioUnSi: PrecioUnSi.toFixed(2),
+                        Serfol: "",
+                        UmedidaPSap: "",
+                        Unidad: "",
+                    }
+                }
+               
+                unicos3.push(ARRT)
+
+
+
+            }
+           
+            unicos3.sort((a, b) => {
+                if(a.TeSalida.Cmsucfol === b.TeSalida.Cmsucfol) {
+                  return 0; 
+                }
+                if(a.TeSalida.Cmsucfol< b.TeSalida.Cmsucfol) {
+                  return -1;
+                }
+                return 1;
+              });
+       
+                var auxJsonModel = new sap.ui.model.json.JSONModel(unicos3);
                 that.getView().setModel(auxJsonModel, 'ModelValidacion');
             });
 
         },
+
+       
         VisibleTable: function () {
 
             var that = this;
@@ -384,7 +467,7 @@ console.log(filter)
             //G
             aCols.push({
                 label: texts.getProperty("/ValCondi.refInterna"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/Cmsucfol'
             });
             //H
@@ -414,31 +497,31 @@ console.log(filter)
             //L
             aCols.push({
                 label: texts.getProperty("/ValCondi.cantidadRecibo"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/CantidadSap'
             });
             //M
             aCols.push({
                 label: texts.getProperty("/ValCondi.costoRecibo"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/PrecCDescSap'
             });
             //N
             aCols.push({
                 label: texts.getProperty("/ValCondi.subtotalRecibo"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImporteSap'
             });
             //O
             aCols.push({
                 label: texts.getProperty("/ValCondi.impuestosRecibo"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImpuestosSap'
             });
             //P
             aCols.push({
                 label: texts.getProperty("/ValCondi.totalRecibo"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImpTotCImpSap'
             });
             //Q
@@ -469,79 +552,79 @@ console.log(filter)
             //U
             aCols.push({
                 label: texts.getProperty("/ValCondi.cantidadCFDI"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/Cantidad'
             });
             //V
             aCols.push({
                 label: texts.getProperty("/ValCondi.costoCFDI"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/PrecioUnSi'
             });
             //W
             aCols.push({
                 label: texts.getProperty("/ValCondi.subtotalCFDI"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImporteTotal'
             });
             //X
             aCols.push({
                 label: texts.getProperty("/ValCondi.impuestosCFDI"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImpuestosFact'
             });
             //Y
             aCols.push({
                 label: texts.getProperty("/ValCondi.totalCFDI"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImporteTotCi'
             });
             //Z
             aCols.push({
                 label: texts.getProperty("/ValCondi.cantidadMC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/MejorCantidad'
             });
             //AA
             aCols.push({
                 label: texts.getProperty("/ValCondi.costoMC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/MejorPrecio'
             });
             //BB
             aCols.push({
                 label: texts.getProperty("/ValCondi.subtotalMC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/MejorSubtotal'
             });
             //CC
             aCols.push({
                 label: texts.getProperty("/ValCondi.impuestosMC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/ImpuestosTotal'
             });
             //DD
             aCols.push({
                 label: texts.getProperty("/ValCondi.totalMC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/MejorTotal'
             });
             //EE
             aCols.push({
                 label: texts.getProperty("/ValCondi.subtotalNC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/NcargoMc'
             });
             //FF
             aCols.push({
                 label: texts.getProperty("/ValCondi.impuestosNC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/NcargoImpMc'
             });
             //GG
             aCols.push({
                 label: texts.getProperty("/ValCondi.totalNC"),
-                type: EdmType.String,
+                type: EdmType.Number,
                 property: 'TeSalida/NcargoTotMc'
             });
             //HH
@@ -593,83 +676,7 @@ console.log(filter)
             });
         },
 
-        /*
-        getToken: function () {
-            console.log("getToken")
-            //Consulta
-            var id = null;
-            $.ajax({
-                type: 'GET',
-                url: '/sap/opu/odata/sap/ZOSP_CATPRO_SRV/?$format=xml',
-
-                headers: {
-                    "X-CSRF-Token": "Fetch"
-                },
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                async: false,
-                success: function (dataR, textStatus, jqXHR) {
-                    id = jqXHR.getResponseHeader('X-CSRF-Token');
-                    Console.log(id)
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    id = jqXHR.getResponseHeader('X-CSRF-Token');
-                    console.log(id)
-                }
-            });
-            return id;
-        },
-
-post2:function(){
-    var arrjson={
-        "IOption": "16",
-        "ITEXT64":[{"IText64":"data:text/plain;base64,MzI0Njk5CU9SRUYJMDAwMwk3NTAxNTg5OTEwMDA5CTkwDQozMjQ2OTkJT1JFRgkwMDAzCTc1MDE1ODk5NDAwMDYJOTANCjMyNDY5OQlPUkVGCTAwMDMJNzUwMTU4OTkyMDAwOAk5MA0K"}],
-        "ETMODIFY": [
-            {
-                "OrgCompras": "",
-                "Lifnr": "",
-                "Codigoean": "",
-                "Costobnuevo": "",
-                "Material":""
-            }
-        ],
-        "ETDPRINT": [{
-            "Prinbr": "",
-            "EanUpcBase": "",
-            "HazardDescript": "",
-            "DesNormal": "",
-            "UndDn": "",
-            "CostBruto": "",
-            "UndCb": "",
-            "Zfechenv": "",
-            "Docnum": "",
-            "Adver": "",
-            "Error": ""
-        }
-    ]
-};
-    $.ajax({
-        type: 'POST',
-        url: '/sap/opu/odata/sap/ZOSP_CATPRO_SRV/HdrcatproSet',
-        headers: {
-            "X-CSRF-Token": this.getToken()
-        },
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        async: true,
-        data: JSON.stringify(arrjson),
-        success: function (dataR, textStatus, jqXHR) {
-       console.log(dataR)
-
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-          console.log(jqXHR)
-        }
-    });
-},
-
-
-*/
+       
 
 
     });

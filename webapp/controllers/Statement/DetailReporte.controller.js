@@ -7,12 +7,15 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/routing/History",
     "sap/m/MessageBox",
+    "sap/ui/export/library",
+    "sap/ui/export/Spreadsheet",
     "sap/ui/core/routing/Router",
     "demo/models/BaseModel",
     'sap/f/library'
-], function (jQuery, Fragment, Controller, UploadCollectionParameter, JSONModel, History, fioriLibrary, MessageBox) {
+  
+], function (jQuery, Fragment, Controller, UploadCollectionParameter, JSONModel, History, fioriLibrary, MessageBox, exportLibrary, Spreadsheet) {
     "use strict";
-
+    var EdmType = exportLibrary.EdmType;
     var oModel = new this.MejorCond();
 
     return Controller.extend("demo.controllers.Statement.DetailReporte", {
@@ -107,7 +110,7 @@ sap.ui.define([
 
         buildExportTable: function () {
 
-            var texts = this.getOwnerComponent().getModel("appTxts");
+         /*   var texts = this.getOwnerComponent().getModel("appTxts");
             var columns = [{
                     name: texts.getProperty("/acuerdos.sucursal"),
                     template: {
@@ -147,6 +150,285 @@ sap.ui.define([
 
 
             this.exportxls('MejorCondHdr', '/', columns);
+            */
+           var aCols, oRowBinding, oSettings, oSheet, oTable, that = this;
+
+           if (!that._oTable) {
+               that._oTable = this.byId('tableAcuerdos');
+           }
+
+           oTable = that._oTable;
+
+           oRowBinding = oTable.getBinding().oList;
+
+           aCols = that.createColumnConfig();
+
+           oSettings = {
+               workbook: {
+                   columns: aCols,
+                   hierarchyLevel: 'Level'
+               },
+               dataSource: oRowBinding,
+               fileName: 'Estado de Cuenta',
+               worker: false // We need to disable worker because we are using a MockServer as OData Service
+           };
+
+           oSheet = new Spreadsheet(oSettings);
+           oSheet.build().finally(function () {
+               oSheet.destroy();
+           });
+
+        },
+
+        genereteRowAction: function () {
+            var texts = this.getOwnerComponent().getModel("appTxts");
+
+            var oTable = this.byId("tableVisor");
+
+            var oTemplate = oTable.getRowActionTemplate();
+            if (oTemplate) {
+                oTemplate.destroy();
+                oTemplate = null;
+            }
+
+
+
+            oTemplate = new RowAction({
+                items: [
+                    new RowActionItem({ icon: "sap-icon://open-command-field", text: texts.getProperty("/global.view"), press: (Event) => this.onPress(Event) }),
+
+                ]
+            });
+
+
+            oTable.setRowActionTemplate(oTemplate);
+            oTable.setRowActionCount(2);
+        },
+
+        createColumnConfig: function () {
+            var that = this;
+            var oModel = that.getView().getModel("MejorCondHdr").getData(),
+                aCols = [];
+
+            var texts = this.getOwnerComponent().getModel("appTxts");
+           
+             //A
+             aCols.push({
+                label: texts.getProperty("/reporte.headerOrden"),
+                type: EdmType.String,
+                property: 'TeSalida/DocCompra'
+            });
+            //B
+            aCols.push({
+                label: texts.getProperty("/reporte.headerPosicion"),
+                type: EdmType.String,
+                property: 'TeSalida/Posicion'
+            });
+            //C
+            aCols.push({
+                label: texts.getProperty("/reporte.headerNE"),
+                type: EdmType.String,
+                property: 'TeSalida/FolionEntrada'
+            });
+            //D
+            aCols.push({
+                label: texts.getProperty("/reporte.headerEntradaMercancia"),
+                type: EdmType.String,
+                property: 'TeSalida/DocMaterial'
+            });
+            //E
+            aCols.push({
+                label: texts.getProperty("/reporte.headerRegFactura"),
+                type: EdmType.String,
+                property: 'TeSalida/DocFactura'
+            });
+            //F
+            aCols.push({
+                label: texts.getProperty("/reporte.folioCargo"),
+                type: EdmType.String,
+                property: 'TeSalida/DocCargo'
+            });
+            //G
+            aCols.push({
+                label: texts.getProperty("/reporte.refInterna"),
+                type: EdmType.String,
+                property: 'TeSalida/Cmsucfol'
+            });
+            //H
+            aCols.push({
+                label: texts.getProperty("/reporte.EAN"),
+                type: EdmType.String,
+                property: 'TeSalida/EanUpc'
+            });
+            //I
+            aCols.push({
+                label: texts.getProperty("/reporte.mterialRecibo"),
+                type: EdmType.String,
+                property: 'TeSalida/MaterialSap'
+            });
+            //J
+            aCols.push({
+                label: texts.getProperty("/reporte.fechaRecibo"),
+                type: EdmType.String,
+                property: 'TeSalida/FecharSap'
+            });
+            //K
+            aCols.push({
+                label: texts.getProperty("/reporte.unidadRecibo"),
+                type: EdmType.String,
+                property: 'TeSalida/UmedidaPSap'
+            });
+            //L
+            aCols.push({
+                label: texts.getProperty("/reporte.cantidadRecibo"),
+                type: EdmType.Number,
+                property: 'TeSalida/CantidadSap'
+            });
+            //M
+            aCols.push({
+                label: texts.getProperty("/reporte.costoRecibo"),
+                type: EdmType.Number,
+                property: 'TeSalida/PrecCDescSap'
+            });
+            //N
+            aCols.push({
+                label: texts.getProperty("/reporte.subtotalRecibo"),
+                type: EdmType.Number,
+                property: 'TeSalida/ImporteSap'
+            });
+            //O
+            aCols.push({
+                label: texts.getProperty("/reporte.impuestosRecibo"),
+                type: EdmType.Number,
+                property: 'TeSalida/ImpuestosSap'
+            });
+            //P
+            aCols.push({
+                label: texts.getProperty("/reporte.totalRecibo"),
+                type: EdmType.Number,
+                property: 'TeSalida/ImpTotCImpSap'
+            });
+            //Q
+            aCols.push({
+                label: texts.getProperty("/reporte.recepcionCFDI"),
+                type: EdmType.String,
+                property: 'TeSalida/FechaRegSap'
+            });
+            //R
+            aCols.push({
+                label: texts.getProperty("/reporte.factura"),
+                type: EdmType.String,
+                property: 'TeSalida/Serfol'
+            });
+            //S
+            aCols.push({
+                label: texts.getProperty("/reporte.materialCFDI"),
+                type: EdmType.String,
+                property: 'TeSalida/Material'
+            });
+            //T
+
+            aCols.push({
+                label: texts.getProperty("/reporte.unidadMedida"),
+                type: EdmType.String,
+                property: 'TeSalida/Unidad'
+            });
+            //U
+            aCols.push({
+                label: texts.getProperty("/reporte.cantidadCFDI"),
+                type: EdmType.Number,
+                property: 'TeSalida/Cantidad'
+            });
+            //V
+            aCols.push({
+                label: texts.getProperty("/reporte.costoCFDI"),
+                type: EdmType.Number,
+                property: 'TeSalida/PrecioUnSi'
+            });
+            //W
+            aCols.push({
+                label: texts.getProperty("/reporte.subtotalCFDI"),
+                type: EdmType.Number,
+                property: 'TeSalida/ImporteTotal'
+            });
+            //X
+            aCols.push({
+                label: texts.getProperty("/reporte.impuestosCFDI"),
+                type: EdmType.Number,
+                property: 'TeSalida/ImpuestosFact'
+            });
+            //Y
+            aCols.push({
+                label: texts.getProperty("/reporte.totalCFDI"),
+                type: EdmType.Number,
+                property: 'TeSalida/ImporteTotCi'
+            });
+            //Z
+            aCols.push({
+                label: texts.getProperty("/reporte.cantidadMC"),
+                type: EdmType.Number,
+                property: 'TeSalida/MejorCantidad'
+            });
+            //AA
+            aCols.push({
+                label: texts.getProperty("/reporte.costoMC"),
+                type: EdmType.Number,
+                property: 'TeSalida/MejorPrecio'
+            });
+            //BB
+            aCols.push({
+                label: texts.getProperty("/reporte.subtotalMC"),
+                type: EdmType.Number,
+                property: 'TeSalida/MejorSubtotal'
+            });
+            //CC
+            aCols.push({
+                label: texts.getProperty("/reporte.impuestosMC"),
+                type: EdmType.Number,
+                property: 'TeSalida/ImpuestosTotal'
+            });
+            //DD
+            aCols.push({
+                label: texts.getProperty("/reporte.totalMC"),
+                type: EdmType.Number,
+                property: 'TeSalida/MejorTotal'
+            });
+            //EE
+            aCols.push({
+                label: texts.getProperty("/reporte.subtotalNC"),
+                type: EdmType.Number,
+                property: 'TeSalida/NcargoMc'
+            });
+            //FF
+            aCols.push({
+                label: texts.getProperty("/reporte.impuestosNC"),
+                type: EdmType.Number,
+                property: 'TeSalida/NcargoImpMc'
+            });
+            //GG
+            aCols.push({
+                label: texts.getProperty("/reporte.totalNC"),
+                type: EdmType.Number,
+                property: 'TeSalida/NcargoTotMc'
+            });
+            //HH
+            aCols.push({
+                label: texts.getProperty("/reporte.Estatus"),
+                type: EdmType.String,
+                property: 'TeSalida/Estatus'
+            });
+            //II
+            aCols.push({
+                label: texts.getProperty("/reporte.Estatus"),
+                type: EdmType.String,
+                property: 'TeSalida/DescEstat'
+            });
+            //JJ
+
+
+
+
+            return aCols;
         },
 
         _onDocumentMatched: function (oEvent) {
