@@ -90,7 +90,9 @@ sap.ui.define([
             let filterInput = this.getView().byId("filtroBusqueda");
 
             let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
-            // format[AAAAMMDD] (2020101)
+          console.log(this.byId("supplierInput").getValue())
+          console.log(this.byId("supplierInput").getSelectedKey())
+          // format[AAAAMMDD] (2020101)
             // let desde_LV_ZDESDE = this.buildSapDate( dateRange.getDateValue()       );
             // format[AAAAMMDD] (2020101)
             // let desde_LV_ZHASTA = this.buildSapDate( dateRange.getSecondDateValue() );
@@ -273,13 +275,12 @@ sap.ui.define([
             let filterInput = this.getView().byId("filtroBusqueda");
 
             let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
-            // format[AAAAMMDD] (2020101)
-            // let desde_LV_ZDESDE = this.buildSapDate( dateRange.getDateValue()       );
-            // format[AAAAMMDD] (2020101)
-            // let desde_LV_ZHASTA = this.buildSapDate( dateRange.getSecondDateValue() );
-
-
-            //tomar valores dummy para hacer al consulta
+            console.log(proveedor_LIFNR)
+            console.log((this.byId("supplierInput").getValue().split("-")[0]).trim())
+           if (proveedor_LIFNR=== undefined){
+            proveedor_LIFNR=(this.byId("supplierInput").getValue().split("-")[0]).trim()
+           }
+           console.log(proveedor_LIFNR)
             let todayDate = new Date();
 
             // format[AAAAMMDD] (2020101)
