@@ -1,15 +1,25 @@
 <core:FragmentDefinition xmlns="sap.m"
     xmlns:m="sap.m"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
     xmlns:core="sap.ui.core">
     <VBox>
         <Panel visible="{	path: 'TemporalModel>/generalData/cedisType',
                         formatter: '.formatter.isSeco'
                     }">
-            <Table  mode="SingleSelect" id="tableWizardOrder" items="{Pedidos>/ETOC/Paginated/results}" selectionChange="selectPedido">
-                 <headerToolbar>
+            <Table mode="SingleSelect" id="tableWizardOrder" items="{Pedidos>/ETOC/Paginated/results}" selectionChange="selectPedido">
+                <headerToolbar>
                     <OverflowToolbar>
                         <ToolbarSpacer/>
                         <!-- <Input id="searchOrders" width="auto" textAlign="Initial" placeholder="{appTxts>/quotes.search}" type="Number" showValueHelp="true" valueHelpIconSrc="sap-icon://search"/> -->
+
+                        <Select visible="{= ${Pedidos>/ETOC/Paginated/results/length} > 0 }" change=".paginateValue(${$parameters>/selectedItem}, 'Pedidos', '/ETOC')">
+                            <items>
+                                <core:Item key="10" text="10"/>
+                                <core:Item key="20" text="20"/>
+                                <core:Item key="50" text="50"/>
+                                <core:Item key="100" text="100"/>
+                            </items>
+                        </Select>
                     </OverflowToolbar>
                 </headerToolbar>
                 <columns>
@@ -45,24 +55,31 @@
                     </Column>
                 </columns>
                 <items>
-                <ColumnListItem>
-                    <cells>
-                        <ObjectIdentifier text="{Pedidos>Ebeln}"/>
-                        <ObjectIdentifier text="{Pedidos>Matnr}"/>
-                        <ObjectIdentifier text="{Pedidos>Ean11}"/>                                                       
-                        <ObjectIdentifier text="{Pedidos>Menge}"/>
-                        <ObjectIdentifier text="{Pedidos>Kdatb}"/>
-                        <ObjectIdentifier text="{Pedidos>Kdate}"/>
-                        <ObjectIdentifier text="{Pedidos>Werks}"/>
-                        <ObjectIdentifier text="{Pedidos>MengeR}"/>
-                        <ObjectIdentifier text="{Pedidos>MengeR}"/>
-                        <Input change="captureQuntSummon" />
-                    </cells>
-                </ColumnListItem>
-            </items>
+                    <ColumnListItem>
+                        <cells>
+                            <ObjectIdentifier text="{Pedidos>Ebeln}"/>
+                            <ObjectIdentifier text="{Pedidos>Matnr}"/>
+                            <ObjectIdentifier text="{Pedidos>Ean11}"/>
+                            <ObjectIdentifier text="{Pedidos>Menge}"/>
+                            <ObjectIdentifier text="{Pedidos>Kdatb}"/>
+                            <ObjectIdentifier text="{Pedidos>Kdate}"/>
+                            <ObjectIdentifier text="{Pedidos>Werks}"/>
+                            <ObjectIdentifier text="{Pedidos>MengeR}"/>
+                            <ObjectIdentifier text="{Pedidos>MengeR}"/>
+                            <Input liveChange="captureQuntSummon" customData:menger="{Pedidos>MengeR}" customData:ebeln="{Pedidos>Ebeln}" customData:matnr="{Pedidos>Matnr}" type="Number"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
             </Table>
-        </Panel>
 
+            <OverflowToolbar >
+                <Text text="{Pedidos>/ETOC/Paginated/initRow} - {Pedidos>/ETOC/Paginated/endRow} {appTxts>/pagination.of} {Pedidos>/ETOC/results/length}" />
+                <ToolbarSpacer/>
+                <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${Pedidos>/ETOC/Paginated/iterator}, ${Pedidos>/ETOC/Paginated/initRow}, 'Pedidos', '/ETOC')" enabled="{= ${Pedidos>/ETOC/Paginated/iterator} !== 1}" />
+                <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${Pedidos>/ETOC/Paginated/iterator}, ${Pedidos>/ETOC/Paginated/endRow}, 'Pedidos', '/ETOC')" enabled="{= ${Pedidos>/ETOC/Paginated/endRow} !== ${Pedidos>/ETOC/results/length}}" />
+            </OverflowToolbar>
+
+        </Panel>
 
         <Panel visible="{	path: 'TemporalModel>/generalData/cedisType',
                         formatter: '.formatter.isFresco'

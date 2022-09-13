@@ -41,11 +41,11 @@ sap.ui.define([
         },
 
         createQuote: function (selectedKey) {
-            if(!this.hasAccess(31)){
+            if (!this.hasAccess(31)) {
                 return
             }
             if (this.getConfigModel().getProperty("/supplierInputKey") != null) {
-                
+
                 var oView = this.getView();
 
                 var frag = "demo.views.Quotes.wizards.WQuoteCreate";
@@ -76,7 +76,7 @@ sap.ui.define([
 
         onDialogAfterOpen: function () {
             this._oWizard = this.byId("QuoteCedisWizard");
-            this._oWizard._getProgressNavigator().ontap = function(){};
+            this._oWizard._getProgressNavigator().ontap = function () { };
             this.handleButtonsVisibility();
             dataTempModel = new JSONModel(dataTemp);
             this.getView().setModel(dataTempModel, "TemporalModel");
@@ -123,8 +123,8 @@ sap.ui.define([
             this._handleMessageBoxOpen(this.getView().getModel("appTxts").getProperty("/quotes.discardButton"), "warning");
         },
 
-        async handleWizardSubmit () {
-            
+        async handleWizardSubmit() {
+
             sap.m.MessageBox["confirm"](this.getView().getModel("appTxts").getProperty("/quotes.submitAppoinment"), {
                 actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
                 onClose: async function (oAction) {
@@ -136,9 +136,11 @@ sap.ui.define([
                         this._oWizard = null;
 
                         let appoimentModel = JSON.parse(this.getOwnerComponent().getModel("ActionCita").getJSON());
-                            
+
+                        console.log("Cita generada: ", appoimentModel);
+
                         let createObjReq = {
-                              "ETCITANUEVA":[
+                            "ETCITANUEVA": [
                                 appoimentModel
                                 // {
                                 //           "Ebeln":"0000000099",
@@ -151,14 +153,20 @@ sap.ui.define([
                                 //           "Anden":"1234567890",
                                 //           "TipoCita":"aZ"
                                 //         }
-                              ],
-                              "ETRETURN":[]
-                            };
+                            ],
+                            "ETRETURN": []
+                        };
 
                         sap.ui.core.BusyIndicator.show();
                         let resp = null;
 
-                        await this._PostODataV2Async(_oDataModelAppoimnet, _oDataEntityAppoiment, createObjReq).then(response => {
+                        let headers = {
+                            "X-Requested-With": "X",
+                            "Content-Type": "application/json;charset=utf-8",
+                            "Accept": "application/json, text/javascript, */*;q=0.01"
+                        };
+
+                        await this._PostODataV2Async(_oDataModelAppoimnet, _oDataEntityAppoiment, createObjReq, headers).then(response => {
                             resp = response.d;
                             sap.ui.core.BusyIndicator.hide();
                         }).catch(error => {
@@ -217,9 +225,9 @@ sap.ui.define([
             sap.ui.core.BusyIndicator.show();
             let that = this;
             this._GetODataV2(_oDataModelOC, _oDataEntityOC, filtros, ["ETOC"], "").then(resp => {
-                console.log(" RESP : " , resp.data.results[0]);                
-                 that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "Pedidos");
-                 that.paginate("Pedidos", "/ETOC", 1, 0);
+                console.log(" RESP : ", resp.data.results[0]);
+                that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "Pedidos");
+                that.paginate("Pedidos", "/ETOC", 1, 0);
                 sap.ui.core.BusyIndicator.hide();
             }).catch(error => {
                 console.error(error);
@@ -256,7 +264,7 @@ sap.ui.define([
             var urlPositions = `/Valida_citasSet?$expand=Po_validas&$filter=IOption eq '1' and IEbeln eq '${this._document}'`;
             this.getView().setModel(new JSONModel(), "tableWizardPo_validas");
 
-            citas1Model.getJsonModelAsync(urlPositions, function(response){
+            citas1Model.getJsonModelAsync(urlPositions, function (response) {
                 console.log(response)
                 var ojbResponse = response.getProperty('/results/0');
                 console.log(ojbResponse)
@@ -266,7 +274,7 @@ sap.ui.define([
                 } else {
                     sap.m.MessageBox.error(ojbResponse.EMessage);
                 }
-            },function(){
+            }, function () {
                 sap.m.MessageBox.error("");
             }, this);
 
@@ -288,26 +296,28 @@ sap.ui.define([
             }
             */
         },
-        onSelectRBOption: function(oEvent){
+        onSelectRBOption: function (oEvent) {
             dataTempModel.setProperty("/generalData/cedisType", oEvent.getParameters().selectedIndex);
         },
-        onChangeSelectTipoCita: function(oEvent){
+        onChangeSelectTipoCita: function (oEvent) {
             dataTempModel.setProperty("/generalData/tipoCita", oEvent.getParameters().selectedItem.getKey());
-            console.info(dataTempModel)
+            console.info(dataTempModel);
+
+            this.getOwnerComponent().getModel("ActionCita").setProperty("/TipoCita", oEvent.getParameters().selectedItem.getKey());
         },
-        onChangeSelectTipoUnidad: function(oEvent){
+        onChangeSelectTipoUnidad: function (oEvent) {
             dataTempModel.setProperty("/generalData/tipoUnidad", oEvent.getParameters().selectedItem.getKey());
             console.info(dataTempModel)
         },
-        onSelectProductType: function(oEvent){
+        onSelectProductType: function (oEvent) {
             dataTempModel.setProperty("/generalData/tipoProducto", oEvent.getParameters().selectedItem.getKey());
             console.info(dataTempModel)
         },
-        selectChange: function(oEvent){
+        selectChange: function (oEvent) {
             console.log(oEvent)
         },
 
-        appointmentDateChange(oEvent){
+        appointmentDateChange(oEvent) {
             let source = oEvent.getSource();
             let dateSelected = source.getDateValue();
             this.searchOrders(this.buildSapDate(dateSelected));
@@ -315,66 +325,68 @@ sap.ui.define([
             this.getOwnerComponent().getModel("ActionCita").setProperty("/FechaCita", this.buildSapDate(dateSelected));
         },
 
-        setAppoimentCalendar(dateSelected){
+        setAppoimentCalendar(dateSelected) {
             let planningCalendar = this.getView().byId("appoinmentPC");
-            dateSelected.setHours(8,0);
+            dateSelected.setHours(8, 0);
             planningCalendar.setStartDate(dateSelected);
             planningCalendar.setMinDate(dateSelected);
             planningCalendar.setMaxDate(dateSelected);
             let incrementedDate = new Date();
-            incrementedDate.setHours(10,0);
+            incrementedDate.setHours(10, 0);
             let oModel = new JSONModel();
-                oModel.setData({
-                    platforms: [{
-                        pic: "https://avatars.dicebear.com/api/initials/Anden%201.svg",
-                        name: "Anden 1",
-                        role: "Primer Anden",
-                        appointments: [
-                            {
-                                start: dateSelected,
-                                end: incrementedDate,
-                                title: "Coca-Cola",
-                                info: "Dropping Mundet",
-                                type: "Type02"
-                            },
-                        ],
-                    },
-                    {
-                        pic: "https://avatars.dicebear.com/api/initials/Anden%202.svg",
-                        name: "Anden 2",
-                        role: "Segundo Anden",
-                        appointments: [{
-                            start: dateSelected,
-                            end: incrementedDate,
-                            title: "Pepsi",
-                            info: "Dropping 7up",
-                            type: "Type03"
-                        },
-                        ],
-                    },
-                    {
-                        pic: "https://avatars.dicebear.com/api/initials/Anden%203.svg",
-                        name: "Anden 3",
-                        role: "Tercer Anden",
-                        appointments: [{
-                            start: dateSelected,
-                            end: incrementedDate,
-                            title: "Topo-Chico",
-                            info: "Dropping Aguas Minerales",
-                            type: "Type03"
-                        },
-                        ],
-                    }
-                    ]
-                });
-                this.getOwnerComponent().setModel(oModel, "Platforms");
+            oModel.setData({
+                platforms: [{
+                    pic: "https://avatars.dicebear.com/api/initials/Anden%201.svg",
+                    name: "Anden 1",
+                    role: "Primer Anden",
+                    appointments: [
+                        // {
+                        //     start: dateSelected,
+                        //     end: incrementedDate,
+                        //     title: "Coca-Cola",
+                        //     info: "Dropping Mundet",
+                        //     type: "Type02"
+                        // },
+                    ],
+                },
+                {
+                    pic: "https://avatars.dicebear.com/api/initials/Anden%202.svg",
+                    name: "Anden 2",
+                    role: "Segundo Anden",
+                    appointments: [
+                    //     {
+                    //     start: dateSelected,
+                    //     end: incrementedDate,
+                    //     title: "Pepsi",
+                    //     info: "Dropping 7up",
+                    //     type: "Type03"
+                    // },
+                    ],
+                },
+                {
+                    pic: "https://avatars.dicebear.com/api/initials/Anden%203.svg",
+                    name: "Anden 3",
+                    role: "Tercer Anden",
+                    appointments: [
+                    //     {
+                    //     start: dateSelected,
+                    //     end: incrementedDate,
+                    //     title: "Topo-Chico",
+                    //     info: "Dropping Aguas Minerales",
+                    //     type: "Type03"
+                    // },
+                    ],
+                }
+                ]
+            });
+            this.getOwnerComponent().setModel(oModel, "Platforms");
         },
 
         handleIntervalSelect: function (oEvent) {
 
             var oPC = oEvent.getSource(),
-                oStartDate = oEvent.getParameter("startDate").toISOString(),
-                oEndDate = oEvent.getParameter("endDate").toISOString(),
+                oStartDate = oEvent.getParameter("startDate"),
+                oEndDate = oEvent.getParameter("endDate"),
                 oRow = oEvent.getParameter("row"),
                 oModel = this.getOwnerComponent().getModel("Platforms"),
                 oData = oModel.getData(),
@@ -417,7 +429,7 @@ sap.ui.define([
 
             if (oAppointment) {
                 sSelected = oAppointment.getSelected() ? "selected" : "deselected";
-                MessageBox.show("'" + oAppointment.getTitle() + "' " + sSelected + ". \n Selected appointments: " + this.byId("appoinmentPC").getSelectedAppointments().length );
+                MessageBox.show("'" + oAppointment.getTitle() + "' " + sSelected + ". \n Selected appointments: " + this.byId("appoinmentPC").getSelectedAppointments().length);
             } else {
                 aAppointments = oEvent.getParameter("appointments");
                 sValue = aAppointments.length + " Appointments selected";
@@ -427,11 +439,38 @@ sap.ui.define([
         },
 
         selectPedido: function (oEvent) {
-            console.log("oEvent params : ", oEvent.getParameters());
+            //this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "ActionCita");
+            let sourceTable = oEvent.getSource();
+
+            let line = sourceTable._aSelectedPaths[0].split("/").slice(-1).pop()
+            console.log("LINE: ", line);
+
         },
 
         captureQuntSummon: function (oEvent) {
-            console.log("oEvent params : ", oEvent.getParameters());
+
+            //this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "ActionCita");
+
+            let osource = oEvent.getSource();
+            let matnr = osource.data("matnr");
+            let ebeln = osource.data("ebeln");
+            let menger = osource.data("menger");
+            let cantidad = oEvent.getParameter("value");
+
+            if (menger<cantidad) {
+                osource.setValueState(sap.ui.core.ValueState.Error);
+                osource.setValueStateText("Debe ser menor a la cantidad por agotar");
+                // return;
+            }
+
+            let actionModel = this.getOwnerComponent().getModel("ActionCita");
+
+            actionModel.setProperty("/Ebeln", ebeln);
+            actionModel.setProperty("/Matnr", matnr);
+            actionModel.setProperty("/Citado", cantidad);
+
+            console.log("oEvent Source : ", osource);
+
         }
     });
 });
