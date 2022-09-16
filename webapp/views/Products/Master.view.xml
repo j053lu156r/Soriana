@@ -78,22 +78,22 @@
                                 </fb:control>
                             </fb:FilterGroupItem>
 
-                            <!--fb:FilterGroupItem 
+                            <fb:FilterGroupItem 
                                 groupName            = "__$INTERNAL$"
-                                name                 = "D"
+                                name                 = "E"
                                 label                = "{appTxts>/products.status}" 
                                 partOfCurrentVariant = "true" 
                                 visibleInFilterBar   = "true">
                                 <fb:control>
-                                    <ComboBox id="comboStatus" items="{
-                                                path : 'catalogos>/Estatus/results'
+                                    <ComboBox id="cboxStatus" items="{
+                                                path : 'Catalogos>/Estatus'
                                             }">
                                         <items>
-                                            <core:Item key="{catalogos>Status}" text="{catalogos>Descripcion}"/>
+                                            <core:Item key="{Catalogos>Estatus}" text="{Catalogos>Estatus} - {Catalogos>Denominacion}"/>
                                         </items>
                                     </ComboBox>
                                 </fb:control>
-                            </fb:FilterGroupItem-->
+                            </fb:FilterGroupItem>
 
                             <fb:FilterGroupItem  
                                 groupName            = "__$INTERNAL$"
@@ -192,6 +192,24 @@
                             <Label text="{appTxts>/products.status}" />
                             <t:template>
                                 <Text text="{Folios>ProcStatus}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="auto">
+                            <Label text="{appTxts>/products.maraStatus}" />
+                            <t:template>
+                                <Text text="{Folios>MaraStatus}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="auto">
+                            <Label text="{appTxts>/products.currentCost}" />
+                            <t:template>
+                                <Text text="{Folios>CostoActual}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="auto">
+                            <Label text="{appTxts>/products.capEmpaque}" />
+                            <t:template>
+                                <Text text="{Folios>CapEmpaque}" wrapping="false"/>
                             </t:template>
                         </t:Column>
                         <!-- <t:Column width="auto">
