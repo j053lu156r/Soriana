@@ -1,50 +1,49 @@
-<mvc:View displayBlock="true" 
-        controllerName="demo.controllers.BoletinVta.Detail" 
-        height="100%"
-		xmlns="sap.uxap"
-		xmlns:mvc="sap.ui.core.mvc"
-		xmlns:m="sap.m"
-		xmlns:f="sap.f"
-		xmlns:form="sap.ui.layout.form">
-
-	<ObjectPageLayout id="ObjectPageLayout"
-					showTitleInHeaderContent="true"
-					alwaysShowContentHeader="false"
-					preserveHeaderStateOnScroll="false"
-					headerContentPinnable="true"
-					isChildPage="true"
-					upperCaseAnchorBar="false">
-
-				<headerTitle>
-					<ObjectPageDynamicHeaderTitle>
-						<expandedHeading>
-							<m:Title text="{promotionDetModel>/plant}" wrapping="true" class="sapUiSmallMarginEnd"/>
-						</expandedHeading>
-						<snappedHeading>
-							<m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Center">
-								<m:FlexBox wrap="NoWrap" fitContainer="true" alignItems="Center" class="sapUiTinyMarginEnd">
-									<f:Avatar src="../../../../../../../{products>ProductPicUrl}" displaySize="S" displayShape="Square" class="sapUiTinyMarginEnd"/>
-									<m:Title text="{promotionDetModel>/plantName}" wrapping="true" class="sapUiTinyMarginEnd"/>
-								</m:FlexBox>
-							</m:FlexBox>
-						</snappedHeading>
-                        <expandedContent>
-                            <m:Text text="{promotionDetModel>/plantName}"/>
-                        </expandedContent>
-                        <snappedContent>
-                            <m:Text text="{promotionDetModel>/plantName}"/>
-                        </snappedContent>
-						<navigationActions>
-                            <!-- <m:OverflowToolbarButton type="Transparent" icon="sap-icon://receipt" press="handleReceipt"/> -->
-							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/endColumn/fullScreen} !== null }"/>
-							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/endColumn/exitFullScreen} !== null }"/>
-							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close column"/> 
-                            <!-- visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/> -->
-						</navigationActions>
-					</ObjectPageDynamicHeaderTitle>
-				</headerTitle>
+<mvc:View 
+    displayBlock="true" 
+    controllerName="demo.controllers.BoletinVta.Detail" 
+    height="100%"
+    xmlns="sap.uxap"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:m="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form">
+	<ObjectPageLayout 
+        id="ObjectPageLayout"
+        showTitleInHeaderContent="true"
+        alwaysShowContentHeader="false"
+        preserveHeaderStateOnScroll="false"
+        headerContentPinnable="true"
+        isChildPage="true"
+        upperCaseAnchorBar="false">
+        <headerTitle>
+            <ObjectPageDynamicHeaderTitle>
+                <expandedHeading>
+                    <m:Title text="{promotionDetModel>/plant}" wrapping="true" class="sapUiSmallMarginEnd"/>
+                </expandedHeading>
+                <snappedHeading>
+                    <m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Center">
+                        <m:FlexBox wrap="NoWrap" fitContainer="true" alignItems="Center" class="sapUiTinyMarginEnd">
+                            <f:Avatar src="../../../../../../../{products>ProductPicUrl}" displaySize="S" displayShape="Square" class="sapUiTinyMarginEnd"/>
+                            <m:Title text="{promotionDetModel>/plantName}" wrapping="true" class="sapUiTinyMarginEnd"/>
+                        </m:FlexBox>
+                    </m:FlexBox>
+                </snappedHeading>
+                <expandedContent>
+                    <m:Text text="{promotionDetModel>/plantName}"/>
+                </expandedContent>
+                <snappedContent>
+                    <m:Text text="{promotionDetModel>/plantName}"/>
+                </snappedContent>
+                <navigationActions>
+                    <!-- <m:OverflowToolbarButton type="Transparent" icon="sap-icon://receipt" press="handleReceipt"/> -->
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/endColumn/fullScreen} !== null }"/>
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/endColumn/exitFullScreen} !== null }"/>
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close column"/> 
+                    <!-- visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/> -->
+                </navigationActions>
+            </ObjectPageDynamicHeaderTitle>
+        </headerTitle>
 		<sections>
-
 			<ObjectPageSection >
 				<subSections>
 					<ObjectPageSubSection>
