@@ -225,9 +225,11 @@ sap.ui.define([
             sap.ui.core.BusyIndicator.show();
             let that = this;
             this._GetODataV2(_oDataModelOC, _oDataEntityOC, filtros, ["ETOC"], "").then(resp => {
-                console.log(" RESP : ", resp.data.results[0]);
+                resp.data.results[0].ETOC.results.forEach(oc => {
+                    oc.Selected=false
+                });
                 that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "Pedidos");
-                that.paginate("Pedidos", "/ETOC", 1, 0);
+                // that.paginate("Pedidos", "/ETOC", 1, 0);
                 sap.ui.core.BusyIndicator.hide();
             }).catch(error => {
                 console.error(error);
@@ -296,23 +298,28 @@ sap.ui.define([
             }
             */
         },
+
         onSelectRBOption: function (oEvent) {
             dataTempModel.setProperty("/generalData/cedisType", oEvent.getParameters().selectedIndex);
         },
+
         onChangeSelectTipoCita: function (oEvent) {
             dataTempModel.setProperty("/generalData/tipoCita", oEvent.getParameters().selectedItem.getKey());
             console.info(dataTempModel);
 
             this.getOwnerComponent().getModel("ActionCita").setProperty("/TipoCita", oEvent.getParameters().selectedItem.getKey());
         },
+
         onChangeSelectTipoUnidad: function (oEvent) {
             dataTempModel.setProperty("/generalData/tipoUnidad", oEvent.getParameters().selectedItem.getKey());
             console.info(dataTempModel)
         },
+
         onSelectProductType: function (oEvent) {
             dataTempModel.setProperty("/generalData/tipoProducto", oEvent.getParameters().selectedItem.getKey());
             console.info(dataTempModel)
         },
+
         selectChange: function (oEvent) {
             console.log(oEvent)
         },
@@ -438,18 +445,42 @@ sap.ui.define([
             oAppointment.setSelected(false)
         },
 
-        selectPedido: function (oEvent) {
-            //this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "ActionCita");
-            let sourceTable = oEvent.getSource();
+        selectPedido: async function (oEvent) {
 
-            let line = sourceTable._aSelectedPaths[0].split("/").slice(-1).pop()
-            console.log("LINE: ", line);
+            console.log("Object: ", oEvent.getParameter("rowContext").getObject());
+
+            console.log("Model: ", oEvent.getParameter("rowContext").getModel().getData());
+
+            let source = oEvent.getSource();
+            let arrayData = oEvent.getParameter("rowContext").getModel().getData();
+            let objectClicked = oEvent.getParameter("rowContext").getObject();
+            let selectedIndex = oEvent.getParameter("rowIndex");
+            let selectedIndices = source.getSelectedIndices();
+            console.log("Source ID: ", source.getId());
+            console.log("selectedIndices : ", source.getSelectedIndices());
+            let isSelected = selectedIndices.some(index => index==selectedIndex);
+
+            //-- habilitar o desabilitar row
+            arrayData.ETOC.results.forEach(pedido => {
+                if (pedido.Ebeln == objectClicked.Ebeln && pedido.Ean11 == objectClicked.Ean11) {
+                    pedido.Selected = isSelected;
+                }
+            });
+
+
+            source.setFirstVisibleRow((selectedIndex+2));
+
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+            source.setFirstVisibleRow( isSelected ? selectedIndex : 0 );
 
         },
 
         captureQuntSummon: function (oEvent) {
 
             //this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "ActionCita");
+
+            osource.setValueState(sap.ui.core.ValueState.None);
 
             let osource = oEvent.getSource();
             let matnr = osource.data("matnr");
@@ -460,6 +491,7 @@ sap.ui.define([
             if (menger<cantidad) {
                 osource.setValueState(sap.ui.core.ValueState.Error);
                 osource.setValueStateText("Debe ser menor a la cantidad por agotar");
+                this.byId("btnAppoimentNext").setEnabled(false);
                 // return;
             }
 

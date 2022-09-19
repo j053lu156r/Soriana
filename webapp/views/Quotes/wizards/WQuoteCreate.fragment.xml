@@ -13,13 +13,14 @@
         stretch="true">
 		<f:DynamicPage
 			stickySubheaderProvider="QuoteCedisWizard"
-			toggleHeaderOnTitleClick="false"
+			toggleHeaderOnTitleClick="true"
 			class="sapUiNoContentPadding"
 			showFooter="true">
 			<f:content>
 				<Wizard id="QuoteCedisWizard"
                     class="sapUiResponsivePadding--header sapUiResponsivePadding--content"
                     showNextButton="false"
+                    renderMode="Page"
                     >
                     <WizardStep id="RemissionDetail"
                         title="{appTxts>/quotes.generalData}"
@@ -44,7 +45,7 @@
 				<OverflowToolbar>
 					<ToolbarSpacer/>
 					<Button text="{appTxts>/rem.back}" visible="{/backButtonVisible}" press="onDialogBackButton" />
-					<Button text="{appTxts>/rem.next}" type="Emphasized" enabled="{/nextButtonEnabled}" visible="{/nextButtonVisible}" press="onDialogNextButton" />
+					<Button id="btnAppoimentNext" text="{appTxts>/rem.next}" type="Emphasized" enabled="{/nextButtonEnabled}" visible="{/nextButtonVisible}" press="onDialogNextButton" />
 					<!-- <Button text="{appTxts>/rem.review}" type="Emphasized" enabled="{/reviewButtonEnabled}" visible="{/reviewButtonVisible}" press="onDialogNextButton" /> -->
 					<Button text="{appTxts>/rem.finish}" type="Emphasized" visible="{/finishButtonVisible}" press="handleWizardSubmit" />
 					<Button	text="{appTxts>/rem.cancel}" type="Transparent" press="onCloseWizard"/>
