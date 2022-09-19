@@ -783,6 +783,13 @@
                     ]
                 },
                 {
+                    "name": "detailCargoMatsBoletinVta",
+                    "pattern": "detailCargoMatsBoletinVta/{layout}/{Company}/{Forum}/{ForumDesc}/{Agreement}/{Vendor}/{DateCreated}/{document}/{year}",
+                    "target": [
+                        "detailCargoMatsBoletinVta"
+                    ]
+                },
+                {
                     "name": "masterValidacionCondicion",
                     "pattern": "masterValidacionCondicion",
                     "target": [
@@ -1172,6 +1179,11 @@
                     "viewName": "DetailCargo",
                     "viewPath": "demo.views.BoletinVta",
                     "controlAggregation": "midColumnPages"
+                },
+                "detailCargoMatsBoletinVta" : {
+                    "viewName": "DetailCargoMaterial",
+                    "viewPath": "demo.views.BoletinVta",
+                    "controlAggregation": "endColumnPages"
                 },
                 "masterValidacionCondicion": {
                     "viewType": "XML",

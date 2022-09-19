@@ -17,8 +17,6 @@
                 this.oRouter = this.getOwnerComponent().getRouter();
                 this.oModel = this.getOwnerComponent().getModel();
     
-                //this.oRouter.getRoute("masterBoletinVtaPolizas").attachPatternMatched(this._onDocumentMatched, this);
-
                 this.getView().addEventDelegate({
                     onAfterShow: function (oEvent) {
                         var barModel = this.getOwnerComponent().getModel();
@@ -30,25 +28,10 @@
                 this.configFilterLanguage(this.getView().byId("filterBar"));
             },
 
-            /*_onDocumentMatched: function (oEvent) {
-			
-                var _company = oEvent.getParameter("arguments").company || _company || "0";
-                var _dopcument = oEvent.getParameter("arguments").document || _document || "0";
-                var _year = oEvent.getParameter("arguments").year || _year || "0";
-
-                if (_company !== "0000"){
-                    this.getView().byId("sociedadInput").setValue(_company);
-                    this.getView().byId("documentoInput").setValue(_dopcument);
-                    this.getView().byId("ejercicioInput").setValue(_year);
-                    this.searchData();
-                } else { 
-                    this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "PolizasHdr");
-                    this.clearFilters(); 
-                }
-            },*/
-
             searchData: function () {
                 var texts = this.getOwnerComponent().getModel("appTxts");
+                var textindSoc = texts.getProperty("/polizas.indSoc");
+                var textindEje = texts.getProperty("/polizas.indEje");
                 var bContinue = true;
     
                 if (!oModel.getModel()) {
@@ -64,10 +47,10 @@
                     bContinue = false;
                 } else if ( documento != "" && documento != null ) {
                     if ( sociedad == "" || sociedad == null ){
-                        MessageBox.error(texts.getProperty("/polizas.indSoc"));
+                        MessageBox.error(textindSoc);
                         bContinue = false;
                     } else if ( ejercicio == "" || ejercicio == null ) {
-                        MessageBox.error(texts.getProperty("/polizas.indEje"));
+                        MessageBox.error(textindEje);
                         bContinue = false;
                     }
                 }
@@ -134,9 +117,6 @@
             },
 
             onDebitDetail: function () {
-
-                //var odata = this.getOwnerComponent().getModel("acuTotDetModel");
-                //var results = odata.getProperty("/");
 
                 var documento = this.getView().byId('documentoInput').getValue();
                 var ejercicio = this.getView().byId('ejercicioInput').getValue();

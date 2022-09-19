@@ -15,7 +15,7 @@ sap.ui.define([
     var currentRow;
     return Controller.extend("demo.controllers.BoletinVta.Master", {
         onInit: function () {
-            //this.setDaterangeMaxMin();
+            
             this._pdfViewer = new PDFViewer();
             this.getView().addDependent(this._pdfViewer);
             
@@ -31,8 +31,8 @@ sap.ui.define([
         },
         searchData: function () {
             var texts = this.getOwnerComponent().getModel("appTxts");
-            var vErrVendor = texts.getProperty("foliosCap.indVendor");
-            var vErrDates = texts.getProperty("foliosCap.indDates");
+            var vErrVendor = texts.getProperty("/foliosCap.indVendor");
+            var vErrDates = texts.getProperty("/foliosCap.indDates");
             var bContinue = true;
 
             if (!oPModel.getModel()) {
@@ -41,7 +41,7 @@ sap.ui.define([
 
             var promocion = this.getView().byId('promocionInput').getValue();
             var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
-            //var vLifnr = this.getView().byId('supplierInput').getValue();
+            
             var texts = this.getOwnerComponent().getModel("appTxts");
             var dateRange = this.getView().byId("aportaDay");
 
@@ -108,6 +108,7 @@ sap.ui.define([
             var binding = list.getBinding("items");
             binding.filter(filterCustomer);
         },
+
         setDaterangeMaxMin: function () {
             var datarange = this.getView().byId('dateRange');
             var date = new Date();
@@ -118,6 +119,7 @@ sap.ui.define([
             datarange.setSecondDateValue(date);
             datarange.setDateValue(minConsultDate);
         },
+
         onListItemPress: function (oEvent) {
 
             var resource = oEvent.getSource().getBindingContext("promocionesHdr").getPath(),
@@ -127,16 +129,6 @@ sap.ui.define([
             var results = odata.getProperty("/");
 
             var docResult = results[line]; 
-            
-            /* this.getOwnerComponent().getRouter().navTo("detailBoletinVta",
-                {
-                    layout: sap.f.LayoutType.TwoColumnsMidExpanded,
-                    promotion: docResult.Promotion,
-                    vendor: docResult.Vendor,
-                    promDescription : docResult.Description,
-                    IntenalClass: docResult.InternalClass
-
-                }, true); */
 
             this.getOwnerComponent().getRouter().navTo("detailBoletinVtaCentros",
                 {
@@ -191,9 +183,6 @@ sap.ui.define([
 			case "application/pdf":
 				reader.readAsDataURL(file, "UTF-8");
 				break;
-				/*case "text/xml":
-					reader.readAsText(file, "UTF8");
-					break;*/
 			default:
 				reader.readAsDataURL(file);
 				break;
