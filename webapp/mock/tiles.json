@@ -582,12 +582,17 @@
                     "binding": "masterBoletinVta",
                     "functions": [
                         {
-                            "idFunction": 53
+                            "idFunction": 53,
+                            "roles": [
+                                "0001",
+                                "0004",
+                                "0005"
+                            ]
                         }
                     ]
                 },
                 {
-                    "id": "0041",
+                    "id": "0048",
                     "title": "/tiles.boletinVtaProveedor",
                     "subHeader": "",
                     "icon": "sap-icon://my-sales-order",
@@ -597,7 +602,12 @@
                     "binding": "masterBoletinVtaProv",
                     "functions": [
                         {
-                            "idFunction": 53
+                            "idFunction": 55,
+                            "roles": [
+                                "0001",
+                                "0002",
+                                "0003"
+                            ]
                         }
                     ]
                 },
