@@ -168,7 +168,7 @@
                                     text="{appTxts>/foliosCap.attachPDF}" 
                                     press="openUploadDialog"
                                     icon="sap-icon://pdf-attachment"
-                                    enabled="{= ${promocionesHdr>Status} === '1' ? true : false }"/>
+                                    enabled="{= ${promocionesHdr>Status} === '3' ? false : true }"/>
                             <Button id="_IDGenButtonPDFview" xmlns="sap.m" 
                                     type="Accept" 
                                     text="Ver" 
