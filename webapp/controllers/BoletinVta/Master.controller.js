@@ -67,7 +67,8 @@ sap.ui.define([
                     url = url + "Promotion eq '" + promocion + "' and ";
                 }
 
-                url = url + " Vendor eq '" + vLifnr + "' and EarliestDate eq '" + startDate + "' and LatestDate eq '" + endDate + "'";
+                url = url + " Vendor eq '" + vLifnr + "' and EarliestDate eq '" + startDate + "' and LatestDate eq '" + endDate + 
+                "' and tile eq 'Buyer'";
 
                 this.getView().byId('tablePromociones').setBusy(true);
                 oPModel.getJsonModelAsync(
