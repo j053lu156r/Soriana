@@ -41,11 +41,10 @@ sap.ui.define([
 
             var promocion = this.getView().byId('promocionInput').getValue();
             var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
-            //var vLifnr = this.getView().byId('supplierInput').getValue();
+          
             var texts = this.getOwnerComponent().getModel("appTxts");
             var dateRange = this.getView().byId("aportaDay");
 
-            //Fechas de entrega
             var startDate = this.buildSapDate(dateRange.getDateValue());
             var endDate = this.buildSapDate(dateRange.getSecondDateValue());
 
@@ -67,7 +66,8 @@ sap.ui.define([
                     url = url + "Promotion eq '" + promocion + "' and ";
                 }
 
-                url = url + " Vendor eq '" + vLifnr + "' and EarliestDate eq '" + startDate + "' and LatestDate eq '" + endDate + "'";
+                url = url + " Vendor eq '" + vLifnr + "' and EarliestDate eq '" + startDate + "' and LatestDate eq '" + endDate + 
+                            "' and tile eq 'Vendor' ";
 
                 this.getView().byId('tablePromociones').setBusy(true);
                 oPModel.getJsonModelAsync(
@@ -91,9 +91,11 @@ sap.ui.define([
             }
 
         },
+
         onExit: function () {
 
         },
+
         filtrado: function (evt) {
             var filterCustomer = [];
             var query = evt.getParameter("query");
@@ -279,6 +281,7 @@ sap.ui.define([
 
             this.exportxls('promocionesHdr', '/', columns);
         },
+
         onPressAccept: function (oEvent) {
  
             var resource = oEvent.getSource().getBindingContext("promocionesHdr").getPath(),
@@ -289,6 +292,7 @@ sap.ui.define([
         },
 
         _confirmDialog: function (line) {
+
             var texts = this.getOwnerComponent().getModel("appTxts");
             this._line_approve = line;
 
@@ -330,7 +334,7 @@ sap.ui.define([
             oPModel.getJsonModelAsync(
                 url,
                 function (jsonModel, parent) {
-                    var pdfView = jsonModel.getData(); //getProperty("/results");
+                    var pdfView = jsonModel.getData();
 
                     if (pdfView != null) {
                         
@@ -351,16 +355,6 @@ sap.ui.define([
                 },this
             );
         },
-
-        /* onFinancialView: function(){
-            this.getOwnerComponent().getRouter().navTo("BoletinVtaDetailPolizas",
-                {
-                    layout: sap.f.LayoutType.TwoColumnsMidExpanded,
-                    company: "2001",
-                    document: "5100011100",
-                    year: "2022"
-                });
-        }, */
         
         _approve: function (line) {
 
