@@ -27,6 +27,7 @@ sap.ui.define([
     var _oDataEntityAppoiment = "MainSet";
     var _oDataModelOC = "ZOSP_DEVO_NC_SRV_01";
     var _oDataEntityOC = "notCreditSet";
+    var _centroSeleccionado = null;
 
     return Controller.extend("demo.controllers.Quotes.wizards.WQuoteCreate", {
 
@@ -45,6 +46,9 @@ sap.ui.define([
                 return
             }
             if (this.getConfigModel().getProperty("/supplierInputKey") != null) {
+
+                this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "CitaMainData");
+                this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel([]), "CitaCreationArray");
 
                 var oView = this.getView();
 
@@ -108,12 +112,14 @@ sap.ui.define([
             }
 
         },
+
         onDialogNextButton: function () {
             if (this._oWizard.getProgressStep().getValidated()) {
                 this._oWizard.nextStep();
             }
             this.handleButtonsVisibility();
         },
+
         onDialogBackButton: function () {
             this._oWizard.previousStep();
             this.handleButtonsVisibility();
@@ -135,13 +141,13 @@ sap.ui.define([
                         this._pDialog = null;
                         this._oWizard = null;
 
-                        let appoimentModel = JSON.parse(this.getOwnerComponent().getModel("ActionCita").getJSON());
+                        let appoimentModel = JSON.parse(this.getOwnerComponent().getModel("CitaCreationArray").getJSON());
 
                         console.log("Cita generada: ", appoimentModel);
 
                         let createObjReq = {
                             "ETCITANUEVA": [
-                                appoimentModel
+                                ...appoimentModel
                                 // {
                                 //           "Ebeln":"0000000099",
                                 //           "Ebelp":"00002",
@@ -174,7 +180,9 @@ sap.ui.define([
                         });
 
                         this.getView().setModel(new JSONModel(), "tableWizardOrderPosition");
-                        this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "ActionCita");
+                        this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "CitaMainData");
+                        this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel([]), "CitaCreationArray");
+                        _centroSeleccionado = null;
 
                     }
                 }.bind(this)
@@ -191,7 +199,9 @@ sap.ui.define([
                         this._pDialog = null;
                         this._oWizard = null;
                         this.getView().setModel(new JSONModel(), "tableWizardOrderPosition");
-                        this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "ActionCita");
+                        this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "CitaMainData");
+                        this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel([]), "CitaCreationArray");
+                        _centroSeleccionado = null;
                     }
                 }.bind(this)
             });
@@ -226,7 +236,7 @@ sap.ui.define([
             let that = this;
             this._GetODataV2(_oDataModelOC, _oDataEntityOC, filtros, ["ETOC"], "").then(resp => {
                 resp.data.results[0].ETOC.results.forEach(oc => {
-                    oc.Selected=false
+                    oc.Selected = false
                 });
                 that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "Pedidos");
                 // that.paginate("Pedidos", "/ETOC", 1, 0);
@@ -307,7 +317,7 @@ sap.ui.define([
             dataTempModel.setProperty("/generalData/tipoCita", oEvent.getParameters().selectedItem.getKey());
             console.info(dataTempModel);
 
-            this.getOwnerComponent().getModel("ActionCita").setProperty("/TipoCita", oEvent.getParameters().selectedItem.getKey());
+            this.getOwnerComponent().getModel("CitaMainData").setProperty("/TipoCita", oEvent.getParameters().selectedItem.getKey());
         },
 
         onChangeSelectTipoUnidad: function (oEvent) {
@@ -329,7 +339,7 @@ sap.ui.define([
             let dateSelected = source.getDateValue();
             this.searchOrders(this.buildSapDate(dateSelected));
             this.setAppoimentCalendar(dateSelected);
-            this.getOwnerComponent().getModel("ActionCita").setProperty("/FechaCita", this.buildSapDate(dateSelected));
+            this.getOwnerComponent().getModel("CitaMainData").setProperty("/FechaCita", this.buildSapDate(dateSelected));
         },
 
         setAppoimentCalendar(dateSelected) {
@@ -361,13 +371,13 @@ sap.ui.define([
                     name: "Anden 2",
                     role: "Segundo Anden",
                     appointments: [
-                    //     {
-                    //     start: dateSelected,
-                    //     end: incrementedDate,
-                    //     title: "Pepsi",
-                    //     info: "Dropping 7up",
-                    //     type: "Type03"
-                    // },
+                        //     {
+                        //     start: dateSelected,
+                        //     end: incrementedDate,
+                        //     title: "Pepsi",
+                        //     info: "Dropping 7up",
+                        //     type: "Type03"
+                        // },
                     ],
                 },
                 {
@@ -375,13 +385,13 @@ sap.ui.define([
                     name: "Anden 3",
                     role: "Tercer Anden",
                     appointments: [
-                    //     {
-                    //     start: dateSelected,
-                    //     end: incrementedDate,
-                    //     title: "Topo-Chico",
-                    //     info: "Dropping Aguas Minerales",
-                    //     type: "Type03"
-                    // },
+                        //     {
+                        //     start: dateSelected,
+                        //     end: incrementedDate,
+                        //     title: "Topo-Chico",
+                        //     info: "Dropping Aguas Minerales",
+                        //     type: "Type03"
+                        // },
                     ],
                 }
                 ]
@@ -447,62 +457,108 @@ sap.ui.define([
 
         selectPedido: async function (oEvent) {
 
-            console.log("Object: ", oEvent.getParameter("rowContext").getObject());
-
-            console.log("Model: ", oEvent.getParameter("rowContext").getModel().getData());
-
             let source = oEvent.getSource();
             let arrayData = oEvent.getParameter("rowContext").getModel().getData();
             let objectClicked = oEvent.getParameter("rowContext").getObject();
             let selectedIndex = oEvent.getParameter("rowIndex");
             let selectedIndices = source.getSelectedIndices();
-            console.log("Source ID: ", source.getId());
-            console.log("selectedIndices : ", source.getSelectedIndices());
-            let isSelected = selectedIndices.some(index => index==selectedIndex);
+            let isSelected = selectedIndices.some(index => index == selectedIndex);
+
+            if (selectedIndices.length == 0) {
+                _centroSeleccionado = null;
+            } else if (_centroSeleccionado == null) {
+                _centroSeleccionado = objectClicked.Werks;
+            } else if (_centroSeleccionado != objectClicked.Werks) {
+                sap.m.MessageBox.warning('Todos los pedidos deben pertencer al mismo centro');
+                source.removeSelectionInterval(selectedIndex, selectedIndex);
+                return;
+            }
+
+            // console.log("Context Object: ", objectClicked);
+            // console.log("Context Model: ", arrayData);
+            // console.log("selectedIndices : ", source.getSelectedIndices());            
 
             //-- habilitar o desabilitar row
             arrayData.ETOC.results.forEach(pedido => {
-                if (pedido.Ebeln == objectClicked.Ebeln && pedido.Ean11 == objectClicked.Ean11) {
+                if (pedido.Ebeln == objectClicked.Ebeln && pedido.Ean11 == objectClicked.Ean11)
                     pedido.Selected = isSelected;
-                }
             });
 
+            source.setFirstVisibleRow((selectedIndex + 2));
 
-            source.setFirstVisibleRow((selectedIndex+2));
-
+            // dando tiempo para que actue el autoscroll y se refleje la funcionalidad (necsario**)
             await new Promise(resolve => setTimeout(resolve, 100));
 
-            source.setFirstVisibleRow( isSelected ? selectedIndex : 0 );
+            source.setFirstVisibleRow(isSelected ? selectedIndex : 0);
+
+            // -- agregar o borrar del modelo de creacion de cita
+            if (isSelected)
+                this.addToCreationArray(objectClicked);
+            else
+                this.dropFromCreationArray(objectClicked);
+
+            let creationArray = this.getOwnerComponent().getModel("CitaCreationArray").getData();
+            console.log("creationArray: ", creationArray);
 
         },
 
         captureQuntSummon: function (oEvent) {
 
-            //this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "ActionCita");
-
-            osource.setValueState(sap.ui.core.ValueState.None);
-
+            //this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "CitaMainData");
             let osource = oEvent.getSource();
+            osource.setValueState(sap.ui.core.ValueState.None);
             let matnr = osource.data("matnr");
             let ebeln = osource.data("ebeln");
             let menger = osource.data("menger");
             let cantidad = oEvent.getParameter("value");
 
-            if (menger<cantidad) {
+            if (menger < cantidad) {
                 osource.setValueState(sap.ui.core.ValueState.Error);
                 osource.setValueStateText("Debe ser menor a la cantidad por agotar");
-                this.byId("btnAppoimentNext").setEnabled(false);
+                // this.byId("btnAppoimentNext").setEnabled(false);
                 // return;
             }
 
-            let actionModel = this.getOwnerComponent().getModel("ActionCita");
+            // console.log("oEvent Source : ", osource);
 
-            actionModel.setProperty("/Ebeln", ebeln);
-            actionModel.setProperty("/Matnr", matnr);
-            actionModel.setProperty("/Citado", cantidad);
+            let creationArray = this.getOwnerComponent().getModel("CitaCreationArray").getData();
 
-            console.log("oEvent Source : ", osource);
+            creationArray.forEach(item => {
+                if (item.Matnr == matnr && item.Ebeln == ebeln)
+                    item.Citado = cantidad;
+            });
 
+            this.getOwnerComponent().getModel("CitaCreationArray").setData(creationArray);
+
+        },
+
+        addToCreationArray(detalle) {
+            let creationArray = this.getOwnerComponent().getModel("CitaCreationArray").getData();
+            let mainDataModel = this.getOwnerComponent().getModel("CitaMainData").getData();
+
+            let newdetail = {
+                "Ebeln": detalle.Ebeln,
+                "Ebelp": detalle.Ebelp,
+                "Matnr": detalle.Matnr,
+                "TipoCita": mainDataModel.TipoCita
+            };
+
+            creationArray.push(newdetail);
+
+            this.getOwnerComponent().getModel("CitaCreationArray").setData(creationArray);
+        },
+
+        dropFromCreationArray(detalle) {
+            let creationArray = this.getOwnerComponent().getModel("CitaCreationArray").getData();
+
+            let filteredArray = creationArray.filter(item => (item.Matnr != detalle.Matnr && item.Ebeln != detalle.Ebeln));
+
+            this.getOwnerComponent().getModel("CitaCreationArray").setData(filteredArray);
+        },
+
+        clearModelsOnFilter(oEvent) {
+            this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel([]), "CitaCreationArray");
+            _centroSeleccionado = null;
         }
     });
 });

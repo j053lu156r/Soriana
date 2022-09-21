@@ -84,7 +84,7 @@ sap.ui.define([
                 value1: '1'
             })
             );
-            
+
             filtros.push(new sap.ui.model.Filter({
                 path: "Proveedor",
                 operator: sap.ui.model.FilterOperator.EQ,
@@ -272,8 +272,8 @@ sap.ui.define([
             sap.ui.core.BusyIndicator.show();
             let that = this;
             this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASDET"], "").then(resp => {
-                console.log('DETALLE : ' , resp.data.results[0]);
-                
+                console.log('DETALLE : ', resp.data.results[0]);
+
                 // that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(resp.data.results[0]), "tableQuotesModel");
                 // that.paginate("tableQuotesModel", "/CTCITASCAB", 1, 0);
                 sap.ui.core.BusyIndicator.hide();
@@ -281,7 +281,7 @@ sap.ui.define([
                 sap.ui.core.BusyIndicator.hide();
                 console.error(error);
             });
-            
+
             /*var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(1);
             this.getOwnerComponent().getRouter().navTo("detailOrders", { layout: oNextUIState, document: document }, true);*/
             // this.getOwnerComponent().getRouter().navTo("detailQuotes", { layout: sap.f.LayoutType.MidColumnFullScreen, document: document }, true);

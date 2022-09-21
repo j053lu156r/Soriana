@@ -10,8 +10,7 @@
             <Select id="sTipoCita" class="sapUiSmallMarginBottom" items="{
                         path: 'appoinmentsCatalogs>/ETIPOCITANAV/results',
                         sorter: { path: 'Name' }
-                    }"
-                change="onChangeSelectTipoCita" >
+                    }" change="onChangeSelectTipoCita">
                 <items>
                     <core:Item key="{appoinmentsCatalogs>ZNumcita}" text="{appoinmentsCatalogs>ZTipocita}" />
                 </items>

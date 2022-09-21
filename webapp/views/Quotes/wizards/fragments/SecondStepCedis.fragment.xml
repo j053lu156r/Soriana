@@ -7,7 +7,7 @@
         <Panel visible="{	path: 'TemporalModel>/generalData/cedisType',
                         formatter: '.formatter.isSeco'
                     }">
-            <t:Table id="tableWizardOrder" rows="{Pedidos>/ETOC/results}" rowSelectionChange="selectPedido" enableSelectAll="false" enableCellFilter="false" >
+            <t:Table id="tableWizardOrder" rows="{Pedidos>/ETOC/results}" rowSelectionChange="selectPedido" enableSelectAll="false" filter="clearModelsOnFilter">
 
                 <t:extension>
                     <!-- <headerToolbar> -->
