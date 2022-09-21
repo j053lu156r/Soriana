@@ -141,13 +141,13 @@
 						</header>
 						<footer/>
 					</Column>
-                    -->
                     <Column id="_IDGenColumn6PDFV" width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
 						<header>
 							<Text id="_IDGenText6PDFV" text="" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 						</header>
 						<footer/>
 					</Column>
+                    -->
 				</columns>
 				<items>
 					<ColumnListItem id="_IDGenColumnListItem1" type="Navigation" press="onListItemPress">                    
@@ -159,28 +159,29 @@
 							<Text id="_IDGenText8" xmlns="sap.m" text="{path: 'promocionesHdr>EarliestDate', formatter: '.ReverseDate'}"/>
                             <Text id="_IDGenText9" xmlns="sap.m" text="{path: 'promocionesHdr>LatestDate', formatter: '.ReverseDate'}"/>
                             <Text id="_IDGenText10" xmlns="sap.m" text="{promocionesHdr>PromClass}"/>
+
                             <Button id="_IDGenButton2" xmlns="sap.m" 
                                     type="Accept" 
                                     text="{appTxts>/foliosCap.aprove}" 
                                     press="onPressAccept"
                                     icon="sap-icon://accept"
                                     enabled="{= ${promocionesHdr>Status} === '2' ? true : false }"/>
-                            
+                            <!--
                             <Button id="_IDGenButtonPDF" xmlns="sap.m" 
                                     type="Accept" 
                                     text="{appTxts>/foliosCap.attachPDF}" 
                                     press="openUploadDialog"
                                     icon="sap-icon://pdf-attachment"
-                                    enabled="{= ${promocionesHdr>Status} === '1' ? true : false }"/>
+                                    enabled="{= ${promocionesHdr>Status} === '3' ? false : true }"/>
                             
                             <Button id="_IDGenButtonPDFview" xmlns="sap.m" 
                                     type="Accept" 
                                     text="Ver" 
                                     press=".onOpenPDF"
                                     icon="sap-icon://pdf-reader"
-                                    enabled="{= ${promocionesHdr>Status} === ' '  ? false : true }"
-                                    visible="{= ${promocionesHdr>Status} === ' '  ? false : true }"/>
-                            
+                                    enabled="{= ${promocionesHdr>Status} === '0'  ? false : true }"
+                                    visible="{= ${promocionesHdr>Status} === '0'  ? false : true }"/>
+                            -->
 						</cells>
 					</ColumnListItem>
 				</items>
