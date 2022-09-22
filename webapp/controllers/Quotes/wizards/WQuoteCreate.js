@@ -172,12 +172,12 @@ sap.ui.define([
                             "Accept": "application/json, text/javascript, */*;q=0.01"
                         };
 
-                        await this._PostODataV2Async(_oDataModelAppoimnet, _oDataEntityAppoiment, createObjReq, headers).then(response => {
-                            resp = response.d;
-                            sap.ui.core.BusyIndicator.hide();
-                        }).catch(error => {
-                            console.log(error);
-                        });
+                        // await this._PostODataV2Async(_oDataModelAppoimnet, _oDataEntityAppoiment, createObjReq, headers).then(response => {
+                        //     resp = response.d;
+                        //     sap.ui.core.BusyIndicator.hide();
+                        // }).catch(error => {
+                        //     console.log(error);
+                        // });
 
                         this.getView().setModel(new JSONModel(), "tableWizardOrderPosition");
                         this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "CitaMainData");
