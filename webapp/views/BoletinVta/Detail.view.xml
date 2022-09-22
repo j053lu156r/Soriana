@@ -35,11 +35,9 @@
                     <m:Text text="{promotionDetModel>/plantName}"/>
                 </snappedContent>
                 <navigationActions>
-                    <!-- <m:OverflowToolbarButton type="Transparent" icon="sap-icon://receipt" press="handleReceipt"/> -->
                     <m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/endColumn/fullScreen} !== null }"/>
                     <m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/endColumn/exitFullScreen} !== null }"/>
                     <m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close column"/> 
-                    <!-- visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/> -->
                 </navigationActions>
             </ObjectPageDynamicHeaderTitle>
         </headerTitle>
@@ -57,9 +55,7 @@
                                         <m:OverflowToolbar>
                                             <m:Title text="{appTxts>/foliosCapDet.titleDet} ({promotionDet>/length})" />
                                             <m:ToolbarSpacer/>
-                                            <!-- <m:Button icon="sap-icon://retail-store" text="{appTxts>/foliosCapDet.centerGroup}" 
-                                                press=".onDetailCenterPress"
-                                            /> -->
+                                            
                                             <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
                                                 press=".buildExportTable"
                                                 visible="{= ${promotionDet>/length} > 0}"
@@ -72,62 +68,62 @@
                                         <m:header>
                                             <m:Text text="{appTxts>/foliosCapDet.Material}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </m:header>
+                                        <m:footer>
+                                            <m:Text id="txtT" text="Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </m:footer>
                                     </m:Column>
-                                    <!--
-                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-                                        <m:header>
-                                            <m:Text text="{appTxts>/foliosCapDet.MatDescription}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                        </m:header>
-                                    </m:Column>
-                                    -->
+                                    
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
                                             <m:Text text="{appTxts>/foliosCapDet.SalesUnit}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </m:header>
                                     </m:Column>
+                                    <!--
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
                                             <m:Text text="{appTxts>/foliosCapDet.planQty}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </m:header>
+                                        <m:footer>
+                                            <m:ObjectNumber id="OBNC"
+                                                number="{
+                                                    parts:[{path:'centroTotDetModel>/totQtyPlan'},{path:'Unit'}],
+                                                    type: 'sap.ui.model.type.Unit',
+                                                    formatOptions: {showMeasure: false}
+                                                        }"
+                                                unit="" />
+                                        </m:footer>
                                     </m:Column>
+                                    -->
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
                                             <m:Text text="{appTxts>/foliosCapDet.planPrice}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </m:header>
+                                        <m:footer>
+                                            <m:ObjectNumber id="OBNT"
+                                                number="{
+                                                    parts:[{path:'centroTotDetModel>/totPlanPrice'},{path:'CurrencyCode'}],
+                                                    type: 'sap.ui.model.type.Currency',
+                                                    formatOptions: {showMeasure: false}
+                                                        }"
+                                                unit="MXN" />
+                                        </m:footer>
                                     </m:Column>
-                                    <!--
-                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-                                        <m:header>
-                                            <m:Text text="{appTxts>/aportaciones.ieps}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                        </m:header>
-                                    </m:Column>
-                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-                                        <m:header>
-                                            <m:Text text="{appTxts>/aportaciones.total}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                        </m:header>
-                                    </m:Column>
-                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-                                        <m:header>
-                                            <m:Text text="{appTxts>/aportaciones.aporta}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                        </m:header>
-                                    </m:Column> -->
 								</m:columns>
 								<m:items>
 									<m:ColumnListItem >
 										<m:cells>
                                             <m:ObjectIdentifier title="{promotionDet>Material}" 
                                                 text="{promotionDet>Description}" />
-                                            <!--<m:ObjectIdentifier title="{promotionDet>Matnr}"
-                                                text="{promotionDet>Maktx}" />-->
+                                            
                                             <m:ObjectIdentifier
                                                 text="{promotionDet>SalesUnit}" />
-                                            
+                                            <!--
                                             <m:ObjectIdentifier
                                                 text="{
                                                     path: 'promotionDet>QtyPlan',
                                                     type: 'sap.ui.model.type.Float'
                                                     }" />
-                                                    
+                                             -->       
                                             <m:ObjectNumber
                                                 emphasized="true"
                                                 number="{
@@ -137,27 +133,7 @@
                                                         }"
                                                 unit="{promotionDet>CurrencyPlan}'"
                                                 state="Success" />
-                                            <!--
-                                            <m:ObjectIdentifier
-                                                text="{
-                                                    path: 'AportacionesDet>Zieps',
-                                                    type: 'sap.ui.model.type.Float'
-                                                    }" />
-                                            <m:ObjectNumber
-                                                emphasized="true"
-                                                number="{
-                                                    parts:[{path:'AportacionesDet>Ztotal'},{path:'CurrencyCode'}],
-                                                    type: 'sap.ui.model.type.Currency',
-                                                    formatOptions: {showMeasure: false}
-                                                        }"
-                                                unit="MXN"
-                                                state="Success" />
-                                            <m:ObjectIdentifier
-                                                text="{
-                                                    path: 'AportacionesDet>Zaportacion',
-                                                    type: 'sap.ui.model.type.Float'
-                                                    }" />
-                                            -->
+                                            
 										</m:cells>
 									</m:ColumnListItem>
 								</m:items>

@@ -24,7 +24,7 @@
                     <m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Center">
                         <m:FlexBox wrap="NoWrap" fitContainer="true" alignItems="Center" class="sapUiTinyMarginEnd">
                             <f:Avatar src="../../../../../../../{products>ProductPicUrl}" displaySize="S" displayShape="Square" class="sapUiTinyMarginEnd"/>
-                            <m:Title text="{debitDetMatModel>/Forum} {debitDetMatModel>/ForumDesc}" wrapping="true" class="sapUiTinyMarginEnd"/>
+                            <!-- <m:Title text="{debitDetMatModel>/Forum} {debitDetMatModel>/ForumDesc}" wrapping="true" class="sapUiTinyMarginEnd"/> -->
                         </m:FlexBox>
                     </m:FlexBox>
                 </snappedHeading>
@@ -68,6 +68,9 @@
                                         <m:header>
                                             <m:Text text="{appTxts>/PolizadetCargo.Material}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </m:header>
+                                        <m:footer>
+                                            <m:Text id="txtT" text="Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </m:footer>
                                     </m:Column>
                                     <!--
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
@@ -120,7 +123,7 @@
                                                 unit="{debitDet>Currency}" />
                                         </m:footer>
                                     </m:Column>
-                                    -->
+                                    
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
                                             <m:Text text="{appTxts>/PolizadetCargo.DistQty}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -135,6 +138,7 @@
                                                 unit="{debitDet>uom}" />
                                         </m:footer>
                                     </m:Column>
+                                    -->
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
                                             <m:Text text="{appTxts>/PolizadetCargo.bonus}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -217,7 +221,7 @@
                                                         }"
                                                 unit="{debitDet>Currency}'"
                                                 state="Success" />
-                                            -->
+                                            
                                             <m:ObjectNumber
                                                 emphasized="true"
                                                 number="{
@@ -227,6 +231,8 @@
                                                         }"
                                                 unit="{debitMatDet>uom}'"
                                                 state="Success" />
+                                            -->
+                                            
                                             <m:ObjectNumber
                                                 emphasized="true"
                                                 number="{
