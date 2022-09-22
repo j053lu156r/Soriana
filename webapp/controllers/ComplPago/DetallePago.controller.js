@@ -813,7 +813,17 @@ console.log(TDatos)
 			return Math.abs(mc) > 0 ? true : false
 		},
 
+        formatCurrency: function (quantityToFormat) {
 
+            let quant = parseFloat(quantityToFormat);
+
+            quant = quant.toLocaleString('en-US', {
+                style: 'currency',
+                currency: 'USD'
+               });
+            
+            return (quantityToFormat > 0 ? "-" : "") + quant.replace('$','');
+        },
 
 
 		_onDocumentPress: function(oEvent){

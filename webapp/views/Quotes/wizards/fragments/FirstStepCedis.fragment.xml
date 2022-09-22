@@ -7,17 +7,16 @@
                 <RadioButton text="{appTxts>/quotes.frescos}" />
             </RadioButtonGroup> -->
             <Label text="{appTxts>/quotes.quoteType}" labelFor="currency"/>
-            <Select id="sTipoCita" class= "sapUiSmallMarginBottom" items="{
+            <Select id="sTipoCita" class="sapUiSmallMarginBottom" items="{
                         path: 'appoinmentsCatalogs>/ETIPOCITANAV/results',
                         sorter: { path: 'Name' }
-                    }"
-                change = "onChangeSelectTipoCita">
+                    }" change="onChangeSelectTipoCita">
                 <items>
                     <core:Item key="{appoinmentsCatalogs>ZNumcita}" text="{appoinmentsCatalogs>ZTipocita}" />
                 </items>
             </Select>
             <Label text="{appTxts>/quotes.totalpackages}" />
-            <Input id="totalpackagesInput" class= "sapUiSmallMarginBottom" width="auto" change=".hasOnlyNumbers" type="Number"/>
+            <Input id="totalpackagesInput" class= "sapUiSmallMarginBottom" width="auto" change=".hasOnlyNumbers" type="Number" />
             <Label text="{appTxts>/quotes.platforms}"/>
             <Input id="platformsInput" class= "sapUiSmallMarginBottom" width="auto" change=".hasOnlyNumbers" type="Number" />
         </VBox>

@@ -336,7 +336,6 @@ sap.ui.define([
                 await this._PostODataV2Async(_oDataModel, _oDataEntity, objRequest, headers).then(resp => {
                     response = resp.d;
                     sap.ui.core.BusyIndicator.hide();
-
                 }).catch(error => {
                     console.log(error);
                 });
@@ -1110,6 +1109,7 @@ sap.ui.define([
                             folioModel.TMoneda = "MXN";
                             folioModel.Lifnr = this.getConfigModel().getProperty("/supplierInputKey");
                             folioModel.EanUpcBase = folioModel.CodEan;
+                            
                             let createObjReq = {
                                 "IOption": "5",
                                 "ITREC": [
@@ -1121,6 +1121,7 @@ sap.ui.define([
 
                             sap.ui.core.BusyIndicator.show();
                             let resp = null;
+
                             await this._PostODataV2Async(_oDataModel, _oDataEntity, createObjReq).then(response => {
                                 resp = response.d;
                                 sap.ui.core.BusyIndicator.hide();
