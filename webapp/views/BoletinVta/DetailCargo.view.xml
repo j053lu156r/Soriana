@@ -74,6 +74,9 @@
                                         <m:header>
                                             <m:Text text="{appTxts>/PolizadetCargo.Centro}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </m:header>
+                                        <m:footer>
+                                            <m:Text id="txtT" text="Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </m:footer>
                                     </m:Column>
                                     <!--
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
@@ -122,7 +125,7 @@
                                                 unit="{debitDet>Currency}" />
                                         </m:footer>
                                     </m:Column>
-                                    -->
+                                    
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
                                             <m:Text text="{appTxts>/PolizadetCargo.DistQty}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -137,6 +140,7 @@
                                                 unit="{debitDet>uom}" />
                                         </m:footer>
                                     </m:Column>
+                                    -->
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
                                             <m:Text text="{appTxts>/PolizadetCargo.bonus}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>

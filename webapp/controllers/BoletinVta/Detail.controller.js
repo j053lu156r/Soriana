@@ -117,6 +117,20 @@ sap.ui.define([
                     var objResponse = jsonModel.getProperty("/results");
 
                     if (objResponse != null) {
+                        var currCode = objResponse[0].CurrencyPlan;
+                        //var SalesUnit = objResponse[0].SalesUnit;
+                        var totQtyPlan = objResponse.reduce((a, b) => +a + (+b["QtyPlan"] || 0), 0);
+                        var totPlanPrice = objResponse.reduce((a, b) => +a + (+b["PlanPrice"] || 0), 0);
+
+                        var totalDetCentro = {
+                            "totQtyPlan": Number(totQtyPlan.toFixed(2)),
+                            "totPlanPrice": Number(totPlanPrice.toFixed(2)),
+                            "currCode": currCode
+                        };
+
+                        parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(totalDetCentro), 
+                            "centroTotDetModel");
+
                         parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(objResponse), 
                         "promotionDet");
                     }
@@ -178,12 +192,14 @@ sap.ui.define([
                         content: "{SalesUnit}"
                     }
                 },
+                /*
                 {
                     name: texts.getProperty("/foliosCapDet.planQty"),
                     template: {
                         content: "{QtyPlan}"
                     }
                 },
+                */
                 {
                     name: texts.getProperty("/foliosCapDet.planPrice"),
                     template: {

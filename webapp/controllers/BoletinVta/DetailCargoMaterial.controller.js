@@ -197,12 +197,14 @@ sap.ui.define([
                         content: "{MatdocPosition}"
                     }
                 },
+                /*
                 {
                     name: texts.getProperty("/PolizadetCargo.DistQty"),
                     template: {
                         content: "{DistQty}"
                     }
                 },
+                */
                 {
                     name: texts.getProperty("/PolizadetCargo.bonus"),
                     template: {
