@@ -84,6 +84,7 @@ sap.ui.define([
                         xblnr: this._Xblnr,
                         lifnr: this._lifnr,
                         ebeln: this._Ebeln,
+                        suc: this._Suc,
                     }
                 );
 
@@ -124,6 +125,7 @@ sap.ui.define([
             this._Xblnr = oEvent.getParameter("arguments").xblnr || this._Xblnr || "0",
             this._lifnr = oEvent.getParameter("arguments").lifnr || this._lifnr || "0";
             this._Ebeln = oEvent.getParameter("arguments").ebeln || this._Ebeln || "0";
+          //  this._Suc = oEvent.getParameter("arguments").suc || this._Suc || "0";
 
             var headerDeatil = {
                 "Xblnr": this._Xblnr,
@@ -131,7 +133,7 @@ sap.ui.define([
             };
 
             this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "headerDetail");
-
+            console.log("2")
             var url = "/HrdReturnsSet?$expand=ETDTDEVNAV,ETFDEVNAV,ITDFAGR&$filter= IOption eq '3' and IEbeln eq '" + this._Ebeln + "'"
                     + " and IXblnr eq '" + this._Xblnr + "'"
 
@@ -150,6 +152,7 @@ sap.ui.define([
             this._Xblnr = oEvent.getParameter("arguments").xblnr || this._Xblnr || "0",
                 this._lifnr = oEvent.getParameter("arguments").lifnr || this._lifnr || "0";
             this._Ebeln = oEvent.getParameter("arguments").ebeln || this._Ebeln || "";
+            this._Suc = oEvent.getParameter("arguments").suc || this._Suc || "0";
 
             var headerDeatil = {
                 "Xblnr": this._Xblnr,
@@ -159,9 +162,10 @@ sap.ui.define([
             this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "headerDetail");
 
            // var url = "/HrdReturnsSet?$expand=ETDTDEVNAV,ETFDEVNAV,ITDFAGR&$filter= IOption eq '3' "+ " and IXblnr eq '" + this._Xblnr + "'"
-
+           console.log("3")
+           console.log(this.getConfigModel().getProperty("/supplierInputKey"))
             var url = "/HrdReturnsSet?$expand=ETDTDEVNAV,ETFDEVNAV,ITDFAGR&$filter= IOption eq '3' and IEbeln eq '" + this._Ebeln + "'"
-               + " and IXblnr eq '" + parseInt(this._Xblnr) + "'"
+               + " and IXblnr eq '" + parseInt(this._Xblnr) + "' and ILifnr eq '"+this.getConfigModel().getProperty("/supplierInputKey")+ "' and IWerks eq '"+this._Suc+ "'"
 
 
             var dueModel = oModel.getJsonModel(url);
@@ -184,7 +188,7 @@ sap.ui.define([
             };
 
             this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "headerDetail");
-
+            console.log("4")
             var url = "/HrdReturnsSet?$expand=ETDTDEVNAV,ETFDEVNAV,ITDFAGR&$filter= IOption eq '3' and IEbeln eq '" + this._Ebeln + "'"
                 + " and IXblnr eq '" + parseInt(this._Xblnr) + "'"
 
@@ -209,7 +213,7 @@ sap.ui.define([
             };
 
             this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "headerDetail");
-
+console.log("1")
             var url = "/HrdReturnsSet?$expand=ETDTDEVNAV,ETFDEVNAV,ITDFAGR&$filter= IOption eq '3' and IEbeln eq '" + this._Ebeln + "'"
                 + " and IXblnr eq '" +parseInt(this._Xblnr) + "'"
 
