@@ -224,6 +224,7 @@ sap.ui.define([
         documentUploadPress2: function(){
             var that = this;
             var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+            console.log(vLifnr);
             var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoiceTest", "fileUploaderTest");
             sap.ui.core.BusyIndicator.show(0);
 
