@@ -176,8 +176,10 @@ sap.ui.define([
                         await this._PostODataV2Async(_oDataModelAppoimnet, _oDataEntityAppoiment, createObjReq, headers).then(response => {
                             resp = response.d;
                             sap.ui.core.BusyIndicator.hide();
+                            sap.m.MessageBox.success();
                         }).catch(error => {
                             console.log(error);
+                            sap.m.MessageBox.error(error);
                         });
 
                         this.getView().setModel(new JSONModel(), "tableWizardOrderPosition");
