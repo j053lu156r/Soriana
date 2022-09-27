@@ -28,6 +28,7 @@ sap.ui.define([
     var _oDataModelOC = "ZOSP_DEVO_NC_SRV_01";
     var _oDataEntityOC = "notCreditSet";
     var _centroSeleccionado = null;
+    var _invalidinputs = [];
 
     return Controller.extend("demo.controllers.Quotes.wizards.WQuoteCreate", {
 
@@ -99,7 +100,7 @@ sap.ui.define([
                     oModel.setProperty("/finishButtonVisible", false);
                     break;
                 case 2:
-                    oModel.setProperty("/nextButtonVisible", true);
+                    oModel.setProperty("/nextButtonVisible", false);
                     oModel.setProperty("/backButtonVisible", true);
                     oModel.setProperty("/finishButtonVisible", false);
                     break;
@@ -172,12 +173,12 @@ sap.ui.define([
                             "Accept": "application/json, text/javascript, */*;q=0.01"
                         };
 
-                        // await this._PostODataV2Async(_oDataModelAppoimnet, _oDataEntityAppoiment, createObjReq, headers).then(response => {
-                        //     resp = response.d;
-                        //     sap.ui.core.BusyIndicator.hide();
-                        // }).catch(error => {
-                        //     console.log(error);
-                        // });
+                        await this._PostODataV2Async(_oDataModelAppoimnet, _oDataEntityAppoiment, createObjReq, headers).then(response => {
+                            resp = response.d;
+                            sap.ui.core.BusyIndicator.hide();
+                        }).catch(error => {
+                            console.log(error);
+                        });
 
                         this.getView().setModel(new JSONModel(), "tableWizardOrderPosition");
                         this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "CitaMainData");
@@ -211,32 +212,19 @@ sap.ui.define([
 
             let filtros = [];
 
-            filtros.push(new sap.ui.model.Filter({
-                path: "IOption",
-                operator: sap.ui.model.FilterOperator.EQ,
-                value1: '7'
-            })
-            );
+            filtros.push(this.buildFiltro('IOption', 7));
 
-            filtros.push(new sap.ui.model.Filter({
-                path: "ILifnr",
-                operator: sap.ui.model.FilterOperator.EQ,
-                value1: this.getConfigModel().getProperty("/supplierInputKey")
-            })
-            );
+            filtros.push(this.buildFiltro('ILifnr', this.getConfigModel().getProperty("/supplierInputKey")));
 
-            filtros.push(new sap.ui.model.Filter({
-                path: "IKdatb",
-                operator: sap.ui.model.FilterOperator.EQ,
-                value1: `${date}`
-            })
-            );
+            filtros.push(this.buildFiltro('IKdatb', date));
 
             sap.ui.core.BusyIndicator.show();
             let that = this;
             this._GetODataV2(_oDataModelOC, _oDataEntityOC, filtros, ["ETOC"], "").then(resp => {
+                that.getOwnerComponent().setModel(new JSONModel(), "Pedidos");
                 resp.data.results[0].ETOC.results.forEach(oc => {
-                    oc.Selected = false
+                    oc.Selected = false;
+                    oc.MengeR = 10;
                 });
                 that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "Pedidos");
                 // that.paginate("Pedidos", "/ETOC", 1, 0);
@@ -244,31 +232,6 @@ sap.ui.define([
             }).catch(error => {
                 console.error(error);
             });
-
-            // this._document = this.byId("searchOrder").getValue();
-            // this._document.trim();
-
-            // if(this._document != "") {
-            //     var url = `/notCreditSet?$expand=OEKKONAV&$filter=IOption eq '4' and ILifnr eq '${this.getConfigModel().getProperty("/supplierInputKey")}'`;
-            //     url += ` and IEbeln eq '${this._document}'`;
-
-            //     var dueModel = ordersModel.getJsonModel(url);
-
-            //     if (dueModel != null) {
-            //         var ojbResponse = dueModel.getProperty("/results/0");
-            //         if (ojbResponse != null) {
-            //             if (ojbResponse.ESuccess == "X") {
-            //                 this.getDetailOrder();
-            //             } else {
-            //                 sap.m.MessageBox.error(ojbResponse.EReturn);
-            //             }
-            //         }
-            //     }
-
-            //     this.byId("searchOrder").setValue("");
-            // } else {
-            //     sap.m.MessageBox.error(this.getView().getModel("appTxts").getProperty("/quotes.messageEmptyOrder"));
-            // }
         },
 
         getDetailOrder: function () {
@@ -338,16 +301,16 @@ sap.ui.define([
             let source = oEvent.getSource();
             let dateSelected = source.getDateValue();
             this.searchOrders(this.buildSapDate(dateSelected));
-            this.setAppoimentCalendar(dateSelected);
+            this.setAppoimentCalendar(dateSelected, dateSelected);
             this.getOwnerComponent().getModel("CitaMainData").setProperty("/FechaCita", this.buildSapDate(dateSelected));
         },
 
-        setAppoimentCalendar(dateSelected) {
+        setAppoimentCalendar(dateSelected, maxdate) {
             let planningCalendar = this.getView().byId("appoinmentPC");
             dateSelected.setHours(8, 0);
             planningCalendar.setStartDate(dateSelected);
             planningCalendar.setMinDate(dateSelected);
-            planningCalendar.setMaxDate(dateSelected);
+            planningCalendar.setMaxDate(maxdate);
             let incrementedDate = new Date();
             incrementedDate.setHours(10, 0);
             let oModel = new JSONModel();
@@ -410,7 +373,6 @@ sap.ui.define([
                 iIndex = -1;
 
             let startHours = oStartDate.getHours();
-
             oStartDate.setHours(startHours);
             startHours++;
             oEndDate.setHours(startHours);
@@ -418,11 +380,15 @@ sap.ui.define([
             let oAppointment = {
                 start: oStartDate,
                 end: oEndDate,
-                title: "Appointment " + oStartDate,
-                type: "Type09"
+                title: "Entrega " + oStartDate.toISOString().substr(0,10),
+                type: "Type08"
             },
                 aSelectedRows,
                 i;
+
+            oData.platforms.forEach(element => {
+                element.appointments = [];
+            });
 
             if (oRow) {
                 iIndex = oPC.indexOfRow(oRow);
@@ -436,6 +402,18 @@ sap.ui.define([
             }
 
             oModel.setData(oData);
+            this.getOwnerComponent().getModel("CitaMainData").setProperty("/FechaCita", this.buildSapDate(oStartDate));
+
+            let creationArray = this.getOwnerComponent().getModel("CitaCreationArray").getData();
+
+            creationArray.forEach(item => {
+                    item.FechaCita = oStartDate.toISOString().substr(0,10);
+                    item.HoraIni = oStartDate.getHours()
+                    item.HoraFin = oEndDate.getHours()
+                    item.Anden = iIndex
+            });
+
+            this.getOwnerComponent().getModel("CitaCreationArray").setData(creationArray);
         },
 
         handleAppointmentSelect: function (oEvent) {
@@ -468,15 +446,14 @@ sap.ui.define([
                 _centroSeleccionado = null;
             } else if (_centroSeleccionado == null) {
                 _centroSeleccionado = objectClicked.Werks;
+                this.fetchConfigCentro(_centroSeleccionado);
+                this.byId("btnAppoimentNext").setVisible(true);
+                this.byId("btnAppoimentNext").setEnabled(false);
             } else if (_centroSeleccionado != objectClicked.Werks) {
                 sap.m.MessageBox.warning('Todos los pedidos deben pertencer al mismo centro');
                 source.removeSelectionInterval(selectedIndex, selectedIndex);
                 return;
             }
-
-            // console.log("Context Object: ", objectClicked);
-            // console.log("Context Model: ", arrayData);
-            // console.log("selectedIndices : ", source.getSelectedIndices());            
 
             //-- habilitar o desabilitar row
             arrayData.ETOC.results.forEach(pedido => {
@@ -497,9 +474,29 @@ sap.ui.define([
             else
                 this.dropFromCreationArray(objectClicked);
 
+            //-- Re-setting appoimentCalendar
             let creationArray = this.getOwnerComponent().getModel("CitaCreationArray").getData();
-            console.log("creationArray: ", creationArray);
+            let maxdate = this.findMaxDate(creationArray, arrayData);
+            let dateSelected = this.byId("DP1").getDateValue();
+            this.setAppoimentCalendar(dateSelected, maxdate);
+        },
 
+        findMaxDate(creationArray, arrayData) {
+            let tempArray = [];
+            arrayData.ETOC.results.forEach(item => {
+                if (creationArray.some(obj => obj.Ebeln == item.Ebeln && obj.Matnr == item.Matnr))
+                    tempArray.push(item);
+            });
+
+            let maxDate = new Date();
+
+            tempArray.forEach(item => {
+                let tempDate = new Date(item.Kdate);
+                if (maxDate < tempDate)
+                    maxDate = tempDate;
+            })
+
+            return maxDate;
         },
 
         captureQuntSummon: function (oEvent) {
@@ -515,11 +512,15 @@ sap.ui.define([
             if (menger < cantidad) {
                 osource.setValueState(sap.ui.core.ValueState.Error);
                 osource.setValueStateText("Debe ser menor a la cantidad por agotar");
-                // this.byId("btnAppoimentNext").setEnabled(false);
-                // return;
+                _invalidinputs.push(osource.getId());
+                this.byId("btnAppoimentNext").setEnabled((_invalidinputs.length == 0));
+                return;
+            } else {
+                let temparray = _invalidinputs.filter(id => id != osource.getId());
+                _invalidinputs = temparray;
             }
 
-            // console.log("oEvent Source : ", osource);
+            this.byId("btnAppoimentNext").setEnabled((_invalidinputs.length == 0) && (cantidad>0));
 
             let creationArray = this.getOwnerComponent().getModel("CitaCreationArray").getData();
 
@@ -559,6 +560,34 @@ sap.ui.define([
         clearModelsOnFilter(oEvent) {
             this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel([]), "CitaCreationArray");
             _centroSeleccionado = null;
+        },
+
+        fetchConfigCentro(centro) {
+
+            let filtros = [];
+
+            filtros.push(this.buildFiltro("Action", '3'));
+            filtros.push(this.buildFiltro("Centro", centro));
+
+            sap.ui.core.BusyIndicator.show();
+            let that = this;
+            this._GetODataV2(_oDataModelAppoimnet, _oDataEntityAppoiment, filtros, ["ETCONFIG"], "").then(resp => {
+                console.log("Configuracion Centro", resp.data.results[0]);
+                // that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "Pedidos");
+                // that.paginate("Pedidos", "/ETOC", 1, 0);
+                sap.ui.core.BusyIndicator.hide();
+            }).catch(error => {
+                console.error(error);
+            });
+
+        },
+
+        buildFiltro(path, value) {
+            return new sap.ui.model.Filter({
+                path: path,
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: `${value}`
+            })
         }
     });
 });

@@ -92,7 +92,7 @@
                     <t:Column >
                         <Label text="{appTxts>/quotes.quantitySummon}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                         <t:template>
-                            <Input id="inputCantidad" liveChange="captureQuntSummon" enabled="{= ${Pedidos>Selected}}" customData:menger="{Pedidos>MengeR}" customData:ebeln="{Pedidos>Ebeln}" customData:matnr="{Pedidos>Matnr}" type="Number"/>
+                            <Input id="inputCantidad" value="{Pedidos>Citado}" liveChange="captureQuntSummon" enabled="{= ${Pedidos>Selected}}" customData:menger="{Pedidos>MengeR}" customData:ebeln="{Pedidos>Ebeln}" customData:matnr="{Pedidos>Matnr}" type="Number"/>
                         </t:template>
                     </t:Column>
                 </t:columns>
