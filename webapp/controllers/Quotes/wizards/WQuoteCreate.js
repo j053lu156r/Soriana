@@ -186,7 +186,6 @@ sap.ui.define([
                         this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "CitaMainData");
                         this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel([]), "CitaCreationArray");
                         _centroSeleccionado = null;
-
                     }
                 }.bind(this)
             });
@@ -410,8 +409,8 @@ sap.ui.define([
 
             creationArray.forEach(item => {
                     item.FechaCita = oStartDate.toISOString().substr(0,10);
-                    item.HoraIni = oStartDate.getHours()
-                    item.HoraFin = oEndDate.getHours()
+                    item.HoraIni = oStartDate.toTimeString().substr(0,8);
+                    item.HoraFin = oEndDate.toTimeString().substr(0,8);
                     item.Anden = iIndex
             });
 
