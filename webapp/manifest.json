@@ -687,6 +687,20 @@
                     ]
                 },
                 {
+                    "name": "masterAcuerdosGral",
+                    "pattern": "masterAcuerdosGral",
+                    "target": [
+                        "masterAcuerdosGral"
+                    ]
+                },
+                {
+                    "name": "masterAcuerdosNser",
+                    "pattern": "masterAcuerdosNser",
+                    "target": [
+                        "masterAcuerdosNser"
+                    ]
+                },
+                {
                     "name": "Products",
                     "pattern": "Products",
                     "target": [
@@ -1128,6 +1142,16 @@
                     "viewName": "DetailDetail",
                     "viewPath": "demo.views.AcuerdosNS",
                     "controlAggregation": "midColumnPages"
+                },
+                "masterAcuerdosGral" : {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.AcuerdosGral",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "masterAcuerdosNser" : {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.AcuerdosNser",
+                    "controlAggregation": "beginColumnPages"
                 },
                 "Products": {
                     "viewName": "Master",
