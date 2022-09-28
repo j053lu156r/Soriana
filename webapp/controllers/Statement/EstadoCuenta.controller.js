@@ -1313,8 +1313,8 @@ sap.ui.define([
                 layout: sap.f.LayoutType.MidColumnFullScreen,
                 xblnr: results.Foliodescuento,
                 lifnr: Lifnr,
-                ebeln: results.Ebeln
-                // zbukr: docResult.Zbukr,
+                ebeln: results.Ebeln,
+             suc: results.Sucursal 
                 // lifnr: docResult.Lifnr
             }, true);
 
@@ -1327,7 +1327,7 @@ sap.ui.define([
             var path = oEvent.getSource().getBindingContext("GroupedTotales").getPath();
             let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(path);
 
-            console.log(results)
+            
 
             //nueva funcion apra mostrar detalle
 
@@ -1371,7 +1371,7 @@ sap.ui.define([
                 //camvuar  docuemnto con cual se va consultar
 
                 if (results.LifnrAportacion !== "") {
-
+                    console.log('on detailAportacionesAS1')
 
                     this.getOwnerComponent().getRouter().navTo("detailAportacionesAS", {
                         layout: sap.f.LayoutType.MidColumnFullScreen,
@@ -1384,13 +1384,14 @@ sap.ui.define([
                     }, true);
 
                 } else {
+                   
                     MessageToast.show("Sin detalle");
                 }
             } else if (boletinVentasTCodes.includes(tcode) || tcode === '') {
                 console.log('on boletin vtz')
 
                 // navega a pantalla de boltines * revisar condiciones de apertura , conseguir esenarios
-                this.getOwnerComponent().getRouter().navTo("BoletinVtaDetailPolizas", {
+                this.getOwnerComponent().getRouter().navTo("BoletinVtaDetailPolizasE", {
                     layout: sap.f.LayoutType.MidColumnFullScreen,
                     //  document: results.Xblnr,
                     document: doc,
