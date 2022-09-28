@@ -177,8 +177,8 @@ sap.ui.define([
 
                     var currentDate = new Date()
                     var paymentDate = new Date(sortedAsc[index].Laufd.replace(/-/g, '\/'))
-                    console.log("currentDate",currentDate)
-                    console.log("paymentDate",paymentDate)
+                  //  console.log("currentDate",currentDate)
+                  //  console.log("paymentDate",paymentDate)
 
                     var lastNextFriday
 
@@ -212,7 +212,7 @@ sap.ui.define([
                 //generar totales
 
                 for (let x in groupedMovs) {
-
+                    console.log(groupedMovs)
                     console.log(x)
 
                     console.log("sumando valores");
@@ -221,13 +221,16 @@ sap.ui.define([
                     var cost = groupedMovs[x].reduce(function (_this, val) {
                         var current = Number(val.Rbetr)
                         var total = _this + current
+                        console.log(total)
                          return total
                     }, 0);
-
+                    console.log(cost)
                     var cor=.001
                     cost = cost + cor
-                    acumulado = acumulado + Math.abs(cost),
-
+                    console.log(cost)
+                    
+                    acumulado = acumulado + cost,
+                    console.log(acumulado)
                     nestedMovs.push({
                         "name": x,
                         "totalRegs": groupedMovs[x].length,
@@ -240,16 +243,18 @@ sap.ui.define([
 
                 }
 
-
+                console.log(nestedMovs)
 
                 //update model
 
                 var totalCostos = nestedMovs.reduce(function (_this, val) {
                     var current = Number(val.cost)
                     var total = _this + current
+                    console.log(total)
                     return total
+                     
                 }, 0);
-
+              
 
 
 
