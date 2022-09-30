@@ -95,6 +95,7 @@ sap.ui.define([
                         xblnr: this._Xblnr,
                         lifnr: this._lifnr,
                         ebeln: this._Ebeln,
+                        suc: this._Suc,
                     }
                 );
 
@@ -116,9 +117,15 @@ sap.ui.define([
 
         },
         handleClose: function () {
+            console.log(this.parent)
             if(this.parent == "ESTADOC") {
                 var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
                 this.oRouter.navTo("EstadoCuenta", {layout: sNextLayout});
+            }
+            if(this.parent == "COMPLEMENTO") {
+                var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
+                this.oRouter.navTo("detailCompl2", {layout: sNextLayout});
+               
             }
         },
         _onDocumentMatched: function (oEvent) {
@@ -181,6 +188,7 @@ sap.ui.define([
             this._Xblnr = oEvent.getParameter("arguments").xblnr || this._Xblnr || "0",
                 this._lifnr = oEvent.getParameter("arguments").lifnr || this._lifnr || "0";
             this._Ebeln = oEvent.getParameter("arguments").ebeln || this._Ebeln || "";
+            this._Suc = oEvent.getParameter("arguments").suc || this._Suc || "0";
 
             var headerDeatil = {
                 "Xblnr": this._Xblnr,
@@ -190,7 +198,7 @@ sap.ui.define([
             this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "headerDetail");
             console.log("4")
             var url = "/HrdReturnsSet?$expand=ETDTDEVNAV,ETFDEVNAV,ITDFAGR&$filter= IOption eq '3' and IEbeln eq '" + this._Ebeln + "'"
-                + " and IXblnr eq '" + parseInt(this._Xblnr) + "'"
+                + " and IXblnr eq '" + parseInt(this._Xblnr) + "' and ILifnr eq '"+this.getConfigModel().getProperty("/supplierInputKey")+ "' and IWerks eq '"+this._Suc+ "'"
 
 
             var dueModel = oModel.getJsonModel(url);

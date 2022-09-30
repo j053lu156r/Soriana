@@ -557,6 +557,36 @@
                     ]
                 },
                 {
+                    "id": "0045",
+                    "title": "/tiles.acuerdosGral",
+                    "subHeader": "",
+                    "icon": "sap-icon://customer-order-entry",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterAcuerdosGral",
+                    "functions": [
+                        {
+                            "idFunction": 52
+                        }
+                    ]
+                },
+                {
+                    "id": "0046",
+                    "title": "/tiles.acuerdosNser",
+                    "subHeader": "",
+                    "icon": "sap-icon://customer-order-entry",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterAcuerdosNser",
+                    "functions": [
+                        {
+                            "idFunction": 52
+                        }
+                    ]
+                },
+                {
                     "id": "0034",
                     "title": "/tiles.aportaciones",
                     "subHeader": "",

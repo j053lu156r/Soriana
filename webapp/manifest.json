@@ -4,8 +4,8 @@
         "service": "myservice"
     },
     "sap.app": {
-        "croosNavigation":{
-            "inbounds":{
+        "croosNavigation": {
+            "inbounds": {
                 "intent1": {
                     "signature": {
                         "parameters": {},
@@ -30,16 +30,15 @@
             "id": "servicecatalog.connectivityComponentForManifest",
             "version": "0.0.0"
         },
-
-		"dataSources": {
-			"migoRemote": {
-				"uri": "https://port8080-workspaces-ws-x4zxg.us10.trial.applicationstudio.cloud.sap/sap/opu/odata/sap/ZOSP_MMIM_MIGO_DOC_SRV/",
-				"type": "OData",
-				"settings": {
-					"odataVersion": "2.0"
-				}
-			}
-		}
+        "dataSources": {
+            "migoRemote": {
+                "uri": "https://port8080-workspaces-ws-x4zxg.us10.trial.applicationstudio.cloud.sap/sap/opu/odata/sap/ZOSP_MMIM_MIGO_DOC_SRV/",
+                "type": "OData",
+                "settings": {
+                    "odataVersion": "2.0"
+                }
+            }
+        }
     },
     "sap.ui": {
         "technology": "UI5",
@@ -54,12 +53,13 @@
     },
     "sap.ui5": {
         "rootView": "demo.views.App",
-         "config": { "fullWidth": true },
+        "config": {
+            "fullWidth": true
+        },
         "dependencies": {
             "minUI5Version": "1.30",
             "libs": {
-                "sap.f": {
-				},
+                "sap.f": {},
                 "sap.m": {},
                 "sap.ui.commons": {
                     "minVersion": ""
@@ -73,8 +73,7 @@
                 "sap.ui.unified": {
                     "minVersion": ""
                 },
-				"sap.uxap": {
-				}
+                "sap.uxap": {}
             }
         },
         "models": {
@@ -204,9 +203,9 @@
                 "uri": "localService/mockdata/notifModel.json",
                 "preload": true
             },
-			"migoModel": {
-				"dataSource": "migoRemote"
-			}
+            "migoModel": {
+                "dataSource": "migoRemote"
+            }
         },
         "routing": {
             "config": {
@@ -236,8 +235,8 @@
                     "name": "detail",
                     "target": [
                         "masterDetail",
-						"detailDetail"
-					]
+                        "detailDetail"
+                    ]
                 },
                 {
                     "pattern": "masterDelivReview",
@@ -247,77 +246,77 @@
                     ]
                 },
                 {
-					"pattern": "masterCfdi",
-					"name": "masterCfdi",
-					"target": [
+                    "pattern": "masterCfdi",
+                    "name": "masterCfdi",
+                    "target": [
                         "masterCfdi",
                         "detailCfdi"
-					]
-				},
-				{
-					"pattern": "detailCfdi/{document}/{year}/{layout}",
-					"name": "detailCfdi",
-					"target": [
-                        "masterCfdi",
-                        "detailCfdi"
-					]
+                    ]
                 },
                 {
-					"pattern": "masterOrders",
-					"name": "masterOrders",
-					"target": [
+                    "pattern": "detailCfdi/{document}/{year}/{layout}",
+                    "name": "detailCfdi",
+                    "target": [
+                        "masterCfdi",
+                        "detailCfdi"
+                    ]
+                },
+                {
+                    "pattern": "masterOrders",
+                    "name": "masterOrders",
+                    "target": [
                         "masterOrders",
                         "detailOrders"
-					]
-				},
-				{
-					"pattern": "detailOrders/{document}/{layout}",
-					"name": "detailOrders",
-					"target": [
-                        "masterOrders",
-						"detailOrders"
-					]
+                    ]
                 },
                 {
-					"pattern": "masterUsers",
-					"name": "masterUsers",
-					"target": [
+                    "pattern": "detailOrders/{document}/{layout}",
+                    "name": "detailOrders",
+                    "target": [
+                        "masterOrders",
+                        "detailOrders"
+                    ]
+                },
+                {
+                    "pattern": "masterUsers",
+                    "name": "masterUsers",
+                    "target": [
                         "masterUsers",
                         "detailUsers"
-					]
-				},
-				{
-					"pattern": "detailUsers/{user}/{supplier}/{layout}",
-					"name": "detailUsers",
-					"target": [
-                        "masterUsers",
-						"detailUsers"
-					]
+                    ]
                 },
                 {
-					"pattern": "historyUsers/{user}/{supplier}/{layout}",
-					"name": "historyUsers",
-					"target": [
+                    "pattern": "detailUsers/{user}/{supplier}/{layout}",
+                    "name": "detailUsers",
+                    "target": [
+                        "masterUsers",
+                        "detailUsers"
+                    ]
+                },
+                {
+                    "pattern": "historyUsers/{user}/{supplier}/{layout}",
+                    "name": "historyUsers",
+                    "target": [
                         "masterUsers",
                         "detailUsers",
                         "historyUsers"
-					]
+                    ]
                 },
                 {
-					"pattern": "masterPayPlan",
-					"name": "masterPayPlan",
-					"target": [
+                    "pattern": "masterPayPlan",
+                    "name": "masterPayPlan",
+                    "target": [
                         "masterPayPlan",
                         "detailPayPlan"
-					]
-				},
-				{
-					"pattern": "detailPayPlan/{document}/{laufd}/{laufi}/{zbukr}/{lifnr}/{layout}",
-					"name": "detailPayPlan",
-					"target": [
+                    ]
+                },
+                {
+                    "pattern": "detailPayPlan/{document}/{laufd}/{laufi}/{zbukr}/{lifnr}/{layout}",
+                    "name": "detailPayPlan",
+                    "target": [
                         "masterPayPlan",
-						"detailPayPlan"
-					]
+                        "detailPayPlan"
+                    ]
                 },
                 {
                     "name": "Logout",
@@ -377,29 +376,37 @@
                     ]
                 },
                 {
-					"pattern": "masterCompl",
-					"name": "masterCompl",
-					"target": [
+                    "pattern": "masterCompl",
+                    "name": "masterCompl",
+                    "target": [
                         "masterCompl",
                         "detailCompl"
-					]
-				},
+                    ]
+                },
                 {
-					"pattern": "masterFactoring",
-					"name": "masterFactoring",
-					"target": [
+                    "pattern": "masterFactoring",
+                    "name": "masterFactoring",
+                    "target": [
                         "masterFactoring",
                         "detailFactoring"
-					]
-				},
-				{
-					"pattern": "detailCompl/{document}/{layout}",
-					"name": "detailCompl",
+                    ]
+                },
+                {
+                    "pattern": "detailCompl/{document}/{layout}",
+                    "name": "detailCompl",
+                    "target": [
+                        "masterCompl",
+                        "detailCompl"
+                    ]
+                },
+                {
+					"pattern": "detailCompl2",
+					"name": "detailCompl2",
 					"target": [
                         "masterCompl",
-						"detailCompl"
+						"detailCompl2"
 					]
-				},
+	  		},
                 {
                     "pattern": "detailComplPagos/{document}/{layout}/{sociedad}/{ejercicio}/{fecha}",
                     "name": "detailComplPagos",
@@ -448,11 +455,10 @@
                     "name": "detailAcuerdosAS",
                     "target": [
                         "EstadoCuenta",
-                         "detailAcuerdosAS"
+                        "detailAcuerdosAS"
                     ]
                 },
                 {
-
                     "pattern": "detailDetailAcuEC/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{tda}",
                     "name": "detailDetailAcuEC",
                     "target": [
@@ -481,11 +487,9 @@
                     "pattern": "detailAcuerdosFactoraje/{layout}/{document}/{sociedad}/{ejercicio}/{doc}",
                     "name": "detailAcuerdosFactoraje",
                     "target": [
-
                         "masterFactoring",
                         "detailFactoring",
                         "detailAcuerdosFactoraje"
-
                     ]
                 },
                 {
@@ -493,7 +497,7 @@
                     "name": "EstadoCuentaReporte",
                     "target": [
                         "EstadoCuenta",
-                         "EstadoCuentaReporte"
+                        "EstadoCuentaReporte"
                     ]
                 },
                 {
@@ -510,7 +514,7 @@
                     "name": "detailAportacionesAS",
                     "target": [
                         "EstadoCuenta",
-                         "detailAportacionesAccount"
+                        "detailAportacionesAccount"
                     ]
                 },
                 {
@@ -540,14 +544,16 @@
                     "name": "masterFacSoriana",
                     "pattern": "masterFacSoriana",
                     "target": [
-                        "masterFacSoriana" , "detailFacSoriana"
+                        "masterFacSoriana",
+                        "detailFacSoriana"
                     ]
                 },
                 {
                     "name": "detailFacSoriana",
                     "pattern": "detailFacSoriana/{layout}/{document}/{budat}/{zconfact}/{lifnr}/{bukrs}",
                     "target": [
-                        "masterFacSoriana" , "detailFacSoriana"
+                        "masterFacSoriana",
+                        "detailFacSoriana"
                     ]
                 },
                 {
@@ -561,29 +567,33 @@
                     "name": "masterDevoluciones",
                     "pattern": "masterDevoluciones",
                     "target": [
-                        "masterDevoluciones" , "detailDevo"
+                        "masterDevoluciones",
+                        "detailDevo"
                     ]
                 },
                 {
                     "name": "detailDevo",
                     "pattern": "detailDevo/{layout}/{xblnr}/{lifnr}/{ebeln}",
                     "target": [
-                        "masterDevoluciones" , "detailDevo"
+                        "masterDevoluciones",
+                        "detailDevo"
                     ]
                 },
                 {
                     "name": "detailDevoEstadoCuenta",
                     "pattern": "detailDevoEstadoCuenta/{layout}/{xblnr}/{lifnr}/{ebeln}/{suc}",
                     "target": [
-                        "EstadoCuenta" , "detailDevoEstadoC"
+                        "EstadoCuenta",
+                        "detailDevoEstadoC"
                     ]
                 },
                 {
                     "name": "detailDevoComplemento",
-                    "pattern": "detailDevoComplemento/{layout}/{xblnr}/{lifnr}/{ebeln}",
+                    "pattern": "detailDevoComplemento/{layout}/{xblnr}/{lifnr}/{ebeln}/{suc}",
                     "target": [
                         "masterCompl",
-                        "detailComplPagos" , "detailDevoComplemento"
+                        "detailComplPagos",
+                        "detailDevoComplemento"
                     ]
                 },
                 {
@@ -591,7 +601,8 @@
                     "pattern": "detailDevoFactoraje/{layout}/{xblnr}/{lifnr}/{ebeln}",
                     "target": [
                         "masterFactoring",
-                        "detailFactoring" , "detailDevoFactoraje"
+                        "detailFactoring",
+                        "detailDevoFactoraje"
                     ]
                 },
                 {
@@ -640,19 +651,19 @@
                     ]
                 },
                 {
-					"pattern": "detailAportaciones/{layout}/{folio}/{concepto}/{gerencia}/{importe}",
-					"name": "detailAportaciones",
-					"target": [
+                    "pattern": "detailAportaciones/{layout}/{folio}/{concepto}/{gerencia}/{importe}",
+                    "name": "detailAportaciones",
+                    "target": [
                         "masterAportaciones",
-						"detailAportaciones"
-					]
-				},
+                        "detailAportaciones"
+                    ]
+                },
                 {
                     "pattern": "detailDetailAporta/{layout}/{folio}/{concepto}/{gerencia}/{importe}",
                     "name": "detailDetailAporta",
                     "target": [
                         "masterAportaciones",
-						"detailAportaciones",
+                        "detailAportaciones",
                         "detailDetailAporta"
                     ]
                 },
@@ -687,10 +698,31 @@
                     ]
                 },
                 {
+                    "name": "masterAcuerdosGral",
+                    "pattern": "masterAcuerdosGral",
+                    "target": [
+                        "masterAcuerdosGral"
+                    ]
+                },
+                {
+                    "name": "masterAcuerdosNser",
+                    "pattern": "masterAcuerdosNser",
+                    "target": [
+                        "masterAcuerdosNser"
+                    ]
+                },
+                {
                     "name": "Products",
                     "pattern": "Products",
                     "target": [
                         "Products"
+                    ]
+                },
+                {
+                    "name": "CatalogProducts",
+                    "pattern": "CatalogProducts",
+                    "target": [
+                        "CatalogProducts"
                     ]
                 },
                 {
@@ -718,7 +750,6 @@
                     ]
                 },
                 {
-
                     "name": "detailVisorNotas",
                     "pattern": "detailVisorNotas/{layout}/{Mblnr}/{Mjahr}/{Ebeln}/{Lifnr}/{BudatMkpf}/{Werks}/{Xblnr}/{XblnrFact}",
                     "target": [
@@ -879,16 +910,16 @@
                 "EstadoCuentaReporte": {
                     "viewType": "XML",
                     "viewName": "DetailReporte",
-                     "controlAggregation": "midColumnPages",
-                     "viewPath": "demo.views.Statement"
-                 },
+                    "controlAggregation": "midColumnPages",
+                    "viewPath": "demo.views.Statement"
+                },
                 "ComplementoReporteMC": {
                     "viewType": "XML",
                     "viewName": "DetailReporte",
                     "controlAggregation": "endColumnPages",
                     "viewPath": "demo.views.Statement"
                 },
-                "masterRelease":{
+                "masterRelease": {
                     "viewName": "Master",
                     "viewPath": "demo.views.MiBandeja.Releases",
                     "controlAggregation": "beginColumnPages"
@@ -907,14 +938,19 @@
                     "viewName": "Master",
                     "viewPath": "demo.views.ComplPago",
                     "controlAggregation": "beginColumnPages"
-				},
+                },
                 "masterFactoring": {
                     "viewName": "Master",
                     "viewPath": "demo.views.Factoraje",
                     "controlAggregation": "beginColumnPages"
-				},
-				"detailCompl": {
+                },
+                "detailCompl": {
                     "viewName": "Detail",
+                    "viewPath": "demo.views.ComplPago",
+                    "controlAggregation": "midColumnPages"
+                },
+                "detailCompl2": {
+                    "viewName": "DetallePago",
                     "viewPath": "demo.views.ComplPago",
                     "controlAggregation": "midColumnPages"
                 },
@@ -932,8 +968,8 @@
                     "viewName": "Master",
                     "viewPath": "demo.views.Detail",
                     "controlAggregation": "beginColumnPages"
-				},
-				"detailCfdi": {
+                },
+                "detailCfdi": {
                     "viewName": "Detail",
                     "viewPath": "demo.views.Detail",
                     "controlAggregation": "midColumnPages"
@@ -943,8 +979,8 @@
                     "viewId": "masterOrders",
                     "viewPath": "demo.views.Orders",
                     "controlAggregation": "beginColumnPages"
-				},
-				"detailOrders": {
+                },
+                "detailOrders": {
                     "viewName": "Detail",
                     "viewPath": "demo.views.Orders",
                     "controlAggregation": "midColumnPages"
@@ -953,13 +989,13 @@
                     "viewName": "Master",
                     "viewPath": "demo.views.Users",
                     "controlAggregation": "beginColumnPages"
-				},
-				"detailUsers": {
+                },
+                "detailUsers": {
                     "viewName": "Detail",
                     "viewPath": "demo.views.Users",
                     "controlAggregation": "midColumnPages"
                 },
-                "masterDelivReview":{
+                "masterDelivReview": {
                     "viewName": "Master",
                     "viewPath": "demo.views.DeliveryReview",
                     "controlAggregation": "beginColumnPages"
@@ -978,8 +1014,8 @@
                     "viewName": "Master",
                     "viewPath": "demo.views.PaymentPlan",
                     "controlAggregation": "beginColumnPages"
-				},
-				"detailPayPlan": {
+                },
+                "detailPayPlan": {
                     "viewName": "Detail",
                     "viewPath": "demo.views.PaymentPlan",
                     "controlAggregation": "midColumnPages"
@@ -989,67 +1025,72 @@
                     "viewPath": "demo.views.Users",
                     "controlAggregation": "beginColumnPages"
                 },
-                "masterFacSoriana" : {
+                "masterFacSoriana": {
                     "viewName": "Master",
                     "viewPath": "demo.views.FacSoriana",
                     "controlAggregation": "beginColumnPages"
                 },
-                "detailFacSoriana" : {
+                "detailFacSoriana": {
                     "viewName": "Detail",
-                    "viewPath": "demo.views.FacSoriana" , "controlAggregation": "midColumnPages"
+                    "viewPath": "demo.views.FacSoriana",
+                    "controlAggregation": "midColumnPages"
                 },
                 "masterHelpDocs": {
                     "viewName": "Master",
                     "viewPath": "demo.views.HelpDocs",
                     "controlAggregation": "beginColumnPages"
                 },
-                "masterDevoluciones" : {
+                "masterDevoluciones": {
                     "viewName": "Master",
                     "viewPath": "demo.views.Devoluciones",
                     "controlAggregation": "beginColumnPages"
                 },
-                "detailDevo" : {
+                "detailDevo": {
                     "viewName": "Detail",
-                    "viewPath": "demo.views.Devoluciones" , "controlAggregation": "midColumnPages"
+                    "viewPath": "demo.views.Devoluciones",
+                    "controlAggregation": "midColumnPages"
                 },
-                "detailDevoEstadoC" : {
+                "detailDevoEstadoC": {
                     "viewName": "Detail",
-                    "viewPath": "demo.views.DevolucionesAlt" , "controlAggregation": "midColumnPages"
+                    "viewPath": "demo.views.DevolucionesAlt",
+                    "controlAggregation": "midColumnPages"
                 },
-                "detailDevoComplemento" : {
+                "detailDevoComplemento": {
                     "viewName": "Detail",
-                    "viewPath": "demo.views.DevolucionesAlt" , "controlAggregation": "endColumnPages"
+                    "viewPath": "demo.views.DevolucionesAlt",
+                    "controlAggregation": "endColumnPages"
                 },
-                "detailDevoFactoraje" : {
+                "detailDevoFactoraje": {
                     "viewName": "Detail",
-                    "viewPath": "demo.views.DevolucionesAlt" , "controlAggregation": "endColumnPages"
+                    "viewPath": "demo.views.DevolucionesAlt",
+                    "controlAggregation": "endColumnPages"
                 },
                 "Dashboard": {
                     "viewName": "Master",
                     "controlAggregation": "beginColumnPages",
                     "viewPath": "demo.views.Dashboard"
                 },
-                "masterRepartidores" : {
+                "masterRepartidores": {
                     "viewName": "Master",
                     "viewPath": "demo.views.Repartidores",
                     "controlAggregation": "beginColumnPages"
                 },
-                "masterRemission" : {
+                "masterRemission": {
                     "viewName": "Master",
                     "viewPath": "demo.views.Remissions",
                     "controlAggregation": "beginColumnPages"
                 },
-                "detailRemission" : {
+                "detailRemission": {
                     "viewName": "Detail",
-                    "viewPath": "demo.views.Remissions" ,
+                    "viewPath": "demo.views.Remissions",
                     "controlAggregation": "midColumnPages"
                 },
-                "masterIncidencias" : {
+                "masterIncidencias": {
                     "viewName": "Master",
                     "viewPath": "demo.views.Incidencias",
                     "controlAggregation": "beginColumnPages"
                 },
-                "masterAportaciones" : {
+                "masterAportaciones": {
                     "viewName": "Master",
                     "viewPath": "demo.views.Aportaciones",
                     "controlAggregation": "beginColumnPages"
@@ -1079,7 +1120,7 @@
                     "viewPath": "demo.views.Aportaciones",
                     "controlAggregation": "endColumnPages"
                 },
-                "masterAcuerdos" : {
+                "masterAcuerdos": {
                     "viewName": "Master",
                     "viewPath": "demo.views.Acuerdos",
                     "controlAggregation": "beginColumnPages"
@@ -1119,7 +1160,7 @@
                     "viewPath": "demo.views.Acuerdos",
                     "controlAggregation": "endColumnPages"
                 },
-                "masterAcuerdosNS" : {
+                "masterAcuerdosNS": {
                     "viewName": "Master",
                     "viewPath": "demo.views.AcuerdosNS",
                     "controlAggregation": "beginColumnPages"
@@ -1129,82 +1170,97 @@
                     "viewPath": "demo.views.AcuerdosNS",
                     "controlAggregation": "midColumnPages"
                 },
+                "masterAcuerdosGral": {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.AcuerdosGral",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "masterAcuerdosNser": {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.AcuerdosNser",
+                    "controlAggregation": "beginColumnPages"
+                },
                 "Products": {
                     "viewName": "Master",
                     "controlAggregation": "beginColumnPages",
                     "viewPath": "demo.views.Products"
+                },
+                "CatalogProducts": {
+                    "viewName": "Master",
+                    "controlAggregation": "beginColumnPages",
+                    "viewPath": "demo.views.CatalogProducts"
                 },
                 "masterQuotes": {
                     "viewName": "Master",
                     "controlAggregation": "beginColumnPages",
                     "viewPath": "demo.views.Quotes"
                 },
-                "detailQuotes" : {
+                "detailQuotes": {
                     "viewName": "Detail",
-                    "viewPath": "demo.views.Quotes" ,
+                    "viewPath": "demo.views.Quotes",
                     "controlAggregation": "midColumnPages"
                 },
-                "masterVisorNotas":{
+                "masterVisorNotas": {
                     "viewName": "Master",
                     "viewPath": "demo.views.VisorNotasEntrada",
                     "controlAggregation": "beginColumnPages"
                 },
-                "detailVisorNotas" : {
+                "detailVisorNotas": {
                     "viewName": "Detail",
-                    "viewPath": "demo.views.VisorNotasEntrada" ,
+                    "viewPath": "demo.views.VisorNotasEntrada",
                     "controlAggregation": "midColumnPages"
                 },
-                "masterBoletinVta" : {
+                "masterBoletinVta": {
                     "viewName": "Master",
                     "viewPath": "demo.views.BoletinVta",
                     "controlAggregation": "beginColumnPages"
                 },
-                "masterBoletinVtaProv" : {
+                "masterBoletinVtaProv": {
                     "viewName": "MasterVendor",
                     "viewPath": "demo.views.BoletinVta",
                     "controlAggregation": "beginColumnPages"
                 },
-                "detailBoletinVta" : {
+                "detailBoletinVta": {
                     "viewName": "Detail",
                     "viewPath": "demo.views.BoletinVta",
                     "controlAggregation": "endColumnPages"
                 },
-                "detailBoletinVtaCentros" : {
+                "detailBoletinVtaCentros": {
                     "viewName": "DetailCentro",
                     "viewPath": "demo.views.BoletinVta",
                     "controlAggregation": "midColumnPages"
                 },
-                "masterBoletinVtaPolizas" : {
+                "masterBoletinVtaPolizas": {
                     "viewName": "Polizas",
                     "viewPath": "demo.views.BoletinVta",
                     "controlAggregation": "beginColumnPages"
                 },
-                "BoletinVtaDetailPolizas" : {
+                "BoletinVtaDetailPolizas": {
                     "viewName": "DetailPolizas",
                     "viewPath": "demo.views.BoletinVta",
                     "controlAggregation": "midColumnPages"
                 },
-                "BoletinVtaDetailPolizasE" : {
+                "BoletinVtaDetailPolizasE": {
                     "viewName": "DetailPolizasE",
                     "viewPath": "demo.views.Statement",
                     "controlAggregation": "midColumnPages"
                 },
-                "BoletinVtaDetailPolizasNivel3" : {
+                "BoletinVtaDetailPolizasNivel3": {
                     "viewName": "DetailPolizas",
                     "viewPath": "demo.views.BoletinVta",
                     "controlAggregation": "endColumnPages"
                 },
-                "detailCargoBoletinVta" : {
+                "detailCargoBoletinVta": {
                     "viewName": "DetailCargo",
                     "viewPath": "demo.views.BoletinVta",
                     "controlAggregation": "midColumnPages"
                 },
-                "detailCargoBoletinVta2" : {
+                "detailCargoBoletinVta2": {
                     "viewName": "DetailCargoE",
                     "viewPath": "demo.views.Statement",
                     "controlAggregation": "midColumnPages"
                 },
-                "detailCargoMatsBoletinVta" : {
+                "detailCargoMatsBoletinVta": {
                     "viewName": "DetailCargoMaterial",
                     "viewPath": "demo.views.BoletinVta",
                     "controlAggregation": "endColumnPages"
@@ -1213,11 +1269,8 @@
                     "viewType": "XML",
                     "viewName": "MasterValidaciones",
                     "controlAggregation": "beginColumnPages",
-                 
-                    "viewPath":  "demo.views.ValidacionCondiciones"
+                    "viewPath": "demo.views.ValidacionCondiciones"
                 }
-                
-              
             }
         },
         "contentDensities": {
