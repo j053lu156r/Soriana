@@ -230,7 +230,7 @@ console.log(TDatos)
 						obj.IdNumTipomov= "65"
 					}
 
-					else if(obj.DescripcionGpo === "" && obj.Agrupacion === "3" ) {
+					else if(obj.DescripcionGpo === "" && obj.Agrupacion === "3"  ) {
 						obj.DescripcionGpo= "RETENCION POR AFORO"
 						obj.IdNumGpo= "AF"
 						obj.DescTipomov= "RETENCION POR AFORO"
@@ -288,6 +288,9 @@ console.log(TDatos)
 
 
 			var groupedMovs = that.groupArrayOfObjects(auxArray, "DescripcionGpo");
+             console.log(groupedMovs)
+
+ 
 			var nestedMovs = []
 
 			var me = this;
@@ -305,16 +308,34 @@ console.log(TDatos)
 					return total
 				}, 0);
 
+if (x==="RETENCION POR AFORO"){
+    if(BUKRS==="5003"){
+        nestedMovs.push({
+            "name": x,
+            "totalRegs": groupedMovs[x].length,
+            "totalDebit": 0,
+            "totalCredit": 0,
+            "cost": that.truncate(cost,2),
+            "positions": groupedMovs[x]
+    
+        })   
+    }
 
-				nestedMovs.push({
-					"name": x,
-					"totalRegs": groupedMovs[x].length,
-					"totalDebit": 0,
-					"totalCredit": 0,
-					"cost": that.truncate(cost,2),
-					"positions": groupedMovs[x]
+}else{
+    nestedMovs.push({
+        "name": x,
+        "totalRegs": groupedMovs[x].length,
+        "totalDebit": 0,
+        "totalCredit": 0,
+        "cost": that.truncate(cost,2),
+        "positions": groupedMovs[x]
 
-				})
+    })
+}
+
+	
+
+			
 
 
 			}
@@ -942,8 +963,8 @@ console.log(TDatos)
 				layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
 				xblnr: results.Foliodescuento,
 				lifnr: Lifnr,
-				ebeln: results.Ebeln || 0
-				// zbukr: docResult.Zbukr,
+				ebeln: results.Ebeln || 0,
+				suc:  results.Sucursal,
 				// lifnr: docResult.Lifnr
 			}, true);
 
