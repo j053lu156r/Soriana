@@ -63,6 +63,25 @@ sap.ui.define([
                         var objResponse = jsonModel.getProperty("/results");
 
                         if (objResponse != null) {
+
+                            var totBase = objResponse.reduce((a, b) => +a + (+b["Base"] || 0), 0);
+                            var totDesct = objResponse.reduce((a, b) => +a + (+b["Desct"] || 0), 0);
+                            var totIva = objResponse.reduce((a, b) => +a + (+b["Iva"] || 0), 0);
+                            var totIeps = objResponse.reduce((a, b) => +a + (+b["Ieps"] || 0), 0);
+                            var totTotca = objResponse.reduce((a, b) => +a + (+b["Totca"] || 0), 0);
+                            //var totTotca = Number(totDesct.toFixed(2)) + Number(totIva.toFixed(2)) + Number(totIeps.toFixed(2));
+
+                            var totalAcuGral = {
+                                "TotBase": Number(totBase.toFixed(2)),
+                                "TotDesct": Number(totDesct.toFixed(2)),
+                                "TotIva": Number(totIva.toFixed(2)),
+                                "TotIeps": Number(totIeps.toFixed(2)),
+                                "TotTotca": Number(totTotca.toFixed(2)),
+                            };
+
+                            parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(totalAcuGral), 
+                                "AcuerdosGralTot");
+
                             parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(objResponse),
                                 "AcuerdosGralHdr");
 
@@ -139,6 +158,12 @@ sap.ui.define([
                     name: texts.getProperty("/acuerdosGral.ieps"),
                     template: {
                         content: "{Ieps}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/acuerdosGral.totCargo"),
+                    template: {
+                        content: "{Totca}"
                     }
                 },
                 {
