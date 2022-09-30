@@ -57,7 +57,9 @@
                             <header>
                                 <Text text="{appTxts>/acuerdosGral.proveedor}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" />
                             </header>
-                            <footer />
+                            <footer>
+                                <Text text="Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </footer>
                         </Column>
                         <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                             <header>
@@ -87,25 +89,71 @@
                             <header>
                                 <Text text="{appTxts>/acuerdosGral.base}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" />
                             </header>
-                            <footer />
+                            <footer>
+                                <ObjectNumber
+                                    number="{
+                                        parts:[{path:'AcuerdosGralTot>/TotBase'},{path:'CurrencyCode'}],
+                                        type: 'sap.ui.model.type.Currency',
+                                        formatOptions: {showMeasure: false}
+                                            }"
+                                    unit="MXN" />
+                            </footer>
                         </Column>
                         <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                             <header>
                                 <Text text="{appTxts>/acuerdosGral.descto}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" />
                             </header>
-                            <footer />
-                        </Column>
-                        <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-                            <header>
-                                <Text text="{appTxts>/acuerdosGral.iva}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" />
-                            </header>
-                            <footer />
+                            <footer>
+                                <ObjectNumber
+                                    number="{
+                                        parts:[{path:'AcuerdosGralTot>/TotDesct'},{path:'CurrencyCode'}],
+                                        type: 'sap.ui.model.type.Currency',
+                                        formatOptions: {showMeasure: false}
+                                            }"
+                                    unit="MXN" />
+                            </footer>
                         </Column>
                         <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                             <header>
                                 <Text text="{appTxts>/acuerdosGral.ieps}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" />
                             </header>
-                            <footer />
+                            <footer>
+                                <ObjectNumber
+                                    number="{
+                                        parts:[{path:'AcuerdosGralTot>/TotIeps'},{path:'CurrencyCode'}],
+                                        type: 'sap.ui.model.type.Currency',
+                                        formatOptions: {showMeasure: false}
+                                            }"
+                                    unit="MXN" />
+                            </footer>
+                        </Column>
+                        <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="{appTxts>/acuerdosGral.iva}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" />
+                            </header>
+                            <footer>
+                                <ObjectNumber
+                                    number="{
+                                        parts:[{path:'AcuerdosGralTot>/TotIva'},{path:'CurrencyCode'}],
+                                        type: 'sap.ui.model.type.Currency',
+                                        formatOptions: {showMeasure: false}
+                                            }"
+                                    unit="MXN" />
+                            </footer>
+                        </Column>
+                        <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="{appTxts>/acuerdosGral.totCargo}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" />
+                            </header>
+                            <footer>
+                                <ObjectNumber
+                                    number="{
+                                        parts:[{path:'AcuerdosGralTot>/TotTotca'},{path:'CurrencyCode'}],
+                                        type: 'sap.ui.model.type.Currency',
+                                        formatOptions: {showMeasure: false}
+                                            }"
+                                    unit="MXN" />
+                            </footer>
                         </Column>
                         <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                             <header>
@@ -151,6 +199,16 @@
                                 <ObjectNumber
                                     emphasized="false"
                                     number="{
+                                        parts:[{path:'AcuerdosGralHdr>Ieps'},{path:'CurrencyCode'}],
+                                        type: 'sap.ui.model.type.Currency',
+                                        formatOptions: {showMeasure: false}
+                                        }"
+                                    unit="MXN"
+                                    state="None"
+                                />
+                                <ObjectNumber
+                                    emphasized="false"
+                                    number="{
                                         parts:[{path:'AcuerdosGralHdr>Iva'},{path:'CurrencyCode'}],
                                         type: 'sap.ui.model.type.Currency',
                                         formatOptions: {showMeasure: false}
@@ -161,7 +219,7 @@
                                 <ObjectNumber
                                     emphasized="false"
                                     number="{
-                                        parts:[{path:'AcuerdosGralHdr>Ieps'},{path:'CurrencyCode'}],
+                                        parts:[{path:'AcuerdosGralHdr>Totca'},{path:'CurrencyCode'}],
                                         type: 'sap.ui.model.type.Currency',
                                         formatOptions: {showMeasure: false}
                                         }"

@@ -63,6 +63,28 @@ sap.ui.define([
                         var objResponse = jsonModel.getProperty("/results");
 
                         if (objResponse != null) {
+
+                            var totCanti = objResponse.reduce((a, b) => +a + (+b["Canti"] || 0), 0);
+                            var totPvmat = objResponse.reduce((a, b) => +a + (+b["Pvmat"] || 0), 0);
+                            var totCumat = objResponse.reduce((a, b) => +a + (+b["Cumat"] || 0), 0);
+                            var totCargo = objResponse.reduce((a, b) => +a + (+b["Cargo"] || 0), 0);
+                            var totIva = objResponse.reduce((a, b) => +a + (+b["Iva"] || 0), 0);
+                            var totIeps = objResponse.reduce((a, b) => +a + (+b["Ieps"] || 0), 0);
+                            var totTotca = objResponse.reduce((a, b) => +a + (+b["Totca"] || 0), 0);
+
+                            var totalAcuNser = {
+                                "TotCanti": Number(totCanti.toFixed(2)),
+                                "TotPvmat": Number(totPvmat.toFixed(2)),
+                                "TotCumat": Number(totCumat.toFixed(2)),
+                                "TotCargo": Number(totCargo.toFixed(2)),
+                                "TotIva": Number(totIva.toFixed(2)),
+                                "TotIeps": Number(totIeps.toFixed(2)),
+                                "TotTotca": Number(totTotca.toFixed(2))
+                            };
+
+                            parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(totalAcuNser), 
+                                "AcuerdosNserTot");
+
                             parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(objResponse),
                                 "AcuerdosNserHdr");
 
