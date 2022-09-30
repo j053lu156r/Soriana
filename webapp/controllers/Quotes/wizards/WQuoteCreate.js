@@ -225,7 +225,7 @@ sap.ui.define([
                 that.getOwnerComponent().setModel(new JSONModel(), "Pedidos");
                 resp.data.results[0].ETOC.results.forEach(oc => {
                     oc.Selected = false;
-                    oc.MengeR = 10;
+                    // oc.MengeR = 10;
                 });
                 that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "Pedidos");
                 // that.paginate("Pedidos", "/ETOC", 1, 0);
@@ -233,6 +233,7 @@ sap.ui.define([
             }).catch(error => {
                 console.error(error);
             });
+
         },
 
         getDetailOrder: function () {
@@ -317,7 +318,7 @@ sap.ui.define([
             let oModel = new JSONModel();
             oModel.setData({
                 platforms: [{
-                    pic: "https://avatars.dicebear.com/api/initials/Anden%201.svg",
+                    // pic: "https://avatars.dicebear.com/api/initials/Anden%201.svg",
                     name: "Anden 1",
                     role: "Primer Anden",
                     appointments: [
@@ -330,34 +331,34 @@ sap.ui.define([
                         // },
                     ],
                 },
-                {
-                    pic: "https://avatars.dicebear.com/api/initials/Anden%202.svg",
-                    name: "Anden 2",
-                    role: "Segundo Anden",
-                    appointments: [
-                        //     {
-                        //     start: dateSelected,
-                        //     end: incrementedDate,
-                        //     title: "Pepsi",
-                        //     info: "Dropping 7up",
-                        //     type: "Type03"
-                        // },
-                    ],
-                },
-                {
-                    pic: "https://avatars.dicebear.com/api/initials/Anden%203.svg",
-                    name: "Anden 3",
-                    role: "Tercer Anden",
-                    appointments: [
-                        //     {
-                        //     start: dateSelected,
-                        //     end: incrementedDate,
-                        //     title: "Topo-Chico",
-                        //     info: "Dropping Aguas Minerales",
-                        //     type: "Type03"
-                        // },
-                    ],
-                }
+                // {
+                //     pic: "https://avatars.dicebear.com/api/initials/Anden%202.svg",
+                //     name: "Anden 2",
+                //     role: "Segundo Anden",
+                //     appointments: [
+                //         //     {
+                //         //     start: dateSelected,
+                //         //     end: incrementedDate,
+                //         //     title: "Pepsi",
+                //         //     info: "Dropping 7up",
+                //         //     type: "Type03"
+                //         // },
+                //     ],
+                // },
+                // {
+                //     pic: "https://avatars.dicebear.com/api/initials/Anden%203.svg",
+                //     name: "Anden 3",
+                //     role: "Tercer Anden",
+                //     appointments: [
+                //         //     {
+                //         //     start: dateSelected,
+                //         //     end: incrementedDate,
+                //         //     title: "Topo-Chico",
+                //         //     info: "Dropping Aguas Minerales",
+                //         //     type: "Type03"
+                //         // },
+                //     ],
+                // }
                 ]
             });
             this.getOwnerComponent().setModel(oModel, "Platforms");
@@ -425,7 +426,7 @@ sap.ui.define([
 
             if (oAppointment) {
                 sSelected = oAppointment.getSelected() ? "selected" : "deselected";
-                MessageBox.show("'" + oAppointment.getTitle() + "' " + sSelected + ". \n Selected appointments: " + this.byId("appoinmentPC").getSelectedAppointments().length);
+                MessageBox.show("'" + oAppointment.getTitle() + "' " + sSelected + ". \n  Cita: " + this.byId("appoinmentPC").getSelectedAppointments().length);
             } else {
                 aAppointments = oEvent.getParameter("appointments");
                 sValue = aAppointments.length + " Appointments selected";
