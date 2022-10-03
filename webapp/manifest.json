@@ -458,6 +458,7 @@
                         "detailAcuerdosAS"
                     ]
                 },
+             
                 {
                     "pattern": "detailDetailAcuEC/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{tda}",
                     "name": "detailDetailAcuEC",
@@ -500,6 +501,15 @@
                         "EstadoCuentaReporte"
                     ]
                 },
+                {
+                    "name": "AcuerdosEC",
+                    "pattern": "AcuerdosEC/{layout}/{document}/{sociedad}",
+                    "target": [
+                        "EstadoCuenta",
+                        "AcuerdosEC"
+                    ]
+                },
+               
                 {
                     "pattern": "ComplementoReporteMC/{layout}/{document}/{proveedor}/:serie:/{fecha}",
                     "name": "ComplementoReporteMC",
@@ -711,6 +721,7 @@
                         "masterAcuerdosNser"
                     ]
                 },
+              
                 {
                     "name": "Products",
                     "pattern": "Products",
@@ -913,6 +924,14 @@
                     "controlAggregation": "midColumnPages",
                     "viewPath": "demo.views.Statement"
                 },
+                "AcuerdosEC": {
+                 
+                    "viewName": "AcuerdosE",
+                    "controlAggregation": "midColumnPages",
+                    "viewPath": "demo.views.Statement"
+                  
+                },
+             
                 "ComplementoReporteMC": {
                     "viewType": "XML",
                     "viewName": "DetailReporte",
@@ -1180,6 +1199,7 @@
                     "viewPath": "demo.views.AcuerdosNser",
                     "controlAggregation": "beginColumnPages"
                 },
+              
                 "Products": {
                     "viewName": "Master",
                     "controlAggregation": "beginColumnPages",
