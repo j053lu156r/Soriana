@@ -485,7 +485,33 @@
                         }
 
                     ]
+                }, {
+                    "id": "0045",
+                    "title": "/tiles.titleCatalogoP",
+                    "subHeader": "",
+                    "icon": "sap-icon://s4hana",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "CatalogProducts",
+                    "functions": [
+
+                        {
+                            "idFunction": 46
+                        },
+                        {
+                            "idFunction": 42
+                        },
+                        {
+                            "idFunction": 43
+                        },
+                        {
+                            "idFunction": 44
+                        }
+
+                    ]
                 }
+
             ]
         },
         {

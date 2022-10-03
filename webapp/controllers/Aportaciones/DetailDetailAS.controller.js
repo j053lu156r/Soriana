@@ -146,7 +146,7 @@ sap.ui.define([
             this._belnr =  oEvent.getParameter("arguments").belnr || this._belnr || "0";
             this._gjahr =  oEvent.getParameter("arguments").gjahr || this._gjahr || "0";
 
-            console.log(_vistaAnteior)
+          
 
 
             var url = "AportaSet?$expand=AportaDet&$filter=IOption eq '1'";;
