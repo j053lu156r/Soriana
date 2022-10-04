@@ -8,6 +8,7 @@ sap.ui.define([
     var oModel = new this.Devoluciones();
     return Controller.extend("demo.controllers.DevolucionesAlt.Detail", {
         onInit: function () {
+            console.log("12")
             var oExitButton = this.getView().byId("exitFullScreenBtn"),
                 oEnterButton = this.getView().byId("enterFullScreenBtn");
 
@@ -15,9 +16,10 @@ sap.ui.define([
             this.oModel = this.getOwnerComponent().getModel();
 
           //  this.oRouter.getRoute("_detailDevo").attachPatternMatched(this._onDocumentMatched, this);
+          this.oRouter.getRoute("detailDevoFactoraje").attachPatternMatched(this._onDocumentMatchedFactoraje, this);
             this.oRouter.getRoute("detailDevoEstadoCuenta").attachPatternMatched(this._onDocumentMatchedEstadoC, this);
             this.oRouter.getRoute("detailDevoComplemento").attachPatternMatched(this._onDocumentMatchedComplemento, this);
-            this.oRouter.getRoute("detailDevoFactoraje").attachPatternMatched(this._onDocumentMatchedFactoraje, this);
+          
 
 
 
@@ -59,24 +61,39 @@ sap.ui.define([
             this._oDialog.setModel(new JSONModel(objModel));
             this._oDialog.open();
         },
-        handleFullScreen: function () {
-            this.bFocusFullScreenButton = true;
-            var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
-            this.oRouter.navTo("detailDevo",
-                {
-                    layout: sNextLayout,
-                    xblnr: this._Xblnr,
-                    lifnr: this._lifnr,
-                    ebeln: this._Ebeln,
-                }
-            );
-        },
-        handleExitFullScreen: function () {
+    	handleFullScreen: function () {
+			var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(3);
+			this.bFocusFullScreenButton = true;
+            console.log(this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen"))
+			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
+			this.oRouter.navTo("detailDevo", {
+				layout: sap.f.LayoutType.EndColumnFullScreen,//sNextLayout,
+                xblnr: this._Xblnr,
+                lifnr: this._lifnr,
+                ebeln: this._Ebeln,
+                suc: this._Suc,
+			});
+		},
+
+
+
+		handleExitFullScreen: function () {
+			this.bFocusFullScreenButton = true;
+			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
+			this.oRouter.navTo("detailDevo", {
+				layout: sap.f.LayoutType.ThreeColumnsMidExpandedEndHidden,//sNextLayout,
+                xblnr: this._Xblnr,
+                lifnr: this._lifnr,
+                ebeln: this._Ebeln,
+                suc: this._Suc,
+			});
+		},
+      /*  handleExitFullScreen: function () {
             this.bFocusFullScreenButton = true;
             var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
 
 
-
+console.log(this.parent)
             if(this.parent == "ESTADOC"){
                 this.oRouter.navTo("detailDevoEstadoCuenta",
                     {
@@ -106,6 +123,7 @@ sap.ui.define([
                         xblnr: this._Xblnr,
                         lifnr: this._lifnr,
                         ebeln: this._Ebeln,
+                        suc: this._Suc,
                     }
                 );
 
@@ -115,7 +133,7 @@ sap.ui.define([
 
 
 
-        },
+        },*/
         handleClose: function () {
             console.log(this.parent)
             if(this.parent == "ESTADOC") {
@@ -125,6 +143,13 @@ sap.ui.define([
             if(this.parent == "COMPLEMENTO") {
                 var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
                 this.oRouter.navTo("detailCompl2", {layout: sNextLayout});
+               
+            }
+            
+            if(this.parent == "FACTORAJE") {
+                var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
+               this.oRouter.navTo("masterFactoring", {layout: sNextLayout});
+              
                
             }
         },
@@ -155,6 +180,7 @@ sap.ui.define([
         },
 
         _onDocumentMatchedEstadoC: function (oEvent) {
+            console.log("3")
             this.parent = "ESTADOC"
             this._Xblnr = oEvent.getParameter("arguments").xblnr || this._Xblnr || "0",
                 this._lifnr = oEvent.getParameter("arguments").lifnr || this._lifnr || "0";
@@ -184,6 +210,7 @@ sap.ui.define([
             console.log(dueModel);
         },
         _onDocumentMatchedComplemento: function (oEvent) {
+           
             this.parent = "COMPLEMENTO"
             this._Xblnr = oEvent.getParameter("arguments").xblnr || this._Xblnr || "0",
                 this._lifnr = oEvent.getParameter("arguments").lifnr || this._lifnr || "0";
@@ -194,27 +221,89 @@ sap.ui.define([
                 "Xblnr": this._Xblnr,
                 "Werks": this._Werks
             };
-
+            sap.ui.core.BusyIndicator.show();
             this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "headerDetail");
             console.log("4")
-            var url = "/HrdReturnsSet?$expand=ETDTDEVNAV,ETFDEVNAV,ITDFAGR&$filter= IOption eq '3' and IEbeln eq '" + this._Ebeln + "'"
+            var that=this;
+          var auxFilters=[];
+                auxFilters.push(new sap.ui.model.Filter({
+                    path: "IOption",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1:"3"
+                })
+                )
+                auxFilters.push(new sap.ui.model.Filter({
+                    path: "IEbeln",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1:that._Ebeln
+                })
+                )
+                auxFilters.push(new sap.ui.model.Filter({
+                    path: "IXblnr",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1:parseInt(that._Xblnr)
+                })
+                )
+                auxFilters.push(new sap.ui.model.Filter({
+                    path: "ILifnr",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1:that.getConfigModel().getProperty("/supplierInputKey")
+                })
+                )
+                auxFilters.push(new sap.ui.model.Filter({
+                    path: "IWerks",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1:that._Suc
+                })
+                )
+           
+
+
+
+            var model = "ZOSP_RETURNS_SRV";
+            var entity = "HrdReturnsSet";
+            var expand = ['ETDTDEVNAV','ETFDEVNAV','ITDFAGR'];
+            var filter = auxFilters;
+            var select = "";
+            sap.ui.core.BusyIndicator.hide();
+           sap.ui.core.BusyIndicator.show();
+           that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
+                sap.ui.core.BusyIndicator.hide();
+
+                var data = _GEToDataV2Response.data;
+                console.log(data)
+               // var dueModel = oModel.getJsonModel(data);
+                var ojbResponse = data.results[0];
+                that.getOwnerComponent().setModel(new JSONModel(ojbResponse),
+                    "devoDetail");
+    
+                    that.paginate("devoDetail", "/ETDTDEVNAV", 1, 0);
+               
+
+
+            });
+            
+            
+          /*  var url = "/HrdReturnsSet?$expand=ETDTDEVNAV,ETFDEVNAV,ITDFAGR&$filter= IOption eq '3' and IEbeln eq '" + this._Ebeln + "'"
                 + " and IXblnr eq '" + parseInt(this._Xblnr) + "' and ILifnr eq '"+this.getConfigModel().getProperty("/supplierInputKey")+ "' and IWerks eq '"+this._Suc+ "'"
 
 
             var dueModel = oModel.getJsonModel(url);
+            console.log(dueModel);
+            sap.ui.core.BusyIndicator.hide();
             var ojbResponse = dueModel.getProperty("/results/0");
             this.getOwnerComponent().setModel(new JSONModel(ojbResponse),
                 "devoDetail");
 
             this.paginate("devoDetail", "/ETDTDEVNAV", 1, 0);
-            console.log(dueModel);
+            console.log(dueModel);*/
         },
         _onDocumentMatchedFactoraje: function (oEvent) {
             this.parent = "FACTORAJE"
             this._Xblnr = oEvent.getParameter("arguments").xblnr || this._Xblnr || "0",
                 this._lifnr = oEvent.getParameter("arguments").lifnr || this._lifnr || "0";
             this._Ebeln = oEvent.getParameter("arguments").ebeln || this._Ebeln || "0";
-
+            this._Suc = oEvent.getParameter("arguments").suc || this._Suc || "0";
             var headerDeatil = {
                 "Xblnr": this._Xblnr,
                 "Werks": this._Werks
@@ -223,7 +312,7 @@ sap.ui.define([
             this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "headerDetail");
 console.log("1")
             var url = "/HrdReturnsSet?$expand=ETDTDEVNAV,ETFDEVNAV,ITDFAGR&$filter= IOption eq '3' and IEbeln eq '" + this._Ebeln + "'"
-                + " and IXblnr eq '" +parseInt(this._Xblnr) + "'"
+                + " and IXblnr eq '" +parseInt(this._Xblnr)  + "' and ILifnr eq '"+this.getConfigModel().getProperty("/supplierInputKey")+ "' and IWerks eq '"+this._Suc+ "'"
 
 
             var dueModel = oModel.getJsonModel(url);

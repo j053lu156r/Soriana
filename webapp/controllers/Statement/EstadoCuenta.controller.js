@@ -1417,7 +1417,7 @@ this.getOwnerComponent().getRouter().navTo("AcuerdosE",    {
            console.log(sociedad)
            console.log(doc)
             this.getOwnerComponent().getRouter().navTo("AcuerdosEC", {
-                layout: sap.f.LayoutType.MidColumnFullScreen,
+                layout: sap.f.LayoutType.TwoColumnsMidExpanded,
                 document: doc,
                 sociedad: sociedad
       

@@ -199,6 +199,21 @@
                               <Text text="{ECuentaAcl>Cargo }" wrapping="false"/>
                              </t:template>
                         </t:Column>
+                          <t:Column width="auto" id="idIeps" visible="true" sortProperty="Ieps" filterProperty="Ieps">
+                            <Label text="{appTxts>/stateA.ieps}" />
+                            <t:template>
+                               <ObjectNumber
+                                    emphasized="false"
+                                    number="{
+                                        parts:[{path:'ECuentaAcl>Ieps'},{path:'CurrencyCode'}],
+                                        type: 'sap.ui.model.type.Currency',
+                                        formatOptions: {showMeasure: false}
+                                        }"
+                                    unit="MXN"
+                                    state="None"
+                                />
+                            </t:template>
+                        </t:Column>
                         <t:Column width="auto" id="idIva" visible="true" sortProperty="Iva" >
                             <Label text="{appTxts>/stateA.iva}" />
                             <t:template>
@@ -215,21 +230,7 @@
                             
                                </t:template>
                         </t:Column>
-                        <t:Column width="auto" id="idIeps" visible="true" sortProperty="Ieps" filterProperty="Ieps">
-                            <Label text="{appTxts>/stateA.ieps}" />
-                            <t:template>
-                               <ObjectNumber
-                                    emphasized="false"
-                                    number="{
-                                        parts:[{path:'ECuentaAcl>Ieps'},{path:'CurrencyCode'}],
-                                        type: 'sap.ui.model.type.Currency',
-                                        formatOptions: {showMeasure: false}
-                                        }"
-                                    unit="MXN"
-                                    state="None"
-                                />
-                            </t:template>
-                        </t:Column>
+                      
                          <t:Column width="auto" id="idPrdes" visible="true" sortProperty="Prdes" filterProperty="Prdes">
                             <Label text="{appTxts>/stateA.pDescto}" />
                             <t:template>

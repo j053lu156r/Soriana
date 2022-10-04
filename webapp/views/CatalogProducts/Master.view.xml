@@ -56,9 +56,10 @@
                                 label                = "{appTxts>/products.supplier}" 
                                 labelTooltip         = "Tooltip Example" 
                                 partOfCurrentVariant = "true" 
-                                visibleInFilterBar   = "true">
+                                visibleInFilterBar   = "true"
+                               >
                                 <fb:control>
-                                    <Input id="supplierInput" placeholder="{appTxts>/products.supplier}" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}">
+                                    <Input id="supplierInput" placeholder="{appTxts>/products.supplier}"  showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}">
                                     </Input>
                                 </fb:control>
                             </fb:FilterGroupItem>
@@ -94,7 +95,7 @@
 					<ff:formElements>
 						<ff:FormElement label="">
 							<ff:fields>
-									<ComboBox	items="{path: 'Division>/'}" id="FDivision">
+									<ComboBox	items="{path: 'Division>/'}" id="FDivision" 	loadItems="SearchDivision">
 				<core:Item key="{Division>Node}" text="{Division>Ltext}" />
 			</ComboBox>
 							</ff:fields>
@@ -106,7 +107,7 @@
 						<ff:FormElement label="">
 							<ff:fields>
 								<ComboBox items="{path: 'Tienda>/'}" id="Ftienda">
-				<core:Item key="{Tienda>Werks}" text="{Tienda>Name1}" />
+				<core:Item key="{Tienda>Ekorg}" text="{Tienda>Ekotx}" />
 			</ComboBox>
 							</ff:fields>
 						</ff:FormElement>

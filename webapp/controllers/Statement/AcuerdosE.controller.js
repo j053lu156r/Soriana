@@ -72,7 +72,7 @@ for(var x =0;x<data.length;x++){
                     that.getView().byId("idPvmat").setVisible(false)
                     that.getView().byId("Cumat").setVisible(false)
                     that.getView().byId("idCargo").setVisible(false)
-                    that.getView().byId("idTotca").setVisible(false)
+                    //that.getView().byId("idTotca").setVisible(false)
 
 
 
@@ -328,13 +328,6 @@ for(var x =0;x<data.length;x++){
                 property: 'Cargo'
             });
         }
-        if (that.getView().byId("idIva").getVisible()) {
-            aCols.push({
-                label: texts.getProperty("/reporte.iva"),
-                type: EdmType.Number,
-                property: 'Iva'
-            });
-        }
         if (that.getView().byId("idIeps").getVisible()) {
             aCols.push({
                 label: texts.getProperty("/stateA.ieps"),
@@ -342,6 +335,14 @@ for(var x =0;x<data.length;x++){
                 property: 'Ieps'
             });
         }
+        if (that.getView().byId("idIva").getVisible()) {
+            aCols.push({
+                label: texts.getProperty("/reporte.iva"),
+                type: EdmType.Number,
+                property: 'Iva'
+            });
+        }
+      
         if (that.getView().byId("idPrdes").getVisible()) {
             aCols.push({
                 label: texts.getProperty("/stateA.pDescto"),
@@ -388,12 +389,20 @@ for(var x =0;x<data.length;x++){
             var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(2);
             this.bFocusFullScreenButton = true;
             var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
-            this.oRouter.navTo("EstadoCuenta", {
+            this.getOwnerComponent().getRouter().navTo("AcuerdosEC", {
+                layout: sNextLayout,
+                document: this._document,
+                sociedad: this.sociedad,
+      
+            }, true);
+        
+          
+         /*   this.oRouter.navTo("EstadoCuenta", {
                 layout: sNextLayout,
                 document: this._document,
                 sociedad: this.sociedad,
 
-            });
+            });*/
         },
         handleExitFullScreen: function () {
             this.bFocusFullScreenButton = true;

@@ -583,7 +583,7 @@
                 },
                 {
                     "name": "detailDevo",
-                    "pattern": "detailDevo/{layout}/{xblnr}/{lifnr}/{ebeln}",
+                    "pattern": "detailDevo/{layout}/{xblnr}/{lifnr}/{ebeln}/{suc}",
                     "target": [
                         "masterDevoluciones",
                         "detailDevo"
@@ -608,7 +608,7 @@
                 },
                 {
                     "name": "detailDevoFactoraje",
-                    "pattern": "detailDevoFactoraje/{layout}/{xblnr}/{lifnr}/{ebeln}",
+                    "pattern": "detailDevoFactoraje/{layout}/{xblnr}/{lifnr}/{ebeln}/{suc}",
                     "target": [
                         "masterFactoring",
                         "detailFactoring",
