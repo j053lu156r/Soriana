@@ -18,16 +18,23 @@ sap.ui.define([
     return BaseController.extend("demo.controllers.CatalogProducts.Master", {
 
         onInit: function () {
-
-            this.SearchDivision();
-            this.SearchFTienda()
-            this.SearchTSurtido();
+           
+           //
+          
         },
         //http://azdevgtwsq01.soriana.com:8000/sap/opu/odata/sap/ZOSP_MMPI_MATNR_LIST_SRV/$metadata
         //ZOSP_MMPI_MATNR_LIST_SRV/LIFNR_MATNR_LIST?$filter=Vendor eq '116467' 
 
 
-
+        onAfterRendering(){
+            var Model = this.getView().getModel("configSite").getData();
+            console.log(Model.supplierInputKey)
+            if(Model.supplierInputKey!==undefined){
+                this.SearchDivision();
+            }
+            this.SearchFTienda()
+            this.SearchTSurtido();
+        },
 
         searchData: function () {
 
@@ -75,7 +82,7 @@ sap.ui.define([
             }
             if (that.getView().byId("Ftienda").getSelectedKey() !== "") {
                 auxFilters.push(new sap.ui.model.Filter({
-                    path: "Werks",
+                    path: "EkorgT001w",
                     operator: sap.ui.model.FilterOperator.EQ,
                     value1: that.getView().byId("Ftienda").getSelectedKey()
                 })
@@ -120,30 +127,47 @@ sap.ui.define([
 
 
         },
+       
 
         SearchDivision: function () {
             var that = this;
-            var model = "ZOSP_MMPI_MATNR_LIST_SRV";
-            var entity = "DIV_MATGRP_LIST";
-            var expand = "";
-            var filter = "";
-            var select = "";
+            var Model = that.getView().getModel("configSite").getData();
+         
+           
+                var auxFilters=[];
+                auxFilters.push(new sap.ui.model.Filter({
+                    path: "Vendor",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: Model.supplierInputKey.toString()
+                })
+                )
+    
+    
+                var model = "ZOSP_MMPI_MATNR_LIST_SRV";
+                var entity = "DIV_MATGRP_LIST";
+                var expand = "";
+                var filter =auxFilters;
+                var select = "";
+    
+               
+                sap.ui.core.BusyIndicator.show();
+                that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
+                    sap.ui.core.BusyIndicator.hide();
+    
+                    var data = _GEToDataV2Response.data.results;
+    console.log(data)
+                    const cmModel = new sap.ui.model.json.JSONModel(data);
+                    that.getView().setModel(cmModel, "Division");
+    
+                });
+            
+           
 
-            sap.ui.core.BusyIndicator.show();
-            that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
-                sap.ui.core.BusyIndicator.hide();
-
-                var data = _GEToDataV2Response.data.results;
-
-                const cmModel = new sap.ui.model.json.JSONModel(data);
-                that.getView().setModel(cmModel, "Division");
-
-            });
         },
         SearchFTienda: function () {
             var that = this;
             var model = "ZOSP_MMPI_MATNR_LIST_SRV";
-            var entity = "WERKS_LIST";
+            var entity = "EKORG_LIST";
             var expand = "";
             var filter = "";
             var select = "";
@@ -153,7 +177,7 @@ sap.ui.define([
                 sap.ui.core.BusyIndicator.hide();
 
                 var data = _GEToDataV2Response.data.results;
-
+console.log(data)
                 const cmModel = new sap.ui.model.json.JSONModel(data);
                 that.getView().setModel(cmModel, "Tienda");
 
