@@ -1,10 +1,13 @@
 sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "demo/controllers/BaseController",
-    "sap/ui/core/mvc/Controller"
-], function (JSONModel, Controller) {
-    "use strict";
+    //"sap/ui/core/mvc/Controller",
+    "sap/ui/export/library",
+    "sap/ui/export/Spreadsheet"
 
+], function (JSONModel, Controller, exportLibrary, Spreadsheet) {
+    "use strict";
+    var EdmType = exportLibrary.EdmType;
     var oModel = new this.Devoluciones();
     return Controller.extend("demo.controllers.DevolucionesAlt.Detail", {
         onInit: function () {
@@ -334,6 +337,11 @@ console.log("1")
         onExit: function () {
             this.onCloseDialog();
         },
+        
+        /*04/10*/ 
+
+      
+
         buildExcel: function () {
             var texts = this.getOwnerComponent().getModel("appTxts");
             let Encabezado = this.getOwnerComponent().getModel("devoDetail");
@@ -414,7 +422,7 @@ console.log("1")
                 {
                     name: texts.getProperty("/devo.codigo"),
                     template: {
-                        content: "{Ean11}"
+                        content: "'{Ean11}"
                     }
                 },
                 {

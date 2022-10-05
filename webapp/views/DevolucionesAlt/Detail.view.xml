@@ -95,7 +95,7 @@
                         <ObjectPageSubSection>
                             <blocks>
                             <m:VBox>
-                                <m:Table items="{path : 'devoDetail>/ETDTDEVNAV/Paginated/results' , sorter : { path : 'Xblnr', ascending : true }}">
+                                <m:Table  id="TableDetails" items="{path : 'devoDetail>/ETDTDEVNAV/Paginated/results' , sorter : { path : 'Xblnr', ascending : true }}">
                                         <m:headerToolbar>
                                             <m:OverflowToolbar>
                                                 <!--<m:Title text="{appTxts>/order.positions}" /> -->
