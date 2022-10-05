@@ -217,7 +217,7 @@ sap.ui.define([
 
             oSaveData.create("/promFilesSet", promFile, null, function () {
 
-				promData[currentRow].Status = "1";
+				promData[currentRow].Status = "2";
                 var oPromModel = new sap.ui.model.json.JSONModel();
 				oPromModel.setData(promData);
 				that.getOwnerComponent().setModel(oPromModel, "promocionesHdr");
