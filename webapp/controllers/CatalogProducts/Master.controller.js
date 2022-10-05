@@ -441,110 +441,110 @@ console.log(data)
                 }
             };
             var Exc17 = {
-                name: texts.getProperty("/CatagProd.Exc18"),
+                name: texts.getProperty("/CatagProd.Exc17"),
                 template: {
                     content: "{KbetrDto1}"
                 }
             };
             var Exc18 = {
-                name: texts.getProperty("/CatagProd.Exc19"),
+                name: texts.getProperty("/CatagProd.Exc18"),
                 template: {
                     content: "{KbetrDto2}"
                 }
             };
             var Exc19 = {
-                name: texts.getProperty("/CatagProd.Exc20"),
+                name: texts.getProperty("/CatagProd.Exc19"),
                 template: {
                     content: "{KbetrDto3}"
                 }
             };
             var Exc20 = {
-                name: texts.getProperty("/CatagProd.Exc21"),
+                name: texts.getProperty("/CatagProd.Exc20"),
                 template: {
                     content: "{KbetrDto4}"
                 }
             };
             var Exc21 = {
-                name: texts.getProperty("/CatagProd.Exc22"),
+                name: texts.getProperty("/CatagProd.Exc21"),
                 template: {
                     content: "{KbetrDtoad}"
                 }
             };
             var Exc22 = {
-                name: texts.getProperty("/CatagProd.Exc23"),
+                name: texts.getProperty("/CatagProd.Exc22"),
                 template: {
                     content: "{Bonificacion}"
                 }
             };
             var Exc23 = {
-                name: texts.getProperty("/CatagProd.Exc24"),
+                name: texts.getProperty("/CatagProd.Exc23"),
                 template: {
                     content: "{KbetrCargo}"
                 }
             };
             var Exc24 = {
-                name: texts.getProperty("/CatagProd.Exc25"),
+                name: texts.getProperty("/CatagProd.Exc24"),
                 template: {
                     content: "{Netpr}"
                 }
             };
             var Exc25 = {
-                name: texts.getProperty("/CatagProd.Exc6"),
+                name: texts.getProperty("/CatagProd.Exc25"),
                 template: {
                     content: "{Umrez}"
                 }
             };
             var Exc26 = {
-                name: texts.getProperty("/CatagProd.Exc27"),
+                name: texts.getProperty("/CatagProd.Exc26"),
                 template: {
                     content: "{Meins}"
                 }
             };
             var Exc27 = {
-                name: texts.getProperty("/CatagProd.Exc28"),
+                name: texts.getProperty("/CatagProd.Exc27"),
                 template: {
                     content: "'{Ean11Codemp}"
                 }
             };
             var Exc28 = {
-                name: texts.getProperty("/CatagProd.Exc29"),
+                name: texts.getProperty("/CatagProd.Exc28"),
                 template: {
                     content: "{KbetrCtoUni}"
                 }
             };
             var Exc29 = {
-                name: texts.getProperty("/CatagProd.Exc30"),
+                name: texts.getProperty("/CatagProd.Exc29"),
                 template: {
                     content: "{Zterm}"
                 }
             };
             var Exc30 = {
-                name: texts.getProperty("/CatagProd.Exc31"),
+                name: texts.getProperty("/CatagProd.Exc30"),
                 template: {
                     content: "{Text1}"
                 }
             };
             var Exc31 = {
-                name: texts.getProperty("/CatagProd.Exc32"),
+                name: texts.getProperty("/CatagProd.Exc31"),
                 template: {
                     content: "{Dismm}"
                 }
             };
             var Exc32 = {
-                name: texts.getProperty("/CatagProd.Exc33"),
+                name: texts.getProperty("/CatagProd.Exc32"),
                 template: {
                     content: "{Dibez}"
                 }
             };
             var Exc33 = {
-                name: texts.getProperty("/CatagProd.Exc34"),
+                name: texts.getProperty("/CatagProd.Exc33"),
                 template: {
                     content: "{Bwscl}"
                 }
             };
             
             var Exc34 = {
-                name: texts.getProperty("/CatagProd.Exc35"),
+                name: texts.getProperty("/CatagProd.Exc34"),
                 template: {
                     content: "{BwsclDesc}"
                 }
@@ -556,7 +556,7 @@ console.log(data)
             var oExport = new Export({
 
                 exportType: new ExportTypeCSV({
-                    fileExtension: "txt",
+                    fileExtension: "csv",
                     separatorChar: ";"
                 }),
 
