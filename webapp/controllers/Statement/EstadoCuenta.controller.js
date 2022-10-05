@@ -1387,7 +1387,7 @@ sap.ui.define([
                    
                     MessageToast.show("Sin detalle");
                 }
-            } else if ( tcode === '') {
+            } else if ( tcode === 'ZMM_ACUERDOS_LIQUI') {
                 console.log('on boletin vtz')
 
                 // navega a pantalla de boltines * revisar condiciones de apertura , conseguir esenarios
@@ -1403,17 +1403,7 @@ sap.ui.define([
 
             } else if (tcode === 'ZFI_INVLOAD') {
 console.log("HolaJuan")
-/*this.bFocusFullScreenButton = true;
-//var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
-console.log("HolaJuan")
-this.getOwnerComponent().getRouter().navTo("AcuerdosE",    {
-        layout: sap.f.LayoutType.MidColumnFullScreen,//sNextLayout,
-        sociedad: sociedad,
-        documento: doc
-    }, false);
-    console.log("HolaJuan")
-            
-            */
+
            console.log(sociedad)
            console.log(doc)
             this.getOwnerComponent().getRouter().navTo("AcuerdosEC", {
