@@ -117,6 +117,11 @@ sap.ui.define([
                     //  that.buildExportpiechart()
                  
                     that.DescargarLog();
+
+                    that.getView().byId("FDivision").setSelectedKey("")
+that.getView().byId("Fsurtido").setSelectedKey("")
+that.getView().byId("Ftienda").setSelectedKey("")
+that.getView().byId("SKU").setValue("")
                 } else {
                     sap.m.MessageBox.error("busqueda sin resultados");
                     // sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.ValidacionMens'));
@@ -210,6 +215,36 @@ console.log(data)
             console.log(oModel);
             var texts = this.getOwnerComponent().getModel("appTxts");
 
+
+
+            aCols.push({
+                label: texts.getProperty("/CatagProd.Exc1"),
+                type: EdmType.String,
+                property: 'Node'
+            });
+            aCols.push({
+                label: texts.getProperty("/CatagProd.Exc2"),
+                type: EdmType.String,
+                property: 'Ltext'
+
+
+            });
+            aCols.push({
+                label: texts.getProperty("/CatagProd.Exc3"),
+                type: EdmType.String,
+                property: 'MatGrp'
+            });
+            aCols.push({
+                label: texts.getProperty("/CatagProd.Exc14"),
+                type: EdmType.String,
+                property: 'Wgbez'
+            });
+
+
+
+
+
+
             aCols.push({
                 label: texts.getProperty("/CatagProd.Exc1"),
                 type: EdmType.String,
@@ -240,13 +275,7 @@ console.log(data)
                 property: 'InfoRec'
             });
 
-            aCols.push({
-                label: texts.getProperty("/CatagProd.Exc6"),
-                type: EdmType.String,
-                property: 'Ltext'
-
-
-            });
+           
 
             aCols.push({
                 label: texts.getProperty("/CatagProd.Exc7"),
@@ -254,11 +283,7 @@ console.log(data)
                 property: 'Maktx'
             });
 
-            aCols.push({
-                label: texts.getProperty("/CatagProd.Exc8"),
-                type: EdmType.String,
-                property: 'MatGrp'
-            });
+           
 
             aCols.push({
                 label: texts.getProperty("/CatagProd.Exc9"),
@@ -266,11 +291,7 @@ console.log(data)
                 property: 'Material'
             });
 
-            aCols.push({
-                label: texts.getProperty("/CatagProd.Exc10"),
-                type: EdmType.String,
-                property: 'Node'
-            });
+            
 
             aCols.push({
                 label: texts.getProperty("/CatagProd.Exc11"),
@@ -290,11 +311,7 @@ console.log(data)
                 property: 'Werks'
             });
 
-            aCols.push({
-                label: texts.getProperty("/CatagProd.Exc14"),
-                type: EdmType.String,
-                property: 'Wgbez'
-            });
+           
 
 
             return aCols;
@@ -378,7 +395,7 @@ console.log(data)
             var Exc9 = {
                 name: texts.getProperty("/CatagProd.Exc9"),
                 template: {
-                    content: "{Ean11}"
+                    content: "'{Ean11}"
                 }
             };
             var Exc10 = {
@@ -429,105 +446,104 @@ console.log(data)
                     content: "{KbetrDto1}"
                 }
             };
-            var Exc19 = {
+            var Exc18 = {
                 name: texts.getProperty("/CatagProd.Exc19"),
                 template: {
                     content: "{KbetrDto2}"
                 }
             };
-            var Exc20 = {
+            var Exc19 = {
                 name: texts.getProperty("/CatagProd.Exc20"),
                 template: {
                     content: "{KbetrDto3}"
                 }
             };
-            var Exc21 = {
+            var Exc20 = {
                 name: texts.getProperty("/CatagProd.Exc21"),
                 template: {
                     content: "{KbetrDto4}"
                 }
             };
-            var Exc22 = {
+            var Exc21 = {
                 name: texts.getProperty("/CatagProd.Exc22"),
                 template: {
                     content: "{KbetrDtoad}"
                 }
             };
-            var Exc23 = {
+            var Exc22 = {
                 name: texts.getProperty("/CatagProd.Exc23"),
                 template: {
                     content: "{Bonificacion}"
                 }
             };
-            var Exc24 = {
+            var Exc23 = {
                 name: texts.getProperty("/CatagProd.Exc24"),
                 template: {
                     content: "{KbetrCargo}"
                 }
             };
-            var Exc25 = {
+            var Exc24 = {
                 name: texts.getProperty("/CatagProd.Exc25"),
                 template: {
                     content: "{Netpr}"
                 }
             };
-            var Exc26 = {
+            var Exc25 = {
                 name: texts.getProperty("/CatagProd.Exc6"),
                 template: {
                     content: "{Umrez}"
                 }
             };
-            var Exc27 = {
+            var Exc26 = {
                 name: texts.getProperty("/CatagProd.Exc27"),
                 template: {
                     content: "{Meins}"
                 }
             };
-            var Exc28 = {
+            var Exc27 = {
                 name: texts.getProperty("/CatagProd.Exc28"),
                 template: {
-                    content: "{Ean11Codemp}"
+                    content: "'{Ean11Codemp}"
                 }
             };
-            var Exc29 = {
+            var Exc28 = {
                 name: texts.getProperty("/CatagProd.Exc29"),
                 template: {
                     content: "{KbetrCtoUni}"
                 }
             };
-            var Exc30 = {
+            var Exc29 = {
                 name: texts.getProperty("/CatagProd.Exc30"),
                 template: {
                     content: "{Zterm}"
                 }
             };
-            var Exc31 = {
+            var Exc30 = {
                 name: texts.getProperty("/CatagProd.Exc31"),
                 template: {
                     content: "{Text1}"
                 }
             };
-            var Exc32 = {
+            var Exc31 = {
                 name: texts.getProperty("/CatagProd.Exc32"),
                 template: {
                     content: "{Dismm}"
                 }
             };
-            var Exc33 = {
+            var Exc32 = {
                 name: texts.getProperty("/CatagProd.Exc33"),
                 template: {
                     content: "{Dibez}"
                 }
             };
-            var Exc34 = {
+            var Exc33 = {
                 name: texts.getProperty("/CatagProd.Exc34"),
                 template: {
                     content: "{Bwscl}"
                 }
             };
             
-          
-            var Exc35 = {
+            var Exc34 = {
                 name: texts.getProperty("/CatagProd.Exc35"),
                 template: {
                     content: "{BwsclDesc}"
@@ -567,6 +583,7 @@ console.log(data)
                     Exc15,
                     Exc16,
                     Exc17,
+                    Exc18,
                     Exc19,
                     Exc20,
                     Exc21,
