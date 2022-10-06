@@ -69,14 +69,56 @@ sap.ui.define([
 			var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(3);
 			this.bFocusFullScreenButton = true;
             console.log(this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen"))
-			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
+		/*	var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
 			this.oRouter.navTo("detailDevo", {
 				layout: sap.f.LayoutType.EndColumnFullScreen,//sNextLayout,
                 xblnr: this._Xblnr,
                 lifnr: this._lifnr,
                 ebeln: this._Ebeln,
                 suc: this._Suc,
-			});
+			});*/
+
+
+            console.log(this.parent)
+            if(this.parent == "ESTADOC"){
+            
+                this.getOwnerComponent().getRouter().navTo("detailDevoEstadoCuenta", {
+                    layout: sap.f.LayoutType.MidColumnFullScreen,
+                        xblnr: this._Xblnr,
+                        lifnr: this._lifnr,
+                        ebeln: this._Ebeln,
+                        suc: this._Suc,
+                }, true);
+         
+                 //   this.bus.publish("flexible", "detailDevoComplemento");
+              
+
+            }else if(this.parent == "COMPLEMENTO"){
+                this.oRouter.navTo("detailDevoComplemento",
+                    {
+                        layout:sap.f.LayoutType.MidColumnFullScreen,
+                        xblnr: this._Xblnr,
+                        lifnr: this._lifnr,
+                        ebeln: this._Ebeln,
+                        suc: this._Suc,
+                    }
+                );
+
+            }else if(this.parent == "FACTORAJE"){
+                this.oRouter.navTo("detailDevoFactoraje",
+                    {
+                        layout: sap.f.LayoutType.MidColumnFullScreen,
+                        xblnr: this._Xblnr,
+                        lifnr: this._lifnr,
+                        ebeln: this._Ebeln,
+                        suc: this._Suc,
+                    }
+                );
+
+            }
+
+
+
 		},
 
 
@@ -84,31 +126,16 @@ sap.ui.define([
 		handleExitFullScreen: function () {
 			this.bFocusFullScreenButton = true;
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
-		/*	this.oRouter.navTo("detailDevo", {
-				layout: sap.f.LayoutType.ThreeColumnsMidExpandedEndHidden,//sNextLayout,
-                xblnr: this._Xblnr,
-                lifnr: this._lifnr,
-                ebeln: this._Ebeln,
-                suc: this._Suc,
-			});*/
+	
             console.log(this.parent)
             if(this.parent == "ESTADOC"){
-              /*  this.oRouter.navTo("detailDevoEstadoCuenta",
-                    {
-                        layout: sNextLayout,
-                        xblnr: this._Xblnr,
-                        lifnr: this._lifnr,
-                        ebeln: this._Ebeln,
-                        suc: this._Suc,
-                    }
-                );*/
+            
                 this.getOwnerComponent().getRouter().navTo("detailDevoEstadoCuenta", {
                     layout: sap.f.LayoutType.TwoColumnsMidExpanded,
                         xblnr: this._Xblnr,
                         lifnr: this._lifnr,
                         ebeln: this._Ebeln,
                         suc: this._Suc,
-                    // lifnr: docResult.Lifnr
                 }, true);
          
                     this.bus.publish("flexible", "detailDevoComplemento");
