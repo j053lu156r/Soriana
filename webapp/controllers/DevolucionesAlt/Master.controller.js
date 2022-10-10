@@ -351,7 +351,8 @@ sap.ui.define([
                     layout: sap.f.LayoutType.TwoColumnsMidExpanded,
                     xblnr: docResult.Xblnr,
                     lifnr: docResult.Lifnr,
-                    ebeln: docResult.Ebeln
+                    ebeln: docResult.Ebeln,
+                    suc: docResult.Werks
 
                 }, true);
         },
