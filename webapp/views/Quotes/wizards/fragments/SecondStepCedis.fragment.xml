@@ -86,13 +86,13 @@
                         <Label text="{appTxts>/quotes.toExhaust}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
                         <t:template>
-                            <ObjectIdentifier text="{Pedidos>MengeR}"/>
+                            <ObjectIdentifier text="{Pedidos>MengeA}"/>
                         </t:template>
                     </t:Column>
                     <t:Column >
                         <Label text="{appTxts>/quotes.quantitySummon}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                         <t:template>
-                            <Input id="inputCantidad" value="{Pedidos>Citado}" liveChange="captureQuntSummon" enabled="{= ${Pedidos>Selected}}" customData:menger="{Pedidos>MengeR}" customData:ebeln="{Pedidos>Ebeln}" customData:matnr="{Pedidos>Matnr}" type="Number"/>
+                            <Input id="inputCantidad" value="{Pedidos>Citado}" liveChange="captureQuntSummon" enabled="true" customData:menger="{Pedidos>MengeA}" customData:ebeln="{Pedidos>Ebeln}" customData:matnr="{Pedidos>Matnr}" type="Number"/>
                         </t:template>
                     </t:Column>
                 </t:columns>
