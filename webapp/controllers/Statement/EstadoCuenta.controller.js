@@ -267,7 +267,7 @@ sap.ui.define([
         },
 
         searchDataV2: function () {
-
+        
             let dateRange = this.getView().byId("dateRange");
 
             //ciltro documento
@@ -368,8 +368,12 @@ sap.ui.define([
                 )
 
             }
-
-
+            let that = this
+            var jsonModelG = new JSONModel();
+            var jsonModelT = new JSONModel();
+            that.getOwnerComponent().setModel(jsonModelG, "GroupedTotales");
+            that.initTable()
+            that.getOwnerComponent().setModel(jsonModelT, "totales")
 
 
             // let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}' ${queryFiltro} &$format=json`;
@@ -382,7 +386,7 @@ sap.ui.define([
             var select = "";
             sap.ui.core.BusyIndicator.show();
 
-            let that = this
+           
             this._GetODataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
                 sap.ui.core.BusyIndicator.hide();
                 var data = _GEToDataV2Response.data.results;
