@@ -126,13 +126,17 @@ sap.ui.define([
                         var totBonus = objResponse.reduce((a, b) => +a + (+b["Bonus"] || 0), 0);
                         var totIVA = objResponse.reduce((a, b) => +a + (+b["Tax"] || 0), 0);
                         var totIEPS = objResponse.reduce((a, b) => +a + (+b["Ieps"] || 0), 0);
+                        var totDiscount = objResponse.reduce((a, b) => +a + (+b["Discount"] || 0), 0);
                         var TotDistQty = objResponse.reduce((a, b) => +a + (+b["DistQty"] || 0), 0);
+                        var total = objResponse.reduce((a, b) => +a + (+b["Total"] || 0), 0);
                         var totalMatDet = {
                             "TotCost": Number(totCost.toFixed(2)),
                             "TotPrice": Number(totPrice.toFixed(2)),
                             "TotBonus": Number(totBonus.toFixed(2)),
                             "TotIVA": Number(totIVA.toFixed(2)),
                             "TotIEPS": Number(totIEPS.toFixed(2)),
+                            "TotDiscount": Number(totDiscount.toFixed(2)),
+                            "Total": Number(total.toFixed(2)),
                             "TotDistQty": Number(TotDistQty.toFixed(3)),
                             "Promotion": objResponse[0].Promotion
                         };
@@ -212,15 +216,21 @@ sap.ui.define([
                     }
                 },
                 {
+                    name: texts.getProperty("/PolizadetCargo.IEPS"),
+                    template: {
+                        content: "{Ieps}"
+                    }
+                },
+                {
                     name: texts.getProperty("/PolizadetCargo.IVA"),
                     template: {
                         content: "{Tax}"
                     }
                 },
                 {
-                    name: texts.getProperty("/PolizadetCargo.IEPS"),
+                    name: texts.getProperty("/PolizadetCargo.Total"),
                     template: {
-                        content: "{Ieps}"
+                        content: "{Total}"
                     }
                 }
             ];

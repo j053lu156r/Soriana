@@ -137,6 +137,8 @@ sap.ui.define([
                         var totBonus = objResponse.reduce((a, b) => +a + (+b["Bonus"] || 0), 0);
                         var totIVA = objResponse.reduce((a, b) => +a + (+b["Tax"] || 0), 0);
                         var totIEPS = objResponse.reduce((a, b) => +a + (+b["Ieps"] || 0), 0);
+                        var totDiscount = objResponse.reduce((a, b) => +a + (+b["Discount"] || 0), 0);
+                        var total = objResponse.reduce((a, b) => +a + (+b["Total"] || 0), 0);
                         var TotDistQty = objResponse.reduce((a, b) => +a + (+b["DistQty"] || 0), 0);
                         var currCode = objResponse[0].Currency;
                         var totalAcuDet = {
@@ -145,6 +147,8 @@ sap.ui.define([
                             "TotBonus": Number(totBonus.toFixed(2)),
                             "TotIVA": Number(totIVA.toFixed(2)),
                             "TotIEPS": Number(totIEPS.toFixed(2)),
+                            "TotDiscount": Number(totDiscount.toFixed(2)),
+                            "Total": Number(total.toFixed(2)),
                             "TotDistQty": Number(TotDistQty.toFixed(3)),
                             "Promotion": objResponse[0].Promotion,
                             "currCode": currCode
@@ -180,20 +184,7 @@ sap.ui.define([
                         content: "{Agreement}"
                     }
                 },
-                /*
-                {
-                    name: texts.getProperty("/PolizadetCargo.Material"),
-                    template: {
-                        content: "{Material}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/PolizadetCargo.MatDescription"),
-                    template: {
-                        content: "{MatDescription}"
-                    }
-                },
-                */
+                
                 {
                     name: texts.getProperty("/PolizadetCargo.Centro"),
                     template: {
@@ -206,25 +197,17 @@ sap.ui.define([
                         content: "{ForumDescrition}"
                     }
                 },
-                /*
-                {
-                    name: texts.getProperty("/PolizadetCargo.Posicion"),
-                    template: {
-                        content: "{MatdocPosition}"
-                    }
-                },
                 
-                {
-                    name: texts.getProperty("/PolizadetCargo.DistQty"),
-                    template: {
-                        content: "{DistQty}"
-                    }
-                },
-                */
                 {
                     name: texts.getProperty("/PolizadetCargo.bonus"),
                     template: {
                         content: "{Bonus}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/PolizadetCargo.IEPS"),
+                    template: {
+                        content: "{Ieps}"
                     }
                 },
                 {
@@ -234,9 +217,9 @@ sap.ui.define([
                     }
                 },
                 {
-                    name: texts.getProperty("/PolizadetCargo.IEPS"),
+                    name: texts.getProperty("/PolizadetCargo.Total"),
                     template: {
-                        content: "{Ieps}"
+                        content: "{Total}"
                     }
                 }
             ];
