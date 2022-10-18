@@ -72,6 +72,14 @@ sap.ui.define([
             }, this);
         },
         onPress: function (oEvent) {
+            /*
+            const data = {
+                "Userid": "chernandez@strategy-a.com",
+                "IDProveedor": "94664"
+            }
+            const encodedData = btoa(JSON.stringify(data))
+            console.log(encodedData)
+            */
             this.sendLogin();
         },
         sendLogin() {

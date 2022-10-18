@@ -485,7 +485,33 @@
                         }
 
                     ]
+                }, {
+                    "id": "0045",
+                    "title": "/tiles.titleCatalogoP",
+                    "subHeader": "",
+                    "icon": "sap-icon://s4hana",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "CatalogProducts",
+                    "functions": [
+
+                        {
+                            "idFunction": 46
+                        },
+                        {
+                            "idFunction": 42
+                        },
+                        {
+                            "idFunction": 43
+                        },
+                        {
+                            "idFunction": 44
+                        }
+
+                    ]
                 }
+
             ]
         },
         {
@@ -557,6 +583,36 @@
                     ]
                 },
                 {
+                    "id": "0045",
+                    "title": "/tiles.acuerdosGral",
+                    "subHeader": "",
+                    "icon": "sap-icon://customer-order-entry",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterAcuerdosGral",
+                    "functions": [
+                        {
+                            "idFunction": 52
+                        }
+                    ]
+                },
+                {
+                    "id": "0046",
+                    "title": "/tiles.acuerdosNser",
+                    "subHeader": "",
+                    "icon": "sap-icon://customer-order-entry",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterAcuerdosNser",
+                    "functions": [
+                        {
+                            "idFunction": 52
+                        }
+                    ]
+                },
+                {
                     "id": "0034",
                     "title": "/tiles.aportaciones",
                     "subHeader": "",
@@ -582,12 +638,17 @@
                     "binding": "masterBoletinVta",
                     "functions": [
                         {
-                            "idFunction": 53
+                            "idFunction": 53,
+                            "roles": [
+                                "0001",
+                                "0004",
+                                "0005"
+                            ]
                         }
                     ]
                 },
                 {
-                    "id": "0041",
+                    "id": "0048",
                     "title": "/tiles.boletinVtaProveedor",
                     "subHeader": "",
                     "icon": "sap-icon://my-sales-order",
@@ -597,7 +658,12 @@
                     "binding": "masterBoletinVtaProv",
                     "functions": [
                         {
-                            "idFunction": 53
+                            "idFunction": 55,
+                            "roles": [
+                                "0001",
+                                "0002",
+                                "0003"
+                            ]
                         }
                     ]
                 },

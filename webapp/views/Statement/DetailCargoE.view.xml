@@ -1,6 +1,6 @@
 <mvc:View 
     displayBlock="true" 
-    controllerName="demo.controllers.BoletinVta.DetailCargo" 
+    controllerName="demo.controllers.Statement.DetailCargoE" 
     height="100%"
     xmlns="sap.uxap"
     xmlns:mvc="sap.ui.core.mvc"
@@ -58,7 +58,18 @@
                                     </m:OverflowToolbar>
                                 </m:headerToolbar>
 								<m:columns>
-                                    
+                                    <!--
+                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:header>
+                                            <m:Text text="{appTxts>/PolizadetCargo.Agreement}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </m:header>
+                                    </m:Column>
+                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:header>
+                                            <m:Text text="{appTxts>/PolizadetCargo.Material}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </m:header>
+                                    </m:Column>
+                                    -->
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
                                             <m:Text text="{appTxts>/PolizadetCargo.Centro}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -67,13 +78,24 @@
                                             <m:Text id="txtT" text="Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </m:footer>
                                     </m:Column>
+                                    <!--
+                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:header>
+                                            <m:Text text="{appTxts>/PolizadetCargo.DocMat}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </m:header>
+                                    </m:Column>
                                     
+                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:header>
+                                            <m:Text text="{appTxts>/PolizadetCargo.Posicion}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </m:header>
+                                    </m:Column>
+                                    -->
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
                                             <m:Text text="{appTxts>/PolizadetCargo.Vendor}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </m:header>
                                     </m:Column>
-                                    
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
                                             <m:Text text="{appTxts>/PolizadetCargo.Costo}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -85,10 +107,40 @@
                                                     type: 'sap.ui.model.type.Currency',
                                                     formatOptions: {showMeasure: false}
                                                         }"
-                                                unit="MXN" />
+                                                unit="{debTotDetModel>/currCode}" />
                                         </m:footer>
                                     </m:Column>
-                                   
+                                    <!--
+                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:header>
+                                            <m:Text text="{appTxts>/PolizadetCargo.precio}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </m:header>
+                                        <m:footer>
+                                            <m:ObjectNumber id="OBNP"
+                                                number="{
+                                                    parts:[{path:'debTotDetModel>/TotPrice'},{path:'CurrencyCode'}],
+                                                    type: 'sap.ui.model.type.Currency',
+                                                    formatOptions: {showMeasure: false}
+                                                        }"
+                                                unit="{debitDet>Currency}" />
+                                        </m:footer>
+                                    </m:Column>
+                                    
+                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:header>
+                                            <m:Text text="{appTxts>/PolizadetCargo.DistQty}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </m:header>
+                                        <m:footer>
+                                            <m:ObjectNumber id="OBNQ"
+                                                number="{
+                                                    parts:[{path:'debTotDetModel>/TotDistQty'},{path:'debitDet>uom'}],
+                                                    type: 'sap.ui.model.type.Unit',
+                                                    formatOptions: {showMeasure: false}
+                                                        }"
+                                                unit="{debitDet>uom}" />
+                                        </m:footer>
+                                    </m:Column>
+                                    -->
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
                                             <m:Text text="{appTxts>/PolizadetCargo.bonus}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -100,37 +152,7 @@
                                                     type: 'sap.ui.model.type.Currency',
                                                     formatOptions: {showMeasure: false}
                                                         }"
-                                                unit="MXN" />
-                                        </m:footer>
-                                    </m:Column>
-                                    <!--
-                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-                                        <m:header>
-                                            <m:Text text="{appTxts>/PolizadetCargo.discount}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                        </m:header>
-                                        <m:footer>
-                                            <m:ObjectNumber id="OBNBD"
-                                                number="{
-                                                    parts:[{path:'debTotDetModel>/TotDiscount'},{path:'CurrencyCode'}],
-                                                    type: 'sap.ui.model.type.Currency',
-                                                    formatOptions: {showMeasure: false}
-                                                        }"
-                                                unit="MXN" />
-                                        </m:footer>
-                                    </m:Column>
-                                    -->
-                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-                                        <m:header>
-                                            <m:Text text="{appTxts>/PolizadetCargo.IEPS}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                        </m:header>
-                                        <m:footer>
-                                            <m:ObjectNumber id="OBNE"
-                                                number="{
-                                                    parts:[{path:'debTotDetModel>/TotIEPS'},{path:'CurrencyCode'}],
-                                                    type: 'sap.ui.model.type.Currency',
-                                                    formatOptions: {showMeasure: false}
-                                                        }"
-                                                unit="MXN" />
+                                                unit="{debTotDetModel>/currCode}" />
                                         </m:footer>
                                     </m:Column>
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
@@ -144,31 +166,40 @@
                                                     type: 'sap.ui.model.type.Currency',
                                                     formatOptions: {showMeasure: false}
                                                         }"
-                                                unit="MXN" />
+                                                unit="{debTotDetModel>/currCode}" />
                                         </m:footer>
                                     </m:Column>
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
-                                            <m:Text text="{appTxts>/PolizadetCargo.total}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                            <m:Text text="{appTxts>/PolizadetCargo.IEPS}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </m:header>
                                         <m:footer>
-                                            <m:ObjectNumber id="OBNTt"
+                                            <m:ObjectNumber id="OBNE"
                                                 number="{
-                                                    parts:[{path:'debTotDetModel>/Total'},{path:'CurrencyCode'}],
+                                                    parts:[{path:'debTotDetModel>/TotIEPS'},{path:'CurrencyCode'}],
                                                     type: 'sap.ui.model.type.Currency',
                                                     formatOptions: {showMeasure: false}
                                                         }"
-                                                unit="MXN" />
+                                                unit="{debTotDetModel>/currCode}" />
                                         </m:footer>
                                     </m:Column>
 								</m:columns>
 								<m:items>
 									<m:ColumnListItem type="Navigation" press="onListItemPress">
 										<m:cells>
-                                            
+                                            <!--
+                                            <m:ObjectIdentifier title="{debitDet>Agreement}"/>
+                                            <m:ObjectIdentifier title="{debitDet>Material}"
+                                                text="{debitDet>MatDescription}" />
+                                            -->
                                             <m:ObjectIdentifier title="{debitDet>Forum}"
                                                 text="{debitDet>ForumDescrition}" />
-                                            
+                                            <!--
+                                            <m:ObjectIdentifier
+                                                text="{debitDet>MaterialDoc}" />
+                                            <m:ObjectIdentifier
+                                                text="{debitDet>MatdocPosition}" />
+                                            -->
                                             <m:ObjectIdentifier title="{debitDet>Vendor}"
                                                 text="{debitDet>VendorName}" />
                                             <m:ObjectNumber
@@ -178,7 +209,27 @@
                                                     type: 'sap.ui.model.type.Currency',
                                                     formatOptions: {showMeasure: false}
                                                         }"
-                                                unit="MXN'"
+                                                unit="{debitDet>Currency}'"
+                                                state="Success" />
+                                            <!--
+                                            <m:ObjectNumber
+                                                emphasized="true"
+                                                number="{
+                                                    parts:[{path:'debitDet>Price'},{path:'CurrencyCode'}],
+                                                    type: 'sap.ui.model.type.Currency',
+                                                    formatOptions: {showMeasure: false}
+                                                        }"
+                                                unit="{debitDet>Currency}'"
+                                                state="Success" />
+                                            -->
+                                            <m:ObjectNumber
+                                                emphasized="true"
+                                                number="{
+                                                    parts:[{path:'debitDet>DistQty'},{path:'uom'}],
+                                                    type: 'sap.ui.model.type.Unit',
+                                                    formatOptions: {showMeasure: false}
+                                                        }"
+                                                unit="{debitDet>uom}'"
                                                 state="Success" />
                                             <m:ObjectNumber
                                                 emphasized="true"
@@ -187,27 +238,7 @@
                                                     type: 'sap.ui.model.type.Currency',
                                                     formatOptions: {showMeasure: false}
                                                         }"
-                                                unit="MXN"
-                                                state="Success" />
-                                            <!--
-                                            <m:ObjectNumber
-                                                emphasized="true"
-                                                number="{
-                                                    parts:[{path:'debitDet>Discount'},{path:'CurrencyCode'}],
-                                                    type: 'sap.ui.model.type.Currency',
-                                                    formatOptions: {showMeasure: false}
-                                                        }"
-                                                unit="MXN"
-                                                state="Success" />
-                                            -->
-                                            <m:ObjectNumber
-                                                emphasized="true"
-                                                number="{
-                                                    parts:[{path:'debitDet>Ieps'},{path:'CurrencyCode'}],
-                                                    type: 'sap.ui.model.type.Currency',
-                                                    formatOptions: {showMeasure: false}
-                                                        }"
-                                                unit="MXN"
+                                                unit="{debitDet>Currency}'"
                                                 state="Success" />
                                             <m:ObjectNumber
                                                 emphasized="true"
@@ -216,17 +247,18 @@
                                                     type: 'sap.ui.model.type.Currency',
                                                     formatOptions: {showMeasure: false}
                                                         }"
-                                                unit="MXN"
+                                                unit="{debitDet>Currency}'"
                                                 state="Success" />
                                             <m:ObjectNumber
                                                 emphasized="true"
                                                 number="{
-                                                    parts:[{path:'debitDet>Total'},{path:'CurrencyCode'}],
+                                                    parts:[{path:'debitDet>Ieps'},{path:'CurrencyCode'}],
                                                     type: 'sap.ui.model.type.Currency',
                                                     formatOptions: {showMeasure: false}
                                                         }"
-                                                unit="MXN"
+                                                unit="{debitDet>Currency}'"
                                                 state="Success" />
+                                            
 										</m:cells>
 									</m:ColumnListItem>
 								</m:items>

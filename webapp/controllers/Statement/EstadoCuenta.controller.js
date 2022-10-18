@@ -90,7 +90,9 @@ sap.ui.define([
             let filterInput = this.getView().byId("filtroBusqueda");
 
             let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
-            // format[AAAAMMDD] (2020101)
+          console.log(this.byId("supplierInput").getValue())
+          console.log(this.byId("supplierInput").getSelectedKey())
+          // format[AAAAMMDD] (2020101)
             // let desde_LV_ZDESDE = this.buildSapDate( dateRange.getDateValue()       );
             // format[AAAAMMDD] (2020101)
             // let desde_LV_ZHASTA = this.buildSapDate( dateRange.getSecondDateValue() );
@@ -273,7 +275,7 @@ sap.ui.define([
         },
 
         searchDataV2: function () {
-
+        
             let dateRange = this.getView().byId("dateRange");
 
             //ciltro documento
@@ -281,13 +283,12 @@ sap.ui.define([
             let filterInput = this.getView().byId("filtroBusqueda");
 
             let proveedor_LIFNR = this.getConfigModel().getProperty("/supplierInputKey");
-            // format[AAAAMMDD] (2020101)
-            // let desde_LV_ZDESDE = this.buildSapDate( dateRange.getDateValue()       );
-            // format[AAAAMMDD] (2020101)
-            // let desde_LV_ZHASTA = this.buildSapDate( dateRange.getSecondDateValue() );
-
-
-            //tomar valores dummy para hacer al consulta
+            console.log(proveedor_LIFNR)
+            console.log((this.byId("supplierInput").getValue().split("-")[0]).trim())
+           if (proveedor_LIFNR=== undefined){
+            proveedor_LIFNR=(this.byId("supplierInput").getValue().split("-")[0]).trim()
+           }
+           console.log(proveedor_LIFNR)
             let todayDate = new Date();
 
             // format[AAAAMMDD] (2020101)
@@ -375,8 +376,12 @@ sap.ui.define([
                 )
 
             }
-
-
+            let that = this
+            var jsonModelG = new JSONModel();
+            var jsonModelT = new JSONModel();
+            that.getOwnerComponent().setModel(jsonModelG, "GroupedTotales");
+            that.initTable()
+            that.getOwnerComponent().setModel(jsonModelT, "totales")
 
 
             // let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}' ${queryFiltro} &$format=json`;
@@ -389,7 +394,7 @@ sap.ui.define([
             var select = "";
             sap.ui.core.BusyIndicator.show();
 
-            let that = this
+           
             this._GetODataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
                 sap.ui.core.BusyIndicator.hide();
                 var data = _GEToDataV2Response.data.results;
@@ -1320,8 +1325,8 @@ sap.ui.define([
                 layout: sap.f.LayoutType.MidColumnFullScreen,
                 xblnr: results.Foliodescuento,
                 lifnr: Lifnr,
-                ebeln: results.Ebeln
-                // zbukr: docResult.Zbukr,
+                ebeln: results.Ebeln,
+             suc: results.Sucursal 
                 // lifnr: docResult.Lifnr
             }, true);
 
@@ -1334,7 +1339,7 @@ sap.ui.define([
             var path = oEvent.getSource().getBindingContext("GroupedTotales").getPath();
             let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(path);
 
-            console.log(results)
+            
 
             //nueva funcion apra mostrar detalle
 
@@ -1378,7 +1383,7 @@ sap.ui.define([
                 //camvuar  docuemnto con cual se va consultar
 
                 if (results.LifnrAportacion !== "") {
-
+                    console.log('on detailAportacionesAS1')
 
                     this.getOwnerComponent().getRouter().navTo("detailAportacionesAS", {
                         layout: sap.f.LayoutType.MidColumnFullScreen,
@@ -1391,13 +1396,14 @@ sap.ui.define([
                     }, true);
 
                 } else {
+                   
                     MessageToast.show("Sin detalle");
                 }
-            } else if (boletinVentasTCodes.includes(tcode) || tcode === '') {
+            } else if ( tcode === 'ZMM_ACUERDOS_LIQUI') {
                 console.log('on boletin vtz')
 
                 // navega a pantalla de boltines * revisar condiciones de apertura , conseguir esenarios
-                this.getOwnerComponent().getRouter().navTo("BoletinVtaDetailPolizas", {
+                this.getOwnerComponent().getRouter().navTo("BoletinVtaDetailPolizasE", {
                     layout: sap.f.LayoutType.MidColumnFullScreen,
                     //  document: results.Xblnr,
                     document: doc,
@@ -1407,8 +1413,18 @@ sap.ui.define([
 
 
 
-            }
+            } else if (tcode === 'ZFI_INVLOAD') {
+console.log("HolaJuan")
 
+           console.log(sociedad)
+           console.log(doc)
+            this.getOwnerComponent().getRouter().navTo("AcuerdosEC", {
+                layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+                document: doc,
+                sociedad: sociedad
+      
+            }, true);
+        }
         },
 
         onPress: function (oEvent) {

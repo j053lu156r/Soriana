@@ -62,6 +62,7 @@ sap.ui.define([
                     xblnr: this._Xblnr,
                     lifnr: this._lifnr,
                     ebeln: this._Ebeln,
+                    suc: this._Werks
                 }
             );
         },
@@ -74,6 +75,7 @@ sap.ui.define([
                     xblnr: this._Xblnr,
                     lifnr: this._lifnr,
                     ebeln: this._Ebeln,
+                    suc: this._Werks
                 }
             );
         },
@@ -85,6 +87,7 @@ sap.ui.define([
             this._Xblnr = oEvent.getParameter("arguments").xblnr || this._Xblnr || "0",
             this._lifnr = oEvent.getParameter("arguments").lifnr || this._lifnr || "0";
             this._Ebeln = oEvent.getParameter("arguments").ebeln || this._Ebeln || "0";
+            this._Werks = oEvent.getParameter("arguments").suc || this._Suc || "0";
 
             var headerDeatil = {
                 "Xblnr": this._Xblnr,
@@ -94,7 +97,7 @@ sap.ui.define([
             this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "headerDetail");
 
             var url = "/HrdReturnsSet?$expand=ETDTDEVNAV,ETFDEVNAV,ITDFAGR&$filter= IOption eq '3' and IEbeln eq '" + this._Ebeln + "'"
-                    + " and ILifnr eq '" + this._lifnr + "' and IXblnr eq '" + this._Xblnr + "'"
+                    + " and ILifnr eq '" + this._lifnr + "' and IXblnr eq '" + this._Xblnr + "' and IWerks eq '" + this._Werks + "'";
 
 
             var dueModel = oModel.getJsonModel(url);

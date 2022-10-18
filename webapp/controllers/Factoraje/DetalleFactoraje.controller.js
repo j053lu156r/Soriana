@@ -807,18 +807,21 @@ sap.ui.define([
 			let results = this.getOwnerComponent().getModel("GroupedFactoraje").getProperty(path);
 
 			console.log(results)
-			//var Lifnr = this.getOwnerComponent().getModel('GroupedFactoraje').getProperty('/Lifnr')
-
-
+		//var Lifnr = this.getOwnerComponent().getModel('GroupedFactoraje').getProperty('/Lifnr')
+         
+console.log(results.Foliodescuento)
+console.log(results.Lifnr)
+console.log(results.Ebeln)
 			this.getOwnerComponent().getRouter().navTo("detailDevoFactoraje", {
 				layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
-				xblnr: results.Foliodescuento,
+				xblnr: results.Folio|| 0,
 				lifnr: results.Lifnr,
-				ebeln: results.Ebeln || 0
-				// zbukr: docResult.Zbukr,
-				// lifnr: docResult.Lifnr
+				ebeln: results.Ebeln || 0,
+                suc:  results.Sucursal,
+				
 			}, true);
 
+          
 
 		},
 

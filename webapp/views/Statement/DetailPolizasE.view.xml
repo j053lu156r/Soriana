@@ -1,5 +1,5 @@
 <mvc:View displayBlock="true" 
-        controllerName="demo.controllers.BoletinVta.DetailPolizas" 
+        controllerName="demo.controllers.Statement.DetailPolizasE" 
         height="100%"
 		xmlns="sap.uxap"
 		xmlns:mvc="sap.ui.core.mvc"
