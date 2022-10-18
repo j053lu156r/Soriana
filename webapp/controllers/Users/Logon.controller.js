@@ -4,9 +4,8 @@ sap.ui.define([
     "demo/controllers/BaseController",
     'sap/ui/core/Fragment',
     'sap/m/MessageToast',
-    "sap/ui/model/json/JSONModel",
-    "demo/js/SHA256"
-], function (JQuery, Fragment, Controller, MessageToast, BaseController, JSONModel, SHA256) {
+    "sap/ui/model/json/JSONModel"
+], function (JQuery, Fragment, Controller, MessageToast, BaseController, JSONModel) {
     "use strict";
 
     var oModel = new UserModel();
@@ -78,7 +77,7 @@ sap.ui.define([
                 "Userid": "chernandez@strategy-a.com",
                 "IDProveedor": "0000040022"
             }
-            let jwt = SHA256.SHA256(JSON.stringify(payload));
+            let jwt = aesjs.utils.utf8.toBytes(JSON.stringify(payload))
             console.log(jwt)
             */
             this.sendLogin();
