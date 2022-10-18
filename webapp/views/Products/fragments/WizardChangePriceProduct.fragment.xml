@@ -6,7 +6,7 @@
     xmlns:u="sap.ui.unified"
     xmlns:l="sap.ui.layout"
     xmlns:layout="sap.ui.layout"
-    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">>
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
     <Dialog id="changePriceDialog" showHeader="false" verticalScrolling="false" contentHeight="95%" contentWidth="96%">
         <f:DynamicPage toggleHeaderOnTitleClick="false" showFooter="true">
             <f:title>

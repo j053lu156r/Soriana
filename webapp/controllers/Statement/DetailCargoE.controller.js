@@ -9,7 +9,7 @@ sap.ui.define([
 	"use strict";
 
     var oModel = new this.Polizas();
-	return Controller.extend("demo.controllers.BoletinVta.DetailCargo", {
+	return Controller.extend("demo.controllers.Statement.DetailCargoE", {
 		onInit: function () {
 			var oExitButton = this.getView().byId("exitFullScreenBtn"),
 				oEnterButton = this.getView().byId("enterFullScreenBtn");
@@ -17,7 +17,7 @@ sap.ui.define([
 			this.oRouter = this.getOwnerComponent().getRouter();
 			this.oModel = this.getOwnerComponent().getModel();
 
-			this.oRouter.getRoute("detailCargoBoletinVta").attachPatternMatched(this._onDocumentMatched, this);
+			this.oRouter.getRoute("detailCargoBoletinVta2").attachPatternMatched(this._onDocumentMatched, this);
 
 			[oExitButton, oEnterButton].forEach(function (oButton) {
 				oButton.addEventDelegate({
@@ -60,7 +60,7 @@ sap.ui.define([
             
 			this.bFocusFullScreenButton = true;
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
-			this.oRouter.navTo("detailCargoBoletinVta", 
+			this.oRouter.navTo("detailCargoBoletinVta2", 
                 {
                     layout: sNextLayout, 
                     Company: this._Company,
@@ -76,7 +76,7 @@ sap.ui.define([
 		handleExitFullScreen: function () {
 			this.bFocusFullScreenButton = true;
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
-			this.oRouter.navTo("detailCargoBoletinVta", 
+			this.oRouter.navTo("detailCargoBoletinVta2", 
                 {
                     layout: sNextLayout, 
                     Company: this._Company,
@@ -89,19 +89,28 @@ sap.ui.define([
             );
 		},
 
-		handleClose: function () {
+	/*	handleClose: function () {
 			
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
             sNextLayout = sap.f.LayoutType.TwoColumnsMidExpanded;
-			this.oRouter.navTo("masterBoletinVtaPolizas",
-            {
-                layout: sNextLayout,
-                company: this._Company,
-                document: this._document,
-                year : this._year,
+		
+                    this.getOwnerComponent().getRouter().navTo("detailAportacionesAS", {
+                        layout: sap.f.LayoutType.MidColumnFullScreen,
+                        document: "",
+                        view: 'EstadoCuenta',
+                        //ejercicio: ejercicio,
+                        belnr: "",
+                        bukrs: "",
+                        gjahr: ""
+                    }, true);
 
-            }, true);
+		},*/
+        handleClose: function () {
+			console.log('on hanlde close')
+			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
+			this.oRouter.navTo("EstadoCuenta", {} );
 		},
+
 
 		_onDocumentMatched: function (oEvent) {
 			
@@ -137,8 +146,6 @@ sap.ui.define([
                         var totBonus = objResponse.reduce((a, b) => +a + (+b["Bonus"] || 0), 0);
                         var totIVA = objResponse.reduce((a, b) => +a + (+b["Tax"] || 0), 0);
                         var totIEPS = objResponse.reduce((a, b) => +a + (+b["Ieps"] || 0), 0);
-                        var totDiscount = objResponse.reduce((a, b) => +a + (+b["Discount"] || 0), 0);
-                        var total = objResponse.reduce((a, b) => +a + (+b["Total"] || 0), 0);
                         var TotDistQty = objResponse.reduce((a, b) => +a + (+b["DistQty"] || 0), 0);
                         var currCode = objResponse[0].Currency;
                         var totalAcuDet = {
@@ -147,8 +154,6 @@ sap.ui.define([
                             "TotBonus": Number(totBonus.toFixed(2)),
                             "TotIVA": Number(totIVA.toFixed(2)),
                             "TotIEPS": Number(totIEPS.toFixed(2)),
-                            "TotDiscount": Number(totDiscount.toFixed(2)),
-                            "Total": Number(total.toFixed(2)),
                             "TotDistQty": Number(TotDistQty.toFixed(3)),
                             "Promotion": objResponse[0].Promotion,
                             "currCode": currCode
@@ -184,7 +189,20 @@ sap.ui.define([
                         content: "{Agreement}"
                     }
                 },
-                
+                /*
+                {
+                    name: texts.getProperty("/PolizadetCargo.Material"),
+                    template: {
+                        content: "{Material}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/PolizadetCargo.MatDescription"),
+                    template: {
+                        content: "{MatDescription}"
+                    }
+                },
+                */
                 {
                     name: texts.getProperty("/PolizadetCargo.Centro"),
                     template: {
@@ -197,17 +215,25 @@ sap.ui.define([
                         content: "{ForumDescrition}"
                     }
                 },
+                /*
+                {
+                    name: texts.getProperty("/PolizadetCargo.Posicion"),
+                    template: {
+                        content: "{MatdocPosition}"
+                    }
+                },
                 
+                {
+                    name: texts.getProperty("/PolizadetCargo.DistQty"),
+                    template: {
+                        content: "{DistQty}"
+                    }
+                },
+                */
                 {
                     name: texts.getProperty("/PolizadetCargo.bonus"),
                     template: {
                         content: "{Bonus}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/PolizadetCargo.IEPS"),
-                    template: {
-                        content: "{Ieps}"
                     }
                 },
                 {
@@ -217,9 +243,9 @@ sap.ui.define([
                     }
                 },
                 {
-                    name: texts.getProperty("/PolizadetCargo.Total"),
+                    name: texts.getProperty("/PolizadetCargo.IEPS"),
                     template: {
-                        content: "{Total}"
+                        content: "{Ieps}"
                     }
                 }
             ];

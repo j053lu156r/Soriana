@@ -40,6 +40,7 @@ sap.ui.define([
                     this.getCatalogos();
                     this.clearFilters();
                     this.setInitialDates();
+                    this.loadEstatusCatalog();
                 }
             }, this);
             this.configFilterLanguage(this.getView().byId("filterBar"));
@@ -335,7 +336,6 @@ sap.ui.define([
                 await this._PostODataV2Async(_oDataModel, _oDataEntity, objRequest, headers).then(resp => {
                     response = resp.d;
                     sap.ui.core.BusyIndicator.hide();
-
                 }).catch(error => {
                     console.log(error);
                 });
@@ -485,6 +485,7 @@ sap.ui.define([
             var dateRange = this.getView().byId("dateRange");
             //var comboStatus = this.getView().byId("comboStatus");
             var inputFolioTxt = this.getView().byId("inputFolioTxt");
+            var cboxStatus = this.getView().byId("cboxStatus");
 
             let folio = inputFolioTxt.getValue().trim();
 
@@ -500,6 +501,10 @@ sap.ui.define([
             }
 
             let filtros = [];
+
+            if(cboxStatus.getSelectedKey() !== ""){
+                filtros.push(new sap.ui.model.Filter("IScode", sap.ui.model.FilterOperator.EQ, cboxStatus.getSelectedKey()));
+            }
 
             filtros.push(new sap.ui.model.Filter({
                 path: "IOption",
@@ -617,6 +622,24 @@ sap.ui.define([
                     name: texts.getProperty("/products.descriptionStatusUPC"),
                     template: {
                         content: "{Pristate}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/products.maraStatus"),
+                    template: {
+                        content: "{MaraStatus}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/products.currentCost"),
+                    template: {
+                        content: "{CostoActual}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/products.capEmpaque"),
+                    template: {
+                        content: "{CapEmpaque}"
                     }
                 }
             ];
@@ -1086,6 +1109,7 @@ sap.ui.define([
                             folioModel.TMoneda = "MXN";
                             folioModel.Lifnr = this.getConfigModel().getProperty("/supplierInputKey");
                             folioModel.EanUpcBase = folioModel.CodEan;
+                            
                             let createObjReq = {
                                 "IOption": "5",
                                 "ITREC": [
@@ -1097,6 +1121,7 @@ sap.ui.define([
 
                             sap.ui.core.BusyIndicator.show();
                             let resp = null;
+
                             await this._PostODataV2Async(_oDataModel, _oDataEntity, createObjReq).then(response => {
                                 resp = response.d;
                                 sap.ui.core.BusyIndicator.hide();
@@ -2578,6 +2603,16 @@ sap.ui.define([
                 error: function(error, status, err) {
                     console.log(error);
                 }
+            });
+        },
+
+        loadEstatusCatalog: function(){
+            let aFilters = [];
+            aFilters.push(new sap.ui.model.Filter("IOption", sap.ui.model.FilterOperator.EQ, "24"));
+            this._GetODataV2(_oDataModel, _oDataEntity, aFilters, ["ETSCODE"], "").then(resp => {
+                this.getOwnerComponent().getModel("Catalogos").setProperty('/Estatus', resp.data.results[0].ETSCODE.results);
+            }).catch(error => {
+                console.error(error);
             });
         }
 

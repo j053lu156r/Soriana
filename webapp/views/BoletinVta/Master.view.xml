@@ -162,20 +162,20 @@
                                     text="{appTxts>/foliosCap.aprove}" 
                                     press="onPressAccept"
                                     icon="sap-icon://accept"
-                                    enabled="{= ${promocionesHdr>Status} === '1' ? true : false }"/>
+                                    enabled="{= ${promocionesHdr>Status} === '2' ? true : false }"/>
                             <Button id="_IDGenButtonPDF" xmlns="sap.m" 
                                     type="Accept" 
                                     text="{appTxts>/foliosCap.attachPDF}" 
                                     press="openUploadDialog"
                                     icon="sap-icon://pdf-attachment"
-                                    enabled="{= ${promocionesHdr>Status} === '2' ? false : true }"/>
+                                    enabled="{= ${promocionesHdr>Status} === '3' ? false : true }"/>
                             <Button id="_IDGenButtonPDFview" xmlns="sap.m" 
                                     type="Accept" 
                                     text="Ver" 
                                     press=".onOpenPDF"
                                     icon="sap-icon://pdf-reader"
-                                    enabled="{= ${promocionesHdr>Status} === '1' || ${promocionesHdr>Status} === '2' ? true : false }"
-                                    visible="{= ${promocionesHdr>Status} === '1' || ${promocionesHdr>Status} === '2' ? true : false }"/>
+                                    enabled="{= ${promocionesHdr>Status} === '0' ? false : true }"
+                                    visible="{= ${promocionesHdr>Status} === '0' ? false : true }"/>
                             
 						</cells>
 					</ColumnListItem>
