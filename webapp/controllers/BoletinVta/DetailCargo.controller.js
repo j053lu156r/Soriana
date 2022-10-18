@@ -120,9 +120,10 @@ sap.ui.define([
             };
 
             this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "debitDetModel");
-            
+
             var url = "debitByForumSet?$filter=Company eq '" + this._Company + "' and Agreement eq '" + this._Agreement +
-                      "' and Vendor eq '" + this._Vendor + "' and DateCreated eq '" + this._DateCreated + "'";
+                      "' and Vendor eq '" + this._Vendor + "' and DateCreated eq '" + this._DateCreated +
+                      "' and Document eq '" + this._document + "'";
                         
             this.getView().byId('debitDetTable').setBusy(true);
             oModel.getJsonModelAsync(
@@ -217,7 +218,7 @@ sap.ui.define([
                     }
                 },
                 {
-                    name: texts.getProperty("/PolizadetCargo.Total"),
+                    name: texts.getProperty("/PolizadetCargo.total"),
                     template: {
                         content: "{Total}"
                     }
