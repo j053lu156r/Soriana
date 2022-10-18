@@ -153,7 +153,7 @@ sap.ui.define([
             if (this._folio != "" && this._folio != null) {
                 url += " and IFolio eq '" + this._folio + "'";
             }
-            if (this._bukrs != "" && this._bukrs != null) {
+         /*   if (this._bukrs != "" && this._bukrs != null) {
                 url += " and IBukrs eq '" + this._bukrs + "'";
             }
             if (this._belnr != "" && this._belnr != null) {
@@ -161,7 +161,7 @@ sap.ui.define([
             }
             if (this._gjahr != "" && this._gjahr != null) {
                 url += " and IGjahr eq '" + this._gjahr + "'";
-            }
+            }*/
 
             //this.getView().byId('ObjectPageLayout').setBusy(true);
             oModel.getJsonModelAsync(

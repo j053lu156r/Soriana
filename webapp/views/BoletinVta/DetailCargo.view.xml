@@ -171,7 +171,6 @@
                                             
                                             <m:ObjectIdentifier title="{debitDet>Vendor}"
                                                 text="{debitDet>VendorName}" />
-                                            <!--
                                             <m:ObjectNumber
                                                 emphasized="true"
                                                 number="{
@@ -181,7 +180,6 @@
                                                         }"
                                                 unit="MXN'"
                                                 state="Success" />
-                                           -->
                                             <m:ObjectNumber
                                                 emphasized="true"
                                                 number="{
@@ -191,6 +189,7 @@
                                                         }"
                                                 unit="MXN"
                                                 state="Success" />
+                                            <!--
                                             <m:ObjectNumber
                                                 emphasized="true"
                                                 number="{
@@ -200,6 +199,7 @@
                                                         }"
                                                 unit="MXN"
                                                 state="Success" />
+                                            -->
                                             <m:ObjectNumber
                                                 emphasized="true"
                                                 number="{
