@@ -4,8 +4,9 @@ sap.ui.define([
     "demo/controllers/BaseController",
     'sap/ui/core/Fragment',
     'sap/m/MessageToast',
-    "sap/ui/model/json/JSONModel"
-], function (JQuery, Fragment, Controller, MessageToast, BaseController, JSONModel) {
+    "sap/ui/model/json/JSONModel",
+    "demo/js/AES"
+], function (JQuery, Fragment, Controller, MessageToast, BaseController, JSONModel, aesjs) {
     "use strict";
 
     var oModel = new UserModel();
@@ -72,19 +73,27 @@ sap.ui.define([
             }, this);
         },
         onPress: function (oEvent) {
-            /*
             const payload = {
                 "Userid": "chernandez@strategy-a.com",
                 "IDProveedor": "0000040022"
             }
-            let jwt = aesjs.utils.utf8.toBytes(JSON.stringify(payload))
-            console.log(jwt)
+
+            /*
+            // An example 128-bit key (16 bytes * 8 bits/byte = 128 bits)
+            var key = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+
+            // Convert text to bytes
+            var payloadBytes = aesjs.convertUtf8(JSON.stringify(payload))
+            console.log(payloadBytes)
+
+            var aesCtr = new aesjs.ModeOfOperationCtr(key, new aesjs.main.Counter(5));
             */
+            
             this.sendLogin();
         },
         sendLogin() {
             var that = this;
-            
+
             var logon_user = this.getView().byId("logon_user");
             var logon_pass = this.getView().byId("logon_pass");
             var logon_user_value = logon_user.getValue();
@@ -114,7 +123,7 @@ sap.ui.define([
             var expresion = /[\"\b\f\n\r\t\\\']/gi;
             var array_regex = logon_pass_value.match(expresion);
 
-            if (array_regex !== null){
+            if (array_regex !== null) {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel('appTxts').getProperty("/logon.regexError"));
                 return
             }
@@ -126,7 +135,7 @@ sap.ui.define([
             */
 
             var respObj = oModel.create("/headerAdmSet", objRequest);
-            
+
             var oLogonJSONModel = new sap.ui.model.json.JSONModel();
             var bLogon = false;
 
@@ -157,8 +166,8 @@ sap.ui.define([
                 this.getRouter().navTo("tile");
             }
         },
-        onPressCON: function(){
-            this.getRouter().navTo("ConfirmUser",{mail:"correo@correo.com"});
+        onPressCON: function () {
+            this.getRouter().navTo("ConfirmUser", { mail: "correo@correo.com" });
         },
         onPressRC: function (oEvent) {
 
@@ -244,7 +253,7 @@ sap.ui.define([
             var array_regex = pass1.match(expresion);
             var array_regex2 = pass2.match(expresion);
 
-            if (array_regex !== null || array_regex2 !== null){
+            if (array_regex !== null || array_regex2 !== null) {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel('appTxts').getProperty("/logon.regexError"));
                 return
             }
