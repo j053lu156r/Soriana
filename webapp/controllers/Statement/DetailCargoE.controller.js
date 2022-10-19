@@ -131,14 +131,19 @@ sap.ui.define([
             this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "debitDetModel");
             
             var url = "debitByForumSet?$filter=Company eq '" + this._Company + "' and Agreement eq '" + this._Agreement +
-                      "' and Vendor eq '" + this._Vendor + "' and DateCreated eq '" + this._DateCreated + "'";
+            "' and Vendor eq '" + this._Vendor + "' and DateCreated eq '" + this._DateCreated +
+            "' and Document eq '" + this._document + "'";
+
+           // var url = "debitByForumSet?$filter=Company eq '" + this._Company + "' and Agreement eq '" + this._Agreement +
+             //         "' and Vendor eq '" + this._Vendor + "' and DateCreated eq '" + this._DateCreated + "'";
                         
             this.getView().byId('debitDetTable').setBusy(true);
             oModel.getJsonModelAsync(
                 url,
                 function (jsonModel, parent) {
                     var objResponse = jsonModel.getProperty("/results");
-
+                    console.log(objResponse)
+                    
                     if (objResponse != null) {
 
                         var totCost = objResponse.reduce((a, b) => +a + (+b["Cost"] || 0), 0);
