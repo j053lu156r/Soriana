@@ -111,7 +111,8 @@ sap.ui.define([
             this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "debitDetMatModel");
             
             var url = "debitByMaterialSet?$filter=Company eq '" + this._Company + "' and Forum eq '" + this._Forum  + 
-                     "' and Agreement eq '" + this._Agreement + "' and Vendor eq '" + this._Vendor + "' and DateCreated eq '" + this._DateCreated + "'";
+                     "' and Agreement eq '" + this._Agreement + "' and Vendor eq '" + this._Vendor + "' and DateCreated eq '" + this._DateCreated + 
+                     "' and Document eq '" + this._document + "'"; 
                         
             this.getView().byId('debitMatTable').setBusy(true);
             oModel.getJsonModelAsync(
@@ -127,7 +128,7 @@ sap.ui.define([
                         var totIVA = objResponse.reduce((a, b) => +a + (+b["Tax"] || 0), 0);
                         var totIEPS = objResponse.reduce((a, b) => +a + (+b["Ieps"] || 0), 0);
                         var totDiscount = objResponse.reduce((a, b) => +a + (+b["Discount"] || 0), 0);
-                        var TotDistQty = objResponse.reduce((a, b) => +a + (+b["DistQty"] || 0), 0);
+                        var TotQty = objResponse.reduce((a, b) => +a + (+b["Qty"] || 0), 0);
                         var total = objResponse.reduce((a, b) => +a + (+b["Total"] || 0), 0);
                         var totalMatDet = {
                             "TotCost": Number(totCost.toFixed(2)),
@@ -137,7 +138,7 @@ sap.ui.define([
                             "TotIEPS": Number(totIEPS.toFixed(2)),
                             "TotDiscount": Number(totDiscount.toFixed(2)),
                             "Total": Number(total.toFixed(2)),
-                            "TotDistQty": Number(TotDistQty.toFixed(3)),
+                            "TotQty": Number(TotQty.toFixed(0)),
                             "Promotion": objResponse[0].Promotion
                         };
                         parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(totalMatDet), 
@@ -194,25 +195,32 @@ sap.ui.define([
                     template: {
                         content: "{MatDescription}"
                     }
-                },                
+                },       
+                /*         
                 {
                     name: texts.getProperty("/PolizadetCargo.Posicion"),
                     template: {
                         content: "{MatdocPosition}"
                     }
                 },
-                /*
-                {
-                    name: texts.getProperty("/PolizadetCargo.DistQty"),
-                    template: {
-                        content: "{DistQty}"
-                    }
-                },
                 */
+                                
                 {
                     name: texts.getProperty("/PolizadetCargo.bonus"),
                     template: {
                         content: "{Bonus}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/PolizadetCargo.Qty"),
+                    template: {
+                        content: "{Qty}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/PolizadetCargo.discount"),
+                    template: {
+                        content: "{Discount}"
                     }
                 },
                 {
@@ -228,7 +236,7 @@ sap.ui.define([
                     }
                 },
                 {
-                    name: texts.getProperty("/PolizadetCargo.Total"),
+                    name: texts.getProperty("/PolizadetCargo.total"),
                     template: {
                         content: "{Total}"
                     }

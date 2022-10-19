@@ -79,20 +79,21 @@
                                                 unit="MXN" />
                                         </m:footer>
                                     </m:Column>
+                                    
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
-                                            <m:Text text="{appTxts>/PolizadetCargo.bonus}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                            <m:Text text="{appTxts>/PolizadetCargo.Qty}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                         </m:header>
                                         <m:footer>
-                                            <m:ObjectNumber id="OBNB"
+                                            <m:ObjectNumber id="OBNCQ"
                                                 number="{
-                                                    parts:[{path:'debTotMatModel>/TotBonus'},{path:'CurrencyCode'}],
-                                                    type: 'sap.ui.model.type.Currency',
+                                                    parts:[{path:'debTotMatModel>/TotQty'},{path:'uom'}],
+                                                    type: 'sap.ui.model.type.Unit',
                                                     formatOptions: {showMeasure: false}
-                                                        }"
-                                                unit="MXN" />
+                                                    }"/>
                                         </m:footer>
                                     </m:Column>
+                                    
                                     <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                         <m:header>
                                             <m:Text text="{appTxts>/PolizadetCargo.discount}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -101,6 +102,20 @@
                                             <m:ObjectNumber id="OBNBD"
                                                 number="{
                                                     parts:[{path:'debTotMatModel>/TotDiscount'},{path:'CurrencyCode'}],
+                                                    type: 'sap.ui.model.type.Currency',
+                                                    formatOptions: {showMeasure: false}
+                                                        }"
+                                                unit="MXN" />
+                                        </m:footer>
+                                    </m:Column>
+                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:header>
+                                            <m:Text text="{appTxts>/PolizadetCargo.bonus}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </m:header>
+                                        <m:footer>
+                                            <m:ObjectNumber id="OBNB"
+                                                number="{
+                                                    parts:[{path:'debTotMatModel>/TotBonus'},{path:'CurrencyCode'}],
                                                     type: 'sap.ui.model.type.Currency',
                                                     formatOptions: {showMeasure: false}
                                                         }"
@@ -166,11 +181,21 @@
                                                         }"
                                                 unit="MXN"
                                                 state="Success" />
-                                                                                        
+                                            
                                             <m:ObjectNumber
                                                 emphasized="true"
                                                 number="{
-                                                    parts:[{path:'debitMatDet>Bonus'},{path:'CurrencyCode'}],
+                                                    parts:[{path:'debitMatDet>Qty'},{path:'uom'}],
+                                                    type: 'sap.ui.model.type.Unit',
+                                                    formatOptions: {showMeasure: false}
+                                                        }"
+                                                unit="{debitMatDet>uom}'"
+                                                state="Success" />
+                                            
+                                            <m:ObjectNumber
+                                                emphasized="true"
+                                                number="{
+                                                    parts:[{path:'debitMatDet>Discount'},{path:'CurrencyCode'}],
                                                     type: 'sap.ui.model.type.Currency',
                                                     formatOptions: {showMeasure: false}
                                                         }"
@@ -179,7 +204,7 @@
                                             <m:ObjectNumber
                                                 emphasized="true"
                                                 number="{
-                                                    parts:[{path:'debitMatDet>Discount'},{path:'CurrencyCode'}],
+                                                    parts:[{path:'debitMatDet>Bonus'},{path:'CurrencyCode'}],
                                                     type: 'sap.ui.model.type.Currency',
                                                     formatOptions: {showMeasure: false}
                                                         }"
