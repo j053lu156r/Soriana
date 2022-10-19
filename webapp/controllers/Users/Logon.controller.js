@@ -4,9 +4,8 @@ sap.ui.define([
     "demo/controllers/BaseController",
     'sap/ui/core/Fragment',
     'sap/m/MessageToast',
-    "sap/ui/model/json/JSONModel",
-    "demo/js/AES"
-], function (JQuery, Fragment, Controller, MessageToast, BaseController, JSONModel, aesjs) {
+    "sap/ui/model/json/JSONModel"
+], function (JQuery, Fragment, Controller, MessageToast, BaseController, JSONModel) {
     "use strict";
 
     var oModel = new UserModel();
