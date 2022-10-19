@@ -47,17 +47,7 @@
 
                         <fb:filterGroupItems>
 
-                            <fb:FilterGroupItem
-                                    groupName="__$INTERNAL$"
-                                    name="A"
-                                    label="{appTxts>/state.date}"
-                                    mandatory="true"
-                                    partOfCurrentVariant="true"
-                                    visibleInFilterBar="false">
-                                <fb:control>
-                                    <DateRangeSelection id="dateRange" change="onChange" required="false"/>
-                                </fb:control>
-                            </fb:FilterGroupItem>
+                           
 
                             <fb:FilterGroupItem
                                     groupName="__$INTERNAL$"
@@ -73,8 +63,20 @@
                                            valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}">
                                     </Input>
                                 </fb:control>
-                            </fb:FilterGroupItem>
 
+
+                            </fb:FilterGroupItem>
+ <fb:FilterGroupItem
+                                    groupName="__$INTERNAL$"
+                                    name="A"
+                                    label="{appTxts>/state.date}"
+                                    mandatory="true"
+                                    partOfCurrentVariant="true"
+                                    visibleInFilterBar="false">
+                                <fb:control>
+                                    <DateRangeSelection id="dateRange" change="onChange" required="false"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
 
                         </fb:filterGroupItems>
 
