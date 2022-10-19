@@ -29,7 +29,7 @@ sap.ui.define([
             this._oPropertiesModel.setDefaultBindingMode(BindingMode.TwoWay);
             this.getOwnerComponent().setModel(this._oPropertiesModel, "properties");
             this.VisibleTable();
-           
+            this.SearchFTienda()
           
 
         },
@@ -62,13 +62,32 @@ idXblnr2: true
             that.getView().setModel(auxJsonModel, 'OPFiltros');
             var Fecha= new Date();
            
-            Fecha = (Fecha.getTime() - (1000*60*60*24*90))
+            Fecha = (Fecha.getTime() - (1000*60*60*24*7))
           
          that.getView().byId("dateRange").setDateValue(new Date(Fecha));
          that.getView().byId("dateRange").setSecondDateValue(new Date());
 
          
 
+        },
+        SearchFTienda: function () {
+            var that = this;
+            var model = "ZOSP_MMPI_MATNR_LIST_SRV";
+            var entity = "EKORG_LIST";
+            var expand = "";
+            var filter = "";
+            var select = "";
+
+            sap.ui.core.BusyIndicator.show();
+            that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
+                sap.ui.core.BusyIndicator.hide();
+
+                var data = _GEToDataV2Response.data.results;
+console.log(data)
+                const cmModel = new sap.ui.model.json.JSONModel(data);
+                that.getView().setModel(cmModel, "Tienda");
+
+            });
         },
         TableVisible: function () {
             var that = this;
@@ -84,6 +103,26 @@ idXblnr2: true
            
 
         },
+        onChange:function(){
+            var inicial= this.getView().byId("dateRange").getDateValue()
+            var final =  this.getView().byId("dateRange").getSecondDateValue();
+            var Fecha= new Date();
+           
+            Fecha = (final.getTime() - (1000*60*60*24*7))
+            console.log(inicial.getTime())
+            console.log(final.getTime())
+            console.log(final.getTime()-inicial.getTime())
+
+            if((final.getTime()-inicial.getTime())>604800000){
+                sap.m.MessageBox.error("la busqueda no puede ser superior a 7 dias ");
+                console.log(new Date(Fecha))
+                console.log(final)
+               
+                this.getView().byId("dateRange").setDateValue(new Date(Fecha))
+                 this.getView().byId("dateRange").setSecondDateValue(final);
+            }
+ 
+         },
         Validacion:function(){
             var that=this;
            
@@ -162,6 +201,23 @@ if (that.getView().byId("dateRange").getValue().split("-")[1].trim() === that.ge
                 value1: Model.supplierInputKey
             })
             )
+
+            if (this.getView().byId("FtiendNT").getSelectedKey()!==""){
+                var valor="";
+              
+                
+               
+                auxFilters.push(new sap.ui.model.Filter({
+                    path: "Ekorg",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1:this.getView().byId("FtiendNT").getSelectedKey()
+                })
+                )
+            }else{
+                sap.m.MessageBox.error("Favor Seleccione Formato Tienda");
+                return false;
+            }
+
             if (this.getView().byId("inpInvoice").getValue()!==""){
                 var valor="";
               

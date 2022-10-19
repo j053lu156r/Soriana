@@ -57,10 +57,10 @@ sap.ui.define([
 		},
 
 		handleFullScreen: function () {
-            //var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(2);
+            
 			this.bFocusFullScreenButton = true;
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
-            //sNextLayout = sap.f.LayoutType.TwoColumnsMidExpanded;
+            
 			this.oRouter.navTo("detailBoletinVtaCentros", 
                 {
                     layout: sNextLayout, 
@@ -76,7 +76,7 @@ sap.ui.define([
 		handleExitFullScreen: function () {
 			this.bFocusFullScreenButton = true;
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
-            //sNextLayout = sap.f.LayoutType.TwoColumnsMidExpanded;
+            
 			this.oRouter.navTo("detailBoletinVtaCentros", 
                 {
                     layout: sNextLayout, 
@@ -90,22 +90,13 @@ sap.ui.define([
 		},
 
 		handleClose: function () {
-			//var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
+			
             if(this._origin === "buyer") {
                 this.oRouter.navTo("masterBoletinVta");
             } else {
                 this.oRouter.navTo("masterBoletinVtaProv");
             }
-			/*
-            this.oRouter.navTo("detailBoletinVta",
-            {
-                layout: sap.f.LayoutType.TwoColumnsMidExpanded,
-                promotion: this._promotion,
-                vendor: this._vendor,
-                promDescription : this._promDesciption,
-                IntenalClass: this._IntenalClass
-            }, true);
-            */
+			
 		},
         
 		_onDocumentMatched: function (oEvent) {

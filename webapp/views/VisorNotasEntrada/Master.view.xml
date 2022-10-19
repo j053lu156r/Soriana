@@ -43,9 +43,22 @@
                                     groupTitle="Fechas" name="Fecha de entrega" mandatory="false" 
                                     partOfCurrentVariant="true" visibleInFilterBar="true">
                                     <fb:control>
-                                        <DateRangeSelection id="dateRange" required="false"/>
+                                        <DateRangeSelection id="dateRange" required="true" change="onChange"  />
                                     </fb:control>
                                 </fb:FilterGroupItem>
+                                
+                                     <fb:FilterGroupItem groupName="F14" label="Formato Tienda" 
+                                    groupTitle="Fechas" name="Fecha de entrega" mandatory="false" 
+                                    partOfCurrentVariant="true" visibleInFilterBar="true">
+                                    <fb:control>
+                                     <ComboBox items="{path: 'Tienda>/'}" required="true" id="FtiendNT">
+				<core:Item key="{Tienda>Ekorg}" text="{Tienda>Ekotx}"  />
+			</ComboBox>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+
+
+
 
                                 <fb:FilterGroupItem groupName="__$INTERNAL$" name="Invoice2" 
                                     label="{appTxts>/visor.filtros}" mandatory="false" 
