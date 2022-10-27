@@ -163,6 +163,7 @@ sap.ui.define([
                             "Promotion": objResponse[0].Promotion,
                             "currCode": currCode
                         };
+                        console.log(totalAcuDet)
                         parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(totalAcuDet), 
                             "debTotDetModel");
 
