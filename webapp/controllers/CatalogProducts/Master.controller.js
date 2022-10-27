@@ -170,11 +170,18 @@ that.getView().byId("SKU").setValue("")
 
         },
         SearchFTienda: function () {
+            var auxFilters=[];
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "Zoption",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: "2"
+            })
+            )
             var that = this;
             var model = "ZOSP_MMPI_MATNR_LIST_SRV";
             var entity = "EKORG_LIST";
             var expand = "";
-            var filter = "";
+            var filter = auxFilters;
             var select = "";
 
             sap.ui.core.BusyIndicator.show();
@@ -183,6 +190,7 @@ that.getView().byId("SKU").setValue("")
 
                 var data = _GEToDataV2Response.data.results;
 console.log(data)
+
                 const cmModel = new sap.ui.model.json.JSONModel(data);
                 that.getView().setModel(cmModel, "Tienda");
 
