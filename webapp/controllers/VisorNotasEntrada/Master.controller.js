@@ -71,11 +71,18 @@ idXblnr2: true
 
         },
         SearchFTienda: function () {
+            var auxFilters=[];
+            auxFilters.push(new sap.ui.model.Filter({
+                path: "Zoption",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: "2"
+            })
+            )
             var that = this;
             var model = "ZOSP_MMPI_MATNR_LIST_SRV";
             var entity = "EKORG_LIST";
             var expand = "";
-            var filter = "";
+            var filter = auxFilters;
             var select = "";
 
             sap.ui.core.BusyIndicator.show();
