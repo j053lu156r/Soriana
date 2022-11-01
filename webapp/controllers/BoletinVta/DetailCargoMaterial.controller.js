@@ -128,6 +128,7 @@ sap.ui.define([
                         var totIVA = objResponse.reduce((a, b) => +a + (+b["Tax"] || 0), 0);
                         var totIEPS = objResponse.reduce((a, b) => +a + (+b["Ieps"] || 0), 0);
                         var totDiscount = objResponse.reduce((a, b) => +a + (+b["Discount"] || 0), 0);
+                        totDiscount = objResponse[0].Discount;
                         var TotQty = objResponse.reduce((a, b) => +a + (+b["Qty"] || 0), 0);
                         var total = objResponse.reduce((a, b) => +a + (+b["Total"] || 0), 0);
                         var totalMatDet = {
@@ -136,7 +137,7 @@ sap.ui.define([
                             "TotBonus": Number(totBonus.toFixed(2)),
                             "TotIVA": Number(totIVA.toFixed(2)),
                             "TotIEPS": Number(totIEPS.toFixed(2)),
-                            "TotDiscount": Number(totDiscount.toFixed(2)),
+                            "TotDiscount": Number(totDiscount),
                             "Total": Number(total.toFixed(2)),
                             "TotQty": Number(TotQty.toFixed(0)),
                             "Promotion": objResponse[0].Promotion
