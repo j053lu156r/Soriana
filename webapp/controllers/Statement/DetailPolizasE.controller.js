@@ -23,7 +23,7 @@
                     onAfterShow: function (oEvent) {
                         var barModel = this.getOwnerComponent().getModel();
                         barModel.setProperty("/barVisible", true);
-                        this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "PolizasHdr");
+                      //  this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "PolizasHdr");
                         //this.clearFilters();
                     }
                 }, this);
@@ -71,6 +71,7 @@
             },
 
             _onDocumentMatched: function (oEvent) {
+                console.log("entro1")
 			
                 this._company = oEvent.getParameter("arguments").company || this._company || "0";
                 this._document = oEvent.getParameter("arguments").document || this._document || "0";
@@ -89,6 +90,7 @@
             },
 
             searchData: function () {
+                console.log("buscar")
                 var texts = this.getOwnerComponent().getModel("appTxts");
                 var bContinue = true;
     
@@ -99,7 +101,67 @@
                 var url = "finalcialDocumentsSet?$filter=Bukrs eq '" + this._company + "' and Belnr eq '" + this._document + "' and Gjahr eq '" + this._year + "'";
 
                 this.getView().byId('tablePolizas').setBusy(true);
-                oModel.getJsonModelAsync(
+
+              var auxFilters=[];
+                auxFilters.push(new sap.ui.model.Filter({
+                    path: "Bukrs",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: this._company 
+                })
+                )
+                auxFilters.push(new sap.ui.model.Filter({
+                    path: "Belnr",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: this._document
+                })
+                )
+                auxFilters.push(new sap.ui.model.Filter({
+                    path: "Gjahr",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: this._year
+                })
+                )
+                var that = this;
+                var model = "ZOS_FI_DOCUMENTS_SRV";
+                var entity = "finalcialDocumentsSet";
+                var expand = "";
+                var filter = auxFilters;
+                var select = "";
+                that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "PolizasHdr");
+                sap.ui.core.BusyIndicator.show();
+                that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
+                    sap.ui.core.BusyIndicator.hide();
+    console.log(_GEToDataV2Response);
+                    var objResponse = _GEToDataV2Response.data.results;
+
+                    if (objResponse != null) {
+                        if (objResponse.length > 0) {
+                            var vendorName = objResponse[0].Name;
+                            var Agreement = objResponse[0].Knuma;
+                            var totBase = objResponse.reduce((a, b) => +a + (+b["Dmbtr"] || 0), 0);
+                            var totDescto = objResponse.reduce((a, b) => +a + (+b["Wrbtr"] || 0), 0);
+                            var totIVA = objResponse.reduce((a, b) => +a + (+b["Wmwst"] || 0), 0);
+                            var totalAcuDet = {
+                                "TotBase": Number(totBase.toFixed(2)),
+                                "TotDescto": Number(totDescto.toFixed(2)),
+                                "TotIVA": Number(totIVA.toFixed(2)),
+                                "VendorName": vendorName,
+                                "Agreement": Agreement
+                            };
+                            that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(totalAcuDet), 
+                                "acuTotDetModel");
+
+                                that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(objResponse),
+                                "PolizasHdr");
+
+                                that.paginate("PolizasHdr", "/PolizasDet", 1, 0);
+                        }
+                    }
+                    that.getView().byId('tablePolizas').setBusy(false);
+    
+                });
+
+            /*  oModel.getJsonModelAsync(
                     url,
                     function (jsonModel, parent) {
                         var objResponse = jsonModel.getProperty("/results");
@@ -133,7 +195,7 @@
                         parent.getView().byId('tablePolizas').setBusy(false);
                     },
                     this
-                );
+                );*/
     
             },
             onExit: function () {
@@ -141,7 +203,7 @@
             },
 
             onDebitDetail: function () {
-
+console.log("entro")
                 //var odata = this.getOwnerComponent().getModel("acuTotDetModel");
                 //var results = odata.getProperty("/");
 
@@ -166,7 +228,7 @@
 
             },
             onDebitDetail2: function () {
-
+                console.log("entro2")
                 //var odata = this.getOwnerComponent().getModel("acuTotDetModel");
                 //var results = odata.getProperty("/");
 
