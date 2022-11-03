@@ -1360,6 +1360,7 @@ sap.ui.define([
             var aportacionesTCodes = ['Z_APORTACIONES']
             var boletinVentasTCodes = ['ZMM_ACUERDOS_LIQUI']
 
+            console.log(results)
 
             if ((acuerdosTCodes.includes(tcode) && doc.startsWith('510')) || (tcode == "" && !(doc.startsWith("1700") && results.Xblnr))) {
 
@@ -1405,13 +1406,13 @@ sap.ui.define([
                 console.log('on boletin vtz')
 
                 // navega a pantalla de boltines * revisar condiciones de apertura , conseguir esenarios
+                console.log(doc,sociedad,ejercicio)
                 this.getOwnerComponent().getRouter().navTo("BoletinVtaDetailPolizasE", {
                     layout: sap.f.LayoutType.MidColumnFullScreen,
-                    //  document: results.Xblnr,
                     document: doc,
                     company: sociedad,
                     year: ejercicio
-                }, false);
+                }, true);
 
 
 
