@@ -119,7 +119,7 @@ sap.ui.define([
                 url,
                 function (jsonModel, parent) {
                     var objResponse = jsonModel.getProperty("/results");
-
+console.log(objResponse)
                     if (objResponse != null) {
 
                         var totCost = objResponse.reduce((a, b) => +a + (+b["Cost"] || 0), 0);
@@ -136,7 +136,7 @@ sap.ui.define([
                             "TotBonus": Number(totBonus.toFixed(2)),
                             "TotIVA": Number(totIVA.toFixed(2)),
                             "TotIEPS": Number(totIEPS.toFixed(2)),
-                            "TotDiscount": Number(totDiscount.toFixed(2)),
+                            "TotDiscount": objResponse[0].Discount,//Number(totDiscount.toFixed(2)),
                             "Total": Number(total.toFixed(2)),
                             "TotQty": Number(TotQty.toFixed(0)),
                             "Promotion": objResponse[0].Promotion
