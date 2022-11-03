@@ -255,27 +255,20 @@ sap.ui.define([
             if (positions.ETREMDNAV.results != null) {
 
                 var cajsTarimas = this.groupByAuto(positions.ETREMDNAV.results, "Cajtar")
-                console.log(cajsTarimas)
-                var cajTarIndex = 1;
+                let cajTarIndex = 1;
                 for (const key in cajsTarimas) {
-
-                    cajsTarimas[key].forEach(function (item) {
-                        console.log(item)
-                        html += '<div style="padding:5px;display:inline; margin:5px;border:1px solid #999999;text-align:center;">' +
-                            `<p style="width:100%;font-size: smaller;">${positions.Eremh.Zremision}</p>` +
-                            `<p style="width:100%;font-size: smaller;">${this.getConfigModel().getProperty("/supplierInput")}</p>` +
-                            `<p style="width:100%;font-size: smaller;">${item.Werks} - ${item.Name1}</p>` +
-                            `<p style="width:100%;font-weight:bold;font-size: smaller;">${item.Maktx}</p>` +
-                            '<svg class="barcode"' +
-                            `jsbarcode-value="${item.Cajtar}"` +
-                            'jsbarcode-textmargin="0"' +
-                            'jsbarcode-fontoptions="bold">' +
-                            '</svg>' +
-                            `<p style="width:100%; text-align:left; font-size: smaller;">${this.getView().getModel("appTxts").getProperty("/rem.palletbox")}: ${cajTarIndex} de ${Object.keys(cajsTarimas).length}</p>` +
-                            '</div>';
-                    }, this);
-
-                    cajTarIndex++
+                    html += '<div style="padding:5px;display:inline; margin:5px;border:1px solid #999999;text-align:center;">' +
+                        `<p style="width:100%;font-size: smaller;">${positions.Eremh.Zremision}</p>` +
+                        `<p style="width:100%;font-size: smaller;">${this.getConfigModel().getProperty("/supplierInput")}</p>` +
+                        `<p style="width:100%;font-size: smaller;">${cajsTarimas[key][0].Werks} - ${cajsTarimas[key][0].Name1}</p>` +
+                        '<svg class="barcode"' +
+                        `jsbarcode-value="${key}"` +
+                        'jsbarcode-textmargin="0"' +
+                        'jsbarcode-fontoptions="bold">' +
+                        '</svg>' +
+                        `<p style="width:100%; text-align:left; font-size: smaller;">${this.getView().getModel("appTxts").getProperty("/rem.palletbox")}: ${cajTarIndex} de ${Object.keys(cajsTarimas).length}</p>` +
+                        '</div>';
+                    cajTarIndex++;
                 }
 
             }
