@@ -1226,7 +1226,7 @@ sap.ui.define([
                     width: 22
                 },
                 {
-                    label: texts.getProperty("/state.dateUPC").toUpperCase(),
+                    label: texts.getProperty("/state.date").toUpperCase(),
                     property: "Budat",
                     width: 22
                 },
