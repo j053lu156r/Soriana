@@ -35,7 +35,7 @@
                         id                  = "filterBar"
                         header              = "Header"
 		                reset               = "onReset" 
-                        search              = "searchData" 
+                        search              = "buscarD" 
                         clear               = "onClear" 
                         cancel              = "onCancel" 
 		                filtersDialogClosed = "onFiltersDialogClosed"
@@ -102,11 +102,11 @@
 						</ff:FormElement>
 					</ff:formElements>
 				</ff:FormContainer>
-				<ff:FormContainer title="{appTxts>/CatagProd.Ftienda}">
+				<ff:FormContainer title="{appTxts>/CatagProd.Ftienda}*" >
 					<ff:formElements>
 						<ff:FormElement label="">
 							<ff:fields>
-								<ComboBox items="{path: 'Tienda>/'}" id="Ftienda">
+								<ComboBox items="{path: 'Tienda>/'}" id="Ftienda" >
 				<core:Item key="{Tienda>Ekorg}" text="{Tienda>Ekotx}" />
 			</ComboBox>
 							</ff:fields>
@@ -143,7 +143,7 @@
 							<ff:fields>
                   
 
-           <Button icon="employee" text="{appTxts>/CatagProd.ButtonExcel}" press="searchData"></Button>
+           <Button icon="employee" text="{appTxts>/CatagProd.ButtonExcel}" press="buscarD"></Button>
          
 							</ff:fields>
                             

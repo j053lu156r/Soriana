@@ -1039,7 +1039,15 @@ sap.ui.define([
             }
         },
         /*Juan Pacheco Nueva forma de llamar los odata*/
-        _GEToDataV2: function(model, entity, filter,  expand,) {
+        _GEToDataV2: function(model, entity, filter,  expand, top, count) {
+console.log(top);
+console.log(count);
+           if (top=== ""||top=== undefined ||top === null){
+            top="";
+           }
+           if (count=== "" ||count===  undefined  ||count=== null){
+            count="";
+           }
             var oModel2 = "/sap/opu/odata/sap/"+model;
             var that = this;
 			let entidad = "/" + entity;
@@ -1051,6 +1059,8 @@ sap.ui.define([
 				filters: filter,
                 urlParameters: {
                     "$expand":expand,
+                    "$top": top,
+			        "$skip": count,
 
                   },
                   //381970
@@ -1075,6 +1085,7 @@ sap.ui.define([
         /*OPulido version de  _GEToDataV2 de Juan Pacheco  */
 
         _GetODataV2: function(model, entity, filter,  expand, top, skip) {
+            console.log(top,skip)
             var oModel2 = "/sap/opu/odata/sap/"+model;
             var that = this;
             let entidad = "/" + entity;
