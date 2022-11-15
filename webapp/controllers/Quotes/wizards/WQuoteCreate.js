@@ -47,6 +47,10 @@ sap.ui.define([
         },
 
         createQuote: function (selectedKey) {
+           
+           
+           
+
             if (!this.hasAccess(31)) {
                 return
             }
@@ -77,6 +81,27 @@ sap.ui.define([
                 this._pDialog.then(function (oDialog) {
                     oDialog.open();
                     that.setInitialDate();
+
+                    if(that.getView().getModel("ModelLectura") !== undefined ){
+                        var Datos =that.getView().getModel("ModelLectura").getData()
+                        console.log(Datos)
+                        
+                        that.getView().byId("sTipoCita").setSelectedKey(Datos.Tipocita)
+                        that.getView().byId("totalpackagesInput").setValue("1")
+                        that.getView().byId("platformsInput").setValue("2")
+                        that.getView().byId("sTipoUnidad").setSelectedKey(Datos.Tipounidad)
+                        that.getView().byId("carrierInput").setValue("1234")
+                        that.getView().byId("DP1").setDateValue(new Date(Datos.Fechacita))
+        
+                        that.getView().byId("sTipoCita").setEditable(false)
+                        that.getView().byId("totalpackagesInput").setEditable(false)
+                        that.getView().byId("platformsInput").setEditable(false)
+                        that.getView().byId("sTipoUnidad").setEditable(false)
+                        that.getView().byId("carrierInput").setEditable(false)
+                        that.getView().byId("DP1").setEditable(false)
+        
+        
+                    }
                 });
             } else {
                 sap.m.MessageBox.error(this.getView().getModel("appTxts").getProperty("/quotes.messageNoSupplier"));
@@ -171,7 +196,7 @@ sap.ui.define([
                                     "Ebeln": appoimentModel[0].Ebeln,
                                     "Ebelp": appoimentModel[0].Ebelp,
                                     "Matnr": appoimentModel[0].Matnr,
-                                    "Citado": appoimentModel[0].Citado,
+                                    "Citado": appoimentModel[0].Citado.toLocaleString(),
                                     "FechaCita": appoimentModel[0].FechaCita,
                                     "HoraIni": appoimentModel[0].HoraIni,
                                     "HoraFin": appoimentModel[0].HoraFin,
@@ -236,7 +261,7 @@ if(response.Success==="X"){
             var oModel2 = "/sap/opu/odata/sap/"+model;
             var that = this;
 
-            console.log(that.getToken(oModel2+entity))
+          //  console.log(that.getToken(oModel2+entity))
 			return new Promise(function(fnResolve, fnReject) {
 
                 $.ajax({
@@ -269,7 +294,7 @@ if(response.Success==="X"){
 			var id = null;
 			$.ajax({
 				type: 'GET',
-				url: oModel2,
+				url:  "/sap/opu/odata/sap/model/ZOSP_CITAS_ADM_SRV/MainSet$filter=Fechaini eq '20221101' and Fechafin eq '20221130'",//oModel2,
 
 				headers: {
 					"X-CSRF-Token": "Fetch"
@@ -284,6 +309,7 @@ if(response.Success==="X"){
 					id = jqXHR.getResponseHeader('X-CSRF-Token');
 				}
 			});
+            console.log(id)
 			return id;
 		},
 
@@ -423,8 +449,8 @@ if(response.Success==="X"){
 
             var FI = new Date(new Date(oStartDate).toISOString().slice(0, 10) + " " + oData[0].DispIni)
             var FF = new Date(new Date(oEndDate).toISOString().slice(0, 10) + " " + oData[0].DispFin)
-         
-            if (oStartDate.toLocaleString('en-GB') > FI.toLocaleString('en-GB') && oEndDate.toLocaleString().trim('en-GB') < FF.toLocaleString('en-GB')) {
+
+            if (oStartDate.toLocaleString('en-GB') > FI.toLocaleString('en-GB') && oEndDate.toLocaleString('en-GB').trim() < FF.toLocaleString('en-GB')) {
                 oData[oPC.indexOfRow(oRow)].appointments.push({
                     start: oStartDate,
                     end: oEndDate,
@@ -543,8 +569,9 @@ if(response.Success==="X"){
             osource.setValueState(sap.ui.core.ValueState.None);
             let matnr = osource.data("matnr");
             let ebeln = osource.data("ebeln");
-            let menger = osource.data("menger");
-            let cantidad = oEvent.getParameter("value");
+            let menger = Number(osource.data("menger"));
+            let cantidad = Number(oEvent.getParameter("value"));
+           
 
             if (menger < cantidad) {
 

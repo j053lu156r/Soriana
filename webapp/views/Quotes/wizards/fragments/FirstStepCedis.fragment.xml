@@ -7,7 +7,7 @@
                 <RadioButton text="{appTxts>/quotes.frescos}" />
             </RadioButtonGroup> -->
             <Label text="{appTxts>/quotes.quoteType}" labelFor="currency"/>
-            <Select id="sTipoCita" class="sapUiSmallMarginBottom" selectedKey="{TemporalModel>tipoCita}" items="{
+            <Select id="sTipoCita" class="sapUiSmallMarginBottom"  items="{
                         path: 'appoinmentsCatalogs>/ETIPOCITANAV/results',
                         sorter: { path: 'Name' }
                     }" change="onChangeSelectTipoCita">
