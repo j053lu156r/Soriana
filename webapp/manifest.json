@@ -858,6 +858,13 @@
                     "target": [
                         "masterValidacionCondicion"
                     ]
+                },
+                {
+                    "name": "masterPowerBI",
+                    "pattern": "masterPowerBI",
+                    "target": [
+                        "masterPowerBI"
+                    ]
                 }
             ],
             "targets": {
@@ -1302,6 +1309,12 @@
                     "viewName": "MasterValidaciones",
                     "controlAggregation": "beginColumnPages",
                     "viewPath": "demo.views.ValidacionCondiciones"
+                },
+                "masterPowerBI": {
+                    "viewType": "XML",
+                    "viewName": "Master",
+                    "controlAggregation": "beginColumnPages",
+                    "viewPath": "demo.views.PowerBI"
                 }
             }
         },

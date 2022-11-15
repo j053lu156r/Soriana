@@ -83,7 +83,6 @@
                         {
                             "idFunction": 48
                         }
-
                     ]
                 }
             ]
@@ -108,7 +107,6 @@
                         {
                             "idFunction": 3
                         }
-
                     ]
                 },
                 {
@@ -126,7 +124,8 @@
                         },
                         {
                             "idFunction": 6
-                        }, {
+                        },
+                        {
                             "idFunction": 40
                         }
                     ]
@@ -146,14 +145,12 @@
                             "roles": [
                                 "0000"
                             ]
-
                         },
                         {
                             "idFunction": 45,
                             "roles": [
                                 "0000"
                             ]
-
                         }
                     ]
                 },
@@ -197,7 +194,6 @@
                     "functions": [
                         {
                             "idFunction": 28
-
                         }
                     ]
                 }
@@ -454,7 +450,6 @@
                         }
                     ]
                 }
-
             ]
         },
         {
@@ -470,7 +465,6 @@
                     "type": "standard",
                     "binding": "Products",
                     "functions": [
-
                         {
                             "idFunction": 46
                         },
@@ -483,9 +477,9 @@
                         {
                             "idFunction": 44
                         }
-
                     ]
-                }, {
+                },
+                {
                     "id": "0045",
                     "title": "/tiles.titleCatalogoP",
                     "subHeader": "",
@@ -495,7 +489,6 @@
                     "type": "standard",
                     "binding": "CatalogProducts",
                     "functions": [
-
                         {
                             "idFunction": 46
                         },
@@ -508,10 +501,8 @@
                         {
                             "idFunction": 44
                         }
-
                     ]
                 }
-
             ]
         },
         {
@@ -679,6 +670,41 @@
                     "functions": [
                         {
                             "idFunction": 54
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "/tiles.titleRep",
+            "tiles": [
+                {
+                    "id": "0041",
+                    "title": "/tiles.titleRep.0001.powerbi",
+                    "subHeader": "",
+                    "icon": "sap-icon://manager-insight",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterPowerBI",
+                    "functions": [
+                        {
+                            "idFunction": 30
+                        },
+                        {
+                            "idFunction": 31
+                        },
+                        {
+                            "idFunction": 32
+                        },
+                        {
+                            "idFunction": 33
+                        },
+                        {
+                            "idFunction": 34
+                        },
+                        {
+                            "idFunction": 47
                         }
                     ]
                 }

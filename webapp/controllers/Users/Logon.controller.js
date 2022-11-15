@@ -76,17 +76,20 @@ sap.ui.define([
                 "Userid": "chernandez@strategy-a.com",
                 "IDProveedor": "0000040022"
             }
-
-            /*
+            
             // An example 128-bit key (16 bytes * 8 bits/byte = 128 bits)
             var key = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
             // Convert text to bytes
-            var payloadBytes = aesjs.convertUtf8(JSON.stringify(payload))
+            var payloadBytes = aesjs.utils.utf8.toBytes(JSON.stringify(payload));
             console.log(payloadBytes)
 
-            var aesCtr = new aesjs.ModeOfOperationCtr(key, new aesjs.main.Counter(5));
-            */
+            var aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
+            var encryptedBytes = aesCtr.encrypt(payloadBytes);
+            console.log(encryptedBytes);
+
+            var encryptedHex = aesjs.utils.hex.fromBytes(encryptedBytes);
+            console.log(encryptedHex);
             
             this.sendLogin();
         },
