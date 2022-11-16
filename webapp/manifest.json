@@ -205,6 +205,10 @@
             },
             "migoModel": {
                 "dataSource": "migoRemote"
+            },
+            "applicationModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {}
             }
         },
         "routing": {

@@ -90,9 +90,9 @@ sap.ui.define([
             var sLayout = sap.f.LayoutType.OneColumn;
 
             this.onExit();
-			/*if (sPreviousHash !== undefined) {
-				window.history.go(-1);
-			} else {*/
+            /*if (sPreviousHash !== undefined) {
+                window.history.go(-1);
+            } else {*/
             this.getOwnerComponent().getRouter().navTo("tile", { layout: sLayout }, true /*no history*/);
             //}
         },
@@ -107,7 +107,7 @@ sap.ui.define([
             if (sPreviousHash !== undefined) {
                 window.history.go(-1);
             } else {
-            this.getOwnerComponent().getRouter().navTo("tile", { layout: sLayout }, true /*no history*/);
+                this.getOwnerComponent().getRouter().navTo("tile", { layout: sLayout }, true /*no history*/);
             }
         },
 
@@ -313,23 +313,23 @@ sap.ui.define([
         },
         onValueHelpRequestquitar: function () {
             var oView = this.getView();
-            this.getConfigModel().setProperty("/supplierInput",null);
-            this.getConfigModel().setProperty("/supplierInputKey",null);
-            this.getConfigModel().setProperty("/supplierTitle",null);
-        /*    if (!this._pValueHelpDialog) {
-                this._pValueHelpDialog = sap.ui.core.Fragment.load({
-                    id: oView.getId(),
-                    name: "demo.fragments.SupplierSelect",
-                    controller: this
-                }).then(function (oDialog) {
-                    oView.addDependent(oDialog);
-                    return oDialog;
-                });
-            }
-            this._pValueHelpDialog.then(function (oDialog) {
-
-                oDialog.open();
-            });*/
+            this.getConfigModel().setProperty("/supplierInput", null);
+            this.getConfigModel().setProperty("/supplierInputKey", null);
+            this.getConfigModel().setProperty("/supplierTitle", null);
+            /*    if (!this._pValueHelpDialog) {
+                    this._pValueHelpDialog = sap.ui.core.Fragment.load({
+                        id: oView.getId(),
+                        name: "demo.fragments.SupplierSelect",
+                        controller: this
+                    }).then(function (oDialog) {
+                        oView.addDependent(oDialog);
+                        return oDialog;
+                    });
+                }
+                this._pValueHelpDialog.then(function (oDialog) {
+    
+                    oDialog.open();
+                });*/
         },
         onValueHelpSearch: function (oEvent) {
             var sValue = oEvent.getParameter("value");
@@ -349,18 +349,18 @@ sap.ui.define([
 
             var descBloqueo = ""
 
-             var oReg  = oEvent.getParameter("selectedItem").getBindingContext("userdata").getObject()
+            var oReg = oEvent.getParameter("selectedItem").getBindingContext("userdata").getObject()
 
 
             //console.log(oEvent.getParameter("selectedItem").getBindingContext("userdata").getObject())
 
             var bloqueo = oReg ? oReg.BloqueoFlag : ""
 
-        if(bloqueo === "X"){
+            if (bloqueo === "X") {
 
-            descBloqueo="[Bloqueo de pago]"
+                descBloqueo = "[Bloqueo de pago]"
 
-        }
+            }
 
             oEvent.getSource().getBinding("items").filter([]);
 
@@ -369,14 +369,21 @@ sap.ui.define([
             }
 
 
-             this.getConfigModel().setProperty("/supplierStatus", descBloqueo);
+            this.getConfigModel().setProperty("/supplierStatus", descBloqueo);
 
 
             var detSupp = this.detailSupplier(oSelectedItem.getTitle());
 
             this.setActiveLifnr(oSelectedItem.getTitle(), oSelectedItem.getDescription() + descBloqueo, detSupp.Impflag);
+            
+            var viewName = this.getView().getModel("applicationModel").getProperty("/routeName");
 
+            if (viewName === "masterPowerBI") {
+                var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+                sap.ui.controller("demo.controllers.PowerBI.Master").onSuggestionItemSelected(vLifnr);
+            }
         },
+
         setActiveLifnr: function (key, description, importation) {
             if (key != "") {
                 var model = this.getOwnerComponent().getModel();
@@ -395,7 +402,7 @@ sap.ui.define([
 
             this.buildUserTileAuth();
         },
-        detailSupplier: function(key){
+        detailSupplier: function (key) {
             var suppList = this.getOwnerComponent().getModel("userdata").getProperty("/ETUSUAPROVNAV/results");
 
             return suppList.find(element => element.Lifnr == key);
@@ -422,10 +429,10 @@ sap.ui.define([
                         var strFunction = f.idFunction;
                         var rolesPermitidos = f.roles;
                         var continuar = true;
-                        if (rolesPermitidos != null){
-                             continuar = rolesPermitidos.includes(roluser);
+                        if (rolesPermitidos != null) {
+                            continuar = rolesPermitidos.includes(roluser);
                         }
-                        if (continuar){
+                        if (continuar) {
                             if (hasCollab) {
                                 if (strFunction != null) {
                                     var funcValue = userFunctions.find(element => element.Idfuncion == strFunction.toString().padStart(6, "000000"));
@@ -475,12 +482,12 @@ sap.ui.define([
                 this.getOwnerComponent().getModel('userdata').setProperty("/ETUSUAPROVNAV", suppliers);
             }
         },
-        
+
         formatTranslate: function (title) {
             var txtModel = this.getOwnerComponent().getModel('appTxts');
             return txtModel.getProperty(title);
         },
-       formatTranslate: function (title, idTile) {
+        formatTranslate: function (title, idTile) {
             var finalTitle = this.defineTileTitle(title, idTile);
             var txtModel = this.getOwnerComponent().getModel('appTxts');
             return txtModel.getProperty(finalTitle);
@@ -588,7 +595,7 @@ sap.ui.define([
             var element = oEvent.getSource().sId;
             var vValue = this.getView().byId(element).getValue();
 
-            if(vValue == ""){
+            if (vValue == "") {
                 this.getView().byId(element).setValue("");
             }
 
@@ -629,10 +636,10 @@ sap.ui.define([
         },
         frmBtnDesvVisible: function (esvisible, usr1) {
             //var confiSite = this.getOwnerComponent().getModel("configSite");
-           // var disp = confiSite.getProperty("/barVisible");
-           if (esvisible && usr1 != "" && usr1 != undefined && usr1 !== null){
-            var seve = true;
-           }
+            // var disp = confiSite.getProperty("/barVisible");
+            if (esvisible && usr1 != "" && usr1 != undefined && usr1 !== null) {
+                var seve = true;
+            }
 
             return ((esvisible && usr1 !== null && usr1 !== "" && usr1 !== undefined));
             // return ((chgUsrRol == '0001' || chgUsrRol == '0005') && usrRol != '0005');
@@ -898,24 +905,24 @@ sap.ui.define([
             };
             reader.readAsDataURL(file);
         },
-        getInboxCount:  function () {
+        getInboxCount: function () {
 
 
             var countMails = 0;
 
             if (this.getOwnerComponent().getModel("userdata") != null) {
                 var vMail = this.getOwnerComponent().getModel("userdata").getProperty("/IMail");
-            var response = inboxModel.getJsonModel(
-                `/headInboxSet?$expand=ETINBOXUNAV&$filter=IOption eq '2' and IMail eq '${vMail}'`);
+                var response = inboxModel.getJsonModel(
+                    `/headInboxSet?$expand=ETINBOXUNAV&$filter=IOption eq '2' and IMail eq '${vMail}'`);
                 if (response != null) {
                     var objResponse = response.getProperty("/results/0/ETINBOXUNAV/results");
                     //countMails= objResponse.getData().length;
-                     countMails =  parseInt(response.getProperty("/results/0/ENmes"),10);
-                    }
+                    countMails = parseInt(response.getProperty("/results/0/ENmes"), 10);
+                }
 
 
             }
-        return countMails;
+            return countMails;
         },
 
         getStatus: function () {
@@ -1007,7 +1014,7 @@ sap.ui.define([
                     break;
             }
         },
-        helpBranch: function(){
+        helpBranch: function () {
             var oView = this.getView();
 
             if (!this._brandHelpDialog) {
@@ -1039,76 +1046,76 @@ sap.ui.define([
             }
         },
         /*Juan Pacheco Nueva forma de llamar los odata*/
-        _GEToDataV2: function(model, entity, filter,  expand, top, count) {
-console.log(top);
-console.log(count);
-           if (top=== ""||top=== undefined ||top === null){
-            top="";
-           }
-           if (count=== "" ||count===  undefined  ||count=== null){
-            count="";
-           }
-            var oModel2 = "/sap/opu/odata/sap/"+model;
+        _GEToDataV2: function (model, entity, filter, expand, top, count) {
+            console.log(top);
+            console.log(count);
+            if (top === "" || top === undefined || top === null) {
+                top = "";
+            }
+            if (count === "" || count === undefined || count === null) {
+                count = "";
+            }
+            var oModel2 = "/sap/opu/odata/sap/" + model;
             var that = this;
-			let entidad = "/" + entity;
+            let entidad = "/" + entity;
 
-			return new Promise(function(fnResolve, fnReject) {
+            return new Promise(function (fnResolve, fnReject) {
 
                 var oModel = new sap.ui.model.odata.ODataModel(oModel2);
-				oModel.read(entidad, {
-				filters: filter,
-                urlParameters: {
-                    "$expand":expand,
-                    "$top": top,
-			        "$skip": count,
+                oModel.read(entidad, {
+                    filters: filter,
+                    urlParameters: {
+                        "$expand": expand,
+                        "$top": top,
+                        "$skip": count,
 
-                  },
-                  //381970
-					success: function(oData, oResponse) {
+                    },
+                    //381970
+                    success: function (oData, oResponse) {
 
-						fnResolve(oResponse);
-					},
-					error: function(error) {
+                        fnResolve(oResponse);
+                    },
+                    error: function (error) {
                         console.log(error)
-						sap.ui.core.BusyIndicator.hide();
-						MessageBox.error("Error: " + error.responseJSON.error.message, {
-							icon: MessageBox.Icon.ERROR,
-							title: "Error"
-						});
-						fnReject(new Error(error.message));
-					}
-				});
-			});
-		},
+                        sap.ui.core.BusyIndicator.hide();
+                        MessageBox.error("Error: " + error.responseJSON.error.message, {
+                            icon: MessageBox.Icon.ERROR,
+                            title: "Error"
+                        });
+                        fnReject(new Error(error.message));
+                    }
+                });
+            });
+        },
 
 
         /*OPulido version de  _GEToDataV2 de Juan Pacheco  */
 
-        _GetODataV2: function(model, entity, filter,  expand, top, skip) {
-            console.log(top,skip)
-            var oModel2 = "/sap/opu/odata/sap/"+model;
+        _GetODataV2: function (model, entity, filter, expand, top, skip) {
+            console.log(top, skip)
+            var oModel2 = "/sap/opu/odata/sap/" + model;
             var that = this;
             let entidad = "/" + entity;
             let aParams = {
                 "$expand": expand
             };
-            if (top !== null && skip !== null && top !== "" && top !== undefined && skip !== undefined){
+            if (top !== null && skip !== null && top !== "" && top !== undefined && skip !== undefined) {
                 aParams["$top"] = top;
                 aParams["skip"] = skip;
             }
 
-            return new Promise(function(fnResolve, fnReject) {
+            return new Promise(function (fnResolve, fnReject) {
 
                 var oModel = new sap.ui.model.odata.v2.ODataModel(oModel2);
                 oModel.setUseBatch(false);
                 oModel.read(entidad, {
                     filters: filter,
-                     urlParameters: aParams,
+                    urlParameters: aParams,
                     //381970
-                    success: function(oData, oResponse) {
+                    success: function (oData, oResponse) {
                         fnResolve(oResponse);
                     },
-                    error: function(error) {
+                    error: function (error) {
                         console.log(error)
                         sap.ui.core.BusyIndicator.hide();
                         MessageBox.error("Error: " + error.responseJSON.error.message, {
@@ -1122,29 +1129,29 @@ console.log(count);
         },
 
         /*Mparra version de  _PostoDataV2 de Juan Pacheco  */
-        _PostODataV2Async: function(model, entity, data, headers) {
-            var oModel2 = "/sap/opu/odata/sap/"+model;
-			return new Promise(function(fnResolve, fnReject) {
+        _PostODataV2Async: function (model, entity, data, headers) {
+            var oModel2 = "/sap/opu/odata/sap/" + model;
+            return new Promise(function (fnResolve, fnReject) {
 
                 $.ajax({
-					url: oModel2 + "/" + entity,
-					type: "POST",
+                    url: oModel2 + "/" + entity,
+                    type: "POST",
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
                     headers: headers,
                     data: JSON.stringify(data),
-					success: function(dataResponse) {
-						fnResolve(dataResponse);
-					},
-					error: function(error, status, err) {
-						sap.ui.core.BusyIndicator.hide();
-						fnReject(new Error(error));
-					}
-				});
-			});
+                    success: function (dataResponse) {
+                        fnResolve(dataResponse);
+                    },
+                    error: function (error, status, err) {
+                        sap.ui.core.BusyIndicator.hide();
+                        fnReject(new Error(error));
+                    }
+                });
+            });
         },
 
-        _GEToDataV2ajax: function(url) {
+        _GEToDataV2ajax: function (url) {
 
             return new Promise((fnResolve, fnReject) => {
 
@@ -1153,12 +1160,12 @@ console.log(count);
                     type: "GET",
                     dataType: "json",
                     contentType: "application/json; charset=utf-8; IEEE754Compatible=true",
-                    success: function(dataResponse) {
+                    success: function (dataResponse) {
                         fnResolve(dataResponse);
                     },
-                    error: function(error, status, err) {
+                    error: function (error, status, err) {
                         sap.ui.core.BusyIndicator.hide();
-                        console.log("error",error)
+                        console.log("error", error)
                         /*MessageBox.error(error.responseText.replaceAll("\n",""), {
                             icon: MessageBox.Icon.ERROR,
                             title: err
@@ -1169,45 +1176,45 @@ console.log(count);
             });
         },
 
-        _POSToDataV2: function(model, entity, aData) {
-            var oModel2 = "/sap/opu/odata/sap/"+model;
+        _POSToDataV2: function (model, entity, aData) {
+            var oModel2 = "/sap/opu/odata/sap/" + model;
             var that = this;
 
             console.log(oModel2)
-			return new Promise(function(fnResolve, fnReject) {
+            return new Promise(function (fnResolve, fnReject) {
 
                 $.ajax({
-					url: oModel2+entity,
-					type: "POST",
+                    url: oModel2 + entity,
+                    type: "POST",
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
-                    data:aData,
-					success: function(dataResponse) {
-						fnResolve(dataResponse);
-					},
-					error: function(error, status, err) {
-						sap.ui.core.BusyIndicator.hide();
-						console.log("error",error)
-						/*MessageBox.error(error.responseText.replaceAll("\n",""), {
-							icon: MessageBox.Icon.ERROR,
-							title: err
-						});*/
-						fnReject(new Error(error));
-					}
-				});
-			});
-		},
+                    data: aData,
+                    success: function (dataResponse) {
+                        fnResolve(dataResponse);
+                    },
+                    error: function (error, status, err) {
+                        sap.ui.core.BusyIndicator.hide();
+                        console.log("error", error)
+                        /*MessageBox.error(error.responseText.replaceAll("\n",""), {
+                            icon: MessageBox.Icon.ERROR,
+                            title: err
+                        });*/
+                        fnReject(new Error(error));
+                    }
+                });
+            });
+        },
 
-        buildExcelSpreadSheet: function(columns, rowData, name){
+        buildExcelSpreadSheet: function (columns, rowData, name) {
             var oSettings = {
-				workbook: { columns: columns },
-				dataSource: rowData,
+                workbook: { columns: columns },
+                dataSource: rowData,
                 fileName: name
-			};
+            };
 
             var oSheet = new Spreadsheet(oSettings);
-            oSheet.build().then( function() {})
-            .finally(oSheet.destroy);
+            oSheet.build().then(function () { })
+                .finally(oSheet.destroy);
         }
     });
 });
