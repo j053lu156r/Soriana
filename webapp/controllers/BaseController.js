@@ -380,7 +380,8 @@ sap.ui.define([
 
             if (viewName === "masterPowerBI") {
                 var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
-                sap.ui.controller("demo.controllers.PowerBI.Master").onSuggestionItemSelected(vLifnr);
+                var user = this.getOwnerComponent().getModel("userdata").getProperty('/IMail');
+                sap.ui.controller("demo.controllers.PowerBI.Master").onSuggestionItemSelected(vLifnr, user);
             }
         },
 

@@ -35,8 +35,7 @@ sap.ui.define([
                     this.getView().byId("dateRange").setValue("");
                     this.getView().byId("folio").setValue("");
     //                this.getView().byId("client").setValue("");
-                    this.getOwnerComponent().setModel(new JSONModel(),
-                    "tableItemsCfdi");
+                    this.getOwnerComponent().setModel(new JSONModel(), "tableItemsCfdi");
 
                     this.getConfigModel().setProperty("/updateFormatsSingle", "xml");
                 }
