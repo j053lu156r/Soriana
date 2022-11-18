@@ -1,0 +1,41 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+    xmlns:u="sap.ui.unified"
+	xmlns:core="sap.ui.core">
+    <Dialog title="{appTxts>/helpDocs.popup.title}" class="sapUiContentPadding">
+        <VBox>
+            <VBox width="100%">
+                <Label text="{appTxts>/helpDocs.description}" />
+                <Input id="description" maxLength="35"/>
+            </VBox>
+            <u:FileUploader
+			id="fileUploader"
+			name="myFileUpload"
+			tooltip="{appTxts>/helpDocs.uploader.tooltip}"
+			uploadComplete="handleUploadComplete"
+			change="handleValueChange"
+			typeMissmatch="handleTypeMissmatch"
+			style="Emphasized"
+			fileType="pdf,jpg,png,doc,xls,docx,xlsx,ppt,pptx"
+			placeholder="{appTxts>/helpDocs.uploader.placeholder}">
+				<u:parameters>
+					<u:FileUploaderParameter
+						name="Accept-CH"
+						value="Viewport-Width"/>
+					<u:FileUploaderParameter
+						name="Accept-CH"
+						value="Width"/>
+					<u:FileUploaderParameter
+						name="Accept-CH-Lifetime"
+						value="86400"/>
+				</u:parameters>
+			</u:FileUploader>
+        </VBox>
+        <buttons>
+            <Button id="closeDialog" text="{appTxts>/date.close}" press="onCloseDialog"/>
+        </buttons>
+        <buttons>
+            <Button id="realizaConsulta" text="{appTxts>/notifications.save}" press="handleUploadPress"/>
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>
