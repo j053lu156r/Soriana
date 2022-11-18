@@ -109,7 +109,15 @@
 									<m:Column><m:Text text="{appTxts>/sendInv.position}" /></m:Column>
                                     <m:Column><m:Text text="{appTxts>/sendInv.barcode}" /></m:Column>
                                     <m:Column><m:Text text="{appTxts>/sendInv.description}" /></m:Column>
-                                    <m:Column><m:Text text="{appTxts>/sendInv.qty}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/sendInv.qty}" />
+									   <m:footer>
+
+                                <m:ObjectNumber
+                                        number="" id="TotalSumEF"
+                                />
+
+                            </m:footer>
+									</m:Column>
                                     <m:Column><m:Text text="{appTxts>/sendInv.unitPrice}" /></m:Column>
                                     <m:Column><m:Text text="{appTxts>/global.amount}" /></m:Column>
                                     <m:Column><m:Text text="{appTxts>/sendInv.packCap}" /></m:Column>
@@ -137,6 +145,7 @@
 										</m:cells>
 									</m:ColumnListItem>
 								</m:items>
+								 
 							</m:Table>
                             <m:OverflowToolbar visible="{= ${tableDetailMoves>/EDOCDTLNAV/Paginated/results/length} > 0 }">
                                 <m:Text text="{tableDetailMoves>/EDOCDTLNAV/Paginated/initRow} - {tableDetailMoves>/EDOCDTLNAV/Paginated/endRow} {appTxts>/pagination.of} {tableDetailMoves>/EDOCDTLNAV/results/length}" />
