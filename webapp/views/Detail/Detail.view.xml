@@ -106,7 +106,15 @@
                                         </m:OverflowToolbar>
                                     </m:headerToolbar>
 								<m:columns>
-									<m:Column><m:Text text="{appTxts>/sendInv.position}" /></m:Column>
+									<m:Column><m:Text text="{appTxts>/sendInv.position}" />
+									   <m:footer>
+									  <m:Label
+			text="Total"
+			
+			design="Bold"
+                                />
+								 </m:footer>
+									</m:Column>
                                     <m:Column><m:Text text="{appTxts>/sendInv.barcode}" /></m:Column>
                                     <m:Column><m:Text text="{appTxts>/sendInv.description}" /></m:Column>
                                     <m:Column><m:Text text="{appTxts>/sendInv.qty}" />
