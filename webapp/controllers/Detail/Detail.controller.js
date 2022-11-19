@@ -49,6 +49,7 @@ sap.ui.define([
 			this.oRouter.navTo("masterCfdi", {layout: sNextLayout});
 		},
 		_onDocumentMatched: function (oEvent) {
+            var suma =0;
             this._document = oEvent.getParameter("arguments").document || this._document || "0";
             this._year = oEvent.getParameter("arguments").year || this._year || "0";
             var url = "/HeaderCFDISet?$expand=EDOCDTLNAV,EDOCHDRNAV&$filter=IOption eq '2' and IBelnr eq '" 
@@ -57,7 +58,12 @@ sap.ui.define([
 
             var ojbResponse = dueModel.getProperty("/results/0");
             //var records = ojbResponse.EDOCDTLNAV;
+            console.log(ojbResponse)
+for(var x =0;x<ojbResponse.EDOCDTLNAV.results.length;x++){
+    suma=suma+ Number(ojbResponse.EDOCDTLNAV.results[x].Bpmng)
 
+}
+this.getView().byId("TotalSumEF").setNumber(suma);
             this.getOwnerComponent().setModel(new JSONModel(ojbResponse),
             "tableDetailMoves");
 

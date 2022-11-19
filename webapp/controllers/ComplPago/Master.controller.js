@@ -224,19 +224,20 @@ sap.ui.define([
 
             let registro = results[posicion];
            var Datos;
-          for(var x=0;x<10;x++){
+         // for(var x=0;x<10;x++){
 
 
 
           //  Fecha = (Fecha.getTime() - (1000 * 60 * 60 * 24 * 5))
-            let LaufdT = String(new Date(new Date(registro.Augdt+ 'T00:00:00').getTime() - (1000 * 60 * 60 * 24 * x)))
+           // let LaufdT = String(new Date(new Date(registro.Augdt+ 'T00:00:00').getTime() - (1000 * 60 * 60 * 24 * x)))
            // let LaufdT2 = String(new Date(new Date(registro.Augdt+ 'T00:00:00').getTime() + (1000 * 60 * 60 * 24 * 10)))
 
-            let Laufd = new Date(LaufdT).toISOString().slice(0,10).replace(/-/g, "");
+          //  let Laufd = new Date(LaufdT).toISOString().slice(0,10).replace(/-/g, "");
           //  let Laufd2 = new Date(LaufdT2).toISOString().slice(0,10).replace(/-/g, "");
             let Augdt=String(registro.Augdt).replace(/-/g, "");
-            let url = `HeaderPYMNTCSet?$expand=ETXTHDRNAV,ETXTTOTALNAV,ETXTTAXNAV,ETXTFACTPROVNAV,ETXTFACTSORNAV,ETXTDISCOUNTNAV,ETXTAGREEMENTNAV&$filter= IOption eq '3' and 
-            ILaufd ge '${Laufd}' and
+            let fecha=(registro.Laufd).replace(/-/g, "");
+            let url = `HeaderPYMNTCSet?$expand=ETXTHDRNAV,ETXTTOTALNAV,ETXTTAXNAV,ETXTFACTPROVNEWNAV,ETXTFACTSORNEWNAV,ETXTDISCOUNTNEWNAV,ETXTAGREEMENTNEWNAV&$filter= IOption eq '3' and 
+            ILaufd ge '${fecha}' and
             
             ILaufi eq '${registro.Laufi}' and 
             IBukrs eq '${registro.Bukrs}' and 
@@ -256,21 +257,21 @@ sap.ui.define([
             let Datos2 = JSON.parse(dataJSON);
 
 
-            if(Datos2.results[0].ETXTFACTPROVNAV.results.length!==0){
-                x=100;
+            if(Datos2.results[0].ETXTFACTPROVNEWNAV.results.length!==0){
+               // x=100;
                 Datos=Datos2;
 
             }
 
-        }
+      //  }
 
             let Encabezado = Object.values(Datos.results[0].ETXTHDRNAV.results[0]).slice(1).join('\t');
             let Totales = Datos.results[0].ETXTTOTALNAV.results;
             let Impuestos = Datos.results[0].ETXTTAXNAV.results;
-            let FacturasProveedor = Datos.results[0].ETXTFACTPROVNAV.results;
-            let FacturasSoriana = Datos.results[0].ETXTFACTSORNAV.results;
-            let Descuentos = Datos.results[0].ETXTDISCOUNTNAV.results;
-            let Agreement = Datos.results[0].ETXTAGREEMENTNAV.results;
+            let FacturasProveedor = Datos.results[0].ETXTFACTPROVNEWNAV.results;
+            let FacturasSoriana = Datos.results[0].ETXTFACTSORNEWNAV.results;
+            let Descuentos = Datos.results[0].ETXTDISCOUNTNEWNAV.results;
+            let Agreement = Datos.results[0].ETXTAGREEMENTNEWNAV.results;
 
 
             let aArchivo = [
