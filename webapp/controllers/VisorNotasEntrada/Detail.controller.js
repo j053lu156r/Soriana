@@ -95,6 +95,7 @@ if (ModeloN.XblnrFact==='0.1'){
             //var expand = "DocDetalleNav";
             var filter = "";
             var expand = "";
+            var suma=0
 
             sap.ui.core.BusyIndicator.show();
             that._GEToDataV2(model, entity, filter, expand).then(function (_GEToDataV2Response) {
@@ -104,7 +105,7 @@ if (ModeloN.XblnrFact==='0.1'){
                 var DataT=[];
                 for (var x = 0; x < data.length; x++) {
 
-
+                    suma=suma+Number(data[x].Menge)
                     DataT.push({
                         Ean11: data[x].Ean11 ,
                         Ebeln: data[x].Ebeln ,
@@ -125,15 +126,18 @@ if (ModeloN.XblnrFact==='0.1'){
 
                     })
                 }
-              
+
+              console.log(suma)
                 var auxJsonModel = new sap.ui.model.json.JSONModel(DataT);
                 that.getView().setModel(auxJsonModel, 'DetallePosiciones');
+                that.getView().byId("sumatxt").setText(suma)
 
+               
             });
            
             var auxJsonModel = new sap.ui.model.json.JSONModel(ModelD);
             that.getView().setModel(auxJsonModel, 'DetalleModel');
-
+       
         },
         VisibleTable: function () {
 
