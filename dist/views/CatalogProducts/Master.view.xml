@@ -1,0 +1,160 @@
+<mvc:View
+    displayBlock   = "true"
+    xmlns:f        = "sap.f" 
+    xmlns:mvc      = "sap.ui.core.mvc"
+    xmlns:fb       = "sap.ui.comp.filterbar"
+    xmlns:vm       = "sap.ui.comp.variants"
+    xmlns          = "sap.m" 
+    xmlns:core     = "sap.ui.core"
+    xmlns:t        ="sap.ui.table"
+	xmlns:l="sap.ui.layout"
+	xmlns:ff="sap.ui.layout.form"
+
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    controllerName ="demo.controllers.CatalogProducts.Master">
+
+    
+
+    <f:DynamicPage class="sapUiContentPadding">
+        <!-- DynamicPage Title -->
+
+        <f:title>
+            <f:DynamicPageTitle backgroundDesign="Transparent">
+                <f:heading>
+                    <vm:VariantManagement standardItemText="{appTxts>/products.title}"></vm:VariantManagement>
+                </f:heading>
+               
+            </f:DynamicPageTitle>
+        </f:title>
+
+        <!-- DynamicPage Header -->
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <fb:FilterBar 
+                        id                  = "filterBar"
+                        header              = "Header"
+		                reset               = "onReset" 
+                        search              = "buscarD" 
+                        clear               = "onClear" 
+                        cancel              = "onCancel" 
+		                filtersDialogClosed = "onFiltersDialogClosed"
+		                showRestoreButton   = "false" 
+                        showClearButton     = "false" 
+                        useToolbar          = "false"
+                        showGoButton="false"
+                        showFilterConfiguration="false">
+
+                        <fb:filterGroupItems>
+
+                        
+
+                            <fb:FilterGroupItem  
+                                groupName            = "__$INTERNAL$"
+                                name                 = "B" 
+                                mandatory            = "true"
+                                label                = "{appTxts>/products.supplier}" 
+                                labelTooltip         = "Tooltip Example" 
+                                partOfCurrentVariant = "true" 
+                                visibleInFilterBar   = "true"
+                               >
+                                <fb:control>
+                                    <Input id="supplierInput" placeholder="{appTxts>/products.supplier}"  showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}">
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                    
+
+                        </fb:filterGroupItems>
+
+                    </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+
+        <f:content>
+            <VBox>
+           
+		<ff:Form id="FormDisplayColumn_threeGroups234"
+			editable="false">
+			<ff:title>
+				<core:Title text="Filtros" />
+                  
+			</ff:title>
+			<ff:layout>
+				<ff:ColumnLayout 
+					columnsM="2"
+					columnsL="3"
+					columnsXL="4"
+				/>
+			</ff:layout>
+            
+			<ff:formContainers>
+				<ff:FormContainer title="{appTxts>/CatagProd.Division}">
+					<ff:formElements>
+						<ff:FormElement label="">
+							<ff:fields>
+									<ComboBox	items="{path: 'Division>/'}" id="FDivision" 	loadItems="SearchDivision">
+				<core:Item key="{Division>Node}" text="{Division>Ltext}" />
+			</ComboBox>
+							</ff:fields>
+						</ff:FormElement>
+					</ff:formElements>
+				</ff:FormContainer>
+				<ff:FormContainer title="{appTxts>/CatagProd.Ftienda}*" >
+					<ff:formElements>
+						<ff:FormElement label="">
+							<ff:fields>
+								<ComboBox items="{path: 'Tienda>/'}" id="Ftienda" >
+				<core:Item key="{Tienda>Ekorg}" text="{Tienda>Ekotx}" />
+			</ComboBox>
+							</ff:fields>
+						</ff:FormElement>
+					</ff:formElements>
+				</ff:FormContainer>
+				<ff:FormContainer title="{appTxts>/CatagProd.Tsurtido}">
+              
+					<ff:formElements>
+						<ff:FormElement label="">
+							<ff:fields>
+								<ComboBox items="{path: 'Surtido>/'}" id="Fsurtido">
+				<core:Item key="{Surtido>Dismm}" text="{Surtido>Dibez}" />
+			</ComboBox>
+							</ff:fields>
+						</ff:FormElement>
+					</ff:formElements>
+				</ff:FormContainer>
+                <ff:FormContainer title="{appTxts>/CatagProd.Cbarras}">
+					<ff:formElements>
+						<ff:FormElement label="">
+							<ff:fields>
+                        <Input
+                            id="SKU"
+                            placeholder="Enter product"
+                            showSuggestion="false"
+                            showValueHelp="false"
+                         
+                          />
+        	</ff:fields>
+                            
+						</ff:FormElement>
+                        <ff:FormElement label="">
+							<ff:fields>
+                  
+
+           <Button icon="employee" text="{appTxts>/CatagProd.ButtonExcel}" press="buscarD"></Button>
+         
+							</ff:fields>
+                            
+						</ff:FormElement>
+					</ff:formElements>
+				</ff:FormContainer>
+			</ff:formContainers>
+		</ff:Form>  
+            </VBox>
+        </f:content>
+        
+    </f:DynamicPage>
+    
+</mvc:View>
