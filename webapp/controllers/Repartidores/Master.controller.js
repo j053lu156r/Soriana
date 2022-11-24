@@ -159,7 +159,7 @@ sap.ui.define([
 
             var UserModel = this.getOwnerComponent().getModel("userdata");
             var userRol = UserModel.getProperty("/ERol");
-            var editable = false;
+            var editable = true;
             var oDRS2 = sap.ui.core.Fragment.byId("CreateDealersFragment", "fcad");
             oDRS2.setMinDate(new Date());
             var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
@@ -168,9 +168,11 @@ sap.ui.define([
                 return false;
             }
 
+            /*
             if (userRol != null && userRol == "0001" || userRol == "0002" || userRol == "0005") {
                 editable = true;
             }
+            */
             //Solo Determinados usuarios pueden modificar estos campos
             //sap.ui.core.Fragment.byId("CreateDealersFragment", "supplier").setValue(Results.Lifnr).setEditable(editable).setVisible(editable);
             sap.ui.core.Fragment.byId("CreateDealersFragment", "supplier").setEditable(editable).setVisible(editable);
@@ -188,8 +190,7 @@ sap.ui.define([
                     sap.ui.core.Fragment.byId("CreateDealersFragment", "saveDialog").setVisible(false);
                 }
 
-            }
-            else {
+            } else {
                 sap.ui.core.Fragment.byId("CreateDealersFragment", "status").setValue("Activo").setEditable(false);
                 sap.ui.core.Fragment.byId("CreateDealersFragment", "modifyDialog").setVisible(false);
             }
@@ -232,11 +233,13 @@ sap.ui.define([
 
             var UserModel = this.getOwnerComponent().getModel("userdata");
             var userRol = UserModel.getProperty("/ERol");
-            var editable = false;
+            var editable = true;
 
+            /*
             if (userRol != null && userRol == "0001" || userRol == "0002" || userRol == "0005") {
                 editable = true;
             }
+            */
             //Solo Determinados usuarios pueden modificar estos campos
             sap.ui.core.Fragment.byId("CreateDealersFragment", "supplier").setEditable(editable).setVisible(editable);
             //sap.ui.core.Fragment.byId("CreateDealersFragment", "supplier").setValue(Results.Lifnr).setEditable(editable).setVisible(editable);
