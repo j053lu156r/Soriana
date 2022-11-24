@@ -103,9 +103,11 @@ if (ModeloN.XblnrFact==='0.1'){
                 var data = _GEToDataV2Response.data.results;
              
                 var DataT=[];
+                console.log(data)
                 for (var x = 0; x < data.length; x++) {
-
-                    suma=suma+Number(data[x].Menge)
+console.log(data[x].Erfmg)
+console.log(suma)
+                    suma=suma+Number(data[x].Erfmg)
                     DataT.push({
                         Ean11: data[x].Ean11 ,
                         Ebeln: data[x].Ebeln ,
