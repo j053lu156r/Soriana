@@ -171,6 +171,16 @@
 						</header>
 						<footer/>
 					</Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/global.export}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+					</Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/global.downEDI}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+					</Column>
 				</columns>
 				<items>
 					<ColumnListItem type="Navigation" press="onListItemPress">
@@ -181,9 +191,6 @@
                                 xmlns="sap.m"
                                 number="{parts: [{path: 'tableItemsOrders>Netwr'}, {path: 'tableItemsOrders>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
                                 unit="{tableItemsOrders>Waers}" emphasized="false" state="None"/>							
-  <!--Inicia cambio BORTA 27.07.2021 Se Cambia la fecha a formato correcto -->
-  <!--                            <Text text="{path: 'tableItemsOrders>Bedat', formatter: '.formatDate'}" width="auto" maxLines="1" wrapping="false" textAlign="Begin"
-								textDirection="Inherit"/> -->
                             <Text xmlns="sap.m" text="{path: 'tableItemsOrders>Eindt', formatter: '.ReverseDate'}" width="auto" maxLines="1" wrapping="false" textAlign="Begin"
                                 textDirection="Inherit"/>
                             <Text xmlns="sap.m" text="{path: 'tableItemsOrders>Kdate', formatter: '.ReverseDate'}" width="auto" maxLines="1" wrapping="false" textAlign="Begin"
@@ -191,6 +198,8 @@
                             <Text xmlns="sap.m" text="{path: 'tableItemsOrders>Ekorg'}" width="auto" maxLines="1" wrapping="false" textAlign="Begin"
                                 textDirection="Inherit"/>
                             <Text text="{tableItemsOrders>Telf1}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>                                         
+                            <Button icon="sap-icon://excel-attachment" press="buildExcel" />
+                            <Button icon="sap-icon://attachment-text-file" press="downloadEDI" />
 						</cells>
 					</ColumnListItem>
 				</items>
