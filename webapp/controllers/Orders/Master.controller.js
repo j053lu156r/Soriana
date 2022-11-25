@@ -1,27 +1,18 @@
 sap.ui.define([
-    "jquery.sap.global",
-    "sap/ui/core/Fragment",
     "demo/controllers/BaseController",
-    "sap/m/UploadCollectionParameter",
-    "sap/ui/core/mvc/Controller",
     "sap/m/PDFViewer",
     "sap/ui/model/json/JSONModel",
-    "sap/ui/core/routing/History",
-    "sap/m/MessageBox",
-    "sap/ui/core/routing/Router",
-    "demo/models/BaseModel",
-    'sap/f/library'
-], function (jQuery, Fragment, Controller, UploadCollectionParameter, History, PDFViewer, JSONModel, fioriLibrary) {
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator"
+], function (Controller, PDFViewer, JSONModel, Filter, FilterOperator) {
     "use strict";
 
-    var tipoUpload = "";
     var oModel = new this.Pedidostemp();
-    var dPersCxP = "";
-    var dIdCxP = "";
-    var regulaArchivos = true;
     var cfdiModel = new this.CfdiModel();
     var _oDataModel = "ZOSP_DEVO_NC_SRV_01";
     var _oDataEntity = "notCreditSet";
+    var oXlsModel = new this.ModelXlsPedidos();
+    var oEdiModel = new this.ModelEDI();
     return Controller.extend("demo.controllers.Orders.Master", {
         onInit: function () {
             this._pdfViewer = new PDFViewer();
@@ -39,6 +30,8 @@ sap.ui.define([
                 }
             }, this);
             this.configFilterLanguage(this.getView().byId("filterBar"));
+            this.xlsModel = new sap.ui.model.odata.v2.ODataModel(oXlsModel.sUrl);
+            this.ediModel = new sap.ui.model.odata.v2.ODataModel(oEdiModel.sUrl);
         },
         searchData: function () {
             sap.ui.core.BusyIndicator.show(0);
@@ -283,6 +276,55 @@ sap.ui.define([
             // Solicitan quitar filtro Cliente - BORTA 27.07.2021
             //    this.getView().byId('client').setValue("");
             this.getView().byId('closedOrders').setSelected(false);
+        },
+
+        buildExcel: function(oEvent){
+            var that = this;
+			var oItem = oEvent.getSource().getBindingContext("tableItemsOrders").getObject();
+            var aFilters = [];
+            aFilters.push(new Filter("Ebeln", FilterOperator.EQ, oItem.Ebeln));
+            this.xlsModel.read("/EnvExcelSet", {
+                filters: aFilters,
+                success: function(response){
+                    var base64Data = response.results[0].Excel;
+                    const linkSource = `data:application/vnd.ms-excel;charset=utf-8;base64,${base64Data}`;
+                    const downloadLink = document.createElement("a");
+                    downloadLink.href = linkSource;
+                    downloadLink.download = `Excel_Pedido_${oItem.Ebeln}.xls`;
+                    downloadLink.click();
+                }, 
+               error: function(error){
+                console.log(error)
+                   sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/order.xlsError"));
+                }
+            });
+        },
+
+        downloadEDI: function(oEvent){
+            var that = this;
+			var oItem = oEvent.getSource().getBindingContext("tableItemsOrders").getObject();
+            var aFilters = [];
+            aFilters.push(new Filter("Ebeln", FilterOperator.EQ, oItem.Ebeln));
+
+            this.ediModel.read("/EdiFileSet", {
+                filters: aFilters,
+                success: function(response){
+                    console.log(response)
+                    if(response.results.length > 0){
+                        var base64Data = response.results[0].Datar;
+                        const linkSource = `data:text/plain;charset=utf-8;base64,${base64Data}`;
+                        const downloadLink = document.createElement("a");
+                        downloadLink.href = linkSource;
+                        downloadLink.download = `EDI_${oItem.Ebeln}.txt`;
+                        downloadLink.click();
+                    } else {
+                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/order.ediEmptyError"));
+                    }
+                }, 
+                error: function(error){
+                    sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/order.downEdiError"));
+                }
+            });
         }
     });
 });
