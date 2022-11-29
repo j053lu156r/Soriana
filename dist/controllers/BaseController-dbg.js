@@ -861,6 +861,7 @@ sap.ui.define([
         },
         findFunName: function (funct) {
             var fNames = this.getOwnerComponent().getModel("funNames").getProperty("/results");
+            console.log(fNames)
             var changeI = funct.toString();
             var name = fNames.find(element => element.Idfuncion === changeI.padStart(6, "000000"));
             if (name != null) {
