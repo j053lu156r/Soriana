@@ -216,33 +216,39 @@ sap.ui.define([
             var texts = this.getOwnerComponent().getModel("appTxts");
             var columns = [
                 {
-                    name: "Pedidos",
+                    name: texts.getProperty("/order.title"),
                     template: {
                         content: "{Ebeln}"
                     }
                 },
                 {
-                    name: "Cliente",
+                    name: texts.getProperty("/order.customer"),
                     template: {
                         content: "{Bukrs} - {Butxt}"
                     }
                 },
                 {
-                    name: "Monto",
+                    name: texts.getProperty("/order.amount"),
                     template: {
                         content: "{Netwr}"
                     }
                 },
                 {
-                    name: "Moneda",
+                    name: texts.getProperty("/order.currency"),
                     template: {
                         content: "{Waers}"
                     }
                 },
                 {
-                    name: "Fecha entrega",
+                    name: texts.getProperty("/order.deliveryend"),
                     template: {
                         content: "{Eindt}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/order.shipmentstart"),
+                    template: {
+                        content: "{Kdatb}"
                     }
                 },
                 {
@@ -258,9 +264,27 @@ sap.ui.define([
                     }
                 },
                 {
+                    name: texts.getProperty("/order.clase"),
+                    template: {
+                        content: "{Bsart}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/order.descript"),
+                    template: {
+                        content: "{Bsart_d}"
+                    }
+                },
+                {
                     name: texts.getProperty("/order.assorment"),
                     template: {
                         content: "{Telf1}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/order.center"),
+                    template: {
+                        content: "{Werks}"
                     }
                 }
             ];
