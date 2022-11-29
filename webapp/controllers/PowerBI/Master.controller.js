@@ -1,8 +1,6 @@
 sap.ui.define([
-    "jquery.sap.global",
-    "demo/controllers/BaseController",
-    "sap/ui/model/json/JSONModel"
-], function (jQuery, Controller, JSONModel) {
+    "demo/controllers/BaseController"
+], function (Controller) {
     "use strict";
 
     // 128-bit key (16 bytes * 8 bits/byte = 128 bits)
@@ -38,7 +36,7 @@ sap.ui.define([
             var encryptedBytes = aesCtr.encrypt(payloadBytes);
             var encryptedHex = aesjs.utils.hex.fromBytes(encryptedBytes);
             var oFrameContent = oFrame.$()[0];
-            oFrameContent.setAttribute("src", "https://brave-ground-043dfce0f.2.azurestaticapps.net/getReportEmbedded?token=" + encryptedHex);
+            oFrameContent.setAttribute("src", "https://brave-flower-02269970f.2.azurestaticapps.net/getReportEmbedded?token=" + encryptedHex);
         }
     });
 });

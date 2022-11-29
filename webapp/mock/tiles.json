@@ -248,7 +248,7 @@
                     "bind2": "sendcompl",
                     "functions": [
                         {
-                            "idFunction": 9
+                            "idFunction": 51
                         }
                     ]
                 },
@@ -278,7 +278,7 @@
                     "binding": "masterValidacionCondicion",
                     "functions": [
                         {
-                            "idFunction": 11
+                            "idFunction": 57
                         }
                     ]
                 }
@@ -490,16 +490,16 @@
                     "binding": "CatalogProducts",
                     "functions": [
                         {
-                            "idFunction": 46
+                            "idFunction": 58
                         },
                         {
-                            "idFunction": 42
+                            "idFunction": 59
                         },
                         {
-                            "idFunction": 43
+                            "idFunction": 60
                         },
                         {
-                            "idFunction": 44
+                            "idFunction": 61
                         }
                     ]
                 }
@@ -569,7 +569,7 @@
                     "binding": "masterAcuerdosNS",
                     "functions": [
                         {
-                            "idFunction": 52
+                            "idFunction": 56
                         }
                     ]
                 },
@@ -584,7 +584,7 @@
                     "binding": "masterAcuerdosGral",
                     "functions": [
                         {
-                            "idFunction": 52
+                            "idFunction": 62
                         }
                     ]
                 },
@@ -599,7 +599,7 @@
                     "binding": "masterAcuerdosNser",
                     "functions": [
                         {
-                            "idFunction": 52
+                            "idFunction": 63
                         }
                     ]
                 },
@@ -689,22 +689,7 @@
                     "binding": "masterPowerBI",
                     "functions": [
                         {
-                            "idFunction": 30
-                        },
-                        {
-                            "idFunction": 31
-                        },
-                        {
-                            "idFunction": 32
-                        },
-                        {
-                            "idFunction": 33
-                        },
-                        {
-                            "idFunction": 34
-                        },
-                        {
-                            "idFunction": 47
+                            "idFunction": 64
                         }
                     ]
                 }
