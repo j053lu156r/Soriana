@@ -228,18 +228,18 @@ sap.ui.define(
             })
           );
         }
-        var modeloGLo=[];
+        var modeloGLo = [];
         var model = "ZOSP_MMPI_MATNR_LIST_SRV";
         var entity = "LIFNR_MATNR_LIST";
         var expand = "";
         var filter = auxFilters;
 
         sap.ui.core.BusyIndicator.show();
-        var indi =0;
+        var indi = 0;
 
         foo(0);
         function foo(cont) {
-        /*  return new Promise(function (fnResolve, fnReject) {
+          /*  return new Promise(function (fnResolve, fnReject) {
             for (var x = 0; x < 4; x++) {
               that._GEToDataV2(model, entity, filter, expand, top, skip).then(function (_GEToDataV2Response) {
                   var data = _GEToDataV2Response.data.results;
@@ -254,113 +254,132 @@ sap.ui.define(
             }
           });*/
           var p1 = new Promise((resolve, reject) => {
-            var data =[];
-            that._GEToDataV2(model, entity, filter, expand, top, skip).then(function (_GEToDataV2Response) {
-                data=_GEToDataV2Response.data.results;
-               indi=Number(data[0].Zcount)
+            var data = [];
+            that
+              ._GEToDataV2(model, entity, filter, expand, top, skip)
+              .then(function (_GEToDataV2Response) {
+                data = _GEToDataV2Response.data.results;
+            
                 console.log(data);
                 if (data.length > 0) {
-                    modeloGLo.push(data);
-                   
+                  indi = Number(data[0].Zcount);
+                  modeloGLo.push(data);
                 }
-                resolve(data)
+                resolve(data);
               });
 
             skip = skip + 5000;
-          
           });
           var p2 = new Promise((resolve, reject) => {
-            var data =[];
-            that._GEToDataV2(model, entity, filter, expand, top, skip).then(function (_GEToDataV2Response) {
-                data=_GEToDataV2Response.data.results;
+            var data = [];
+            that
+              ._GEToDataV2(model, entity, filter, expand, top, skip)
+              .then(function (_GEToDataV2Response) {
+                data = _GEToDataV2Response.data.results;
                 console.log(data);
                 if (data.length > 0) {
-                    modeloGLo.push(data);
-                   
+                  modeloGLo.push(data);
                 }
-                resolve(data)
+                resolve(data);
               });
 
             skip = skip + 5000;
-          
           });
           var p3 = new Promise((resolve, reject) => {
-            var data =[];
-            that._GEToDataV2(model, entity, filter, expand, top, skip).then(function (_GEToDataV2Response) {
-                data=_GEToDataV2Response.data.results;
+            var data = [];
+            that
+              ._GEToDataV2(model, entity, filter, expand, top, skip)
+              .then(function (_GEToDataV2Response) {
+                data = _GEToDataV2Response.data.results;
                 console.log(data);
                 if (data.length > 0) {
-                    modeloGLo.push(data);
-                   
+                  modeloGLo.push(data);
                 }
-                resolve(data)
+                resolve(data);
               });
 
             skip = skip + 5000;
-           
           });
           var p4 = new Promise((resolve, reject) => {
-            var data =[];
-            that._GEToDataV2(model, entity, filter, expand, top, skip).then(function (_GEToDataV2Response) {
-                data=_GEToDataV2Response.data.results;
+            var data = [];
+            that
+              ._GEToDataV2(model, entity, filter, expand, top, skip)
+              .then(function (_GEToDataV2Response) {
+                data = _GEToDataV2Response.data.results;
                 console.log(data);
                 if (data.length > 0) {
-                    modeloGLo.push(data);
-                   
+                  modeloGLo.push(data);
                 }
-                resolve(data)
+                resolve(data);
               });
 
             skip = skip + 5000;
-           
           });
-       
-        
-          Promise.all([p1, p2, p3,p4]).then(values => {
-            cont=cont+20000
-            console.log(values);
-            console.log(modeloGLo);
-            
-       
-            console.log(cont);
-            if (cont < indi) {
-              console.log(cont);
-              foo(cont);
-            }else{
-var dataT=[];
-                for(var x =0; x<modeloGLo.length;x++){
-                    for(var y =0; y<modeloGLo[x].length;y++){
-                    dataT.push(modeloGLo[x][y]);
+          var p5 = new Promise((resolve, reject) => {
+            var data = [];
+            that
+              ._GEToDataV2(model, entity, filter, expand, top, skip)
+              .then(function (_GEToDataV2Response) {
+                data = _GEToDataV2Response.data.results;
+                console.log(data);
+                if (data.length > 0) {
+                  modeloGLo.push(data);
                 }
-            }
+                resolve(data);
+              });
+
+            skip = skip + 5000;
+          });
+          var p6 = new Promise((resolve, reject) => {
+            var data = [];
+            that
+              ._GEToDataV2(model, entity, filter, expand, top, skip)
+              .then(function (_GEToDataV2Response) {
+                data = _GEToDataV2Response.data.results;
+                console.log(data);
+                if (data.length > 0) {
+                  modeloGLo.push(data);
+                }
+                resolve(data);
+              });
+
+            skip = skip + 5000;
+          });
+
+          Promise.all([p1, p2, p3, p4, p5, p6])
+            .then((values) => {
+              cont = cont + 20000;
+              console.log(values);
+              console.log(modeloGLo);
+
+              console.log(cont);
+              if (cont < indi) {
+                console.log(cont);
+                foo(cont);
+              } else {
+                var dataT = [];
+                for (var x = 0; x < modeloGLo.length; x++) {
+                  for (var y = 0; y < modeloGLo[x].length; y++) {
+                    dataT.push(modeloGLo[x][y]);
+                  }
+                }
                 console.log(dataT);
-              
 
                 that.getView().byId("FDivision").setSelectedKey("");
                 that.getView().byId("Fsurtido").setSelectedKey("");
                 that.getView().byId("Ftienda").setSelectedKey("");
                 that.getView().byId("SKU").setValue("");
                 const cmModel = new sap.ui.model.json.JSONModel(dataT);
-               that.getView().setModel(cmModel, "ModelTP");
-               console.log( that.getView().getModel("ModelTP").getData());
-               that.DescargarLog();
+                that.getView().setModel(cmModel, "ModelTP");
+                console.log(that.getView().getModel("ModelTP").getData());
+                that.DescargarLog();
                 sap.ui.core.BusyIndicator.hide();
-
-
-
-
-
-            }
-          }).catch(reason => {
-            console.log(reason)
-          });
-
-
-          
-
-       
+              }
+            })
+            .catch((reason) => {
+              console.log(reason);
+            });
         }
-     
       },
 
       SearchDivision: function () {
@@ -563,7 +582,7 @@ var dataT=[];
           var Exc2 = {
             name: texts.getProperty("/CatagProd.Exc2"),
             template: {
-              content: "{Ltext}",
+              content: "{LtextSeg}",
             },
           };
           var Exc3 = {
@@ -587,7 +606,7 @@ var dataT=[];
           var Exc6 = {
             name: texts.getProperty("/CatagProd.Exc6"),
             template: {
-              content: "{LtextSeg}",
+              content: "{Ltext}",
             },
           };
           var Exc7 = {
