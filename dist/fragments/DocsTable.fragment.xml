@@ -1,0 +1,110 @@
+<!DOCTYPE XML>
+<core:FragmentDefinition xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:unified="sap.ui.unified">
+	<Table id="dcTable"
+								width="714.7396240234375px" noDataText="" mode="MultiSelect"
+								showSeparators="All" growing="true" growingThreshold="20"
+								growingScrollToLoad="true" fixedLayout="false">
+	<infoToolbar>
+		<Toolbar width="100%" height="auto" design="Auto" visible="false"
+			enabled="true">
+			<content>
+				<Label text="Label" design="Standard" width="100%" required="false"
+					textAlign="Begin" textDirection="Inherit" />
+			</content>
+		</Toolbar>
+	</infoToolbar>
+	<headerToolbar>
+		<Toolbar width="auto" height="46px" design="Auto" visible="true"
+			enabled="true">
+			<content>
+				<Title text="Items (2)" titleStyle="Auto" width="auto"
+					textAlign="Begin" visible="true" />
+				<ToolbarSpacer width="" />
+				<Button text="" type="Default" icon="sap-icon://sort"
+					iconFirst="true" width="auto" enabled="true" visible="true"
+					iconDensityAware="false" press="_onButtonPress" />
+				<Button text="" type="Transparent" icon="sap-icon://filter"
+					iconFirst="true" width="auto" enabled="true" visible="true"
+					iconDensityAware="false" press="_onButtonPress1" />
+				<SearchField value="" placeholder="{appTxts>/dtable.search}"
+					showSearchButton="true" visible="true" width="auto"
+					liveChange="_onSearchFieldLiveChange" />
+			</content>
+			<tooltip />
+		</Toolbar>
+	</headerToolbar>
+	<columns>
+		<Column width="80px" hAlign="Right" vAlign="Middle"
+			minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline"
+			mergeDuplicates="false">
+			<header>
+				<Text text="{appTxts>/dtable.doc}" width="auto" maxLines="1" wrapping="false"
+					textAlign="Begin" textDirection="Inherit" />
+			</header>
+			<footer />
+		</Column>
+		<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet"
+			demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+			<header>
+				<Text text="{appTxts>/dtable.date}" width="auto" maxLines="1" wrapping="false"
+					textAlign="Begin" textDirection="Inherit" />
+			</header>
+			<footer />
+		</Column>
+		<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet"
+			demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+			<header>
+				<Text text="{appTxts>/dtable.order}" width="auto" maxLines="1" wrapping="false"
+					textAlign="Begin" textDirection="Inherit" />
+			</header>
+			<footer />
+		</Column>
+		<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet"
+			demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+			<header>
+				<Text text="{appTxts>/dtable.reference}" width="auto" maxLines="1" wrapping="false"
+					textAlign="Begin" textDirection="Inherit" />
+			</header>
+			<footer />
+		</Column>
+		<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet"
+			demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+			<header>
+				<Text text="{appTxts>/dtable.amount}" width="auto" maxLines="1" wrapping="false"
+					textAlign="Begin" textDirection="Inherit" />
+			</header>
+			<footer />
+		</Column>
+		<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet"
+			demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+			<header>
+				<Text text="{appTxts>/dtable.total}" width="auto" maxLines="1" wrapping="false"
+					textAlign="Begin" textDirection="Inherit" />
+			</header>
+			<footer />
+		</Column>
+	</columns>
+	<items>
+		<ColumnListItem type="Active">
+			<cells>
+				<ObjectIdentifier title="{DOCEM}" text=""
+					titleActive="true" visible="true" titlePress="_onObjectIdentifierTitlePress" />
+				<Text
+					text="{path: 'FechaEM', type: 'sap.ui.model.type.Date', formatOptions: { UTC: true, style: 'short' }}"
+					width="auto" maxLines="1" wrapping="false" textAlign="Begin"
+					textDirection="Inherit" />
+				<ObjectIdentifier title="{Pedido}" text=""
+					titleActive="true" visible="true" titlePress="_onObjectIdentifierTitlePress1" />
+				<Text text="{Referencia}" width="auto" maxLines="1" wrapping="false"
+					textAlign="Begin" textDirection="Inherit" />
+				<unified:Currency value="3200.23" currency="USD"
+					useSymbol="false" maxPrecision="3" />
+				<unified:Currency value="3200.23" currency="USD"
+					useSymbol="false" maxPrecision="3" />
+			</cells>
+		</ColumnListItem>
+	</items>
+	</Table>
+</core:FragmentDefinition>

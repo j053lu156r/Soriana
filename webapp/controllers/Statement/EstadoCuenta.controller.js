@@ -40,7 +40,11 @@ sap.ui.define([
                     this.clearFilters();
                     this.getOwnerComponent().setModel(new JSONModel(), "totales");
                     this.getOwnerComponent().setModel(new JSONModel(), "GroupedTotales");
-
+                    var Fecha= new Date();
+           
+                    Fecha = (Fecha.getTime() - (1000*60*60*24*720))
+                    this.getView().byId("dateRange").setDateValue(new Date(Fecha));
+                    this.getView().byId("dateRange").setSecondDateValue(new Date());
 
                     var oModel = new JSONModel({
                         filtros: [{
@@ -100,7 +104,7 @@ sap.ui.define([
 
             //tomar valores dummy para hacer al consulta
             let todayDate = new Date();
-
+  
             // format[AAAAMMDD] (2020101)
             let desde_LV_ZDESDE = '20160219' //this.buildSapDate( todayDate );
             // format[AAAAMMDD] (2020101)
@@ -273,6 +277,11 @@ sap.ui.define([
 
 
         },
+        onChange:function(){
+           var inicial= this.getView().byId("dateRange").getDateValue()
+           console.log(inicial)
+
+        },
 
         searchDataV2: function () {
         
@@ -291,8 +300,9 @@ sap.ui.define([
            console.log(proveedor_LIFNR)
             let todayDate = new Date();
 
+          console.log( this.buildSapDate(this.getView().byId("dateRange").getDateValue()))
             // format[AAAAMMDD] (2020101)
-            let desde_LV_ZDESDE = '20160219' //this.buildSapDate( todayDate );
+            let desde_LV_ZDESDE = this.buildSapDate(this.getView().byId("dateRange").getDateValue());///'20160219' //this.buildSapDate( todayDate );
             // format[AAAAMMDD] (2020101)
             let desde_LV_ZHASTA = this.buildSapDate(todayDate);
 
@@ -335,16 +345,16 @@ sap.ui.define([
 
             )
 
-            /*   auxFilters.push(new sap.ui.model.Filter({
+               auxFilters.push(new sap.ui.model.Filter({
                        path: "Datei",
                        operator: sap.ui.model.FilterOperator.EQ,
                        value1: desde_LV_ZDESDE
                    })
    
-               )*/
+               )
 
             auxFilters.push(new sap.ui.model.Filter({
-                path: "Datei",
+                path: "Datef",
                 operator: sap.ui.model.FilterOperator.EQ,
                 value1: desde_LV_ZHASTA
             })
@@ -1224,7 +1234,7 @@ sap.ui.define([
                     width: 22
                 },
                 {
-                    label: texts.getProperty("/state.dateUPC").toUpperCase(),
+                    label: texts.getProperty("/state.date").toUpperCase(),
                     property: "Budat",
                     width: 22
                 },
@@ -1358,6 +1368,7 @@ sap.ui.define([
             var aportacionesTCodes = ['Z_APORTACIONES']
             var boletinVentasTCodes = ['ZMM_ACUERDOS_LIQUI']
 
+            console.log(results)
 
             if ((acuerdosTCodes.includes(tcode) && doc.startsWith('510')) || (tcode == "" && !(doc.startsWith("1700") && results.Xblnr))) {
 
@@ -1403,13 +1414,13 @@ sap.ui.define([
                 console.log('on boletin vtz')
 
                 // navega a pantalla de boltines * revisar condiciones de apertura , conseguir esenarios
+                console.log(doc,sociedad,ejercicio)
                 this.getOwnerComponent().getRouter().navTo("BoletinVtaDetailPolizasE", {
                     layout: sap.f.LayoutType.MidColumnFullScreen,
-                    //  document: results.Xblnr,
                     document: doc,
                     company: sociedad,
                     year: ejercicio
-                }, false);
+                }, true);
 
 
 
