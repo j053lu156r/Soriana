@@ -1,0 +1,161 @@
+<mvc:View displayBlock="true" 
+    xmlns:f="sap.f" 
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar" 
+    xmlns:vm="sap.ui.comp.variants" 
+    xmlns:unified="sap.ui.unified"
+    xmlns="sap.m" 
+      xmlns:t="sap.ui.table"
+    xmlns:core="sap.ui.core"
+    controllerName="demo.controllers.VisorNotasEntrada.Master"
+    height="100%">
+    <f:DynamicPage class="sapUiContentPadding">
+        <f:title>
+            <f:DynamicPageTitle backgroundDesign="Transparent">
+                <f:heading>
+                    <vm:VariantManagement standardItemText="{appTxts>/visor.title}"/>
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>
+        
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <fb:FilterBar id="filterBar"  header="Header" reset="onReset" search="searchData" 
+                        clear="clearFilters" cancel="onCancel" filtersDialogClosed = "onFiltersDialogClosed" 
+                        showRestoreButton="false" showClearButton="false" useToolbar="false">
+
+                            <fb:filterGroupItems>
+                                <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab" 
+                                    label="{appTxts>/visor.supplier}" mandatory="true" 
+                                    partOfCurrentVariant="true" visibleInFilterBar="true">
+                                    <fb:control>
+                                        <Input
+                                            id="supplierInput" placeholder="{appTxts>/visor.supplier}" 
+                                            showSuggestion="true" valueHelpOnly="true"
+                                            showValueHelp="true" valueHelpRequest=".onValueHelpRequest" 
+                                            value="{configSite>/supplierInput}">
+                                        </Input>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+
+                                <fb:FilterGroupItem groupName="F1" label="{appTxts>/visor.dates}" 
+                                    groupTitle="Fechas" name="Fecha de entrega" mandatory="false" 
+                                    partOfCurrentVariant="true" visibleInFilterBar="true">
+                                    <fb:control>
+                                        <DateRangeSelection id="dateRange" required="true" change="onChange"  />
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                                
+                                     <fb:FilterGroupItem groupName="F14" label="Formato Tienda" 
+                                    groupTitle="Fechas" name="Fecha de entrega" mandatory="false" 
+                                    partOfCurrentVariant="true" visibleInFilterBar="true">
+                                    <fb:control>
+                                     <ComboBox items="{path: 'Tienda>/'}" required="true" id="FtiendNT">
+				<core:Item key="{Tienda>Ekorg}" text="{Tienda>Ekotx}"  />
+			</ComboBox>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+
+
+
+
+                                <fb:FilterGroupItem groupName="__$INTERNAL$" name="Invoice2" 
+                                    label="{appTxts>/visor.filtros}" mandatory="false" 
+                                    partOfCurrentVariant="true" visibleInFilterBar="true">
+                                    <fb:control>
+                                     	<ComboBox id="OPFiltrosC"
+                                            items="{
+                                                path: 'OPFiltros>/',
+                                                sorter: { path: 'text' }
+                                            }">
+                                            <core:Item key="{OPFiltros>key}" text="{OPFiltros>text}" />
+                                        </ComboBox>
+                                       
+                                    </fb:control>
+                                    
+                                </fb:FilterGroupItem>
+                                 <fb:FilterGroupItem groupName="__$INTERNAL$" name="Invoice" 
+                                    label="" mandatory="false" 
+                                    partOfCurrentVariant="true" visibleInFilterBar="true">
+                                    <fb:control>
+                                     
+                                        <Input
+                                            id="inpInvoice" placeholder="{appTxts>/visor.placeholder}" liveChange="Validacion"/>
+                                    </fb:control>
+                                    
+                                </fb:FilterGroupItem>
+                            </fb:filterGroupItems>
+                    </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+
+        </f:header>
+        <f:content>
+            <t:Table 
+                    noData                  ="{appTxts>/visor.noData}" 
+                    id                      ="tableVisor"
+                    alternateRowColors      ="true" 
+                    rows                    ="{ path : 'migoModel>/' }"
+                    enableColumnReordering  = "false"
+                    enableSelectAll         ="false"
+                    visibleRowCount="15"
+                    selectionMode           ="None">  
+                    <t:extension>
+                        <OverflowToolbar style="Clear">
+                            <Title id="title" text="{appTxts>/state.detail} ({migoModel>/length})"/>
+                            <ToolbarSpacer/>
+                               <Button icon="sap-icon://excel-attachment" text="Descarga Global" press="DMAsivo" visible="{= ${migoModel>/length} > 0}" />
+                            <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${migoModel>/length} > 0}" />
+                         <Button icon="sap-icon://action-settings" press="ConfigTable" />
+                        
+                        </OverflowToolbar>
+                    </t:extension>
+                    <t:columns>
+                     
+                        <t:Column width="auto" id="idMblnr" visible="true" sortProperty="Mblnr" filterProperty="Mblnr" >
+                            <Label text="{appTxts>/visor.folio}" />
+                            <t:template>
+                                <Text text="{migoModel>Mblnr}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="auto" id="idEbeln" visible="true" sortProperty="Ebeln" filterProperty="Ebeln">
+                            <Label text="{appTxts>/visor.order}" />
+                            <t:template>
+                                <Text text="{migoModel>Ebeln}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                       
+                        <t:Column width="auto" id="idBudatMkpf" visible="true" sortProperty="BudatMkpf" filterProperty="BudatMkpf">
+                            <Label text="{appTxts>/visor.receivedDate}" />
+                            <t:template>
+                                <Text text="{migoModel>BudatMkpf}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="auto" id="idWerks" visible="true" sortProperty="Werks"  filterProperty="Werks">
+                            <Label text="{appTxts>/visor.branchOffice}" />
+                            <t:template>
+                                <Text text="{migoModel>Werks}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                         <t:Column width="auto" id="idXblnr" visible="true" sortProperty="Xblnr"  filterProperty="Xblnr">
+                            <Label text="{appTxts>/visor.Frecibo}" />
+                            <t:template>
+                                <Text text="{migoModel>Xblnr}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="auto" id="idXblnr2" visible="true" sortProperty="XblnrFact" filterProperty="XblnrFact"> 
+                            <Label text="{appTxts>/visor.invoice}" />
+                            <t:template>
+                                <Text text="{migoModel>XblnrFact}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                      
+                       
+                          
+                    </t:columns>
+                  
+                </t:Table>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>
