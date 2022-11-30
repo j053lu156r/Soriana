@@ -725,7 +725,21 @@
                         "masterAcuerdosNser"
                     ]
                 },
-              
+                {
+                    "name": "masterCargoNS",
+                    "pattern": "masterCargoNS",
+                    "target": [
+                        "masterCargoNS"
+                    ]
+                },
+                {
+                    "pattern": "detailCargoNS/{layout}/{sociedad}/{documento}/{ejercicio}/{tienda}",
+                    "name": "detailCargoNS",
+                    "target": [
+                        "masterCargoNS",
+                        "detailCargoNS"
+                    ]
+                },
                 {
                     "name": "Products",
                     "pattern": "Products",
@@ -1217,7 +1231,16 @@
                     "viewPath": "demo.views.AcuerdosNser",
                     "controlAggregation": "beginColumnPages"
                 },
-              
+                "masterCargoNS": {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.CargoNS",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailCargoNS": {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.CargoNS",
+                    "controlAggregation": "midColumnPages"
+                },
                 "Products": {
                     "viewName": "Master",
                     "controlAggregation": "beginColumnPages",
