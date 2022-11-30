@@ -604,6 +604,21 @@
                     ]
                 },
                 {
+                    "id": "0050",
+                    "title": "/tiles.cargoNS",
+                    "subHeader": "",
+                    "icon": "sap-icon://customer-order-entry",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterCargoNS",
+                    "functions": [
+                        {
+                            "idFunction": 65
+                        }
+                    ]
+                },
+                {
                     "id": "0034",
                     "title": "/tiles.aportaciones",
                     "subHeader": "",
