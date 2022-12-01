@@ -93,11 +93,13 @@ sap.ui.define([
                     if (objResponse != null) {
 
                         var totCargo = objResponse.AcuNivSerDet.results.reduce((a, b) => +a + (+b["Zboni"] || 0), 0);
+                        var totIEPS = objResponse.AcuNivSerDet.results.reduce((a, b) => +a + (+b["Zieps"] || 0), 0);
                         var totIVA = objResponse.AcuNivSerDet.results.reduce((a, b) => +a + (+b["Ziva"] || 0), 0);
                         var totTotal = objResponse.AcuNivSerDet.results.reduce((a, b) => +a + (+b["Total"] || 0), 0);
 
                         var totalDetDet = {
                             "TotCargo": Number(totCargo.toFixed(2)),
+                            "TotIEPS": Number(totIEPS.toFixed(2)),
                             "TotIVA": Number(totIVA.toFixed(2)),
                             "TotTotal": Number(totTotal.toFixed(2))
                         };
