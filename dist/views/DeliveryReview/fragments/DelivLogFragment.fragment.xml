@@ -1,0 +1,69 @@
+<core:FragmentDefinition 
+    xmlns="sap.m" 
+    xmlns:upload="sap.m.upload"
+	xmlns:core="sap.ui.core"
+    id="DelivLogFragment">
+	<Dialog title="{appTxts>/invoice.log}" 
+            horizontalScrolling="true"
+            class="sapUiContentPadding"
+            contentWidth= "1800px"
+		    contentHeight= "500px" >
+            <Table 
+                id="tableLog"
+                alternateRowColors="true" 
+                fixedLayout="false" 
+                noDataText="{appTxts>/fs.nodata}"
+                sticky="HeaderToolbar,InfoToolbar,ColumnHeaders"
+                items="{path: 'tableDelivLog>/FACLOGNAV/results'}" 
+				>
+                <columns>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Label text="{appTxts>/invoice.uuid}" />
+                        </header>
+                    </Column>
+                    
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Label text="{appTxts>/invoice.folio}" />
+                            </header>
+                    </Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Label text="{appTxts>/invoice.date}" />
+                        </header>
+                    </Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Label text="{appTxts>/invoice.hour}" />
+                        </header>
+                    </Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Label text="{appTxts>/invoice.desc1}" />
+                        </header>
+                    </Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Label text="{appTxts>/invoice.status}" />
+                            </header>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Active"> 
+                        <cells>
+                            <Text text="{tableDelivLog>Uuid}"  width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{tableDelivLog>FolioId}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{path: 'tableDelivLog>Fecha' , formatter: '.ReverseDate'}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{tableDelivLog>Hora}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{tableDelivLog>Descripcion1}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <Text text="{tableDelivLog>Descripcion4}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+		<buttons>
+			<Button id="closeDialogDes" text="{appTxts>/recipient.close}" press="onCancel"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>
