@@ -473,6 +473,15 @@
                     ]
                 },
                 {
+                    "pattern": "detailANS/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{tda}",
+                    "name": "detailANS",
+                    "target": [
+                        "EstadoCuenta",
+                        "detailAcuerdosAS",
+                        "detailANS"
+                    ]
+                },
+                {
                     "pattern": "detailDetailAcuCP/{layout}/{sociedad}/{document}/{ejercicio}/{doc}/{tda}",
                     "name": "detailDetailAcuCP",
                     "target": [
@@ -1198,6 +1207,11 @@
                 },
                 "detailDetailAcuEC": {
                     "viewName": "DetailDetailEC",
+                    "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "endColumnPages"
+                },
+                "detailANS": {
+                    "viewName": "DetailANS",
                     "viewPath": "demo.views.Acuerdos",
                     "controlAggregation": "endColumnPages"
                 },
