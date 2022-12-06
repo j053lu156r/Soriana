@@ -48,7 +48,6 @@ sap.ui.define([
 
                 sections.forEach(section => {
                     section.tiles.forEach(element => {
-                        console.log(element)
                         if (this.hasTileVisible(element.id)) {
                             if (element.numeric != null && element.numeric != "") {
                                 var parts = element.numeric.split(">");
