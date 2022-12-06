@@ -1,0 +1,1 @@
+sap.ui.define([],function(){"use strict";return{findPropertieValue:function(e,n,t,i){let r=i.results.find(n=>n[e]==t);return r?r[n]:""}}});
