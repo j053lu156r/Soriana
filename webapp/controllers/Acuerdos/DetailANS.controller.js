@@ -5,17 +5,17 @@ sap.ui.define([
     "use strict";
 
     var oModel = new this.Acuerdos();
-    return Controller.extend("demo.controllers.Acuerdos.DetailDetailCP", {
+    return Controller.extend("demo.controllers.Acuerdos.DetailANS", {
         onInit: function () {
-            /*var oExitButton = this.getView().byId("exitFullScreenBtn"),
-                oEnterButton = this.getView().byId("enterFullScreenBtn");*/
+            var oExitButton = this.getView().byId("exitFullScreenBtn"),
+                oEnterButton = this.getView().byId("enterFullScreenBtn");
 
             this.oRouter = this.getOwnerComponent().getRouter();
             this.oModel = this.getOwnerComponent().getModel();
 
-            this.oRouter.getRoute("detailDetailAcuCP").attachPatternMatched(this._onDocumentMatched, this);
+            this.oRouter.getRoute("detailANS").attachPatternMatched(this._onDocumentMatched, this);
 
-            /*[oExitButton, oEnterButton].forEach(function (oButton) {
+            [oExitButton, oEnterButton].forEach(function (oButton) {
                 oButton.addEventDelegate({
                     onAfterRendering: function () {
                         if (this.bFocusFullScreenButton) {
@@ -24,7 +24,7 @@ sap.ui.define([
                         }
                     }.bind(this)
                 });
-            }, this);*/
+            }, this);
         },
         handleItemPress: function (oEvent) {
 			/*var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(2),
@@ -63,11 +63,15 @@ sap.ui.define([
             this.oRouter.navTo("masterCargoNS", { layout: sNextLayout });
         },*/
         handleClose: function () {
-			window.history.go(-1);
-		},
-		onBack: function () {
-			window.history.go(-1);
-		},
+            var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/closeColumn");
+            this.oRouter.navTo("detailAcuerdosAS", { 
+                layout: sNextLayout,
+                document: this._documento,
+				sociedad: this._sociedad,
+				ejercicio: this._ejercicio,
+                doc: this._documento
+            });
+        },
         _onDocumentMatched: function (oEvent) {
             console.log(oEvent.getParameter("arguments"))
             this._sociedad = oEvent.getParameter("arguments").sociedad || this._sociedad || "0";

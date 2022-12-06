@@ -22,6 +22,12 @@ sap.ui.define([
             oModel.setProperty("/routeName", sRouteName);
         },
 
+        onAfterRendering: function(){
+            var lifnr = this.getConfigModel().getProperty("/supplierInputKey");
+            var user = this.getOwnerComponent().getModel("userdata").getProperty('/IMail');
+            this.onSuggestionItemSelected(lifnr, user);
+        },
+
         onExit: function () {
             
         },
