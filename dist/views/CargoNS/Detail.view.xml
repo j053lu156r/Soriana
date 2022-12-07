@@ -124,6 +124,20 @@
                                         </m:Column>
                                         <m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                             <m:header>
+                                                <m:Text text="{appTxts>/cargoNS.ieps}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                            </m:header>
+                                            <m:footer>
+                                                <m:ObjectNumber
+                                                    number="{
+                                                        parts:[{path:'TotCargoNS>/TotIEPS'},{path:'CurrencyCode'}],
+                                                        type: 'sap.ui.model.type.Currency',
+                                                        formatOptions: {showMeasure: false}
+                                                            }"
+                                                    unit="MXN" />
+                                            </m:footer>
+                                        </m:Column>
+                                        <m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                            <m:header>
                                                 <m:Text text="{appTxts>/cargoNS.iva}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                             </m:header>
                                             <m:footer>
@@ -178,6 +192,13 @@
                                                 <m:ObjectNumber
                                                     number="{
                                                         parts:[{path:'DetCargoNSHdr>Zboni'},{path:'CurrencyCode'}],
+                                                        type: 'sap.ui.model.type.Currency',
+                                                        formatOptions: {showMeasure: false}
+                                                            }"
+                                                    unit="MXN" />
+                                                <m:ObjectNumber
+                                                    number="{
+                                                        parts:[{path:'DetCargoNSHdr>Zieps'},{path:'CurrencyCode'}],
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
