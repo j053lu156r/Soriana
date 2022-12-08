@@ -5,17 +5,17 @@ sap.ui.define([
     "use strict";
 
     var oModel = new this.Acuerdos();
-    return Controller.extend("demo.controllers.Acuerdos.DetailDetailCP", {
+    return Controller.extend("demo.controllers.Acuerdos.DetailANS", {
         onInit: function () {
-            /*var oExitButton = this.getView().byId("exitFullScreenBtn"),
-                oEnterButton = this.getView().byId("enterFullScreenBtn");*/
+            var oExitButton = this.getView().byId("exitFullScreenBtn"),
+                oEnterButton = this.getView().byId("enterFullScreenBtn");
 
             this.oRouter = this.getOwnerComponent().getRouter();
             this.oModel = this.getOwnerComponent().getModel();
 
-            this.oRouter.getRoute("detailDetailAcuCP").attachPatternMatched(this._onDocumentMatched, this);
+            this.oRouter.getRoute("detailANS").attachPatternMatched(this._onDocumentMatched, this);
 
-            /*[oExitButton, oEnterButton].forEach(function (oButton) {
+            [oExitButton, oEnterButton].forEach(function (oButton) {
                 oButton.addEventDelegate({
                     onAfterRendering: function () {
                         if (this.bFocusFullScreenButton) {
@@ -24,7 +24,10 @@ sap.ui.define([
                         }
                     }.bind(this)
                 });
-            }, this);*/
+            }, this);
+
+            console.log(this.oModel)
+            this.oModel.setProperty("/actionButtonsInfo/midColumn/exitFullScreen", );
         },
         handleItemPress: function (oEvent) {
 			/*var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(2),
@@ -33,41 +36,63 @@ sap.ui.define([
 
         },
         handleFullScreen: function () {
-            this.bFocusFullScreenButton = true;
+            console.log("aqu")
+            var oFCL = this.getView().getParent().getParent();
+
+			oFCL.setLayout(sap.f.LayoutType.EndColumnFullScreen);
+            this.getView().byId("enterFullScreenBtn").setVisible(false)
+            this.getView().byId("exitFullScreenBtn").setVisible(true)
+            
+
+
+        /*    this.bFocusFullScreenButton = true;
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
             this.oRouter.navTo("detailCargoANS",
                 {
-                    layout: sNextLayout,
+                    layout: sap.f.LayoutType.EndColumnFullScreen,
                     sociedad: this._sociedad,
                     documento: this._documento,
                     ejercicio: this._ejercicio,
                     tienda: this._tienda
                 }
-            );
+            );*/
         },
         handleExitFullScreen: function () {
-            this.bFocusFullScreenButton = true;
+            console.log("aqu2")
+         
+            var oFCL = this.getView().getParent().getParent();
+
+			oFCL.setLayout(sap.f.LayoutType.ThreeColumnsMidExpanded);
+            this.getView().byId("enterFullScreenBtn").setVisible(true)
+            this.getView().byId("exitFullScreenBtn").setVisible(false)
+            
+           /* this.bFocusFullScreenButton = true;
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
+            console.log(this.oModel)
             this.oRouter.navTo("detailCargoANS",
                 {
-                    layout: sNextLayout,
+                    layout: sap.f.LayoutType.TwoColumnsMidExpanded,
                     sociedad: this._sociedad,
                     documento: this._documento,
                     ejercicio: this._ejercicio,
                     tienda: this._tienda
                 }
-            );
+            );*/
         },
        /* handleClose: function () {
             var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
             this.oRouter.navTo("masterCargoNS", { layout: sNextLayout });
         },*/
         handleClose: function () {
-			window.history.go(-1);
-		},
-		onBack: function () {
-			window.history.go(-1);
-		},
+            var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/closeColumn");
+            this.oRouter.navTo("detailAcuerdosAS", { 
+                layout: sNextLayout,
+                document: this._documento,
+				sociedad: this._sociedad,
+				ejercicio: this._ejercicio,
+                doc: this._documento
+            });
+        },
         _onDocumentMatched: function (oEvent) {
             console.log(oEvent.getParameter("arguments"))
             this._sociedad = oEvent.getParameter("arguments").sociedad || this._sociedad || "0";

@@ -240,6 +240,7 @@ sap.ui.define([
 		},
 
         onListItemPress: function (oEvent) {
+            console.log("detail")
             var resource = oEvent.getSource().getBindingContext("AcuerdosHdr").getPath(),
                 line = resource.split("/").slice(-1).pop();
 
@@ -247,8 +248,8 @@ sap.ui.define([
             var results = odata.getProperty("/AcuerdosDet/Paginated/results");
 
             var docResult = results[line];
-
-            this.getOwnerComponent().getRouter().navTo("detailDetailAcuEC",
+           // detailDetailAcuEC
+            this.getOwnerComponent().getRouter().navTo("detailANS",
                 {
                     layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
                     document: this._document,
