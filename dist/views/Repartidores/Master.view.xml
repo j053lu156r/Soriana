@@ -1,0 +1,156 @@
+<mvc:View displayBlock="true" 
+    xmlns:f="sap.f" 
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar" 
+    xmlns:vm="sap.ui.comp.variants" 
+    xmlns="sap.m" 
+    xmlns:core="sap.ui.core"
+	 controllerName="demo.controllers.Repartidores.Master" height="100%">
+	<f:DynamicPage  
+		class="sapUiContentPadding">
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle backgroundDesign="Transparent">
+                <f:heading>
+                    <vm:VariantManagement standardItemText="{appTxts>/rep.title}">
+                    </vm:VariantManagement>
+                </f:heading>
+               <f:actions>
+                    <ToolbarSpacer/>
+                    <Button text="{appTxts>/rep.createdealer}" type="Emphasized" press="createButton"/>
+                    <ToolbarSpacer/>
+                    <Button text="{appTxts>/rep.discharge}" type="Emphasized" press="deleteButton"/>
+                </f:actions>
+            </f:DynamicPageTitle>
+        </f:title>
+        <!-- DynamicPage Header -->
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <fb:FilterBar id="filterBar"  header="Header"
+		                reset="onReset" search="searchData" clear="clearFilters" cancel="onCancel" 
+		                filtersDialogClosed = "onFiltersDialogClosed"
+		                showRestoreButton="false" showClearButton="false" useToolbar="false"> 
+			
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab" label="Proveedor" mandatory="true" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        id="supplierInput"
+                                        placeholder="Proveedor"
+                                        showSuggestion="true"
+                                        valueHelpOnly="true"
+                                        showValueHelp="true"
+                                        valueHelpRequest=".onValueHelpRequest"
+                                        value="{configSite>/supplierInput}"
+                                        >
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="{appTxts>/rep.dealer}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        id="repartidorInput"
+                                        placeholder="Repartidor"
+                                        showSuggestion="true"
+                                        >
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+
+	                </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+		<f:content>
+            <VBox>
+			<Table sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
+                noDataText="{appTxts>/rep.title}" 
+                id="tableRepartidores"
+                mode="MultiSelect" 
+                alternateRowColors="true" 
+                items="{path: 'RepartidoresHdr>/ETDEALERSNAV/Paginated/results', sorter : { path : 'Belnr', descending : true }}"                
+				>
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title text="{appTxts>/rep.title} ({RepartidoresHdr>/ETDEALERSNAV/results/length})" />
+                        <ToolbarSpacer/>
+                        <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
+                        press=".buildExportTable"
+                        visible="{= ${RepartidoresHdr>/ETDEALERSNAV/results/length} > 0}"
+                        />
+                        <Select 
+                            visible="{= ${RepartidoresHdr>/ETDEALERSNAV/Paginated/results/length} > 0 }"
+                            change=".paginateValue(${$parameters>/selectedItem}, 'RepartidoresHdr', '/ETDEALERSNAV')">
+                            <items>
+                                <core:Item key="10" text="10"/>
+                                <core:Item key="20" text="20"/>
+                                <core:Item key="50" text="50"/>
+                                <core:Item key="100" text="100"/>
+                            </items>
+                        </Select>
+                    </OverflowToolbar>
+                </headerToolbar>
+				<columns>
+                	<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/rep.number}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/rep.supplier}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+					<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/rep.name}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+					<Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/rep.key}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+					<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/rep.fcad}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/rep.status}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>                  
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press="onListItemPress">                    
+						<cells>
+                            <Text xmlns="sap.m" text="{RepartidoresHdr>Usua}"/>
+                            <Text xmlns="sap.m" text="{RepartidoresHdr>Lifnr} - {RepartidoresHdr>Nlifnr}"/>
+							<Text xmlns="sap.m" text="{RepartidoresHdr>Repartidor}"/>
+							<Text xmlns="sap.m" text="{RepartidoresHdr>Clave}"/>
+                            <Text xmlns="sap.m" text="{path: 'RepartidoresHdr>Endda', formatter: '.ReverseDate'}"/>
+                            <Text xmlns="sap.m" text="{RepartidoresHdr>Zactivo}"/>                            
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+            <OverflowToolbar visible="{= ${RepartidoresHdr>/ETDEALERSNAV/Paginated/results/length} > 0 }">
+                <Text text="{RepartidoresHdr>/ETDEALERSNAV/Paginated/initRow} - {RepartidoresHdr>/ETDEALERSNAV/Paginated/endRow} {appTxts>/pagination.of} {RepartidoresHdr>/ETDEALERSNAV/results/length}" />
+                <ToolbarSpacer/>
+                <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${RepartidoresHdr>/ETDEALERSNAV/Paginated/iterator}, ${RepartidoresHdr>/ETDEALERSNAV/Paginated/initRow}, 'RepartidoresHdr', '/ETDEALERSNAV')" enabled="{= ${RepartidoresHdr>/ETDEALERSNAV/Paginated/iterator} !== 1}" />
+                <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${RepartidoresHdr>/ETDEALERSNAV/Paginated/iterator}, ${RepartidoresHdr>/ETDEALERSNAV/Paginated/endRow}, 'RepartidoresHdr', '/ETDEALERSNAV')" enabled="{= ${RepartidoresHdr>/ETDEALERSNAV/Paginated/endRow} !== ${RepartidoresHdr>/ETDEALERSNAV/results/length}}" />
+            </OverflowToolbar>
+            </VBox>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

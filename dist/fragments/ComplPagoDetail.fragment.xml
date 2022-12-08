@@ -1,0 +1,58 @@
+<!DOCTYPE XML>
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:unified="sap.ui.unified">
+	<Dialog title="{appTxts>/compl.title}" horizontalScrolling="true">
+	<Table
+		noDataText="No data found"
+		fixedLayout="false"
+		items="{
+			path : 'invoiceComplPago>/NavDocList/results',
+			sorter : {
+				path : 'Belnr',
+				descending : false
+			}
+		}">
+		<ColumnListItem>
+			<cells>
+				<Text text="{invoiceComplPago>Belnr}" />
+				<Text text="{invoiceComplPago>Uuid}" />
+				<Text text="{invoiceComplPago>Xblnr}" />
+				<Text text="{invoiceComplPago>Budat}" />
+				<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout" xmlns="sap.m" number="{parts: [{path: 'invoiceComplPago>Dmbtr'}, {path: 'invoiceComplPago>Pswsl'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{invoiceComplPago>Pswsl}" emphasized="false" state="None"/>
+			</cells>
+		</ColumnListItem>
+		<columns>
+			<Column>
+				<header>
+					<Text text="{appTxts>/compl.invoice} " />
+				</header>
+			</Column>
+			<Column>
+				<header>
+					<Text text="{appTxts>/compl.uuid} " />
+				</header>
+			</Column>
+			<Column>
+				<header>
+					<Text text="{appTxts>/compl.reference} " />
+				</header>
+			</Column>
+			<Column>
+				<header>
+					<Text text="{appTxts>/compl.date} " />
+				</header>
+			</Column>
+			<Column>
+				<header hAlign="Center">
+					<Text text="{appTxts>/compl.amount} " />
+				</header>
+			</Column>
+		</columns>
+	</Table>
+	<buttons>
+			<Button id="closeDialog" text="{i18n>dialogCloseButtonText}" press="onCloseDialog"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>
