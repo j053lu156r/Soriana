@@ -33,7 +33,13 @@ sap.ui.define([
 
         },
         handleFullScreen: function () {
-            this.bFocusFullScreenButton = true;
+            console.log("aqu")
+            var oFCL = this.getView().getParent().getParent();
+
+			oFCL.setLayout(sap.f.LayoutType.EndColumnFullScreen);
+            this.getView().byId("enterFullScreenBtn").setVisible(false)
+            this.getView().byId("exitFullScreenBtn").setVisible(true)
+          /*  this.bFocusFullScreenButton = true;
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
             this.oRouter.navTo("detailCargoANS",
                 {
@@ -43,10 +49,17 @@ sap.ui.define([
                     ejercicio: this._ejercicio,
                     tienda: this._tienda
                 }
-            );
+            );*/
         },
         handleExitFullScreen: function () {
-            this.bFocusFullScreenButton = true;
+            console.log("aqu2")
+         
+            var oFCL = this.getView().getParent().getParent();
+
+			oFCL.setLayout(sap.f.LayoutType.ThreeColumnsMidExpanded);
+            this.getView().byId("enterFullScreenBtn").setVisible(true)
+            this.getView().byId("exitFullScreenBtn").setVisible(false)
+          /*  this.bFocusFullScreenButton = true;
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
             this.oRouter.navTo("detailCargoANS",
                 {
@@ -56,7 +69,7 @@ sap.ui.define([
                     ejercicio: this._ejercicio,
                     tienda: this._tienda
                 }
-            );
+            );*/
         },
        /* handleClose: function () {
             var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");

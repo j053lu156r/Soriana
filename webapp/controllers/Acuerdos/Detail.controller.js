@@ -230,7 +230,7 @@ sap.ui.define([
 			this.bFocusFullScreenButton = true;
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
 			this.oRouter.navTo("detailAcuerdos", {
-				layout: ap.f.LayoutType.ThreeColumnsEndExpanded,
+				layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
 				document: this._document,
 				sociedad: this._sociedad,
 				ejercicio: this._ejercicio,

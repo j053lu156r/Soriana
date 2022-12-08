@@ -47,66 +47,6 @@
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
-                <!--
-                    <fb:FilterBar id="filterBar"  header="Header"
-		                reset="onReset" search="searchData" clear="clearFilters" cancel="onCancel" 
-		                filtersDialogClosed = "onFiltersDialogClosed"
-		                showRestoreButton="false" showClearButton="false" useToolbar="false"> 
-			
-                        <fb:filterGroupItems>
-                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="{appTxts>/acuerdos.sociedad}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
-                                <fb:control>
-                                    <Input
-                                        id="sociedadInput"
-                                        placeholder="{appTxts>/acuerdos.sociedad}"
-                                        showSuggestion="true"
-                                        maxLength="4"
-                                        >
-                                    </Input>
-                                </fb:control>
-                            </fb:FilterGroupItem>
-                        
-                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="B" label="{appTxts>/acuerdos.docto}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
-                                <fb:control>
-                                    <Input
-                                        id="documentoInput"
-                                        placeholder="{appTxts>/acuerdos.docto}"
-                                        showSuggestion="true"
-                                        maxLength="10"
-                                        >
-                                    </Input>
-                                </fb:control>
-                            </fb:FilterGroupItem>
-
-                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="C" label="{appTxts>/acuerdos.ejercicio}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
-                                <fb:control>
-                                    <Input
-                                        id="ejercicioInput"
-                                        placeholder="{appTxts>/acuerdos.ejercicio}"
-                                        showSuggestion="true"
-                                        maxLength="4"
-                                        >
-                                    </Input>
-                                </fb:control>
-                            </fb:FilterGroupItem>
-
-                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="D" label="{appTxts>/acuerdos.acuerdo}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
-                                <fb:control>
-                                    <Input
-                                        id="acuerdoInput"
-                                        placeholder="{appTxts>/acuerdos.acuerdo}"
-                                        showSuggestion="true"
-                                        maxLength="10"
-                                        >
-                                    </Input>
-                                </fb:control>
-                            </fb:FilterGroupItem>
-
-                        </fb:filterGroupItems>
-
-	                </fb:FilterBar>
-                    -->
-
                 </f:content>
             </f:DynamicPageHeader>
         </f:header>

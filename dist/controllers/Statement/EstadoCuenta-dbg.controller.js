@@ -1356,7 +1356,7 @@ sap.ui.define([
             var tcode = results.Tcode
             console.log(sociedad, ejercicio, tcode)
             var doc = results.Belnr
-            var acuerdosTCodes = ['MEB4', 'WLF4', 'MEB2', 'MEB0', 'WLF2', 'ZMMFILACUERDO', 'WFL5']
+            var acuerdosTCodes = [ "ZD33","ZM33","ZD34","ZM34",'MEB4', 'WLF4', 'MEB2', 'MEB0', 'WLF2', 'ZMMFILACUERDO', 'WFL5']
             var aportacionesTCodes = ['Z_APORTACIONES']
             var boletinVentasTCodes = ['ZMM_ACUERDOS_LIQUI']
 
