@@ -1,0 +1,9 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	controllerName="demo.controllers.Users.Logout" xmlns:html="http://www.w3.org/1999/xhtml">
+		<MessagePage showHeader="false"
+				 text="Logout"
+				 enableFormattedText="true"
+				 description="{appTxts>/tile.logout}"
+				 icon="sap-icon://visits">
+	</MessagePage>
+</mvc:View>
