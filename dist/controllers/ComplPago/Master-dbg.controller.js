@@ -12,6 +12,8 @@ sap.ui.define([
     "sap/ui/core/routing/Router",
     "demo/models/BaseModel",
     'sap/f/library',
+   
+    
 
 ], function (exportLibrary, Spreadsheet, Fragment, Controller, UploadCollectionParameter, History, PDFViewer, JSONModel, fioriLibrary) {
     "use strict";
@@ -294,6 +296,50 @@ sap.ui.define([
             //this.exportxls('Archivo', '/Detalles/results', columns, typeExport);
 
             sap.ui.core.util.File.save(ContenidoArchivo, nombreArchivo, "txt", "text/plain", "utf-8", false);
+
+        },
+
+        generateFilexlsx: function (oEvent) {
+            let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
+            let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
+
+            let registro = results[posicion];
+           var Datos;
+         // for(var x=0;x<10;x++){
+
+
+
+          //  Fecha = (Fecha.getTime() - (1000 * 60 * 60 * 24 * 5))
+           // let LaufdT = String(new Date(new Date(registro.Augdt+ 'T00:00:00').getTime() - (1000 * 60 * 60 * 24 * x)))
+           // let LaufdT2 = String(new Date(new Date(registro.Augdt+ 'T00:00:00').getTime() + (1000 * 60 * 60 * 24 * 10)))
+
+          //  let Laufd = new Date(LaufdT).toISOString().slice(0,10).replace(/-/g, "");
+          //  let Laufd2 = new Date(LaufdT2).toISOString().slice(0,10).replace(/-/g, "");
+            let Augdt=String(registro.Augdt).replace(/-/g, "");
+            let fecha=(registro.Laufd).replace(/-/g, "");
+            let url = `HeaderPYMNTCSet?$expand=ETXTHDRNAV,ETXTTOTALNAV,ETXTTAXNAV,ETXTFACTPROVNEWNAV,ETXTFACTSORNEWNAV,ETXTDISCOUNTNEWNAV,ETXTAGREEMENTNEWNAV&$filter= IOption eq '3' and 
+            ILaufd ge '${fecha}' and
+            
+            ILaufi eq '${registro.Laufi}' and 
+            IBukrs eq '${registro.Bukrs}' and 
+            ILifnr eq '${registro.Lifnr}' and 
+            IGjahr eq '${registro.Gjahr}' and 
+            IVblnr eq '${registro.Vblnr}' and 
+            IAugdt eq '${Augdt}'&$format=json`;
+
+
+
+            let oODataJSONModel = this.getOdata(sUri);
+
+            let oDataJSONModel = this.getOdataJsonModel(url, oODataJSONModel);
+            console.log(oODataJSONModel)
+            let dataJSON = oDataJSONModel.getJSON();
+           
+            console.log( JSON.parse(dataJSON))
+            generarxls( JSON.parse(dataJSON));
+
+
+           
 
         },
         generaRenglonesArchivo: function (Array) {
@@ -928,7 +974,11 @@ var auxFilters=[];
             that.getView().byId("dinamicTableCP").close();
         },
 
+        generateexcel:function(datosjson){
+            
 
+          generarxls(datosjson);
+        }
 
 
 

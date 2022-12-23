@@ -241,6 +241,24 @@ function ValidacionesFiscales() {
 ValidacionesFiscales.prototype = Object.create(BaseModel.prototype);
 ValidacionesFiscales.prototype.contructor = ValidacionesFiscales;
 
+//Envio Adenda simplificada
+function AdendaSimplificada() {
+
+    var host = window.location.host; 
+    if (host !== "socios.soriana.com"){
+        url = "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboSimplificada.asmx" //QAS
+    } else {
+        url = "https://enviodocumentos.soriana.com/RecibeCFD/wseDocReciboSimplificada.asmx" //PRO
+    }
+    var params = {};
+    params.sUrl = url;
+    params.sModel = "adendaSimplificada";
+    BaseModel.call(this, params);
+}
+
+AdendaSimplificada.prototype = Object.create(BaseModel.prototype);
+AdendaSimplificada.prototype.contructor = AdendaSimplificada;
+
 //Plan de pagos
 function PaymentPlan() {
     var params = {};

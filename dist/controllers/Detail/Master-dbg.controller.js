@@ -18,6 +18,7 @@ sap.ui.define([
     var oModel = new this.EnvioCfdi();
     var cfdiModel = new this.CfdiModel();
     var oValidFiscales = new this.ValidacionesFiscales();
+    var oAdendaSimplificada = new this.AdendaSimplificada();
     var fiscalUrl = "";
     var _oDataModel = "ZOSP_CFDI_SRV_04";
     var _oDataEntity = "HeaderCFDISet";
@@ -34,7 +35,7 @@ sap.ui.define([
                     barModel.setProperty("/barVisible", true);
                     this.getView().byId("dateRange").setValue("");
                     this.getView().byId("folio").setValue("");
-    //                this.getView().byId("client").setValue("");
+                    //                this.getView().byId("client").setValue("");
                     this.getOwnerComponent().setModel(new JSONModel(), "tableItemsCfdi");
 
                     this.getConfigModel().setProperty("/updateFormatsSingle", "xml");
@@ -60,7 +61,7 @@ sap.ui.define([
             var endDate = this.buildSapDate(dateRange.getSecondDateValue());
             var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
             var vXblnr = this.getView().byId("folio").getValue();
-   //         var vWerks = this.getView().byId("client").getSelectedKey();
+            //         var vWerks = this.getView().byId("client").getSelectedKey();
 
             if (vLifnr != null && vLifnr != "") {
                 bContinue = true;
@@ -97,14 +98,14 @@ sap.ui.define([
                     aFilter.push(new sap.ui.model.Filter("IEnddate", sap.ui.model.FilterOperator.EQ, endDate));
                 }
 
-               this._GetODataV2(_oDataModel, _oDataEntity, aFilter, ["EMTDCNAV"]).then(resp => {
-                   var ojbResponse = resp.data.results[0];
-                   this.getOwnerComponent().setModel(new JSONModel(ojbResponse), "tableItemsCfdi");
-                   this.paginate('tableItemsCfdi', '/EMTDCNAV', 1, 0);
-                   sap.ui.core.BusyIndicator.hide();
-               }).catch(error => {
-                   sap.ui.core.BusyIndicator.hide();
-               });
+                this._GetODataV2(_oDataModel, _oDataEntity, aFilter, ["EMTDCNAV"]).then(resp => {
+                    var ojbResponse = resp.data.results[0];
+                    this.getOwnerComponent().setModel(new JSONModel(ojbResponse), "tableItemsCfdi");
+                    this.paginate('tableItemsCfdi', '/EMTDCNAV', 1, 0);
+                    sap.ui.core.BusyIndicator.hide();
+                }).catch(error => {
+                    sap.ui.core.BusyIndicator.hide();
+                });
             }
 
         },
@@ -145,7 +146,7 @@ sap.ui.define([
                 this._uploadDialog2 = null;
             }
         },
-        documentUploadPress: function(){
+        documentUploadPress: function () {
             var that = this;
             var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoice", "fileUploader");
             var uploadList = sap.ui.core.Fragment.byId("uploadInvoice", "logUploadList");
@@ -162,12 +163,12 @@ sap.ui.define([
             var objRequest = {
                 "Lifnr": vLifnr,
                 "Type": "A",
-                "Log" : [ {"Uuid": "", "Description": "", "Sts": "" }]
+                "Log": [{ "Uuid": "", "Description": "", "Sts": "" }]
             };
 
             var docMatList = this.byId("complPagoList").getSelectedItems();
 
-            if(docMatList.length > 0){
+            if (docMatList.length > 0) {
                 var docMat = docMatList[0].getBindingContext("tableItemsCfdi").getObject();
                 objRequest.Docmat = docMat.Mblnr;
                 objRequest.Year = docMat.Gjahr;
@@ -204,7 +205,7 @@ sap.ui.define([
             if (!this.hasAccess(3)) {
                 return false;
             }
-            if (vLifnr !== undefined && vLifnr !== null){
+            if (vLifnr !== undefined && vLifnr !== null) {
                 if (!this._uploadDialog3) {
                     this._uploadDialog3 = sap.ui.xmlfragment("uploadInvoiceTest", "demo.fragments.UploadInvoice2", this);
                     this.getView().addDependent(this._uploadDialog3);
@@ -214,13 +215,38 @@ sap.ui.define([
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/clarifications.noSupplier"));
             }
         },
+
+        openUploadDialogAdenda: function () {
+            var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+            if (!this.hasAccess(3)) {
+                return false;
+            }
+            if (vLifnr !== undefined && vLifnr !== null) {
+                if (!this._uploadDialog4) {
+                    this._uploadDialog4 = sap.ui.xmlfragment("uploadInvoiceAdenda", "demo.fragments.UploadInvoiceAdenda", this);
+                    this.getView().addDependent(this._uploadDialog4);
+                }
+                this._uploadDialog4.open();
+            } else {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/clarifications.noSupplier"));
+            }
+        },
+
         onCloseDialogUpload2: function () {
             if (this._uploadDialog3) {
                 this._uploadDialog3.destroy();
                 this._uploadDialog3 = null;
             }
         },
-        documentUploadPress2: function(){
+
+        onCloseDialogUploadAdenda: function () {
+            if (this._uploadDialog4) {
+                this._uploadDialog4.destroy();
+                this._uploadDialog4 = null;
+            }
+        },
+
+        documentUploadPress2: function () {
             var that = this;
             var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
             console.log(vLifnr);
@@ -237,39 +263,39 @@ sap.ui.define([
             var reader2 = new FileReader();
 
             reader2.onload = function (evn) {
-                var strXML = evn.target.result;  
-                
-                var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' + 
-                    'xmlns:tem="http://tempuri.org/"><soapenv:Header/><soapenv:Body><tem:RecibeCFDPortal>' + 
-                    '<tem:XMLCFD><![CDATA[' + strXML + ']]></tem:XMLCFD><tem:proveedor>' + vLifnr + 
+                var strXML = evn.target.result;
+
+                var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' +
+                    'xmlns:tem="http://tempuri.org/"><soapenv:Header/><soapenv:Body><tem:RecibeCFDPortal>' +
+                    '<tem:XMLCFD><![CDATA[' + strXML + ']]></tem:XMLCFD><tem:proveedor>' + vLifnr +
                     '</tem:proveedor></tem:RecibeCFDPortal></soapenv:Body></soapenv:Envelope>';
-                
+
                 $.ajax({
                     async: true,
                     url: oValidFiscales.sUrl,
                     method: "POST",
                     headers: {
-                       "Content-Type": "text/xml; charset=utf-8",
-                       "Access-Control-Allow-Origin": "*"
+                        "Content-Type": "text/xml; charset=utf-8",
+                        "Access-Control-Allow-Origin": "*"
                     },
                     data: body,
-                    success: function(response) {
+                    success: function (response) {
                         sap.ui.core.BusyIndicator.hide();
                         that.onCloseDialogUpload2();
                         oFileUploader.clear();
-                        var oXMLModel = new sap.ui.model.xml.XMLModel();  
+                        var oXMLModel = new sap.ui.model.xml.XMLModel();
                         oXMLModel.setXML(response.getElementsByTagName("RecibeCFDPortalResult")[0].textContent);
                         var oXml = oXMLModel.getData();
                         var status = oXml.getElementsByTagName("AckErrorApplication")[0].attributes[5].nodeValue;
                         var strResponse = oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent;
-                        strResponse = strResponse.replaceAll(";","\n\n");
+                        strResponse = strResponse.replaceAll(";", "\n\n");
                         if (status == "ACCEPTED") {
                             sap.m.MessageBox.success(strResponse);
                         } else {
                             sap.m.MessageBox.error(strResponse);
                         }
                     },
-                    error: function(request, status, err) {
+                    error: function (request, status, err) {
                         sap.ui.core.BusyIndicator.hide();
                         that.onCloseDialogUpload2();
                         oFileUploader.clear();
@@ -279,7 +305,78 @@ sap.ui.define([
             };
             reader2.readAsText(file);
         },
-        
+
+        adendaUploadPress: function () {
+            var that = this;
+            var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+            var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoiceAdenda", "fileUploaderAdenda");
+            var inptOrder = sap.ui.core.Fragment.byId("uploadInvoiceAdenda", "order");
+            sap.ui.core.BusyIndicator.show(0);
+
+            if (!oFileUploader.getValue()) {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/helpDocs.uploader.nodata"));
+                sap.ui.core.BusyIndicator.hide();
+                return;
+            }
+
+            if (inptOrder.getValue() == "" || inptOrder.getValue() == null || inptOrder.getValue() == undefined) {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/helpDocs.uploader.nodata"));
+                sap.ui.core.BusyIndicator.hide();
+                return;
+            }
+
+            var file = oFileUploader.oFileUpload.files[0];
+            var reader = new FileReader();
+            var order = inptOrder.getValue();
+
+            reader.onload = function (evn) {
+                var strXML = evn.target.result;
+                var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' +
+                    'xmlns:tem="http://tempuri.org/"><soapenv:Header/><soapenv:Body><tem:RecibeCFDPortal>' +
+                    '<tem:XMLCFD><![CDATA[' + strXML + ']]></tem:XMLCFD>' +
+                    '<tem:proveedor>' + vLifnr + '</tem:proveedor>' +
+                    '<tem:FolioPedido>' + order + '</tem:FolioPedido>' +
+                    '</tem:RecibeCFDPortal></soapenv:Body></soapenv:Envelope>';
+
+                $.ajax({
+                    async: true,
+                    url: oAdendaSimplificada.sUrl,
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/xml; charset=utf-8",
+                        "Access-Control-Allow-Origin": "*"
+                    },
+                    data: body,
+                    success: function (response) {
+                        sap.ui.core.BusyIndicator.hide();
+                        that.onCloseDialogUploadAdenda();
+                        oFileUploader.clear();
+                        console.log(response.getElementsByTagName("RecibeCFDPortalResult")[0])
+                        /*
+                        var oXMLModel = new sap.ui.model.xml.XMLModel();
+                        oXMLModel.setXML(response.getElementsByTagName("RecibeCFDPortalResult")[0]);
+                        var oXml = oXMLModel.getData();
+                        var status = oXml.getElementsByTagName("AckErrorApplication")[0].attributes[5].nodeValue;
+                        var strResponse = oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent;
+                        strResponse = strResponse.replaceAll(";", "\n\n");
+                        if (status == "ACCEPTED") {
+                            sap.m.MessageBox.success(strResponse);
+                        } else {
+                            sap.m.MessageBox.error(strResponse);
+                        }
+                        */
+                    },
+                    error: function (request, status, err) {
+                        sap.ui.core.BusyIndicator.hide();
+                        that.onCloseDialogUploadAdenda();
+                        oFileUploader.clear();
+                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.SendError"));
+                    }
+                });
+            };
+            reader.readAsText(file);
+        },
+
         filtrado: function (evt) {
             var filterCustomer = [];
             var query = evt.getParameter("query");
@@ -318,12 +415,12 @@ sap.ui.define([
             this.getOwnerComponent().getRouter().navTo("detailCfdi", { layout: oNextUIState.layout, document: document, year: year }, true);
         },
 
-        onGetFiscalUrl: function(oEvent){
+        onGetFiscalUrl: function (oEvent) {
             this.fiscalModel.read("", {
-                success: function(response){
+                success: function (response) {
                     console.log(response)
-                }, 
-                error: function(error){
+                },
+                error: function (error) {
                     sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/sendInv.getUrlError"));
                 }
             });
