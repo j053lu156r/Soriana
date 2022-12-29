@@ -1,0 +1,73 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+    xmlns:u="sap.ui.unified"
+	xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    <Dialog title="{appTxts>/iupload.titleAdenda}" class="sapUiContentPadding">
+            <HBox id="uploadBoxAdenda" alignContent="Center" alignItems="Center">
+            <f:SimpleForm id="SimpleFormChange354"
+			editable="true"
+			layout="ResponsiveGridLayout"
+			labelSpanXL="3"
+			labelSpanL="3"
+			labelSpanM="3"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="4"
+			emptySpanL="4"
+			emptySpanM="4"
+			emptySpanS="0"
+			columnsXL="1"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false" >
+                <f:content>
+                    <u:FileUploader
+                        id="fileUploaderAdenda"
+                        name="myFileUpload"
+                        tooltip="{appTxts>/helpDocs.uploader.tooltip}"
+                        uploadComplete="handleUploadComplete2"
+                        change="handleValueChange2"
+                        style="Emphasized"
+                        fileType="{configSite>/updateFormatsSingle}"
+                        placeholder="{appTxts>/helpDocs.uploader.placeholder}">
+                            <u:parameters>
+                                <u:FileUploaderParameter
+                                    name="Accept-CH"
+                                    value="Viewport-Width"/>
+                                <u:FileUploaderParameter
+                                    name="Accept-CH"
+                                    value="Width"/>
+                                <u:FileUploaderParameter
+                                    name="Accept-CH-Lifetime"
+                                    value="86400"/>
+                            </u:parameters>
+                    </u:FileUploader>
+
+                    <Label text="Orden" />
+                    <Input id="order" placeholder="0000000000" />
+
+                </f:content>
+            </f:SimpleForm>
+            </HBox>
+            <VBox>
+                <List
+                    id="logUploadListTest"
+                    mode="None"
+                    items="{
+                        path: '/Log/results'
+                    }"
+                    visible="false">
+                    <items>
+                        <StandardListItem
+                            title="{Description}"
+                            highlight="{path:'Sts', formatter: '.defineHighlight'}" />
+                    </items>
+                </List>
+            </VBox>
+        <buttons>
+            <Button id="btnSaveAdenda" text="{appTxts>/notifications.save}" press="adendaUploadPress" class="sapUiSmallMarginBegin"/>
+            <Button id="closeDialogAdenda" text="{appTxts>/date.close}" press="onCloseDialogUploadAdenda"/>
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

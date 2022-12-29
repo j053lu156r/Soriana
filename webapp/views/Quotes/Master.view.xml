@@ -20,7 +20,7 @@
                 </f:actions> -->
                 <f:actions>
                     <ToolbarSpacer/>
-                    <Button text="{appTxts>/quotes.createQuote}" type="Emphasized" press=".createQuote"/>
+                    <Button text="{appTxts>/quotes.createQuote}" type="Emphasized" press=".createQuote('N')"/>
                 </f:actions>
             </f:DynamicPageTitle>
         </f:title>
@@ -59,66 +59,7 @@
                                 </fb:control>
                             </fb:FilterGroupItem>
 
-                            <!-- <fb:FilterGroupItem groupName="__$INTERNAL$" name="Tipo cita" label="{appTxts>/quotes.quoteType}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="false">
-                                <fb:control>
-                                    <ComboBox id="quoteType" items="{
-                                                path: 'appoinmentsCatalogs>/ETIPOCITANAV/results',
-                                                sorter: { path: 'Name' }
-                                            }">
-                                        <core:Item key="{appoinmentsCatalogs>ZNumcita}" text="{appoinmentsCatalogs>ZTipocita}" />
-                                    </ComboBox>
-                                </fb:control>
-                            </fb:FilterGroupItem> -->
-
-                            <!-- <fb:FilterGroupItem groupName="__$INTERNAL$" name="Product type" label="{appTxts>/quotes.productType}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="false">
-                                <fb:control>
-                                    <Input id="productType" placeholder="{appTxts>/quotes.productType}" showSuggestion="true" valueHelpOnly="false" showValueHelp="true" valueHelpRequest="helpProductType(false)" />
-                                </fb:control>
-                            </fb:FilterGroupItem> -->
-
-                            <!-- <fb:FilterGroupItem groupName="__$INTERNAL$" name="Turn" label="{appTxts>/quotes.turn}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="false">
-                                <fb:control>
-                                    <ComboBox id="quoteTurn" items="{
-                                                path: 'appoinmentsCatalogs>/ETIPOTURNONAV/results'
-                                            }">
-                                        <core:Item key="{appoinmentsCatalogs>ZNumturno}" text="{appoinmentsCatalogs>ZTipoturno}" />
-                                    </ComboBox>
-                                </fb:control>
-                            </fb:FilterGroupItem> -->
-
-                            <!-- <fb:FilterGroupItem groupName="__$INTERNAL$" name="Status" label="{appTxts>/quotes.quoteStatus}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="false">
-                                <fb:control>
-                                    <ComboBox id="quoteStatus" items="{
-                                                path: 'appoinmentsCatalogs>/ETIPOSTATUSNAV/results'
-                                            }">
-                                        <core:Item key="{appoinmentsCatalogs>ZNumstatus}" text="{appoinmentsCatalogs>ZTipostatus}" />
-                                    </ComboBox>
-                                </fb:control>
-                            </fb:FilterGroupItem> -->
-
-                            <!-- <fb:FilterGroupItem groupName="__$INTERNAL$" name="Tipo unidad" label="{appTxts>/quotes.unitType}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="false">
-                                <fb:control>
-                                    <ComboBox id="quoteUnitType" items="{
-                                                path: 'appoinmentsCatalogs>/ETIPOUNIDADNAV/results'
-                                            }">
-                                        <core:Item key="{appoinmentsCatalogs>ZNumunidad}" text="{appoinmentsCatalogs>ZTipounidad}" />
-                                    </ComboBox>
-                                </fb:control>
-                            </fb:FilterGroupItem> -->
-
-                            <!-- <fb:FilterGroupItem groupName="__$INTERNAL$" name="A2" label="{appTxts>/quotes.order}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="false">
-                                <fb:control>
-                                    <Input id="orderInput" placeholder="{appTxts>/quotes.order}" showSuggestion="true">
-                                    </Input>
-                                </fb:control>
-                            </fb:FilterGroupItem> -->
-
-                            <!-- <fb:FilterGroupItem groupName="__$INTERNAL$" name="Sucursal" label="{appTxts>/quotes.branch}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="false">
-                                <fb:control>
-                                    <Input id="branchInput" placeholder="{appTxts>/quotes.branch}" showSuggestion="true" valueHelpOnly="false" showValueHelp="true" valueHelpRequest="helpBranch">
-                                    </Input>
-                                </fb:control>
-                            </fb:FilterGroupItem> -->
+                          
                         </fb:filterGroupItems>
                     </fb:FilterBar>
                 </f:content>
@@ -126,12 +67,7 @@
         </f:header>
         <f:content>
             <VBox>
-                <!-- <SegmentedButton selectedKey="{quoteConfigModel>/spc1Visible}">
-                <items>
-                    <SegmentedButtonItem key="Table" icon="sap-icon://table-view"/>
-                    <SegmentedButtonItem key="Calendar" icon="sap-icon://calendar"/>
-                </items>
-            </SegmentedButton> -->
+              
                 <Table sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" noDataText="{appTxts>/quotes.noData}" autoPopinMode="true" fixedLayout="false" growing="true" visible="{= ${quoteConfigModel>/spc1Visible} !== 'Calendar' }" id="tableQuotes" mode="None" alternateRowColors="true" items="{path: 'tableQuotesModel>/CTCITASCAB/Paginated/results', sorter : { path : 'ZfolioCita', descending : true }}">
                     <headerToolbar>
                         <OverflowToolbar>

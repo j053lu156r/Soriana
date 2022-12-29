@@ -140,6 +140,44 @@ sap.ui.define([
                 console.error(error);
             });
         },
+        searchDetail: function (dato) {
+
+      
+
+         
+
+            let filtros = [];
+
+            filtros.push(new sap.ui.model.Filter({
+                path: "Action",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: '2'
+            })
+            );
+            
+            filtros.push(new sap.ui.model.Filter({
+                path: "Folioini ",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: "'"+dato+"'"
+            })
+            );
+
+           
+            sap.ui.core.BusyIndicator.show();
+            let that = this;
+            this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASDETEXT"], "").then(resp => {
+
+                console.log(resp.data.results[0].CTCITASDETEXT.results)
+          //console.log(this.getView().getModel("appoinmentsCatalogs").getData())
+                that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(resp.data.results[0].CTCITASDETEXT.results), "PosicionesG");
+              // that.paginate("tableQuotesModel", "/CTCITASCAB", 1, 0);
+                sap.ui.core.BusyIndicator.hide();
+            }).catch(error => {
+                sap.ui.core.BusyIndicator.hide();
+                console.error(error);
+            });
+        },
+
 
         clearFilds: function () {
             // this.getView().byId("quoteFolioInput").setValue("");
@@ -253,13 +291,20 @@ sap.ui.define([
      
         var productPath = oEvent.getSource().getBindingContext("tableQuotesModel").getPath(),
         product = productPath.split("/").slice(-1).pop();
-        console.log(product)
-        console.log(modelo[product])
+       // console.log(product)
+      //  console.log(modelo[product])
+        this.searchDetail(modelo[product].Folio)
         modelo[product].lectura=true;
-        console.log(modelo[product])
+       // console.log(modelo[product])
         var  cmModel = new sap.ui.model.json.JSONModel(modelo[product]);
-        this.getView().setModel(cmModel, "ModelLectura");
-        this.createQuote()
+        this.getOwnerComponent().setModel(cmModel, "ModelLectura");
+        this.getOwnerComponent().setModel(
+            new sap.ui.model.json.JSONModel({
+              editable: false,
+            }),
+            "Modeleditable"
+          );
+        this.createQuote('V')
 
        
         },

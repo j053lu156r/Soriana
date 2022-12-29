@@ -166,6 +166,15 @@
                             </t:template>
                         </t:Column>
                         <t:Column
+                            width           = "5%"
+                            hAlign          = "Center" id="column4.5">
+                            <Label text="{appTxts>/pay.headerFile}" />
+                            <t:template>
+                              <!--  <Button icon="sap-icon://document-text" type="Transparent" press="DescargarExcel" ></Button>-->
+                               <Button icon="sap-icon://excel-attachment" type="Transparent" press="generateFilexlsx" ></Button>
+                            </t:template>
+                        </t:Column>
+                        <t:Column
                             width           = "7%"
                             hAlign          = "Center"
                             id              = "column5"  sortProperty="Augdt" filterProperty="Augdt">
