@@ -1,0 +1,18 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:unified="sap.ui.unified">
+	<Dialog id="idDialog" title="{appTxts>/recover.title}">
+		<FlexBox width="700px" id="box1" alignContent="Center" alignItems="Center" direction="Column" height="auto">
+			<items>
+				<ObjectIdentifier xmlns="sap.m" text="{appTxts>/recover.send}" id="textIdentifier"/>
+				<Input xmlns="sap.m" id="verifyCode" placeholder="{appTxts>/recover.code}" textAlign="Center" maxLength="6"/>
+				<Button xmlns="sap.m" text="{appTxts>/recover.verify}" id="verifyButton" press="verifyCode"/>
+				<Input xmlns="sap.m" id="pass1" placeholder="{appTxts>/recover.password}" type="Password" visible="false"/>
+				<Input xmlns="sap.m" id="pass2" placeholder="{appTxts>/recover.confpassword}" type="Password" visible="false"/>
+				<Button xmlns="sap.m" text="{appTxts>/recover.changepassword}" id="confirmButton" visible="false" press="changePassword"/>
+				<ObjectStatus id="objectConfirm" class="sapUiSmallMarginBottom" text="{appTxts>/recover.changesuccess}" state="Success" visible="false" />
+			</items>
+		</FlexBox>
+		<buttons>
+			<Button text="{appTxts>/recover.close}" press="onCloseDialog"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>
