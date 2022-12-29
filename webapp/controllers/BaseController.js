@@ -350,9 +350,7 @@ sap.ui.define([
             var descBloqueo = ""
 
             var oReg = oEvent.getParameter("selectedItem").getBindingContext("userdata").getObject()
-
-
-            //console.log(oEvent.getParameter("selectedItem").getBindingContext("userdata").getObject())
+            console.log(oReg)
 
             var bloqueo = oReg ? oReg.BloqueoFlag : ""
 
