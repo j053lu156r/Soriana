@@ -316,6 +316,7 @@ sap.ui.define([
             this.getConfigModel().setProperty("/supplierInput", null);
             this.getConfigModel().setProperty("/supplierInputKey", null);
             this.getConfigModel().setProperty("/supplierTitle", null);
+            this.getConfigModel().setProperty("/adendaSimplificada", false);
             /*    if (!this._pValueHelpDialog) {
                     this._pValueHelpDialog = sap.ui.core.Fragment.load({
                         id: oView.getId(),
@@ -347,43 +348,44 @@ sap.ui.define([
             console.log("ON LIFNR SELECTION")
             var oSelectedItem = oEvent.getParameter("selectedItem");
 
-            var descBloqueo = ""
+            if (oSelectedItem !== undefined) {
+                var descBloqueo = ""
 
-            var oReg = oEvent.getParameter("selectedItem").getBindingContext("userdata").getObject()
-            console.log(oReg)
+                var oReg = oSelectedItem.getBindingContext("userdata").getObject()
 
-            var bloqueo = oReg ? oReg.BloqueoFlag : ""
+                var bloqueo = oReg ? oReg.BloqueoFlag : ""
 
-            if (bloqueo === "X") {
+                if (bloqueo === "X") {
 
-                descBloqueo = "[Bloqueo de pago]"
+                    descBloqueo = "[Bloqueo de pago]"
 
-            }
+                }
 
-            oEvent.getSource().getBinding("items").filter([]);
+                oEvent.getSource().getBinding("items").filter([]);
 
-            if (!oSelectedItem) {
-                return;
-            }
-
-
-            this.getConfigModel().setProperty("/supplierStatus", descBloqueo);
+                if (!oSelectedItem) {
+                    return;
+                }
 
 
-            var detSupp = this.detailSupplier(oSelectedItem.getTitle());
+                this.getConfigModel().setProperty("/supplierStatus", descBloqueo);
 
-            this.setActiveLifnr(oSelectedItem.getTitle(), oSelectedItem.getDescription() + descBloqueo, detSupp.Impflag);
 
-            var viewName = this.getView().getModel("applicationModel").getProperty("/routeName");
+                var detSupp = this.detailSupplier(oSelectedItem.getTitle());
 
-            if (viewName === "masterPowerBI") {
-                var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
-                var user = this.getOwnerComponent().getModel("userdata").getProperty('/IMail');
-                sap.ui.controller("demo.controllers.PowerBI.Master").onSuggestionItemSelected(vLifnr, user);
+                this.setActiveLifnr(oSelectedItem.getTitle(), oSelectedItem.getDescription() + descBloqueo, detSupp.Impflag, oReg.Simplif_flag);
+
+                var viewName = this.getView().getModel("applicationModel").getProperty("/routeName");
+
+                if (viewName === "masterPowerBI") {
+                    var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+                    var user = this.getOwnerComponent().getModel("userdata").getProperty('/IMail');
+                    sap.ui.controller("demo.controllers.PowerBI.Master").onSuggestionItemSelected(vLifnr, user);
+                }
             }
         },
 
-        setActiveLifnr: function (key, description, importation) {
+        setActiveLifnr: function (key, description, importation, adenda) {
             if (key != "") {
                 var model = this.getOwnerComponent().getModel();
                 var devModel = this.getOwnerComponent().getModel("device");
@@ -393,10 +395,15 @@ sap.ui.define([
                 } else {
                     this.getConfigModel().setProperty("/supplierTitle", key + " - " + description);
                 }
-
                 this.getConfigModel().setProperty("/supplierInput", key + " - " + description);
                 this.getConfigModel().setProperty("/supplierInputKey", key);
                 this.getConfigModel().setProperty("/supplierInportation", importation);
+            }
+
+            if (adenda === "X") {
+                this.getConfigModel().setProperty("/adendaSimplificada", true);
+            } else {
+                this.getConfigModel().setProperty("/adendaSimplificada", false);
             }
 
             this.buildUserTileAuth();
@@ -517,7 +524,7 @@ sap.ui.define([
             if (userTileAuth != null) {
                 var secitons = userTileAuth.getProperty("/sections");
                 var host = window.location.host;
-                if(sectionTitle === "/tiles.titleRep" && host === "socios.soriana.com"){
+                if (sectionTitle === "/tiles.titleRep" && host === "socios.soriana.com") {
                     return false;
                 } else {
                     if (secitons != null) {
