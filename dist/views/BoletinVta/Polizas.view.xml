@@ -1,0 +1,227 @@
+
+    <mvc:View displayBlock="true" 
+    xmlns:f="sap.f" 
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar" 
+    xmlns:vm="sap.ui.comp.variants" 
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+	controllerName="demo.controllers.BoletinVta.Polizas"
+    height="100%">
+
+	<f:DynamicPage id="DP01"  
+		class="sapUiContentPadding"> 
+        <f:header>
+            <f:DynamicPageHeader id="DPH" pinnable="true">
+                <f:content>
+                    <!-- <OverflowToolbar class="sapUiMediumMarginTop">
+                    <ToolbarSpacer/>
+                        <Button icon="sap-icon://decline" type="Transparent" press="onClose" tooltip="Cerrar"/>
+                    </OverflowToolbar> -->
+                    <fb:FilterBar id="filterBar"  header="Header" 
+		                reset="onReset" search="searchData" clear="clearFilters" cancel="onCancel" 
+		                filtersDialogClosed = "onFiltersDialogClosed"
+		                showRestoreButton="false" showClearButton="false" useToolbar="false"> 
+			
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem id="FG01" groupName="__$INTERNAL$" name="A" label="{appTxts>/polizas.sociedad}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        id="sociedadInput"
+                                        placeholder="{appTxts>/polizas.sociedad}"
+                                        showSuggestion="true"
+                                        maxLength="4"
+                                        >
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        
+                            <fb:FilterGroupItem id="FG02" groupName="__$INTERNAL$" name="B" label="{appTxts>/polizas.docto}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        id="documentoInput"
+                                        placeholder="{appTxts>/polizas.docto}"
+                                        showSuggestion="true"
+                                        maxLength="10"
+                                        >
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem id="FG03" groupName="__$INTERNAL$" name="C" label="{appTxts>/polizas.ejercicio}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        id="ejercicioInput"
+                                        placeholder="{appTxts>/polizas.ejercicio}"
+                                        showSuggestion="true"
+                                        maxLength="4"
+                                        >
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                        </fb:filterGroupItems>
+
+	                </fb:FilterBar>
+                   <layout:HorizontalLayout id="HL01" allowWrapping="true">
+                        <layout:VerticalLayout  id="VL01" class="sapUiMediumMarginEnd">
+                            <ObjectAttribute    id="OA01" title="{appTxts>/polizas.vendor}"/>
+                        </layout:VerticalLayout>
+                        <layout:VerticalLayout id="VL01D" class="sapUiMediumMarginEnd">
+                            <ObjectAttribute id="OA01D" text="{acuTotDetModel>/VendorName}"/>
+                        </layout:VerticalLayout>
+                   </layout:HorizontalLayout>
+
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+		<f:content>
+            <VBox id="VB01">
+			<Table 
+                noDataText="{appTxts>/polizas.noData}" 
+                id="tablePolizas"
+                items="{PolizasHdr>/}">
+                <headerToolbar>
+                    <OverflowToolbar id="OTB01">
+                        <Title id="Title01" text="{appTxts>/polizas.Position} ({PolizasHdr>/length})" />
+                        <ToolbarSpacer id="TBS01"/>
+                        <!-- <OverflowToolbarButton type="Transparent" 
+                            icon="sap-icon://pdf-attachment" 
+                            press="onPressPDF" 
+                            id="pdfCFDIBtn" 
+                            tooltip="CFDI" 
+                            visible="{= ${PolizasHdr>/UUID} === undefined || ${PolizasHdr>/UUID} === '' ? false : true }"/>
+                        -->
+                        <Button id="BTNC" icon="sap-icon://monitor-payments" text="{appTxts>/polizas.detCargo}" 
+                            press=".onDebitDetail"
+                            visible="{= ${PolizasHdr>/length} > 0}"
+                        />
+                        <Button id="BTNE" icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
+                            press=".buildExportTable"
+                            visible="{= ${PolizasHdr>/length} > 0}"
+                        />
+                        <Select id="sel01"
+                            visible="{= ${PolizasHdr>/length} > 0 }"
+                            change=".paginateValue(${$parameters>/selectedItem}, 'PolizasHdr', '/PolizasDet')">
+                            <items>
+                                <core:Item id="is01" key="10" text="10"/>
+                                <core:Item id="is02" key="20" text="20"/>
+                                <core:Item id="is03" key="50" text="50"/>
+                                <core:Item id="is04" key="100" text="100"/>
+                            </items>
+                        </Select>
+                    </OverflowToolbar>
+                </headerToolbar>
+				<columns>
+                	<Column id="CCentro" width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text id="txtS" text="{appTxts>/polizas.sucursal}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer>
+                            <Text id="txtT" text="Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </footer>
+					</Column>
+                    <Column id="CBase" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text id="txtB" text="{appTxts>/polizas.base}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer>
+                            <ObjectNumber id="OBNT"
+                                number="{
+                                    parts:[{path:'acuTotDetModel>/TotBase'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="MXN" />
+                        </footer>
+					</Column>
+					<Column id="CDesc" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text id="txtD" text="{appTxts>/polizas.desc}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer>
+                            <ObjectNumber id="ONT"
+                                number="{
+                                    parts:[{path:'acuTotDetModel>/TotDescto'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="MXN" />
+                        </footer>
+					</Column>
+                    <!--
+					<Column id="CIva" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text id="txtI" text="{appTxts>/polizas.iva}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer>
+                            <ObjectNumber id="ONI"
+                                number="{
+                                    parts:[{path:'acuTotDetModel>/TotIVA'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="MXN" />
+                        </footer>
+					</Column>
+					<Column id="CPDesc" width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text id="txtpd" text="{appTxts>/polizas.pDesc}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+                    -->
+				</columns>
+				<items>
+					<ColumnListItem id="CItems">                    
+						<cells>
+                            <ObjectIdentifier id="OIB"
+                                title="{PolizasHdr>Segment}" 
+                                titleActive="false"/>
+                            <ObjectNumber id="ONB"
+                                number="{
+                                    parts:[{path:'PolizasHdr>Dmbtr'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="MXN" />
+                            <ObjectNumber id="OND"
+                                number="{
+                                    parts:[{path:'PolizasHdr>Wrbtr'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="MXN" />
+                            <!--
+                            <ObjectNumber id="ONI2"
+                                number="{
+                                    parts:[{path:'PolizasHdr>Wmwst'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="MXN" />
+                            <ObjectNumber id="ONPD"
+                                number="{PolizasHdr>PDesc}"
+                                unit="{PolizasHdr>Waers}"
+                                state="Success" />
+                            -->
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+            <OverflowToolbar id="OFT" visible="{= ${PolizasHdr>/results/length} > 0 }">
+                <Text id="txtIR" text="{PolizasHdr>/initRow} - {PolizasHdr>/endRow} {appTxts>/pagination.of} {PolizasHdr>/results/length}" />
+                <ToolbarSpacer id="TBS"/>
+                <Button id="BTNL" type="Default" icon="sap-icon://slim-arrow-left" 
+                        press=".prevPagination(${PolizasHdr>/iterator}, ${PolizasHdr>/initRow}, 'PolizasHdr', '/PolizasDet')" 
+                        enabled="{= ${PolizasHdr>/iterator} !== 1}" />
+                <Button id="BTNR" type="Default" icon="sap-icon://slim-arrow-right" 
+                        press=".nextPagination(${PolizasHdr>/PolizasDet/Paginated/iterator}, ${PolizasHdr>/PolizasDet/Paginated/endRow}, 'PolizasHdr', '/PolizasDet')" 
+                        enabled="{= ${PolizasHdr>/PolizasDet/Paginated/endRow} !== ${PolizasHdr>Det/results/length}}" />
+            </OverflowToolbar>
+            </VBox>
+		</f:content>
+	</f:DynamicPage>
+
+</mvc:View>

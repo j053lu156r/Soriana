@@ -1,0 +1,22 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+    <Dialog title="{appTxts>/quotes.editTitle}" class="sapUiContentPadding">
+        <VBox width="100%" alignContent="Center" alignItems="Center">
+            <Label labelFor="paramQuoteId" text="{appTxts>/quotes.parameter}" />
+            <Select id="paramQuoteId" change="selectedParamQuote" >
+                <core:Item key="1" text="{appTxts>/quotes.dateReceipt}" />
+                <core:Item key="2" text="{appTxts>/quotes.boardingStartDate}" />
+                <core:Item key="3" text="{appTxts>/quotes.shipmentEndDate}" />
+                <core:Item key="4" text="{appTxts>/quotes.platform}" />
+            </Select>
+            <Label labelFor="paramQuoteId" text="{appTxts>/quotes.value}" />
+            <DatePicker id="paramQuoteValue" valueFormat="yyyy-MM-dd" width="auto" />
+            <Input id="inputQuoteValue" width="auto" visible="false" />
+        </VBox>
+        <buttons>
+            <Button text="{appTxts>/quotes.save}" press="editValues(${tableQuotesDetail>/ECITASCONSNAV/results/0/ZfolioCita})" />
+            <Button id="closeDialog" text="{appTxts>/date.close}" press="handleCloseEdit"/>
+        </buttons>
+	</Dialog>
+</core:FragmentDefinition>
