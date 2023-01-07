@@ -128,8 +128,10 @@ var suma_importe_retencion=0;
 var suma_base_ieps=0;
 var suma_importe_ieps=0;
 var suma_base_exento=0;
+var suma_total_factura=0;
+var suma_total_cargos=0;
 var indice_subrenglon = indice_renglon;
-
+var continuasuma=true;
 //Renglones F
 indice_subrenglon=indice_renglon;
 for (var row of nodo_datos.results[0].ETXTFACTPROVNEWNAV.results){
@@ -138,6 +140,8 @@ for (var row of nodo_datos.results[0].ETXTFACTPROVNEWNAV.results){
     var tasaOcuota_sumados="";
     var claseImp_sumados="";
     var num_doc=row.Columna3;
+    var prefijo_doc=row.C07Documento.length>0?row.C07Documento.substring(0, 2):"";
+
     createCell(newWorkBook.Sheets[SheetName],"A"+indice_renglon,"s","Factura");//descripcion
     createCell(newWorkBook.Sheets[SheetName],"B"+indice_renglon,"s",row.Columna2);//uuid
     createCell(newWorkBook.Sheets[SheetName],"C"+indice_renglon,"s",row.C07Documento);//doc de sap
@@ -148,49 +152,57 @@ for (var row of nodo_datos.results[0].ETXTFACTPROVNEWNAV.results){
     newWorkBook.Sheets[SheetName]["G"+indice_renglon].z = formato_cantidades;
 
     //IVA
-    createCell(newWorkBook.Sheets[SheetName],"J"+indice_renglon,"s",row.C11Importedr01);
+    createCell(newWorkBook.Sheets[SheetName],"J"+indice_renglon,"n",row.C11Importedr01);
     newWorkBook.Sheets[SheetName]["J"+indice_renglon].z=formato_cantidades;
     createCell(newWorkBook.Sheets[SheetName],"K"+indice_renglon,"n",row.C13TasaocuotaDr01);
     createCell(newWorkBook.Sheets[SheetName],"L"+indice_renglon,"s",row.C14TipofactorDr01);
     createCell(newWorkBook.Sheets[SheetName],"M"+indice_renglon,"s",row.C15ImpuestoDr01);
-    createCell(newWorkBook.Sheets[SheetName],"N"+indice_renglon,"s",row.C16BaseDr01);//base
+    createCell(newWorkBook.Sheets[SheetName],"N"+indice_renglon,"n",row.C16BaseDr01);//base
     newWorkBook.Sheets[SheetName]["N"+indice_renglon].z=formato_cantidades;
     switch (parseFloat(row.C13TasaocuotaDr01)){
         case 0.16: 
         suma_base16+=parseFloat(row.C16BaseDr01);
-        suma_impuesto16+=parseFloat(row.C15ImpuestoDr01);
+        suma_impuesto16+=parseFloat(row.C11Importedr01);
         break;
         case 0.08:
             suma_base8+=parseFloat(row.C16BaseDr01);
-            suma_impuesto8+=parseFloat(row.C15ImpuestoDr01);
+            suma_impuesto8+=parseFloat(row.C11Importedr01);
         break;
         case 0:
             if (tipofactor=="TASA"){
                 suma_base0+=parseFloat(row.C16BaseDr01);
-                suma_impuesto0+=parseFloat(row.C15ImpuestoDr01);
+                suma_impuesto0+=parseFloat(row.C11Importedr01);
             }else if (tipofactor=="EXENTO"){
                 suma_base_exento+=parseFloat(row.C16BaseDr01);
             }
         break;
     }
     //IEPS
-    createCell(newWorkBook.Sheets[SheetName],"O"+indice_renglon,"s",row.C11Importedr02);
+    createCell(newWorkBook.Sheets[SheetName],"O"+indice_renglon,"n",row.C17ImporteDr02);
     newWorkBook.Sheets[SheetName]["O"+indice_renglon].z=formato_cantidades;
-    createCell(newWorkBook.Sheets[SheetName],"P"+indice_renglon,"n",row.C13TasaocuotaDr02);
-    createCell(newWorkBook.Sheets[SheetName],"Q"+indice_renglon,"s",row.C14TipofactorDr02);
-    createCell(newWorkBook.Sheets[SheetName],"R"+indice_renglon,"s",row.C15ImpuestoDr02);
-    createCell(newWorkBook.Sheets[SheetName],"S"+indice_renglon,"s",row.C16BaseDr02);//base
+    createCell(newWorkBook.Sheets[SheetName],"P"+indice_renglon,"n",row.C19TasaocuotaDr02);
+    createCell(newWorkBook.Sheets[SheetName],"Q"+indice_renglon,"s",row.C20TipofactordrDr02);
+    createCell(newWorkBook.Sheets[SheetName],"R"+indice_renglon,"s",row.C21ImpuestoDr02);
+    createCell(newWorkBook.Sheets[SheetName],"S"+indice_renglon,"n",row.C22BasedrDr02);//base
     newWorkBook.Sheets[SheetName]["S"+indice_renglon].z=formato_cantidades;
 
     //Retencion
-    createCell(newWorkBook.Sheets[SheetName],"T"+indice_renglon,"s",row.C11Importedr03);
+    createCell(newWorkBook.Sheets[SheetName],"T"+indice_renglon,"n",row.C23ImporteDr03);
     newWorkBook.Sheets[SheetName]["T"+indice_renglon].z=formato_cantidades;
-    createCell(newWorkBook.Sheets[SheetName],"U"+indice_renglon,"n",row.C13TasaocuotaDr03);
-    createCell(newWorkBook.Sheets[SheetName],"V"+indice_renglon,"s",row.C14TipofactorDr03);
-    createCell(newWorkBook.Sheets[SheetName],"W"+indice_renglon,"s",row.C15ImpuestoDr03);
-    createCell(newWorkBook.Sheets[SheetName],"X"+indice_renglon,"s",row.C16BaseDr03);//base
+    createCell(newWorkBook.Sheets[SheetName],"U"+indice_renglon,"n",row.C25TasaocuotaDr03);
+    createCell(newWorkBook.Sheets[SheetName],"V"+indice_renglon,"s",row.C26TipofactordrDr03);
+    createCell(newWorkBook.Sheets[SheetName],"W"+indice_renglon,"s",row.C27ImpuestodrDr03);
+    createCell(newWorkBook.Sheets[SheetName],"X"+indice_renglon,"n",row.C28BasedrDr03);//base
     newWorkBook.Sheets[SheetName]["X"+indice_renglon].z=formato_cantidades;
 
+if (prefijo_doc=="60"){
+suma_total_factura-=parseFloat(row.Columna6);
+}
+
+if (continuasuma){// solo continua sumando si no ha encontrado documento 60
+//suma total facturas
+suma_total_factura+=parseFloat(row.Columna6);
+}
     if (indice_subrenglon>indice_renglon){
         indice_renglon=indice_subrenglon;
     }else{
@@ -212,57 +224,57 @@ for (var row of nodo_datos.results[0].ETXTFACTSORNEWNAV.results){
     createCell(newWorkBook.Sheets[SheetName],"D"+indice_renglon,"s",row.Columna3);//tienda  
     //createCell(newWorkBook.Sheets[SheetName],"E"+indice_renglon,"s",row.Columna5);//folio o nota de entrada  . Ver donde mapearon este dato
     //createCell(newWorkBook.Sheets[SheetName],"F"+indice_renglon,"s",row.Columna4);//serie y folio . Ver donde mapearon este dato
-    createCell(newWorkBook.Sheets[SheetName],"G"+indice_renglon,"n",row.Columna5);//importe de factura
+    createCell(newWorkBook.Sheets[SheetName],"G"+indice_renglon,"n",-Math.abs(row.Columna5));//importe de factura
     newWorkBook.Sheets[SheetName]["G"+indice_renglon].z = formato_cantidades;
     //createCell(newWorkBook.Sheets[SheetName],"G"+indice_renglon,"n",row.Columna5);//importe de cargo
-    createCell(newWorkBook.Sheets[SheetName],"G"+indice_renglon,"n",row.Columna5); // importe de prorrateo
-    newWorkBook.Sheets[SheetName]["G"+indice_renglon].z = formato_cantidades;
+
 //PRORRATEO
 createCell(newWorkBook.Sheets[SheetName],"H"+indice_renglon,"s",row.C08Uuid);//UUID factura para aplicar cargo
 createCell(newWorkBook.Sheets[SheetName],"I"+indice_renglon,"n",row.C09CargoFactura);//Cargo que se aplica sobre la factura
+newWorkBook.Sheets[SheetName]["I"+indice_renglon].z = formato_cantidades;
 
     //IVA
-    createCell(newWorkBook.Sheets[SheetName],"J"+indice_renglon,"s",row.C11Importedr01);
+    createCell(newWorkBook.Sheets[SheetName],"J"+indice_renglon,"n",-Math.abs(row.C11Importedr01.replace("-","")));//importedr
     newWorkBook.Sheets[SheetName]["J"+indice_renglon].z=formato_cantidades;
     createCell(newWorkBook.Sheets[SheetName],"K"+indice_renglon,"n",row.C13TasaocuotaDr01);
     createCell(newWorkBook.Sheets[SheetName],"L"+indice_renglon,"s",row.C14TipofactorDr01);
     createCell(newWorkBook.Sheets[SheetName],"M"+indice_renglon,"s",row.C15ImpuestoDr01);
-    createCell(newWorkBook.Sheets[SheetName],"N"+indice_renglon,"s",row.C16BaseDr01);//base
+    createCell(newWorkBook.Sheets[SheetName],"N"+indice_renglon,"n",-Math.abs(row.C16BaseDr01.replace("-","")));//base
     newWorkBook.Sheets[SheetName]["N"+indice_renglon].z=formato_cantidades;
     switch (parseFloat(row.C13TasaocuotaDr01)){
         case 0.16: 
         suma_base16+=parseFloat(row.C16BaseDr01);
-        suma_impuesto16+=parseFloat(row.C15ImpuestoDr01);
+        suma_impuesto16+=parseFloat(row.C11Importedr01);
         break;
         case 0.08:
             suma_base8+=parseFloat(row.C16BaseDr01);
-            suma_impuesto8+=parseFloat(row.C15ImpuestoDr01);
+            suma_impuesto8+=parseFloat(row.C11Importedr01);
         break;
         case 0:
             if (tipofactor=="TASA"){
                 suma_base0+=parseFloat(row.C16BaseDr01);
-                suma_impuesto0+=parseFloat(row.C15ImpuestoDr01);
+                suma_impuesto0+=parseFloat(row.C11Importedr01);
             }else if (tipofactor=="EXENTO"){
                 suma_base_exento+=parseFloat(row.C16BaseDr01);
             }
         break;
     }
     //IEPS
-    createCell(newWorkBook.Sheets[SheetName],"O"+indice_renglon,"s",row.C11Importedr02);
+    createCell(newWorkBook.Sheets[SheetName],"O"+indice_renglon,"n",-Math.abs(row.C17ImporteDr02.replace("-","")));
     newWorkBook.Sheets[SheetName]["O"+indice_renglon].z=formato_cantidades;
-    createCell(newWorkBook.Sheets[SheetName],"P"+indice_renglon,"n",row.C13TasaocuotaDr02);
-    createCell(newWorkBook.Sheets[SheetName],"Q"+indice_renglon,"s",row.C14TipofactorDr02);
-    createCell(newWorkBook.Sheets[SheetName],"R"+indice_renglon,"s",row.C15ImpuestoDr02);
-    createCell(newWorkBook.Sheets[SheetName],"S"+indice_renglon,"s",row.C16BaseDr02);//base
+    createCell(newWorkBook.Sheets[SheetName],"P"+indice_renglon,"n",row.C19TasaocuotaDr02);
+    createCell(newWorkBook.Sheets[SheetName],"Q"+indice_renglon,"s",row.C20TipofactorDr02);
+    createCell(newWorkBook.Sheets[SheetName],"R"+indice_renglon,"s",row.C21ImpuestoDr02);
+    createCell(newWorkBook.Sheets[SheetName],"S"+indice_renglon,"n",-Math.abs(row.C22BasedrDr02.replace("-","")));//base
     newWorkBook.Sheets[SheetName]["S"+indice_renglon].z=formato_cantidades;
 
     //Retencion
-    createCell(newWorkBook.Sheets[SheetName],"T"+indice_renglon,"s",row.C11Importedr03);
+    createCell(newWorkBook.Sheets[SheetName],"T"+indice_renglon,"n",row.C23ImporteDr03);
     newWorkBook.Sheets[SheetName]["T"+indice_renglon].z=formato_cantidades;
-    createCell(newWorkBook.Sheets[SheetName],"U"+indice_renglon,"n",row.C13TasaocuotaDr03);
-    createCell(newWorkBook.Sheets[SheetName],"V"+indice_renglon,"s",row.C14TipofactorDr03);
-    createCell(newWorkBook.Sheets[SheetName],"W"+indice_renglon,"s",row.C15ImpuestoDr03);
-    createCell(newWorkBook.Sheets[SheetName],"X"+indice_renglon,"s",row.C16BaseDr03);//base
+    createCell(newWorkBook.Sheets[SheetName],"U"+indice_renglon,"n",row.C25TasaocuotaDr02);
+    createCell(newWorkBook.Sheets[SheetName],"V"+indice_renglon,"s",row.C26TipofactordrDr02);
+    createCell(newWorkBook.Sheets[SheetName],"W"+indice_renglon,"s",row.C27ImpuestoDr02);
+    createCell(newWorkBook.Sheets[SheetName],"X"+indice_renglon,"n",row.C28BasedrDr02);//base
     newWorkBook.Sheets[SheetName]["X"+indice_renglon].z=formato_cantidades;
 
     if (indice_subrenglon>indice_renglon){
@@ -282,59 +294,64 @@ for (var row of nodo_datos.results[0].ETXTDISCOUNTNEWNAV.results){
     var num_doc=row.Columna3;
     createCell(newWorkBook.Sheets[SheetName],"A"+indice_renglon,"s","Cargos aplicados");//descripcion
     createCell(newWorkBook.Sheets[SheetName],"B"+indice_renglon,"s",row.Columna4);//descripcion de cargo
-    createCell(newWorkBook.Sheets[SheetName],"C"+indice_renglon,"s","PENDIENTE");//doc de sap
+    createCell(newWorkBook.Sheets[SheetName],"C"+indice_renglon,"s",row.C07Documento);//doc de sap
     createCell(newWorkBook.Sheets[SheetName],"D"+indice_renglon,"s",row.Columna2);//tienda  
     createCell(newWorkBook.Sheets[SheetName],"E"+indice_renglon,"s",row.Columna3);//folio o nota de entrada
     //createCell(newWorkBook.Sheets[SheetName],"G"+indice_renglon,"n",row.Columna5);//importe de cargo
-    createCell(newWorkBook.Sheets[SheetName],"G"+indice_renglon,"n",row.Columna5); // importe de factura
+    createCell(newWorkBook.Sheets[SheetName],"G"+indice_renglon,"n",-Math.abs(row.Columna5)); // importe de factura
     newWorkBook.Sheets[SheetName]["G"+indice_renglon].z = formato_cantidades;
 //PRORRATEO
 createCell(newWorkBook.Sheets[SheetName],"H"+indice_renglon,"s",row.C08Uuid);//UUID factura para aplicar cargo
 createCell(newWorkBook.Sheets[SheetName],"I"+indice_renglon,"n",row.C09CargoFactura);//Cargo que se aplica sobre la factura
+newWorkBook.Sheets[SheetName]["I"+indice_renglon].z = formato_cantidades;
 
     //IVA
-    createCell(newWorkBook.Sheets[SheetName],"J"+indice_renglon,"s",row.C11Importedr01);
+    createCell(newWorkBook.Sheets[SheetName],"J"+indice_renglon,"n",-Math.abs(row.C11Importedr01.replace("-","")));
     newWorkBook.Sheets[SheetName]["J"+indice_renglon].z=formato_cantidades;
     createCell(newWorkBook.Sheets[SheetName],"K"+indice_renglon,"n",row.C13TasaocuotaDr01);
     createCell(newWorkBook.Sheets[SheetName],"L"+indice_renglon,"s",row.C14TipofactorDr01);
     createCell(newWorkBook.Sheets[SheetName],"M"+indice_renglon,"s",row.C15ImpuestoDr01);
-    createCell(newWorkBook.Sheets[SheetName],"N"+indice_renglon,"s",row.C16BaseDr01);//base
+    createCell(newWorkBook.Sheets[SheetName],"N"+indice_renglon,"n",-Math.abs(row.C16BaseDr01.replace("-","")));//base
     newWorkBook.Sheets[SheetName]["N"+indice_renglon].z=formato_cantidades;
     switch (parseFloat(row.C13TasaocuotaDr01)){
         case 0.16: 
         suma_base16+=parseFloat(row.C16BaseDr01);
-        suma_impuesto16+=parseFloat(row.C15ImpuestoDr01);
+        suma_impuesto16+=parseFloat(row.C11Importedr01);
         break;
         case 0.08:
             suma_base8+=parseFloat(row.C16BaseDr01);
-            suma_impuesto8+=parseFloat(row.C15ImpuestoDr01);
+            suma_impuesto8+=parseFloat(row.C11Importedr01);
         break;
         case 0:
             if (tipofactor=="TASA"){
                 suma_base0+=parseFloat(row.C16BaseDr01);
-                suma_impuesto0+=parseFloat(row.C15ImpuestoDr01);
+                suma_impuesto0+=parseFloat(row.C11Importedr01);
             }else if (tipofactor=="EXENTO"){
                 suma_base_exento+=parseFloat(row.C16BaseDr01);
             }
         break;
     }
     //IEPS
-    createCell(newWorkBook.Sheets[SheetName],"O"+indice_renglon,"s",row.C11Importedr02);
+    createCell(newWorkBook.Sheets[SheetName],"O"+indice_renglon,"n",-Math.abs(row.C17ImporteDr02.replace("-","")));
     newWorkBook.Sheets[SheetName]["O"+indice_renglon].z=formato_cantidades;
-    createCell(newWorkBook.Sheets[SheetName],"P"+indice_renglon,"n",row.C13TasaocuotaDr02);
-    createCell(newWorkBook.Sheets[SheetName],"Q"+indice_renglon,"s",row.C14TipofactorDr02);
-    createCell(newWorkBook.Sheets[SheetName],"R"+indice_renglon,"s",row.C15ImpuestoDr02);
-    createCell(newWorkBook.Sheets[SheetName],"S"+indice_renglon,"s",row.C16BaseDr02);//base
+    createCell(newWorkBook.Sheets[SheetName],"P"+indice_renglon,"n",row.C19TasaocuotaDr02);
+    createCell(newWorkBook.Sheets[SheetName],"Q"+indice_renglon,"s",row.C20TipofactorDr02);
+    createCell(newWorkBook.Sheets[SheetName],"R"+indice_renglon,"s",row.C21ImpuestoDr02);
+    createCell(newWorkBook.Sheets[SheetName],"S"+indice_renglon,"n",-Math.abs(row.C22BasedrDr02.replace("-","")));//base
     newWorkBook.Sheets[SheetName]["S"+indice_renglon].z=formato_cantidades;
 
     //Retencion
-    createCell(newWorkBook.Sheets[SheetName],"T"+indice_renglon,"s",row.C11Importedr03);
+    createCell(newWorkBook.Sheets[SheetName],"T"+indice_renglon,"n",-Math.abs(row.C23ImporteDr03));
     newWorkBook.Sheets[SheetName]["T"+indice_renglon].z=formato_cantidades;
-    createCell(newWorkBook.Sheets[SheetName],"U"+indice_renglon,"n",row.C13TasaocuotaDr03);
-    createCell(newWorkBook.Sheets[SheetName],"V"+indice_renglon,"s",row.C14TipofactorDr03);
-    createCell(newWorkBook.Sheets[SheetName],"W"+indice_renglon,"s",row.C15ImpuestoDr03);
-    createCell(newWorkBook.Sheets[SheetName],"X"+indice_renglon,"s",row.C16BaseDr03);//base
+    createCell(newWorkBook.Sheets[SheetName],"U"+indice_renglon,"n",row.C25TasaocuotaDr03);
+    createCell(newWorkBook.Sheets[SheetName],"V"+indice_renglon,"s",row.C26TipofactorDr03);
+    createCell(newWorkBook.Sheets[SheetName],"W"+indice_renglon,"s",row.C27ImpuestoDr03);
+    createCell(newWorkBook.Sheets[SheetName],"X"+indice_renglon,"n",row.C28BaseDr03);//base
     newWorkBook.Sheets[SheetName]["X"+indice_renglon].z=formato_cantidades;
+
+    if (row.Columna5!=""){
+    suma_total_cargos+=parseFloat(row.Columna5);
+    }
 
     if (indice_subrenglon>indice_renglon){
         indice_renglon=indice_subrenglon;
@@ -369,7 +386,24 @@ newWorkBook.Sheets[SheetName]["L4"].z=formato_cantidades;
 createCell(newWorkBook.Sheets[SheetName],"M4","n",suma_importe_retencion);
 newWorkBook.Sheets[SheetName]["M4"].z=formato_cantidades;
 
+//imprime el total sumado de facturas en lugar del total que viene en la cabecera
+createCell(newWorkBook.Sheets[SheetName],"F2","n",suma_total_factura);
+newWorkBook.Sheets[SheetName]["F2"].z=formato_cantidades;
+
+//imprime el total sumado de cargos(P) en lugar del total que viene en la cabecera
+createCell(newWorkBook.Sheets[SheetName],"H2","n",-Math.abs(suma_total_cargos));
+newWorkBook.Sheets[SheetName]["H2"].z=formato_cantidades;
+
+//nueva suma de jesus para el dato en L2 total retención
+var importe_pagado=parseFloat(nodo_datos.results[0].ETXTTOTALNAV.results[0].Columna11);//K2
+
+var retencion_aplicada=(importe_pagado*-1)+suma_total_factura+(-Math.abs(suma_total_cargos))+(-Math.abs(suma_total_cargos));
+retencion_aplicada=retencion_aplicada<1?0:retencion_aplicada;
+
+createCell(newWorkBook.Sheets[SheetName],"L2","n",retencion_aplicada);
+newWorkBook.Sheets[SheetName]["L2"].z=formato_cantidades;
 
 /* genera archivo XLSX */
 XLSX.writeFile(newWorkBook, nodo_datos.results[0].IBukrs+"_"+nodo_datos.results[0].IGjahr+"_"+nodo_datos.results[0].IVblnr+".xlsx",{codepage: 65001});
+
 }
