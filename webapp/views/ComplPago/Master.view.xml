@@ -104,8 +104,7 @@
                     rows              ="{
                     path: 'Documentos>/Detalles/results',
                     sorter: {
-    path: 'Augdt',
-    descending: true
+    path: 'Augdt'
 
   }
 
