@@ -1,1 +1,0 @@
-sap.ui.define([],function(){"use strict";return{isSeco:function(e){return e==0?true:false},isFresco:function(e){return e==1?true:false}}});
