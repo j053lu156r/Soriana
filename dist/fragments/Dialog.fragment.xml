@@ -1,0 +1,19 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		contentWidth= "450px"
+		contentHeight= "300px"
+		noDataText="{appTxts>/dialog.noData}"
+		title="{appTxts>/dialog.title}"
+		search="handleSearch"
+		confirm="handleClose"
+		cancel="handleClose"
+		items="{
+			path: '/ProductCollection'
+		}" >
+		<StandardListItem
+			title="{Name}"			
+			type="Active" />
+	</SelectDialog>
+</core:FragmentDefinition>
