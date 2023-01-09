@@ -406,7 +406,7 @@ newWorkBook.Sheets[SheetName]["H2"].z=formato_cantidades;
 //nueva suma de jesus para el dato en L2 total retención
 var importe_pagado=parseFloat(nodo_datos.results[0].ETXTTOTALNAV.results[0].Columna11);//K2
 
-var retencion_aplicada=(importe_pagado*-1)+suma_total_factura+(-Math.abs(suma_total_cargos_nf))+(-Math.abs(suma_total_cargos_nf));
+var retencion_aplicada=(importe_pagado*-1)+suma_total_factura+(-Math.abs(suma_total_cargos_nf))+(-Math.abs(suma_total_cargos_f));
 retencion_aplicada=retencion_aplicada<1?0:retencion_aplicada;
 
 createCell(newWorkBook.Sheets[SheetName],"L2","n",retencion_aplicada);
