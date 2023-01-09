@@ -400,12 +400,16 @@ sap.ui.define([
                 this.getConfigModel().setProperty("/supplierInportation", importation);
             }
 
-            if (adenda === "X") {
-                this.getConfigModel().setProperty("/adendaSimplificada", true);
+            if (adenda !== undefined){
+                if (adenda === "X") {
+                    this.getConfigModel().setProperty("/adendaSimplificada", true);
+                } else {
+                    this.getConfigModel().setProperty("/adendaSimplificada", false);
+                }
             } else {
                 this.getConfigModel().setProperty("/adendaSimplificada", false);
             }
-
+    
             this.buildUserTileAuth();
         },
         detailSupplier: function (key) {
@@ -523,15 +527,10 @@ sap.ui.define([
 
             if (userTileAuth != null) {
                 var secitons = userTileAuth.getProperty("/sections");
-                var host = window.location.host;
-                if (sectionTitle === "/tiles.titleRep" && host === "socios.soriana.com") {
-                    return false;
+                if (secitons != null) {
+                    return secitons.includes(sectionTitle);
                 } else {
-                    if (secitons != null) {
-                        return secitons.includes(sectionTitle);
-                    } else {
-                        return false;
-                    }
+                    return false;
                 }
             } else {
                 return false;
