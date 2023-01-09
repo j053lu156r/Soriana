@@ -1,0 +1,160 @@
+<mvc:View displayBlock="true" 
+        controllerName="demo.controllers.BoletinVta..DetailCentro" 
+        height="100%"
+		xmlns="sap.uxap"
+		xmlns:mvc="sap.ui.core.mvc"
+		xmlns:m="sap.m"
+		xmlns:f="sap.f"
+		xmlns:form="sap.ui.layout.form">
+
+	<ObjectPageLayout id="ObjectPageLayout"
+					showTitleInHeaderContent="true"
+					alwaysShowContentHeader="false"
+					preserveHeaderStateOnScroll="false"
+					headerContentPinnable="true"
+					isChildPage="true"
+					upperCaseAnchorBar="false">
+
+				<headerTitle>
+					<ObjectPageDynamicHeaderTitle>
+						<expandedHeading>
+							<m:Title text="{promotionDetModel>/promotion}" wrapping="true" class="sapUiSmallMarginEnd"/>
+						</expandedHeading>
+						<snappedHeading>
+							<m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Center">
+								<m:FlexBox wrap="NoWrap" fitContainer="true" alignItems="Center" class="sapUiTinyMarginEnd">
+									<f:Avatar src="../../../../../../../{products>ProductPicUrl}" displaySize="S" displayShape="Square" class="sapUiTinyMarginEnd"/>
+									<m:Title text="{promotionDetModel>/promotion}" wrapping="true" class="sapUiTinyMarginEnd"/>
+								</m:FlexBox>
+							</m:FlexBox>
+						</snappedHeading>
+                        <expandedContent>
+                            <m:Text text="{promotionDetModel>/Description}"/>
+                        </expandedContent>
+                        <snappedContent>
+                            <m:Text text="{promotionDetModel>/Description}"/>
+                        </snappedContent>
+						<navigationActions>
+                            <!-- <m:OverflowToolbarButton type="Transparent" icon="sap-icon://receipt" press="handleReceipt"/> -->
+							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
+							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>				<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close column" /> 
+                            <!-- visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/> -->
+						</navigationActions>
+					</ObjectPageDynamicHeaderTitle>
+				</headerTitle>
+		<sections>
+
+			<ObjectPageSection >
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<m:Table sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
+                                    noDataText="{appTxts>/foliosCapDet.noData}" 
+                                    id="promotionCenterTable"
+                                    alternateRowColors="true" 
+									items="{promotionCenterDet>/}">
+                                     <m:headerToolbar>
+                                        <m:OverflowToolbar>
+                                            <m:Title text="{appTxts>/foliosCapCenter.titleCenter} ({promotionCenterDet>/length})" />
+                                            <m:ToolbarSpacer/>
+                                            <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
+                                                press=".buildExportTable"
+                                                visible="{= ${promotionCenterDet>/length} > 0}"
+                                            />
+                                            
+                                        </m:OverflowToolbar>
+                                    </m:headerToolbar>
+								<m:columns>
+                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:header>
+                                            <m:Text text="{appTxts>/foliosCapCenter.plant}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </m:header>
+                                    </m:Column>
+                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:header>
+                                            <m:Text text="{appTxts>/foliosCapCenter.Class}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </m:header>
+                                    </m:Column>
+                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:header>
+                                            <m:Text text="{appTxts>/foliosCapCenter.ClassCat}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </m:header>
+                                    </m:Column>
+                                    <!--
+                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:header>
+                                            <m:Text text="{appTxts>/foliosCapDet.planPrice}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </m:header>
+                                    </m:Column>
+                                    
+                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:header>
+                                            <m:Text text="{appTxts>/aportaciones.ieps}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </m:header>
+                                    </m:Column>
+                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:header>
+                                            <m:Text text="{appTxts>/aportaciones.total}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </m:header>
+                                    </m:Column>
+                                    <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:header>
+                                            <m:Text text="{appTxts>/aportaciones.aporta}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                        </m:header>
+                                    </m:Column> -->
+								</m:columns>
+								<m:items>
+									<m:ColumnListItem type="Navigation" press="onListItemPress">
+										<m:cells>
+                                            <m:ObjectIdentifier title="{promotionCenterDet>Plant}" 
+                                                text="{promotionCenterDet>Name1}" />
+                                            <!--<m:ObjectIdentifier title="{promotionDet>Matnr}"
+                                                text="{promotionDet>Maktx}" />-->
+                                            <m:ObjectIdentifier
+                                                text="{promotionCenterDet>ClassDesc}" />
+                                            
+                                            <m:ObjectIdentifier
+                                                text="{
+                                                    path: 'promotionCenterDet>ClassCat'}" />
+                                                    
+                                       <!-- <m:ObjectNumber
+                                                emphasized="true"
+                                                number="{
+                                                    parts:[{path:'promotionCenterDet>PlanPrice'},{path:'CurrencyCode'}],
+                                                    type: 'sap.ui.model.type.Currency',
+                                                    formatOptions: {showMeasure: false}
+                                                        }"
+                                                unit="{promotionCenterDet>CurrencyPlan}'"
+                                                state="Success" />
+                                            <m:ObjectIdentifier
+                                                text="{
+                                                    path: 'AportacionesDet>Zieps',
+                                                    type: 'sap.ui.model.type.Float'
+                                                    }" />
+                                            <m:ObjectNumber
+                                                emphasized="true"
+                                                number="{
+                                                    parts:[{path:'AportacionesDet>Ztotal'},{path:'CurrencyCode'}],
+                                                    type: 'sap.ui.model.type.Currency',
+                                                    formatOptions: {showMeasure: false}
+                                                        }"
+                                                unit="MXN"
+                                                state="Success" />
+                                            <m:ObjectIdentifier
+                                                text="{
+                                                    path: 'AportacionesDet>Zaportacion',
+                                                    type: 'sap.ui.model.type.Float'
+                                                    }" />
+                                            -->
+										</m:cells>
+									</m:ColumnListItem>
+								</m:items>
+							</m:Table>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>
+	</ObjectPageLayout>
+    
+</mvc:View>
