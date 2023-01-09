@@ -118,7 +118,7 @@
                         <OverflowToolbar style="Clear">
                             <Title id="title" text="{appTxts>/pay.paylist}"/>
                             <ToolbarSpacer/>
-                             <Button icon="sap-icon://download-from-cloud" text="{appTxts>/pay.Desmasiva}" press="generateFileMasivo" visible="{= ${Documentos>/Detalles/Paginated/results/length} > 0}" />
+                             <Button icon="sap-icon://download-from-cloud" text="{appTxts>/pay.Desmasiva}" press="generateFilexlsxMasivo" visible="{= ${Documentos>/Detalles/Paginated/results/length} > 0}" />
                             <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${Documentos>/Detalles/Paginated/results/length} > 0}" />
                             <Select visible="false" change=".paginateValue(${$parameters>/selectedItem}, 'Documentos', '/Detalles')">
                                 <items>
