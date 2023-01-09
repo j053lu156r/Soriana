@@ -209,7 +209,7 @@ sap.ui.define([
 
              
 //Augdt
-console.log(Documentos)
+
 Documentos.Detalles.results.sort(function (a, b) {
     if (a.Augdt > b.Augdt) {
       return 1;
