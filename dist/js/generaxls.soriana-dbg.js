@@ -80,7 +80,7 @@ newWorkBook.Sheets[SheetName]['V6'].s = { fill: { fgColor: { rgb: "ffff00" }}};
 newWorkBook.Sheets[SheetName]['W6'].s = { fill: { fgColor: { rgb: "ffff00" }}};
 newWorkBook.Sheets[SheetName]['X6'].s = { fill: { fgColor: { rgb: "ffff00" }}};
 //fin estilos
-console.log(_datos)
+
 var nodo_datos=_datos;
 //Cabecera
 console.log(newWorkBook.Sheets[SheetName]);
@@ -129,7 +129,8 @@ var suma_base_ieps=0;
 var suma_importe_ieps=0;
 var suma_base_exento=0;
 var suma_total_factura=0;
-var suma_total_cargos=0;
+var suma_total_cargos_nf=0; // suma letras P
+var suma_total_cargos_f=0; // suma letras S
 var indice_subrenglon = indice_renglon;
 var continuasuma=true;
 //Renglones F
@@ -277,6 +278,10 @@ newWorkBook.Sheets[SheetName]["I"+indice_renglon].z = formato_cantidades;
     createCell(newWorkBook.Sheets[SheetName],"X"+indice_renglon,"n",row.C28BasedrDr02);//base
     newWorkBook.Sheets[SheetName]["X"+indice_renglon].z=formato_cantidades;
 
+    if (row.Columna5!=""){
+        suma_total_cargos_f+=parseFloat(row.Columna5);
+        }
+
     if (indice_subrenglon>indice_renglon){
         indice_renglon=indice_subrenglon;
     }else{
@@ -350,7 +355,7 @@ newWorkBook.Sheets[SheetName]["I"+indice_renglon].z = formato_cantidades;
     newWorkBook.Sheets[SheetName]["X"+indice_renglon].z=formato_cantidades;
 
     if (row.Columna5!=""){
-    suma_total_cargos+=parseFloat(row.Columna5);
+    suma_total_cargos_nf+=parseFloat(row.Columna5);
     }
 
     if (indice_subrenglon>indice_renglon){
@@ -390,14 +395,18 @@ newWorkBook.Sheets[SheetName]["M4"].z=formato_cantidades;
 createCell(newWorkBook.Sheets[SheetName],"F2","n",suma_total_factura);
 newWorkBook.Sheets[SheetName]["F2"].z=formato_cantidades;
 
+//imprime el total sumado de cargos(S) en lugar del total que viene en la cabecera
+createCell(newWorkBook.Sheets[SheetName],"G2","n",-Math.abs(suma_total_cargos_f));
+newWorkBook.Sheets[SheetName]["G2"].z=formato_cantidades;
+
 //imprime el total sumado de cargos(P) en lugar del total que viene en la cabecera
-createCell(newWorkBook.Sheets[SheetName],"H2","n",-Math.abs(suma_total_cargos));
+createCell(newWorkBook.Sheets[SheetName],"H2","n",-Math.abs(suma_total_cargos_nf));
 newWorkBook.Sheets[SheetName]["H2"].z=formato_cantidades;
 
 //nueva suma de jesus para el dato en L2 total retención
 var importe_pagado=parseFloat(nodo_datos.results[0].ETXTTOTALNAV.results[0].Columna11);//K2
 
-var retencion_aplicada=(importe_pagado*-1)+suma_total_factura+(-Math.abs(suma_total_cargos))+(-Math.abs(suma_total_cargos));
+var retencion_aplicada=(importe_pagado*-1)+suma_total_factura+(-Math.abs(suma_total_cargos_nf))+(-Math.abs(suma_total_cargos_f));
 retencion_aplicada=retencion_aplicada<1?0:retencion_aplicada;
 
 createCell(newWorkBook.Sheets[SheetName],"L2","n",retencion_aplicada);
@@ -405,5 +414,4 @@ newWorkBook.Sheets[SheetName]["L2"].z=formato_cantidades;
 
 /* genera archivo XLSX */
 XLSX.writeFile(newWorkBook, nodo_datos.results[0].IBukrs+"_"+nodo_datos.results[0].IGjahr+"_"+nodo_datos.results[0].IVblnr+".xlsx",{codepage: 65001});
-
 }

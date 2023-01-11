@@ -47,9 +47,7 @@
 		                showRestoreButton   = "false"
                         showClearButton     = "false"
                         useToolbar          = "false">
-
                         <fb:filterGroupItems>
-
                             <fb:FilterGroupItem
                                 groupName    = "__$INTERNAL$"
                                 groupTitle   = "Group1"
@@ -104,8 +102,7 @@
                     rows              ="{
                     path: 'Documentos>/Detalles/results',
                     sorter: {
-    path: 'Augdt',
-    descending: true
+    path: 'Augdt'
 
   }
 

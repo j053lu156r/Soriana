@@ -207,7 +207,19 @@ sap.ui.define([
             if(arrT.length>0){
                 var Documentos = { Detalles: { results: [...arrT[0].EPYMNTDOCSNAV.results] } };
 
+             
+//Augdt
 
+Documentos.Detalles.results.sort(function (a, b) {
+    if (a.Augdt > b.Augdt) {
+      return 1;
+    }
+    if (a.Augdt < b.Augdt) {
+      return -1;
+    }
+    // a must be equal to b
+    return 0;
+  });
                 that.getOwnerComponent().setModel(new JSONModel(Documentos), "Documentos");
 
                 that.paginate("Documentos", "/Detalles", 1, 0);
