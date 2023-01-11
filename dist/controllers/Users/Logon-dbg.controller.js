@@ -139,13 +139,15 @@ sap.ui.define([
             if (bLogon) {
                 var vLifnr = "";
                 var vSuppName = "";
+                var adendaSimp = "";
                 this.setUserModel(oLogonJSONModel);
                 if (oLogonJSONModel.getProperty("/Esusdata/Zusuasor") != null && oLogonJSONModel.getProperty("/Esusdata/Zusuasor") != "X") {
                     vLifnr = oLogonJSONModel.getProperty("/ETROLUSUANAV/results/0").Lifnr;
                     var suppDetails = oLogonJSONModel.getProperty("/ETUSUAPROVNAV/results").find(element => element.Lifnr == vLifnr);
                     vSuppName = suppDetails.Name;
+                    adendaSimp = suppDetails.Simplif_flag;
                 }
-                this.setActiveLifnr(vLifnr, vSuppName);
+                this.setActiveLifnr(vLifnr, vSuppName, undefined, adendaSimp);
                 this.getRouter().navTo("tile");
             }
         },

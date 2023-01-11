@@ -24,6 +24,9 @@ sap.ui.define([
     var _oDataEntity = "HeaderCFDISet";
 
     return Controller.extend("demo.controllers.Detail.Master", {
+
+        // Comentario de prueba
+
         onInit: function () {
             this._pdfViewer = new PDFViewer();
             this.getView().addDependent(this._pdfViewer);
@@ -351,10 +354,8 @@ sap.ui.define([
                         sap.ui.core.BusyIndicator.hide();
                         that.onCloseDialogUploadAdenda();
                         oFileUploader.clear();
-                        console.log(response.getElementsByTagName("RecibeCFDPortalResult")[0])
-                        /*
                         var oXMLModel = new sap.ui.model.xml.XMLModel();
-                        oXMLModel.setXML(response.getElementsByTagName("RecibeCFDPortalResult")[0]);
+                        oXMLModel.setXML(response.getElementsByTagName("RecibeCFDPortalResult")[0].textContent);
                         var oXml = oXMLModel.getData();
                         var status = oXml.getElementsByTagName("AckErrorApplication")[0].attributes[5].nodeValue;
                         var strResponse = oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent;
@@ -364,7 +365,6 @@ sap.ui.define([
                         } else {
                             sap.m.MessageBox.error(strResponse);
                         }
-                        */
                     },
                     error: function (request, status, err) {
                         sap.ui.core.BusyIndicator.hide();

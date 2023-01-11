@@ -207,7 +207,19 @@ sap.ui.define([
             if(arrT.length>0){
                 var Documentos = { Detalles: { results: [...arrT[0].EPYMNTDOCSNAV.results] } };
 
+             
+//Augdt
 
+Documentos.Detalles.results.sort(function (a, b) {
+    if (a.Augdt > b.Augdt) {
+      return 1;
+    }
+    if (a.Augdt < b.Augdt) {
+      return -1;
+    }
+    // a must be equal to b
+    return 0;
+  });
                 that.getOwnerComponent().setModel(new JSONModel(Documentos), "Documentos");
 
                 that.paginate("Documentos", "/Detalles", 1, 0);
@@ -300,26 +312,19 @@ sap.ui.define([
         },
 
         generateFilexlsx: function (oEvent) {
+            sap.ui.core.BusyIndicator.show();
             let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
             let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
 
             let registro = results[posicion];
+
+
            var Datos;
-         // for(var x=0;x<10;x++){
-
-
-
-          //  Fecha = (Fecha.getTime() - (1000 * 60 * 60 * 24 * 5))
-           // let LaufdT = String(new Date(new Date(registro.Augdt+ 'T00:00:00').getTime() - (1000 * 60 * 60 * 24 * x)))
-           // let LaufdT2 = String(new Date(new Date(registro.Augdt+ 'T00:00:00').getTime() + (1000 * 60 * 60 * 24 * 10)))
-
-          //  let Laufd = new Date(LaufdT).toISOString().slice(0,10).replace(/-/g, "");
-          //  let Laufd2 = new Date(LaufdT2).toISOString().slice(0,10).replace(/-/g, "");
+        
             let Augdt=String(registro.Augdt).replace(/-/g, "");
             let fecha=(registro.Laufd).replace(/-/g, "");
-            let url = `HeaderPYMNTCSet?$expand=ETXTHDRNAV,ETXTTOTALNAV,ETXTTAXNAV,ETXTFACTPROVNEWNAV,ETXTFACTSORNEWNAV,ETXTDISCOUNTNEWNAV,ETXTAGREEMENTNEWNAV&$filter= IOption eq '3' and 
+           /* let url = `HeaderPYMNTCSet?$expand=ETXTHDRNAV,ETXTTOTALNAV,ETXTTAXNAV,ETXTFACTPROVNEWNAV,ETXTFACTSORNEWNAV,ETXTDISCOUNTNEWNAV,ETXTAGREEMENTNEWNAV&$filter= IOption eq '3' and 
             ILaufd ge '${fecha}' and
-            
             ILaufi eq '${registro.Laufi}' and 
             IBukrs eq '${registro.Bukrs}' and 
             ILifnr eq '${registro.Lifnr}' and 
@@ -335,10 +340,174 @@ sap.ui.define([
             console.log(oODataJSONModel)
             let dataJSON = oDataJSONModel.getJSON();
            
-            console.log( JSON.parse(dataJSON))
-            generarxls( JSON.parse(dataJSON));
+         
+            generarxls( JSON.parse(dataJSON));*/
+var auxFilters=[];
+
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'IOption',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: '3'
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'ILaufd',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: fecha
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'ILaufi',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: registro.Laufi
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'IBukrs',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: registro.Bukrs
+            })
+            )
+
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'ILifnr',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: registro.Lifnr
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'IGjahr',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: registro.Gjahr
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'IVblnr',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: registro.Vblnr
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'IAugdt',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: Augdt
+            })
+            )
+
+            
 
 
+
+            var model = "ZOSP_PYMNT_CMPL_SRV";
+            var entity = "HeaderPYMNTCSet";
+            var expand = ["ETXTHDRNAV", "ETXTTOTALNAV", "ETXTTAXNAV", "ETXTFACTPROVNEWNAV", "ETXTFACTSORNEWNAV", "ETXTDISCOUNTNEWNAV", "ETXTAGREEMENTNEWNAV"];
+            var filter = auxFilters;
+            var select = "";
+
+            sap.ui.core.BusyIndicator.show();
+         that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
+              
+                var Datos = _GEToDataV2Response.data;
+                console.log(Datos)
+                generarxls( Datos);
+                sap.ui.core.BusyIndicator.hide();
+            });
+           
+
+           
+
+        },
+        generateFilexlsxMasivo: function () {
+            if(this.byId("complPagoList").getSelectedIndices().length<1){
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/pay.Message'));
+                return
+            }
+            sap.ui.core.BusyIndicator.show();
+            var results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
+            var registro = results;
+            console.log(registro)
+            var aIndices = this.byId("complPagoList").getSelectedIndices();
+
+            console.log(aIndices)
+           for(var x =0;x<aIndices.length;x++){
+            console.log(registro[aIndices[x]])
+
+           var Laufd = String(registro[aIndices[x]].Laufd).replace(/-/g, "");
+           var Augdt = String(registro[aIndices[x]].Augdt).replace(/-/g, "");
+
+        console.log(Laufd)
+        console.log(Augdt)
+           // let Augdt=String(registro.Augdt).replace(/-/g, "");
+            //let fecha=(registro.Laufd).replace(/-/g, "");
+        
+var auxFilters=[];
+
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'IOption',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: '3'
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'ILaufd',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: Laufd
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'ILaufi',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: registro[aIndices[x]].Laufi
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'IBukrs',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: registro[aIndices[x]].Bukrs
+            })
+            )
+
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'ILifnr',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: registro[aIndices[x]].Lifnr
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'IGjahr',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: registro[aIndices[x]].Gjahr
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'IVblnr',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: registro[aIndices[x]].Vblnr
+            })
+            )
+            auxFilters.push(new sap.ui.model.Filter({
+                path: 'IAugdt',
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: Augdt
+            })
+            )
+
+            var model = "ZOSP_PYMNT_CMPL_SRV";
+            var entity = "HeaderPYMNTCSet";
+            var expand = ["ETXTHDRNAV", "ETXTTOTALNAV", "ETXTTAXNAV", "ETXTFACTPROVNEWNAV", "ETXTFACTSORNEWNAV", "ETXTDISCOUNTNEWNAV", "ETXTAGREEMENTNEWNAV"];
+            var filter = auxFilters;
+            var select = "";
+
+            sap.ui.core.BusyIndicator.show();
+         that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
+              
+                var Datos = _GEToDataV2Response.data;
+                console.log(Datos)
+                generarxls( Datos);
+                sap.ui.core.BusyIndicator.hide();
+            });
+           
+        }
            
 
         },
