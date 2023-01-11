@@ -58,6 +58,22 @@ sap.ui.define(
             new sap.ui.model.json.JSONModel([]),
             "CitaCreationArray"
           );
+          //
+
+          if (selectedKey === "N") {
+            this.getOwnerComponent().setModel(
+              new sap.ui.model.json.JSONModel({
+                lectura: false,
+              }),
+              "ModelLectura"
+            );
+          }
+          this.getOwnerComponent().setModel(
+            new sap.ui.model.json.JSONModel({
+              editable: true,
+            }),
+            "Modeleditable"
+          );
 
           var oView = this.getView();
 
@@ -82,24 +98,42 @@ sap.ui.define(
           }
           this._pDialog.then(function (oDialog) {
             oDialog.open();
-            that.setInitialDate();
 
-            if (that.getView().getModel("ModelLectura") !== undefined) {
-              var Datos = that.getView().getModel("ModelLectura").getData();
-              console.log(Datos);
-
+            var Datos = that.getView().getModel("ModelLectura").getData();
+            console.log(Datos);
+            if (selectedKey === "N") {
+              that.getView().byId("ModCita").setVisible(false);
+              that.getView().byId("cancCita").setVisible(false);
+            } else {
+              that.getView().byId("ModCita").setVisible(true);
+              that.getView().byId("cancCita").setVisible(true);
+            }
+            if (!Datos.lectura) {
+              that.setInitialDate();
+              that.getView().byId("sTipoCita").setSelectedKey("");
+              that.getView().byId("sTipoUnidad").setSelectedKey("");
+              that.getView().byId("sTipoCita").setEditable(true);
+              that.getView().byId("totalpackagesInput").setEditable(true);
+              that.getView().byId("platformsInput").setEditable(true);
+              that.getView().byId("sTipoUnidad").setEditable(true);
+              that.getView().byId("carrierInput").setEditable(true);
+              that.getView().byId("DP1").setEditable(true);
+              that.getView().byId("totalpackagesInput").setEditable(true);
+              that.getView().byId("platformsInput").setEditable(true);
+              that.getView().byId("carrierInput").setEditable(true);
+            } else {
               that.getView().byId("sTipoCita").setSelectedKey(Datos.Tipocita);
-              that.getView().byId("totalpackagesInput").setValue("1");
-              that.getView().byId("platformsInput").setValue("2");
               that
                 .getView()
                 .byId("sTipoUnidad")
                 .setSelectedKey(Datos.Tipounidad);
-              that.getView().byId("carrierInput").setValue("1234");
               that
                 .getView()
                 .byId("DP1")
                 .setDateValue(new Date(Datos.Fechacita));
+              that.getView().byId("totalpackagesInput").setValue(Datos.Bultos);
+              that.getView().byId("platformsInput").setValue(Datos.Tarimas);
+              that.getView().byId("carrierInput").setValue(Datos.Transportista);
 
               that.getView().byId("sTipoCita").setEditable(false);
               that.getView().byId("totalpackagesInput").setEditable(false);
@@ -107,6 +141,9 @@ sap.ui.define(
               that.getView().byId("sTipoUnidad").setEditable(false);
               that.getView().byId("carrierInput").setEditable(false);
               that.getView().byId("DP1").setEditable(false);
+              that.getView().byId("totalpackagesInput").setEditable(false);
+              that.getView().byId("platformsInput").setEditable(false);
+              that.getView().byId("carrierInput").setEditable(false);
             }
           });
         } else {
@@ -160,25 +197,12 @@ sap.ui.define(
       },
 
       onDialogNextButton: function () {
-       
-        
-     
-        this.getView().getModel("TemporalModel").getData().generalData.totalBultos=this.getView().byId("totalpackagesInput").getValue()
-        this.getView().getModel("TemporalModel").getData().generalData.tarimas=this.getView().byId("platformsInput").getValue()
-       
-        this.getView().getModel("TemporalModel").getData().generalData.transportista=this.getView().byId("carrierInput").getValue()
-        
+        this.getView().getModel("TemporalModel").getData().generalData.totalBultos = this.getView().byId("totalpackagesInput").getValue();
+        this.getView().getModel("TemporalModel").getData().generalData.tarimas = this.getView().byId("platformsInput").getValue();
 
-
-        
-        console.log(this.getView().getModel("TemporalModel").getData());
-        
-        
-        
-        
+        this.getView().getModel("TemporalModel").getData().generalData.transportista = this.getView().byId("carrierInput").getValue();
 
         if (this._oWizard.getProgressStep().getValidated()) {
-          console.log(this._oWizard.getProgressStep().sButtonText);
           if (this._oWizard.getProgressStep().sButtonText === "Paso 2") {
             let dateSelected = this.byId("DP1").getDateValue();
             this.searchOrders(this.buildSapDate(dateSelected));
@@ -195,25 +219,29 @@ sap.ui.define(
       },
 
       onCloseWizard: function () {
-        this._handleMessageBoxOpen(
-          this.getView()
-            .getModel("appTxts")
-            .getProperty("/quotes.discardButton"),
-          "warning"
-        );
+        var Datos = this.getView().getModel("ModelLectura").getData();
+
+        if (Datos.lectura) {
+          this._handleMessageBoxOpen(
+            this.getView()
+              .getModel("appTxts")
+              .getProperty("/quotes.closeButton"),
+            "warning"
+          );
+        } else {
+          this._handleMessageBoxOpen(
+            this.getView()
+              .getModel("appTxts")
+              .getProperty("/quotes.discardButton"),
+            "warning"
+          );
+        }
       },
-      testModelos:function(){
-        console.log(this.getView().getModel("configSite").getData());
-         console.log(this.getView().getModel("TemporalModel").getData());
-         console.log(this.getView().getModel("CitaCreationArray").getData());
-         
-      },
+      testModelos: function () {},
 
       async handleWizardSubmit() {
         sap.m.MessageBox["confirm"](
-          this.getView()
-            .getModel("appTxts")
-            .getProperty("/quotes.submitAppoinment"),
+          this.getView().getModel("appTxts").getProperty("/quotes.submitAppoinment"),
           {
             actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
             onClose: async function (oAction) {
@@ -223,80 +251,129 @@ sap.ui.define(
                 this._pDialog = null;
                 this._oWizard = null;
 
-                let appoimentModel = this.getOwnerComponent()
-                  .getModel("CitaCreationArray")
-                  .getData();
+                let appoimentModel = this.getOwnerComponent().getModel("CitaCreationArray").getData();
                 var Model = this.getView().getModel("configSite").getData();
                 var Model2 = this.getView().getModel("TemporalModel").getData();
 
-                
-                console.log(this.getView().getModel("TemporalModel").getData());
-                console.log(appoimentModel);
+                if (this.getOwnerComponent().getModel("ModelLectura").getData().lectura === true) {
+                  var ArrtPos = [];
 
-                let createObjReq = {
-                  Proveedor: Model.supplierInputKey.padStart(10, 0),
-                  Action: "1",
+                  for (var x = 0; x < this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results.length; x++ ) {
+                    if (this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Selected) {
+                      ArrtPos.push({
+                        Folio: this.getOwnerComponent().getModel("ModelLectura").getData().Folio,
+                        Ebeln: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Ebeln,
+                        Ebelp: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Ebelp,
+                        Matnr: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Matnr,
+                        Cantidad: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado,
+                        Fechaini: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Kdatb,
+                        Fechafin: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Kdate,
+                        Umedida: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Meins,
+                        Citado: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado,
+                     
+                      });
+                    }
+                  }
+                  var json = {
+                    Proveedor: this.getOwnerComponent().getModel("ModelLectura").getData().Proveedor,
+                    Action: "2",
 
-                  ETCITANUEVA: [
-                    {
-                      Ebeln: appoimentModel[0].Ebeln,
-                      Ebelp: appoimentModel[0].Ebelp,
-                      Matnr: appoimentModel[0].Matnr,
-                      Citado: appoimentModel[0].Citado.toLocaleString(),
-                      FechaCita: appoimentModel[0].FechaCita,
-                      HoraIni: appoimentModel[0].HoraIni,
-                      HoraFin: appoimentModel[0].HoraFin,
-                      Anden: Number(appoimentModel[0].Citado) + 1,
+                    CTCITASCAB: [
+                      {
+                        Folio: this.getOwnerComponent().getModel("ModelLectura").getData().Folio,
+                        Centro: this.getOwnerComponent().getModel("ModelLectura").getData().Centro,
+                        Fechacita: appoimentModel[0].FechaCita,
+                        Proveedor: this.getOwnerComponent().getModel("ModelLectura").getData().Proveedor,
+                        Tipocita: Model2.generalData.Tipocita,
+                        Tipounidad: Model2.generalData.tipoUnidad,
+                        Transportista: Model2.generalData.transportista,
+                        Bultos: Model2.generalData.totalBultos,
+                        Tarimas: Model2.generalData.tarimas,
+                        HoraIni: appoimentModel[0].HoraIni,
+                        HoraFin: appoimentModel[0].HoraFin,
+                        Anden: (Number(appoimentModel[0].Anden) + 1).toString(),
+                      },
+                    ],
+                    CTCITASDET: ArrtPos,
+                    ETRETURN: [],
+                  };
+                  var model = _oDataModelAppoimnet;
+                  var entity = "/" + _oDataEntityAppoiment;
+                  var json2 = JSON.stringify(json);
+                  var that = this;
+
+                  that._POSToData(model, entity, json2).then(function (_GEToDataV2Response) {
+                      sap.ui.core.BusyIndicator.hide();
+
+                      var response = _GEToDataV2Response.d;
+
+                      if (response.Success === "X") {
+                        sap.m.MessageBox.success(response.Message);
+                      } else {
+                        sap.m.MessageBox.error(response.Message);
+                      }
+                    });
+                } else {
+                //  let appoimentModel = this.getOwnerComponent().getModel("CitaCreationArray").getData();
+                  console.log(appoimentModel)
+                  var ArrT = [];
+                  for (var x = 0;  x < appoimentModel.length;x++ ) {
+                    ArrT.push({
+                      Ebeln: appoimentModel[x].Ebeln,
+                      Ebelp: appoimentModel[x].Ebelp,
+                      Matnr: appoimentModel[x].Matnr,
+                      Citado: appoimentModel[x].Citado.toLocaleString(),
+                      FechaCita: appoimentModel[x].FechaCita,
+                      HoraIni: appoimentModel[x].HoraIni,
+                      HoraFin: appoimentModel[x].HoraFin,
+                      Anden: Number(appoimentModel[x].Anden) + 1,
                       TipoCita: Model2.generalData.tipoCita,
-                      Lifnr: "",
+                      Lifnr: Model.supplierInputKey,
                       Bultos: Model2.generalData.totalBultos,
                       Tarimas: Model2.generalData.tarimas,
                       TipoUnidad: Model2.generalData.tipoUnidad,
                       Transportista: Model2.generalData.transportista,
-                    },
-                    {
-                      Ebeln: appoimentModel[1].Ebeln,
-                      Ebelp: appoimentModel[1].Ebelp,
-                      Matnr: appoimentModel[1].Matnr,
-                      Citado: appoimentModel[1].Citado.toLocaleString(),
-                      FechaCita: appoimentModel[1].FechaCita,
-                      HoraIni: appoimentModel[1].HoraIni,
-                      HoraFin: appoimentModel[1].HoraFin,
-                      Anden: Number(appoimentModel[1].Citado) + 1,
-                      TipoCita: Model2.generalData.tipoCita,
-                      Lifnr: "",
-                      Bultos: Model2.generalData.totalBultos,
-                      Tarimas: Model2.generalData.tarimas,
-                      TipoUnidad: Model2.generalData.tipoUnidad,
-                      Transportista: Model2.generalData.transportista,
-                    }
-                   
-                  ],
-                  ETRETURN: [],
-                };
+                    });
+                  }
 
-                sap.ui.core.BusyIndicator.show();
-                let resp = null;
+                  let createObjReq = {
+                    Proveedor: Model.supplierInputKey.padStart(10, 0),
+                    Action: "1",
 
-                var model = _oDataModelAppoimnet;
-                var entity = "/" + _oDataEntityAppoiment;
-                var json2 = JSON.stringify(createObjReq);
-                var that = this;
+                    ETCITANUEVA: ArrT,
+                    ETRETURN: [],
+                  };
 
-                that
-                  ._POSToData(model, entity, json2)
-                  .then(function (_GEToDataV2Response) {
-                    sap.ui.core.BusyIndicator.hide();
+                  sap.ui.core.BusyIndicator.show();
+                  let resp = null;
 
-                    var response = _GEToDataV2Response.d;
+                  var model = _oDataModelAppoimnet;
+                  var entity = "/" + _oDataEntityAppoiment;
+                  var json2 = JSON.stringify(createObjReq);
+                  var that = this;
+                }
 
-                    console.log(_GEToDataV2Response);
-                    if (response.Success === "X") {
-                      sap.m.MessageBox.success(response.Message);
-                    } else {
-                      sap.m.MessageBox.error(response.Message);
-                    }
-                  });
+                that._POSToData(model, entity, json2).then(function (_GEToDataV2Response) {
+                  sap.ui.core.BusyIndicator.hide();
+
+                  var response = _GEToDataV2Response.d;
+
+                  if (response.Success === "X") {
+                    sap.m.MessageBox.success(response.Message);
+                  } else {
+                    sap.m.MessageBox.error(response.Message);
+                  }
+                });
+
+                this.getOwnerComponent().setModel(
+                  new sap.ui.model.json.JSONModel([]),
+                  "ModelLectura"
+                );
+
+                this.getOwnerComponent().setModel(
+                  new sap.ui.model.json.JSONModel([]),
+                  "Modeleditable"
+                );
               }
             }.bind(this),
           }
@@ -306,7 +383,6 @@ sap.ui.define(
         var oModel2 = "/sap/opu/odata/sap/" + model;
         var that = this;
 
-      
         return new Promise(function (fnResolve, fnReject) {
           $.ajax({
             url: oModel2 + entity,
@@ -315,15 +391,14 @@ sap.ui.define(
             dataType: "json",
             data: aData,
             headers: {
-              "X-Requested-With":"X"
+              "X-Requested-With": "X",
             },
             success: function (dataResponse) {
               fnResolve(dataResponse);
             },
             error: function (error, status, err) {
               sap.ui.core.BusyIndicator.hide();
-              console.log("error", error);
-            
+
               fnReject(new Error(error));
             },
           });
@@ -350,7 +425,7 @@ sap.ui.define(
             id = jqXHR.getResponseHeader("X-CSRF-Token");
           },
         });
-        console.log(id);
+
         return id;
       },
 
@@ -363,6 +438,8 @@ sap.ui.define(
               this.byId("wizardDialog").destroy();
               this._pDialog = null;
               this._oWizard = null;
+
+              this.getView().setModel(new JSONModel(), "ModelLectura");
               this.getView().setModel(
                 new JSONModel(),
                 "tableWizardOrderPosition"
@@ -383,36 +460,74 @@ sap.ui.define(
 
       searchOrders: function (date) {
         let filtros = [];
-
+        let that = this;
         filtros.push(this.buildFiltro("IOption", 7));
 
         filtros.push(
-          this.buildFiltro(
+          that.buildFiltro(
             "ILifnr",
-            this.getConfigModel().getProperty("/supplierInputKey")
+            that.getConfigModel().getProperty("/supplierInputKey")
           )
         );
 
-        filtros.push(this.buildFiltro("IKdatb", date));
+        filtros.push(that.buildFiltro("IKdatb", date));
+        var Datos = that.getView().getModel("ModelLectura").getData();
+
+        if (that.getView().getModel("PosicionesG") === undefined) {
+          var PosicionesG = [];
+        } else {
+          var PosicionesG = that.getView().getModel("PosicionesG").getData();
+        }
 
         sap.ui.core.BusyIndicator.show();
-        let that = this;
-        this._GetODataV2(_oDataModelOC, _oDataEntityOC, filtros, ["ETOC"], "")
-          .then((resp) => {
-            that.getOwnerComponent().setModel(new JSONModel(), "Pedidos");
-            resp.data.results[0].ETOC.results.forEach((oc) => {
-              oc.Selected = false;
-              // oc.MengeR = 10;
-            });
+        let ARRTV = [];
+        that._GetODataV2(_oDataModelOC, _oDataEntityOC, filtros, ["ETOC"], "").then((resp) => {
+          that.getView().byId("tableWizardOrder").clearSelection()
+            if (Datos.lectura) {
+              this.getOwnerComponent().setModel(
+                new sap.ui.model.json.JSONModel({
+                  editable: false,
+                }),
+                "Modeleditable"
+              );
+              for (
+                var x = 0;
+                x < resp.data.results[0].ETOC.results.length;
+                x++
+              ) {
+                resp.data.results[0].ETOC.results[x].Selected = true;
+                for (var y = 0; y < PosicionesG.length; y++) {
+                  if (
+                    resp.data.results[0].ETOC.results[x].Matnr ===
+                      PosicionesG[y].Matnr &&
+                    resp.data.results[0].ETOC.results[x].Werks ===
+                      PosicionesG[y].Werks
+                  ) {
+                    resp.data.results[0].ETOC.results[x].Citado =
+                      PosicionesG[y].Citado;
+                    ARRTV.push(resp.data.results[0].ETOC.results[x]);
+                  }
+                }
+              }
+
+              resp.data.results[0].ETOC.results = ARRTV;
+            } else {
+              for (
+                var x = 0;
+                x < resp.data.results[0].ETOC.results.length;
+                x++
+              ) {
+                resp.data.results[0].ETOC.results[x].Selected = false;
+              }
+            }
+
             that
               .getOwnerComponent()
               .setModel(new JSONModel(resp.data.results[0]), "Pedidos");
-            // that.paginate("Pedidos", "/ETOC", 1, 0);
+            //
             sap.ui.core.BusyIndicator.hide();
           })
-          .catch((error) => {
-            console.error(error);
-          });
+          .catch((error) => {});
       },
 
       getDetailOrder: function () {
@@ -423,9 +538,8 @@ sap.ui.define(
         citas1Model.getJsonModelAsync(
           urlPositions,
           function (response) {
-            console.log(response);
             var ojbResponse = response.getProperty("/results/0");
-            console.log(ojbResponse);
+
             if (ojbResponse.ESuccess == "X") {
               var Po_validas = me.getView().getModel("tableWizardPo_validas");
               Po_validas.setProperty("/Oekponav", ojbResponse.Po_validas);
@@ -448,34 +562,46 @@ sap.ui.define(
       },
 
       onChangeSelectTipoCita: function (oEvent) {
-        dataTempModel.setProperty("/generalData/tipoCita", oEvent.getParameters().selectedItem.getKey()   );
-        console.info(dataTempModel);
+        dataTempModel.setProperty(
+          "/generalData/tipoCita",
+          oEvent.getParameters().selectedItem.getKey()
+        );
 
-        this.getOwnerComponent().getModel("CitaMainData").setProperty("/TipoCita", oEvent.getParameters().selectedItem.getKey() );
+        this.getOwnerComponent()
+          .getModel("CitaMainData")
+          .setProperty(
+            "/TipoCita",
+            oEvent.getParameters().selectedItem.getKey()
+          );
       },
 
       onChangeSelectTipoUnidad: function (oEvent) {
-        dataTempModel.setProperty("/generalData/tipoUnidad", oEvent.getParameters().selectedItem.getKey() );
-        console.info(dataTempModel);
+        dataTempModel.setProperty(
+          "/generalData/tipoUnidad",
+          oEvent.getParameters().selectedItem.getKey()
+        );
       },
 
       onSelectProductType: function (oEvent) {
-        dataTempModel.setProperty("/generalData/tipoProducto", oEvent.getParameters().selectedItem.getKey());
-        console.info(dataTempModel);
+        dataTempModel.setProperty(
+          "/generalData/tipoProducto",
+          oEvent.getParameters().selectedItem.getKey()
+        );
       },
 
       selectChange: function (oEvent) {
-        console.log(oEvent);
+        console.log("seleccion")
       },
-
+      onListItemPress: function (oEvent) {
+        console.log("222")
+      },
       appointmentDateChange(oEvent) {
+       
         let source = oEvent.getSource();
         let dateSelected = source.getDateValue();
-        // this.searchOrders(this.buildSapDate(dateSelected));
+
         this.setAppoimentCalendar(dateSelected, dateSelected);
-        this.getOwnerComponent()
-          .getModel("CitaMainData")
-          .setProperty("/FechaCita", this.buildSapDate(dateSelected));
+        this.getOwnerComponent().getModel("CitaMainData").setProperty("/FechaCita", this.buildSapDate(dateSelected));
       },
 
       setAppoimentCalendar(dateSelected, maxdate) {
@@ -559,7 +685,14 @@ sap.ui.define(
 
         if (oAppointment) {
           sSelected = oAppointment.getSelected() ? "selected" : "deselected";
-          MessageBox.show("'" + oAppointment.getTitle() +   "' " +     sSelected +". \n  Cita: " +    this.byId("appoinmentPC").getSelectedAppointments().length  );
+          MessageBox.show(
+            "'" +
+              oAppointment.getTitle() +
+              "' " +
+              sSelected +
+              ". \n  Cita: " +
+              this.byId("appoinmentPC").getSelectedAppointments().length
+          );
         } else {
           aAppointments = oEvent.getParameter("appointments");
           sValue = aAppointments.length + " Appointments selected";
@@ -569,7 +702,6 @@ sap.ui.define(
       },
 
       selectPedido: async function (oEvent) {
-        console.log(this.getView().getModel("Pedidos"));
         let source = oEvent.getSource();
         let arrayData = oEvent.getParameter("rowContext").getModel().getData();
         let objectClicked = oEvent.getParameter("rowContext").getObject();
@@ -578,15 +710,14 @@ sap.ui.define(
         let isSelected = selectedIndices.some(
           (index) => index == selectedIndex
         );
-        console.log(selectedIndices);
+
         if (selectedIndices.length == 0) {
           _centroSeleccionado = null;
         } else if (_centroSeleccionado == null) {
-          console.log(_centroSeleccionado);
           _centroSeleccionado = objectClicked.Werks;
           this.fetchConfigCentro(_centroSeleccionado);
           this.byId("btnAppoimentNext").setVisible(true);
-          this.byId("btnAppoimentNext").setEnabled(false);
+          this.byId("btnAppoimentNext").setEnabled(true);
           this.byId("inputCantidad").setEnabled(true);
         } else if (_centroSeleccionado != objectClicked.Werks) {
           sap.m.MessageBox.warning(
@@ -595,15 +726,14 @@ sap.ui.define(
           source.removeSelectionInterval(selectedIndex, selectedIndex);
           return;
         }
-        console.log(arrayData.ETOC.results);
+
         //-- habilitar o desabilitar row
         arrayData.ETOC.results.forEach((pedido) => {
           if (
             pedido.Ebeln == objectClicked.Ebeln &&
             pedido.Ean11 == objectClicked.Ean11
           )
-            console.log(isSelected);
-          pedido.Selected = isSelected;
+            pedido.Selected = isSelected;
         });
 
         source.setFirstVisibleRow(selectedIndex + 2);
@@ -723,8 +853,11 @@ sap.ui.define(
       },
 
       clearModelsOnFilter(oEvent) {
-        this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel([]), "CitaCreationArray"   );
-         _centroSeleccionado = null;
+        this.getOwnerComponent().setModel(
+          new sap.ui.model.json.JSONModel([]),
+          "CitaCreationArray"
+        );
+        _centroSeleccionado = null;
       },
       convertHora: function (valor) {
         var EJ = valor;
@@ -754,7 +887,9 @@ sap.ui.define(
         var select = "";
 
         sap.ui.core.BusyIndicator.show();
-        that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
+        that
+          ._GEToDataV2(model, entity, filter, expand, select)
+          .then(function (_GEToDataV2Response) {
             sap.ui.core.BusyIndicator.hide();
             var data = _GEToDataV2Response.data.results[0].ETCONFIG.results;
             var N = "";
@@ -781,13 +916,10 @@ sap.ui.define(
                 role: data[x].Func,
                 DispIni: data[x].DatoH01,
                 DispFin: data[x].DatoH02,
-                appointments: [
-                
-                ],
+                appointments: [],
               });
             }
 
-            console.log(Arrt);
             var auxJsonModel = new sap.ui.model.json.JSONModel(Arrt);
 
             that.getOwnerComponent().setModel(auxJsonModel, "Platforms");
@@ -882,11 +1014,12 @@ sap.ui.define(
         var select = "";
         var dataPos = that.getView().getModel("Platforms").getData(); //that.getOwnerComponent().getModel("Platforms").getData();
         sap.ui.core.BusyIndicator.show();
-        that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
+        that
+          ._GEToDataV2(model, entity, filter, expand, select)
+          .then(function (_GEToDataV2Response) {
             sap.ui.core.BusyIndicator.hide();
-            console.log(_GEToDataV2Response);
+
             var data = _GEToDataV2Response.data.results[0].CTCITASCAB.results;
-            console.log(data);
 
             for (var x = 0; x < data.length; x++) {
               for (var y = 0; y < dataPos.length; y++) {
@@ -908,6 +1041,139 @@ sap.ui.define(
 
             var auxJsonModel = new sap.ui.model.json.JSONModel(dataPos);
             that.getOwnerComponent().setModel(auxJsonModel, "Platforms");
+          });
+      },
+
+      Modificar_Primera_Vista: function () {
+        var oModel = this.getView().getModel();
+        this._oWizard = this.byId("QuoteCedisWizard");
+
+        var that = this;
+        if (this._oWizard.getProgress() === 1) {
+          that.getView().byId("sTipoCita").setEditable(true);
+          that.getView().byId("totalpackagesInput").setEditable(true);
+          that.getView().byId("platformsInput").setEditable(true);
+          that.getView().byId("sTipoUnidad").setEditable(true);
+          that.getView().byId("carrierInput").setEditable(true);
+          that.getView().byId("DP1").setEditable(true);
+        }
+        if (this._oWizard.getProgress() === 2) {
+          this.getOwnerComponent().setModel(
+            new sap.ui.model.json.JSONModel({
+              editable: true,
+            }),
+            "Modeleditable"
+          );
+          let dateSelected = this.byId("DP1").getDateValue();
+          console.log("Pedidos");
+          this.searchOrders2(this.buildSapDate(dateSelected));
+        }
+        this.handleButtonsVisibility();
+      },
+      searchOrders2: function (date) {
+        let filtros = [];
+        let that = this;
+        filtros.push(this.buildFiltro("IOption", 7));
+
+        filtros.push(
+          that.buildFiltro(
+            "ILifnr",
+            that.getConfigModel().getProperty("/supplierInputKey")
+          )
+        );
+
+        filtros.push(that.buildFiltro("IKdatb", date));
+        var Datos = that.getView().getModel("ModelLectura").getData();
+        var dataNL = that.getView().getModel("Pedidos").getData();
+
+        var PosicionesG = that.getView().getModel("PosicionesG").getData();
+
+        sap.ui.core.BusyIndicator.show();
+        let ARRTV = [];
+        that._GetODataV2(_oDataModelOC, _oDataEntityOC, filtros, ["ETOC"], "").then((resp) => {
+          that.getView().byId("tableWizardOrder").clearSelection()
+            for (var x = 0; x < resp.data.results[0].ETOC.results.length; x++) {
+              resp.data.results[0].ETOC.results[x].Selected = false;
+            }
+            for (var y = 0; y < dataNL.ETOC.results.length; y++) {
+              resp.data.results[0].ETOC.results.push(dataNL.ETOC.results[y]);
+            }
+
+            that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "Pedidos");
+           
+            sap.ui.core.BusyIndicator.hide();
+          })
+          .catch((error) => {});
+      },
+
+      CancelarCita: function () {
+        this._oWizard = this.getView().byId("QuoteCedisWizard");
+
+        let appoimentModel = this.getOwnerComponent()
+          .getModel("CitaCreationArray")
+          .getData();
+
+        var json = {
+          Proveedor: this.getOwnerComponent().getModel("ModelLectura").getData()
+            .Proveedor,
+          Action: "3",
+
+          CTCITASCAB: [
+            {
+              Folio: this.getOwnerComponent().getModel("ModelLectura").getData()
+                .Folio,
+              Centro: this.getOwnerComponent()
+                .getModel("ModelLectura")
+                .getData().Centro,
+              Fechacita: this.getOwnerComponent()
+                .getModel("ModelLectura")
+                .getData().Fechacita,
+              Proveedor: this.getOwnerComponent()
+                .getModel("ModelLectura")
+                .getData().Proveedor,
+            },
+          ],
+          CTCITASDET: [],
+          ETRETURN: [],
+        };
+        var model = _oDataModelAppoimnet;
+        var entity = "/" + _oDataEntityAppoiment;
+        var json2 = JSON.stringify(json);
+        var that = this;
+
+        that
+          ._POSToData(model, entity, json2)
+          .then(function (_GEToDataV2Response) {
+            sap.ui.core.BusyIndicator.hide();
+
+            var response = _GEToDataV2Response.d;
+
+            if (response.Success === "X") {
+              sap.m.MessageBox.success("cita Cancelada correctamente");
+            } else {
+              sap.m.MessageBox.error(response.ETRETURN.results[0].Message);
+            }
+
+            that._oWizard.discardProgress(that._oWizard.getSteps()[0]);
+            that.byId("wizardDialog").destroy();
+            that._pDialog = null;
+            that._oWizard = null;
+
+            that.getView().setModel(new JSONModel(), "ModelLectura");
+            that
+              .getView()
+              .setModel(new JSONModel(), "tableWizardOrderPosition");
+            that
+              .getOwnerComponent()
+              .setModel(new sap.ui.model.json.JSONModel(), "CitaMainData");
+            that
+              .getOwnerComponent()
+              .setModel(
+                new sap.ui.model.json.JSONModel([]),
+                "CitaCreationArray"
+              );
+            _centroSeleccionado = null;
+            that.searchData();
           });
       },
     });

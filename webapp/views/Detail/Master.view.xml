@@ -17,6 +17,7 @@
                     <ToolbarSpacer/>
                     <Button text="{appTxts>/sendInv.load}" type="Emphasized" press="openUploadDialog" visible="false"/>
                     <Button text="{appTxts>/sendInv.uploadCFDI}" type="Emphasized" press="openUploadDialog2"/>
+                    <Button text="{appTxts>/sendInv.uploadAdenda}" type="Emphasized" press="openUploadDialogAdenda" visible="{configSite>/adendaSimplificada}"/>
                 </f:actions>
             </f:DynamicPageTitle>
         </f:title>

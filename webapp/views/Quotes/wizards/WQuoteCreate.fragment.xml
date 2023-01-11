@@ -22,6 +22,8 @@
 
             <f:footer>
                 <OverflowToolbar>
+                   <Button text="Modificar" visible="{path:'ModelLectura>/lectura'}" press="Modificar_Primera_Vista" id="ModCita"/>
+                    <Button text="Cancelar cita" visible="{path:'ModelLectura>/lectura'}" press="CancelarCita" id="cancCita"/>
                     <ToolbarSpacer/>
                     <Button text="{appTxts>/rem.back}" visible="{/backButtonVisible}" press="onDialogBackButton" />
                     <Button id="btnAppoimentNext" text="{appTxts>/rem.next}" type="Emphasized" enabled="{/nextButtonEnabled}" visible="{/nextButtonVisible}" press="onDialogNextButton" />

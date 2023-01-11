@@ -744,6 +744,8 @@ console.log(modo)
 
                 switch (Estatus) {
                     case "B":
+                        this.getView().byId("status").setEnabled(true);
+                        this.getView().byId("status").setEditable(true);
                         this.getView().byId("clarificationType").setEnabled(true).setEditable(true);
                         this.getView().byId("analyst").setEnabled(true).setEditable(true);
                         break;
@@ -946,6 +948,15 @@ var ArrT=[];
                 }
                 
             }
+            if (tipo_Doc==='KR'){
+                for(var x =0;x<TAclara.length;x++){
+                    if(TAclara[x].TipAcla==="CD"||TAclara[x].TipAcla==="FI"||TAclara[x].TipAcla==="PF"){
+                        ArrT.push(TAclara[x])
+                    }
+
+                }
+                
+            }
             if (tipo_Doc==='KG'){
                 for(var x =0;x<TAclara.length;x++){
                     if(TAclara[x].TipAcla==="DF"){
@@ -1024,6 +1035,15 @@ var ArrT=[];
 
             var ArrT=[];
             if (tipo_Doc==='RE'){
+                for(var x =0;x<TAclara.length;x++){
+                    if(TAclara[x].TipAcla==="CD"||TAclara[x].TipAcla==="FI"||TAclara[x].TipAcla==="PF"){
+                        ArrT.push(TAclara[x])
+                    }
+
+                }
+                
+            }
+            if (tipo_Doc==='KR'){
                 for(var x =0;x<TAclara.length;x++){
                     if(TAclara[x].TipAcla==="CD"||TAclara[x].TipAcla==="FI"||TAclara[x].TipAcla==="PF"){
                         ArrT.push(TAclara[x])

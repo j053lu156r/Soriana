@@ -516,7 +516,7 @@
                     "numeric": " ",
                     "footer": "",
                     "type": "standard",
-                    "binding": "masterQuotes2",
+                    "binding": "masterQuotes",
                     "functions": [
                         {
                             "idFunction": 30
