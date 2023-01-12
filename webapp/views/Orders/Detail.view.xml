@@ -319,7 +319,7 @@ Inicio de CAMBIO BORTA 27.07.2021 Se solicita indicar valores en columnas y no e
                                                 unit="{tableDetailMoves>Meins}" emphasized="false" state="None"/>
                                             <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
                                                 xmlns="sap.m"
-                                                number="{parts: [{path: 'tableDetailMoves>Netwr'}, {path: 'tableDetailMoves>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                number="{parts: [{path: 'tableDetailMoves>Tbtwr'}, {path: 'tableDetailMoves>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
                                                 unit="{tableDetailMoves>Waers}" emphasized="false" state="None"/>
                                             <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
                                                 xmlns="sap.m"
