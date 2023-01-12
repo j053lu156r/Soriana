@@ -290,23 +290,29 @@ Inicio de CAMBIO BORTA 27.07.2021 Se solicita indicar valores en columnas y no e
                                     </m:OverflowToolbar>
                                 </m:headerToolbar>
 								<m:columns>
-									<m:Column><m:Text text="Posicion" /></m:Column>
-                                    <m:Column><m:Text text="Fecha publicación" /></m:Column>
-                                    <m:Column><m:Text text="Numero de servicio" /></m:Column>
-                                    <m:Column><m:Text text="Articulo" /></m:Column>
-                                    <m:Column><m:Text text="Versión" /></m:Column>
-                                    <m:Column><m:Text text="Cantidad" /></m:Column>
-                                    <m:Column><m:Text text="Costo unitario" /></m:Column>
-                                    <m:Column><m:Text text="Costo total" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/order.position}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/order.numServ}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/order.article}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/order.version}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/order.plaza}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/order.publicDate}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/order.medio}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/order.canal}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/order.cuantity}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/order.unitPrice}" /></m:Column>
+                                    <m:Column><m:Text text="{appTxts>/order.total}" /></m:Column>
 								</m:columns>
 								<m:items>
 									<m:ColumnListItem type="Navigation" press="handleItemPress">
 										<m:cells>
-											<m:ObjectIdentifier text="{tableDetailMoves>Ebelp}" />
                                             <m:ObjectIdentifier text="{tableDetailMoves>Extrow}" />
                                             <m:ObjectIdentifier text="{tableDetailMoves>Srvpos}" />
                                             <m:ObjectIdentifier text="{tableDetailMoves>Ktext1}" />
                                             <m:ObjectIdentifier text="{tableDetailMoves>Userf1Txt}" />
+                                            <m:ObjectIdentifier text="{tableDetailMoves>Suc}" />
+                                            <Text xmlns="sap.m" text="{path: 'tableDetailMoves>FePubl', formatter: '.ReverseDate'}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                            <m:ObjectIdentifier text="{tableDetailMoves>Medio}" />
+                                            <m:ObjectIdentifier text="{tableDetailMoves>Canal}" />
                                             <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
                                                 xmlns="sap.m"
                                                 number="{parts: [{path: 'tableDetailMoves>Menge'}, {path: 'tableDetailMoves>Meins'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
@@ -317,7 +323,7 @@ Inicio de CAMBIO BORTA 27.07.2021 Se solicita indicar valores en columnas y no e
                                                 unit="{tableDetailMoves>Waers}" emphasized="false" state="None"/>
                                             <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
                                                 xmlns="sap.m"
-                                                number="{parts: [{path: 'tableDetailMoves>Brtwr'}, {path: 'tableDetailMoves>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                number="{parts: [{path: 'tableDetailMoves>Netwr'}, {path: 'tableDetailMoves>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
                                                 unit="{tableDetailMoves>Waers}" emphasized="false" state="None"/>
 										</m:cells>
 									</m:ColumnListItem>
