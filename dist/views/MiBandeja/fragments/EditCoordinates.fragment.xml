@@ -1,0 +1,16 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+    <Dialog title="{appTxts>/locations.popup.title}" class="sapUiContentPadding">
+        <Label labelFor="latitud" text="{appTxts>/locations.latitude}" />
+        <Input id="latitud" value="{detailLocation>/Zlatitud}" />
+        <Label labelFor="longitud" text="{appTxts>/locations.longitude}" />
+        <Input id="longitud" value="{detailLocation>/Zlongitud}" />
+        <buttons>
+            <Button id="closeDialog" text="{appTxts>/date.close}" press="onCloseDialog"/>
+        </buttons>
+        <buttons>
+            <Button id="realizaConsulta" text="{appTxts>/notifications.save}" press="saveCoordinates"/>
+        </buttons>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,32 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout" controllerName="demo.controllers.Users.Logon">
+	<Page class="loginBg" showNavButton="false" enableScrolling="false" showHeader="false">
+		<content>
+			<FlexBox xmlns:mvc="sap.ui.core.mvc" 
+            xmlns:layout="sap.ui.commons.layout"
+            justifyContent="Center"
+            xmlns="sap.m" 
+            width="100%"
+            height="100%"
+            id="box0" 
+            fitContainer="true"
+			alignContent="Center" alignItems="Center">
+				<items>
+					<VBox xmlns="sap.m" id="vbox0" alignContent="Center" alignItems="Center" direction="Column" class="loginCard">
+						<items>
+                            <Image
+                            class="logoLogin"
+                            src="{resourcesPaths>/images}/LogoSoriana.svg" />
+							<Title text="{appTxts>/logon.title}" class="loginTitle" />
+							<Input width="100%" id="logon_user" placeholder="{appTxts>/logon.mail}" textAlign="Initial" type="Email" change="hasChangeMail" showValueHelp="true" valueHelpIconSrc="sap-icon://person-placeholder" />
+							<Input width="100%" id="logon_pass" type="Password" placeholder="{appTxts>/logon.password}" textAlign="Initial" showValueHelp="true" valueHelpIconSrc="sap-icon://locked" />
+							<Link xmlns="sap.m" text="{appTxts>/logon.confirm}" id="recuConfirm" press="onPressCON" class="myLinkRC sapUiTinyMarginTop" target="_blank"/>
+                            
+							<Link xmlns="sap.m" text="{appTxts>/logon.recovery}" id="recuContr" press="onPressRC" class="myLinkRC sapUiTinyMarginTop"/>
+                            <Button text="{appTxts>/logon.login}" press="onPress" type="Emphasized" class="btnLogin"/>
+						</items>
+					</VBox>
+				</items>
+			</FlexBox>
+		</content>
+	</Page>
+</mvc:View>
