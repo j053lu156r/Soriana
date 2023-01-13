@@ -541,14 +541,10 @@ sap.ui.define([
             if (userTileAuth != null) {
                 var tiles = userTileAuth.getProperty("/tiles");
                 var host = window.location.host;
-                if (tileID === "0049" && host === "socios.soriana.com") {
-                    return false;
+                if (tiles != null) {
+                    return tiles.includes(tileID);
                 } else {
-                    if (tiles != null) {
-                        return tiles.includes(tileID);
-                    } else {
-                        return false;
-                    }
+                    return false;
                 }
             } else {
                 return false;
