@@ -1,0 +1,51 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+    <Dialog title="{appTxts>/rem.consolidatedDetail}" stretch="true" class="sapUiContentPadding">
+        <Panel width="100%">
+            <VBox id="consolidatedDetail" width="100%" alignItems="Center">
+                <Image src="./images/LogoSoriana.svg" width="350px" />
+                <Title text="{appTxts>/rem.consolidatedReportTilte}" titleStyle="H3" width="100%" />
+                <FlexBox alignItems="Start" justifyContent="SpaceBetween" width="100%">
+                    <Text text="{/supplier}" />
+                    <Text text="{appTxts>/rem.document}:  {/remisionNo}" />
+                </FlexBox>
+                <VBox items="{/cajtars}">
+                    <Table
+                        items="{path: 'items', templateShareable:false}"
+                        >
+                        <headerToolbar>
+                            <OverflowToolbar>
+                                <Text text="{appTxts>/rem.palletbox}: {Cajtar}" />
+                                <ToolbarSpacer />
+                                <Text text="{appTxts>/rem.destination}: {Werks} - {Name1}" />
+                            </OverflowToolbar>
+                        </headerToolbar>
+                        <columns>
+							<Column><Text text="{appTxts>/rem.codebar}" /></Column>
+                            <Column><Text text="{appTxts>/rem.description}" /></Column>
+                            <Column><Text text="{appTxts>/rem.capEmp}" /></Column>
+                            <Column><Text text="{appTxts>/rem.quantity}" /></Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem>
+                                <cells>
+                                    <Text text="{Ean11}" />
+                                    <Text text="{Maktx}" />
+                                    <Text text="{CapEmpaque}" />
+                                    <Text text="{Menge}" />
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </VBox>
+            </VBox>
+        </Panel>
+        <buttons>
+            <Button id="closeDialog" text="{appTxts>/date.close}" press="onCloseDialogBoxPrint"/>
+        </buttons>
+        <buttons>
+            <Button id="realizaConsulta" text="{appTxts>/rem.print}" press="printDetailConsolidated"/>
+        </buttons>
+	</Dialog>
+</core:FragmentDefinition>
