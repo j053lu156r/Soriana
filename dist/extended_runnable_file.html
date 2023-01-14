@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+		<meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+		<meta http-equiv="Expires" content="-1">
+		<meta http-equiv="Pragma" content="no-cache">
+		<script src="https://smtpjs.com/v2/smtp.js"></script>
+		<script src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js" id="sap-ui-bootstrap" data-sap-ui-libs="sap.m, sap.ui.comp, sap.ui.layout,sap.tnt" data-sap-ui-theme="sap_belize_plus" data-sap-ui-xx-bindingsyntax="complex" data-sap-ui-compatversion="edge" data-sap-ui-resourceroots="{
+            &quot;demo&quot;: &quot;./&quot;
+         }">
+		</script>
+	<script src="../../changes_preview.js"></script>
+
+	<script>(function(){document.addEventListener("load",function(e){if("OpaFrame"===e.target.id){var t=document.getElementById("OpaFrame").contentWindow.document,n=t.createElement("script");n.type="text/javascript",n.innerHTML="sap.ui.getCore().loadLibrary('sap.ui.fl'); jQuery.getScript('../../changes_preview.js')",t.head.appendChild(n)}},!0)})()</script>
+
+		<!-- only load the mobile lib "sap.m" and the "sap_bluecrystal" theme -->
+
+		<script>
+		
+			//sap.ui.localResources("viewnavigation");
+		 	//var app = new sap.m.App("App", {initialPage: "idView1"});
+    	 	//var page1 = sap.ui.view({id:"idView1", viewName:"demo.views.Tile"  , type:sap.ui.core.mvc.ViewType.XML});
+    	 	//var page2 = sap.ui.view({id:"idView2", viewName:"demo.views.Detail", type:sap.ui.core.mvc.ViewType.XML});
+    	 	//app.addPage(page1);    	 	
+    	 	//app.addPage(page2);
+    	 	//app.placeAt("content");		
+			sap.ui.getCore().attachInit(function () {
+				sap.ui.require([
+					"demo/localService/mockserver",
+					"sap/m/Shell",
+					"sap/ui/core/ComponentContainer"
+				], function (mockserver, Shell, ComponentContainer) {
+					//mockserver.init();
+					new Shell({
+						app: new ComponentContainer({
+							name: "demo",
+							height: "100%"
+						})
+					}).placeAt("content");
+				});
+			});
+		</script>
+
+	</head>
+	<body class="sapUiBody" role="application">
+		<div id="content">
+		</div>
+	</body>
+</html>

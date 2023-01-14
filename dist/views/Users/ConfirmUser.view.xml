@@ -1,0 +1,31 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="demo.controllers.Users.ConfirmUser" xmlns:html="http://www.w3.org/1999/xhtml">
+	<App id="ConfirmUser">
+		<pages>
+			<Page showHeader="false" title="{appTxts>/confirm.title}">
+				<content>
+					<FlexBox width="100%" id="box0" alignContent="Center" alignItems="Center" fitContainer="true">
+						<items>
+							<VBox width="100%" direction="Column" id="activeForm" alignContent="Center" alignItems="Inherit" visible="false">
+								<items>
+									<Text text="{appTxts>/confirm.active}" class="sapUiContentPadding"/>
+                                    <Input width="100%" id="user_confirm" placeholder="{appTxts>/logon.mail}" textAlign="Initial" type="Email" change="hasChangeMail"   />
+                                    <Input width="100%" id="hCode" placeholder="{appTxts>/confirm.code}" maxLength="6" required="true" textFormatMode="Key"/>
+									<Input width="100%" id="pass1" placeholder="{appTxts>/confirm.pass}" maxLength="10" required="true" textFormatMode="Key" type="Password"/>
+									<Input width="100%" id="pass2" placeholder="{appTxts>/confirm.confPass}" maxLength="10" required="true" textFormatMode="Key" type="Password"/>
+									<Button text="{appTxts>/confirm.continue}" width="100px" id="btn_continue" press="activateAccount"/>
+								</items>
+							</VBox>
+							<VBox width="100%" direction="Column" id="errorBox" justifyContent="Center" alignContent="Center" alignItems="Inherit" visible="false">
+							    <items>
+							        <!--Text text="" id="text0" textAlign="Center"/-->
+							        <ObjectStatus text="{appTxts>/confirm.error}" id="errorField" icon="sap-icon://alert" state="Warning"/>
+							        <Button text="{appTxts>/confirm.return}" width="auto" id="button0" icon="sap-icon://navigation-right-arrow" press="backLogin" iconFirst="false"/>
+							    </items>
+							</VBox>
+						</items>
+					</FlexBox>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
