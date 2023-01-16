@@ -886,28 +886,46 @@ if (x==="RETENCION POR AFORO"){
 			var tcode = results.Tcode
 			console.log(sociedad, ejercicio, tcode)
 			var doc = results.Belnr
+			var boart = results.Boart
 
 			var aportacionesTCodes = ['Z_APORTACIONES']
 			var boletinVentasTCodes = ['ZMM_ACUERDOS_LIQUI']
 
-
+			var acuerdosNSBoart = ['ZD33', 'ZD34', 'ZM33', 'ZM34']
 
 			//logica para enviar a Aportaciones o a Acuerdos
 			if (( tcode.match("(ZMMFILACUERDO|MEB|WLF).*")  && doc.startsWith('51')) || (tcode == "" && !( doc.startsWith("170") &&  results.Foliodescuento ))   ) {
 //1500000453  1500177301
 
+				console.log('on detail compl pago acuerdos',tcode.match("(ZMMFILACUERDO|MEB|WLF).*") )
 
-				console.log('on detail factoraje acuerdos',tcode.match("(ZMMFILACUERDO|MEB|WLF).*") )
-				this.getOwnerComponent().getRouter().navTo("detailAcuerdos",
-					{
-						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
-						document: results.Belnr,
-						sociedad: this._sociedad,
-						ejercicio: ejercicio,
-						doc: this._document,
-						fecha: this._fecha
-						// lifnr: docResult.Lifnr
-					}, true);
+				if (acuerdosNSBoart.includes(boart)) {
+					
+					this.getOwnerComponent().getRouter().navTo("detailAcuerdosCPNS",
+						{
+							layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
+							document: results.Belnr,
+							sociedad: this._sociedad,
+							ejercicio: ejercicio,
+							doc: this._document,
+							fecha: this._fecha
+							// lifnr: docResult.Lifnr
+						}, true);
+
+				} else {
+				
+					this.getOwnerComponent().getRouter().navTo("detailAcuerdos",
+						{
+							layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
+							document: results.Belnr,
+							sociedad: this._sociedad,
+							ejercicio: ejercicio,
+							doc: this._document,
+							fecha: this._fecha
+							// lifnr: docResult.Lifnr
+						}, true);
+
+				}
 
 			}else if ((aportacionesTCodes.includes(tcode) || ( doc.startsWith("170")) &&  results.Foliodescuento )  ) {
 

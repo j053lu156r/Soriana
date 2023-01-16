@@ -437,6 +437,15 @@
                     ]
                 },
                 {
+                    "pattern": "detailAcuerdosCPNS/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{fecha}",
+                    "name": "detailAcuerdosCPNS",
+                    "target": [
+                        "masterCompl",
+                        "detailComplPagos",
+                        "detailAcuerdosCPNS"
+                    ]
+                },
+                {
                     "pattern": "detailAportacionesComplemento/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{fecha}",
                     "name": "detailAportacionesComplemento",
                     "target": [
@@ -486,6 +495,14 @@
                     "name": "detailDetailAcuCP",
                     "target": [
                         "detailDetailAcuCP"
+                    ],
+                    "layout": "EndColumnFullScreen"
+                },
+                {
+                    "pattern": "detailDetailCPNS/{layout}/{sociedad}/{document}/{ejercicio}/{doc}/{tda}",
+                    "name": "detailDetailCPNS",
+                    "target": [
+                        "detailDetailCPNS"
                     ],
                     "layout": "EndColumnFullScreen"
                 },
@@ -1195,6 +1212,11 @@
                     "viewPath": "demo.views.Acuerdos",
                     "controlAggregation": "endColumnPages"
                 },
+                "detailAcuerdosCPNS": {
+                    "viewName": "DetailCPNS",
+                    "viewPath": "demo.views.CargoNS",
+                    "controlAggregation": "endColumnPages"
+                },
                 "detailAcuerdosFactoraje": {
                     "viewName": "DetailFactoraje",
                     "viewPath": "demo.views.Acuerdos",
@@ -1218,6 +1240,11 @@
                 "detailDetailAcuCP": {
                     "viewName": "DetailDetailCP",
                     "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "endColumnPages"
+                },
+                "detailDetailCPNS": {
+                    "viewName": "DetailDetailCPNS",
+                    "viewPath": "demo.views.CargoNS",
                     "controlAggregation": "endColumnPages"
                 },
                 "detailDetailAcuFA": {
