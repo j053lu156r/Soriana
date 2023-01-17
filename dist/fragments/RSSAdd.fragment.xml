@@ -1,0 +1,47 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+ 
+    <Dialog title = "{appTxts>/rssadd.title}">
+    <l:Grid defaultSpan = "L12 M12 S12" id = "idGrid">
+    <l:content>
+        <f:SimpleForm id="rssAddForm"
+			editable="true"
+			layout="ResponsiveGridLayout"
+			labelSpanXL="4"
+			labelSpanL="3"
+			labelSpanM="4"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="0"
+			emptySpanL="4"
+			emptySpanM="0"
+			emptySpanS="0"
+			columnsXL="2"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false"
+			ariaLabelledBy="Title1" >
+			<f:content>
+				<Label text="{appTxts>/rssadd.name}" />
+				<Input id="shortText" type="Text" />
+				<Label  text="Url" />
+				<Input id="url" type="Text"/>
+			</f:content>
+		</f:SimpleForm>
+    </l:content>
+    </l:Grid>
+    <buttons>
+    <Button
+    	type="Accept"
+    	text="{appTxts>/rssadd.save}"
+    	press="saveNewRSS"/>
+    <Button
+    	type="Reject"
+		text="{i18n>dialogCloseButtonText}"
+		press="onCloseDialog"/>
+    </buttons>
+    </Dialog>
+</core:FragmentDefinition>

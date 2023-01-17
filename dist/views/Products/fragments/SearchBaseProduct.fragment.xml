@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <SelectDialog id="selectBaseProductDialog" title="{appTxts>/products.baseProduct}" items="{ProductosBase>/results}" search=".onBaseProductSearch" confirm=".onBaseProductClose" cancel=".onBaseProductClose">
+        <StandardListItem title="{ProductosBase>DescLinea}" description="{ProductosBase>NumLinea}" />
+    </SelectDialog>
+</core:FragmentDefinition>
