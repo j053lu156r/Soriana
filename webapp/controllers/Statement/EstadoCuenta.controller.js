@@ -1356,9 +1356,13 @@ sap.ui.define([
             var tcode = results.Tcode
             console.log(sociedad, ejercicio, tcode)
             var doc = results.Belnr
-            var acuerdosTCodes = [ "ZD33","ZM33","ZD34","ZM34",'MEB4', 'WLF4', 'MEB2', 'MEB0', 'WLF2', 'ZMMFILACUERDO', 'WFL5']
+            //var acuerdosTCodes = [ "ZD33","ZM33","ZD34","ZM34",'MEB4', 'WLF4', 'MEB2', 'MEB0', 'WLF2', 'ZMMFILACUERDO', 'WFL5']
+            var acuerdosTCodes = [ 'MEB4', 'WLF4', 'MEB2', 'MEB0', 'WLF2', 'ZMMFILACUERDO', 'WFL5']
             var aportacionesTCodes = ['Z_APORTACIONES']
             var boletinVentasTCodes = ['ZMM_ACUERDOS_LIQUI']
+
+            var boart = results.Boart
+            var acuerdosNSBoart = ['ZD33', 'ZD34', 'ZM33', 'ZM34']
 
             console.log(results)
 
@@ -1366,16 +1370,33 @@ sap.ui.define([
 
                 console.log('on detailAcuerdosAS')
 
+                if (acuerdosNSBoart.includes(boart)) {
 
-                this.getOwnerComponent().getRouter().navTo("detailAcuerdosAS", {
-                    layout: sap.f.LayoutType.MidColumnFullScreen,
-                    document: results.Belnr,
-                    sociedad: sociedad,
-                    ejercicio: ejercicio,
-                    doc: results.Xblnr ? results.Xblnr : 'NA',
-                    // zbukr: docResult.Zbukr,
-                    // lifnr: docResult.Lifnr
-                }, true);
+                    this.getOwnerComponent().getRouter().navTo("detailAcuerdosECNS", {
+                        //layout: sap.f.LayoutType.MidColumnFullScreen,
+                        layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+                        document: results.Belnr,
+                        sociedad: sociedad,
+                        ejercicio: ejercicio,
+                        doc: results.Xblnr ? results.Xblnr : 'NA',
+                        // zbukr: docResult.Zbukr,
+                        // lifnr: docResult.Lifnr
+                        }, true);
+
+                } else {
+
+                    this.getOwnerComponent().getRouter().navTo("detailAcuerdosAS", {
+                        //layout: sap.f.LayoutType.MidColumnFullScreen,
+                        layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+                        document: results.Belnr,
+                        sociedad: sociedad,
+                        ejercicio: ejercicio,
+                        doc: results.Xblnr ? results.Xblnr : 'NA',
+                        // zbukr: docResult.Zbukr,
+                        // lifnr: docResult.Lifnr
+                    }, true);
+
+                }
 
             } else if (aportacionesTCodes.includes(tcode) || (doc.startsWith("1700") && results.Xblnr)) {
 

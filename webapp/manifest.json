@@ -471,6 +471,24 @@
                         "detailAcuerdosAS"
                     ]
                 },
+                {
+                    "pattern": "detailAcuerdosECNS/{layout}/{document}/{sociedad}/{ejercicio}/{doc}",
+                    "name": "detailAcuerdosECNS",
+                    "target": [
+                        "EstadoCuenta",
+                        "detailAcuerdosECNS"
+                    ]
+                },
+
+                {
+                    "pattern": "detailDetailECNS/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{tda}",
+                    "name": "detailDetailECNS",
+                    "target": [
+                        "EstadoCuenta",
+                        "detailAcuerdosECNS",
+                        "detailDetailECNS"
+                    ]
+                },
              
                 {
                     "pattern": "detailDetailAcuEC/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{tda}",
@@ -1226,6 +1244,16 @@
                     "viewName": "DetailAS",
                     "viewPath": "demo.views.Acuerdos",
                     "controlAggregation": "midColumnPages"
+                },
+                "detailAcuerdosECNS": {
+                    "viewName": "DetailECNS",
+                    "viewPath": "demo.views.CargoNS",
+                    "controlAggregation": "midColumnPages"
+                },
+                "detailDetailECNS": {
+                    "viewName": "DetailDetailECNS",
+                    "viewPath": "demo.views.CargoNS",
+                    "controlAggregation": "endColumnPages"
                 },
                 "detailDetailAcuEC": {
                     "viewName": "DetailDetailEC",
