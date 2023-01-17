@@ -5,7 +5,7 @@ sap.ui.define([
     "use strict";
 
     var oModel = new this.Acuerdos();
-    return Controller.extend("demo.controllers.Acuerdos.DetailANS", {
+    return Controller.extend("demo.controllers.CargoNS.DetailDetailECNS", {
         onInit: function () {
             var oExitButton = this.getView().byId("exitFullScreenBtn"),
                 oEnterButton = this.getView().byId("enterFullScreenBtn");
@@ -13,7 +13,7 @@ sap.ui.define([
             this.oRouter = this.getOwnerComponent().getRouter();
             this.oModel = this.getOwnerComponent().getModel();
 
-            this.oRouter.getRoute("detailANS").attachPatternMatched(this._onDocumentMatched, this);
+            this.oRouter.getRoute("detailDetailECNS").attachPatternMatched(this._onDocumentMatched, this);
 
             [oExitButton, oEnterButton].forEach(function (oButton) {
                 oButton.addEventDelegate({
@@ -85,7 +85,7 @@ sap.ui.define([
         },*/
         handleClose: function () {
             var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/closeColumn");
-            this.oRouter.navTo("detailAcuerdosAS", { 
+            this.oRouter.navTo("detailAcuerdosECNS", { 
                 layout: sNextLayout,
                 document: this._documento,
 				sociedad: this._sociedad,
@@ -94,28 +94,30 @@ sap.ui.define([
             });
         },
         _onDocumentMatched: function (oEvent) {
+            console.log(oEvent.getParameter("arguments"))
             this._sociedad = oEvent.getParameter("arguments").sociedad || this._sociedad || "0";
             this._documento = oEvent.getParameter("arguments").document || this._documento || "0";
             this._ejercicio = oEvent.getParameter("arguments").ejercicio || this._ejercicio || "0";
             this._tienda = oEvent.getParameter("arguments").tda || this._tienda || "0";
-
+console.log("1")
             var headerDeatil = {
                 "Sociedad": this._sociedad,
                 "Documento": this._documento,
                 "Ejercicio": this._ejercicio,
                 "Tienda": this._tienda
             };
+            console.log("2")
+            this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "HeadCargoNS");
 
-            this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "acuHeadDetDetModel");
-
-            var url = "AcuerdosSet?$expand=AcuDetDet&$filter=";
-
+            var url = "AcuerdosSet?$expand=AcuNivSerDet&$filter=";
+            console.log("3")
             url += "Sociedad eq '" + this._sociedad + "'";
             url += " and Documento eq '" + this._documento + "'";
             url += " and Ejercicio eq '" + this._ejercicio + "'";
             url += " and Tienda eq '" + this._tienda + "'";
 
-            this.getView().byId('AcuerdosDetDet').setBusy(true);
+            this.getView().byId('DetCargoNS').setBusy(true);
+            console.log("4")
             oModel.getJsonModelAsync(
                 url,
                 function (jsonModel, parent) {
@@ -123,25 +125,28 @@ sap.ui.define([
 
                     if (objResponse != null) {
 
-                        var totCompra = objResponse.AcuDetDet.results.reduce((a, b) => +a + (+b["Compra"] || 0), 0);
-                        var totDescto = objResponse.AcuDetDet.results.reduce((a, b) => +a + (+b["Descuento"] || 0), 0);
-                        var totIVA = objResponse.AcuDetDet.results.reduce((a, b) => +a + (+b["IVA"] || 0), 0);
+                        var totCargo = objResponse.AcuNivSerDet.results.reduce((a, b) => +a + (+b["Zboni"] || 0), 0);
+                        var totIEPS = objResponse.AcuNivSerDet.results.reduce((a, b) => +a + (+b["Zieps"] || 0), 0);
+                        var totIVA = objResponse.AcuNivSerDet.results.reduce((a, b) => +a + (+b["Ziva"] || 0), 0);
+                        var totTotal = objResponse.AcuNivSerDet.results.reduce((a, b) => +a + (+b["Total"] || 0), 0);
+
                         var totalDetDet = {
-                            "TotCompra": Number(totCompra.toFixed(2)),
-                            "TotDescto": Number(totDescto.toFixed(2)),
-                            "TotIVA": Number(totIVA.toFixed(2))
+                            "TotCargo": Number(totCargo.toFixed(2)),
+                            "TotIEPS": Number(totIEPS.toFixed(2)),
+                            "TotIVA": Number(totIVA.toFixed(2)),
+                            "TotTotal": Number(totTotal.toFixed(2))
                         };
-                        parent.getOwnerComponent().setModel(new JSONModel(totalDetDet), "acuTotDetDetModel");
+                        parent.getOwnerComponent().setModel(new JSONModel(totalDetDet), "TotCargoNS");
 
                         parent.getOwnerComponent().setModel(new JSONModel(objResponse),
-                            "AcuDetDetHdr");
-
-                        parent.paginate("AcuDetDetHdr", "/AcuDetDet", 1, 0);
+                            "DetCargoNSHdr");
+                            console.log("5")
+                        parent.paginate("DetCargoNSHdr", "/AcuNivSerDet", 1, 0);
                     }
-                    parent.getView().byId('AcuerdosDetDet').setBusy(false);
+                    parent.getView().byId('DetCargoNS').setBusy(false);
                 },
                 function (parent) {
-                    parent.getView().byId('AcuerdosDetDet').setBusy(false);
+                    parent.getView().byId('DetCargoNS').setBusy(false);
                 },
                 this
             );
@@ -151,62 +156,98 @@ sap.ui.define([
             var texts = this.getOwnerComponent().getModel("appTxts");
             var columns = [
                  {
-                    name: texts.getProperty("/acuerdos.detConv"),
+                    name: texts.getProperty("/cargoNS.proveedor"),
                     template: {
-                        content: "{Convenio}"
+                        content: "{Lifnr}"
                     }
                 },
                 {
-                    name: texts.getProperty("/acuerdos.detCveMov"),
+                    name: texts.getProperty("/cargoNS.referencia"),
                     template: {
-                        content: "{CveMov}"
+                        content: "{Belnr}"
                     }
                 },
                 {
-                    name: texts.getProperty("/acuerdos.detFolio"),
+                    name: texts.getProperty("/cargoNS.pedido"),
                     template: {
-                        content: "{Folio}"
+                        content: "{Ebeln}"
                     }
                 },
                 {
-                    name: texts.getProperty("/acuerdos.detFact"),
+                    name: texts.getProperty("/cargoNS.tienda"),
                     template: {
-                        content: "{Factura}"
+                        content: "{Werks}"
                     }
                 },
                 {
-                    name: texts.getProperty("/acuerdos.detTda"),
+                    name: texts.getProperty("/cargoNS.sku"),
                     template: {
-                        content: "{Tienda}"
+                        content: "{Matnr}"
                     }
                 },
                 {
-                    name: texts.getProperty("/acuerdos.detComp"),
+                    name: texts.getProperty("/cargoNS.codigo"),
                     template: {
-                        content: "{Compra}"
+                        content: "{Ean11}"
                     }
                 },
                 {
-                    name: texts.getProperty("/acuerdos.detDesc"),
+                    name: texts.getProperty("/cargoNS.descripcion"),
                     template: {
-                        content: "{Descuento}"
+                        content: "{Maktx}"
                     }
                 },
                 {
-                    name: texts.getProperty("/acuerdos.detIVA"),
+                    name: texts.getProperty("/cargoNS.cantidad"),
                     template: {
-                        content: "{IVA}"
+                        content: "{Menge}"
                     }
                 },
                 {
-                    name: texts.getProperty("/acuerdos.detPDesc"),
+                    name: texts.getProperty("/cargoNS.bonificacion"),
                     template: {
-                        content: "{PDesc}"
+                        content: "{Zboni}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/cargoNS.ieps"),
+                    template: {
+                        content: "{Zieps}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/cargoNS.iva"),
+                    template: {
+                        content: "{Ziva}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/cargoNS.costoNormal"),
+                    template: {
+                        content: "{Zvkp0}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/cargoNS.costoOferta"),
+                    template: {
+                        content: "{Zpb00}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/cargoNS.diferencia"),
+                    template: {
+                        content: "{Difer}"
+                    }
+                },
+                {
+                    name: texts.getProperty("/cargoNS.bitIeps"),
+                    template: {
+                        content: "{Bieps}"
                     }
                 }
             ];
 
-            this.exportxls('AcuDetDetHdr', '/AcuDetDet/results', columns);
+            this.exportxls('DetCargoNSHdr', '/AcuNivSerDet/results', columns);
         }
     });
 });
