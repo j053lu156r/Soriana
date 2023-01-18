@@ -94,30 +94,28 @@ sap.ui.define([
             });
         },
         _onDocumentMatched: function (oEvent) {
-            console.log(oEvent.getParameter("arguments"))
             this._sociedad = oEvent.getParameter("arguments").sociedad || this._sociedad || "0";
             this._documento = oEvent.getParameter("arguments").document || this._documento || "0";
             this._ejercicio = oEvent.getParameter("arguments").ejercicio || this._ejercicio || "0";
             this._tienda = oEvent.getParameter("arguments").tda || this._tienda || "0";
-console.log("1")
+
             var headerDeatil = {
                 "Sociedad": this._sociedad,
                 "Documento": this._documento,
                 "Ejercicio": this._ejercicio,
                 "Tienda": this._tienda
             };
-            console.log("2")
-            this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "HeadCargoNS");
 
-            var url = "AcuerdosSet?$expand=AcuNivSerDet&$filter=";
-            console.log("3")
+            this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "acuHeadDetDetModel");
+
+            var url = "AcuerdosSet?$expand=AcuDetDet&$filter=";
+
             url += "Sociedad eq '" + this._sociedad + "'";
             url += " and Documento eq '" + this._documento + "'";
             url += " and Ejercicio eq '" + this._ejercicio + "'";
             url += " and Tienda eq '" + this._tienda + "'";
 
-            this.getView().byId('DetCargoNS').setBusy(true);
-            console.log("4")
+            this.getView().byId('AcuerdosDetDet').setBusy(true);
             oModel.getJsonModelAsync(
                 url,
                 function (jsonModel, parent) {
@@ -125,28 +123,25 @@ console.log("1")
 
                     if (objResponse != null) {
 
-                        var totCargo = objResponse.AcuNivSerDet.results.reduce((a, b) => +a + (+b["Zboni"] || 0), 0);
-                        var totIEPS = objResponse.AcuNivSerDet.results.reduce((a, b) => +a + (+b["Zieps"] || 0), 0);
-                        var totIVA = objResponse.AcuNivSerDet.results.reduce((a, b) => +a + (+b["Ziva"] || 0), 0);
-                        var totTotal = objResponse.AcuNivSerDet.results.reduce((a, b) => +a + (+b["Total"] || 0), 0);
-
+                        var totCompra = objResponse.AcuDetDet.results.reduce((a, b) => +a + (+b["Compra"] || 0), 0);
+                        var totDescto = objResponse.AcuDetDet.results.reduce((a, b) => +a + (+b["Descuento"] || 0), 0);
+                        var totIVA = objResponse.AcuDetDet.results.reduce((a, b) => +a + (+b["IVA"] || 0), 0);
                         var totalDetDet = {
-                            "TotCargo": Number(totCargo.toFixed(2)),
-                            "TotIEPS": Number(totIEPS.toFixed(2)),
-                            "TotIVA": Number(totIVA.toFixed(2)),
-                            "TotTotal": Number(totTotal.toFixed(2))
+                            "TotCompra": Number(totCompra.toFixed(2)),
+                            "TotDescto": Number(totDescto.toFixed(2)),
+                            "TotIVA": Number(totIVA.toFixed(2))
                         };
-                        parent.getOwnerComponent().setModel(new JSONModel(totalDetDet), "TotCargoNS");
+                        parent.getOwnerComponent().setModel(new JSONModel(totalDetDet), "acuTotDetDetModel");
 
                         parent.getOwnerComponent().setModel(new JSONModel(objResponse),
-                            "DetCargoNSHdr");
-                            console.log("5")
-                        parent.paginate("DetCargoNSHdr", "/AcuNivSerDet", 1, 0);
+                            "AcuDetDetHdr");
+
+                        parent.paginate("AcuDetDetHdr", "/AcuDetDet", 1, 0);
                     }
-                    parent.getView().byId('DetCargoNS').setBusy(false);
+                    parent.getView().byId('AcuerdosDetDet').setBusy(false);
                 },
                 function (parent) {
-                    parent.getView().byId('DetCargoNS').setBusy(false);
+                    parent.getView().byId('AcuerdosDetDet').setBusy(false);
                 },
                 this
             );
@@ -156,98 +151,62 @@ console.log("1")
             var texts = this.getOwnerComponent().getModel("appTxts");
             var columns = [
                  {
-                    name: texts.getProperty("/cargoNS.proveedor"),
+                    name: texts.getProperty("/acuerdos.detConv"),
                     template: {
-                        content: "{Lifnr}"
+                        content: "{Convenio}"
                     }
                 },
                 {
-                    name: texts.getProperty("/cargoNS.referencia"),
+                    name: texts.getProperty("/acuerdos.detCveMov"),
                     template: {
-                        content: "{Belnr}"
+                        content: "{CveMov}"
                     }
                 },
                 {
-                    name: texts.getProperty("/cargoNS.pedido"),
+                    name: texts.getProperty("/acuerdos.detFolio"),
                     template: {
-                        content: "{Ebeln}"
+                        content: "{Folio}"
                     }
                 },
                 {
-                    name: texts.getProperty("/cargoNS.tienda"),
+                    name: texts.getProperty("/acuerdos.detFact"),
                     template: {
-                        content: "{Werks}"
+                        content: "{Factura}"
                     }
                 },
                 {
-                    name: texts.getProperty("/cargoNS.sku"),
+                    name: texts.getProperty("/acuerdos.detTda"),
                     template: {
-                        content: "{Matnr}"
+                        content: "{Tienda}"
                     }
                 },
                 {
-                    name: texts.getProperty("/cargoNS.codigo"),
+                    name: texts.getProperty("/acuerdos.detComp"),
                     template: {
-                        content: "{Ean11}"
+                        content: "{Compra}"
                     }
                 },
                 {
-                    name: texts.getProperty("/cargoNS.descripcion"),
+                    name: texts.getProperty("/acuerdos.detDesc"),
                     template: {
-                        content: "{Maktx}"
+                        content: "{Descuento}"
                     }
                 },
                 {
-                    name: texts.getProperty("/cargoNS.cantidad"),
+                    name: texts.getProperty("/acuerdos.detIVA"),
                     template: {
-                        content: "{Menge}"
+                        content: "{IVA}"
                     }
                 },
                 {
-                    name: texts.getProperty("/cargoNS.bonificacion"),
+                    name: texts.getProperty("/acuerdos.detPDesc"),
                     template: {
-                        content: "{Zboni}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/cargoNS.ieps"),
-                    template: {
-                        content: "{Zieps}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/cargoNS.iva"),
-                    template: {
-                        content: "{Ziva}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/cargoNS.costoNormal"),
-                    template: {
-                        content: "{Zvkp0}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/cargoNS.costoOferta"),
-                    template: {
-                        content: "{Zpb00}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/cargoNS.diferencia"),
-                    template: {
-                        content: "{Difer}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/cargoNS.bitIeps"),
-                    template: {
-                        content: "{Bieps}"
+                        content: "{PDesc}"
                     }
                 }
             ];
 
-            this.exportxls('DetCargoNSHdr', '/AcuNivSerDet/results', columns);
+            this.exportxls('AcuDetDetHdr', '/AcuDetDet/results', columns);
         }
     });
 });

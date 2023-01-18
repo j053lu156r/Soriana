@@ -437,6 +437,15 @@
                     ]
                 },
                 {
+                    "pattern": "detailAcuerdosCPNS/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{fecha}",
+                    "name": "detailAcuerdosCPNS",
+                    "target": [
+                        "masterCompl",
+                        "detailComplPagos",
+                        "detailAcuerdosCPNS"
+                    ]
+                },
+                {
                     "pattern": "detailAportacionesComplemento/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{fecha}",
                     "name": "detailAportacionesComplemento",
                     "target": [
@@ -460,6 +469,24 @@
                     "target": [
                         "EstadoCuenta",
                         "detailAcuerdosAS"
+                    ]
+                },
+                {
+                    "pattern": "detailAcuerdosECNS/{layout}/{document}/{sociedad}/{ejercicio}/{doc}",
+                    "name": "detailAcuerdosECNS",
+                    "target": [
+                        "EstadoCuenta",
+                        "detailAcuerdosECNS"
+                    ]
+                },
+
+                {
+                    "pattern": "detailDetailECNS/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{tda}",
+                    "name": "detailDetailECNS",
+                    "target": [
+                        "EstadoCuenta",
+                        "detailAcuerdosECNS",
+                        "detailDetailECNS"
                     ]
                 },
              
@@ -486,6 +513,14 @@
                     "name": "detailDetailAcuCP",
                     "target": [
                         "detailDetailAcuCP"
+                    ],
+                    "layout": "EndColumnFullScreen"
+                },
+                {
+                    "pattern": "detailDetailCPNS/{layout}/{sociedad}/{document}/{ejercicio}/{doc}/{tda}",
+                    "name": "detailDetailCPNS",
+                    "target": [
+                        "detailDetailCPNS"
                     ],
                     "layout": "EndColumnFullScreen"
                 },
@@ -1195,6 +1230,11 @@
                     "viewPath": "demo.views.Acuerdos",
                     "controlAggregation": "endColumnPages"
                 },
+                "detailAcuerdosCPNS": {
+                    "viewName": "DetailCPNS",
+                    "viewPath": "demo.views.CargoNS",
+                    "controlAggregation": "endColumnPages"
+                },
                 "detailAcuerdosFactoraje": {
                     "viewName": "DetailFactoraje",
                     "viewPath": "demo.views.Acuerdos",
@@ -1204,6 +1244,16 @@
                     "viewName": "DetailAS",
                     "viewPath": "demo.views.Acuerdos",
                     "controlAggregation": "midColumnPages"
+                },
+                "detailAcuerdosECNS": {
+                    "viewName": "DetailECNS",
+                    "viewPath": "demo.views.CargoNS",
+                    "controlAggregation": "midColumnPages"
+                },
+                "detailDetailECNS": {
+                    "viewName": "DetailDetailECNS",
+                    "viewPath": "demo.views.CargoNS",
+                    "controlAggregation": "endColumnPages"
                 },
                 "detailDetailAcuEC": {
                     "viewName": "DetailDetailEC",
@@ -1218,6 +1268,11 @@
                 "detailDetailAcuCP": {
                     "viewName": "DetailDetailCP",
                     "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "endColumnPages"
+                },
+                "detailDetailCPNS": {
+                    "viewName": "DetailDetailCPNS",
+                    "viewPath": "demo.views.CargoNS",
                     "controlAggregation": "endColumnPages"
                 },
                 "detailDetailAcuFA": {

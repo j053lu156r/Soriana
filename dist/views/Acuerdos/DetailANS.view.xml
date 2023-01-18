@@ -13,12 +13,12 @@
 		<headerTitle>
             <ObjectPageDynamicHeaderTitle>
                 <expandedHeading>
-                    <m:Title text="Tienda: {HeadCargoNS>/Tienda}" wrapping="true"/>
+                    <m:Title text="Tienda: {acuHeadDetDetModel>/Tienda}" wrapping="true"/>
                 </expandedHeading>
 
                 <snappedHeading>
                     <m:FlexBox fitContainer="true" alignItems="Center">
-                        <m:Title text="Tienda: {HeadCargoNS>/Tienda}" wrapping="true" />
+                        <m:Title text="Tienda: {acuHeadDetDetModel>/Tienda}" wrapping="true" />
                     </m:FlexBox>
                 </snappedHeading>
 
@@ -34,7 +34,7 @@
             <m:VBox>
                 <!--<m:Panel>-->
     			    <m:FlexBox direction="Column" alignItems="Center">
-                        <m:Label text="Documento: {HeadCargoNS>/Documento}" design="Bold"/>
+                        <m:Label text="Documento: {acuHeadDetDetModel>/Documento}" design="Bold"/>
 			        </m:FlexBox>
                 <!--</m:Panel>-->
             </m:VBox>
@@ -48,19 +48,19 @@
 							<m:VBox>
                                 <m:Table 
                                     noDataText="{appTxts>/acuerdos.noData}" 
-                                    id="DetCargoNS"
-                                    items="{DetCargoNSHdr>/AcuNivSerDet/Paginated/results}">
+                                    id="AcuerdosDetDet"
+                                    items="{AcuDetDetHdr>/AcuDetDet/Paginated/results}">
                                     <m:headerToolbar>
                                         <m:OverflowToolbar>
-                                            <m:Title text="{appTxts>/cargoNS.cargoDetMov} ({DetCargoNSHdr>/AcuNivSerDet/results/length})" />
+                                            <m:Title text="{appTxts>/acuerdos.detDetMov} ({AcuDetDetHdr>/AcuDetDet/results/length})" />
                                             <m:ToolbarSpacer/>
                                             <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
                                                 press=".buildExportTable"
-                                                visible="{= ${DetCargoNSHdr>/AcuNivSerDet/results/length} > 0}"
+                                                visible="{= ${AcuDetDetHdr>/AcuDetDet/results/length} > 0}"
                                             />
                                             <m:Select 
-                                                visible="{= ${DetCargoNSHdr>/AcuNivSerDet/Paginated/results/length} > 0 }"
-                                                change=".paginateValue(${$parameters>/selectedItem}, 'DetCargoNSHdr', '/AcuNivSerDet')">
+                                                visible="{= ${AcuDetDetHdr>/AcuDetDet/Paginated/results/length} > 0 }"
+                                                change=".paginateValue(${$parameters>/selectedItem}, 'AcuDetDetHdr', '/AcuDetDet')">
                                                 <m:items>
                                                     <core:Item key="10" text="10"/>
                                                     <core:Item key="20" text="20"/>
@@ -71,51 +71,70 @@
                                         </m:OverflowToolbar>
                                     </m:headerToolbar>
                                     <m:columns>
-                                        <m:Column width="18em" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:Column width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                             <m:header>
-                                                <m:Text text="{appTxts>/cargoNS.codigo}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                                <m:Text text="{appTxts>/acuerdos.detConv}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                             </m:header>
                                             <m:footer>
                                                 <m:Text text="Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                             </m:footer>
                                         </m:Column>
-                                        <m:Column width="6em" hAlign="Center" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                             <m:header>
-                                                <m:Text text="{appTxts>/cargoNS.sucursal}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                                <m:Text text="{appTxts>/acuerdos.detCveMov}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                             </m:header>
                                         </m:Column>
-                                        <m:Column width="7em" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                             <m:header>
-                                                <m:Text text="{appTxts>/cargoNS.pedido}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                                <m:Text text="{appTxts>/acuerdos.detFolio}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                             </m:header>
                                         </m:Column>
-                                        <m:Column width="6em" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <m:Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                             <m:header>
-                                                <m:Text text="{appTxts>/cargoNS.cantidad}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                                <m:Text text="{appTxts>/acuerdos.detFact}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                            </m:header>
+                                        </m:Column>
+                                        <m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                            <m:header>
+                                                <m:Text text="{appTxts>/acuerdos.detTda}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                             </m:header>
                                         </m:Column>
                                         <m:Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                             <m:header>
-                                                <m:Text text="{appTxts>/cargoNS.precUnit}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                            </m:header>
-                                            <m:footer>
-                                            </m:footer>
-                                        </m:Column>
-                                        <m:Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-                                            <m:header>
-                                                <m:Text text="{appTxts>/cargoNS.costo}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                            </m:header>
-                                            <m:footer>
-                                            </m:footer>
-                                        </m:Column>
-                                        <m:Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-                                            <m:header>
-                                                <m:Text text="{appTxts>/cargoNS.cargo}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                                <m:Text text="{appTxts>/acuerdos.detComp}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                             </m:header>
                                             <m:footer>
                                                 <m:ObjectNumber
                                                     number="{
-                                                        parts:[{path:'TotCargoNS>/TotCargo'},{path:'CurrencyCode'}],
+                                                        parts:[{path:'acuTotDetDetModel>/TotCompra'},{path:'CurrencyCode'}],
+                                                        type: 'sap.ui.model.type.Currency',
+                                                        formatOptions: {showMeasure: false}
+                                                            }"
+                                                    unit="MXN" />
+                                            </m:footer>
+                                        </m:Column>
+                                        <m:Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                            <m:header>
+                                                <m:Text text="{appTxts>/acuerdos.detDesc}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                            </m:header>
+                                            <m:footer>
+                                                <m:ObjectNumber
+                                                    number="{
+                                                        parts:[{path:'acuTotDetDetModel>/TotDescto'},{path:'CurrencyCode'}],
+                                                        type: 'sap.ui.model.type.Currency',
+                                                        formatOptions: {showMeasure: false}
+                                                            }"
+                                                    unit="MXN" />
+                                            </m:footer>
+                                        </m:Column>
+                                        <m:Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                            <m:header>
+                                                <m:Text text="{appTxts>/acuerdos.detIVA}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                            </m:header>
+                                            <m:footer>
+                                                <m:ObjectNumber
+                                                    number="{
+                                                        parts:[{path:'acuTotDetDetModel>/TotIVA'},{path:'CurrencyCode'}],
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
@@ -124,112 +143,58 @@
                                         </m:Column>
                                         <m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                             <m:header>
-                                                <m:Text text="{appTxts>/cargoNS.ieps}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                                <m:Text text="{appTxts>/acuerdos.detPDesc}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                             </m:header>
-                                            <m:footer>
-                                                <m:ObjectNumber
-                                                    number="{
-                                                        parts:[{path:'TotCargoNS>/TotIEPS'},{path:'CurrencyCode'}],
-                                                        type: 'sap.ui.model.type.Currency',
-                                                        formatOptions: {showMeasure: false}
-                                                            }"
-                                                    unit="MXN" />
-                                            </m:footer>
-                                        </m:Column>
-                                        <m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-                                            <m:header>
-                                                <m:Text text="{appTxts>/cargoNS.iva}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                            </m:header>
-                                            <m:footer>
-                                                <m:ObjectNumber
-                                                    number="{
-                                                        parts:[{path:'TotCargoNS>/TotIVA'},{path:'CurrencyCode'}],
-                                                        type: 'sap.ui.model.type.Currency',
-                                                        formatOptions: {showMeasure: false}
-                                                            }"
-                                                    unit="MXN" />
-                                            </m:footer>
-                                        </m:Column>
-                                        <m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-                                            <m:header>
-                                                <m:Text text="{appTxts>/cargoNS.total}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                            </m:header>
-                                            <m:footer>
-                                                <m:ObjectNumber
-                                                    number="{
-                                                        parts:[{path:'TotCargoNS>/TotTotal'},{path:'CurrencyCode'}],
-                                                        type: 'sap.ui.model.type.Currency',
-                                                        formatOptions: {showMeasure: false}
-                                                            }"
-                                                    unit="MXN" />
-                                            </m:footer>
                                         </m:Column>
                                     </m:columns>
                                     <m:items>
                                         <m:ColumnListItem>                    
                                             <m:cells>
                                                 <m:ObjectIdentifier 
-                                                    title="{DetCargoNSHdr>Ean11}" 
-                                                    text="{DetCargoNSHdr>Maktx}"
+                                                    title="{AcuDetDetHdr>Convenio}" 
                                                     titleActive="true"/>
-                                                <m:Text text="{DetCargoNSHdr>Werks}"/>
-                                                <m:Text text="{DetCargoNSHdr>Ebeln}"/>
-                                                <m:Text text="{DetCargoNSHdr>Menge}"/>
+                                                <m:Text text="{AcuDetDetHdr>CveMov}"/>
+                                                <m:Text text="{AcuDetDetHdr>Folio}"/>
+                                                <m:Text text="{AcuDetDetHdr>Factura}"/>
+                                                <m:Text text="{AcuDetDetHdr>Tienda}"/>
                                                 <m:ObjectNumber
                                                     number="{
-                                                        parts:[{path:'DetCargoNSHdr>Zvkp0'},{path:'CurrencyCode'}],
+                                                        parts:[{path:'AcuDetDetHdr>Compra'},{path:'CurrencyCode'}],
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
                                                     unit="MXN" />
                                                 <m:ObjectNumber
                                                     number="{
-                                                        parts:[{path:'DetCargoNSHdr>Zpb00'},{path:'CurrencyCode'}],
+                                                        parts:[{path:'AcuDetDetHdr>Descuento'},{path:'CurrencyCode'}],
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
                                                     unit="MXN" />
                                                 <m:ObjectNumber
                                                     number="{
-                                                        parts:[{path:'DetCargoNSHdr>Zboni'},{path:'CurrencyCode'}],
+                                                        parts:[{path:'AcuDetDetHdr>IVA'},{path:'CurrencyCode'}],
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
                                                     unit="MXN" />
                                                 <m:ObjectNumber
-                                                    number="{
-                                                        parts:[{path:'DetCargoNSHdr>Zieps'},{path:'CurrencyCode'}],
-                                                        type: 'sap.ui.model.type.Currency',
-                                                        formatOptions: {showMeasure: false}
-                                                            }"
-                                                    unit="MXN" />
-                                                <m:ObjectNumber
-                                                    number="{
-                                                        parts:[{path:'DetCargoNSHdr>Ziva'},{path:'CurrencyCode'}],
-                                                        type: 'sap.ui.model.type.Currency',
-                                                        formatOptions: {showMeasure: false}
-                                                            }"
-                                                    unit="MXN" />
-                                                <m:ObjectNumber
-                                                    number="{
-                                                        parts:[{path:'DetCargoNSHdr>Total'},{path:'CurrencyCode'}],
-                                                        type: 'sap.ui.model.type.Currency',
-                                                        formatOptions: {showMeasure: false}
-                                                            }"
-                                                    unit="MXN" />
+                                                    number="{AcuDetDetHdr>PDesc}"
+                                                    unit="{AcuDetDetHdr>Unidad}"
+                                                    state="Success" />
                                             </m:cells>
                                         </m:ColumnListItem>
                                     </m:items>
                                 </m:Table>
-                                <m:OverflowToolbar visible="{= ${DetCargoNSHdr>/AcuNivSerDet/Paginated/results/length} > 0 }">
-                                    <m:Text text="{DetCargoNSHdr>/AcuNivSerDet/Paginated/initRow} - {DetCargoNSHdr>/AcuNivSerDet/Paginated/endRow} {appTxts>/pagination.of} {DetCargoNSHdr>/AcuNivSerDet/results/length}" />
+                                <m:OverflowToolbar visible="{= ${AcuDetDetHdr>/AcuDetDet/Paginated/results/length} > 0 }">
+                                    <m:Text text="{AcuDetDetHdr>/AcuDetDet/Paginated/initRow} - {AcuDetDetHdr>/AcuDetDet/Paginated/endRow} {appTxts>/pagination.of} {AcuDetDetHdr>/AcuDetDet/results/length}" />
                                     <m:ToolbarSpacer/>
                                     <m:Button type="Default" icon="sap-icon://slim-arrow-left" 
-                                            press=".prevPagination(${DetCargoNSHdr>/AcuNivSerDet/Paginated/iterator}, ${DetCargoNSHdr>/AcuNivSerDet/Paginated/initRow}, 'DetCargoNSHdr', '/AcuNivSerDet')" 
-                                            enabled="{= ${DetCargoNSHdr>/AcuNivSerDet/Paginated/iterator} !== 1}" />
+                                            press=".prevPagination(${AcuDetDetHdr>/AcuDetDet/Paginated/iterator}, ${AcuDetDetHdr>/AcuDetDet/Paginated/initRow}, 'AcuDetDetHdr', '/AcuDetDet')" 
+                                            enabled="{= ${AcuDetDetHdr>/AcuDetDet/Paginated/iterator} !== 1}" />
                                     <m:Button type="Default" icon="sap-icon://slim-arrow-right" 
-                                            press=".nextPagination(${DetCargoNSHdr>/AcuNivSerDet/Paginated/iterator}, ${DetCargoNSHdr>/AcuNivSerDet/Paginated/endRow}, 'DetCargoNSHdr', '/AcuNivSerDet')" 
-                                            enabled="{= ${DetCargoNSHdr>/AcuNivSerDet/Paginated/endRow} !== ${DetCargoNSHdr>/AcuNivSerDet/results/length}}" />
+                                            press=".nextPagination(${AcuDetDetHdr>/AcuDetDet/Paginated/iterator}, ${AcuDetDetHdr>/AcuDetDet/Paginated/endRow}, 'AcuDetDetHdr', '/AcuDetDet')" 
+                                            enabled="{= ${AcuDetDetHdr>/AcuDetDet/Paginated/endRow} !== ${AcuDetDetHdr>/AcuDetDet/results/length}}" />
                                 </m:OverflowToolbar>
                             </m:VBox>
 						</blocks>
