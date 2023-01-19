@@ -848,25 +848,43 @@ console.log(results.Ebeln)
 			var aportacionesTCodes = ['Z_APORTACIONES']
 			var boletinVentasTCodes = ['ZMM_ACUERDOS_LIQUI']
 
-
+			var boart = results.Boart
+			var acuerdosNSBoart = ['ZD33', 'ZD34', 'ZM33', 'ZM34']
 
 			//logica para enviar a Aportaciones o a Acuerdos
-			console.log((( tcode !== "" &&  tcode.match("(ZMMFILACUERDO|MEB|WLF).*")  &&  doc.startsWith('51')) || ((tcode === "" && !( doc.startsWith("170") ) &&  results.Foliodescuento ))   ) )
-			if (( tcode !== "" &&  tcode.match("(ZMMFILACUERDO|MEB|WLF).*")  &&  doc.startsWith('51')) || ((tcode === "" && !( doc.startsWith("170") ) &&  results.Foliodescuento ))   ) {
+			//console.log((( tcode !== "" &&  tcode.match("(ZMMFILACUERDO|MEB|WLF).*")  &&  doc.startsWith('51')) || ((tcode === "" && !( doc.startsWith("170") ) &&  results.Foliodescuento ))   ) )
+			if ( ( tcode !== "" &&  tcode.match("(ZMMFILACUERDO|MEB|WLF).*")  &&  doc.startsWith('51')) 
+			  || ( tcode === "" && !( doc.startsWith("170") &&  results.Foliodescuento ) ) ) {
 //1500000453  1500177301
 
 
-				console.log('on detail factoraje acuerdos',tcode.match("(ZMMFILACUERDO|MEB|WLF).*") )
-				this.getOwnerComponent().getRouter().navTo("detailAcuerdosFactoraje",
-					{
-						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
-						document: results.Belnr,
-						sociedad: this._sociedad,
-						ejercicio: ejercicio2,
-						doc: this._document,
-						fecha: this._fecha
-						// lifnr: docResult.Lifnr
-					}, true);
+				//console.log('on detail factoraje acuerdos',tcode.match("(ZMMFILACUERDO|MEB|WLF).*") )
+				if (acuerdosNSBoart.includes(boart)) {
+				
+					this.getOwnerComponent().getRouter().navTo("detailAcuerdosECNS",
+						{
+							layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
+							document: results.Belnr,
+							sociedad: this._sociedad,
+							ejercicio: ejercicio2,
+							doc: this._document,
+							fecha: this._fecha
+							// lifnr: docResult.Lifnr
+						}, true);
+
+				} else {
+
+					this.getOwnerComponent().getRouter().navTo("detailAcuerdosFactoraje",
+						{
+							layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
+							document: results.Belnr,
+							sociedad: this._sociedad,
+							ejercicio: ejercicio2,
+							doc: this._document,
+							fecha: this._fecha
+							// lifnr: docResult.Lifnr
+						}, true);
+				}
 
 			}else if ((aportacionesTCodes.includes(tcode) || ( doc.startsWith("170")) &&  results.Foliodescuento )  ) {
 
