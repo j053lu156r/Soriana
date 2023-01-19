@@ -956,7 +956,7 @@ if (x==="RETENCION POR AFORO"){
 					layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
 					//  document: results.Xblnr,
 					document: doc,
-					company: sociedad,
+					company: this._sociedad,
 					year: ejercicio
 				}, false);
 
