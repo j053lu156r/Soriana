@@ -542,6 +542,23 @@
                     ]
                 },
                 {
+                    "pattern": "detailAcuerdosFANS/{layout}/{document}/{sociedad}/{ejercicio}/{doc}",
+                    "name": "detailAcuerdosFANS",
+                    "target": [
+                        "masterFactoring",
+                        "detailFactoring",
+                        "detailAcuerdosFANS"
+                    ]
+                },
+                {
+                    "pattern": "detailDetailFANS/{layout}/{sociedad}/{document}/{ejercicio}/{doc}/{tda}",
+                    "name": "detailDetailFANS",
+                    "target": [
+                        "detailDetailFANS"
+                    ],
+                    "layout": "EndColumnFullScreen"
+                },
+                {
                     "pattern": "EstadoCuentaReporte/{layout}/{document}/{proveedor}/:serie:/{fecha}",
                     "name": "EstadoCuentaReporte",
                     "target": [
@@ -1238,6 +1255,16 @@
                 "detailAcuerdosFactoraje": {
                     "viewName": "DetailFactoraje",
                     "viewPath": "demo.views.Acuerdos",
+                    "controlAggregation": "endColumnPages"
+                },
+                "detailAcuerdosFANS": {
+                    "viewName": "DetailFANS",
+                    "viewPath": "demo.views.CargoNS",
+                    "controlAggregation": "endColumnPages"
+                },
+                "detailDetailFANS": {
+                    "viewName": "DetailDetailFANS",
+                    "viewPath": "demo.views.CargoNS",
                     "controlAggregation": "endColumnPages"
                 },
                 "detailAcuerdosAS": {
