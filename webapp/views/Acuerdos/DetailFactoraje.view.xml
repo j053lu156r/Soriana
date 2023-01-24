@@ -38,8 +38,8 @@
 
 
 				<f:navigationActions>
-					<Button icon="sap-icon://full-screen" type="Transparent" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }" />
-					<Button icon="sap-icon://exit-full-screen" type="Transparent" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }" />
+					<Button icon="sap-icon://full-screen" type="Transparent" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/endColumn/fullScreen} !== null }" />
+					<Button icon="sap-icon://exit-full-screen" type="Transparent" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/endColumn/exitFullScreen} !== null }" />
 					<Button icon="sap-icon://decline" type="Transparent" press="handleClose" tooltip="Close column" />
 				</f:navigationActions>
 			</f:DynamicPageTitle>
