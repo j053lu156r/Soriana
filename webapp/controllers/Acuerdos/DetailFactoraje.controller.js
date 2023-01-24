@@ -216,7 +216,7 @@ sap.ui.define([
 		handleFullScreen: function () {
 			var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(2);
 			this.bFocusFullScreenButton = true;
-			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
+			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/fullScreen");
 			this.oRouter.navTo("detailAcuerdosFactoraje", {
 				layout: sNextLayout,
 				document: this._document,
@@ -227,7 +227,7 @@ sap.ui.define([
 		},
 		handleExitFullScreen: function () {
 			this.bFocusFullScreenButton = true;
-			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
+			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/exitFullScreen");
 			this.oRouter.navTo("detailAcuerdosFactoraje", {
 				layout: sNextLayout,
 				document: this._document,
@@ -238,7 +238,7 @@ sap.ui.define([
 		},
 		handleClose: function () {
 			console.log('on hanlde close')
-			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
+			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/closeColumn");
 			this.oRouter.navTo("detailFactoring",
                 {
                     layout: sap.f.LayoutType.TwoColumnsMidExpanded,
