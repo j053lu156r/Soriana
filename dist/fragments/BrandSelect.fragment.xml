@@ -1,0 +1,13 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog
+		id="selecBrandtDialog"
+		title="{appTxts>/quotes.branch}"
+		items="{searchLocations>/ETSTORENAV/results}"
+		search=".brandValueHelpSearch"
+		confirm="_brandValueHelpConfirm"
+        >
+		<StandardListItem
+			title="{searchLocations>Werks}"
+			description="{searchLocations>Name1}" />
+	</SelectDialog>
+</core:FragmentDefinition>
