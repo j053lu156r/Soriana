@@ -904,6 +904,33 @@
                     ]
                 },
                 {
+                    "name": "BoletinVtaPolizasCP",
+                    "pattern": "BoletinVtaPolizasCP/{layout}/{company}/{document}/{year}/{fecha}/{documentO}/{yearO}",
+                    "target": [
+                        "detailComplPagos",
+                        "BoletinVtaPolizasCP"
+                    ]
+                },
+                {
+                    "name": "detailCargoBoletinVtaCP",
+                    "pattern": "detailCargoBoletinVtaCP/{layout}/{Company}/{Agreement}/{Vendor}/{DateCreated}/{document}/{year}/{fecha}/{documentO}/{yearO}",
+                    "target": [
+                        "detailComplPagos",
+                        "BoletinVtaPolizasCP",
+                        "detailCargoBoletinVtaCP"
+                    ]
+                },
+                {
+                    "name": "detailCargoMatsBoletinVtaCP",
+                    "pattern": "detailCargoMatsBoletinVtaCP/{layout}/{Company}/{Forum}/{ForumDesc}/{Agreement}/{Vendor}/{DateCreated}/{document}/{year}/{fecha}/{documentO}/{yearO}",
+                    "target": [
+                        "detailComplPagos",
+                        "BoletinVtaPolizasCP",
+                        "detailCargoBoletinVtaCP",
+                        "detailCargoMatsBoletinVtaCP"
+                    ]
+                },
+                {
                     "name": "detailCargoBoletinVta",
                     "pattern": "detailCargoBoletinVta/{layout}/{Company}/{Agreement}/{Vendor}/{DateCreated}/{document}/{year}",
                     "target": [
@@ -1404,6 +1431,21 @@
                 },
                 "BoletinVtaDetailPolizasNivel3": {
                     "viewName": "DetailPolizas",
+                    "viewPath": "demo.views.BoletinVta",
+                    "controlAggregation": "endColumnPages"
+                },
+                "BoletinVtaPolizasCP": {
+                    "viewName": "DetailPolizasCP",
+                    "viewPath": "demo.views.BoletinVta",
+                    "controlAggregation": "endColumnPages"
+                },
+                "detailCargoBoletinVtaCP": {
+                    "viewName": "DetailCargoCP",
+                    "viewPath": "demo.views.BoletinVta",
+                    "controlAggregation": "endColumnPages"
+                },
+                "detailCargoMatsBoletinVtaCP": {
+                    "viewName": "DetailCargoMaterialCP",
                     "viewPath": "demo.views.BoletinVta",
                     "controlAggregation": "endColumnPages"
                 },
