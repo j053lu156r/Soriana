@@ -952,13 +952,15 @@ if (x==="RETENCION POR AFORO"){
 				console.log('on boletin vtz')
 
 				// navega a pantalla de boltines * revisar condiciones de apertura , conseguir esenarios
-				this.getOwnerComponent().getRouter().navTo("BoletinVtaDetailPolizas", {
+				this.getOwnerComponent().getRouter().navTo("BoletinVtaPolizasCP", {
 					layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
-					//  document: results.Xblnr,
 					document: doc,
-					company: sociedad,
-					year: ejercicio
-				}, false);
+					company: this._sociedad,
+					year: ejercicio,
+					fecha: this._fecha,
+					documentO: this._document,
+					yearO: this._ejercicio
+				}, true);
 
 
 

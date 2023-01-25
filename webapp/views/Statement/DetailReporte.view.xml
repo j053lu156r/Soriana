@@ -92,7 +92,7 @@
                 <t:Table selectionMode="None" noData="{appTxts>/acuerdos.noData}" id="tableAcuerdos" rows="{MejorCondHdr>/}">
                     <t:extension>
                         <OverflowToolbar>
-                            <Title text="Validación de condiciones" />
+                            <Title text="{appTxts>/reporte.headerTitulo}" />
                             <ToolbarSpacer/>
 
                             <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${MejorCondHdr>/length} > 0}" />
@@ -464,6 +464,85 @@
 
 
                         </t:Column>
+
+                        <t:Column sortProperty="TeSalida/Centro" width="15rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.sucursal}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/Centro}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/SubtotalXML" width="15rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.subtXML}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/SubtotalXML}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/TotalXML" width="15rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.totalXML}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/TotalXML}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/DifAddenda" width="15rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.difXML}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/DifAddenda}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/TivaXML" width="15rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.tasaIvaXML}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/TivaXML}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/TiepsXML" width="15rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.tasaIepsXML}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/TiepsXML}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/TivaSAP" width="15rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.tasaIvaSap}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/TivaSAP}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/TiepsSap" width="15rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.tasaIepsSap}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/TiepsSap}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/DifImpuestos" width="15rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.difImp}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/DifImpuestos}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/NoExisteEAN" width="15rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.NoEAN}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/NoExisteEAN}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/MsjProv" width="15rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.proveedorMsj}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{MejorCondHdr>TeSalida/MsjProv}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+
                     </t:columns>
                     <!---
                     <items>
