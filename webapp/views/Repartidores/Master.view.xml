@@ -33,11 +33,11 @@
 		                showRestoreButton="false" showClearButton="false" useToolbar="false"> 
 			
                         <fb:filterGroupItems>
-                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab" label="Proveedor" mandatory="true" partOfCurrentVariant="true" visibleInFilterBar="true">
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab" label="{appTxts>/clarifications.supplier}" mandatory="true" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
                                     <Input
                                         id="supplierInput"
-                                        placeholder="Proveedor"
+                                        placeholder="{appTxts>/clarifications.supplier}"
                                         showSuggestion="true"
                                         valueHelpOnly="true"
                                         showValueHelp="true"

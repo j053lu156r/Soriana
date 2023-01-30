@@ -303,7 +303,7 @@
                                         columnsXL="2"
 										>
 									<form:content>
-										<Label text="Proveedor"/>
+										<Label text="{appTxts>/clarifications.supplier}"/>
 										<Text  text="{reviewModel>/Remision/columnas/0/Proveedor}"/>
 										<Label text="Remision"/>
 										<Input  value="{reviewModel>/Remision/columnas/0/Remision}" change=".changeRemission" maxLength="10"/>

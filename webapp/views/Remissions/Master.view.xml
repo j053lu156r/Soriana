@@ -50,7 +50,7 @@ xmlns:core="sap.ui.core"
                                 <fb:control>
                                     <Input
                                         id="supplierInput"
-                                        placeholder="Proveedor"
+                                        placeholder="{appTxts>/clarifications.supplier}"
                                         showSuggestion="true"
                                         valueHelpOnly="true"
                                         showValueHelp="true"
