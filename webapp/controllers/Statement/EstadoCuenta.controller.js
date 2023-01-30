@@ -1411,7 +1411,8 @@ sap.ui.define([
 
                     this.getOwnerComponent().getRouter().navTo("detailAportacionesAS", {
                         layout: sap.f.LayoutType.MidColumnFullScreen,
-                        document: results.Xblnr,
+                        //document: results.Xblnr,
+                        document: results.Foliodescuento,
                         view: 'EstadoCuenta',
                         //ejercicio: ejercicio,
                         belnr: doc,
