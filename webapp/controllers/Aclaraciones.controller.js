@@ -545,7 +545,7 @@ onChange:function(){
             //oRowBinding = oTable.getBinding('rows');
             oRowBinding = oTable.getBinding().oList;
 
-            aCols = that.exce();
+            aCols = that.createColumnConfig();
 
             oSettings = {
                 workbook: {
