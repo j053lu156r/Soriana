@@ -1,31 +1,28 @@
 <core:FragmentDefinition xmlns="sap.m"
     xmlns:t="sap.ui.table"
-    xmlns:m="sap.m"
+  
+    xmlns:u="sap.ui.unified"
+    	xmlns:l="sap.ui.layout"
     xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
     xmlns:core="sap.ui.core">
     <VBox>
         <Panel visible="{	path: 'TemporalModel>/generalData/cedisType',
                         formatter: '.formatter.isSeco'
                     }">
+                    	<l:HorizontalLayout class="sapUiContentPadding" >
+			<u:FileUploader
+			id="fileUploader"
+			name="myFileUpload"
+			uploadUrl="upload/"
+			tooltip="Upload your file to the local server"
+            fileType="XLSX,xlsx"
+            visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='01' || ${path:'TemporalModel>/generalData/tipoCita'}==='02' ? true :false}"
+			change="onUpload"/>
+		
+            	</l:HorizontalLayout >
             <t:Table id="tableWizardOrder" rows="{Pedidos>/ETOC/results}" rowSelectionChange="selectPedido" enableSelectAll="false" filter="clearModelsOnFilter">
 
-                <t:extension>
-                    <!-- <headerToolbar> -->
-                    <OverflowToolbar>
-                        <ToolbarSpacer/>
-                        <!-- <Input id="searchOrders" width="auto" textAlign="Initial" placeholder="{appTxts>/quotes.search}" type="Number" showValueHelp="true" valueHelpIconSrc="sap-icon://search"/> -->
-
-                        <!-- <Select visible="{= ${Pedidos>/ETOC/Paginated/results/length} > 0 }" change=".paginateValue(${$parameters>/selectedItem}, 'Pedidos', '/ETOC')">
-                            <items>
-                                <core:Item key="10" text="10"/>
-                                <core:Item key="20" text="20"/>
-                                <core:Item key="50" text="50"/>
-                                <core:Item key="100" text="100"/>
-                            </items>
-                        </Select> -->
-                    </OverflowToolbar>
-                    <!-- </headerToolbar> -->
-                </t:extension>
+              
                 <t:columns>
                     <t:Column filterProperty="Ebeln">
                         <Label text="{appTxts>/quotes.order}" width="auto" />
@@ -93,6 +90,37 @@
                         <Label text="{appTxts>/quotes.quantitySummon}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                         <t:template>
                             <Input id="inputCantidad" value="{Pedidos>Citado}" liveChange="captureQuntSummon" enabled="{path:'Modeleditable>/editable'}" customData:menger="{Pedidos>MengeA}" customData:ebeln="{Pedidos>Ebeln}" customData:matnr="{Pedidos>Matnr}" type="Number"/>
+                        </t:template>
+                    </t:Column>
+                     <!--  --> 
+                      <t:Column   visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='04' ? true :false}">
+                        <Label text="{appTxts>/quotes.ZCEQFI}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        <t:template>
+                            <ObjectIdentifier text="{Pedidos>MengeA}"/>
+                        </t:template>
+                    </t:Column>
+                     <t:Column visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='04' ? true :false}">
+                        <Label text="{appTxts>/quotes.ZCEQFP}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        <t:template>
+                            <ObjectIdentifier text="{Pedidos>Zceqfu}"/>
+                        </t:template>
+                    </t:Column>
+                     <t:Column visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='04' ? true :false}">
+                        <Label text="{appTxts>/quotes.ZCPEMF}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        <t:template>
+                            <ObjectIdentifier text="{Pedidos>Zcpemf}"/>
+                        </t:template>
+                    </t:Column>
+                     <t:Column visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='04' ? true :false}">
+                        <Label text="{appTxts>/quotes.ZCPEMP}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        <t:template>
+                          <ObjectIdentifier text="{Pedidos>Zcpemp}"/>
+                        </t:template>
+                    </t:Column>
+                     <t:Column visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='04' ? true :false}">
+                        <Label text="{appTxts>/quotes.ZCJPIC}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        <t:template>
+                            <ObjectIdentifier text="{Pedidos>Zcjpic}"/>
                         </t:template>
                     </t:Column>
                 </t:columns>
