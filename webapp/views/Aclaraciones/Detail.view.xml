@@ -176,6 +176,7 @@
                                             fileTypes="xml,pdf,zip,rar,xls,xlsx,doc,docx,txt" 
                                             maxFileNameLength="15" 
                                             maxFileSize="5" 
+                                            mode="None"
                                             selectionChanged="onChangeUpload" 
                                             fieldGroupIds="aclaracion"
                                             items="{path: '/attachItems', templateShareable: false}" 
