@@ -19,9 +19,12 @@
             <Input id="totalpackagesInput" class= "sapUiSmallMarginBottom" width="auto" change=".hasOnlyNumbers" type="Number" />
             <Label text="{appTxts>/quotes.platforms}"/>
             <Input id="platformsInput" class= "sapUiSmallMarginBottom" width="auto" change=".hasOnlyNumbers" type="Number" />
+             <Label text="{appTxts>/quotes.quoteDateIns}" labelFor="DP2" id="txtDP2"/>
+            <DatePicker id="DP2" width="auto" class="sapUiSmallMarginBottom" placeholder="{appTxts>/quotes.quoteDateIns}" change="inspeccion" visible="true"/>
+
         </VBox>
         <VBox width="40%" class="sapUiTinyMargins">
-            <Label text="{appTxts>/quotes.unitType}" />
+            <Label text="{appTxts>/quotes.unitType}" />     
             <Select id="sTipoUnidad" class= "sapUiSmallMarginBottom" items="{
                         path: 'appoinmentsCatalogs>/ETIPOUNIDADNAV/results'
                     }"
