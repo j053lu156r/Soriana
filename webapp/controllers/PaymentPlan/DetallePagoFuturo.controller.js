@@ -320,7 +320,7 @@ sap.ui.define([
 			this._setAggregation(sPath);
 			var oBreadCrumb = this.byId("breadcrumb");
 			var oLink = new Link({
-				text: "Conceptos",
+				text: "{appTxts>/aportaciones.concepto}",
 				press: [sPath, this.onBreadcrumbPress, this]
 			});
 			oBreadCrumb.destroyLinks();

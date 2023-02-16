@@ -127,6 +127,7 @@ sap.ui.define([
                 sap.ui.core.BusyIndicator.hide();
                 var arrT=[];
                 var data = _GEToDataV2Response.data.results;
+                console.log("Data: --------------------------------------------------------------------------------")
                 console.log(data)
                 var dirtyArray = data[0].EPYMNTDOCSNAV.results
 

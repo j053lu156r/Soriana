@@ -1,7 +1,7 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
 	<SelectDialog
 		id="selectDialog"
-		title="Proveedor"
+		title="{appTxts>/clarifications.supplier}"
 		items="{userdata>/ETUSUAPROVNAV/results}"
 		search=".onValueHelpSearch"
 		confirm=".addSupplier"

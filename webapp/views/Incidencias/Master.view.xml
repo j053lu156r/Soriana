@@ -20,7 +20,7 @@
                     <DateRangeSelection change=".reloadData" id="dateRange"  required="false"/>
                     <Input
                         id="supplierInput"
-                        placeholder="Proveedor"
+                        placeholder="{appTxts>/clarifications.supplier}"
                         showSuggestion="true"
                         valueHelpOnly="true"
                         showValueHelp="true"

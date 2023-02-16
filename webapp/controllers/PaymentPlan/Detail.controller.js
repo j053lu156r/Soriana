@@ -552,7 +552,7 @@ sap.ui.define([
 			this._setAggregation(sPath);
 			var oBreadCrumb = this.byId("breadcrumb");
 			var oLink = new Link({
-				text: "Fecha de Corte",
+				text: "{appTxts>/plan.dateCorte}",
 				press: [sPath, this.onBreadcrumbPress, this]
 			});
             oBreadCrumb.destroyLinks();

@@ -971,6 +971,20 @@
                     "target": [
                         "masterPowerBI"
                     ]
+                },
+                {
+                    "name": "masterDownloadCP",
+                    "pattern": "masterDownloadCP",
+                    "target": [
+                        "masterDownloadCP"
+                    ]
+                },
+                {
+                    "name": "masterUploadCP",
+                    "pattern": "masterUploadCP",
+                    "target": [
+                        "masterUploadCP"
+                    ]
                 }
             ],
             "targets": {
@@ -1480,6 +1494,18 @@
                     "viewName": "Master",
                     "controlAggregation": "beginColumnPages",
                     "viewPath": "demo.views.PowerBI"
+                },
+                "masterDownloadCP": {
+                    "viewType": "XML",
+                    "viewName": "Master",
+                    "controlAggregation": "beginColumnPages",
+                    "viewPath": "demo.views.DownloadCP"
+                },
+                "masterUploadCP": {
+                    "viewType": "XML",
+                    "viewName": "Master",
+                    "controlAggregation": "beginColumnPages",
+                    "viewPath": "demo.views.UploadCP"
                 }
             }
         },

@@ -72,8 +72,7 @@
         </m:Table>
 
         <m:MessageStrip
-                text="LOS IMPORTES MANEJADOS EN ESTE CUADRO SON INFORMATIVOS Y NO REPRESENTAN UN COMPROMISO DE PAGO POR PARTE DE SORIANA Y
-PUEDEN VARIAR POR NUEVAS COMPRAS, DEVOLUCIONES O CARGOS VARIOS."
+                text="{appTxts>/plan.information}"
                 type="Information"
                 showIcon="true"
                 class="sapUiMediumMarginBottom">

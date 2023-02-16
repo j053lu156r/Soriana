@@ -37,7 +37,7 @@
 
                             <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab" label="{appTxts>/global.vendor}" mandatory="true" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
-                                    <Input id="supplierInput" placeholder="Proveedor" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}">
+                                    <Input id="supplierInput" placeholder="{appTxts>/clarifications.supplier}" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}">
                                     </Input>
                                 </fb:control>
                             </fb:FilterGroupItem>
