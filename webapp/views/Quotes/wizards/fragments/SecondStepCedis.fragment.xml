@@ -30,11 +30,18 @@
                             <ObjectIdentifier text="{Pedidos>Ebeln}"/>
                         </t:template>
                     </t:Column>
-                    <t:Column filterProperty="Matnr">
+                 <!--  <t:Column filterProperty="Matnr"  visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='04' ? false :true}">
                         <Label text="{appTxts>/quotes.itemLine}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
                         <t:template>
                             <ObjectIdentifier text="{Pedidos>Matnr}"/>
+                        </t:template>
+                    </t:Column>--> 
+                      <t:Column filterProperty="Matnr"  visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='04' ? true :false}">
+                        <Label text="{appTxts>/quotes.itemLine}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+
+                        <t:template>
+                            <ObjectIdentifier text="{Pedidos>Abelp}"/>
                         </t:template>
                     </t:Column>
                     <t:Column filterProperty="Ean11">
@@ -96,13 +103,15 @@
                       <t:Column   visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='04' ? true :false}">
                         <Label text="{appTxts>/quotes.ZCEQFI}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                         <t:template>
-                            <ObjectIdentifier text="{Pedidos>MengeA}"/>
+<ObjectIdentifier text="{Pedidos>Zceqfu}"/>
+                           <!--  <ObjectIdentifier text="{Pedidos>MengeA}"/>--> 
                         </t:template>
                     </t:Column>
                      <t:Column visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='04' ? true :false}">
                         <Label text="{appTxts>/quotes.ZCEQFP}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                         <t:template>
-                            <ObjectIdentifier text="{Pedidos>Zceqfu}"/>
+                          <!--   <ObjectIdentifier text="{Pedidos>Zceqfu}"/>--> 
+                          <ObjectIdentifier text="{Pedidos>Zceqfp}"/>
                         </t:template>
                     </t:Column>
                      <t:Column visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='04' ? true :false}">
