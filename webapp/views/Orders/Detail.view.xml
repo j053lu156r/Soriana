@@ -44,22 +44,27 @@
                             displayShape="Square"
                             class="sapUiTinyMarginEnd">
                 </f:Avatar>
-                <m:VBox class="sapUiSmallMarginEnd">
-                    <m:ObjectAttribute title="{appTxts>/order.assorment}" />
-                    <m:ObjectStatus text="{tableDetailMoves>/OEKKONAV/results/0/Telf1}" class="sapUiLargeMarginEnd"/>
-                    <m:ObjectAttribute title="{appTxts>/order.status}" />
-                    <m:ObjectStatus text="{ path: 'tableDetailMoves>/OEKKONAV/results/0/Elikz', formatter: '.formatSatusOrder' }"/>
-                    
-                    <m:ObjectAttribute title="{appTxts>/order.amount}" />
-                    <m:ObjectStatus text="{tableDetailMoves>/OEKKONAV/results/0/Netwr} {tableDetailMoves>/OEKKONAV/results/0/Waers}"/>
-                    <m:layoutData>
-                        <m:FlexItemData
-                            growFactor="1"
-                            baseSize="auto"
-                            backgroundDesign="Solid"
-                            styleClass="sapUiTinyMargin" />
-                    </m:layoutData>
-                </m:VBox>
+                <m:HBox class="sapUiSmallMarginEnd">
+                    <m:VBox class="sapUiSmallMarginEnd">
+                        <m:ObjectAttribute title="{appTxts>/order.assorment}" />
+                        <m:ObjectStatus text="{tableDetailMoves>/OEKKONAV/results/0/Telf1}" class="sapUiLargeMarginEnd"/>
+                        <m:ObjectAttribute title="{appTxts>/order.status}" />
+                        <m:ObjectStatus text="{ path: 'tableDetailMoves>/OEKKONAV/results/0/Elikz', formatter: '.formatSatusOrder' }"/>
+                        
+                        <m:ObjectAttribute title="{appTxts>/order.amount}" />
+                        <m:ObjectStatus text="{tableDetailMoves>/OEKKONAV/results/0/Netwr} {tableDetailMoves>/OEKKONAV/results/0/Waers}"/>
+                        <m:layoutData>
+                            <m:FlexItemData
+                                growFactor="1"
+                                baseSize="auto"
+                                backgroundDesign="Solid"
+                                styleClass="sapUiTinyMargin" />
+                        </m:layoutData>
+                    </m:VBox>
+                </m:HBox>
+                
+                
+
 <!--Inicio de Insert BORTA 27.07.2021 Se Homologar Fechas por DD-MM-YYYY  -->                
                 <m:VBox class="sapUiSmallMarginEnd">
                     <m:ObjectAttribute title="{appTxts>/order.date}" />
@@ -112,6 +117,8 @@
                                 <m:IconTabFilter text="{appTxts>/order.detail}" icon="sap-icon://detail-view">
                                 <m:content>
                                     <m:VBox>
+                                        <m:ObjectAttribute title="{appTxts>/order.textoPos}" />
+                                        <m:ObjectStatus text="{tableDetailMoves>/OEKKONAV/results/0/Txtpos}"/>
                                         <m:Table id="suppliersTable"
                                                 items="{path : 'tableDetailMoves>/Oekponav/Paginated/results'}">
                                             <m:headerToolbar>
