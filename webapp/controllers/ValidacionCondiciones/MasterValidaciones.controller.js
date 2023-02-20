@@ -640,9 +640,71 @@ sap.ui.define([
                 property: 'TeSalida/DescEstat'
             });
             //JJ
+            aCols.push({
+                label: texts.getProperty("/reporte.sucursal"),
+                type: EdmType.String,
+                property: 'TeSalida/Centro'
+            });
 
+            aCols.push({
+                label: texts.getProperty("/reporte.subtXML"),
+                type: EdmType.String,
+                property: 'TeSalida/SubtotalXML'
+            });
 
+            aCols.push({
+                label: texts.getProperty("/reporte.totalXML"),
+                type: EdmType.String,
+                property: 'TeSalida/TeSalida/TotalXML'
+            });
 
+            aCols.push({
+                label: texts.getProperty("/reporte.difXML"),
+                type: EdmType.String,
+                property: 'TeSalida/DifAddenda'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/reporte.tasaIvaXML"),
+                type: EdmType.String,
+                property: 'TeSalida/TivaXML'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/reporte.tasaIepsXML"),
+                type: EdmType.String,
+                property: 'TeSalida/TiepsXML'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/reporte.tasaIvaSap"),
+                type: EdmType.String,
+                property: 'TeSalida/TivaSAP'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/reporte.tasaIepsSap"),
+                type: EdmType.String,
+                property: 'TeSalida/TiepsSap'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/reporte.difImp"),
+                type: EdmType.String,
+                property: 'TeSalida/DifImpuestos'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/reporte.NoEAN"),
+                type: EdmType.String,
+                property: 'TeSalida/NoExisteEAN'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/reporte.proveedorMsj"),
+                type: EdmType.String,
+                property: 'TeSalida/MsjProv'
+            });
 
             return aCols;
         },
