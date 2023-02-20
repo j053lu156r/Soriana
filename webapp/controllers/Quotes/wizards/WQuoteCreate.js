@@ -113,7 +113,7 @@ sap.ui.define(
             oDialog.open();
 
             var Datos = that.getView().getModel("ModelLectura").getData();
-            console.log(Datos);
+
             if (selectedKey === "N") {
               that.getView().byId("ModCita").setVisible(false);
               that.getView().byId("cancCita").setVisible(false);
@@ -221,27 +221,20 @@ sap.ui.define(
       },
 
       onDialogNextButton: function () {
-        console.log(
-          this.getOwnerComponent().getModel("CitaCreationArray").getData()
-        );
-        this.getView()
-          .getModel("TemporalModel")
-          .getData().generalData.totalBultos = this.getView()
-          .byId("totalpackagesInput")
-          .getValue();
-        this.getView().getModel("TemporalModel").getData().generalData.tarimas =
-          this.getView().byId("platformsInput").getValue();
+        this.getView().getModel("TemporalModel").getData().generalData.totalBultos = this.getView()
+          .byId("totalpackagesInput").getValue();
+        this.getView().getModel("TemporalModel").getData().generalData.tarimas =  this.getView().byId("platformsInput").getValue();
 
-        this.getView()
-          .getModel("TemporalModel")
-          .getData().generalData.transportista = this.getView()
-          .byId("carrierInput")
-          .getValue();
+        this.getView().getModel("TemporalModel").getData().generalData.transportista = this.getView().byId("carrierInput").getValue();
 
         if (this._oWizard.getProgressStep().getValidated()) {
           if (this._oWizard.getProgressStep().sButtonText === "Paso 2") {
             let dateSelected = this.byId("DP1").getDateValue();
             this.searchOrders(this.buildSapDate(dateSelected));
+          }
+          if (this._oWizard.getProgressStep().sButtonText === "Paso 3") {
+      this.GetCitas()
+
           }
           this._oWizard.nextStep();
         }
@@ -258,19 +251,10 @@ sap.ui.define(
         var Datos = this.getView().getModel("ModelLectura").getData();
 
         if (Datos.lectura) {
-          this._handleMessageBoxOpen(
-            this.getView()
-              .getModel("appTxts")
-              .getProperty("/quotes.closeButton"),
-            "warning"
-          );
+          this._handleMessageBoxOpen( this.getView().getModel("appTxts").getProperty("/quotes.closeButton"), "warning"     );
         } else {
           this._handleMessageBoxOpen(
-            this.getView()
-              .getModel("appTxts")
-              .getProperty("/quotes.discardButton"),
-            "warning"
-          );
+            this.getView().getModel("appTxts").getProperty("/quotes.discardButton"), "warning" );
         }
       },
       testModelos: function () {},
@@ -289,15 +273,15 @@ sap.ui.define(
                 this._pDialog = null;
                 this._oWizard = null;
 
-                let appoimentModel = this.getOwnerComponent()
-                  .getModel("CitaCreationArray")
-                  .getData();
+                let appoimentModel = this.getOwnerComponent().getModel("CitaCreationArray").getData();
                 var Model = this.getView().getModel("configSite").getData();
                 var Model2 = this.getView().getModel("TemporalModel").getData();
                 var Model3 = this.getView().getModel("Platforms").getData();
-console.log(Model3)
+
                 if (
-                  this.getOwnerComponent().getModel("ModelLectura").getData().lectura === true) {
+                  this.getOwnerComponent().getModel("ModelLectura").getData()
+                    .lectura === true
+                ) {
                   var ArrtPos = [];
 
                   for (
@@ -312,33 +296,15 @@ console.log(Model3)
                         .ETOC.results[x].Selected
                     ) {
                       ArrtPos.push({
-                        Folio: this.getOwnerComponent()
-                          .getModel("ModelLectura")
-                          .getData().Folio,
-                        Ebeln: this.getOwnerComponent()
-                          .getModel("Pedidos")
-                          .getData().ETOC.results[x].Ebeln,
-                        Ebelp: this.getOwnerComponent()
-                          .getModel("Pedidos")
-                          .getData().ETOC.results[x].Ebelp,
-                        Matnr: this.getOwnerComponent()
-                          .getModel("Pedidos")
-                          .getData().ETOC.results[x].Matnr,
-                        Cantidad: this.getOwnerComponent()
-                          .getModel("Pedidos")
-                          .getData().ETOC.results[x].Citado,
-                        Fechaini: this.getOwnerComponent()
-                          .getModel("Pedidos")
-                          .getData().ETOC.results[x].Kdatb,
-                        Fechafin: this.getOwnerComponent()
-                          .getModel("Pedidos")
-                          .getData().ETOC.results[x].Kdate,
-                        Umedida: this.getOwnerComponent()
-                          .getModel("Pedidos")
-                          .getData().ETOC.results[x].Meins,
-                        Citado: this.getOwnerComponent()
-                          .getModel("Pedidos")
-                          .getData().ETOC.results[x].Citado,
+                        Folio: this.getOwnerComponent().getModel("ModelLectura").getData().Folio,
+                        Ebeln: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Ebeln,
+                        Ebelp: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Ebelp,
+                        Matnr: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Matnr,
+                        Cantidad: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado,
+                        Fechaini: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Kdatb,
+                        Fechafin: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Kdate,
+                        Umedida: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Meins,
+                        Citado: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado,
                       });
                     }
                   }
@@ -367,7 +333,7 @@ console.log(Model3)
                         Tarimas: Model2.generalData.tarimas,
                         HoraIni: appoimentModel[0].HoraIni,
                         HoraFin: appoimentModel[0].HoraFin,
-                        Anden: Model3[(Number(appoimentModel[0].Anden))].name,
+                        Anden: Model3[Number(appoimentModel[0].Anden)].name,
                       },
                     ],
                     CTCITASDET: ArrtPos,
@@ -382,9 +348,7 @@ console.log(Model3)
                     ._POSToData(model, entity, json2)
                     .then(function (_GEToDataV2Response) {
                       sap.ui.core.BusyIndicator.hide();
-
                       var response = _GEToDataV2Response.d;
-
                       if (response.Success === "X") {
                         sap.m.MessageBox.success(response.Message);
                       } else {
@@ -392,37 +356,100 @@ console.log(Model3)
                       }
                     });
                 } else {
-                  //  let appoimentModel = this.getOwnerComponent().getModel("CitaCreationArray").getData();
-                  console.log(appoimentModel);
                   var ArrT = [];
-                  for (var x = 0; x < appoimentModel.length; x++) {
-                    ArrT.push({
-                      Ebeln: appoimentModel[x].Ebeln,
-                      Ebelp: appoimentModel[x].Ebelp,
-                      Matnr: appoimentModel[x].Matnr,
-                      Citado: appoimentModel[x].Citado.toLocaleString(),
-                      FechaCita: appoimentModel[x].FechaCita,
-                      HoraIni: appoimentModel[x].HoraIni,
-                      HoraFin: appoimentModel[x].HoraFin,
-                      Anden: Model3[(Number(appoimentModel[0].Anden))].name,
-                      TipoCita: Model2.generalData.tipoCita,
-                      Lifnr: Model.supplierInputKey,
-                      Bultos: Model2.generalData.totalBultos,
-                      Tarimas: Model2.generalData.tarimas,
-                      TipoUnidad: Model2.generalData.tipoUnidad,
-                      Transportista: Model2.generalData.transportista,
-                    });
+                  var ArrTCN=[];
+                  if (Model2.generalData.tipoCita === "02") {
+console.log(this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results)
+console.log(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results)
+for(var x =0;x<this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results.length;x++){
+  if(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Selected){
+
+ 
+    for(var y =0;y<this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results.length;y++){
+if((this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Abeln=== this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results[y].Zabeln )
+ &&(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].ZwerksD === this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results[y].ZwerksD ) 
+ &&(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Abelp=== this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results[y].Zabelp )){
+console.log("hola juan")
+//ArrT.push(this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results[y])
+ArrT.push({
+
+ 
+  "Zabeln": this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results[y].Zabeln.trim(),
+  "Zabelp": this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results[y].Zabelp.trim(),
+  "Zmatnr": this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results[y].Zmatnr.trim(),
+  "ZwerksD": this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results[y].ZwerksD.trim(),
+  "Zpmngu": this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results[y].Zpmngu.trim(),
+  "Zaufme":this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results[y].Zceqfu.trim(),
+  "Zceqfu":this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results[y].Zceqfu.trim(),
+  "Zueqfu": this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results[y].Zueqfu.trim(),
+  "Zceqfp": this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results[y].Zceqfp.trim(),
+  "Zaufpf": this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results[y].Zaufpf.trim(),
+  "Zcpemf": this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results[y].Zcpemf.trim(),
+  "Zupemf": this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results[y].Zupemf.trim(),
+  "Zcpemp":this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results[y].Zcpemp.trim(),
+  "Zaufmp":this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results[y].Zaufmp.trim(),
+  "Zcjpic": this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results[y].Zcjpic.trim(),
+  "Zuncom": this.getOwnerComponent().getModel("Pedidos").getData().ETMINIFULL03.results[y].Zuncom.trim()
+})
+
+}
+    }
+  }
+ 
+}
+
+console.log(ArrT)
+console.log(appoimentModel)
+for (var x = 0; x < appoimentModel.length; x++) {
+  ArrTCN.push({
+    Ebeln: appoimentModel[x].Ebeln,
+    Ebelp: appoimentModel[x].Ebelp,
+    Matnr: appoimentModel[x].Matnr,
+    Citado: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado,//appoimentModel[x].Citado.toLocaleString(),
+    FechaCita: appoimentModel[x].FechaCita,
+    HoraIni: appoimentModel[x].HoraIni,
+    HoraFin: appoimentModel[x].HoraFin,
+    Anden: Model3[Number(appoimentModel[0].Anden)].name,
+    TipoCita: Model2.generalData.tipoCita,
+    Lifnr: Model.supplierInputKey,
+    Bultos: Model2.generalData.totalBultos,
+    Tarimas: Model2.generalData.tarimas,
+    TipoUnidad: Model2.generalData.tipoUnidad,
+    Transportista: Model2.generalData.transportista,
+  });
+}
+                   
+                  } else {
+                    for (var x = 0; x < appoimentModel.length; x++) {
+                      ArrTCN.push({
+                        Ebeln: appoimentModel[x].Ebeln,
+                        Ebelp: appoimentModel[x].Ebelp,
+                        Matnr: appoimentModel[x].Matnr,
+                        Citado: appoimentModel[x].Citado.toLocaleString(),
+                        FechaCita: appoimentModel[x].FechaCita,
+                        HoraIni: appoimentModel[x].HoraIni,
+                        HoraFin: appoimentModel[x].HoraFin,
+                        Anden: Model3[Number(appoimentModel[0].Anden)].name,
+                        TipoCita: Model2.generalData.tipoCita,
+                        Lifnr: Model.supplierInputKey,
+                        Bultos: Model2.generalData.totalBultos,
+                        Tarimas: Model2.generalData.tarimas,
+                        TipoUnidad: Model2.generalData.tipoUnidad,
+                        Transportista: Model2.generalData.transportista,
+                      });
+                    }
+
                   }
 
                   let createObjReq = {
                     Proveedor: Model.supplierInputKey.padStart(10, 0),
                     Action: "1",
-
-                    ETCITANUEVA: ArrT,
+                    ETCITANUEVA:  ArrTCN,
+                    ETMINIFULL03: ArrT,
                     ETRETURN: [],
                   };
 
-                  sap.ui.core.BusyIndicator.show();
+                 sap.ui.core.BusyIndicator.show();
                   let resp = null;
 
                   var model = _oDataModelAppoimnet;
@@ -431,9 +458,7 @@ console.log(Model3)
                   var that = this;
                 }
 
-                that
-                  ._POSToData(model, entity, json2)
-                  .then(function (_GEToDataV2Response) {
+                  that._POSToData(model, entity, json2).then(function (_GEToDataV2Response) {
                     sap.ui.core.BusyIndicator.hide();
 
                     var response = _GEToDataV2Response.d;
@@ -485,30 +510,6 @@ console.log(Model3)
         });
       },
 
-      getToken: function (oModel2) {
-        //Consulta
-        var id = null;
-        $.ajax({
-          type: "GET",
-          url: "/sap/opu/odata/sap/model/ZOSP_CITAS_ADM_SRV/MainSet$filter=Fechaini eq '20221101' and Fechafin eq '20221130'", //oModel2,
-
-          headers: {
-            "X-CSRF-Token": "Fetch",
-          },
-          contentType: "application/json; charset=utf-8",
-          dataType: "json",
-          async: false,
-          success: function (dataR, textStatus, jqXHR) {
-            id = jqXHR.getResponseHeader("X-CSRF-Token");
-          },
-          error: function (jqXHR, textStatus, errorThrown) {
-            id = jqXHR.getResponseHeader("X-CSRF-Token");
-          },
-        });
-
-        return id;
-      },
-
       _handleMessageBoxOpen: function (sMessage, sMessageBoxType) {
         sap.m.MessageBox[sMessageBoxType](sMessage, {
           actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
@@ -520,18 +521,12 @@ console.log(Model3)
               this._oWizard = null;
 
               this.getView().setModel(new JSONModel(), "ModelLectura");
-              this.getView().setModel(
-                new JSONModel(),
-                "tableWizardOrderPosition"
-              );
-              this.getOwnerComponent().setModel(
-                new sap.ui.model.json.JSONModel(),
-                "CitaMainData"
-              );
-              this.getOwnerComponent().setModel(
-                new sap.ui.model.json.JSONModel([]),
-                "CitaCreationArray"
-              );
+              this.getView().setModel(new JSONModel(),  "tableWizardOrderPosition");
+              this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel([]), "CitaMainData");
+              this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel([]),"CitaCreationArray");
+              this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel([]),"Pedidos");
+              this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel([]),"Platforms");
+              
               _centroSeleccionado = null;
             }
           }.bind(this),
@@ -541,7 +536,7 @@ console.log(Model3)
       searchOrders: function (date) {
         let filtros = [];
         let that = this;
-        console.log(that.getView().byId("sTipoCita").getSelectedKey());
+
         filtros.push(
           this.buildFiltro(
             "IOption",
@@ -568,7 +563,13 @@ console.log(Model3)
         sap.ui.core.BusyIndicator.show();
         let ARRTV = [];
         that
-          ._GetODataV2(_oDataModelOC, _oDataEntityOC, filtros, ["ETOC","ETMINIFULL03"], "")
+          ._GetODataV2(
+            _oDataModelOC,
+            _oDataEntityOC,
+            filtros,
+            ["ETOC", "ETMINIFULL03"],
+            ""
+          )
           .then((resp) => {
             that.getView().byId("tableWizardOrder").clearSelection();
             let ARRfechas = [];
@@ -583,17 +584,24 @@ console.log(Model3)
               );
 
               console.log("1");
-              for ( var x = 0;x < resp.data.results[0].ETOC.results.length; x++ ) {
+              for (
+                var x = 0;
+                x < resp.data.results[0].ETOC.results.length;
+                x++
+              ) {
                 resp.data.results[0].ETOC.results[x].Selected = true;
 
                 for (var y = 0; y < PosicionesG.length; y++) {
-                  if (resp.data.results[0].ETOC.results[x].Matnr ===PosicionesG[y].Matnr && resp.data.results[0].ETOC.results[x].Werks === PosicionesG[y].Werks ) {
-                    resp.data.results[0].ETOC.results[x].Citado =PosicionesG[y].Citado;
-
-                  
+                  if (
+                    resp.data.results[0].ETOC.results[x].Matnr ===
+                      PosicionesG[y].Matnr &&
+                    resp.data.results[0].ETOC.results[x].Werks ===
+                      PosicionesG[y].Werks
+                  ) {
+                    resp.data.results[0].ETOC.results[x].Citado =
+                      PosicionesG[y].Citado;
 
                     ARRTV.push(resp.data.results[0].ETOC.results[x]);
-                    
                   }
                 }
               }
@@ -601,22 +609,76 @@ console.log(Model3)
               resp.data.results[0].ETOC.results = ARRTV;
             } else {
               console.log("2");
-              for (var x = 0;x < resp.data.results[0].ETOC.results.length; x++) {
-                FechasI.push({ Finicio: new Date(resp.data.results[0].ETOC.results[x].Kdatb),      // Ffin:new Date(resp.data.results[0].ETOC.results[x].Kdate)
+              let ArgTemp = [];
+              for (
+                var x = 0;
+                x < resp.data.results[0].ETOC.results.length;
+                x++
+              ) {
+                FechasI.push({
+                  Finicio: new Date(resp.data.results[0].ETOC.results[x].Kdatb), // Ffin:new Date(resp.data.results[0].ETOC.results[x].Kdate)
                 });
-                FechasF.push({   //  Finicio: new Date(resp.data.results[0].ETOC.results[x].Kdatb),
+                FechasF.push({
+                  //  Finicio: new Date(resp.data.results[0].ETOC.results[x].Kdatb),
                   Ffin: new Date(resp.data.results[0].ETOC.results[x].Kdate),
                 });
                 resp.data.results[0].ETOC.results[x].Selected = false;
-                if(that.getView().byId("sTipoCita").getSelectedKey()==="04"){
-                  console.log(resp.data.results[0].ETMINIFULL03.results[x].Zceqfp)
-                  resp.data.results[0].ETOC.results[x].Zceqfp=resp.data.results[0].ETMINIFULL03.results[x].Zceqfp
-                  resp.data.results[0].ETOC.results[x].Zceqfu=resp.data.results[0].ETMINIFULL03.results[x].Zceqfu
-                  resp.data.results[0].ETOC.results[x].Zcjpic=resp.data.results[0].ETMINIFULL03.results[x].Zcjpic
-                  resp.data.results[0].ETOC.results[x].Zcpemf=resp.data.results[0].ETMINIFULL03.results[x].Zcpemf
-                  resp.data.results[0].ETOC.results[x].Zcpemp=resp.data.results[0].ETMINIFULL03.results[x].Zcpemp
+                if (
+                  that.getView().byId("sTipoCita").getSelectedKey() === "04"
+                ) {
+                  for (
+                    var y = 0;
+                    y < resp.data.results[0].ETMINIFULL03.results.length;
+                    y++
+                  ) {
+                    if (( resp.data.results[0].ETOC.results[x].Abeln === resp.data.results[0].ETMINIFULL03.results[y].Zabeln) && (resp.data.results[0].ETOC.results[x].Abelp===   resp.data.results[0].ETMINIFULL03.results[y].Zabelp)  ) {
+                       resp.data.results[0].ETOC.results[x].Zceqfp = resp.data.results[0].ETMINIFULL03.results[y].Zceqfp;
+                      resp.data.results[0].ETOC.results[x].Zceqfu =  resp.data.results[0].ETMINIFULL03.results[y].Zceqfu;
+                      resp.data.results[0].ETOC.results[x].Zcjpic =  resp.data.results[0].ETMINIFULL03.results[y].Zcjpic;
+                      resp.data.results[0].ETOC.results[x].Zcpemf =  resp.data.results[0].ETMINIFULL03.results[y].Zcpemf;
+                      resp.data.results[0].ETOC.results[x].Zcpemp =  resp.data.results[0].ETMINIFULL03.results[y].Zcpemp;
+                    }
+                  }
+                }
+
+                if (
+                  that.getView().byId("sTipoCita").getSelectedKey() === "02"
+                ) {
+                  let ArrTTT = [];
+
+                  for (
+                    var y = 0;
+                    y < resp.data.results[0].ETMINIFULL03.results.length;
+                    y++
+                  ) {
+                    if (( resp.data.results[0].ETOC.results[x].Abeln === resp.data.results[0].ETMINIFULL03.results[y].Zabeln) && (resp.data.results[0].ETOC.results[x].Abelp===   resp.data.results[0].ETMINIFULL03.results[y].Zabelp)  ) {
+                      ArgTemp.push({
+                        Abeln: resp.data.results[0].ETOC.results[x].Abeln,
+                        Bwart: resp.data.results[0].ETOC.results[x].Bwart,
+                        Citado: resp.data.results[0].ETMINIFULL03.results[y].Zpmngu.trim().split(".")[0],
+                        Ean11: resp.data.results[0].ETOC.results[x].Ean11,
+                        Ebeln: resp.data.results[0].ETOC.results[x].Ebeln,
+                        Ebelp: resp.data.results[0].ETOC.results[x].Ebelp,
+                        Kdatb: resp.data.results[0].ETOC.results[x].Kdatb,
+                        Kdate: resp.data.results[0].ETOC.results[x].Kdate,
+                        Lifnr: resp.data.results[0].ETOC.results[x].Lifnr,
+                        Matnr: resp.data.results[0].ETOC.results[x].Matnr,
+                        Meins: resp.data.results[0].ETOC.results[x].Meins,
+                        Menge: resp.data.results[0].ETOC.results[x].Menge,
+                        MengeA: resp.data.results[0].ETOC.results[x].MengeA,
+                        MengeR: resp.data.results[0].ETOC.results[x].MengeR,
+                        Selected: resp.data.results[0].ETOC.results[x].Selected,
+                        Werks: resp.data.results[0].ETOC.results[x].Werks,
+                        ZwerksD: resp.data.results[0].ETMINIFULL03.results[y].ZwerksD,
+                        Abelp: resp.data.results[0].ETMINIFULL03.results[y].Zabelp,
+                      });
+                    }
+                  }
                 }
               }
+
+              resp.data.results[0].ETOC.results = [];
+              resp.data.results[0].ETOC.results = ArgTemp;
             }
 
             that
@@ -635,21 +697,12 @@ console.log(Model3)
             }
             FechasI.sort(OrdenarPorfechainicio);
             FechasF.sort(OrdenarPorFechaFin);
-            //  console.log( that.getOwnerComponent().getModel("Platforms").getData())
-
             resp.data.results[0].fechaInicio = new Date(FechasI[0].Finicio)
               .toISOString()
               .slice(0, 10);
             resp.data.results[0].fechaFFin = new Date(FechasF[0].Ffin)
               .toISOString()
               .slice(0, 10);
-            console.log(resp.data.results[0]);
-
-
-
-
-
-
             sap.ui.core.BusyIndicator.hide();
           })
           .catch((error) => {
@@ -727,12 +780,8 @@ console.log(Model3)
         );
       },
 
-      selectChange: function (oEvent) {
-        console.log("seleccion");
-      },
-      onListItemPress: function (oEvent) {
-        console.log("222");
-      },
+      selectChange: function (oEvent) {},
+      onListItemPress: function (oEvent) {},
       appointmentDateChange(oEvent) {
         let source = oEvent.getSource();
         let dateSelected = source.getDateValue();
@@ -741,8 +790,6 @@ console.log(Model3)
         this.getOwnerComponent()
           .getModel("CitaMainData")
           .setProperty("/FechaCita", this.buildSapDate(dateSelected));
-        console.log(dateSelected);
-        console.log(dateSelected);
 
         let datepicker = this.getView().byId("DP2");
         let todayDate = new Date();
@@ -801,9 +848,7 @@ console.log(Model3)
         var FF = new Date(
           new Date(oEndDate).toISOString().slice(0, 10) + " " + oData[0].DispFin
         );
-        console.log();
-        console.log(oStartDate);
-        console.log(this.getOwnerComponent().getModel("Pedidos").getData());
+
         if (
           oStartDate.toLocaleString("en-GB") > FI.toLocaleString("en-GB") &&
           oEndDate.toLocaleString("en-GB").trim() < FF.toLocaleString("en-GB")
@@ -889,11 +934,29 @@ console.log(Model3)
 
         //-- habilitar o desabilitar row
         arrayData.ETOC.results.forEach((pedido) => {
-          if (
-            pedido.Ebeln == objectClicked.Ebeln &&
-            pedido.Ean11 == objectClicked.Ean11
-          )
-            pedido.Selected = isSelected;
+if( this.getView().byId("sTipoCita").getSelectedKey() === "02"){
+  console.log("entra1")
+  if ( (pedido.Ebeln === objectClicked.Ebeln) && ( pedido.Ean11 === objectClicked.Ean11 )&&(pedido.ZwerksD === objectClicked.ZwerksD) && (pedido.Abeln === objectClicked.Abeln) &&(pedido.Abelp === objectClicked.Abelp)){
+    console.log(pedido)
+   
+      pedido.Selected = true//isSelected;
+  }else{
+   //   pedido.Selected = true//isSelected;
+    console.log(pedido)
+   // pedido.Selected = true
+  }
+  
+}else{
+  console.log("entra2")
+  if ( pedido.Ebeln === objectClicked.Ebeln  &&     pedido.Ean11 === objectClicked.Ean11 ){
+    pedido.Selected = isSelected;
+  }
+ 
+ 
+}
+
+
+       
         });
 
         // source.setFirstVisibleRow(selectedIndex + 2);
@@ -1068,7 +1131,7 @@ console.log(Model3)
             todayDate = todayDate.getTime() + 1000 * 60 * 60 * 24 * 2;
 
             todayDate = new Date(todayDate).toISOString().slice(0, 10);
-            console.log(data);
+
             for (var x = 0; x < N - 1; x++) {
               var T1 = x;
               Arrt.push({
@@ -1180,13 +1243,12 @@ console.log(Model3)
             sap.ui.core.BusyIndicator.hide();
 
             var data = _GEToDataV2Response.data.results[0].CTCITASCAB.results;
-
+console.log(data)
+console.log(dataPos)
             for (var x = 0; x < data.length; x++) {
               for (var y = 0; y < dataPos.length; y++) {
-                if (
-                  Number(data[x].Anden) ===
-                  Number(dataPos[y].name.split("-")[1])
-                ) {
+
+                if ( Number(data[x].Anden) === Number(dataPos[y].name) ) {
                   dataPos[y].appointments.push({
                     start: new Date(data[x].Fechacita + " " + data[x].HoraIni),
                     end: new Date(data[x].Fechacita + " " + data[x].HoraFin),
@@ -1198,7 +1260,7 @@ console.log(Model3)
                 }
               }
             }
-
+console.log(dataPos)
             var auxJsonModel = new sap.ui.model.json.JSONModel(dataPos);
             that.getOwnerComponent().setModel(auxJsonModel, "Platforms");
           });
@@ -1225,7 +1287,7 @@ console.log(Model3)
             "Modeleditable"
           );
           let dateSelected = this.byId("DP1").getDateValue();
-          console.log("Pedidos");
+
           this.searchOrders2(this.buildSapDate(dateSelected));
         }
         this.handleButtonsVisibility();
@@ -1233,7 +1295,7 @@ console.log(Model3)
       searchOrders2: function (date) {
         let filtros = [];
         let that = this;
-        console.log(that.getView().byId("sTipoCita").getSelectedKey());
+
         filtros.push(
           this.buildFiltro(
             "IOption",
@@ -1351,11 +1413,8 @@ console.log(Model3)
       },
 
       Busqueda: function () {
-        console.log("Hola");
         let IDB = "";
-        console.log(this.getView().byId("FP").getSelected());
-        console.log(this.getView().byId("PB").getSelected());
-        console.log(this.getView().byId("RS").getSelected());
+
         if (this.getView().byId("FP").getSelected()) {
           IDB = "1";
         }
@@ -1374,9 +1433,7 @@ console.log(Model3)
         }
       },
 
-      inspeccion: function () {
-        console.log("Hola");
-      },
+      inspeccion: function () {},
       onUpload: function (e) {
         this._import(e.getParameter("files") && e.getParameter("files")[0]);
       },
@@ -1392,39 +1449,24 @@ console.log(Model3)
               type: "binary",
             });
             workbook.SheetNames.forEach(function (sheetName) {
-              // Here is your object for every sheet in workbook
               excelData = XLSX.utils.sheet_to_row_object_array(
                 workbook.Sheets[sheetName]
               );
             });
-            console.log(excelData);
+
             that.valida_excel(excelData);
-            // Setting the data to the local model
-            /*    that.localModel.setData({
-              items: excelData
-            });
-            that.localModel.refresh(true);*/
           };
-          reader.onerror = function (ex) {
-            console.log(ex);
-          };
+          reader.onerror = function (ex) {};
           reader.readAsBinaryString(file);
         }
       },
       valida_excel: function (excelData) {
-        console.log(
-          this.getOwnerComponent().getModel("CitaCreationArray").getData()
-        );
-        console.log(excelData);
-        console.log(this.getView().getModel("TemporalModel").getData());
-        console.log(this.getView().getModel("Pedidos").getData().ETOC.results);
-        var modeloPosGlobal = this.getView().getModel("Pedidos").getData().ETOC.results;
-        console.log(modeloPosGlobal.length);
+        var modeloPosGlobal = this.getView().getModel("Pedidos").getData()
+          .ETOC.results;
+
         var Mensaje = [];
         for (var x = 0; x < modeloPosGlobal.length; x++) {
-          for (var y = 0; y < excelData.length; y++) {
-
-          }
+          for (var y = 0; y < excelData.length; y++) {}
         }
       },
     });
