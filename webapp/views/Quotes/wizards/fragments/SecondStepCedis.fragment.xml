@@ -16,7 +16,7 @@
 			uploadUrl="upload/"
 			tooltip="Upload your file to the local server"
             fileType="XLSX,xlsx"
-            visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='01' || ${path:'TemporalModel>/generalData/tipoCita'}==='02' ? true :false}"
+            visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='01'  ? true :false}"
 			change="onUpload"/>
 		
             	</l:HorizontalLayout >
@@ -96,15 +96,20 @@
                     <t:Column >
                         <Label text="{appTxts>/quotes.quantitySummon}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                         <t:template>
-                            <Input id="inputCantidad" value="{Pedidos>Citado}" liveChange="captureQuntSummon" enabled="{path:'Modeleditable>/editable'}" customData:menger="{Pedidos>MengeA}" customData:ebeln="{Pedidos>Ebeln}" customData:matnr="{Pedidos>Matnr}" type="Number"/>
+                            <Input id="inputCantidad" value="{Pedidos>Citado}" liveChange="captureQuntSummon" enabled="{path:'Modeleditable>/editable'}" editable="{=${path:'TemporalModel>/generalData/tipoCita'}==='02' ? false :true}" customData:menger="{Pedidos>MengeA}" customData:ebeln="{Pedidos>Ebeln}" customData:matnr="{Pedidos>Matnr}" type="Number"/>
                         </t:template>
                     </t:Column>
                      <!--  --> 
+                        <t:Column   visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='02' ? true :false}">
+                        <Label text="{appTxts>/quotes.tienda}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        <t:template>
+<ObjectIdentifier text="{Pedidos>ZwerksD}"/>
+                        </t:template>
+                    </t:Column>
                       <t:Column   visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='04' ? true :false}">
                         <Label text="{appTxts>/quotes.ZCEQFI}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                         <t:template>
 <ObjectIdentifier text="{Pedidos>Zceqfu}"/>
-                           <!--  <ObjectIdentifier text="{Pedidos>MengeA}"/>--> 
                         </t:template>
                     </t:Column>
                      <t:Column visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='04' ? true :false}">
