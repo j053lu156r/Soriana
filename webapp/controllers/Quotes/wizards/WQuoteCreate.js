@@ -623,14 +623,10 @@ for (var x = 0; x < appoimentModel.length; x++) {
                   Ffin: new Date(resp.data.results[0].ETOC.results[x].Kdate),
                 });
                 resp.data.results[0].ETOC.results[x].Selected = false;
-                if (
-                  that.getView().byId("sTipoCita").getSelectedKey() === "04"
-                ) {
-                  for (
-                    var y = 0;
-                    y < resp.data.results[0].ETMINIFULL03.results.length;
-                    y++
-                  ) {
+                if ( that.getView().byId("sTipoCita").getSelectedKey() === "04") {
+                 
+                  for (var y = 0; y < resp.data.results[0].ETMINIFULL03.results.length; y++ ) {
+                    console.log(resp.data.results[0].ETOC.results)
                     if (( resp.data.results[0].ETOC.results[x].Abeln === resp.data.results[0].ETMINIFULL03.results[y].Zabeln) && (resp.data.results[0].ETOC.results[x].Abelp===   resp.data.results[0].ETMINIFULL03.results[y].Zabelp)  ) {
                        resp.data.results[0].ETOC.results[x].Zceqfp = resp.data.results[0].ETMINIFULL03.results[y].Zceqfp;
                       resp.data.results[0].ETOC.results[x].Zceqfu =  resp.data.results[0].ETMINIFULL03.results[y].Zceqfu;
@@ -641,9 +637,7 @@ for (var x = 0; x < appoimentModel.length; x++) {
                   }
                 }
 
-                if (
-                  that.getView().byId("sTipoCita").getSelectedKey() === "02"
-                ) {
+                if ( that.getView().byId("sTipoCita").getSelectedKey() === "02" ) {
                   let ArrTTT = [];
 
                   for (
@@ -676,9 +670,10 @@ for (var x = 0; x < appoimentModel.length; x++) {
                   }
                 }
               }
-
+              if ( that.getView().byId("sTipoCita").getSelectedKey() === "02" ) {
               resp.data.results[0].ETOC.results = [];
               resp.data.results[0].ETOC.results = ArgTemp;
+              }
             }
 
             that
