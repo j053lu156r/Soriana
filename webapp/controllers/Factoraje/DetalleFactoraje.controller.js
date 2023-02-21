@@ -298,6 +298,7 @@ sap.ui.define([
 					return total
 				}, 0);
 
+				var waers = auxArray[0].Waers;
 				var groupedMovs = that.groupArrayOfObjects(auxArray, "DescripcionGpo");
 				var nestedMovs = []
 				var me = that;
@@ -316,7 +317,8 @@ sap.ui.define([
 						"totalDebit": 0,
 						"totalCredit": 0,
 						"cost": me.truncate(cost, 2),
-						"positions": groupedMovs[x]
+						"positions": groupedMovs[x],
+						"moneda": waers
 
 					})
 
@@ -338,11 +340,13 @@ sap.ui.define([
 						"totalR": totalR,
 						"totalD": 0,
 						"totalC": 0,
+						"moneda": waers,
 						"totalCostos": me.truncate(sumaAux, 2)
 
 					}
 				});
 
+				console.log(jsonModelG);
 				that.getOwnerComponent().setModel(jsonModelG, "GroupedFactoraje");
 
 				that.initTable()
