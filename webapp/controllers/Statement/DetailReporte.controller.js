@@ -439,7 +439,7 @@ sap.ui.define([
             aCols.push({
                 label: texts.getProperty("/reporte.totalXML"),
                 type: EdmType.String,
-                property: 'TeSalida/TeSalida/TotalXML'
+                property: 'TeSalida/TotalXML'
             });
 
             aCols.push({
