@@ -484,7 +484,7 @@
                             <m:Label text="{appTxts>/state.amount}"/>
                             <template>
                                 <m:ObjectNumber
-                                        number="{parts: [{path: 'GroupedTotales>Wrbtr'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"/>
+                                        number="{parts: [{path: 'GroupedTotales>Wrbtr'}, {path: 'totales>/Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:true}}"/>
                             </template>
                         </Column>
                         <Column sortProperty="MCondicion" id="mCondicionColumn" width="20%">

@@ -44,21 +44,21 @@ sap.ui.define([
 								  ]
 					});
 					this.getView().setModel(oModel);*/
- 					this.getOwnerComponent().setModel(new JSONModel(), "totales");
+					this.getOwnerComponent().setModel(new JSONModel(), "totales");
 
 					var oModel = new JSONModel({
 						filtros: [{
-								filtro: 'belnr',
-								descripcion: 'Documento'
-							},
-							{
-								filtro: 'xblnr',
-								descripcion: 'Factura'
-							},
-							{
-								filtro: '',
-								descripcion: ''
-							}
+							filtro: 'belnr',
+							descripcion: 'Documento'
+						},
+						{
+							filtro: 'xblnr',
+							descripcion: 'Factura'
+						},
+						{
+							filtro: '',
+							descripcion: ''
+						}
 
 
 						]
@@ -103,7 +103,7 @@ sap.ui.define([
 
 		/** HANDLE DATA CALL METHODS*/
 		searchData: function () {
-var that=this;
+			var that = this;
 			//let dateRange = this.getView().byId("dateRange");
 
 			//ciltro documento
@@ -125,9 +125,9 @@ var that=this;
 			console.log(this._fecha)
 
 			// format[AAAAMMDD] (2020101)
-			let desde_LV_ZDESDE =  this._fecha.replace(/-/g, ''); // '20210621'// this.buildSapDate(todayDate);
+			let desde_LV_ZDESDE = this._fecha.replace(/-/g, ''); // '20210621'// this.buildSapDate(todayDate);
 			// format[AAAAMMDD] (2020101)
-			let desde_LV_ZHASTA =  dateFormat.format(todayDate)// this.buildSapDate(todayDate);
+			let desde_LV_ZHASTA = dateFormat.format(todayDate)// this.buildSapDate(todayDate);
 
 
 
@@ -161,35 +161,35 @@ var that=this;
 			var oODataJSONModel = this.getOdata(sUri);
 			//            let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}' and belnr eq '${doc_BELNR}'  &$format=json`;
 
-		/*	let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}'${queryFiltro} &$format=json`;
-			//Xblnr*/
-            var auxFilters = [];
+			/*	let urlParams = `EStmtHdrSet?$expand=Citms,Oitms&$filter= Lifnr eq '${proveedor_LIFNR}' and Datei eq '${desde_LV_ZDESDE}' and Datef eq '${desde_LV_ZHASTA}'${queryFiltro} &$format=json`;
+				//Xblnr*/
+			var auxFilters = [];
 
-            auxFilters.push(new sap.ui.model.Filter({path: "Datei", operator: sap.ui.model.FilterOperator.EQ, value1: desde_LV_ZDESDE}));
-            auxFilters.push(new sap.ui.model.Filter({path: "Lifnr", operator: sap.ui.model.FilterOperator.EQ, value1: proveedor_LIFNR }));
-            auxFilters.push(new sap.ui.model.Filter({path: "Datef", operator: sap.ui.model.FilterOperator.EQ, value1: desde_LV_ZHASTA }));
-            auxFilters.push(new sap.ui.model.Filter({path: "belnr", operator: sap.ui.model.FilterOperator.EQ, value1: doc_BELNR }));
-            auxFilters.push(new sap.ui.model.Filter({path: "Bukrs", operator: sap.ui.model.FilterOperator.EQ, value1: BUKRS }));
-
-
-            var model = "ZOCP_DOCPAGO_SRV";
-            var entity = "EStmtHdrSet";
-            var expand = ["Citms","Oitms"];
-            var filter = auxFilters;
-            var select = "";
-            that._GEToDataV2(model, entity, filter, expand).then(function (_GEToDataV2Response) {
-                sap.ui.core.BusyIndicator.show();
-                var dTJSON = _GEToDataV2Response.data;
-console.log(dTJSON);
-//dTJSON = odTJSONModel.getJSON();
-			var TDatos = dTJSON
-console.log(TDatos)
-
-			let Detalles = [...TDatos.results[0].Citms.results, ...TDatos.results[0].Oitms.results];
+			auxFilters.push(new sap.ui.model.Filter({ path: "Datei", operator: sap.ui.model.FilterOperator.EQ, value1: desde_LV_ZDESDE }));
+			auxFilters.push(new sap.ui.model.Filter({ path: "Lifnr", operator: sap.ui.model.FilterOperator.EQ, value1: proveedor_LIFNR }));
+			auxFilters.push(new sap.ui.model.Filter({ path: "Datef", operator: sap.ui.model.FilterOperator.EQ, value1: desde_LV_ZHASTA }));
+			auxFilters.push(new sap.ui.model.Filter({ path: "belnr", operator: sap.ui.model.FilterOperator.EQ, value1: doc_BELNR }));
+			auxFilters.push(new sap.ui.model.Filter({ path: "Bukrs", operator: sap.ui.model.FilterOperator.EQ, value1: BUKRS }));
 
 
+			var model = "ZOCP_DOCPAGO_SRV";
+			var entity = "EStmtHdrSet";
+			var expand = ["Citms", "Oitms"];
+			var filter = auxFilters;
+			var select = "";
+			that._GEToDataV2(model, entity, filter, expand).then(function (_GEToDataV2Response) {
+				sap.ui.core.BusyIndicator.show();
+				var dTJSON = _GEToDataV2Response.data;
+				console.log(dTJSON);
+				//dTJSON = odTJSONModel.getJSON();
+				var TDatos = dTJSON
+				console.log(TDatos)
 
-			//fix aforo
+				let Detalles = [...TDatos.results[0].Citms.results, ...TDatos.results[0].Oitms.results];
+
+
+
+				//fix aforo
 
 
 
@@ -204,7 +204,7 @@ console.log(TDatos)
 
 					var current = val.Agrupacion === '1' ? Number(val.Wrbtr) : 0
 					var total = _this + Number(current)
-					return  total
+					return total
 				}, 0);
 
 
@@ -212,30 +212,30 @@ console.log(TDatos)
 
 					var current = val.Agrupacion === '2' ? Number(val.Wrbtr) : 0
 					var total = _this + Number(current)
-					return  total
+					return total
 				}, 0);
 
 
 
-				var clanedDateArray  = cleanedArray.filter(obj => {
+				var clanedDateArray = cleanedArray.filter(obj => {
 					// DescripcionGpo: "PAGO FACTURA"
 					//IdNumGpo: "1"
 					//DescTipomov: "PAGO FACTURAS"
 					//IdNumTipomov: "11"
 
-					if(obj.DescripcionGpo === "" && obj.Agrupacion === "1" ){
-						obj.DescripcionGpo= "AJUSTE DE FACTURAS"
-						obj.IdNumGpo= "9"
-						obj.DescTipomov= "CARGOS DIVERSOS"
-						obj.IdNumTipomov= "65"
+					if (obj.DescripcionGpo === "" && obj.Agrupacion === "1") {
+						obj.DescripcionGpo = "AJUSTE DE FACTURAS"
+						obj.IdNumGpo = "9"
+						obj.DescTipomov = "CARGOS DIVERSOS"
+						obj.IdNumTipomov = "65"
 					}
 
-					else if(obj.DescripcionGpo === "" && obj.Agrupacion === "3"  ) {
-						obj.DescripcionGpo= "RETENCION POR AFORO"
-						obj.IdNumGpo= "AF"
-						obj.DescTipomov= "RETENCION POR AFORO"
-						obj.IdNumTipomov= ""
-						obj.Wrbtr =  (Number(sumaAux2)+Number(sumaAux1)+Number(obj.Wrbtr)) *-1
+					else if (obj.DescripcionGpo === "" && obj.Agrupacion === "3") {
+						obj.DescripcionGpo = "RETENCION POR AFORO"
+						obj.IdNumGpo = "AF"
+						obj.DescTipomov = "RETENCION POR AFORO"
+						obj.IdNumTipomov = ""
+						obj.Wrbtr = (Number(sumaAux2) + Number(sumaAux1) + Number(obj.Wrbtr)) * -1
 
 
 					}
@@ -244,142 +244,142 @@ console.log(TDatos)
 
 
 
-					return   true
+					return true
 				});
 
 
 
 
 				TDatos.results[0].Detalles = {
-				results: [...cleanedArray]
-			};
+					results: [...cleanedArray]
+				};
 
-			delete TDatos.results[0].Citms;
-			delete TDatos.results[0].Oitms;
-
-
-			//TDatos.results[0].periodo = "Del " + this.formatDateTime(dateRange.getDateValue(), 'dd/MM/YYYY') + " al " + this.formatDateTime(dateRange.getSecondDateValue(), 'dd/MM/YYYY');
+				delete TDatos.results[0].Citms;
+				delete TDatos.results[0].Oitms;
 
 
-			var JSONT = $.extend({}, TDatos.results[0]);
-			var jsonModelT = new JSONModel();
-			jsonModelT.setData(JSONT);
+				//TDatos.results[0].periodo = "Del " + this.formatDateTime(dateRange.getDateValue(), 'dd/MM/YYYY') + " al " + this.formatDateTime(dateRange.getSecondDateValue(), 'dd/MM/YYYY');
 
 
-
-			//filtrar totales y crear modelo grupal
-
- 			let auxArray = [...cleanedArray]
+				var JSONT = $.extend({}, TDatos.results[0]);
+				var jsonModelT = new JSONModel();
+				jsonModelT.setData(JSONT);
 
 
 
-			var sumaAux = auxArray.reduce(function (_this, val) {
-				console.log(val.Wrbtr)
-				var current = Number(val.Wrbtr)
-				var total = _this + current
-				return  total
-			}, 0);
+				//filtrar totales y crear modelo grupal
+
+				let auxArray = [...cleanedArray]
 
 
 
-
-
-
-
-
-			var groupedMovs = that.groupArrayOfObjects(auxArray, "DescripcionGpo");
-             console.log(groupedMovs)
-
- 
-			var nestedMovs = []
-
-			var me = this;
-
-			for (let x in groupedMovs) {
-
-
-				console.log("sumando valores");
-
-
-
-				var cost = groupedMovs[x].reduce(function (_this, val) {
-					var current =   Number(val.Wrbtr)
+				var sumaAux = auxArray.reduce(function (_this, val) {
+					console.log(val.Wrbtr)
+					var current = Number(val.Wrbtr)
 					var total = _this + current
 					return total
 				}, 0);
 
-if (x==="RETENCION POR AFORO"){
-    if(BUKRS==="5003"){
-        nestedMovs.push({
-            "name": x,
-            "totalRegs": groupedMovs[x].length,
-            "totalDebit": 0,
-            "totalCredit": 0,
-            "cost": that.truncate(cost,2),
-            "positions": groupedMovs[x]
-    
-        })   
-    }
-
-}else{
-    nestedMovs.push({
-        "name": x,
-        "totalRegs": groupedMovs[x].length,
-        "totalDebit": 0,
-        "totalCredit": 0,
-        "cost": that.truncate(cost,2),
-        "positions": groupedMovs[x]
-
-    })
-}
-
-	
-
-			
-
-
-			}
-
-
-			console.log(nestedMovs);
-
-			var totalR = nestedMovs.reduce(function (_this, val) {
-				var current = Number(val.totalRegs)
-				var total = _this + current
-				return that.truncate(total, 2)
-			}, 0);
 
 
 
-			var cor=.00001
-			sumaAux = sumaAux + cor
-			var jsonModelG = new JSONModel({
-				"Hierarchy": {
-					"movimientos": nestedMovs,
-					"totalR": totalR,
-					"totalD": 0,
-					"totalC": 0,
-					"totalCostos": that.truncate(sumaAux,2)
 
-				},
-				"Lifnr":proveedor_LIFNR
+
+
+
+				var groupedMovs = that.groupArrayOfObjects(auxArray, "DescripcionGpo");
+				console.log(groupedMovs)
+
+
+				var nestedMovs = []
+
+				var me = this;
+
+				for (let x in groupedMovs) {
+
+
+					console.log("sumando valores");
+
+					var cost = groupedMovs[x].reduce(function (_this, val) {
+						var current = Number(val.Wrbtr)
+						var total = _this + current
+						return total
+					}, 0);
+
+					if (x === "RETENCION POR AFORO") {
+						if (BUKRS === "5003") {
+							nestedMovs.push({
+								"name": x,
+								"totalRegs": groupedMovs[x].length,
+								"totalDebit": 0,
+								"totalCredit": 0,
+								"cost": that.truncate(cost, 2),
+								"positions": groupedMovs[x],
+								"moneda": groupedMovs[x][0].Waers
+
+							})
+						}
+
+					} else {
+						nestedMovs.push({
+							"name": x,
+							"totalRegs": groupedMovs[x].length,
+							"totalDebit": 0,
+							"totalCredit": 0,
+							"cost": that.truncate(cost, 2),
+							"positions": groupedMovs[x],
+							"moneda": groupedMovs[x][0].Waers
+
+						})
+					}
+
+
+
+
+
+
+				}
+
+
+				console.log(nestedMovs);
+
+				var totalR = nestedMovs.reduce(function (_this, val) {
+					var current = Number(val.totalRegs)
+					var total = _this + current
+					return that.truncate(total, 2)
+				}, 0);
+
+
+
+				var cor = .00001
+				sumaAux = sumaAux + cor
+				var jsonModelG = new JSONModel({
+					"Hierarchy": {
+						"movimientos": nestedMovs,
+						"totalR": totalR,
+						"totalD": 0,
+						"totalC": 0,
+						"totalCostos": that.truncate(sumaAux, 2)
+
+					},
+					"Lifnr": proveedor_LIFNR
+
+				});
+
+				console.log(jsonModelG);
+
+				that.getOwnerComponent().setModel(jsonModelG, "GroupedTotales");
+
+
+				that.initTable()
+				sap.ui.core.BusyIndicator.hide();
+				//	this.getOwnerComponent().setModel(jsonModelT, "totales");
+
+				//this.paginate("totales", "/Detalles", 1, 0);
+
+
 
 			});
-
-			console.log(jsonModelG);
-
-			that.getOwnerComponent().setModel(jsonModelG, "GroupedTotales");
-
-
-			that.initTable()
-            sap.ui.core.BusyIndicator.hide();
-		//	this.getOwnerComponent().setModel(jsonModelT, "totales");
-
-			//this.paginate("totales", "/Detalles", 1, 0);
-
-
-
-            });
 
 
 		},
@@ -467,10 +467,10 @@ if (x==="RETENCION POR AFORO"){
 			// If we're at the leaf end, turn off navigation
 			var sPathEnd = sPath.split("/").reverse()[0];
 			if (sPathEnd === this.aCrumbs[this.aCrumbs.length - 1]) {
-			//	this._oTable.setMode("None");
+				//	this._oTable.setMode("None");
 				//  this.byId("weightColumn").setVisible(true);
 				// this.byId("dimensionsColumn").setVisible(true);
-			//	this._oTable.setMode("SingleSelectMaster");
+				//	this._oTable.setMode("SingleSelectMaster");
 
 
 				this.byId("statusColumn").setVisible(true);
@@ -620,81 +620,81 @@ if (x==="RETENCION POR AFORO"){
 				//});
 				//this._updateOrder(oSelectionInfo);
 
-				console.log('on documnt press',oEvent);
+				console.log('on documnt press', oEvent);
 				console.log(sPath)
 				//let posicion = oEvent.getSource().getBindingContext("GroupedTotales").getPath().split("/").pop();
 				let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(sPath);
 
 				console.log(results)
-                var sociedad = this.getOwnerComponent().getModel('GroupedTotales').getProperty('/Bukrs');
-                var ejercicio2 = results.Budat;
-                var ejercicio = ejercicio2.substr(0, 4) ? ejercicio2.substr(0, 4) : ""
+				var sociedad = this.getOwnerComponent().getModel('GroupedTotales').getProperty('/Bukrs');
+				var ejercicio2 = results.Budat;
+				var ejercicio = ejercicio2.substr(0, 4) ? ejercicio2.substr(0, 4) : ""
 				//let registro = results[posicion];
 				//console.log(registro)
 				//var tcode = results.Tcode
-	         // if(tcode !== "Z_APORTACIONES" ){
-        console.log(this.getOwnerComponent().getModel('totales'))
-        var tcode = results.Tcode
-        console.log(sociedad, ejercicio, tcode)
-        var doc = results.Belnr
-        var acuerdosTCodes = ['MEB4','WLF4','MEB2','MEB0','WLF2','ZMMFILACUERDO','WFL5','MEB4']
+				// if(tcode !== "Z_APORTACIONES" ){
+				console.log(this.getOwnerComponent().getModel('totales'))
+				var tcode = results.Tcode
+				console.log(sociedad, ejercicio, tcode)
+				var doc = results.Belnr
+				var acuerdosTCodes = ['MEB4', 'WLF4', 'MEB2', 'MEB0', 'WLF2', 'ZMMFILACUERDO', 'WFL5', 'MEB4']
 
-        var aportacionesTCodes = ['Z_APORTACIONES']
-		var boletinVentasTCodes = ['ZMM_ACUERDOS_LIQUI']
+				var aportacionesTCodes = ['Z_APORTACIONES']
+				var boletinVentasTCodes = ['ZMM_ACUERDOS_LIQUI']
 
 
 
 				console.log(acuerdosTCodes.includes(tcode))
-        console.log(doc)
-        console.log(results.Foliodescuento)
+				console.log(doc)
+				console.log(results.Foliodescuento)
 
-        if (( tcode.match("(ZMMFILACUERDO|MEB|WLF).*")  && doc.startsWith('51')) || (tcode == "" && !( doc.startsWith("170") &&  results.Foliodescuento ))   ) {
-//1500000453  1500177301
-            console.log('on detailAcuerdosAS')
-				 this.getOwnerComponent().getRouter().navTo("detailAcuerdos",
-					{
-						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
-						document: results.Belnr,
-					    sociedad: this._sociedad,
-						ejercicio: ejercicio,
-					    doc: this._document,
-						fecha: this._fecha
-					   // lifnr: docResult.Lifnr
-					}, true);
+				if ((tcode.match("(ZMMFILACUERDO|MEB|WLF).*") && doc.startsWith('51')) || (tcode == "" && !(doc.startsWith("170") && results.Foliodescuento))) {
+					//1500000453  1500177301
+					console.log('on detailAcuerdosAS')
+					this.getOwnerComponent().getRouter().navTo("detailAcuerdos",
+						{
+							layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
+							document: results.Belnr,
+							sociedad: this._sociedad,
+							ejercicio: ejercicio,
+							doc: this._document,
+							fecha: this._fecha
+							// lifnr: docResult.Lifnr
+						}, true);
 
-				}else if (aportacionesTCodes.includes(tcode) || ( doc.startsWith("170") &&  results.Foliodescuento )  ) {
+				} else if (aportacionesTCodes.includes(tcode) || (doc.startsWith("170") && results.Foliodescuento)) {
 
 
-                    console.warn('detailAportacionesComplementoS')
+					console.warn('detailAportacionesComplementoS')
 					this.getOwnerComponent().getRouter().navTo("detailAportacionesComplemento",
-					{
+						{
+							layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
+							document: results.Foliodescuento,
+							sociedad: this._sociedad,
+							ejercicio: ejercicio,
+							doc: this._document,
+							fecha: this._fecha
+							//ejercicio: ejercicio,
+							//doc: results.Belnr,
+							// zbukr: docResult.Zbukr,
+							// lifnr: docResult.Lifnr
+						}, true);
+
+				} else if (boletinVentasTCodes.includes(tcode) || tcode === '') {
+					console.log('on boletin vtz')
+
+					// navega a pantalla de boltines * revisar condiciones de apertura , conseguir esenarios
+					this.getOwnerComponent().getRouter().navTo("BoletinVtaDetailPolizas", {
 						layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
-						document: results.Foliodescuento,
- 						sociedad: this._sociedad,
-						ejercicio: ejercicio,
-					    doc: this._document,
-						fecha: this._fecha
-						//ejercicio: ejercicio,
-						//doc: results.Belnr,
-					   // zbukr: docResult.Zbukr,
-					   // lifnr: docResult.Lifnr
-					}, true);
-
-					} else if (boletinVentasTCodes.includes(tcode) || tcode === ''){
-			console.log('on boletin vtz')
-
-			// navega a pantalla de boltines * revisar condiciones de apertura , conseguir esenarios
-			this.getOwnerComponent().getRouter().navTo("BoletinVtaDetailPolizas", {
-				layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
-				//  document: results.Xblnr,
-				document: doc,
-				company: sociedad,
-				year: ejercicio
-			}, false);
+						//  document: results.Xblnr,
+						document: doc,
+						company: sociedad,
+						year: ejercicio
+					}, false);
 
 
 
-		}
+				}
 
 
 
@@ -778,16 +778,16 @@ if (x==="RETENCION POR AFORO"){
 			});
 
 			this.getView().setModel(new JSONModel({
-					"document": this._document,
-				    "fecha": this._fecha,
-					"currency": "MXN",
+				"document": this._document,
+				"fecha": this._fecha,
+				"currency": "MXN",
 
-				}),
+			}),
 				"detailComplPagos");
 
-				//consume el servicio para obtener los docuemntos
+			//consume el servicio para obtener los docuemntos
 
-				 this.searchData()
+			this.searchData()
 
 
 
@@ -815,9 +815,9 @@ if (x==="RETENCION POR AFORO"){
 			var folio = serieOriginal.replace(/\D/g, '')
 
 
-			console.log('serie numbers',serieNonumbers)
-			console.log('serie',serie)
-			console.log('folio',folio)
+			console.log('serie numbers', serieNonumbers)
+			console.log('serie', serie)
+			console.log('folio', folio)
 
 
 			this.getOwnerComponent().getRouter().navTo("ComplementoReporteMC", {
@@ -834,46 +834,46 @@ if (x==="RETENCION POR AFORO"){
 			return Math.abs(mc) > 0 ? true : false
 		},
 
-        formatCurrency: function (quantityToFormat) {
+		formatCurrency: function (quantityToFormat) {
 
-            let quant = parseFloat(quantityToFormat);
+			let quant = parseFloat(quantityToFormat);
 
-            quant = quant.toLocaleString('en-US', {
-                style: 'currency',
-                currency: 'USD'
-               });
-            
-            return (quantityToFormat > 0 ? "-" : "") + quant.replace('$','');
-        },
+			quant = quant.toLocaleString('en-US', {
+				style: 'currency',
+				currency: 'USD'
+			});
 
-
-		_onDocumentPress: function(oEvent){
-            console.log('on documnt press',oEvent);
-            let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
-            let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
-
-            let registro = results[posicion];
-            console.log(registro)
-
-             this.getOwnerComponent().getRouter().navTo("detailComplPagos",
-                {
-                    layout: sap.f.LayoutType.TwoColumnsMidExpanded,
-                    document: registro.Vblnr
-                   // laufd: docResult.Laufd,
-                   // laufi: docResult.Laufi,
-                   // zbukr: docResult.Zbukr,
-                   // lifnr: docResult.Lifnr
-                }, true);
+			return (quantityToFormat > 0 ? "-" : "") + quant.replace('$', '');
+		},
 
 
+		_onDocumentPress: function (oEvent) {
+			console.log('on documnt press', oEvent);
+			let posicion = oEvent.getSource().getBindingContext("Documentos").getPath().split("/").pop();
+			let results = this.getOwnerComponent().getModel("Documentos").getProperty("/Detalles/Paginated/results");
 
-        },
+			let registro = results[posicion];
+			console.log(registro)
+
+			this.getOwnerComponent().getRouter().navTo("detailComplPagos",
+				{
+					layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+					document: registro.Vblnr
+					// laufd: docResult.Laufd,
+					// laufi: docResult.Laufi,
+					// zbukr: docResult.Zbukr,
+					// lifnr: docResult.Lifnr
+				}, true);
+
+
+
+		},
 
 		//HAANDLE OPEN ACUERDOS
 
 		onDocumentPress: function (oEvent) {
 			console.log('on documnt press', oEvent);
-			let posicion = oEvent.getSource().getBindingContext("GroupedTotales").getPath() ;
+			let posicion = oEvent.getSource().getBindingContext("GroupedTotales").getPath();
 			let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(posicion);
 
 			console.log(results)
@@ -894,13 +894,13 @@ if (x==="RETENCION POR AFORO"){
 			var acuerdosNSBoart = ['ZD33', 'ZD34', 'ZM33', 'ZM34']
 
 			//logica para enviar a Aportaciones o a Acuerdos
-			if (( tcode.match("(ZMMFILACUERDO|MEB|WLF).*")  && doc.startsWith('51')) || (tcode == "" && !( doc.startsWith("170") &&  results.Foliodescuento ))   ) {
-//1500000453  1500177301
+			if ((tcode.match("(ZMMFILACUERDO|MEB|WLF).*") && doc.startsWith('51')) || (tcode == "" && !(doc.startsWith("170") && results.Foliodescuento))) {
+				//1500000453  1500177301
 
-				console.log('on detail compl pago acuerdos',tcode.match("(ZMMFILACUERDO|MEB|WLF).*") )
+				console.log('on detail compl pago acuerdos', tcode.match("(ZMMFILACUERDO|MEB|WLF).*"))
 
 				if (acuerdosNSBoart.includes(boart)) {
-					
+
 					this.getOwnerComponent().getRouter().navTo("detailAcuerdosCPNS",
 						{
 							layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
@@ -913,7 +913,7 @@ if (x==="RETENCION POR AFORO"){
 						}, true);
 
 				} else {
-				
+
 					this.getOwnerComponent().getRouter().navTo("detailAcuerdos",
 						{
 							layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
@@ -927,7 +927,7 @@ if (x==="RETENCION POR AFORO"){
 
 				}
 
-			}else if ((aportacionesTCodes.includes(tcode) || ( doc.startsWith("170")) &&  results.Foliodescuento )  ) {
+			} else if ((aportacionesTCodes.includes(tcode) || (doc.startsWith("170")) && results.Foliodescuento)) {
 
 
 				console.warn('detailAportacionesComplementoS')
@@ -948,7 +948,7 @@ if (x==="RETENCION POR AFORO"){
 
 
 
-			} else if (boletinVentasTCodes.includes(tcode) || tcode === ''){
+			} else if (boletinVentasTCodes.includes(tcode) || tcode === '') {
 				console.log('on boletin vtz')
 
 				// navega a pantalla de boltines * revisar condiciones de apertura , conseguir esenarios
@@ -971,7 +971,7 @@ if (x==="RETENCION POR AFORO"){
 		},
 
 
-		onDocumentDevolucionPress: function (oEvent){
+		onDocumentDevolucionPress: function (oEvent) {
 			var path = oEvent.getSource().getBindingContext("GroupedTotales").getPath();
 			let results = this.getOwnerComponent().getModel("GroupedTotales").getProperty(path);
 
@@ -984,7 +984,7 @@ if (x==="RETENCION POR AFORO"){
 				xblnr: results.Foliodescuento,
 				lifnr: Lifnr,
 				ebeln: results.Ebeln || 0,
-				suc:  results.Sucursal,
+				suc: results.Sucursal,
 				// lifnr: docResult.Lifnr
 			}, true);
 

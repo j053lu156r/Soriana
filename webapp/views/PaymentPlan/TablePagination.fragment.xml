@@ -39,7 +39,7 @@
                     <m:ObjectIdentifier text="{payPlanDetail>Xref3}" />
                     <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
                         xmlns="sap.m"
-                        number="{parts: [{path: 'payPlanDetail>Wrbtr'}, {path: 'payPlanDetail>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                        number="{parts: [{path: 'payPlanDetail>Wrbtr'}, {path: 'payPlanDetail>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:true}}"
                         unit="{payPlanDetail>Waers}" emphasized="false" state="None"/>
                     <m:ObjectIdentifier text="{payPlanDetail>Xblnr}" />
                     <m:ObjectIdentifier text="{path: 'payPlanDetail>Budat', formatter: '.ReverseDate'}" />
