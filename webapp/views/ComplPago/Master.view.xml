@@ -183,11 +183,11 @@
                         <t:Column
                             width           = "12%"
                             hAlign          = "Center"
-                            id              = "column6" sortProperty="Rbetr" filterProperty="Rbetr">
+                            id              = "column6" sortProperty="Wrbtr" filterProperty="Wrbtr">
                             <Label text="{appTxts>/pay.headerAmount}" />
                             <t:template>
                                 <ObjectNumber
-                                        number="{parts: [{path: 'Documentos>Rbetr'}, {path: 'Documentos>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{Documentos>Waers}" emphasized="false" state="None" textAlign="Right"/>
+                                        number="{parts: [{path: 'Documentos>Wrbtr'}, {path: 'Documentos>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{Documentos>Waers}" emphasized="false" state="None" textAlign="Right"/>
                             </t:template>
                         </t:Column>
                                <t:Column

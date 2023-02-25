@@ -1,25 +1,25 @@
 <mvc:View
-        displayBlock="true"
-        xmlns:f="sap.f"
-        xmlns:mvc="sap.ui.core.mvc"
-        xmlns:fb="sap.ui.comp.filterbar"
-        xmlns:vm="sap.ui.comp.variants"
-        xmlns="sap.m"
-        xmlns:core="sap.ui.core"
-        xmlns:unified="sap.ui.unified"
-        xmlns:layout="sap.ui.commons.layout"
-        controllerName="demo.controllers.Statement.EstadoCuenta"
-        height="90%">
-
+    displayBlock="true"
+    xmlns:f="sap.f"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:unified="sap.ui.unified"
+    xmlns:layout="sap.ui.commons.layout"
+    controllerName="demo.controllers.Statement.EstadoCuenta"
+    height="90%"
+>
     <f:DynamicPage class="sapUiContentPadding">
         <!-- DynamicPage Title -->
         <f:title>
             <f:DynamicPageTitle backgroundDesign="Transparent">
                 <f:heading>
-                    <vm:VariantManagement standardItemText="{appTxts>/state.title}"></vm:VariantManagement>
+                    <vm:VariantManagement standardItemText="{appTxts>/state.title}" />
                 </f:heading>
                 <f:actions>
-                    <ToolbarSpacer/>
+                    <ToolbarSpacer />
                     <!--Button
                         text  = "{appTxts>/state.export}"
                         type  = "Emphasized"
@@ -33,53 +33,19 @@
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
-                    <fb:FilterBar
-                            id="filterBar"
-                            header="Header"
-                            reset="onReset"
-                            search="searchDataV2"
-                            clear="onClear"
-                            cancel="onCancel"
-                            filtersDialogClosed="onFiltersDialogClosed"
-                            showRestoreButton="false"
-                            showClearButton="false"
-                            useToolbar="false">
-
+                    <fb:FilterBar id="filterBar" header="Header" reset="onReset" search="searchDataV2" clear="onClear" cancel="onCancel" filtersDialogClosed="onFiltersDialogClosed" showRestoreButton="false" showClearButton="false" useToolbar="false">
                         <fb:filterGroupItems>
-
-                           
-
-                            <fb:FilterGroupItem
-                                    groupName="__$INTERNAL$"
-                                    name="B"
-                                    mandatory="true"
-                                    label="{appTxts>/state.supplier}"
-                                    labelTooltip="Tooltip Example"
-                                    partOfCurrentVariant="true"
-                                    visibleInFilterBar="true">
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="B" mandatory="true" label="{appTxts>/state.supplier}" labelTooltip="Tooltip Example" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
-                                    <Input id="supplierInput" placeholder="{appTxts>/state.supplier}"
-                                           showSuggestion="true" valueHelpOnly="true" showValueHelp="true"
-                                           valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}">
-                                    </Input>
-                                </fb:control>
-
-
-                            </fb:FilterGroupItem>
- <fb:FilterGroupItem
-                                    groupName="__$INTERNAL$"
-                                    name="A"
-                                    label="{appTxts>/state.date}"
-                                    mandatory="true"
-                                    partOfCurrentVariant="true"
-                                    visibleInFilterBar="false">
-                                <fb:control>
-                                    <DateRangeSelection id="dateRange" change="onChange" required="false"/>
+                                    <Input id="supplierInput" placeholder="{appTxts>/state.supplier}" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}" />
                                 </fb:control>
                             </fb:FilterGroupItem>
-
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="{appTxts>/state.date}" mandatory="true" partOfCurrentVariant="true" visibleInFilterBar="false">
+                                <fb:control>
+                                    <DateRangeSelection id="dateRange" change="onChange" required="false" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
                         </fb:filterGroupItems>
-
                     </fb:FilterBar>
                 </f:content>
             </f:DynamicPageHeader>
@@ -87,303 +53,340 @@
 
         <f:content>
             <ScrollContainer>
-                <Panel xmlns:mvc="sap.ui.core.mvc"
-                       xmlns:unified="sap.ui.unified"
-                       xmlns:core="sap.ui.core"
-                       xmlns:layout="sap.ui.commons.layout"
-                       xmlns="sap.m" width="auto" id="PanelTotales" backgroundDesign="Solid"
-                       accessibleRole="Complementary" expanded="false" expandable="true">
+                <Panel xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout" xmlns="sap.m" width="auto" id="PanelTotales" backgroundDesign="Solid" accessibleRole="Complementary" expanded="false" expandable="true">
                     <headerToolbar>
                         <Toolbar id="toolbar1">
-                            <Title text="{appTxts>/state.resume}"/>
-                            <ToolbarSpacer/>
+                            <Title text="{appTxts>/state.resume}" />
+                            <ToolbarSpacer />
                             <!--Button icon="sap-icon://action" text="{appTxts>/state.consult}" type="Emphasized" id="bConsultarEC" press="establecePeriodo"/-->
                         </Toolbar>
                     </headerToolbar>
                     <content>
-                        <FlexBox xmlns:mvc="sap.ui.core.mvc"
-                                 xmlns="sap.m"
-                                 xmlns:unified="sap.ui.unified"
-                                 xmlns:core="sap.ui.core"
-                                 xmlns:layout="sap.ui.commons.layout" width="100%" id="box0">
+                        <FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout" width="100%" id="box0">
                             <items>
-                                <Table xmlns:mvc="sap.ui.core.mvc"
-                                       xmlns="sap.m"
-                                       xmlns:unified="sap.ui.unified"
-                                       xmlns:core="sap.ui.core"
-                                       xmlns:layout="sap.ui.commons.layout" noDataText="{appTxts>/state.noData}"
-                                       id="table0_1551805599360" alternateRowColors="true" backgroundDesign="Solid">
+                                <Table xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout" noDataText="{appTxts>/state.noData}" id="table0_1551805599360" alternateRowColors="true" backgroundDesign="Solid">
                                     <ColumnListItem id="item4">
                                         <cells>
-                                            <Label xmlns:html="http://www.w3.org/1999/xhtml"
-                                                   xmlns:sap.ui.layout="sap.ui.layout"
-                                                   xmlns:mvc="sap.ui.core.mvc"
-                                                   xmlns="sap.m"
-                                                   xmlns:unified="sap.ui.unified"
-                                                   xmlns:core="sap.ui.core"
-                                                   xmlns:layout="sap.ui.commons.layout" text="{appTxts>/state.account}"
-                                                   width="100%" id="lPeriodo" design="Bold" vAlign="Middle"
-                                                   textDirection="LTR" textAlign="Left"/>
-                                            <Text xmlns:html="http://www.w3.org/1999/xhtml"
-                                                  xmlns:sap.ui.layout="sap.ui.layout"
-                                                  xmlns:mvc="sap.ui.core.mvc"
-                                                  xmlns:unified="sap.ui.unified"
-                                                  xmlns:core="sap.ui.core"
-                                                  xmlns:layout="sap.ui.commons.layout"
-                                                  xmlns="sap.m" id="tPeriodoIni" textDirection="RTL" textAlign="Right"
-                                                  text="{totales>/periodo}"/>
-                                            <Label xmlns:html="http://www.w3.org/1999/xhtml"
-                                                   xmlns:sap.ui.layout="sap.ui.layout"
-                                                   xmlns:mvc="sap.ui.core.mvc"
-                                                   xmlns="sap.m"
-                                                   xmlns:unified="sap.ui.unified"
-                                                   xmlns:core="sap.ui.core"
-                                                   xmlns:layout="sap.ui.commons.layout" text="{appTxts>/state.invoiced}"
-                                                   width="100%" id="lTotFact" design="Bold" textDirection="LTR"
-                                                   vAlign="Middle" textAlign="Left"/>
-                                            <ObjectNumber xmlns:sap.ui.layout="sap.ui.layout"
-                                                          xmlns:html="http://www.w3.org/1999/xhtml"
-                                                          xmlns:mvc="sap.ui.core.mvc"
-                                                          xmlns:unified="sap.ui.unified"
-                                                          xmlns:core="sap.ui.core"
-                                                          xmlns:layout="sap.ui.commons.layout"
-                                                          xmlns="sap.m"
-                                                          number="{parts: [{path: 'totales>/Totfac'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
-                                                          unit="{totales>/Banks}" emphasized="false" state="None"
-                                                          id="tTotFact"/>
+                                            <Label
+                                                xmlns:html="http://www.w3.org/1999/xhtml"
+                                                xmlns:sap.ui.layout="sap.ui.layout"
+                                                xmlns:mvc="sap.ui.core.mvc"
+                                                xmlns="sap.m"
+                                                xmlns:unified="sap.ui.unified"
+                                                xmlns:core="sap.ui.core"
+                                                xmlns:layout="sap.ui.commons.layout"
+                                                text="{appTxts>/state.account}"
+                                                width="100%"
+                                                id="lPeriodo"
+                                                design="Bold"
+                                                vAlign="Middle"
+                                                textDirection="LTR"
+                                                textAlign="Left"
+                                            />
+                                            <Text
+                                                xmlns:html="http://www.w3.org/1999/xhtml"
+                                                xmlns:sap.ui.layout="sap.ui.layout"
+                                                xmlns:mvc="sap.ui.core.mvc"
+                                                xmlns:unified="sap.ui.unified"
+                                                xmlns:core="sap.ui.core"
+                                                xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                id="tPeriodoIni"
+                                                textDirection="RTL"
+                                                textAlign="Right"
+                                                text="{totales>/periodo}"
+                                            />
+                                            <Label
+                                                xmlns:html="http://www.w3.org/1999/xhtml"
+                                                xmlns:sap.ui.layout="sap.ui.layout"
+                                                xmlns:mvc="sap.ui.core.mvc"
+                                                xmlns="sap.m"
+                                                xmlns:unified="sap.ui.unified"
+                                                xmlns:core="sap.ui.core"
+                                                xmlns:layout="sap.ui.commons.layout"
+                                                text="{appTxts>/state.invoiced}"
+                                                width="100%"
+                                                id="lTotFact"
+                                                design="Bold"
+                                                textDirection="LTR"
+                                                vAlign="Middle"
+                                                textAlign="Left"
+                                            />
+                                            <ObjectNumber
+                                                xmlns:sap.ui.layout="sap.ui.layout"
+                                                xmlns:html="http://www.w3.org/1999/xhtml"
+                                                xmlns:mvc="sap.ui.core.mvc"
+                                                xmlns:unified="sap.ui.unified"
+                                                xmlns:core="sap.ui.core"
+                                                xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'totales>/Totfac'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{totales>/Banks}"
+                                                emphasized="false"
+                                                state="None"
+                                                id="tTotFact"
+                                            />
                                         </cells>
                                     </ColumnListItem>
                                     <ColumnListItem id="item3">
                                         <cells>
-                                            <Label xmlns:html="http://www.w3.org/1999/xhtml"
-                                                   xmlns:sap.ui.layout="sap.ui.layout"
-                                                   xmlns:mvc="sap.ui.core.mvc"
-                                                   xmlns="sap.m"
-                                                   xmlns:unified="sap.ui.unified"
-                                                   xmlns:core="sap.ui.core"
-                                                   xmlns:layout="sap.ui.commons.layout" text="{appTxts>/state.name}"
-                                                   width="100%" id="lNomProv" design="Bold" textDirection="LTR"
-                                                   vAlign="Middle" textAlign="Left"/>
-                                            <Text xmlns:html="http://www.w3.org/1999/xhtml"
-                                                  xmlns:sap.ui.layout="sap.ui.layout"
-                                                  xmlns:mvc="sap.ui.core.mvc"
-                                                  xmlns:unified="sap.ui.unified"
-                                                  xmlns:core="sap.ui.core"
-                                                  xmlns:layout="sap.ui.commons.layout"
-                                                  xmlns="sap.m" id="tNomProv" textDirection="RTL" textAlign="Right"
-                                                  text="{totales>/Name}"/>
-                                            <Label xmlns:html="http://www.w3.org/1999/xhtml"
-                                                   xmlns:sap.ui.layout="sap.ui.layout"
-                                                   xmlns:mvc="sap.ui.core.mvc"
-                                                   xmlns="sap.m"
-                                                   xmlns:unified="sap.ui.unified"
-                                                   xmlns:core="sap.ui.core"
-                                                   xmlns:layout="sap.ui.commons.layout" text="{appTxts>/state.total}"
-                                                   width="100%" id="lTotPag" design="Bold" textDirection="LTR"
-                                                   vAlign="Middle" textAlign="Left"/>
-                                            <ObjectNumber xmlns:sap.ui.layout="sap.ui.layout"
-                                                          xmlns:html="http://www.w3.org/1999/xhtml"
-                                                          xmlns:mvc="sap.ui.core.mvc"
-                                                          xmlns:unified="sap.ui.unified"
-                                                          xmlns:core="sap.ui.core"
-                                                          xmlns:layout="sap.ui.commons.layout"
-                                                          xmlns="sap.m"
-                                                          number="{parts: [{path: 'totales>/Totpag'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
-                                                          unit="{totales>/Banks}" emphasized="false" state="None"
-                                                          id="tTotPag"/>
+                                            <Label
+                                                xmlns:html="http://www.w3.org/1999/xhtml"
+                                                xmlns:sap.ui.layout="sap.ui.layout"
+                                                xmlns:mvc="sap.ui.core.mvc"
+                                                xmlns="sap.m"
+                                                xmlns:unified="sap.ui.unified"
+                                                xmlns:core="sap.ui.core"
+                                                xmlns:layout="sap.ui.commons.layout"
+                                                text="{appTxts>/state.name}"
+                                                width="100%"
+                                                id="lNomProv"
+                                                design="Bold"
+                                                textDirection="LTR"
+                                                vAlign="Middle"
+                                                textAlign="Left"
+                                            />
+                                            <Text
+                                                xmlns:html="http://www.w3.org/1999/xhtml"
+                                                xmlns:sap.ui.layout="sap.ui.layout"
+                                                xmlns:mvc="sap.ui.core.mvc"
+                                                xmlns:unified="sap.ui.unified"
+                                                xmlns:core="sap.ui.core"
+                                                xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                id="tNomProv"
+                                                textDirection="RTL"
+                                                textAlign="Right"
+                                                text="{totales>/Name}"
+                                            />
+                                            <Label
+                                                xmlns:html="http://www.w3.org/1999/xhtml"
+                                                xmlns:sap.ui.layout="sap.ui.layout"
+                                                xmlns:mvc="sap.ui.core.mvc"
+                                                xmlns="sap.m"
+                                                xmlns:unified="sap.ui.unified"
+                                                xmlns:core="sap.ui.core"
+                                                xmlns:layout="sap.ui.commons.layout"
+                                                text="{appTxts>/state.total}"
+                                                width="100%"
+                                                id="lTotPag"
+                                                design="Bold"
+                                                textDirection="LTR"
+                                                vAlign="Middle"
+                                                textAlign="Left"
+                                            />
+                                            <ObjectNumber
+                                                xmlns:sap.ui.layout="sap.ui.layout"
+                                                xmlns:html="http://www.w3.org/1999/xhtml"
+                                                xmlns:mvc="sap.ui.core.mvc"
+                                                xmlns:unified="sap.ui.unified"
+                                                xmlns:core="sap.ui.core"
+                                                xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'totales>/Totpag'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{totales>/Banks}"
+                                                emphasized="false"
+                                                state="None"
+                                                id="tTotPag"
+                                            />
                                         </cells>
                                     </ColumnListItem>
                                     <ColumnListItem id="item2">
                                         <cells>
-                                            <Label xmlns:html="http://www.w3.org/1999/xhtml"
-                                                   xmlns:sap.ui.layout="sap.ui.layout"
-                                                   xmlns:mvc="sap.ui.core.mvc"
-                                                   xmlns="sap.m"
-                                                   xmlns:unified="sap.ui.unified"
-                                                   xmlns:core="sap.ui.core"
-                                                   xmlns:layout="sap.ui.commons.layout" text="{appTxts>/state.address}"
-                                                   width="100%" id="lDireccion" design="Bold" textDirection="LTR"
-                                                   vAlign="Middle" textAlign="Left"/>
-                                            <Text xmlns:html="http://www.w3.org/1999/xhtml"
-                                                  xmlns:sap.ui.layout="sap.ui.layout"
-                                                  xmlns:mvc="sap.ui.core.mvc"
-                                                  xmlns:unified="sap.ui.unified"
-                                                  xmlns:core="sap.ui.core"
-                                                  xmlns:layout="sap.ui.commons.layout"
-                                                  xmlns="sap.m" id="tDireccion" textDirection="RTL" textAlign="Right"
-                                                  text="{totales>/Address}"/>
-                                            <Label xmlns:html="http://www.w3.org/1999/xhtml"
-                                                   xmlns:sap.ui.layout="sap.ui.layout"
-                                                   xmlns:mvc="sap.ui.core.mvc"
-                                                   xmlns="sap.m"
-                                                   xmlns:unified="sap.ui.unified"
-                                                   xmlns:core="sap.ui.core"
-                                                   xmlns:layout="sap.ui.commons.layout"
-                                                   text="{appTxts>/state.totalNote}" width="100%" id="lTotxCob"
-                                                   design="Bold" textAlign="Left" textDirection="LTR" vAlign="Middle"/>
-                                            <ObjectNumber xmlns:sap.ui.layout="sap.ui.layout"
-                                                          xmlns:html="http://www.w3.org/1999/xhtml"
-                                                          xmlns:mvc="sap.ui.core.mvc"
-                                                          xmlns:unified="sap.ui.unified"
-                                                          xmlns:core="sap.ui.core"
-                                                          xmlns:layout="sap.ui.commons.layout"
-                                                          xmlns="sap.m"
-                                                          number="{parts: [{path: 'totales>/Totnoc'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
-                                                          unit="{totales>/Banks}" emphasized="false" state="None"
-                                                          id="tTotxCob"/>
+                                            <Label
+                                                xmlns:html="http://www.w3.org/1999/xhtml"
+                                                xmlns:sap.ui.layout="sap.ui.layout"
+                                                xmlns:mvc="sap.ui.core.mvc"
+                                                xmlns="sap.m"
+                                                xmlns:unified="sap.ui.unified"
+                                                xmlns:core="sap.ui.core"
+                                                xmlns:layout="sap.ui.commons.layout"
+                                                text="{appTxts>/state.address}"
+                                                width="100%"
+                                                id="lDireccion"
+                                                design="Bold"
+                                                textDirection="LTR"
+                                                vAlign="Middle"
+                                                textAlign="Left"
+                                            />
+                                            <Text
+                                                xmlns:html="http://www.w3.org/1999/xhtml"
+                                                xmlns:sap.ui.layout="sap.ui.layout"
+                                                xmlns:mvc="sap.ui.core.mvc"
+                                                xmlns:unified="sap.ui.unified"
+                                                xmlns:core="sap.ui.core"
+                                                xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                id="tDireccion"
+                                                textDirection="RTL"
+                                                textAlign="Right"
+                                                text="{totales>/Address}"
+                                            />
+                                            <Label
+                                                xmlns:html="http://www.w3.org/1999/xhtml"
+                                                xmlns:sap.ui.layout="sap.ui.layout"
+                                                xmlns:mvc="sap.ui.core.mvc"
+                                                xmlns="sap.m"
+                                                xmlns:unified="sap.ui.unified"
+                                                xmlns:core="sap.ui.core"
+                                                xmlns:layout="sap.ui.commons.layout"
+                                                text="{appTxts>/state.totalNote}"
+                                                width="100%"
+                                                id="lTotxCob"
+                                                design="Bold"
+                                                textAlign="Left"
+                                                textDirection="LTR"
+                                                vAlign="Middle"
+                                            />
+                                            <ObjectNumber
+                                                xmlns:sap.ui.layout="sap.ui.layout"
+                                                xmlns:html="http://www.w3.org/1999/xhtml"
+                                                xmlns:mvc="sap.ui.core.mvc"
+                                                xmlns:unified="sap.ui.unified"
+                                                xmlns:core="sap.ui.core"
+                                                xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'totales>/Totnoc'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{totales>/Banks}"
+                                                emphasized="false"
+                                                state="None"
+                                                id="tTotxCob"
+                                            />
                                         </cells>
                                     </ColumnListItem>
                                     <ColumnListItem id="item5">
                                         <cells>
-                                            <Label xmlns:mvc="sap.ui.core.mvc"
-                                                   xmlns="sap.m"
-                                                   xmlns:unified="sap.ui.unified"
-                                                   xmlns:core="sap.ui.core"
-                                                   xmlns:layout="sap.ui.commons.layout" id="lBancoNum"
-                                                   text="{appTxts>/state.banknumber}" design="Bold"/>
-                                            <Label xmlns:mvc="sap.ui.core.mvc"
-                                                   xmlns="sap.m"
-                                                   xmlns:unified="sap.ui.unified"
-                                                   xmlns:core="sap.ui.core"
-                                                   xmlns:layout="sap.ui.commons.layout" id="tBancoNum"
-                                                   text="{totales>/Bankn}"/>
-                                            <Label xmlns:html="http://www.w3.org/1999/xhtml"
-                                                   xmlns:sap.ui.layout="sap.ui.layout"
-                                                   xmlns:mvc="sap.ui.core.mvc"
-                                                   xmlns="sap.m"
-                                                   xmlns:unified="sap.ui.unified"
-                                                   xmlns:core="sap.ui.core"
-                                                   xmlns:layout="sap.ui.commons.layout"
-                                                   text="{appTxts>/state.commissions}" width="100%" id="lMoneda"
-                                                   design="Bold" textDirection="LTR" vAlign="Middle" textAlign="Left"/>
-                                            <ObjectNumber xmlns:sap.ui.layout="sap.ui.layout"
-                                                          xmlns:html="http://www.w3.org/1999/xhtml"
-                                                          xmlns:mvc="sap.ui.core.mvc"
-                                                          xmlns:unified="sap.ui.unified"
-                                                          xmlns:core="sap.ui.core"
-                                                          xmlns:layout="sap.ui.commons.layout"
-                                                          xmlns="sap.m"
-                                                          number="{parts: [{path: 'totales>/Totcm'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
-                                                          unit="{totales>/Banks}" emphasized="false" state="None"
-                                                          id="tCommission"/>
+                                            <Label xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout" id="lBancoNum" text="{appTxts>/state.banknumber}" design="Bold" />
+                                            <Label xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout" id="tBancoNum" text="{totales>/Bankn}" />
+                                            <Label
+                                                xmlns:html="http://www.w3.org/1999/xhtml"
+                                                xmlns:sap.ui.layout="sap.ui.layout"
+                                                xmlns:mvc="sap.ui.core.mvc"
+                                                xmlns="sap.m"
+                                                xmlns:unified="sap.ui.unified"
+                                                xmlns:core="sap.ui.core"
+                                                xmlns:layout="sap.ui.commons.layout"
+                                                text="{appTxts>/state.commissions}"
+                                                width="100%"
+                                                id="lMoneda"
+                                                design="Bold"
+                                                textDirection="LTR"
+                                                vAlign="Middle"
+                                                textAlign="Left"
+                                            />
+                                            <ObjectNumber
+                                                xmlns:sap.ui.layout="sap.ui.layout"
+                                                xmlns:html="http://www.w3.org/1999/xhtml"
+                                                xmlns:mvc="sap.ui.core.mvc"
+                                                xmlns:unified="sap.ui.unified"
+                                                xmlns:core="sap.ui.core"
+                                                xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'totales>/Totcm'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{totales>/Banks}"
+                                                emphasized="false"
+                                                state="None"
+                                                id="tCommission"
+                                            />
                                         </cells>
                                     </ColumnListItem>
                                     <ColumnListItem id="item6">
                                         <cells>
-                                            <Label xmlns:mvc="sap.ui.core.mvc"
-                                                   xmlns="sap.m"
-                                                   xmlns:unified="sap.ui.unified"
-                                                   xmlns:core="sap.ui.core"
-                                                   xmlns:layout="sap.ui.commons.layout" id="lBancoNom" text="Estatus"
-                                                   design="Bold"/>
-                                            <Label xmlns:mvc="sap.ui.core.mvc"
-                                                   xmlns="sap.m"
-                                                   xmlns:unified="sap.ui.unified"
-                                                   xmlns:core="sap.ui.core"
-                                                   xmlns:layout="sap.ui.commons.layout" id="tBancoNom"
-                                                   text="{configSite>/supplierStatus}"/>
-                                            <Label xmlns:html="http://www.w3.org/1999/xhtml"
-                                                   xmlns:sap.ui.layout="sap.ui.layout"
-                                                   xmlns:mvc="sap.ui.core.mvc"
-                                                   xmlns="sap.m"
-                                                   xmlns:unified="sap.ui.unified"
-                                                   xmlns:core="sap.ui.core"
-                                                   xmlns:layout="sap.ui.commons.layout" text="{appTxts>/state.balance}"
-                                                   width="100%" id="lbalance" design="Bold" textDirection="LTR"
-                                                   vAlign="Middle" textAlign="Left"/>
-                                            <ObjectNumber xmlns:sap.ui.layout="sap.ui.layout"
-                                                          xmlns:html="http://www.w3.org/1999/xhtml"
-                                                          xmlns:mvc="sap.ui.core.mvc"
-                                                          xmlns:unified="sap.ui.unified"
-                                                          xmlns:core="sap.ui.core"
-                                                          xmlns:layout="sap.ui.commons.layout"
-                                                          xmlns="sap.m"
-                                                          number="{parts: [{path: 'totales>/Totsdo'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
-                                                          unit="{totales>/Banks}" emphasized="false" state="None"
-                                                          id="tbalance"/>
+                                            <Label xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout" id="lBancoNom" text="Estatus" design="Bold" />
+                                            <Label xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout" id="tBancoNom" text="{configSite>/supplierStatus}" />
+                                            <Label
+                                                xmlns:html="http://www.w3.org/1999/xhtml"
+                                                xmlns:sap.ui.layout="sap.ui.layout"
+                                                xmlns:mvc="sap.ui.core.mvc"
+                                                xmlns="sap.m"
+                                                xmlns:unified="sap.ui.unified"
+                                                xmlns:core="sap.ui.core"
+                                                xmlns:layout="sap.ui.commons.layout"
+                                                text="{appTxts>/state.balance}"
+                                                width="100%"
+                                                id="lbalance"
+                                                design="Bold"
+                                                textDirection="LTR"
+                                                vAlign="Middle"
+                                                textAlign="Left"
+                                            />
+                                            <ObjectNumber
+                                                xmlns:sap.ui.layout="sap.ui.layout"
+                                                xmlns:html="http://www.w3.org/1999/xhtml"
+                                                xmlns:mvc="sap.ui.core.mvc"
+                                                xmlns:unified="sap.ui.unified"
+                                                xmlns:core="sap.ui.core"
+                                                xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                number="{parts: [{path: 'totales>/Totsdo'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                                                unit="{totales>/Banks}"
+                                                emphasized="false"
+                                                state="None"
+                                                id="tbalance"
+                                            />
                                         </cells>
                                     </ColumnListItem>
                                     <ColumnListItem id="item7">
                                         <cells>
-                                            <Label xmlns:mvc="sap.ui.core.mvc"
-                                                   xmlns="sap.m"
-                                                   xmlns:unified="sap.ui.unified"
-                                                   xmlns:core="sap.ui.core"
-                                                   xmlns:layout="sap.ui.commons.layout" text=""/>
-                                            <Label xmlns:mvc="sap.ui.core.mvc"
-                                                   xmlns="sap.m"
-                                                   xmlns:unified="sap.ui.unified"
-                                                   xmlns:core="sap.ui.core"
-                                                   xmlns:layout="sap.ui.commons.layout" text=""/>
-                                            <Label xmlns:html="http://www.w3.org/1999/xhtml"
-                                                   xmlns:sap.ui.layout="sap.ui.layout"
-                                                   xmlns:mvc="sap.ui.core.mvc"
-                                                   xmlns="sap.m"
-                                                   xmlns:unified="sap.ui.unified"
-                                                   xmlns:core="sap.ui.core"
-                                                   xmlns:layout="sap.ui.commons.layout" text="{appTxts>/state.currency}"
-                                                   width="100%" id="lcurrency" design="Bold" textDirection="LTR"
-                                                   vAlign="Middle" textAlign="Left"/>
-                                            <Text xmlns:html="http://www.w3.org/1999/xhtml"
-                                                  xmlns:sap.ui.layout="sap.ui.layout"
-                                                  xmlns:mvc="sap.ui.core.mvc"
-                                                  xmlns:unified="sap.ui.unified"
-                                                  xmlns:core="sap.ui.core"
-                                                  xmlns:layout="sap.ui.commons.layout"
-                                                  xmlns="sap.m" id="tcurrency" textAlign="Center"
-                                                  text="{totales>/Banks}"/>
+                                            <Label xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout" text="" />
+                                            <Label xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout" text="" />
+                                            <Label
+                                                xmlns:html="http://www.w3.org/1999/xhtml"
+                                                xmlns:sap.ui.layout="sap.ui.layout"
+                                                xmlns:mvc="sap.ui.core.mvc"
+                                                xmlns="sap.m"
+                                                xmlns:unified="sap.ui.unified"
+                                                xmlns:core="sap.ui.core"
+                                                xmlns:layout="sap.ui.commons.layout"
+                                                text="{appTxts>/state.currency}"
+                                                width="100%"
+                                                id="lcurrency"
+                                                design="Bold"
+                                                textDirection="LTR"
+                                                vAlign="Middle"
+                                                textAlign="Left"
+                                            />
+                                            <Text
+                                                xmlns:html="http://www.w3.org/1999/xhtml"
+                                                xmlns:sap.ui.layout="sap.ui.layout"
+                                                xmlns:mvc="sap.ui.core.mvc"
+                                                xmlns:unified="sap.ui.unified"
+                                                xmlns:core="sap.ui.core"
+                                                xmlns:layout="sap.ui.commons.layout"
+                                                xmlns="sap.m"
+                                                id="tcurrency"
+                                                textAlign="Center"
+                                                text="{totales>/Banks}"
+                                            />
                                         </cells>
                                     </ColumnListItem>
                                     <ColumnListItem id="item1">
                                         <cells>
-                                            <Label xmlns:mvc="sap.ui.core.mvc"
-                                                   xmlns="sap.m"
-                                                   xmlns:unified="sap.ui.unified"
-                                                   xmlns:core="sap.ui.core"
-                                                   xmlns:layout="sap.ui.commons.layout" text=""/>
-                                            <Label xmlns:mvc="sap.ui.core.mvc"
-                                                   xmlns="sap.m"
-                                                   xmlns:unified="sap.ui.unified"
-                                                   xmlns:core="sap.ui.core"
-                                                   xmlns:layout="sap.ui.commons.layout" text=""/>
-
+                                            <Label xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout" text="" />
+                                            <Label xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout" text="" />
                                         </cells>
                                     </ColumnListItem>
                                     <columns>
-                                        <Column id="column0_1551805599359"/>
-                                        <Column id="column1_1551805599359"/>
-                                        <Column xmlns:mvc="sap.ui.core.mvc"
-                                                xmlns="sap.m"
-                                                xmlns:unified="sap.ui.unified"
-                                                xmlns:core="sap.ui.core"
-                                                xmlns:layout="sap.ui.commons.layout" id="column0_1551805599359_copy2"/>
-                                        <Column xmlns:mvc="sap.ui.core.mvc"
-                                                xmlns="sap.m"
-                                                xmlns:unified="sap.ui.unified"
-                                                xmlns:core="sap.ui.core"
-                                                xmlns:layout="sap.ui.commons.layout" id="column0_1551805599359_copy3"/>
+                                        <Column id="column0_1551805599359" />
+                                        <Column id="column1_1551805599359" />
+                                        <Column xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout" id="column0_1551805599359_copy2" />
+                                        <Column xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout" id="column0_1551805599359_copy3" />
                                     </columns>
                                 </Table>
                             </items>
                         </FlexBox>
                     </content>
                 </Panel>
-                <Table visible="true" xmlns="sap.ui.table"
-                       selectionMode="None"
-                       id="detailsStatementList"
-                       xmlns:m="sap.m" rows="{GroupedTotales>/Hierarchy/movimientos}" ariaLabelledBy="title"
-                       width="100%">
+                <Table visible="true" xmlns="sap.ui.table" selectionMode="None" id="detailsStatementList" xmlns:m="sap.m" rows="{GroupedTotales>/Hierarchy/movimientos}" ariaLabelledBy="title" width="100%">
                     <extension>
                         <m:OverflowToolbar style="Clear">
-                            <m:Breadcrumbs id="breadcrumb"/>
+                            <m:Breadcrumbs id="breadcrumb" />
                             <!--
                                                         <m:Title id="title" text="{appTxts>/state.detail} ({totales>/Detalles/results/length})"/>
                                                         -->
-                            <m:ToolbarSpacer/>
-                            <m:CheckBox id="checkPartidas_" text="Partidas pendientes de pago" select="onTableGrouping"
-                                        visible="false"/>
-                            <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}"
-                                      press=".buildExportTable" visible="{= ${totales>/Detalles/results/length} > 0}"/>
+                            <m:ToolbarSpacer />
+                            <m:CheckBox id="checkPartidas_" text="Partidas pendientes de pago" select="onTableGrouping" visible="false" />
+                            <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${totales>/Detalles/results/length} > 0}" />
 
                             <!--
                             <m:Select visible="{= ${totales>/Detalles/Paginated/results/length} > 0 }" change="paginar( ${$parameters>/selectedItem} )">
@@ -395,360 +398,256 @@
                                 </m:items>
                             </m:Select>
                             -->
-
                         </m:OverflowToolbar>
                     </extension>
                     <columns>
-
                         <Column sortProperty="name" id="tipoColumn" width="40%">
-                            <m:Label text="{appTxts>/aportaciones.concepto}"/>
+                            <m:Label text="{appTxts>/aportaciones.concepto}" />
                             <template>
-
-                                <m:ObjectAttribute active="true" text="{GroupedTotales>name}" press="conceptoSelect"/>
-
-
+                                <m:ObjectAttribute active="true" text="{GroupedTotales>name}" press="conceptoSelect" />
                             </template>
                         </Column>
 
-                        <Column sortProperty="IdNumTipomov" filterProperty="IdNumTipomov" id="tipoMovColumn"
-                                width="30%">
-                            <m:Label text="{appTxts>/aportaciones.concepto}"/>
+                        <Column sortProperty="IdNumTipomov" filterProperty="IdNumTipomov" id="tipoMovColumn" width="30%">
+                            <m:Label text="{appTxts>/aportaciones.concepto}" />
                             <template>
-                                <m:ObjectAttribute press="onDocumentDevolucionPress"
-                                                   active="{= ${GroupedTotales>IdNumTipomov} === '12'}"
-                                                   text="{GroupedTotales>IdNumTipomov} {GroupedTotales>DescTipomov}"/>
+                                <m:ObjectAttribute press="onDocumentDevolucionPress" active="{= ${GroupedTotales>IdNumTipomov} === '12'}" text="{GroupedTotales>IdNumTipomov} {GroupedTotales>DescTipomov}" />
                             </template>
                         </Column>
 
                         <Column id="statusColumn" width="15%">
-                            <m:Label text="{appTxts>/state.status}"/>
+                            <m:Label text="{appTxts>/state.status}" />
                             <template>
-                                <m:Text text="{=  (${GroupedTotales>Pendt} === true) ? 'Pendiente' : ( ${GroupedTotales>Belnr} === ${GroupedTotales>Augbl} ? 'Pago' : 'Contabilizado'  ) }"
-                                        wrapping="false"/>
+                                <m:Text text="{=  (${GroupedTotales>Pendt} === true) ? 'Pendiente' : ( ${GroupedTotales>Belnr} === ${GroupedTotales>Augbl} ? 'Pago' : 'Contabilizado'  ) }" wrapping="false" />
                             </template>
                         </Column>
 
                         <!--sucursal folio -->
                         <Column filterProperty="Sucursal" sortProperty="Sucursal" id="sucursalColumn" width="15%">
-                            <m:Label text="{appTxts>/order.branch}"/>
+                            <m:Label text="{appTxts>/order.branch}" />
                             <template>
-                                <m:Text text="{GroupedTotales>Sucursal}" wrapping="false"/>
+                                <m:Text text="{GroupedTotales>Sucursal}" wrapping="false" />
                             </template>
                         </Column>
                         <Column sortProperty="Folio" filterProperty="Folio" id="folio2Column" width="15%">
-                            <m:Label text="{appTxts>/invoice.folio}"/>
+                            <m:Label text="{appTxts>/invoice.folio}" />
                             <template>
-                                <m:Text text="{GroupedTotales>Folio}" wrapping="false"/>
+                                <m:Text text="{GroupedTotales>Folio}" wrapping="false" />
                             </template>
                         </Column>
-
 
                         <!-- end sucursal folio -->
 
-
-                        <Column filterType="sap.ui.model.type.Integer" filterProperty="Belnr" sortProperty="Belnr"
-                                id="folioColumn" width="20%">
-                            <m:Label text="{appTxts>/state.folio}"/>
+                        <Column filterType="sap.ui.model.type.Integer" filterProperty="Belnr" sortProperty="Belnr" id="folioColumn" width="20%">
+                            <m:Label text="{appTxts>/state.folio}" />
                             <template>
-                                <m:ObjectIdentifier titlePress="onDocumentPress" titleActive="{= ${GroupedTotales>IdNumTipomov} !== '12'}"
-                                                    title="{GroupedTotales>Belnr}"/>
+                                <m:ObjectIdentifier titlePress="onDocumentPress" titleActive="{= ${GroupedTotales>IdNumTipomov} !== '12'}" title="{GroupedTotales>Belnr}" />
                             </template>
                         </Column>
                         <Column sortProperty="Xblnr" filterProperty="Xblnr" id="referenceColumn" width="20%">
-                            <m:Label text="{appTxts>/state.reference}"/>
+                            <m:Label text="{appTxts>/state.reference}" />
                             <template>
-                                <m:Text text="{GroupedTotales>Xblnr}" wrapping="false"/>
+                                <m:Text text="{GroupedTotales>Xblnr}" wrapping="false" />
                             </template>
                         </Column>
                         <Column sortProperty="Ltext" filterProperty="Ltext" id="typeDocColumn" width="20%">
-                            <m:Label text="{appTxts>/state.typeDoc}"/>
+                            <m:Label text="{appTxts>/state.typeDoc}" />
                             <template>
-                                <m:Text text="{GroupedTotales>Ltext}" wrapping="false"/>
+                                <m:Text text="{GroupedTotales>Ltext}" wrapping="false" />
                             </template>
                         </Column>
-                        <Column sortProperty="Budat" id="dateVColumn"
-                                width="5rem">
-                            <m:Label text="{appTxts>/state.date}"/>
+                        <Column sortProperty="Budat" id="dateVColumn" width="5rem">
+                            <m:Label text="{appTxts>/state.date}" />
                             <template>
-                                <m:Text text="{GroupedTotales>Budat}" wrapping="false"/>
+                                <m:Text text="{GroupedTotales>Budat}" wrapping="false" />
                             </template>
                         </Column>
-                        <Column sortProperty="FechaTesoreria" id="dateColumn"
-                                width="5rem">
-                            <m:Label text="{appTxts>/clarifications.expirationDate}"/>
+                        <Column sortProperty="FechaTesoreria" id="dateColumn" width="5rem">
+                            <m:Label text="{appTxts>/clarifications.expirationDate}" />
                             <template>
-                                <m:Text text="{GroupedTotales>FechaTesoreria}" wrapping="false"/>
+                                <m:Text text="{GroupedTotales>FechaTesoreria}" wrapping="false" />
                             </template>
                         </Column>
                         <Column id="amountColumn" sortProperty="Wrbtr" width="20%">
-                            <m:Label text="{appTxts>/state.amount}"/>
+                            <m:Label text="{appTxts>/state.amount}" />
                             <template>
-                                <m:ObjectNumber
-                                        number="{parts: [{path: 'GroupedTotales>Wrbtr'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"/>
+                                <m:ObjectNumber number="{parts: [{path: 'GroupedTotales>Wrbtr'}, {path: 'totales>/Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:true}}" />
                             </template>
                         </Column>
                         <Column sortProperty="MCondicion" id="mCondicionColumn" width="20%">
-                            <m:Label text="{appTxts>/reporte.headerTitulo}"/>
+                            <m:Label text="{appTxts>/reporte.headerTitulo}" />
                             <template>
-                                <m:Text text="{= ${GroupedTotales>MCondicion} === '0.00' ? ${GroupedTotales>MCondicion} : - ${GroupedTotales>MCondicion} }" wrapping="false"/>
+                                <m:Text text="{= ${GroupedTotales>MCondicion} === '0.00' ? ${GroupedTotales>MCondicion} : - ${GroupedTotales>MCondicion} }" wrapping="false" />
                             </template>
                         </Column>
 
                         <Column id="verReporteColumn" width="20%">
-                            <m:Label text="Reporte VC"/>
+                            <m:Label text="Reporte VC" />
                             <template>
-                                <m:Button text="Ver reporte VC" press=".onPress" icon="sap-icon://expense-report"
-                                          type="Default"
-                                          visible="{path:'GroupedTotales>MCondicion', formatter:'.hasReport'}"/>
+                                <m:Button text="Ver reporte VC" press=".onPress" icon="sap-icon://expense-report" type="Default" visible="{path:'GroupedTotales>MCondicion', formatter:'.hasReport'}" />
                             </template>
                         </Column>
 
                         <Column id="bloqueoColumn" width="10%">
-                            <m:Label text="Bloqueado"/>
+                            <m:Label text="Bloqueado" />
                             <template>
-                                <m:ObjectMarker visible="{=  ${GroupedTotales>BloqueoFlag} === '' ? false : true }"
-                                                type="LockedBy" additionalInfo="{GroupedTotales>DescripcionBloqueo}"
-                                                press="onMarkerPress"/>
+                                <m:ObjectMarker visible="{=  ${GroupedTotales>BloqueoFlag} === '' ? false : true }" type="LockedBy" additionalInfo="{GroupedTotales>DescripcionBloqueo}" press="onMarkerPress" />
                             </template>
                         </Column>
                         <Column sortProperty="Augbl" id="conciliacionColumn" width="15%">
-                            <m:Label text="{appTxts>/state.conciliation}"/>
+                            <m:Label text="{appTxts>/state.conciliation}" />
                             <template>
-                                <m:Text text="{GroupedTotales>Augbl}" wrapping="false"/>
-
+                                <m:Text text="{GroupedTotales>Augbl}" wrapping="false" />
                             </template>
                         </Column>
 
                         <!--columnas nuevas para totales -->
                         <Column sortProperty="totalRegs" id="totalRegColumn" width="15%">
-                            <m:Label text="{appTxts>/state.totalReg}"/>
+                            <m:Label text="{appTxts>/state.totalReg}" />
                             <template>
-                                <m:ObjectNumber number="{GroupedTotales>totalRegs}"/>
+                                <m:ObjectNumber number="{GroupedTotales>totalRegs}" />
                             </template>
                         </Column>
                         <Column sortProperty="totalDebit" id="debitColumn" width="15%">
-                            <m:Label text="{appTxts>/state.debit}"/>
+                            <m:Label text="{appTxts>/state.debit}" />
                             <template>
-                                <m:ObjectNumber
-                                        number="{parts: [{path: 'GroupedTotales>totalDebit'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"/>
+                                <m:ObjectNumber number="{parts: [{path: 'GroupedTotales>totalDebit'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
                             </template>
                         </Column>
                         <Column sortProperty="totalCredit" id="creditColumn" width="15%">
-                            <m:Label text="{appTxts>/state.credit}"/>
+                            <m:Label text="{appTxts>/state.credit}" />
                             <template>
-                                <m:ObjectNumber
-                                        number="{parts: [{path: 'GroupedTotales>totalCredit'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"/>
+                                <m:ObjectNumber number="{parts: [{path: 'GroupedTotales>totalCredit'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
                             </template>
                         </Column>
-
-
                     </columns>
-
                 </Table>
 
-                <OverflowToolbar visible="true">
-
-                    <Text width="47%" text="Total"/>
-
-                    <Text width="17%" text="{GroupedTotales>/Hierarchy/totalR}"/>
-                    <Text width="17%"
-                          text="{parts: [{path: 'GroupedTotales>/Hierarchy/totalD'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
-                    />
-                    <Text width="20%"
-                          text="{parts: [{path: 'GroupedTotales>/Hierarchy/totalC'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
-                    />
-
-                </OverflowToolbar>
 
 
                 <!--
                 <OverflowToolbar  visible="{= ${totales>/Detalles/Paginated/results/length} > 0 }">
                 -->
                 <OverflowToolbar visible="false">
-
-                    <Text text="{totales>/Detalles/Paginated/initRow} - {totales>/Detalles/Paginated/endRow} {appTxts>/pagination.of} {totales>/Detalles/results/length}"/>
-                    <ToolbarSpacer/>
-                    <Button type="Default" icon="sap-icon://slim-arrow-left"
-                            press=".prevPagination(${totales>/Detalles/Paginated/iterator}, ${totales>/Detalles/Paginated/initRow}, 'totales', '/Detalles')"
-                            enabled="{= ${totales>/Detalles/Paginated/iterator} !== 1}"/>
-                    <Button type="Default" icon="sap-icon://slim-arrow-right"
-                            press=".nextPagination(${totales>/Detalles/Paginated/iterator}, ${totales>/Detalles/Paginated/endRow}, 'totales', '/Detalles')"
-                            enabled="{= ${totales>/Detalles/Paginated/endRow} !== ${totales>/Detalles/results/length}}"/>
+                    <Text text="{totales>/Detalles/Paginated/initRow} - {totales>/Detalles/Paginated/endRow} {appTxts>/pagination.of} {totales>/Detalles/results/length}" />
+                    <ToolbarSpacer />
+                    <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${totales>/Detalles/Paginated/iterator}, ${totales>/Detalles/Paginated/initRow}, 'totales', '/Detalles')" enabled="{= ${totales>/Detalles/Paginated/iterator} !== 1}" />
+                    <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${totales>/Detalles/Paginated/iterator}, ${totales>/Detalles/Paginated/endRow}, 'totales', '/Detalles')" enabled="{= ${totales>/Detalles/Paginated/endRow} !== ${totales>/Detalles/results/length}}" />
                 </OverflowToolbar>
 
                 <!-- tabla con agrupacion -->
-                <Table visible="false" selectionChange="handleSelection" growing="true" growingThreshold="100"
-                       inset="false" id="idGroupTable">
+                <Table visible="false" selectionChange="handleSelection" growing="true" growingThreshold="100" inset="false" id="idGroupTable">
                     <headerToolbar>
                         <OverflowToolbar id="idCrumbToolbar">
-                            <Breadcrumbs id="_breadcrumb"/>
-                            <ToolbarSpacer/>
-                            <CheckBox id="checkPartidas" text="Partidas pendientes de pago" select="onTableGrouping"
-                                      visible="false"/>
-                            <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}"
-                                    press=".buildExportTable" visible="{= ${totales>/Detalles/results/length} > 0}"/>
+                            <Breadcrumbs id="_breadcrumb" />
+                            <ToolbarSpacer />
+                            <CheckBox id="checkPartidas" text="Partidas pendientes de pago" select="onTableGrouping" visible="false" />
+                            <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${totales>/Detalles/results/length} > 0}" />
                         </OverflowToolbar>
                     </headerToolbar>
 
                     <columns>
-
-                        <Column
-
-                                demandPopin="false"
-                        >
-                            <Text text="{appTxts>/aportaciones.concepto}"/>
+                        <Column demandPopin="false">
+                            <Text text="{appTxts>/aportaciones.concepto}" />
                             <footer>
-
-                                <Text id="idFooterText" text="Total"/>
+                                <Text id="idFooterText" text="Total" />
                             </footer>
                         </Column>
-                        <Column
-
-                                demandPopin="false"
-                                minScreenWidth="Tablet"
-                                visible="true"
-                        >
-                            <Text text="{appTxts>/aportaciones.concepto}"/>
+                        <Column demandPopin="false" minScreenWidth="Tablet" visible="true">
+                            <Text text="{appTxts>/aportaciones.concepto}" />
                         </Column>
-                        <Column
-
-                                minScreenWidth="Tablet"
-                                demandPopin="true"
-                                hAlign="End"
-                        >
-                            <Text text="{appTxts>/state.status}"/>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="{appTxts>/state.status}" />
                         </Column>
-                        <Column
-
-                                minScreenWidth="Tablet"
-                                demandPopin="true"
-                                hAlign="End"
-                                visible="true">
-                            <Text text="{appTxts>/state.folio}"/>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End" visible="true">
+                            <Text text="{appTxts>/state.folio}" />
                         </Column>
-                        <Column
-
-                                minScreenWidth="Tablet"
-                                demandPopin="true"
-                                hAlign="Center"
-                                visible="true">
-                            <Text text="{appTxts>/state.reference}"/>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">
+                            <Text text="{appTxts>/state.reference}" />
                         </Column>
 
-                        <Column
-
-                                minScreenWidth="Tablet"
-                                demandPopin="true"
-                                hAlign="Center"
-                                visible="true">
-                            <Text text="{appTxts>/state.typeDoc}"/>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">
+                            <Text text="{appTxts>/state.typeDoc}" />
                         </Column>
 
-                        <Column
-                                minScreenWidth="Tablet"
-                                demandPopin="true"
-                                hAlign="Center"
-                                visible="true">
-                            <Text text="{appTxts>/state.date}"/>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">
+                            <Text text="{appTxts>/state.date}" />
                         </Column>
 
-                        <Column
-
-                                visible="true"
-                                hAlign="End">
-                            <Text text="{appTxts>/state.amount}"/>
+                        <Column visible="true" hAlign="End">
+                            <Text text="{appTxts>/state.amount}" />
                         </Column>
 
-                        <Column
-
-                                minScreenWidth="Tablet"
-                                demandPopin="true"
-                                hAlign="Center"
-                                visible="true">
-                            <Text text="Mejor Condición"/>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">
+                            <Text text="Mejor Condición" />
                         </Column>
 
-                        <Column
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="false" />
 
-                                minScreenWidth="Tablet"
-                                demandPopin="true"
-                                hAlign="Center"
-                                visible="false">
-
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">
+                            <Text text="Bloqueo" />
                         </Column>
 
-                        <Column
-
-                                minScreenWidth="Tablet"
-                                demandPopin="true"
-                                hAlign="Center"
-                                visible="true">
-                            <Text text="Bloqueo"/>
-                        </Column>
-
-                        <Column
-
-                                minScreenWidth="Tablet"
-                                demandPopin="true"
-                                hAlign="Center"
-                                visible="true">
-                            <Text text="{appTxts>/state.conciliation}"/>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" visible="true">
+                            <Text text="{appTxts>/state.conciliation}" />
                         </Column>
 
                         <!-- totales grupo -->
-                        <Column
-
-                                visible="End"
-                                hAlign="Center">
-                            <Text text="{appTxts>/state.totalReg}"/>
+                        <Column visible="End" hAlign="Center">
+                            <Text text="{appTxts>/state.totalReg}" />
                             <footer>
-
-                                <Text text="{GroupedTotales>/Hierarchy/totalR}"/>
+                                <Text text="{GroupedTotales>/Hierarchy/totalR}" />
                             </footer>
                         </Column>
 
-                        <Column
-
-                                visible="true"
-                                hAlign="End">
-                            <Text text="{appTxts>/state.debit}"/>
+                        <Column visible="true" hAlign="End">
+                            <Text text="{appTxts>/state.debit}" />
                             <footer>
-
-                                <ObjectNumber
-                                        number="{parts: [{path: 'GroupedTotales>/Hierarchy/totalD'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
-                                />
-
+                                <ObjectNumber number="{parts: [{path: 'GroupedTotales>/Hierarchy/totalD'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
                             </footer>
                         </Column>
-                        <Column
-
-                                visible="true"
-                                hAlign="End">
-                            <Text text="{appTxts>/state.credit}"/>
+                        <Column visible="true" hAlign="End">
+                            <Text text="{appTxts>/state.credit}" />
                             <footer>
-
-                                <ObjectNumber
-                                        number="{parts: [{path: 'GroupedTotales>/Hierarchy/totalC'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
-                                />
-
+                                <ObjectNumber number="{parts: [{path: 'GroupedTotales>/Hierarchy/totalC'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
                             </footer>
                         </Column>
-
-
                     </columns>
-
                 </Table>
-                <OverflowToolbar visible="true">
 
-                    <Text text="Saldo"/>
-                    <ToolbarSpacer/>
-                    <ObjectNumber
-                            number="{parts: [{path: 'GroupedTotales>/Hierarchy/totalT'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
-                    />
+                <OverflowToolbar visible="true">
+                    <!-- Sección de Total-->
+                    <Text width="47%" text="Total MXN" />
+
+                    <Text width="17%" text="{GroupedTotales>/Hierarchy/totalRmxn}" />
+                    <Text width="17%" text="{parts: [{path: 'GroupedTotales>/Hierarchy/totalDmxn'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+                    <Text width="20%" text="{parts: [{path: 'GroupedTotales>/Hierarchy/totalCmxn'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+                </OverflowToolbar>
+
+                <OverflowToolbar visible="true">
+                <!-- Sección de Saldo-->
+                    <Text text="Saldo MXN" />
+                    <ToolbarSpacer />
+                    <ObjectNumber number="{parts: [{path: 'GroupedTotales>/Hierarchy/totalTmxn'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+                </OverflowToolbar>
+
+                <OverflowToolbar visible="true">
+                    <!-- Sección de Total-->
+                    <Text width="47%" text="Total USD" />
+
+                    <Text width="17%" text="{GroupedTotales>/Hierarchy/totalRusd}" />
+                    <Text width="17%" text="{parts: [{path: 'GroupedTotales>/Hierarchy/totalDusd'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+                    <Text width="20%" text="{parts: [{path: 'GroupedTotales>/Hierarchy/totalCusd'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+                </OverflowToolbar>
+
+                <OverflowToolbar visible="true">
+                <!-- Sección de Saldo-->
+                    <Text text="Saldo USD" />
+                    <ToolbarSpacer />
+                    <ObjectNumber number="{parts: [{path: 'GroupedTotales>/Hierarchy/totalTusd'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
                 </OverflowToolbar>
 
             </ScrollContainer>
         </f:content>
     </f:DynamicPage>
-
 </mvc:View>

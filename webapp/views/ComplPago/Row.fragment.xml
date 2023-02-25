@@ -25,7 +25,7 @@
 
                                 <Text text="{GroupedTotales>Budat}" wrapping="false" />
 	<ObjectNumber
-							number= "{parts: [{path: 'GroupedTotales>Wrbtr'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+							number= "{parts: [{path: 'GroupedTotales>Wrbtr'}, {path: 'GroupedTotales>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:true}}"
 							  />                                 <Text text="{GroupedTotales>MCondicion}" wrapping="false" />
                                 <!--
                                  <Text text="{GroupedTotales>BloqueoFlag}" wrapping="false" />
