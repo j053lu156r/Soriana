@@ -120,7 +120,7 @@
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
-                                                    unit="MXN" />
+                                                    unit="{TotCargoNS>/TotMoneda}" />
                                             </m:footer>
                                         </m:Column>
                                         <m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
@@ -134,7 +134,7 @@
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
-                                                    unit="MXN" />
+                                                    unit="{TotCargoNS>/TotMoneda}" />
                                             </m:footer>
                                         </m:Column>
                                         <m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
@@ -148,7 +148,7 @@
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
-                                                    unit="MXN" />
+                                                    unit="{TotCargoNS>/TotMoneda}" />
                                             </m:footer>
                                         </m:Column>
                                         <m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
@@ -162,7 +162,7 @@
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
-                                                    unit="MXN" />
+                                                    unit="{TotCargoNS>/TotMoneda}" />
                                             </m:footer>
                                         </m:Column>
                                     </m:columns>
@@ -182,42 +182,42 @@
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
-                                                    unit="MXN" />
+                                                    unit="{DetCargoNSHdr>Waers}" />
                                                 <m:ObjectNumber
                                                     number="{
                                                         parts:[{path:'DetCargoNSHdr>Zpb00'},{path:'CurrencyCode'}],
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
-                                                    unit="MXN" />
+                                                    unit="{DetCargoNSHdr>Waers}" />
                                                 <m:ObjectNumber
                                                     number="{
                                                         parts:[{path:'DetCargoNSHdr>Zboni'},{path:'CurrencyCode'}],
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
-                                                    unit="MXN" />
+                                                    unit="{DetCargoNSHdr>Waers}" />
                                                 <m:ObjectNumber
                                                     number="{
                                                         parts:[{path:'DetCargoNSHdr>Zieps'},{path:'CurrencyCode'}],
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
-                                                    unit="MXN" />
+                                                    unit="{DetCargoNSHdr>Waers}" />
                                                 <m:ObjectNumber
                                                     number="{
                                                         parts:[{path:'DetCargoNSHdr>Ziva'},{path:'CurrencyCode'}],
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
-                                                    unit="MXN" />
+                                                    unit="{DetCargoNSHdr>Waers}" />
                                                 <m:ObjectNumber
                                                     number="{
                                                         parts:[{path:'DetCargoNSHdr>Total'},{path:'CurrencyCode'}],
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
-                                                    unit="MXN" />
+                                                    unit="{DetCargoNSHdr>Waers}" />
                                             </m:cells>
                                         </m:ColumnListItem>
                                     </m:items>
