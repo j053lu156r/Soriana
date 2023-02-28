@@ -111,7 +111,7 @@
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
-                                                    unit="MXN" />
+                                                    unit="{acuTotDetDetModel>/TotMoneda}" />
                                             </m:footer>
                                         </m:Column>
                                         <m:Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
@@ -125,7 +125,7 @@
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
-                                                    unit="MXN" />
+                                                    unit="{acuTotDetDetModel>/TotMoneda}" />
                                             </m:footer>
                                         </m:Column>
                                         <m:Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
@@ -139,7 +139,7 @@
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
-                                                    unit="MXN" />
+                                                    unit="{acuTotDetDetModel>/TotMoneda}" />
                                             </m:footer>
                                         </m:Column>
                                         <m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
@@ -164,21 +164,21 @@
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
-                                                    unit="MXN" />
+                                                    unit="{AcuDetDetHdr>Waers}" />
                                                 <m:ObjectNumber
                                                     number="{
                                                         parts:[{path:'AcuDetDetHdr>Descuento'},{path:'CurrencyCode'}],
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
-                                                    unit="MXN" />
+                                                    unit="{AcuDetDetHdr>Waers}" />
                                                 <m:ObjectNumber
                                                     number="{
                                                         parts:[{path:'AcuDetDetHdr>IVA'},{path:'CurrencyCode'}],
                                                         type: 'sap.ui.model.type.Currency',
                                                         formatOptions: {showMeasure: false}
                                                             }"
-                                                    unit="MXN" />
+                                                    unit="{AcuDetDetHdr>Waers}" />
                                                 <m:ObjectNumber
                                                     number="{AcuDetDetHdr>PDesc}"
                                                     unit="{AcuDetDetHdr>Unidad}"
