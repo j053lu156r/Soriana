@@ -127,7 +127,7 @@ sap.ui.define([
                         var totDescto = objResponse.AcuDetDet.results.reduce((a, b) => +a + (+b["Descuento"] || 0), 0);
                         var totIVA = objResponse.AcuDetDet.results.reduce((a, b) => +a + (+b["IVA"] || 0), 0);
                         
-                        if (objResponse.AcuDetDet.results.lenght > 0) {
+                        if (objResponse.AcuDetDet.results.length > 0) {
                             var totMoneda = objResponse.AcuDetDet.results[0].Waers;
                         } else {
                             totMoneda = "MXN";

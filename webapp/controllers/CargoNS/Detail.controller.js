@@ -97,7 +97,7 @@ sap.ui.define([
                         var totIVA = objResponse.AcuNivSerDet.results.reduce((a, b) => +a + (+b["Ziva"] || 0), 0);
                         var totTotal = objResponse.AcuNivSerDet.results.reduce((a, b) => +a + (+b["Total"] || 0), 0);
 
-                        if (objResponse.AcuNivSerDet.results.lenght > 0) {
+                        if (objResponse.AcuNivSerDet.results.length > 0) {
                             var totMoneda = objResponse.AcuNivSerDet.results[0].Waers;
                         } else {
                             totMoneda = "MXN";
