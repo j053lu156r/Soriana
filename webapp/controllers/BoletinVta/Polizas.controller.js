@@ -73,12 +73,14 @@
                                     var totBase = objResponse.reduce((a, b) => +a + (+b["Dmbtr"] || 0), 0);
                                     var totDescto = objResponse.reduce((a, b) => +a + (+b["Wrbtr"] || 0), 0);
                                     var totIVA = objResponse.reduce((a, b) => +a + (+b["Wmwst"] || 0), 0);
+                                    var currCode = objResponse[0].Waers;
                                     var totalAcuDet = {
                                         "TotBase": Number(totBase.toFixed(2)),
                                         "TotDescto": Number(totDescto.toFixed(2)),
                                         "TotIVA": Number(totIVA.toFixed(2)),
                                         "VendorName": vendorName,
-                                        "Agreement": Agreement
+                                        "Agreement": Agreement,
+                                        "currCode": currCode
                                     };
                                     parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(totalAcuDet), 
                                         "acuTotDetModel");
