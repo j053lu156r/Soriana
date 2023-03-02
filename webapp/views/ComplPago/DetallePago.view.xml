@@ -164,7 +164,7 @@
 						<Column id="amountColumn" sortProperty="Wrbtr" width="20%">
 							<m:Label text="{appTxts>/state.amount}" />
 							<template>
-								<m:ObjectNumber number= "{parts: [{path: 'GroupedTotales>Wrbtr'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+								<m:ObjectNumber number= "{parts: [{path: 'GroupedTotales>Wrbtr'}, {path: 'GroupedTotales>Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:true}}" />
 							</template>
 						</Column>
 						<Column sortProperty="MCondicion"  id="mCondicionColumn" width="20%">
@@ -220,7 +220,7 @@
 						<Column sortProperty="totalCosto"   id="costoColumn" width="15%">
 							<m:Label text="Costo" />
 							<template>
-								<m:ObjectNumber number="{parts: [{path: 'GroupedTotales>cost'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+								<m:ObjectNumber number="{parts: [{path: 'GroupedTotales>cost'}, {path: 'GroupedTotales>moneda'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:true}}" />
 							</template>
 						</Column>
 

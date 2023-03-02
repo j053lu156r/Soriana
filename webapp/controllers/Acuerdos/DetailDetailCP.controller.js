@@ -114,10 +114,18 @@ sap.ui.define([
                         var totCompra = objResponse.AcuDetDet.results.reduce((a, b) => +a + (+b["Compra"] || 0), 0);
                         var totDescto = objResponse.AcuDetDet.results.reduce((a, b) => +a + (+b["Descuento"] || 0), 0);
                         var totIVA = objResponse.AcuDetDet.results.reduce((a, b) => +a + (+b["IVA"] || 0), 0);
+                        
+                        if (objResponse.AcuDetDet.results.length > 0) {
+                            var totMoneda = objResponse.AcuDetDet.results[0].Waers;
+                        } else {
+                            totMoneda = "MXN";
+                        }
+                        
                         var totalDetDet = {
                             "TotCompra": Number(totCompra.toFixed(2)),
                             "TotDescto": Number(totDescto.toFixed(2)),
-                            "TotIVA": Number(totIVA.toFixed(2))
+                            "TotIVA": Number(totIVA.toFixed(2)),
+                            "TotMoneda": totMoneda
                         };
                         parent.getOwnerComponent().setModel(new JSONModel(totalDetDet), "acuTotDetDetModel");
 

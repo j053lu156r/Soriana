@@ -20,7 +20,7 @@
 	<Text text="{GroupedTotales>Ltext}" wrapping="false" />
 
 	<Text text="{GroupedTotales>Budat}" wrapping="false" />
-	<ObjectNumber number= "{parts: [{path: 'GroupedTotales>Wrbtr'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+	<ObjectNumber number= "{parts: [{path: 'GroupedTotales>Wrbtr'}, {path: 'totales>/Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:true}}" />
 
 	<Text text="{GroupedTotales>MCondicion}" wrapping="false" />
 	<!--

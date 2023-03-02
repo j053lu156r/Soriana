@@ -135,7 +135,7 @@
                                     type: 'sap.ui.model.type.Currency',
                                     formatOptions: {showMeasure: false}
                                         }"
-                                unit="MXN" />
+                                unit="{acuTotDetModel>/TotMoneda}" />
                         </footer>
 					</Column>
 					<Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
@@ -149,7 +149,7 @@
                                     type: 'sap.ui.model.type.Currency',
                                     formatOptions: {showMeasure: false}
                                         }"
-                                unit="MXN" />
+                                unit="{acuTotDetModel>/TotMoneda}" />
                         </footer>
 					</Column>
 					<Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
@@ -163,7 +163,7 @@
                                     type: 'sap.ui.model.type.Currency',
                                     formatOptions: {showMeasure: false}
                                         }"
-                                unit="MXN" />
+                                unit="{acuTotDetModel>/TotMoneda}" />
                         </footer>
 					</Column>
 					<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
@@ -185,21 +185,21 @@
                                     type: 'sap.ui.model.type.Currency',
                                     formatOptions: {showMeasure: false}
                                         }"
-                                unit="MXN" />
+                                unit="{AcuerdosHdr>Waers}" />
                             <ObjectNumber
                                 number="{
                                     parts:[{path:'AcuerdosHdr>Descuento'},{path:'CurrencyCode'}],
                                     type: 'sap.ui.model.type.Currency',
                                     formatOptions: {showMeasure: false}
                                         }"
-                                unit="MXN" />
+                                unit="{AcuerdosHdr>Waers}" />
                             <ObjectNumber
                                 number="{
                                     parts:[{path:'AcuerdosHdr>IVA'},{path:'CurrencyCode'}],
                                     type: 'sap.ui.model.type.Currency',
                                     formatOptions: {showMeasure: false}
                                         }"
-                                unit="MXN" />
+                                unit="{AcuerdosHdr>Waers}" />
                             <ObjectNumber
                                 number="{AcuerdosHdr>PDesc}"
                                 unit="{AcuerdosHdr>Unidad}"
