@@ -214,6 +214,7 @@ sap.ui.define([
         buildExcel: function () {
             var texts = this.getOwnerComponent().getModel("appTxts");
             var data = this.getOwnerComponent().getModel("Incidencias").getProperty("/ETLOGFNAV/results");
+            console.log(data)
             var columns = [
                 {
                     label: texts.getProperty("/incidencias.uuid"),
@@ -246,6 +247,22 @@ sap.ui.define([
                 {
                     label: texts.getProperty("/incidencias.status"),
                     property: "Estatus"
+                },
+                {
+                    label: texts.getProperty("/incidencias.serie"),
+                    property: "Serie"
+                },
+                {
+                    label: texts.getProperty("/incidencias.folio"),
+                    property: "Folio"
+                },
+                {
+                    label: texts.getProperty("/incidencias.descTipoDoc"),
+                    property: "Tipdoc"
+                },
+                {
+                    label: texts.getProperty("/incidencias.numDocFact"),
+                    property: "Belnr"
                 },
             ];
             this.buildExcelSpreadSheet(columns, data, "Incidencias.xlsx")
