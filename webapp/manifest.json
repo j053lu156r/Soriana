@@ -985,6 +985,13 @@
                     "target": [
                         "masterUploadCP"
                     ]
+                },
+                {
+                    "name": "masterEscalas",
+                    "pattern": "masterEscalas",
+                    "target": [
+                        "masterEscalas"
+                    ]
                 }
             ],
             "targets": {
@@ -1506,6 +1513,11 @@
                     "viewName": "Master",
                     "controlAggregation": "beginColumnPages",
                     "viewPath": "demo.views.UploadCP"
+                },
+                "masterEscalas": {
+                    "viewName": "masterEscalas",
+                    "viewPath": "demo.views.acuerdosEscalas",
+                    "controlAggregation": "beginColumnPages"
                 }
             }
         },

@@ -1,0 +1,286 @@
+
+    <mvc:View displayBlock="true" 
+    xmlns:f="sap.f" 
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar" 
+    xmlns:vm="sap.ui.comp.variants" 
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+	controllerName="demo.controllers.acuerdosEscalas.masterEscalas"
+    height="100%">
+
+	<f:DynamicPage id="DP01"  
+		class="sapUiContentPadding"> 
+        <f:header>
+            <f:DynamicPageHeader id="DPH" pinnable="true">
+                <f:content>
+                    <fb:FilterBar id="filterBar"  header="Header" 
+		                reset="onReset" search="searchData" clear="clearFilters" cancel="onCancel" 
+		                filtersDialogClosed = "onFiltersDialogClosed"
+		                showRestoreButton="false" showClearButton="false" useToolbar="false"> 
+			
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem id="FG01" groupName="__$INTERNAL$" name="A" label="{appTxts>/polizas.sociedad}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        id="sociedadInput"
+                                        placeholder="{appTxts>/polizas.sociedad}"
+                                        showSuggestion="true"
+                                        maxLength="4"
+                                        >
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        
+                            <fb:FilterGroupItem id="FG02" groupName="__$INTERNAL$" name="B" label="{appTxts>/polizas.docto}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        id="documentoInput"
+                                        placeholder="{appTxts>/polizas.docto}"
+                                        showSuggestion="true"
+                                        maxLength="10"
+                                        >
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem id="FG03" groupName="__$INTERNAL$" name="C" label="{appTxts>/polizas.ejercicio}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        id="ejercicioInput"
+                                        placeholder="{appTxts>/polizas.ejercicio}"
+                                        showSuggestion="true"
+                                        maxLength="4"
+                                        >
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                        </fb:filterGroupItems>
+
+	                </fb:FilterBar>
+                   <layout:HorizontalLayout id="HL01" allowWrapping="true">
+                        <layout:VerticalLayout  id="VL01" class="sapUiMediumMarginEnd">
+                            <ObjectAttribute    id="OA01" title="{appTxts>/polizas.vendor}"/>
+                        </layout:VerticalLayout>
+                        <layout:VerticalLayout id="VL01D" class="sapUiMediumMarginEnd">
+                            <ObjectAttribute id="OA01D" text="{escalaTotModel>/VendorName}"/>
+                        </layout:VerticalLayout>
+                   </layout:HorizontalLayout>
+
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+		<f:content>
+            <VBox id="VB01">
+                
+                <Table 
+                    growing="true" 
+                    growingScrollToLoad="true"
+                    growingThreshold="10"
+                    noDataText="{appTxts>/polizas.noData}" 
+                    id="tableEscalas"
+                    items="{EscalasDta>/}">
+                    <headerToolbar>
+                        <OverflowToolbar id="OTB01">
+                            <Title id="Title01" text="{appTxts>/polizas.Position} ({EscalasDta>/length})" />
+                            <ToolbarSpacer id="TBS01"/>
+    
+                            <Button id="BTNC" icon="sap-icon://monitor-payments" text="{appTxts>/polizas.detCargo}" 
+                                press=".onDebitDetail"
+                                visible="{= ${EscalasDta>/length} > 0}"
+                            />
+                            <Button id="BTNE" icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
+                                press=".buildExportTable"
+                                visible="{= ${EscalasDta>/length} > 0}"
+                            />
+                            <Select id="sel01"
+                                visible="{= ${EscalasDta>/length} > 0 }"
+                                change=".paginateValue(${$parameters>/selectedItem}, 'EscalasDta', '/')">
+                                <items>
+                                    <core:Item id="is01" key="10" text="10"/>
+                                    <core:Item id="is02" key="20" text="20"/>
+                                    <core:Item id="is03" key="50" text="50"/>
+                                    <core:Item id="is04" key="100" text="100"/>
+                                </items>
+                            </Select>
+                        </OverflowToolbar>
+                    </headerToolbar>
+
+                    <columns>
+                        <Column id="CAcc" width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text id="txtA" text="{appTxts>/ACEscalas.arrangement}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                            <footer>
+                                <Text id="txtT" text="Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </footer>
+                        </Column>
+                        
+                        <Column id="CClas" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text id="txtC" text="{appTxts>/ACEscalas.movClass}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                        </Column>
+                        <Column id="CRef" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text id="txtR" text="{appTxts>/ACEscalas.reference}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                        </Column>
+                        <Column id="CPlanta" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text id="txtP" text="{appTxts>/ACEscalas.plant}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                        </Column>
+                        <Column id="CImp" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text id="txtI" text="{appTxts>/ACEscalas.amount}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                            <footer>
+                                <ObjectNumber id="ONT"
+                                    number="{
+                                        parts:[{path:'escalaTotModel>/totImporte'},{path:'CurrencyCode'}],
+                                        type: 'sap.ui.model.type.Currency',
+                                        formatOptions: {showMeasure: false}
+                                            }"
+                                    unit="{escalaTotModel>/currCode}" />
+                            </footer>
+                        </Column>
+                        <Column id="CDescP" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text id="txtDS" text="{appTxts>/ACEscalas.perDescount}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                        </Column>
+                        <Column id="CDesc" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text id="txtD" text="{appTxts>/ACEscalas.Descount}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                            <footer>
+                                <ObjectNumber id="OND"
+                                    number="{
+                                        parts:[{path:'escalaTotModel>/TotDescto'},{path:'CurrencyCode'}],
+                                        type: 'sap.ui.model.type.Currency',
+                                        formatOptions: {showMeasure: false}
+                                            }"
+                                    unit="{escalaTotModel>/currCode}" />
+                            </footer>
+                        </Column>
+
+                        <Column id="CsIVA" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text id="txtIVA" text="{appTxts>/ACEscalas.IVA}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                            <footer>
+                                <ObjectNumber id="ONDIVA"
+                                    number="{
+                                        parts:[{path:'escalaTotModel>/totIVA'},{path:'CurrencyCode'}],
+                                        type: 'sap.ui.model.type.Currency',
+                                        formatOptions: {showMeasure: false}
+                                            }"
+                                    unit="{escalaTotModel>/currCode}" />
+                            </footer>
+                        </Column>
+                        <Column id="CsIEPS" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text id="txtIPES" text="{appTxts>/ACEscalas.IEPS}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                            <footer>
+                                <ObjectNumber id="ONDIEPS"
+                                    number="{
+                                        parts:[{path:'escalaTotModel>/totIEPS'},{path:'CurrencyCode'}],
+                                        type: 'sap.ui.model.type.Currency',
+                                        formatOptions: {showMeasure: false}
+                                            }"
+                                    unit="{escalaTotModel>/currCode}" />
+                            </footer>
+                        </Column>
+
+                        <Column id="Cstot" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text id="txtST" text="{appTxts>/ACEscalas.subtotal}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                            <footer>
+                                <ObjectNumber id="ONDSTT"
+                                    number="{
+                                        parts:[{path:'escalaTotModel>/TotStot'},{path:'CurrencyCode'}],
+                                        type: 'sap.ui.model.type.Currency',
+                                        formatOptions: {showMeasure: false}
+                                            }"
+                                    unit="{escalaTotModel>/currCode}" />
+                            </footer>
+                        </Column>
+                    </columns>
+
+                    <items>
+                        <ColumnListItem id="CItems">                    
+                            <cells>
+                                <ObjectIdentifier id="OIK"
+                                    title="{EscalasDta>knuma}" 
+                                    titleActive="false"/>
+                                <ObjectIdentifier
+                                    text="{EscalasDta>bwart}" />
+                                <ObjectIdentifier
+                                    text="{EscalasDta>xblnr}" />
+                                <ObjectIdentifier
+                                    text="{EscalasDta>werks}" />
+                                <ObjectNumber id="ONDM"
+                                    number="{
+                                        parts:[{path:'EscalasDta>dmbtr'},{path:'CurrencyCode'}],
+                                        type: 'sap.ui.model.type.Currency',
+                                        formatOptions: {showMeasure: false}
+                                            }"
+                                    unit="{EscalasDta>waers}" />
+                                <ObjectNumber id="ONDS"
+                                    number="{
+                                        parts:[{path:'EscalasDta>zboni'},{path:'CurrencyCode'}],
+                                        type: 'sap.ui.model.type.Currency',
+                                        formatOptions: {showMeasure: false}
+                                            }"
+                                    unit="{EscalasDta>konwa}" />
+                                <ObjectIdentifier
+                                    text="{EscalasDta>zmgn3}" />
+
+                                <ObjectNumber id="ONDSTIVA"
+                                    number="{
+                                        parts:[{path:'EscalasDta>ziva'},{path:'CurrencyCode'}],
+                                        type: 'sap.ui.model.type.Currency',
+                                        formatOptions: {showMeasure: false}
+                                            }"
+                                    unit="{EscalasDta>waers}" />
+                                <ObjectNumber id="ONDSTIEPS"
+                                    number="{
+                                        parts:[{path:'EscalasDta>zieps'},{path:'CurrencyCode'}],
+                                        type: 'sap.ui.model.type.Currency',
+                                        formatOptions: {showMeasure: false}
+                                            }"
+                                    unit="{EscalasDta>waers}" />
+
+                                <ObjectNumber id="ONDST"
+                                    number="{
+                                        parts:[{path:'EscalasDta>stotal'},{path:'CurrencyCode'}],
+                                        type: 'sap.ui.model.type.Currency',
+                                        formatOptions: {showMeasure: false}
+                                            }"
+                                    unit="{EscalasDta>waers}" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+                
+                <OverflowToolbar id="OFT" visible="{= ${EscalasDta>/results/length} > 0 }">
+                    <Text id="txtIR" text="{EscalasDta>/initRow} - {EscalasDta>/endRow} {appTxts>/pagination.of} {EscalasDta>/results/length}" />
+                    <ToolbarSpacer id="TBS"/>
+                    <Button id="BTNL" type="Default" icon="sap-icon://slim-arrow-left" 
+                            press=".prevPagination(${EscalasDta>/iterator}, ${EscalasDta>/initRow}, 'EscalasDta', '/PolizasDet')" 
+                            enabled="{= ${EscalasDta>/iterator} !== 1}" />
+                    <Button id="BTNR" type="Default" icon="sap-icon://slim-arrow-right" 
+                            press=".nextPagination(${EscalasDta>/PolizasDet/Paginated/iterator}, ${EscalasDta>/PolizasDet/Paginated/endRow}, 'EscalasDta', '/PolizasDet')" 
+                            enabled="{= ${EscalasDta>/PolizasDet/Paginated/endRow} !== ${EscalasDta>Det/results/length}}" />
+                </OverflowToolbar>
+
+            </VBox>
+		</f:content>
+	</f:DynamicPage>
+
+</mvc:View>
