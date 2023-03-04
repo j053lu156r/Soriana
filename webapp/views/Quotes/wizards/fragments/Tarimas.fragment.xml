@@ -30,7 +30,8 @@
 
     <buttons >
 		
-			<Button id="Guardar" text="Guardar " width="130px" type="Accept" press="ActualizacionTarima"/>
+			<Button id="Guardar" text="Guardar" width="130px" type="Accept" press="ActualizacionTarima"/>
+			<Button id="Cancelar" text="Cancelar" width="130px" type="Accept" press="handleClose"/>
 		
 		</buttons>
 </Dialog>
