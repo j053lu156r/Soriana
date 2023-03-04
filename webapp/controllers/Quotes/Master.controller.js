@@ -282,6 +282,62 @@ sap.ui.define([
                 this.getOwnerComponent().getRouter().navTo("detailQuotes", { layout: sap.f.LayoutType.MidColumnFullScreen, document: document }, true);
             }
         },
+        Confirmacion:function(oEvent){
+            var oSelectedItem = oEvent.getSource().getParent();
+           
+           
+console.log("juan")
+
+
+
+    sap.m.MessageBox["confirm"](
+        this.getView().getModel("appTxts").getProperty("/quotes.confirmcitabtn"),{
+          actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+          onClose: async function (oAction) {
+            if (oAction === sap.m.MessageBox.Action.YES) {
+                var json = {
+                    Proveedor: oSelectedItem.getBindingContext("tableQuotesModel").getProperty("Proveedor"),
+                    Action: "4",
+                
+                    CTCITASCAB: [
+                      {
+                        Folio: oSelectedItem.getBindingContext("tableQuotesModel").getProperty("Folio"),
+                        Centro: oSelectedItem.getBindingContext("tableQuotesModel").getProperty("Centro"),
+                        Fechacita: oSelectedItem.getBindingContext("tableQuotesModel").getProperty("Fechacita"),
+                        Proveedor: oSelectedItem.getBindingContext("tableQuotesModel").getProperty("Proveedor"),
+                      },
+                    ],
+                    CTCITASDET: [],
+                    ETRETURN: [],
+                  };
+                
+                  var model = "ZOSP_CITAS_ADM_SRV";
+                  var entity = "/MainSet" ;
+                  var json2 = JSON.stringify(json);
+                  var that = this;
+                
+                  that._POSToData(model, entity, json2).then(function (_GEToDataV2Response) {
+                      sap.ui.core.BusyIndicator.hide();
+                
+                      var response = _GEToDataV2Response.d;
+                
+                      if (response.Success === "X") {
+                        sap.m.MessageBox.success(that.getView().getModel("appTxts").getProperty("/quotes.confirmcita"));
+                      } else {
+                        sap.m.MessageBox.error(response.ETRETURN.results[0].Message);
+                      }
+                
+                     
+                      that.searchData();
+                    });
+            }
+          }.bind(this),
+        }
+      );
+
+
+
+        },
 
         onListItemPress: function (oEvent) {
       
