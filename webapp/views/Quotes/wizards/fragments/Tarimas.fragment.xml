@@ -1,0 +1,37 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	
+<Dialog id="myDialog" title="Tarimas" draggable="true"  contentWidth="50%">
+
+	<Table mode="MultiSelect"  
+			items="{path : 'Tarimas>/'}"
+			autoPopinMode="true"
+            id="tableid" >
+		<columns>
+			<Column width="30%">
+				<Text text="Tarima" />
+			</Column>
+			<Column>
+				<Text text="Cantidad"  />
+			</Column>
+			
+		</columns>
+		<items>
+			<ColumnListItem>
+				<cells>
+					<Text text="Tarima n° {Tarimas>Ztarima}" />
+					<Input value="{Tarimas>Menge}" />
+				
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+
+    <buttons >
+		
+			<Button id="Guardar" text="Guardar " width="130px" type="Accept" press="ActualizacionTarima"/>
+		
+		</buttons>
+</Dialog>
+</core:FragmentDefinition>

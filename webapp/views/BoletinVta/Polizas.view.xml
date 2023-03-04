@@ -133,7 +133,7 @@
                                     type: 'sap.ui.model.type.Currency',
                                     formatOptions: {showMeasure: false}
                                         }"
-                                unit="MXN" />
+                                unit="{acuTotDetModel>/currCode}" />
                         </footer>
 					</Column>
 					<Column id="CDesc" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
@@ -147,7 +147,7 @@
                                     type: 'sap.ui.model.type.Currency',
                                     formatOptions: {showMeasure: false}
                                         }"
-                                unit="MXN" />
+                                unit="{acuTotDetModel>/currCode}" />
                         </footer>
 					</Column>
                     <!--
@@ -185,14 +185,14 @@
                                     type: 'sap.ui.model.type.Currency',
                                     formatOptions: {showMeasure: false}
                                         }"
-                                unit="MXN" />
+                                unit="{PolizasHdr>Waers}" />
                             <ObjectNumber id="OND"
                                 number="{
                                     parts:[{path:'PolizasHdr>Wrbtr'},{path:'CurrencyCode'}],
                                     type: 'sap.ui.model.type.Currency',
                                     formatOptions: {showMeasure: false}
                                         }"
-                                unit="MXN" />
+                                unit="{PolizasHdr>Waers}" />
                             <!--
                             <ObjectNumber id="ONI2"
                                 number="{

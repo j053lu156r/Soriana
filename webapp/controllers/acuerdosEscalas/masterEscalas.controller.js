@@ -8,8 +8,8 @@
     ], function (Controller, MessageBox, PDFViewer, History, Router) {
         "use strict";
     
-        var oModel = new this.Polizas();
-        return Controller.extend("demo.controllers.BoletinVta.Polizas", {
+        var oModel = new this.ACEscalas();
+        return Controller.extend("demo.controllers.acuerdosEscalas.masterEscalas", {
             onInit: function () {
                 this._pdfViewer = new PDFViewer();
                 this.getView().addDependent(this._pdfViewer);
@@ -21,7 +21,7 @@
                     onAfterShow: function (oEvent) {
                         var barModel = this.getOwnerComponent().getModel();
                         barModel.setProperty("/barVisible", true);
-                        this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "PolizasHdr");
+                        this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "EscalasDta");
                         this.clearFilters();
                     }
                 }, this);
@@ -29,9 +29,11 @@
             },
 
             searchData: function () {
+
                 var texts = this.getOwnerComponent().getModel("appTxts");
-                var textindSoc = texts.getProperty("/polizas.indSoc");
-                var textindEje = texts.getProperty("/polizas.indEje");
+                var textindSoc = texts.getProperty("/ACEscalas.indSoc");
+                var textindEje = texts.getProperty("/ACEscalas.indEje");
+                var vErrVendor = texts.getProperty("/foliosCap.indVendor");
                 var bContinue = true;
     
                 if (!oModel.getModel()) {
@@ -41,9 +43,13 @@
                 var sociedad = this.getView().byId('sociedadInput').getValue();
                 var documento = this.getView().byId('documentoInput').getValue();
                 var ejercicio = this.getView().byId('ejercicioInput').getValue();
-        
-                if ( documento == "" || documento == null ) {
-                    MessageBox.error(texts.getProperty("/polizas.indNo"));
+                var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
+                
+                if ( vLifnr === "" || vLifnr === null)  {
+                    bContinue = false;
+                    MessageBox.error(vErrVendor);
+                } else if ( documento == "" || documento == null ) {
+                    MessageBox.error(texts.getProperty("/ACEscalas.indNo"));
                     bContinue = false;
                 } else if ( documento != "" && documento != null ) {
                     if ( sociedad == "" || sociedad == null ){
@@ -57,10 +63,10 @@
     
                 if (bContinue) {
     
-                    var url = "finalcialDocumentsSet?$filter=Bukrs eq '" + sociedad + "' and Belnr eq '" + documento +
-                              "' and Gjahr eq '" + ejercicio + "'";
+                    var url = "ScaleSet?$filter=bukrs eq '" + sociedad + "' and mblnr eq '" + documento +
+                              "' and mjahr eq '" + ejercicio + "' and lifnr eq '" + vLifnr + "'";
     
-                    this.getView().byId('tablePolizas').setBusy(true);
+                    this.getView().byId('tableEscalas').setBusy(true);
                     oModel.getJsonModelAsync(
                         url,
                         function (jsonModel, parent) {
@@ -68,33 +74,34 @@
     
                             if (objResponse != null) {
                                 if (objResponse.length > 0) {
-                                    var vendorName = objResponse[0].Name;
-                                    var Agreement = objResponse[0].Knuma;
-                                    var totBase = objResponse.reduce((a, b) => +a + (+b["Dmbtr"] || 0), 0);
-                                    var totDescto = objResponse.reduce((a, b) => +a + (+b["Wrbtr"] || 0), 0);
-                                    var totIVA = objResponse.reduce((a, b) => +a + (+b["Wmwst"] || 0), 0);
-                                    var currCode = objResponse[0].Waers;
+                                    
+                                    var totImporte = objResponse.reduce((a, b) => +a + (+b["dmbtr"] || 0), 0);
+                                    var totDescto = objResponse.reduce((a, b) => +a + (+b["zboni"] || 0), 0);
+                                    var totIVA = objResponse.reduce((a, b) => +a + (+b["ziva"] || 0), 0);
+                                    var totIEPS = objResponse.reduce((a, b) => +a + (+b["zieps"] || 0), 0);
+                                    var TotStot = objResponse.reduce((a, b) => +a + (+b["stotal"] || 0), 0);
+                                    var currCode = objResponse[0].waers;
                                     var totalAcuDet = {
-                                        "TotBase": Number(totBase.toFixed(2)),
+                                        "totImporte": Number(totImporte.toFixed(2)),
                                         "TotDescto": Number(totDescto.toFixed(2)),
-                                        "TotIVA": Number(totIVA.toFixed(2)),
-                                        "VendorName": vendorName,
-                                        "Agreement": Agreement,
+                                        "totIVA": Number(totIVA.toFixed(2)),
+                                        "totIEPS": Number(totIEPS.toFixed(2)),
+                                        "TotStot": Number(TotStot.toFixed(2)),
                                         "currCode": currCode
                                     };
                                     parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(totalAcuDet), 
-                                        "acuTotDetModel");
+                                        "escalaTotModel");
         
                                     parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(objResponse),
-                                        "PolizasHdr");
+                                        "EscalasDta");
         
-                                    parent.paginate("PolizasHdr", "/PolizasDet", 1, 0);
+                                    parent.paginate("EscalasDta", "/", 1, 0);
                                 }
                             }
-                            parent.getView().byId('tablePolizas').setBusy(false);
+                            parent.getView().byId('tableEscalas').setBusy(false);
                         },
                         function (parent) {
-                            parent.getView().byId('tablePolizas').setBusy(false);
+                            parent.getView().byId('tableEscalas').setBusy(false);
                         },
                         this
                     );
@@ -112,33 +119,10 @@
                 this.getView().byId("sociedadInput").setValue("2001");
                 this.getView().byId("documentoInput").setValue("");
                 this.getView().byId("ejercicioInput").setValue(currentYear);
-                var oModel = this.getOwnerComponent().getModel("PolizasHdr");
+                var oModel = this.getOwnerComponent().getModel("EscalasDta");
                 if (oModel) {
                     oModel.setData([]);
                 }
-            },
-
-            onDebitDetail: function () {
-
-                var documento = this.getView().byId('documentoInput').getValue();
-                var ejercicio = this.getView().byId('ejercicioInput').getValue();
-
-                var odata = this.getOwnerComponent().getModel("PolizasHdr");
-                var results = odata.getProperty("/");
-                var docResult = results[0]; 
-                
-                this.getOwnerComponent().getRouter().navTo("detailCargoBoletinVta",
-                    {
-                        layout: sap.f.LayoutType.TwoColumnsMidExpanded,
-                        Company: docResult.Bukrs,
-                        Agreement: docResult.Knuma,
-                        Vendor : docResult.Lifnr,
-                        DateCreated: docResult.Erdat,
-                        document: documento,
-                        year: ejercicio,
-
-                    }, true);
-
             },
     
             buildExportTable: function () {            
@@ -148,42 +132,85 @@
                      {
                         name: texts.getProperty("/Polizas.sucursal"),
                         template: {
-                            content: "{Centro}"
+                            content: "{bukrs}"
                         }
                     },
                     {
                         name: texts.getProperty("/Polizas.base"),
                         template: {
-                            content: "{Base}"
+                            content: "{mblnr}"
                         }
                     },
                     {
                         name: texts.getProperty("/Polizas.desc"),
                         template: {
-                            content: "{Descuento}"
+                            content: "{mjahr}"
                         }
                     },
                     {
                         name: texts.getProperty("/Polizas.iva"),
                         template: {
-                            content: "{IVA}"
+                            content: "{lifnr}"
                         }
                     },
                     {
                         name: texts.getProperty("/Polizas.pDesc"),
                         template: {
-                            content: "{PDesc}"
+                            content: "{knuma}"
                         }
                     },
                     {
                         name: texts.getProperty("/Polizas.unidad"),
                         template: {
-                            content: "{Unidad}"
+                            content: "{bwart}"
+                        }
+                    },
+                    {
+                        name: texts.getProperty("/Polizas.unidad"),
+                        template: {
+                            content: "{xblnr}"
+                        }
+                    },
+                    {
+                        name: texts.getProperty("/Polizas.unidad"),
+                        template: {
+                            content: "{werks}"
+                        }
+                    },
+                    {
+                        name: texts.getProperty("/Polizas.unidad"),
+                        template: {
+                            content: "{dmbtr}"
+                        }
+                    },
+                    {
+                        name: texts.getProperty("/Polizas.unidad"),
+                        template: {
+                            content: "{zboni}"
+                        }
+                    },
+                    {
+                        name: texts.getProperty("/Polizas.unidad"),
+                        template: {
+                            content: "{zmgn3}"
+                        }
+                    },
+                    {
+                        name: texts.getProperty("/Polizas.unidad"),
+                        template: {
+                            content: "{meins}"
+                        }
+                    },
+                    {
+                        name: texts.getProperty("/Polizas.unidad"),
+                        template: {
+                            content: "{konwa}"
                         }
                     }
+
                 ];
     
-                this.exportxls('PolizasHdr', '/', columns);
+                this.exportxls('EscalasDta', '/', columns);
             },
     
             onPressPDF: function () {

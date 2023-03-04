@@ -133,6 +133,12 @@
                             </header>
                             <footer/>
                         </Column>
+                            <Column width="auto" vAlign="Top" minScreenWidth="Tablet" mergeDuplicates="false">
+                            <header>
+                                <Text text="" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                            <footer/>
+                        </Column>
                         <!-- <Column width="auto" vAlign="Top" minScreenWidth="Tablet" mergeDuplicates="false">
 						<header>
 							<Text text="{appTxts>/quotes.packageBoxes}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -162,6 +168,7 @@
                                 <Text xmlns="sap.m" text="{tableQuotesModel>Proveedor}"/>
                                 <Text xmlns="sap.m" text="{tableQuotesModel>Tipocita}"/>
                                 <Text xmlns="sap.m" text="{tableQuotesModel>Tipounidad}"/>
+                                <Button text="Confirmar Cita" press="Confirmacion"></Button>
                             </cells>
                         </ColumnListItem>
                     </items>

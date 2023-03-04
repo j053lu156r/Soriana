@@ -131,6 +131,7 @@ sap.ui.define([
                         totDiscount = objResponse[0].Discount;
                         var TotQty = objResponse.reduce((a, b) => +a + (+b["Qty"] || 0), 0);
                         var total = objResponse.reduce((a, b) => +a + (+b["Total"] || 0), 0);
+                        var currCode = objResponse[0].Currency;
                         var totalMatDet = {
                             "TotCost": Number(totCost.toFixed(2)),
                             "TotPrice": Number(totPrice.toFixed(2)),
@@ -140,7 +141,8 @@ sap.ui.define([
                             "TotDiscount": Number(totDiscount),
                             "Total": Number(total.toFixed(2)),
                             "TotQty": Number(TotQty.toFixed(0)),
-                            "Promotion": objResponse[0].Promotion
+                            "Promotion": objResponse[0].Promotion,
+                            "currCode": currCode
                         };
                         parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(totalMatDet), 
                             "debTotMatModel");
