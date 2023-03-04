@@ -687,6 +687,21 @@
                             "idFunction": 54
                         }
                     ]
+                },
+                {
+                    "id": "0051",
+                    "title": "/tiles.AcuerdosEscalas",
+                    "subHeader": "",
+                    "icon": "sap-icon://my-sales-order",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterEscalas",
+                    "functions": [
+                        {
+                            "idFunction": 69
+                        }
+                    ]
                 }
             ]
         },
