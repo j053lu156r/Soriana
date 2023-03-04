@@ -39,7 +39,8 @@
             <Input id="carrierInput" class= "sapUiSmallMarginBottom" width="auto" change=".hasOnlyNumbers" type="Number" />
             <Label text="{appTxts>/quotes.quoteDate}" labelFor="DP1"/>
             <DatePicker id="DP1" width="auto" class="sapUiSmallMarginBottom" placeholder="{appTxts>/quotes.quoteDate}" change="appointmentDateChange"/>
-
+             <!--  <Label text="Cant Tarimas" labelFor="tarimaInput" id="txttarimaInput"/>
+            <Input id="tarimaInput" class= "sapUiSmallMarginBottom" width="auto" change="tes" type="Number" />-->
         </VBox>
     </HBox>
 </core:FragmentDefinition>
