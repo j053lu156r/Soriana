@@ -480,6 +480,17 @@ function Polizas() {
 Polizas.prototype = Object.create(BaseModel.prototype);
 Polizas.prototype.constructor = Polizas;//Model Polizas
 
+//Model acuerdos de escalas
+function ACEscalas() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_AC_ESCALA_SRV/";
+    params.sModel = "ACEscalasModel";
+    BaseModel.call(this, params);
+}
+
+ACEscalas.prototype = Object.create(BaseModel.prototype);
+ACEscalas.prototype.constructor = ACEscalas;//Model ACEscalas
+
 //MOdel REporte  Mejor Condicion 
 
 //Model Acuerdos
