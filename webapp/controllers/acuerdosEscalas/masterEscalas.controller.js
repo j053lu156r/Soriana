@@ -45,7 +45,7 @@
                 var ejercicio = this.getView().byId('ejercicioInput').getValue();
                 var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
                 
-                if ( vLifnr === "" || vLifnr === null)  {
+                if ( vLifnr === "" || vLifnr === null || vLifnr==="undefined")  {
                     bContinue = false;
                     MessageBox.error(vErrVendor);
                 } else if ( documento == "" || documento == null ) {
@@ -63,8 +63,8 @@
     
                 if (bContinue) {
     
-                    var url = "ScaleSet?$filter=bukrs eq '" + sociedad + "' and mblnr eq '" + documento +
-                              "' and mjahr eq '" + ejercicio + "' and lifnr eq '" + vLifnr + "'";
+                    var url = "ScaleSet?$filter=bukrs eq '" + sociedad + "' and belnr eq '" + documento +
+                              "' and gjahr eq '" + ejercicio + "' and lifnr eq '" + vLifnr + "'";
     
                     this.getView().byId('tableEscalas').setBusy(true);
                     oModel.getJsonModelAsync(
