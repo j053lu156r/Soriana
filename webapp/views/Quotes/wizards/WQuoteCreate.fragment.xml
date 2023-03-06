@@ -4,7 +4,7 @@
     xmlns:form="sap.ui.layout.form"
     xmlns:u="sap.ui.unified"
     xmlns:layout="sap.ui.layout">
-    <Dialog id="wizardDialog" showHeader="true" title="{appTxts>/quotes.createNewQuote}" verticalScrolling="false" stretch="true">
+    <Dialog id="wizardDialog" showHeader="true" title="" verticalScrolling="false" stretch="true">
         <f:DynamicPage stickySubheaderProvider="QuoteCedisWizard" toggleHeaderOnTitleClick="true" class="sapUiNoContentPadding" showFooter="true">
             <f:content>
                 <Wizard id="QuoteCedisWizard" class="sapUiResponsivePadding--header sapUiResponsivePadding--content" showNextButton="false" renderMode="Page">

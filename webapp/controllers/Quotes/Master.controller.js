@@ -181,7 +181,7 @@ sap.ui.define([
 
         clearFilds: function () {
             // this.getView().byId("quoteFolioInput").setValue("");
-            this.getView().byId("dateRange").setValue("");
+            this.getView().byId("dateRange").setDateValue("");
             this.getView().byId("quoteType").setValue("");
             this.getView().byId("quoteStatus").setValue("");
             this.getView().byId("quoteUnitType").setValue("");
@@ -340,27 +340,26 @@ console.log("juan")
         },
 
         onListItemPress: function (oEvent) {
-      
-            var modelo=this.getView().getModel("tableQuotesModel").getData()
+      var that =this;
+            var modelo=that.getView().getModel("tableQuotesModel").getData()
             modelo=modelo.CTCITASCAB.results;
             console.log(modelo)
      
         var productPath = oEvent.getSource().getBindingContext("tableQuotesModel").getPath(),
         product = productPath.split("/").slice(-1).pop();
-       // console.log(product)
-      //  console.log(modelo[product])
-        this.searchDetail(modelo[product].Folio)
+        console.log(product)
+      console.log(modelo[product])
+      that.searchDetail(modelo[product].Folio)
         modelo[product].lectura=true;
-       // console.log(modelo[product])
-        var  cmModel = new sap.ui.model.json.JSONModel(modelo[product]);
-        this.getOwnerComponent().setModel(cmModel, "ModelLectura");
-        this.getOwnerComponent().setModel(
-            new sap.ui.model.json.JSONModel({
-              editable: false,
-            }),
-            "Modeleditable"
-          );
-        this.createQuote('V')
+        modelo[product].Estilo='V';
+
+       console.log(modelo[product])
+      //  var  cmModel = new sap.ui.model.json.JSONModel(modelo[product]);
+        that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(modelo[product]),
+        "ModelLectura");
+       // that.getOwnerComponent().setModel(cmModel, "ModelLectura");
+        //that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({editable: false,}), "Modeleditable");
+        that.createQuote(modelo[product])
 
        
         },
