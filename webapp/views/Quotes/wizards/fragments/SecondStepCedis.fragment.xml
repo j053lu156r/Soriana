@@ -93,14 +93,14 @@
                             <ObjectIdentifier text="{Pedidos>MengeA}"/>
                         </t:template>
                     </t:Column>
-                    <t:Column >
+                    <t:Column  visible="{=${path:'TemporalModel>/generalData/tipoCita'}!=='01' ? true :false}">
                         <Label text="{appTxts>/quotes.quantitySummon}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                         <t:template>
                             <Input id="inputCantidad" value="{Pedidos>Citado}" liveChange="captureQuntSummon" enabled="{path:'Modeleditable>/editable'}" editable="{=${path:'TemporalModel>/generalData/tipoCita'}==='02' ? false :true}" customData:menger="{Pedidos>MengeA}" customData:ebeln="{Pedidos>Ebeln}" customData:matnr="{Pedidos>Matnr}" type="Number"/>
                         </t:template>
                     </t:Column>
                      <!--  --> 
-                        <t:Column   visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='02' ? true :false}">
+                        <t:Column   visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='02' || ${path:'TemporalModel>/generalData/tipoCita'}==='01'? true :false}">
                         <Label text="{appTxts>/quotes.tienda}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                         <t:template>
 <ObjectIdentifier text="{Pedidos>ZwerksD}"/>
@@ -137,23 +137,14 @@
                             <ObjectIdentifier text="{Pedidos>Zcjpic}"/>
                         </t:template>
                     </t:Column>
+                     <t:Column visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='01' ? true :false}">
+                        
+                        <t:template>
+                            <Button  text="Tarimas" press="selectTarima"  />
+                         </t:template>
+                    </t:Column>
                 </t:columns>
-                <!-- <items>
-                    <ColumnListItem>
-                        <cells>
-                            <ObjectIdentifier text="{Pedidos>Ebeln}"/>
-                            <ObjectIdentifier text="{Pedidos>Matnr}"/>
-                            <ObjectIdentifier text="{Pedidos>Ean11}"/>
-                            <ObjectIdentifier text="{Pedidos>Menge}"/>
-                            <ObjectIdentifier text="{Pedidos>Kdatb}"/>
-                            <ObjectIdentifier text="{Pedidos>Kdate}"/>
-                            <ObjectIdentifier text="{Pedidos>Werks}"/>
-                            <ObjectIdentifier text="{Pedidos>MengeR}"/>
-                            <ObjectIdentifier text="{Pedidos>MengeR}"/>
-                            <Input liveChange="captureQuntSummon" customData:menger="{Pedidos>MengeR}" customData:ebeln="{Pedidos>Ebeln}" customData:matnr="{Pedidos>Matnr}" type="Number"/>
-                        </cells>
-                    </ColumnListItem>
-                </items> -->
+             
             </t:Table>
 
             <OverflowToolbar >
