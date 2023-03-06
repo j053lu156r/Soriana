@@ -60,6 +60,8 @@ sap.ui.define(
       },
 
       createQuote: function (selectedKey) {
+        console.log(selectedKey)
+      
         if (!this.hasAccess(31)) {
           return;
         }
@@ -93,7 +95,7 @@ sap.ui.define(
 
           var frag = "demo.views.Quotes.wizards.WQuoteCreate";
 
-          this.remissionType = selectedKey;
+         // this.remissionType = selectedKey;
           let that = this;
 
           // create Dialog
@@ -113,16 +115,21 @@ sap.ui.define(
           this._pDialog.then(function (oDialog) {
             oDialog.open();
 
-            var Datos = that.getView().getModel("ModelLectura").getData();
+            var Datos = selectedKey;
 
             if (selectedKey === "N") {
+            
               that.getView().byId("ModCita").setVisible(false);
               that.getView().byId("cancCita").setVisible(false);
             } else {
               that.getView().byId("ModCita").setVisible(true);
               that.getView().byId("cancCita").setVisible(true);
             }
+            console.log(Datos)
+            console.log(!Datos.lectura)
             if (!Datos.lectura) {
+              console.log("entro creacion")
+              that.getView().byId("wizardDialog").setTitle(that.getView().getModel("appTxts").getProperty("/quotes.createNewQuote"));
               that.setInitialDate();
               that.getView().byId("sTipoCita").setSelectedKey("");
               that.getView().byId("sTipoUnidad").setSelectedKey("");
@@ -136,15 +143,11 @@ sap.ui.define(
               that.getView().byId("platformsInput").setEditable(true);
               that.getView().byId("carrierInput").setEditable(true);
             } else {
+              console.log("entro edicion")
+              that.getView().byId("wizardDialog").setTitle(that.getView().getModel("appTxts").getProperty("/quotes.editNewQuote"));
               that.getView().byId("sTipoCita").setSelectedKey(Datos.Tipocita);
-              that
-                .getView()
-                .byId("sTipoUnidad")
-                .setSelectedKey(Datos.Tipounidad);
-              that
-                .getView()
-                .byId("DP1")
-                .setDateValue(new Date(Datos.Fechacita));
+              that.getView().byId("sTipoUnidad").setSelectedKey(Datos.Tipounidad);
+              that.getView().byId("DP1").setDateValue(new Date(Datos.Fechacita));
               that.getView().byId("totalpackagesInput").setValue(Datos.Bultos);
               that.getView().byId("platformsInput").setValue(Datos.Tarimas);
               that.getView().byId("carrierInput").setValue(Datos.Transportista);
@@ -162,9 +165,7 @@ sap.ui.define(
           });
         } else {
           sap.m.MessageBox.error(
-            this.getView()
-              .getModel("appTxts")
-              .getProperty("/quotes.messageNoSupplier")
+            this.getView().getModel("appTxts").getProperty("/quotes.messageNoSupplier")
           );
         }
       },
@@ -501,15 +502,14 @@ sap.ui.define(
                   }
                   let createObjReq;
                   console.log(Model2)
+                  console.log(ArrTCN)
+                  console.log(ArrT)
 
                   if(ArrTCN.length===0){
 MessageBox.alert("error al crear la cabecera es vacio")
 return
                   }
-                  if(ArrT.length===0){
-                    MessageBox.alert("error al crear el detalle es vacio")
-                    return
-                  }
+                 
                  
                   if (Model2.generalData.tipoCita === "01") {
 
@@ -522,6 +522,7 @@ return
                       ETRETURN: [],
                     };
                   } else {
+
                     createObjReq = {
                       Proveedor: Model.supplierInputKey.padStart(10, 0),
                       Action: "1",
