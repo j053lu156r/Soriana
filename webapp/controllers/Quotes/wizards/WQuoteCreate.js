@@ -60,7 +60,7 @@ sap.ui.define(
       },
 
       createQuote: function (selectedKey) {
-        console.log(selectedKey)
+        console.log("paso 2")
       
         if (!this.hasAccess(31)) {
           return;
@@ -125,10 +125,9 @@ sap.ui.define(
               that.getView().byId("ModCita").setVisible(true);
               that.getView().byId("cancCita").setVisible(true);
             }
-            console.log(Datos)
-            console.log(!Datos.lectura)
+           
             if (!Datos.lectura) {
-              console.log("entro creacion")
+             
               that.getView().byId("wizardDialog").setTitle(that.getView().getModel("appTxts").getProperty("/quotes.createNewQuote"));
               that.setInitialDate();
               that.getView().byId("sTipoCita").setSelectedKey("");
@@ -143,11 +142,12 @@ sap.ui.define(
               that.getView().byId("platformsInput").setEditable(true);
               that.getView().byId("carrierInput").setEditable(true);
             } else {
-              console.log("entro edicion")
+              console.log("paso 3")
+              that.getOwnerComponent().setModel( new sap.ui.model.json.JSONModel(Datos),  "ModelLectura" );
               that.getView().byId("wizardDialog").setTitle(that.getView().getModel("appTxts").getProperty("/quotes.editNewQuote"));
               that.getView().byId("sTipoCita").setSelectedKey(Datos.Tipocita);
               that.getView().byId("sTipoUnidad").setSelectedKey(Datos.Tipounidad);
-              that.getView().byId("DP1").setDateValue(new Date(Datos.Fechacita));
+              that.getView().byId("DP1").setDateValue(new Date((Datos.Fechacita).replaceAll("-",",")));
               that.getView().byId("totalpackagesInput").setValue(Datos.Bultos);
               that.getView().byId("platformsInput").setValue(Datos.Tarimas);
               that.getView().byId("carrierInput").setValue(Datos.Transportista);
@@ -244,7 +244,7 @@ sap.ui.define(
             this.searchOrders(this.buildSapDate(dateSelected));
           }
           if (this._oWizard.getProgressStep().sButtonText === "Paso 3") {
-            console.log()
+          
             if(this.getView().byId("tableWizardOrder").getSelectedIndices().length===0){
 
              
@@ -429,10 +429,7 @@ sap.ui.define(
                     }
                   } else if (Model2.generalData.tipoCita === "01") {
 
-                    console.log(appoimentModel);
-                    console.log(Model2);
-                    console.log(this.getOwnerComponent().getModel("Pedidos").getData())
-                    console.log(ArrTCN)
+                
 
                     for ( var x = 0; x <  this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results.length; x++ ) {
                       if (this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Selected ) {
@@ -501,9 +498,7 @@ sap.ui.define(
                     }
                   }
                   let createObjReq;
-                  console.log(Model2)
-                  console.log(ArrTCN)
-                  console.log(ArrT)
+               
 
                   if(ArrTCN.length===0){
 MessageBox.alert("error al crear la cabecera es vacio")
@@ -532,7 +527,7 @@ return
                     };
                   }
 
-                  console.log(createObjReq);
+              
                   sap.ui.core.BusyIndicator.show();
                   let resp = null;
 
@@ -635,7 +630,7 @@ return
       searchOrders: function (date) {
         let filtros = [];
         let that = this;
-
+        console.log("paso 4")
         filtros.push(
           this.buildFiltro(
             "IOption",
@@ -651,7 +646,8 @@ return
         );
 
         filtros.push(that.buildFiltro("IKdatb", date));
-        var Datos = that.getView().getModel("ModelLectura").getData();
+        var Datos = that.getOwnerComponent().getModel("ModelLectura").getData();
+      console.log(Datos)
 
         if (that.getView().getModel("PosicionesG") === undefined) {
           var PosicionesG = [];
@@ -659,6 +655,7 @@ return
           var PosicionesG = that.getView().getModel("PosicionesG").getData();
         }
 
+       
         sap.ui.core.BusyIndicator.show();
         let ARRTV = [];
         that
@@ -674,31 +671,19 @@ return
             let ARRfechas = [];
             let FechasI = [];
             let FechasF = [];
+           
             if (Datos.lectura) {
-              this.getOwnerComponent().setModel(
-                new sap.ui.model.json.JSONModel({
-                  editable: false,
-                }),
-                "Modeleditable"
-              );
+              console.log("paso 5")
+              this.getOwnerComponent().setModel( new sap.ui.model.json.JSONModel({ editable: false, }), "Modeleditable" );
 
-              console.log("1");
-              for (
-                var x = 0;
-                x < resp.data.results[0].ETOC.results.length;
-                x++
-              ) {
+             
+              for ( var x = 0;x < resp.data.results[0].ETOC.results.length; x++ ) {
                 resp.data.results[0].ETOC.results[x].Selected = true;
-
+                
                 for (var y = 0; y < PosicionesG.length; y++) {
-                  if (
-                    resp.data.results[0].ETOC.results[x].Matnr ===
-                      PosicionesG[y].Matnr &&
-                    resp.data.results[0].ETOC.results[x].Werks ===
-                      PosicionesG[y].Werks
-                  ) {
-                    resp.data.results[0].ETOC.results[x].Citado =
-                      PosicionesG[y].Citado;
+                  if ( resp.data.results[0].ETOC.results[x].Matnr === PosicionesG[y].Matnr && resp.data.results[0].ETOC.results[x].Werks ===  PosicionesG[y].Werks  && resp.data.results[0].ETOC.results[x].Ebeln === PosicionesG[y].Ebeln) {
+                 
+                    resp.data.results[0].ETOC.results[x].Citado =  PosicionesG[y].Citado;
 
                     ARRTV.push(resp.data.results[0].ETOC.results[x]);
                   }
@@ -707,31 +692,20 @@ return
 
               resp.data.results[0].ETOC.results = ARRTV;
             } else {
-              console.log("2");
+              console.log("paso 6")
               let ArgTemp = [];
-              console.log(resp.data.results[0]);
+           
               for (
                 var x = 0;
                 x < resp.data.results[0].ETOC.results.length;
                 x++
               ) {
-                FechasI.push({
-                  Finicio: new Date(resp.data.results[0].ETOC.results[x].Kdatb), // Ffin:new Date(resp.data.results[0].ETOC.results[x].Kdate)
-                });
-                FechasF.push({
-                  //  Finicio: new Date(resp.data.results[0].ETOC.results[x].Kdatb),
-                  Ffin: new Date(resp.data.results[0].ETOC.results[x].Kdate),
-                });
+                FechasI.push({ Finicio: new Date(resp.data.results[0].ETOC.results[x].Kdatb),  });
+                FechasF.push({ Ffin: new Date(resp.data.results[0].ETOC.results[x].Kdate), });
                 resp.data.results[0].ETOC.results[x].Selected = false;
 
-                if (
-                  that.getView().byId("sTipoCita").getSelectedKey() === "01"
-                ) {
-                  for (
-                    var y = 0;
-                    y < resp.data.results[0].ETOCSTO.results.length;
-                    y++
-                  ) {
+                if ( that.getView().byId("sTipoCita").getSelectedKey() === "01"  ) {
+                  for ( var y = 0; y < resp.data.results[0].ETOCSTO.results.length; y++    ) {
                     if ( parseInt(resp.data.results[0].ETOC.results[0].Ebeln) === parseInt(resp.data.results[0].ETOCSTO.results[0].Bednr ) && resp.data.results[0].ETOC.results[x].Abelp === resp.data.results[0].ETOCSTO.results[y].Abelp ) {
                       ArgTemp.push({
                         Abeln: resp.data.results[0].ETOC.results[x].Abeln,
@@ -774,31 +748,15 @@ return
                   }
                 }
 
-                if (
-                  that.getView().byId("sTipoCita").getSelectedKey() === "04"
-                ) {
-                  for (
-                    var y = 0;
-                    y < resp.data.results[0].ETMINIFULL03.results.length;
-                    y++
-                  ) {
-                    console.log(resp.data.results[0].ETOC.results);
-                    if (
-                      resp.data.results[0].ETOC.results[x].Abeln ===
-                        resp.data.results[0].ETMINIFULL03.results[y].Zabeln &&
-                      resp.data.results[0].ETOC.results[x].Abelp ===
-                        resp.data.results[0].ETMINIFULL03.results[y].Zabelp
-                    ) {
-                      resp.data.results[0].ETOC.results[x].Zceqfp =
-                        resp.data.results[0].ETMINIFULL03.results[y].Zceqfp;
-                      resp.data.results[0].ETOC.results[x].Zceqfu =
-                        resp.data.results[0].ETMINIFULL03.results[y].Zceqfu;
-                      resp.data.results[0].ETOC.results[x].Zcjpic =
-                        resp.data.results[0].ETMINIFULL03.results[y].Zcjpic;
-                      resp.data.results[0].ETOC.results[x].Zcpemf =
-                        resp.data.results[0].ETMINIFULL03.results[y].Zcpemf;
-                      resp.data.results[0].ETOC.results[x].Zcpemp =
-                        resp.data.results[0].ETMINIFULL03.results[y].Zcpemp;
+                if (that.getView().byId("sTipoCita").getSelectedKey() === "04" ) {
+                  for (var y = 0; y < resp.data.results[0].ETMINIFULL03.results.length;  y++ ) {
+                  
+                    if (resp.data.results[0].ETOC.results[x].Abeln === resp.data.results[0].ETMINIFULL03.results[y].Zabeln && resp.data.results[0].ETOC.results[x].Abelp === resp.data.results[0].ETMINIFULL03.results[y].Zabelp ) {
+                      resp.data.results[0].ETOC.results[x].Zceqfp = resp.data.results[0].ETMINIFULL03.results[y].Zceqfp;
+                      resp.data.results[0].ETOC.results[x].Zceqfu = resp.data.results[0].ETMINIFULL03.results[y].Zceqfu;
+                      resp.data.results[0].ETOC.results[x].Zcjpic = resp.data.results[0].ETMINIFULL03.results[y].Zcjpic;
+                      resp.data.results[0].ETOC.results[x].Zcpemf = resp.data.results[0].ETMINIFULL03.results[y].Zcpemf;
+                      resp.data.results[0].ETOC.results[x].Zcpemp = resp.data.results[0].ETMINIFULL03.results[y].Zcpemp;
                     }
                   }
                 }
@@ -913,7 +871,7 @@ return
                         for (var y = 0; y < oSelectedItem.getBindingContext("Pedidos").getProperty("Tarima").length; y++) {
                         
                             if(x === Number(oSelectedItem.getBindingContext("Pedidos").getProperty("Tarima")[y].Ztarima)){
-                              console.log(x)
+                            
                               menge = oSelectedItem.getBindingContext("Pedidos").getProperty("Tarima")[y].Menge
                               }
                               }
@@ -928,7 +886,7 @@ return
                           }
                     //    }
                 }
-                console.log(ATTemp)
+            
           this.getOwnerComponent().setModel( new sap.ui.model.json.JSONModel(ATTemp), "Tarimas");
         var oDialog = this.getView().byId("myDialog");
         if (!oDialog) {
@@ -948,9 +906,9 @@ return
         oDialog.close();
       },
       ActualizacionTarima: function () {
-       // console.log(this.ValidaCantidad())
+    
         if(this.ValidaCantidad()){
-          console.log("entro")
+       
           this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[Posicion].Tarima = [];
           for ( var x = 0;x < this.getView().byId("tableid").getSelectedItems().length;x++ ) {
             if(Number(this.getOwnerComponent().getModel("Tarimas").getData()[this.getView().byId("tableid").getSelectedItems()[x].sId.split("-")[4]].Menge) > 0){
@@ -958,7 +916,7 @@ return
                 this.getOwnerComponent().getModel("Tarimas").getData()[this.getView().byId("tableid").getSelectedItems()[x].sId.split("-")[4]] 
                 );
             }else{
-              console.log("2")
+            
               MessageBox.warning("Cantidad en Tarima n° " +this.getOwnerComponent().getModel("Tarimas").getData()[this.getView().byId("tableid").getSelectedItems()[x].sId.split("-")[4]].Ztarima + " es Vacia o tiene un valor inferior a 0");
             return
             }
@@ -973,42 +931,36 @@ return
         var Suma=0;
         var flag= false
         if (this.getView().byId("tableid").getSelectedItems().length<1){
-          console.log("1")
+       
           MessageBox.warning("No ha seleccionado ninguna posición ");
           flag=false
-        //  x=this.getView().byId("tableid").getSelectedItems().length+100
+       
         }
         for ( var x = 0;x < this.getView().byId("tableid").getSelectedItems().length;x++ ) {
           if (this.getOwnerComponent().getModel("Tarimas").getData()[this.getView().byId("tableid").getSelectedItems()[x].sId.split("-")[4]].Menge ===""){
-            console.log("1")
+          
             MessageBox.warning("Cantidad en Tarima n° " +this.getOwnerComponent().getModel("Tarimas").getData()[this.getView().byId("tableid").getSelectedItems()[x].sId.split("-")[4]].Ztarima + " es Vacia o tiene un valor inferior a 0");
             flag=false
-          //  x=this.getView().byId("tableid").getSelectedItems().length+100
+        
           }else{
             Suma= Suma+Number(this.getOwnerComponent().getModel("Tarimas").getData()[this.getView().byId("tableid").getSelectedItems()[x].sId.split("-")[4]].Menge)
 
             this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[Posicion].Tarima = [];
-            console.log(Suma)
+          
             if (Suma>this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[Posicion].MengeA){
              flag=false
-          
-          console.log("1")
-              MessageBox.warning("Las cantidades ingresadas son superior a la cantidad disponible para la tienda");
-              
+              MessageBox.warning("Las cantidades ingresadas son superior a la cantidad disponible para la tienda");   
             }else{
-              console.log(x)
-            //  for ( var y = 0;y < this.getView().byId("tableid").getSelectedItems().length;y++ ) {
+            
                 this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[Posicion].Tarima.push(this.getOwnerComponent().getModel("Tarimas").getData()[this.getView().byId("tableid").getSelectedItems()[x].sId.split("-")[4]] );
                 flag=true
               }
-            //}
-            
-
+           
         }
        
         }
         if(flag){
-         // x=this.getView().byId("tableid").getSelectedItems().length+1000
+      
           return flag
          
         }
@@ -1136,7 +1088,7 @@ return
           iIndex = -1;
         for (var x = 0; x < oData.length; x++) {
           for (var y = 0; y < oData[x].appointments.length; y++) {
-            console.log(oData[x].appointments[y])
+         
             if (oData[x].appointments[y].type === "Type08") {
               sap.m.MessageBox.warning("Favor Guarde la cita abierta");
               return;
@@ -1198,7 +1150,7 @@ return
           sValue;
 
         if (oAppointment) {
-          console.log(oAppointment.getType())
+       
           sSelected = oAppointment.getSelected() ? "selected" : "deselected";
           if(oAppointment.getType()==="Type08"){
             MessageBox.information("'" + oAppointment.getTitle() +  "' " +    sSelected +  ". \n  Cita: " +  this.byId("appoinmentPC").getSelectedAppointments().length, {
@@ -1219,7 +1171,7 @@ return
           }
          
         } else {
-          console.log(aAppointments)
+       
           aAppointments = oEvent.getParameter("appointments");
           sValue = aAppointments.length + " Appointments selected";
           MessageBox.show(sValue);
@@ -1257,7 +1209,7 @@ return
         arrayData.ETOC.results.forEach((pedido) => {
         
           if (this.getView().byId("sTipoCita").getSelectedKey() === "02") {
-            console.log("pedido");
+          
             if (
               pedido.Ebeln === objectClicked.Ebeln &&
               pedido.Ean11 === objectClicked.Ean11 &&
@@ -1279,8 +1231,7 @@ return
               pedido.ZAbeln === objectClicked.ZAbeln 
              
             ) {
-              console.log(pedido);
-              console.log(objectClicked);
+           
               pedido.Selected = true; //isSelected;
             } else {
               //   pedido.Selected = true//isSelected;
@@ -1531,7 +1482,7 @@ return
             sap.ui.core.BusyIndicator.hide();
 
             var data = _GEToDataV2Response.data.results[0].CTCITASCAB.results;
-            console.log(data)
+         
 
             for (var x = 0; x < data.length; x++) {
               for (var y = 0; y < dataPos.length; y++) {
@@ -1547,7 +1498,7 @@ return
                 }
               }
             }
-console.log(dataPos)
+
             var auxJsonModel = new sap.ui.model.json.JSONModel(dataPos);
             that.getOwnerComponent().setModel(auxJsonModel, "Platforms");
           });
@@ -1665,7 +1616,7 @@ console.log(dataPos)
                       sap.ui.core.BusyIndicator.hide();
           
                       var response = _GEToDataV2Response.d;
-          console.log(response.ETRETURN.results[0].Message )
+  
                       if (response.Success === "X") {
                         sap.m.MessageBox.success("cita Cancelada correctamente");
                       } else {
