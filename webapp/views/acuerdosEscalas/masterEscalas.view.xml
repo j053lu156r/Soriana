@@ -117,7 +117,16 @@
                                 <Text id="txtT" text="Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             </footer>
                         </Column>
-                        
+                        <Column id="CCDoc" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text id="txtMD" text="{appTxts>/ACEscalas.matdoc}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                        </Column>
+                        <Column id="CCEj" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text id="txtMY" text="{appTxts>/ACEscalas.matdocYear}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                        </Column>
                         <Column id="CClas" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                             <header>
                                 <Text id="txtC" text="{appTxts>/ACEscalas.movClass}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -218,6 +227,10 @@
                                 <ObjectIdentifier id="OIK"
                                     title="{EscalasDta>knuma}" 
                                     titleActive="false"/>
+                                <ObjectIdentifier
+                                    text="{EscalasDta>mblnr}" />
+                                <ObjectIdentifier
+                                    text="{EscalasDta>mjahr}" />
                                 <ObjectIdentifier
                                     text="{EscalasDta>bwart}" />
                                 <ObjectIdentifier
