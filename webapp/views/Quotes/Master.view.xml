@@ -133,12 +133,19 @@
                             </header>
                             <footer/>
                         </Column>
+                           <Column width="auto" vAlign="Top" minScreenWidth="Tablet" mergeDuplicates="false">
+                            <header>
+                                <Text text="Estado" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                            <footer/>
+                        </Column>
                             <Column width="auto" vAlign="Top" minScreenWidth="Tablet" mergeDuplicates="false">
                             <header>
                                 <Text text="" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             </header>
                             <footer/>
                         </Column>
+                        
                         <!-- <Column width="auto" vAlign="Top" minScreenWidth="Tablet" mergeDuplicates="false">
 						<header>
 							<Text text="{appTxts>/quotes.packageBoxes}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -166,8 +173,9 @@
                                 <Text xmlns="sap.m" text="{tableQuotesModel>Fechareg}"/>
                                 <Text xmlns="sap.m" text="{tableQuotesModel>Fechacita}"/>
                                 <Text xmlns="sap.m" text="{tableQuotesModel>Proveedor}"/>
-                                <Text xmlns="sap.m" text="{tableQuotesModel>Tipocita}"/>
-                                <Text xmlns="sap.m" text="{tableQuotesModel>Tipounidad}"/>
+                                <Text xmlns="sap.m" text="{path: 'tableQuotesModel>Tipocita', formatter: '.codigotipocita'}"/>
+                                <Text xmlns="sap.m" text="{path: 'tableQuotesModel>Tipounidad', formatter: '.codigotipounidad'}"/>
+                                <Text xmlns="sap.m" text="{path: 'tableQuotesModel>Tipounidad', formatter: '.codigoEstado'}"/>
                                 <Button text="Confirmar Cita" press="Confirmacion"></Button>
                             </cells>
                         </ColumnListItem>
