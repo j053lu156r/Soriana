@@ -237,7 +237,6 @@ sap.ui.define([
 				console.log(data)
 				let Detalles = [...data[0].Citms.results];
 				let retencionAforo =  Detalles.find(({ZdocAforo}) => ZdocAforo !== "");
-				console.log(retencionAforo)
 
 				console.log("get aforo",retencionAforo)
 
