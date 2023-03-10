@@ -166,7 +166,7 @@ sap.ui.define([
             let that = this;
             this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASDETEXT"], "").then(resp => {
 
-            
+            console.log(resp.data.results[0].CTCITASDETEXT.results)
                 that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(resp.data.results[0].CTCITASDETEXT.results), "PosicionesG");
               // that.paginate("tableQuotesModel", "/CTCITASCAB", 1, 0);
                 sap.ui.core.BusyIndicator.hide();
@@ -178,23 +178,23 @@ sap.ui.define([
         codigoEstado:function(valor){
             var result=""
             switch (valor) {
-                case '01':
+                case '1':
                  
                   result="POR CONFIRMAR"
                   break;
-                case '02':
+                case '2':
                  
                   result="ACTIVA"
                   break;
-                case '03':
+                case '3':
                   
                   result="AUSENCIA"
                   break;
-                case '04':
+                case '4':
                 
                   result="CANCELADA"
                   break; 
-                  case '05':
+                  case '5':
                 
                   result="PROCESADA"
                   break;  
@@ -393,6 +393,7 @@ sap.ui.define([
                 
                       if (response.Success === "X") {
                         sap.m.MessageBox.success(that.getView().getModel("appTxts").getProperty("/quotes.confirmcita"));
+                        
                       } else {
                         sap.m.MessageBox.error(response.ETRETURN.results[0].Message);
                       }

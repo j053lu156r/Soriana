@@ -175,8 +175,8 @@
                                 <Text xmlns="sap.m" text="{tableQuotesModel>Proveedor}"/>
                                 <Text xmlns="sap.m" text="{path: 'tableQuotesModel>Tipocita', formatter: '.codigotipocita'}"/>
                                 <Text xmlns="sap.m" text="{path: 'tableQuotesModel>Tipounidad', formatter: '.codigotipounidad'}"/>
-                                <Text xmlns="sap.m" text="{path: 'tableQuotesModel>Tipounidad', formatter: '.codigoEstado'}"/>
-                                <Button text="Confirmar Cita" press="Confirmacion"></Button>
+                                <Text xmlns="sap.m" text="{path: 'tableQuotesModel>Zestatus', formatter: '.codigoEstado'}"/>
+                                <Button text="Confirmar Cita" press="Confirmacion" visible="{=${path:'tableQuotesModel>Zestatus'}==='1'? true :false}"></Button>
                             </cells>
                         </ColumnListItem>
                     </items>
