@@ -142,6 +142,8 @@ sap.ui.define([
                     me.getOwnerComponent().setModel(new JSONModel(Documentos), "Documentos");
 
                     me.paginate("Documentos", "/Detalles", 1, 0);
+                } else {
+                    me.getOwnerComponent().setModel(new JSONModel({}), "Documentos");
                 }
 
 

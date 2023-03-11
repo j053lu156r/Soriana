@@ -401,6 +401,7 @@
                         </m:OverflowToolbar>
                     </extension>
                     <columns>
+                    <!-- Holiiiiii -->
                         <Column sortProperty="name" id="tipoColumn" width="40%">
                             <m:Label text="{appTxts>/aportaciones.concepto}" />
                             <template>
@@ -502,18 +503,21 @@
                         </Column>
 
                         <!--columnas nuevas para totales -->
+                        <!-- Holiiiiii -->
                         <Column sortProperty="totalRegs" id="totalRegColumn" width="15%">
                             <m:Label text="{appTxts>/state.totalReg}" />
                             <template>
                                 <m:ObjectNumber number="{GroupedTotales>totalRegs}" />
                             </template>
                         </Column>
+                        <!-- Holiiiiii -->
                         <Column sortProperty="totalDebit" id="debitColumn" width="15%">
                             <m:Label text="{appTxts>/state.debit}" />
                             <template>
                                 <m:ObjectNumber number="{parts: [{path: 'GroupedTotales>totalDebit'}, {path: 'totales>/Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
                             </template>
                         </Column>
+                        <!-- Holiiiiii -->
                         <Column sortProperty="totalCredit" id="creditColumn" width="15%">
                             <m:Label text="{appTxts>/state.credit}" />
                             <template>
