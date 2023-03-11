@@ -254,7 +254,7 @@ sap.ui.define(
           if (this._oWizard.getProgressStep().sButtonText === "Paso 3") {
           
             if(this.getView().byId("tableWizardOrder").getSelectedIndices().length===0){
-
+console.log("no puede pasar ")
              
             }else{
               if(this.getView().byId("sTipoCita").getSelectedKey() === "01"){
@@ -1492,11 +1492,14 @@ console.log(mainDataModel)
             sap.ui.core.BusyIndicator.hide();
 
             var data = _GEToDataV2Response.data.results[0].CTCITASCAB.results;
-         
+         console.log(data)
+         console.log(dataPos)
 
             for (var x = 0; x < data.length; x++) {
               for (var y = 0; y < dataPos.length; y++) {
-                if (Number(data[x].Anden) === Number(dataPos[y].name)) {
+                console.log(data[x].Anden)
+         console.log(dataPos[y].name)
+                if (data[x].Anden === dataPos[y].name) {
                   dataPos[y].appointments.push({
                     start: new Date(data[x].Fechacita + " " + data[x].HoraIni),
                     end: new Date(data[x].Fechacita + " " + data[x].HoraFin),
@@ -1508,7 +1511,7 @@ console.log(mainDataModel)
                 }
               }
             }
-
+console.log(dataPos)
             var auxJsonModel = new sap.ui.model.json.JSONModel(dataPos);
             that.getOwnerComponent().setModel(auxJsonModel, "Platforms");
           });
