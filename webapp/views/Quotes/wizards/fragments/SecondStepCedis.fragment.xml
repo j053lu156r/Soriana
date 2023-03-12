@@ -19,8 +19,9 @@
             visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='01'  ? true :false}"
 			change="onUpload"/>
 		
+		
             	</l:HorizontalLayout >
-            <t:Table id="tableWizardOrder" rows="{Pedidos>/ETOC/results}" rowSelectionChange="selectPedido" enableSelectAll="false" filter="clearModelsOnFilter">
+            <t:Table id="tableWizardOrder" rows="{Pedidos>/ETOC/results}" rowSelectionChange="selectPedido" enableSelectAll="{=${path:'ModelLectura>/lectura'}===true ? true :false}" filter="clearModelsOnFilter">
 
               
                 <t:columns>
