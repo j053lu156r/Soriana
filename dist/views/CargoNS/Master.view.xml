@@ -1,0 +1,224 @@
+<mvc:View displayBlock="true" 
+    xmlns:f="sap.f" 
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar" 
+    xmlns:vm="sap.ui.comp.variants" 
+    xmlns="sap.m" 
+    xmlns:core="sap.ui.core"
+	 controllerName="demo.controllers.CargoNS.Master" height="100%">
+	<f:DynamicPage  
+		class="sapUiContentPadding">
+        <!-- DynamicPage Title -->
+        <!--<f:title>
+            <f:DynamicPageTitle backgroundDesign="Transparent">
+                <f:heading>
+                    <vm:VariantManagement standardItemText="{appTxts>/acuerdos.title}">
+                    </vm:VariantManagement>
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>-->
+        <!-- DynamicPage Header -->
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <fb:FilterBar id="filterBar"  header="Header"
+		                reset="onReset" search="searchData" clear="clearFilters" cancel="onCancel" 
+		                filtersDialogClosed = "onFiltersDialogClosed"
+		                showRestoreButton="false" showClearButton="false" useToolbar="false"> 
+			
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="{appTxts>/acuerdos.sociedad}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        id="sociedadInput"
+                                        placeholder="{appTxts>/acuerdos.sociedad}"
+                                        showSuggestion="true"
+                                        maxLength="4"
+                                        >
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="B" label="{appTxts>/acuerdos.docto}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        id="documentoInput"
+                                        placeholder="{appTxts>/acuerdos.docto}"
+                                        showSuggestion="true"
+                                        maxLength="10"
+                                        >
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="C" label="{appTxts>/acuerdos.ejercicio}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        id="ejercicioInput"
+                                        placeholder="{appTxts>/acuerdos.ejercicio}"
+                                        showSuggestion="true"
+                                        maxLength="4"
+                                        >
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="D" label="{appTxts>/acuerdos.acuerdo}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        id="acuerdoInput"
+                                        placeholder="{appTxts>/acuerdos.acuerdo}"
+                                        showSuggestion="true"
+                                        maxLength="10"
+                                        >
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                        </fb:filterGroupItems>
+
+	                </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+		<f:content>
+            <VBox>
+			<Table 
+                noDataText="{appTxts>/acuerdos.noData}" 
+                id="tableAcuerdos"
+                items="{AcuerdosHdr>/AcuerdosDet/Paginated/results}">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title text="{appTxts>/acuerdos.title} ({AcuerdosHdr>/AcuerdosDet/results/length})" />
+                        <ToolbarSpacer/>
+                        <Button icon="sap-icon://pdf-attachment" text="PDF" 
+                            press="onPressPDF"
+                            visible="{= ${AcuerdosHdr>/UUID} === undefined || ${AcuerdosHdr>/UUID} === '' ? false : true }"
+                        />
+                        <Button icon="sap-icon://attachment-html" text="XML" 
+                            press="onPressXML"
+                            visible="{= ${AcuerdosHdr>/UUID} === undefined || ${AcuerdosHdr>/UUID} === '' ? false : true }"
+                        />
+                        <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
+                            press=".buildExportTable"
+                            visible="{= ${AcuerdosHdr>/AcuerdosDet/results/length} > 0}"
+                        />
+                        <Select 
+                            visible="{= ${AcuerdosHdr>/AcuerdosDet/Paginated/results/length} > 0 }"
+                            change=".paginateValue(${$parameters>/selectedItem}, 'AcuerdosHdr', '/AcuerdosDet')">
+                            <items>
+                                <core:Item key="10" text="10"/>
+                                <core:Item key="20" text="20"/>
+                                <core:Item key="50" text="50"/>
+                                <core:Item key="100" text="100"/>
+                            </items>
+                        </Select>
+                    </OverflowToolbar>
+                </headerToolbar>
+				<columns>
+                	<Column width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/acuerdos.sucursal}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer>
+                            <Text text="Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                        </footer>
+					</Column>
+                    <Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/acuerdos.base}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer>
+                            <ObjectNumber
+                                number="{
+                                    parts:[{path:'acuTotDetModel>/TotBase'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="{acuTotDetModel>/TotMoneda}" />
+                        </footer>
+					</Column>
+					<Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/acuerdos.desc}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer>
+                            <ObjectNumber
+                                number="{
+                                    parts:[{path:'acuTotDetModel>/TotDescto'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="{acuTotDetModel>/TotMoneda}" />
+                        </footer>
+					</Column>
+					<Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/acuerdos.iva}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer>
+                            <ObjectNumber
+                                number="{
+                                    parts:[{path:'acuTotDetModel>/TotIVA'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="{acuTotDetModel>/TotMoneda}" />
+                        </footer>
+					</Column>
+					<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/acuerdos.pDesc}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press="onListItemPress">                    
+						<cells>
+                            <ObjectIdentifier 
+                                title="{AcuerdosHdr>Centro}" 
+                                titleActive="true"/>
+                            <ObjectNumber
+                                number="{
+                                    parts:[{path:'AcuerdosHdr>Base'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="{AcuerdosHdr>Waers}" />
+                            <ObjectNumber
+                                number="{
+                                    parts:[{path:'AcuerdosHdr>Descuento'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="{AcuerdosHdr>Waers}" />
+                            <ObjectNumber
+                                number="{
+                                    parts:[{path:'AcuerdosHdr>IVA'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="{AcuerdosHdr>Waers}" />
+                            <ObjectNumber
+                                number="{AcuerdosHdr>PDesc}"
+                                unit="{AcuerdosHdr>Unidad}"
+                                state="Success" />
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+            <OverflowToolbar visible="{= ${AcuerdosHdr>/AcuerdosDet/Paginated/results/length} > 0 }">
+                <Text text="{AcuerdosHdr>/AcuerdosDet/Paginated/initRow} - {AcuerdosHdr>/AcuerdosDet/Paginated/endRow} {appTxts>/pagination.of} {AcuerdosHdr>/AcuerdosDet/results/length}" />
+                <ToolbarSpacer/>
+                <Button type="Default" icon="sap-icon://slim-arrow-left" 
+                        press=".prevPagination(${AcuerdosHdr>/AcuerdosDet/Paginated/iterator}, ${AcuerdosHdr>/AcuerdosDet/Paginated/initRow}, 'AcuerdosHdr', '/AcuerdosDet')" 
+                        enabled="{= ${AcuerdosHdr>/AcuerdosDet/Paginated/iterator} !== 1}" />
+                <Button type="Default" icon="sap-icon://slim-arrow-right" 
+                        press=".nextPagination(${AcuerdosHdr>/AcuerdosDet/Paginated/iterator}, ${AcuerdosHdr>/AcuerdosDet/Paginated/endRow}, 'AcuerdosHdr', '/AcuerdosDet')" 
+                        enabled="{= ${AcuerdosHdr>/AcuerdosDet/Paginated/endRow} !== ${AcuerdosHdr>/AcuerdosDet/results/length}}" />
+            </OverflowToolbar>
+            </VBox>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

@@ -1,0 +1,11 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog
+		id="selectpTypeDialog"
+		title="{appTxts>/quotes.productType}"
+		items="{searchProductType>/ETIPOPRODUCTONAV/results}"
+		confirm="_productTypeValueHelpConfirm"
+        >
+		<StandardListItem
+			title="{searchProductType>ZTipoprod}" />
+	</SelectDialog>
+</core:FragmentDefinition>

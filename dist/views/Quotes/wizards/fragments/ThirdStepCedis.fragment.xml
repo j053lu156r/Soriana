@@ -1,0 +1,26 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:unified="sap.ui.unified"
+    xmlns:core="sap.ui.core">
+    <VBox>
+        <PlanningCalendar id="appoinmentPC" viewKey="A" rows="{path: 'Platforms>/'}" appointmentsVisualization="Filled" appointmentSelect="handleAppointmentSelect" intervalSelect="handleIntervalSelect" showEmptyIntervalHeaders="false" >
+            <toolbarContent>
+                <Title text="Agenda" titleStyle="H4"/>
+            </toolbarContent>
+            <views>
+                <PlanningCalendarView key="A" intervalType="Hour" description="hours view" intervalsS="12" intervalsM="12" intervalsL="12" showSubIntervals="false">
+                </PlanningCalendarView>
+            </views>
+            <rows>
+                <PlanningCalendarRow icon="{Platforms>pic}" title="{Platforms>name}" text="{Platforms>role}" appointments="{path: 'Platforms>appointments', templateShareable: false}">
+                    <appointments>
+                        <unified:CalendarAppointment startDate="{Platforms>start}" endDate="{Platforms>end}" icon="{Platforms>pic}" title="{Platforms>title}" text="{Platforms>info}" type="{Platforms>type}" tentative="{Platforms>tentative}">
+                        </unified:CalendarAppointment>
+                    </appointments>
+                 
+                </PlanningCalendarRow>
+            </rows>
+        </PlanningCalendar>
+    </VBox>
+
+   
+</core:FragmentDefinition>

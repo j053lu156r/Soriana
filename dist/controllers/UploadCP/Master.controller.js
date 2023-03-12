@@ -1,0 +1,1 @@
+sap.ui.define(["demo/controllers/BaseController"],function(e){"use strict";return e.extend("demo.controllers.UploadCP.Master",{onInit:function(){this.configFilterLanguage(this.getView().byId("filterBar"))},onExit:function(){}})});
