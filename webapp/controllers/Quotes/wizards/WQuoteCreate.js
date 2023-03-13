@@ -116,7 +116,8 @@ sap.ui.define(
             oDialog.open();
 
             var Datos = selectedKey;
-            console.log(Datos)
+         
+        
 
             if (selectedKey === "N") {
             
@@ -155,7 +156,7 @@ sap.ui.define(
               that.getView().byId("carrierInput").setValue(Datos.Transportista);
 
               if(Datos.Tipocita === "01"|| Datos.Tipocita === "02" && Datos.Fechacita!== null){
-                console.log("entro")
+              
                 that.getView().byId("DP2").setDateValue(new Date((Datos.Fechacita).replaceAll("-",",")));
               }
 
@@ -178,6 +179,7 @@ sap.ui.define(
         }
       },
 
+     
       onDialogAfterOpen: function () {
         this._oWizard = this.byId("QuoteCedisWizard");
         this._oWizard._getProgressNavigator().ontap = function () {};
@@ -254,7 +256,8 @@ sap.ui.define(
           if (this._oWizard.getProgressStep().sButtonText === "Paso 3") {
           
             if(this.getView().byId("tableWizardOrder").getSelectedIndices().length===0){
-console.log("no puede pasar ")
+              MessageBox.warning("No Existen Posiciones Seleccionadas");
+              return;
              
             }else{
               if(this.getView().byId("sTipoCita").getSelectedKey() === "01"){
@@ -327,7 +330,8 @@ console.log("no puede pasar ")
                 var Model = this.getView().getModel("configSite").getData();
                 var Model2 = this.getView().getModel("TemporalModel").getData();
                 var Model3 = this.getView().getModel("Platforms").getData();
-
+  var Datos = this.getOwnerComponent().getModel("ModelLectura").getData();
+      console.log(Datos)
 console.log(appoimentModel)
 console.log(Model)
 console.log(Model2)
@@ -350,7 +354,61 @@ console.log(Model3)
                       });
                     }
                   }
-                  var json = {
+                  var json=[]
+                  if(appoimentModel[0].Anden!== undefined && appoimentModel[0].Anden!== null){
+                    json= {
+                      Proveedor: this.getOwnerComponent().getModel("ModelLectura").getData().Proveedor,
+                      Action: "2",
+  
+                      CTCITASCAB: [
+                        {
+                          Folio: this.getOwnerComponent().getModel("ModelLectura").getData().Folio,
+                          Centro: this.getOwnerComponent().getModel("ModelLectura").getData().Centro,
+                          Fechacita: appoimentModel[0].FechaCita,
+                          FechaAud:appoimentModel[0].FechaAud,
+                          Proveedor: this.getOwnerComponent().getModel("ModelLectura").getData().Proveedor,
+                          Tipocita: Model2.generalData.Tipocita,
+                          Tipounidad: Model2.generalData.tipoUnidad,
+                          Transportista: Model2.generalData.transportista,
+                          Bultos: Model2.generalData.totalBultos,
+                          Tarimas: Model2.generalData.tarimas,
+                          HoraIni: appoimentModel[0].HoraIni,
+                          HoraFin: appoimentModel[0].HoraFin,
+                          Anden: Model3[Number(appoimentModel[0].Anden)].name,
+                        },
+                      ],
+                     
+                      CTCITASDET: ArrtPos,
+                      ETRETURN: [],
+                    };
+                  }else{
+                    json= {
+                      Proveedor: this.getOwnerComponent().getModel("ModelLectura").getData().Proveedor,
+                      Action: "2",
+  
+                  
+                      CTCITASCAB: [
+                        {
+                          Folio: this.getOwnerComponent().getModel("ModelLectura").getData().Folio,
+                          Centro: this.getOwnerComponent().getModel("ModelLectura").getData().Centro,
+                          Fechacita:this.getOwnerComponent().getModel("ModelLectura").getData().Fechacita,
+                          FechaAud:this.getOwnerComponent().getModel("ModelLectura").getData().FechaAud,
+                          Proveedor: this.getOwnerComponent().getModel("ModelLectura").getData().Proveedor,
+                          Tipocita: Model2.generalData.Tipocita,
+                          Tipounidad: Model2.generalData.tipoUnidad,
+                          Transportista: Model2.generalData.transportista,
+                          Bultos: Model2.generalData.totalBultos,
+                          Tarimas: this.getOwnerComponent().getModel("ModelLectura").getData().Tarimas,
+                          HoraIni: this.getOwnerComponent().getModel("ModelLectura").getData().HoraIni,
+                          HoraFin: this.getOwnerComponent().getModel("ModelLectura").getData().HoraFin,
+                          Anden: this.getOwnerComponent().getModel("ModelLectura").getData().Anden,
+                        },
+                      ],
+                      CTCITASDET: ArrtPos,
+                      ETRETURN: [],
+                    };
+                  }
+                  /*var json = {
                     Proveedor: this.getOwnerComponent().getModel("ModelLectura").getData().Proveedor,
                     Action: "2",
 
@@ -371,9 +429,26 @@ console.log(Model3)
                         Anden: Model3[Number(appoimentModel[0].Anden)].name,
                       },
                     ],
+                    CTCITASCAB: [
+                      {
+                        Folio: this.getOwnerComponent().getModel("ModelLectura").getData().Folio,
+                        Centro: this.getOwnerComponent().getModel("ModelLectura").getData().Centro,
+                        Fechacita:this.getOwnerComponent().getModel("ModelLectura").getData().Fechacita,
+                        FechaAud:this.getOwnerComponent().getModel("ModelLectura").getData().FechaAud,
+                        Proveedor: this.getOwnerComponent().getModel("ModelLectura").getData().Proveedor,
+                        Tipocita: Model2.generalData.Tipocita,
+                        Tipounidad: Model2.generalData.tipoUnidad,
+                        Transportista: Model2.generalData.transportista,
+                        Bultos: Model2.generalData.totalBultos,
+                        Tarimas: this.getOwnerComponent().getModel("ModelLectura").getData().Tarimas,
+                        HoraIni: this.getOwnerComponent().getModel("ModelLectura").getData().HoraIni,
+                        HoraFin: this.getOwnerComponent().getModel("ModelLectura").getData().HoraFin,
+                        Anden: this.getOwnerComponent().getModel("ModelLectura").getData().Anden,
+                      },
+                    ],
                     CTCITASDET: ArrtPos,
                     ETRETURN: [],
-                  };
+                  };*/
                   var model = _oDataModelAppoimnet;
                   var entity = "/" + _oDataEntityAppoiment;
                   var json2 = JSON.stringify(json);
@@ -516,8 +591,8 @@ console.log(Model3)
                
 
                   if(ArrTCN.length===0){
-MessageBox.alert("error al crear la cabecera es vacio")
-return
+                  MessageBox.alert("error al crear la cabecera es vacio")
+                  return
                   }
                  
                  
@@ -546,11 +621,8 @@ return
                   sap.ui.core.BusyIndicator.show();
                   let resp = null;
 
-                  var model = _oDataModelAppoimnet;
-                  var entity = "/" + _oDataEntityAppoiment;
-                  var json2 = JSON.stringify(createObjReq);
-                  var that = this;
-                }
+                  
+               
 
                  that._POSToData(model, entity, json2).then(function (_GEToDataV2Response) {
                     sap.ui.core.BusyIndicator.hide();
@@ -563,7 +635,7 @@ return
                       sap.m.MessageBox.error(response.ETRETURN.results[0].Message  );
                     }
                   });
-
+                }
                 this.getOwnerComponent().setModel(
                   new sap.ui.model.json.JSONModel([]),
                   "ModelLectura"
@@ -572,6 +644,10 @@ return
                 this.getOwnerComponent().setModel(
                   new sap.ui.model.json.JSONModel([]),
                   "Modeleditable"
+                );
+                this.getOwnerComponent().setModel(
+                  new sap.ui.model.json.JSONModel([]),
+                  "Platforms"
                 );
               }
             }.bind(this),
@@ -675,6 +751,7 @@ console.log(PosicionesG)
         let ARRTV = [];
         that._GetODataV2( _oDataModelOC, _oDataEntityOC, filtros, ["ETOC", "ETMINIFULL03", "ETOCSTO"], "" ).then((resp) => {
             that.getView().byId("tableWizardOrder").clearSelection();
+            console.log(resp)
             let ARRfechas = [];
             let FechasI = [];
             let FechasF = [];
@@ -689,18 +766,61 @@ console.log(PosicionesG)
                 
                 for (var y = 0; y < PosicionesG.length; y++) {
                   if ( resp.data.results[0].ETOC.results[x].Matnr === PosicionesG[y].Matnr && resp.data.results[0].ETOC.results[x].Werks ===  PosicionesG[y].Werks  && resp.data.results[0].ETOC.results[x].Ebeln === PosicionesG[y].Ebeln) {
-                 
+                 console.log(resp.data.results[0].ETOC.results[x])
+                 console.log(PosicionesG[y])
                     resp.data.results[0].ETOC.results[x].Citado =  PosicionesG[y].Citado;
                     resp.data.results[0].ETOC.results[x].ZwerksD =  PosicionesG[y].Werks
-                    resp.data.results[0].ETOC.results[x].Tarima=[];
+
+                   if(Datos.Tipocita ==="01"){
+                   
+                      resp.data.results[0].ETOC.results[x].Tarima=PosicionesG[y].ETOCSTOPALLEXT.results
+                      for(var c=0;c<resp.data.results[0].ETOC.results[x].Tarima.length;c++){
+                        resp.data.results[0].ETOC.results[x].Tarima[c].Menge=Number(resp.data.results[0].ETOC.results[x].Tarima[c].Menge)
+                      }
+                    }else{
+                      resp.data.results[0].ETOC.results[x].Tarima=[];
+                    }
+                    
 
                     ARRTV.push(resp.data.results[0].ETOC.results[x]);
                   }
                 }
               }
+console.log(ARRTV)
+              if(ARRTV.length===0){
+                for (var y = 0; y < PosicionesG.length; y++) {
+                ARRTV.push({
+                  Abeln:"",
+                  Abelp :"",
+                  Bednr :PosicionesG[y].Bednr,
+                  Bwart:"",
+                  Citado:PosicionesG[y].Citado,
+                  Ean11:"",
+                  Ebeln:PosicionesG[y].Ebeln,
+                  Ebelp:PosicionesG[y].Ebelp,
+                  Kdatb:new Date(PosicionesG[y].Kdatb).toISOString().slice(0,10),
+                  Kdate:new Date(PosicionesG[y].Kdate).toISOString().slice(0,10),
+                  Lifnr:"",
+                  Matnr:PosicionesG[y].Matnr,
+                  Meins:PosicionesG[y].Meins,
+                  Menge:PosicionesG[y].Menge,
+                  MengeA:"0",
+                  MengeR:PosicionesG[y].Menge,
+                  Selected:true,
+                  Tarima:PosicionesG[y].ETOCSTOPALLEXT.results,
+                  Werks:PosicionesG[y].Werks,
+                  ZwerksD:PosicionesG[y].ZwerksD,
+                  
+
+
+                })
+              }
+
+              }
 
               resp.data.results[0].ETOC.results = ARRTV;
             } else {
+              console.log(resp)
               console.log("paso 6")
               let ArgTemp = [];
            
@@ -841,14 +961,11 @@ console.log(PosicionesG)
       },
       selectTarima: function (oEvent) {
         var oSelectedItem = oEvent.getSource().getParent();
-        console.log( oSelectedItem)
-        console.log(this.getView().getModel("ModelLectura").getData())
-        console.log( oSelectedItem.getBindingContext("Pedidos"))
-        console.log( oSelectedItem.getBindingContext("Pedidos").sPath.split("/")[3])
+      
    
         Posicion = oSelectedItem.getBindingContext("Pedidos").sPath.split("/")[3];
         
-        console.log(oSelectedItem.getBindingContext("Pedidos").getProperty("Tarima"))
+      
       
           if(oSelectedItem.getBindingContext("Pedidos").getProperty("Tarima").length===0){
             var ATTemp = [];
@@ -1047,7 +1164,7 @@ console.log(PosicionesG)
       selectChange: function (oEvent) {},
       onListItemPress: function (oEvent) {},
       appointmentDateChange(oEvent) {
-        console.log("entro")
+      
         let source = oEvent.getSource();
         let dateSelected = source.getDateValue();
 
@@ -1059,7 +1176,7 @@ console.log(PosicionesG)
         let todayDate = new Date();
 
         todayDate = dateSelected.getTime() - 1000 * 60 * 60 * 24 * 1;
-        console.log(todayDate)
+      
         datepicker.setDateValue(new Date(todayDate));
         datepicker.setMinDate(new Date(todayDate));
         datepicker.fireChange();
@@ -1069,7 +1186,7 @@ console.log(PosicionesG)
           this.getOwnerComponent().getModel("CitaMainData").setProperty("/FechaAud", new Date(todayDate).toISOString().slice(0,10));
           //this.getOwnerComponent().getModel("CitaCreationArray").setProperty("/FechaAud", this.buildSapDate(new Date(todayDate)));
 
-        console.log(this.getOwnerComponent().getModel("CitaMainData").getData())
+   
       },
       /*  setInitialDateAuditoria() {
         let datepicker = this.getView().byId("DP2");
@@ -1083,10 +1200,21 @@ console.log(PosicionesG)
 
       setAppoimentCalendar(dateSelected, maxdate) {
       
-        console.log(new Date(this.getOwnerComponent().getModel("Pedidos").getData().fechaFFin +" 23:59:59"))
-      var fecha1=this.getOwnerComponent().getModel("Pedidos").getData().fechaFFin.replaceAll("-",",")
-      console.log(fecha1)
-      fecha1=fecha1+", 23, 59, 00"
+      console.log(this.getOwnerComponent().getModel("Pedidos").getData())
+      console.log(this.getOwnerComponent().getModel("Pedidos").getData().fechaFFin)
+      var fecha1=""
+      if(this.getOwnerComponent().getModel("Pedidos").getData().fechaFFin=== undefined){
+       var v1= this.byId("DP1").getDateValue().getTime() + 1000 * 60 * 60 * 24 * 7
+v1= new Date(v1).toISOString().slice(0,10);
+       console.log(v1)
+       fecha1=new Date(v1+" 23:59:59")
+      }else{
+         fecha1=this.getOwnerComponent().getModel("Pedidos").getData().fechaFFin
+         fecha1=new Date(fecha1+" 23:59:59")
+      }
+      
+      
+    //  fecha1=fecha1+", 23, 59, 00"
       console.log(fecha1)
 console.log("fechas")
         console.log(dateSelected)
@@ -1095,7 +1223,7 @@ console.log("fechas")
         dateSelected.setHours(8, 0);
         planningCalendar.setStartDate(this.byId("DP1").getDateValue());
         planningCalendar.setMinDate(this.byId("DP1").getDateValue());
-        planningCalendar.setMaxDate(new Date(this.getOwnerComponent().getModel("Pedidos").getData().fechaFFin +" 23:59:59"));
+        planningCalendar.setMaxDate(fecha1);
         let incrementedDate = new Date();
         incrementedDate.setHours(10, 0);
 
@@ -1137,7 +1265,7 @@ console.log("fechas")
           oStartDate.toLocaleString("en-GB") > FI.toLocaleString("en-GB") &&
           oEndDate.toLocaleString("en-GB").trim() < FF.toLocaleString("en-GB")
         ) {
-          console.log( oData[oPC.indexOfRow(oRow)])
+       
           oData[oPC.indexOfRow(oRow)].appointments.push({
             start: oStartDate,
             end: oEndDate,
@@ -1355,7 +1483,7 @@ console.log("fechas")
       addToCreationArray(detalle) {
         let creationArray = this.getOwnerComponent().getModel("CitaCreationArray").getData();
         let mainDataModel = this.getOwnerComponent().getModel("CitaMainData").getData();
-console.log(mainDataModel)
+
         let newdetail = {
           Ebeln: detalle.Ebeln,
           Ebelp: detalle.Ebelp,
@@ -1452,7 +1580,7 @@ console.log(mainDataModel)
                 appointments: [],
               });
             }
-console.log(Arrt)
+
             var auxJsonModel = new sap.ui.model.json.JSONModel(Arrt);
 
             that.getOwnerComponent().setModel(auxJsonModel, "Platforms");
@@ -1508,7 +1636,7 @@ console.log(Arrt)
 
             for (var x = 0; x < data.length; x++) {
               for (var y = 0; y < dataPos.length; y++) {
-         console.log(data[x])
+    
                 if (data[x].Anden === dataPos[y].name) {
                   dataPos[y].appointments.push({
                     start: new Date(data[x].Fechacita + " " + data[x].HoraIni),
