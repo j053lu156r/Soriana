@@ -1,1 +1,0 @@
-sap.ui.define(["demo/controllers/BaseController"],function(e){"use strict";return e.extend("demo.controllers.DownloadCP.Master",{onInit:function(){this.configFilterLanguage(this.getView().byId("filterBar"))},onExit:function(){}})});
