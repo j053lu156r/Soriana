@@ -164,7 +164,7 @@ sap.ui.define([
            
             sap.ui.core.BusyIndicator.show();
             let that = this;
-            this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASDETEXT"], "").then(resp => {
+            this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASDETEXT/ETOCSTOPALLEXT","CTCITASDETEXT"], "").then(resp => {
 
             console.log(resp.data.results[0].CTCITASDETEXT.results)
                 that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(resp.data.results[0].CTCITASDETEXT.results), "PosicionesG");
@@ -251,7 +251,7 @@ sap.ui.define([
 
         clearFilds: function () {
             // this.getView().byId("quoteFolioInput").setValue("");
-            this.getView().byId("dateRange").setDateValue("");
+       //     this.getView().byId("dateRange").setDateValue("");
             this.getView().byId("quoteType").setValue("");
             this.getView().byId("quoteStatus").setValue("");
             this.getView().byId("quoteUnitType").setValue("");
