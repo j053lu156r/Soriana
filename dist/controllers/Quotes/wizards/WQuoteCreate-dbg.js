@@ -1051,7 +1051,7 @@ console.log(PosicionesG)
         let source = oEvent.getSource();
         let dateSelected = source.getDateValue();
 
-        this.setAppoimentCalendar(dateSelected, dateSelected);
+       // this.setAppoimentCalendar(dateSelected, dateSelected);
         this.getOwnerComponent().getModel("CitaMainData").setProperty("/FechaCita", this.buildSapDate(dateSelected));
       
 
@@ -1082,13 +1082,24 @@ console.log(PosicionesG)
       },*/
 
       setAppoimentCalendar(dateSelected, maxdate) {
+      
+        console.log(new Date(this.getOwnerComponent().getModel("Pedidos").getData().fechaFFin +" 23:59:59"))
+      var fecha1=this.getOwnerComponent().getModel("Pedidos").getData().fechaFFin.replaceAll("-",",")
+      console.log(fecha1)
+      fecha1=fecha1+", 23, 59, 00"
+      console.log(fecha1)
+console.log("fechas")
+        console.log(dateSelected)
+        console.log(maxdate)
         let planningCalendar = this.getView().byId("appoinmentPC");
         dateSelected.setHours(8, 0);
-        planningCalendar.setStartDate(dateSelected);
-        planningCalendar.setMinDate(dateSelected);
-        planningCalendar.setMaxDate(maxdate);
+        planningCalendar.setStartDate(this.byId("DP1").getDateValue());
+        planningCalendar.setMinDate(this.byId("DP1").getDateValue());
+        planningCalendar.setMaxDate(new Date(this.getOwnerComponent().getModel("Pedidos").getData().fechaFFin +" 23:59:59"));
         let incrementedDate = new Date();
         incrementedDate.setHours(10, 0);
+
+        console.log(planningCalendar.getMinDate())
       },
 
       handleIntervalSelect: function (oEvent) {
@@ -1126,6 +1137,7 @@ console.log(PosicionesG)
           oStartDate.toLocaleString("en-GB") > FI.toLocaleString("en-GB") &&
           oEndDate.toLocaleString("en-GB").trim() < FF.toLocaleString("en-GB")
         ) {
+          console.log( oData[oPC.indexOfRow(oRow)])
           oData[oPC.indexOfRow(oRow)].appointments.push({
             start: oStartDate,
             end: oEndDate,
@@ -1440,7 +1452,7 @@ console.log(mainDataModel)
                 appointments: [],
               });
             }
-
+console.log(Arrt)
             var auxJsonModel = new sap.ui.model.json.JSONModel(Arrt);
 
             that.getOwnerComponent().setModel(auxJsonModel, "Platforms");
@@ -1492,18 +1504,16 @@ console.log(mainDataModel)
             sap.ui.core.BusyIndicator.hide();
 
             var data = _GEToDataV2Response.data.results[0].CTCITASCAB.results;
-         console.log(data)
-         console.log(dataPos)
+      
 
             for (var x = 0; x < data.length; x++) {
               for (var y = 0; y < dataPos.length; y++) {
-                console.log(data[x].Anden)
-         console.log(dataPos[y].name)
+         console.log(data[x])
                 if (data[x].Anden === dataPos[y].name) {
                   dataPos[y].appointments.push({
                     start: new Date(data[x].Fechacita + " " + data[x].HoraIni),
                     end: new Date(data[x].Fechacita + " " + data[x].HoraFin),
-                    title: "Descarga  ",
+                    title: "Cita "+data[x].Folio,
                     type: "Type02",
                     pic: "",
                     tentative: false,
@@ -1511,7 +1521,7 @@ console.log(mainDataModel)
                 }
               }
             }
-console.log(dataPos)
+
             var auxJsonModel = new sap.ui.model.json.JSONModel(dataPos);
             that.getOwnerComponent().setModel(auxJsonModel, "Platforms");
           });
@@ -1688,8 +1698,7 @@ console.log(dataPos)
         let source = oEvent.getSource();
         let dateSelected = source.getDateValue();
 
-        //this.setAppoimentCalendar(dateSelected, dateSelected);
-       //this.getOwnerComponent().getModel("CitaMainData").setProperty("/FechaAud", this.buildSapDate(dateSelected));
+      
         this.getOwnerComponent().getModel("CitaMainData").setProperty("/FechaAud", new Date(dateSelected).toISOString().slice(0,10));
       },
       onUpload: function (e) {
