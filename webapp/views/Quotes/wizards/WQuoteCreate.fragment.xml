@@ -29,7 +29,7 @@
                     <Button id="btnAppoimentNext" text="{appTxts>/rem.next}" type="Emphasized" enabled="{/nextButtonEnabled}" visible="{/nextButtonVisible}" press="onDialogNextButton" />
                     <!-- <Button text="{appTxts>/rem.review}" type="Emphasized" enabled="{/reviewButtonEnabled}" visible="{/reviewButtonVisible}" press="onDialogNextButton" /> -->
                     <Button text="{appTxts>/rem.finish}" type="Emphasized" visible="{/finishButtonVisible}" press="handleWizardSubmit" />
-                    <Button text="{appTxts>/rem.cancel}" type="Transparent" press="onCloseWizard"/>
+                    <Button text="{appTxts>/quotes.cancel2}" type="Transparent" press="onCloseWizard"/>
                 </OverflowToolbar>
             </f:footer>
         </f:DynamicPage>

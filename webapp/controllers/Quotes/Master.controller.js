@@ -42,6 +42,7 @@ sap.ui.define([
             let lastDay = new Date(todayDate.getFullYear(), todayDate.getMonth() + 1, 0);
             dateRange.setDateValue(firstDay);
             dateRange.setSecondDateValue(lastDay);
+            this.isAdmin();
         },
 
         searchData: function () {
@@ -84,6 +85,7 @@ sap.ui.define([
                 value1: '1'
             })
             );
+         
 
             filtros.push(new sap.ui.model.Filter({
                 path: "Proveedor",
@@ -125,12 +127,20 @@ sap.ui.define([
                 })
                 );
             }
-
+            console.warn(this.getOwnerComponent().getModel("userdata").getProperty("/AdminC"))
             sap.ui.core.BusyIndicator.show();
             let that = this;
             this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASCAB"], "").then(resp => {
+console.warn(resp.data.results[0].CTCITASCAB.results)
+for(var x =0;x<resp.data.results[0].CTCITASCAB.results.length;x++){
+    if(resp.data.results[0].CTCITASCAB.results[x].Zestatus==="1" &&  that.getOwnerComponent().getModel("userdata").getProperty("/AdminC") ==="X"){
+        resp.data.results[0].CTCITASCAB.results[x].AdminV=true;
+    }else{
+        resp.data.results[0].CTCITASCAB.results[x].AdminV=false;
+    }
 
-             
+}
+           
                 that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(resp.data.results[0]), "tableQuotesModel");
                 that.paginate("tableQuotesModel", "/CTCITASCAB", 1, 0);
                 sap.ui.core.BusyIndicator.hide();
@@ -138,6 +148,46 @@ sap.ui.define([
                 sap.ui.core.BusyIndicator.hide();
                 console.error(error);
             });
+        },
+        isAdmin: function () {
+// Validamos si hay datos validos
+       
+
+            let filtros = [];
+
+            filtros.push(new sap.ui.model.Filter({
+                path: "Action",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: '4'
+            })
+            );
+            filtros.push(new sap.ui.model.Filter({
+                path: "Useremail",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: this.getOwnerComponent().getModel("userdata").getProperty("/IMail")
+            })
+            );
+
+
+            sap.ui.core.BusyIndicator.show();
+            let that = this;
+            this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASCAB"], "").then(resp => {
+
+             
+             console.log(resp.data.results[0].Isadmin)
+             if(resp.data.results[0].Isadmin ==="X"){
+                this.getOwnerComponent().getModel("userdata").setProperty("/AdminC", "X")
+             }else{
+                this.getOwnerComponent().getModel("userdata").setProperty("/AdminC", "")
+             }
+                sap.ui.core.BusyIndicator.hide();
+            }).catch(error => {
+                sap.ui.core.BusyIndicator.hide();
+                console.error(error);
+            });
+
+
+            console.log(this.getOwnerComponent().getModel("userdata").getProperty("/"))
         },
         searchDetail: function (dato) {
 
