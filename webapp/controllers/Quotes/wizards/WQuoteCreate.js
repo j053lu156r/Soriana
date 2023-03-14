@@ -408,47 +408,7 @@ console.log(Model3)
                       ETRETURN: [],
                     };
                   }
-                  /*var json = {
-                    Proveedor: this.getOwnerComponent().getModel("ModelLectura").getData().Proveedor,
-                    Action: "2",
-
-                    CTCITASCAB: [
-                      {
-                        Folio: this.getOwnerComponent().getModel("ModelLectura").getData().Folio,
-                        Centro: this.getOwnerComponent().getModel("ModelLectura").getData().Centro,
-                        Fechacita: appoimentModel[0].FechaCita,
-                        FechaAud:appoimentModel[0].FechaAud,
-                        Proveedor: this.getOwnerComponent().getModel("ModelLectura").getData().Proveedor,
-                        Tipocita: Model2.generalData.Tipocita,
-                        Tipounidad: Model2.generalData.tipoUnidad,
-                        Transportista: Model2.generalData.transportista,
-                        Bultos: Model2.generalData.totalBultos,
-                        Tarimas: Model2.generalData.tarimas,
-                        HoraIni: appoimentModel[0].HoraIni,
-                        HoraFin: appoimentModel[0].HoraFin,
-                        Anden: Model3[Number(appoimentModel[0].Anden)].name,
-                      },
-                    ],
-                    CTCITASCAB: [
-                      {
-                        Folio: this.getOwnerComponent().getModel("ModelLectura").getData().Folio,
-                        Centro: this.getOwnerComponent().getModel("ModelLectura").getData().Centro,
-                        Fechacita:this.getOwnerComponent().getModel("ModelLectura").getData().Fechacita,
-                        FechaAud:this.getOwnerComponent().getModel("ModelLectura").getData().FechaAud,
-                        Proveedor: this.getOwnerComponent().getModel("ModelLectura").getData().Proveedor,
-                        Tipocita: Model2.generalData.Tipocita,
-                        Tipounidad: Model2.generalData.tipoUnidad,
-                        Transportista: Model2.generalData.transportista,
-                        Bultos: Model2.generalData.totalBultos,
-                        Tarimas: this.getOwnerComponent().getModel("ModelLectura").getData().Tarimas,
-                        HoraIni: this.getOwnerComponent().getModel("ModelLectura").getData().HoraIni,
-                        HoraFin: this.getOwnerComponent().getModel("ModelLectura").getData().HoraFin,
-                        Anden: this.getOwnerComponent().getModel("ModelLectura").getData().Anden,
-                      },
-                    ],
-                    CTCITASDET: ArrtPos,
-                    ETRETURN: [],
-                  };*/
+            
                   var model = _oDataModelAppoimnet;
                   var entity = "/" + _oDataEntityAppoiment;
                   var json2 = JSON.stringify(json);
@@ -598,7 +558,7 @@ console.log(Model3)
                  
                   if (Model2.generalData.tipoCita === "01") {
 
-                    createObjReq = {
+                    createObjReq={
                       Proveedor: Model.supplierInputKey.padStart(10, 0),
                       Action: "1",
                       ETOCSTO: ArrT,
@@ -608,7 +568,7 @@ console.log(Model3)
                     };
                   } else {
 
-                    createObjReq = {
+                    createObjReq={
                       Proveedor: Model.supplierInputKey.padStart(10, 0),
                       Action: "1",
                       ETCITANUEVA: ArrTCN,
@@ -623,7 +583,10 @@ console.log(Model3)
 
                   
                
-
+                var model = _oDataModelAppoimnet;
+                var entity = "/" + _oDataEntityAppoiment;
+                var json2 = JSON.stringify(createObjReq);
+                var that = this;
                  that._POSToData(model, entity, json2).then(function (_GEToDataV2Response) {
                     sap.ui.core.BusyIndicator.hide();
 
@@ -835,7 +798,7 @@ console.log(ARRTV)
 
                 if ( that.getView().byId("sTipoCita").getSelectedKey() === "01"  ) {
                   for ( var y = 0; y < resp.data.results[0].ETOCSTO.results.length; y++    ) {
-                    if ( parseInt(resp.data.results[0].ETOC.results[0].Ebeln) === parseInt(resp.data.results[0].ETOCSTO.results[0].Bednr ) && resp.data.results[0].ETOC.results[x].Abelp === resp.data.results[0].ETOCSTO.results[y].Abelp ) {
+                    if ( parseInt(resp.data.results[0].ETOC.results[x].Ebeln) === parseInt(resp.data.results[0].ETOCSTO.results[y].Bednr ) && resp.data.results[0].ETOC.results[x].Abelp === resp.data.results[0].ETOCSTO.results[y].Abelp ) {
                       ArgTemp.push({
                         Abeln: resp.data.results[0].ETOC.results[x].Abeln,
                         Bwart: resp.data.results[0].ETOC.results[x].Bwart,
@@ -966,7 +929,7 @@ console.log(ARRTV)
         Posicion = oSelectedItem.getBindingContext("Pedidos").sPath.split("/")[3];
         
       
-      
+      console.log(oSelectedItem.getBindingContext("Pedidos").getProperty("/"))
           if(oSelectedItem.getBindingContext("Pedidos").getProperty("Tarima").length===0){
             var ATTemp = [];
             var cantTar = this.getView().byId("platformsInput").getValue();
