@@ -398,7 +398,7 @@ console.log(Model3)
                           Tipounidad: Model2.generalData.tipoUnidad,
                           Transportista: Model2.generalData.transportista,
                           Bultos: Model2.generalData.totalBultos,
-                          Tarimas: this.getOwnerComponent().getModel("ModelLectura").getData().Tarimas,
+                          Tarimas: Model2.generalData.tarimas,
                           HoraIni: this.getOwnerComponent().getModel("ModelLectura").getData().HoraIni,
                           HoraFin: this.getOwnerComponent().getModel("ModelLectura").getData().HoraFin,
                           Anden: this.getOwnerComponent().getModel("ModelLectura").getData().Anden,
@@ -778,6 +778,49 @@ console.log(ARRTV)
 
                 })
               }
+
+              }
+              if(ARRTV.length<PosicionesG.length){
+                console.log("entra")
+                console.log(PosicionesG)
+                console.log(ARRTV)
+var arrTR=[]
+               for (var x = 0; x < PosicionesG.length; x++) {
+               //   for (var y = 0; y < ARRTV.length; y++) {
+                if(ARRTV.some(ARRTV => ARRTV.Ebelp === PosicionesG[x].Ebelp)){
+
+                }else{
+                ARRTV.push({
+                  Abeln:"",
+                  Abelp :"",
+                  Bednr :PosicionesG[x].Bednr,
+                  Bwart:"",
+                  Citado:PosicionesG[x].Citado,
+                  Ean11:"",
+                  Ebeln:PosicionesG[x].Ebeln,
+                  Ebelp:PosicionesG[x].Ebelp,
+                  Kdatb:new Date(PosicionesG[x].Kdatb).toISOString().slice(0,10),
+                  Kdate:new Date(PosicionesG[x].Kdate).toISOString().slice(0,10),
+                  Lifnr:"",
+                  Matnr:PosicionesG[x].Matnr,
+                  Meins:PosicionesG[x].Meins,
+                  Menge:PosicionesG[x].Menge,
+                  MengeA:"0",
+                  MengeR:PosicionesG[x].Menge,
+                  Selected:true,
+                  Tarima:PosicionesG[x].ETOCSTOPALLEXT.results,
+                  Werks:PosicionesG[x].Werks,
+                  ZwerksD:PosicionesG[x].ZwerksD,
+                  
+
+
+                })
+                }
+                  
+                //  }
+                }
+               
+
 
               }
 
@@ -1163,13 +1206,12 @@ console.log(ARRTV)
 
       setAppoimentCalendar(dateSelected, maxdate) {
       
-      console.log(this.getOwnerComponent().getModel("Pedidos").getData())
-      console.log(this.getOwnerComponent().getModel("Pedidos").getData().fechaFFin)
+    
       var fecha1=""
       if(this.getOwnerComponent().getModel("Pedidos").getData().fechaFFin=== undefined){
        var v1= this.byId("DP1").getDateValue().getTime() + 1000 * 60 * 60 * 24 * 7
 v1= new Date(v1).toISOString().slice(0,10);
-       console.log(v1)
+      
        fecha1=new Date(v1+" 23:59:59")
       }else{
          fecha1=this.getOwnerComponent().getModel("Pedidos").getData().fechaFFin
@@ -1178,10 +1220,8 @@ v1= new Date(v1).toISOString().slice(0,10);
       
       
     //  fecha1=fecha1+", 23, 59, 00"
-      console.log(fecha1)
-console.log("fechas")
-        console.log(dateSelected)
-        console.log(maxdate)
+    
+       
         let planningCalendar = this.getView().byId("appoinmentPC");
         dateSelected.setHours(8, 0);
         planningCalendar.setStartDate(this.byId("DP1").getDateValue());
@@ -1190,7 +1230,7 @@ console.log("fechas")
         let incrementedDate = new Date();
         incrementedDate.setHours(10, 0);
 
-        console.log(planningCalendar.getMinDate())
+       
       },
 
       handleIntervalSelect: function (oEvent) {
