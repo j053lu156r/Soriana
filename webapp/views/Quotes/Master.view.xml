@@ -73,7 +73,7 @@
                         <OverflowToolbar>
                             <Title text="{appTxts>/quotes.quotes} ({tableQuotesModel>/CTCITASCAB/results/length})" />
                             <ToolbarSpacer/>
-                            <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${tableQuotesModel>/CTCITASCAB/results/length} > 0}" />
+                            <!--<Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${tableQuotesModel>/CTCITASCAB/results/length} > 0}" />-->
                             <Select visible="{= ${tableQuotesModel>/CTCITASCAB/Paginated/results/length} > 0 }" change=".paginateValue(${$parameters>/selectedItem}, 'tableQuotesModel', '/CTCITASCAB')">
                                 <items>
                                     <core:Item key="10" text="10"/>
