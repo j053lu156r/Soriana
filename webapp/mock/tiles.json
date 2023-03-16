@@ -724,41 +724,6 @@
                     ]
                 }
             ]
-        },
-        {
-            "title": "/tiles.titleCP",
-            "tiles": [
-                {
-                    "id": "0049",
-                    "title": "/tiles.titleCP.0001.cpDownload",
-                    "subHeader": "",
-                    "icon": "sap-icon://download-from-cloud",
-                    "numeric": " ",
-                    "footer": "",
-                    "type": "standard",
-                    "binding": "masterDownloadCP",
-                    "functions": [
-                        {
-                            "idFunction": 64
-                        }
-                    ]
-                },
-                {
-                    "id": "0049",
-                    "title": "/tiles.titleCP.0002.cpUpload",
-                    "subHeader": "",
-                    "icon": "sap-icon://upload-to-cloud",
-                    "numeric": " ",
-                    "footer": "",
-                    "type": "standard",
-                    "binding": "masterUploadCP",
-                    "functions": [
-                        {
-                            "idFunction": 64
-                        }
-                    ]
-                }
-            ]
         }
     ]
 }
