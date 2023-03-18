@@ -723,7 +723,7 @@ sap.ui.define(
           let FechasF = [];
           //aqui vamos
           if (Datos.lectura) {
-
+            this.getView().byId("tableWizardOrder").setEnableSelectAll(true)
             this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({ editable: false, }), "Modeleditable");
 
 
@@ -755,7 +755,7 @@ sap.ui.define(
 
             resp.data.results[0].ETOC.results = ARRTV;
           } else {
-
+            this.getView().byId("tableWizardOrder").setEnableSelectAll(false)
             let ArgTemp = [];
 
             for (var x = 0;x < resp.data.results[0].ETOC.results.length;  x++  ) {
@@ -854,12 +854,14 @@ sap.ui.define(
                   }
                 }
               }
+              console.log(that.getView().byId("sTipoCita").getSelectedKey())
               if ( that.getView().byId("sTipoCita").getSelectedKey() === "03") {
-            
-                  if (resp.data.results[0].ETOC.results[x].MengeA !== "0") {
+                console.log("entra")
+           // console.log(parseInt(resp.data.results[0].ETOC.results[x].MengeA) > 0)
+                  if (parseInt(resp.data.results[0].ETOC.results[x].MengeA) > 0) {
                   
                     ArgTemp.push(resp.data.results[0].ETOC.results[x]);
-                  }
+                 }
                
               }
             }
@@ -1813,7 +1815,7 @@ sap.ui.define(
               }
               if ( that.getView().byId("sTipoCita").getSelectedKey() === "03") {
            
-                  if (resp.data.results[0].ETOC.results[x].MengeA !== "0") {
+               if (parseInt(resp.data.results[0].ETOC.results[x].MengeA) > 0) {
                  
                     ArgTemp.push(resp.data.results[0].ETOC.results[x]);
                   }
@@ -1952,16 +1954,20 @@ sap.ui.define(
         this.getOwnerComponent().getModel("CitaMainData").setProperty("/FechaAud", new Date(dateSelected).toISOString().slice(0, 10));
       },
       onUpload: function (e) {
-        this._import(e.getParameter("files") && e.getParameter("files")[0]);
+        console.log(e.getParameter("files") && e.getParameter("files")[0])
+     this._import(e.getParameter("files") && e.getParameter("files")[0]);
+    //    console.log(archivo)
       },
 
       _import: function (file) {
+        console.log(file)
         var that = this;
         var excelData = {};
         if (file && window.FileReader) {
           var reader = new FileReader();
           reader.onload = function (e) {
             var data = e.target.result;
+            console.log(data)
             var workbook = XLSX.read(data, {
               type: "binary",
             });
@@ -1978,6 +1984,7 @@ sap.ui.define(
         }
       },
       valida_excel: function (excelData) {
+        console.log(excelData)
         var modeloPosGlobal = this.getView().getModel("Pedidos").getData()
           .ETOC.results;
 
