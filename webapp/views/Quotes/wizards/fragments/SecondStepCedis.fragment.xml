@@ -15,13 +15,13 @@
 			name="myFileUpload"
 			uploadUrl="upload/"
 			tooltip="Upload your file to the local server"
-            fileType="XLSX,xlsx"
-            visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='01'  ? true :false}"
+            fileType="TXT,txt,csv"
+            visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='02'  ? true :false}"
 			change="onUpload"/>
 		
 		
             	</l:HorizontalLayout >
-            <t:Table id="tableWizardOrder" rows="{Pedidos>/ETOC/results}" rowSelectionChange="selectPedido" enableSelectAll="{=${path:'ModelLectura>/lectura'}===true ? true :false}" filter="clearModelsOnFilter">
+            <t:Table id="tableWizardOrder" rows="{Pedidos>/ETOC/results}" rowSelectionChange="selectPedido" filter="clearModelsOnFilter">
 
               
                 <t:columns>
@@ -31,13 +31,13 @@
                             <ObjectIdentifier text="{Pedidos>Ebeln}"/>
                         </t:template>
                     </t:Column>
-                 <!--  <t:Column filterProperty="Matnr"  visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='04' ? false :true}">
-                        <Label text="{appTxts>/quotes.itemLine}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                   <t:Column filterProperty="Matnr"  visible="true">
+                        <Label text="{appTxts>/quotes.itemLine2}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
                         <t:template>
-                            <ObjectIdentifier text="{Pedidos>Matnr}"/>
+                            <ObjectIdentifier text="{Pedidos>Ebelp}"/>
                         </t:template>
-                    </t:Column>--> 
+                    </t:Column>
                       <t:Column filterProperty="Matnr"  visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='04' ? true :false}">
                         <Label text="{appTxts>/quotes.itemLine}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 
