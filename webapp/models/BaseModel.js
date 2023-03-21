@@ -1,3 +1,7 @@
+let endpointQASwebService = "https://servicioswebsorianaqa.soriana.com";
+let endpointPROwebService = "https://enviodocumentos.soriana.com";
+let hostPro = "socios.soriana.com"
+
 //INICIA BASE MODEL
 function BaseModel(params) {
     this.sUrl = params.sUrl;
@@ -227,10 +231,10 @@ EnvioCfdi.prototype.contructor = EnvioCfdi;
 function ValidacionesFiscales() {
 
     var host = window.location.host; 
-    if (host !== "socios.soriana.com"){
-        url = "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboPortal.asmx" //QAS
+    if (host !== hostPro){
+        url = endpointQASwebService + "/RecibeCFD/wseDocReciboPortal.asmx" //QAS
     } else {
-        url = "https://enviodocumentos.soriana.com/RecibeCFD/wseDocReciboPortal.asmx" //PRO
+        url = endpointPROwebService +"/RecibeCFD/wseDocReciboPortal.asmx" //PRO
     }
     var params = {};
     params.sUrl = url;
@@ -245,10 +249,10 @@ ValidacionesFiscales.prototype.contructor = ValidacionesFiscales;
 function AdendaSimplificada() {
 
     var host = window.location.host; 
-    if (host !== "socios.soriana.com"){
-        url = "https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboSimplificada.asmx" //QAS
+    if (host !== hostPro){
+        url = endpointQASwebService + "/RecibeCFD/wseDocReciboSimplificada.asmx" //QAS
     } else {
-        url = "https://enviodocumentos.soriana.com/RecibeCFD/wseDocReciboSimplificada.asmx" //PRO
+        url = endpointPROwebService + "/RecibeCFD/wseDocReciboSimplificada.asmx" //PRO
     }
     var params = {};
     params.sUrl = url;
@@ -593,3 +597,17 @@ function ModelXlsPedidos() {
 
 ModelXlsPedidos.prototype = Object.create(BaseModel.prototype);
 ModelXlsPedidos.prototype.constructor = ModelXlsPedidos;
+
+//Servicios Carta Porte
+function CartaPorte() {
+    var host = window.location.host; 
+    if (host !== hostPro){
+        url = endpointQASwebService + "/CartaPorteProxy/wscartaporte.asmx" //QAS
+    } else {
+        url = endpointPROwebService + "/CartaPorteProxy/wscartaporte.asmx" //PRO
+    }
+    var params = {};
+    params.sUrl = url;
+    params.sModel = "cartaPorte";
+    BaseModel.call(this, params);
+}
