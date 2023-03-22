@@ -729,7 +729,7 @@
             "title": "/tiles.titleCP",
             "tiles": [
                 {
-                    "id": "0049",
+                    "id": "0066",
                     "title": "/tiles.titleCP.0001.cpDownload",
                     "subHeader": "",
                     "icon": "sap-icon://download-from-cloud",
@@ -739,12 +739,12 @@
                     "binding": "masterDownloadCP",
                     "functions": [
                         {
-                            "idFunction": 64
+                            "idFunction": 67
                         }
                     ]
                 },
                 {
-                    "id": "0049",
+                    "id": "0066",
                     "title": "/tiles.titleCP.0002.cpUpload",
                     "subHeader": "",
                     "icon": "sap-icon://upload-to-cloud",
@@ -754,7 +754,7 @@
                     "binding": "masterUploadCP",
                     "functions": [
                         {
-                            "idFunction": 64
+                            "idFunction": 68
                         }
                     ]
                 }
