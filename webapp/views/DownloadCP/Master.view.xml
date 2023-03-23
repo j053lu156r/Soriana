@@ -26,23 +26,23 @@
                 <l:content>
                     <form:SimpleForm id="SimpleFormChange354" minWidth="1024" maxContainerCols="2" layout="ResponsiveLayout" editable="true" visible="true">
                         <form:content>
-                            <m:Label text="{appTxts>/cartaPorte.determinante}" labelFor="ComboBoxDet" />
-                            <m:ComboBox id="ComboBoxDet" required="true" width="40%" items="{CedisModel>/Cedis}" showSecondaryValues= "true"> 
-                                <core:ListItem key="{CedisModel>Id_Num_UN}" text="{CedisModel>Id_Num_UN} {CedisModel>Desc_UN}" additionalText="{CedisModel>Ids_Num_UN}"/>
+                            <m:Label text="{appTxts>/cartaPorte.determinante}" labelFor="DCPComboBoxDet" />
+                            <m:ComboBox id="DCPComboBoxDet" required="true" width="40%" items="{CedisModel>/Cedis}" showSecondaryValues= "true"> 
+                                <core:ListItem key="{CedisModel>Ids_Num_UN}" text="{CedisModel>Ids_Num_UN} {CedisModel>Desc_UN}" additionalText="{CedisModel>Id_Num_UN}"/>
                             </m:ComboBox>
 
-                            <m:Label text="{appTxts>/cartaPorte.operacion}" labelFor="ComboBoxOp"/>
-                            <m:ComboBox id="ComboBoxOp" required="true" width="40%" items="{TipoOperModel>/TipoOperacion}">
+                            <m:Label text="{appTxts>/cartaPorte.operacion}" labelFor="DCPComboBoxOp"/>
+                            <m:ComboBox id="DCPComboBoxOp" required="true" width="40%" items="{TipoOperModel>/TipoOperacion}">
                                 <core:ListItem key="{TipoOperModel>Id_Num_TipoOper}" text="{TipoOperModel>Desc_TipoOper}"/>
                             </m:ComboBox>
 
-                            <m:Label text="{appTxts>/cartaPorte.folio}" labelFor="inputFolio" />
-                            <Input id="inputFolio" required="true" type="Number" width="40%"/>
+                            <m:Label text="{appTxts>/cartaPorte.folio}" labelFor="DCPinputFolio" />
+                            <Input id="DCPinputFolio" required="true" type="Number" width="40%"/>
                         </form:content>
                     </form:SimpleForm>
                     <m:FlexBox alignItems="Center" justifyContent="Center">
                         <m:items>
-                            <m:Button type="Accept" press="submit" text="{appTxts>/cartaPorte.download}" width="100%" />
+                            <m:Button type="Accept" press="onDownload" text="{appTxts>/cartaPorte.download}" width="100%" />
                         </m:items>
                     </m:FlexBox>
                 </l:content>
