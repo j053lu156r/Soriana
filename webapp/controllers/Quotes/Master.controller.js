@@ -42,6 +42,7 @@ sap.ui.define([
             let lastDay = new Date(todayDate.getFullYear(), todayDate.getMonth() + 1, 0);
             dateRange.setDateValue(firstDay);
             dateRange.setSecondDateValue(lastDay);
+            this.isAdmin();
         },
 
         searchData: function () {
@@ -84,6 +85,7 @@ sap.ui.define([
                 value1: '1'
             })
             );
+         
 
             filtros.push(new sap.ui.model.Filter({
                 path: "Proveedor",
@@ -125,13 +127,20 @@ sap.ui.define([
                 })
                 );
             }
-
+            console.warn(this.getOwnerComponent().getModel("userdata").getProperty("/AdminC"))
             sap.ui.core.BusyIndicator.show();
             let that = this;
             this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASCAB"], "").then(resp => {
+console.warn(resp.data.results[0].CTCITASCAB.results)
+for(var x =0;x<resp.data.results[0].CTCITASCAB.results.length;x++){
+    if(resp.data.results[0].CTCITASCAB.results[x].Zestatus==="1" &&  that.getOwnerComponent().getModel("userdata").getProperty("/AdminC") ==="X"){
+        resp.data.results[0].CTCITASCAB.results[x].AdminV=true;
+    }else{
+        resp.data.results[0].CTCITASCAB.results[x].AdminV=false;
+    }
 
-                console.log(resp)
-                console.log(this.getView().getModel("appoinmentsCatalogs").getData())
+}
+           
                 that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(resp.data.results[0]), "tableQuotesModel");
                 that.paginate("tableQuotesModel", "/CTCITASCAB", 1, 0);
                 sap.ui.core.BusyIndicator.hide();
@@ -139,6 +148,46 @@ sap.ui.define([
                 sap.ui.core.BusyIndicator.hide();
                 console.error(error);
             });
+        },
+        isAdmin: function () {
+// Validamos si hay datos validos
+       
+
+            let filtros = [];
+
+            filtros.push(new sap.ui.model.Filter({
+                path: "Action",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: '4'
+            })
+            );
+            filtros.push(new sap.ui.model.Filter({
+                path: "Useremail",
+                operator: sap.ui.model.FilterOperator.EQ,
+                value1: this.getOwnerComponent().getModel("userdata").getProperty("/IMail")
+            })
+            );
+
+
+            sap.ui.core.BusyIndicator.show();
+            let that = this;
+            this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASCAB"], "").then(resp => {
+
+             
+             console.log(resp.data.results[0].Isadmin)
+             if(resp.data.results[0].Isadmin ==="X"){
+                this.getOwnerComponent().getModel("userdata").setProperty("/AdminC", "X")
+             }else{
+                this.getOwnerComponent().getModel("userdata").setProperty("/AdminC", "")
+             }
+                sap.ui.core.BusyIndicator.hide();
+            }).catch(error => {
+                sap.ui.core.BusyIndicator.hide();
+                console.error(error);
+            });
+
+
+            console.log(this.getOwnerComponent().getModel("userdata").getProperty("/"))
         },
         searchDetail: function (dato) {
 
@@ -165,10 +214,9 @@ sap.ui.define([
            
             sap.ui.core.BusyIndicator.show();
             let that = this;
-            this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASDETEXT"], "").then(resp => {
+            this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASDETEXT/ETOCSTOPALLEXT","CTCITASDETEXT"], "").then(resp => {
 
-                console.log(resp.data.results[0].CTCITASDETEXT.results)
-          //console.log(this.getView().getModel("appoinmentsCatalogs").getData())
+            console.log(resp.data.results[0].CTCITASDETEXT.results)
                 that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(resp.data.results[0].CTCITASDETEXT.results), "PosicionesG");
               // that.paginate("tableQuotesModel", "/CTCITASCAB", 1, 0);
                 sap.ui.core.BusyIndicator.hide();
@@ -177,11 +225,83 @@ sap.ui.define([
                 console.error(error);
             });
         },
+        codigoEstado:function(valor){
+            var result=""
+            switch (valor) {
+                case '1':
+                 
+                  result="POR CONFIRMAR"
+                  break;
+                case '2':
+                 
+                  result="ACTIVA"
+                  break;
+                case '3':
+                  
+                  result="AUSENCIA"
+                  break;
+                case '4':
+                
+                  result="CANCELADA"
+                  break; 
+                  case '5':
+                
+                  result="PROCESADA"
+                  break;  
+              }
+              return  result
+
+        },
+        codigotipocita:function(valor){
+            var result=""
+            switch (valor) {
+                case '01':
+                 
+                  result="PALLET BLINDADO"
+                  break;
+                case '02':
+                 
+                  result="RECIBO EN SITIO"
+                  break;
+                case '03':
+                  
+                  result="CEDIS"
+                  break;
+                case '04':
+                
+                  result="PALL-MINIPALL"
+                  break;  
+              }
+              return  result
+
+        },
+        codigotipounidad:function(valor){
+            var result=""
+            switch (valor) {
+                case '01':
+                 
+                  result="TRAILER"
+                  break;
+                case '02':
+                 
+                  result="CAMIONETA"
+                  break;
+                case '03':
+                  
+                  result="THORTON"
+                  break;
+              
+              }
+              return  result
+
+
+        },
+        
 
 
         clearFilds: function () {
             // this.getView().byId("quoteFolioInput").setValue("");
-            this.getView().byId("dateRange").setDateValue("");
+       //     this.getView().byId("dateRange").setDateValue("");
             this.getView().byId("quoteType").setValue("");
             this.getView().byId("quoteStatus").setValue("");
             this.getView().byId("quoteUnitType").setValue("");
@@ -286,7 +406,7 @@ sap.ui.define([
             var oSelectedItem = oEvent.getSource().getParent();
            
            
-console.log("juan")
+
 
 
 
@@ -323,6 +443,7 @@ console.log("juan")
                 
                       if (response.Success === "X") {
                         sap.m.MessageBox.success(that.getView().getModel("appTxts").getProperty("/quotes.confirmcita"));
+                        
                       } else {
                         sap.m.MessageBox.error(response.ETRETURN.results[0].Message);
                       }
@@ -340,25 +461,41 @@ console.log("juan")
         },
 
         onListItemPress: function (oEvent) {
+      
       var that =this;
-            var modelo=that.getView().getModel("tableQuotesModel").getData()
+    
+            var modelo=that.getView().getModel("tableQuotesModel").getData();
             modelo=modelo.CTCITASCAB.results;
-            console.log(modelo)
-     
+          
+     if(that.getView().getModel("tableQuotesModel").getData().CTCITASCAB.Paginated.iterator>1){
+      
         var productPath = oEvent.getSource().getBindingContext("tableQuotesModel").getPath(),
         product = productPath.split("/").slice(-1).pop();
-        console.log(product)
-      console.log(modelo[product])
+        var iteracion=(Number(that.getView().getModel("tableQuotesModel").getData().CTCITASCAB.Paginated.iterator)-1).toString()
+     
+        product=iteracion+product
+
+
+     
+     }else{
+       
+        var productPath = oEvent.getSource().getBindingContext("tableQuotesModel").getPath(),
+        product = productPath.split("/").slice(-1).pop();
+      
+     }
+        
+      
       that.searchDetail(modelo[product].Folio)
         modelo[product].lectura=true;
         modelo[product].Estilo='V';
 
-       console.log(modelo[product])
+      
       //  var  cmModel = new sap.ui.model.json.JSONModel(modelo[product]);
         that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(modelo[product]),
         "ModelLectura");
        // that.getOwnerComponent().setModel(cmModel, "ModelLectura");
         //that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({editable: false,}), "Modeleditable");
+        console.log("paso 1")
         that.createQuote(modelo[product])
 
        
@@ -460,7 +597,7 @@ console.log("juan")
             }
         },
         btnValidateFile: function () {
-            console.log("Upload file");
+        
         }
     });
 });

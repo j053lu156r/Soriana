@@ -73,7 +73,7 @@
                         <OverflowToolbar>
                             <Title text="{appTxts>/quotes.quotes} ({tableQuotesModel>/CTCITASCAB/results/length})" />
                             <ToolbarSpacer/>
-                            <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${tableQuotesModel>/CTCITASCAB/results/length} > 0}" />
+                            <!--<Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${tableQuotesModel>/CTCITASCAB/results/length} > 0}" />-->
                             <Select visible="{= ${tableQuotesModel>/CTCITASCAB/Paginated/results/length} > 0 }" change=".paginateValue(${$parameters>/selectedItem}, 'tableQuotesModel', '/CTCITASCAB')">
                                 <items>
                                     <core:Item key="10" text="10"/>
@@ -133,12 +133,19 @@
                             </header>
                             <footer/>
                         </Column>
+                           <Column width="auto" vAlign="Top" minScreenWidth="Tablet" mergeDuplicates="false">
+                            <header>
+                                <Text text="Estado" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                            <footer/>
+                        </Column>
                             <Column width="auto" vAlign="Top" minScreenWidth="Tablet" mergeDuplicates="false">
                             <header>
                                 <Text text="" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             </header>
                             <footer/>
                         </Column>
+                        
                         <!-- <Column width="auto" vAlign="Top" minScreenWidth="Tablet" mergeDuplicates="false">
 						<header>
 							<Text text="{appTxts>/quotes.packageBoxes}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -166,9 +173,10 @@
                                 <Text xmlns="sap.m" text="{tableQuotesModel>Fechareg}"/>
                                 <Text xmlns="sap.m" text="{tableQuotesModel>Fechacita}"/>
                                 <Text xmlns="sap.m" text="{tableQuotesModel>Proveedor}"/>
-                                <Text xmlns="sap.m" text="{tableQuotesModel>Tipocita}"/>
-                                <Text xmlns="sap.m" text="{tableQuotesModel>Tipounidad}"/>
-                                <Button text="Confirmar Cita" press="Confirmacion"></Button>
+                                <Text xmlns="sap.m" text="{path: 'tableQuotesModel>Tipocita', formatter: '.codigotipocita'}"/>
+                                <Text xmlns="sap.m" text="{path: 'tableQuotesModel>Tipounidad', formatter: '.codigotipounidad'}"/>
+                                <Text xmlns="sap.m" text="{path: 'tableQuotesModel>Zestatus', formatter: '.codigoEstado'}"/>
+                                <Button text="Confirmar Cita" press="Confirmacion" visible="{path:'tableQuotesModel>AdminV'}"></Button>
                             </cells>
                         </ColumnListItem>
                     </items>
