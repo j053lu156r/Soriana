@@ -3,15 +3,33 @@ sap.ui.define([
 ], function (Controller) {
     "use strict";
 
+    var oCartaPorte = new this.CartaPorte();
+    var oFilesCartaPorte = new this.FilesCartaPorte();
+
     return Controller.extend("demo.controllers.UploadCP.Master", {
+
+        oFileUploader: undefined,
+        cboxComboBoxDet: undefined,
+        cboxTipoOper: undefined,
+        inputFolio: undefined,
+
         onInit: function () {
             this.configFilterLanguage(this.getView().byId("filterBar"));
             this.onLoadCedis();
             this.onLoadTipoOperacion();
+            this.oFileUploader = this.getView().byId("fuTxt");
+            this.cboxComboBoxDet = this.getView().byId("UCPComboBoxDet");
+            this.cboxTipoOper = this.getView().byId("UCPComboBoxOp");
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.getRoute("masterUploadCP").attachMatched(this._onRouteMatched, this);
         },
 
+        _onRouteMatched: function (oEvent) {
+			this._clearInputs();
+		},
+
         onExit: function () {
-            
+            that._clearInputs();
         },
 
         onLoadCedis: function () {
@@ -42,9 +60,7 @@ sap.ui.define([
                     that.getOwnerComponent().setModel(oModel, "CedisModel");
                 },
                 error: function (request, status, err) {
-                    console.log(request)
-                    console.log(status)
-                    console.log(err)
+                    sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/cartaPorte.missingCedisError"));
                 }
             });
         },
@@ -78,9 +94,7 @@ sap.ui.define([
                     that.getOwnerComponent().setModel(oModel, "TipoOperModel");
                 },
                 error: function (request, status, err) {
-                    console.log(request)
-                    console.log(status)
-                    console.log(err)
+                    sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/cartaPorte.missingTipoOperError"));
                 }
             });
         },
@@ -111,6 +125,60 @@ sap.ui.define([
                 dataTipos[index] = tipo;
             });
             return dataTipos;
+        },
+
+        cpUploadPress: function () {
+            let that = this;
+            let lifnr = this.getConfigModel().getProperty("/supplierInputKey");
+            var file = this.oFileUploader.oFileUpload.files[0];
+            let determinante = this.cboxComboBoxDet.getSelectedKey();
+            let tipoOperacion = this.cboxTipoOper.getSelectedKey();
+
+            if (determinante == "" || tipoOperacion == "" || lifnr == undefined || file == undefined) {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/cartaPorte.uploadMissingDataError"));
+            } else {
+                sap.ui.core.BusyIndicator.show(0);
+                const form = new FormData();
+                form.append("IdsNumUn", determinante);
+                form.append("TipoOperacion", tipoOperacion);
+                form.append("provid", lifnr);
+                form.append("folio", "20");
+                form.append("BControlCargar", "enviar");
+                form.append("archivoCartaPorte", file);
+
+                $.ajax({
+                    async: true,
+                    url: oFilesCartaPorte.sUrl,
+                    method: "POST",
+                    headers: {
+                        "Access-Control-Allow-Origin": "*"
+                    },
+                    processData: false,
+                    contentType: false,
+                    mimeType: "multipart/form-data",
+                    data: form,
+                    success: function (response) {
+                        sap.ui.core.BusyIndicator.hide();
+                        if (response !== "") {
+                            sap.m.MessageBox.error(response);
+                        } else {
+                            sap.m.MessageBox.success(that.getOwnerComponent().getModel("appTxts").getProperty("/cartaPorte.uploadSuccess"));
+                            that._clearInputs();
+                        }
+                    },
+                    error: function () {
+                        sap.ui.core.BusyIndicator.hide();
+                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/cartaPorte.uploadError"));
+                        that._clearInputs();
+                    }
+                });
+            }
+        },
+
+        _clearInputs() {
+            this.cboxComboBoxDet.setSelectedKey(null);
+            this.cboxTipoOper.setSelectedKey(null);
+            this.oFileUploader.clear();
         }
     });
 });

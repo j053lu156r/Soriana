@@ -1,5 +1,5 @@
 <mvc:View
-    controllerName="demo.controllers.DownloadCP.Master"
+    controllerName="demo.controllers.UploadCP.Master"
     xmlns:m="sap.m"
     xmlns:vm="sap.ui.comp.variants"
     xmlns:f="sap.f"
@@ -28,24 +28,20 @@
                     <form:SimpleForm id="SimpleFormChange354" minWidth="1024" maxContainerCols="2" layout="ResponsiveLayout" editable="true" visible="true">
                         <form:content>
                         
-                            <m:Label text="{appTxts>/cartaPorte.determinante}" labelFor="ComboBoxDet" />
-                            <m:ComboBox id="ComboBoxDet" required="true" width="40%" items="{CedisModel>/Cedis}" showSecondaryValues= "true"> 
-                                <core:ListItem key="{CedisModel>Id_Num_UN}" text="{CedisModel>Id_Num_UN} {CedisModel>Desc_UN}" additionalText="{CedisModel>Ids_Num_UN}"/>
+                            <m:Label text="{appTxts>/cartaPorte.determinante}" labelFor="UCPComboBoxDet" />
+                            <m:ComboBox id="UCPComboBoxDet" required="true" width="40%" items="{CedisModel>/Cedis}" showSecondaryValues= "true"> 
+                                <core:ListItem key="{CedisModel>Ids_Num_UN}" text="{CedisModel>Ids_Num_UN} {CedisModel>Desc_UN}" additionalText="{CedisModel>Id_Num_UN}"/>
                             </m:ComboBox>
 
-                            <m:Label text="{appTxts>/cartaPorte.operacion}" labelFor="ComboBoxOp"/>
-                            <m:ComboBox id="ComboBoxOp" required="true" width="40%" items="{TipoOperModel>/TipoOperacion}">
+                            <m:Label text="{appTxts>/cartaPorte.operacion}" labelFor="UCPComboBoxOp"/>
+                            <m:ComboBox id="UCPComboBoxOp" required="true" width="40%" items="{TipoOperModel>/TipoOperacion}">
                                 <core:ListItem key="{TipoOperModel>Id_Num_TipoOper}" text="{TipoOperModel>Desc_TipoOper}"/>
                             </m:ComboBox>
 
                             <m:Label text="{appTxts>/cartaPorte.file}" labelFor="fuFile" />
-                            <u:FileUploader id="fuFile" width="40%" name="fuFile" uploadComplete="handleUploadComplete" change="handleValueChange" style="Emphasized" fileType="{configSite>/updateFormatsSingle}">
-                                <u:parameters>
-                                    <u:FileUploaderParameter name="Accept-CH" value="Viewport-Width" />
-                                    <u:FileUploaderParameter name="Accept-CH" value="Width" />
-                                    <u:FileUploaderParameter name="Accept-CH-Lifetime" value="86400" />
-                                </u:parameters>
-                            </u:FileUploader>
+                            <u:FileUploader id="fuTxt" width="40%" name="fuTxt" uploadComplete="handleUploadComplete" 
+                                change="handleValueChange" style="Emphasized" fileType="txt"
+                                uploadUrl="{oCartaPorte.sUrl}"/>
                         </form:content>
                     </form:SimpleForm>
                     <m:FlexBox alignItems="Center" justifyContent="Center">
@@ -59,7 +55,7 @@
                     </m:FlexBox>
                     <m:FlexBox alignItems="Center" justifyContent="Center">
                         <m:items>
-                            <m:Button type="Accept" press="submit" text="{appTxts>/cartaPorte.upload}" width="100%" />
+                            <m:Button type="Accept" press="cpUploadPress" text="{appTxts>/cartaPorte.upload}" width="100%" />
                         </m:items>
                     </m:FlexBox>
                 </l:content>

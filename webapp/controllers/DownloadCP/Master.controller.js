@@ -19,13 +19,20 @@ sap.ui.define([
             this.cboxComboBoxDet = this.getView().byId("DCPComboBoxDet");
             this.cboxTipoOper = this.getView().byId("DCPComboBoxOp");
             this.inputFolio = this.getView().byId("DCPinputFolio");
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.getRoute("masterDownloadCP").attachMatched(this._onRouteMatched, this);
         },
 
-        onExit: function () {
+        _onRouteMatched: function (oEvent) {
+			this._clearInputs();
+		},
 
+        onExit: function () {
+            this._clearInputs();
         },
 
         onLoadCedis: function () {
+            sap.ui.core.BusyIndicator.show(0);
             const that = this;
             const s = new XMLSerializer();
             var body = '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
@@ -51,14 +58,17 @@ sap.ui.define([
                     var oModel = new sap.ui.model.json.JSONModel();
                     oModel.setData(dataCedis);
                     that.getOwnerComponent().setModel(oModel, "CedisModel");
+                    sap.ui.core.BusyIndicator.hide();
                 },
                 error: function (request, status, err) {
+                    sap.ui.core.BusyIndicator.hide();
                     sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/cartaPorte.missingCedisError"));
                 }
             });
         },
 
         onLoadTipoOperacion: function () {
+            sap.ui.core.BusyIndicator.show(0);
             const that = this;
             const s = new XMLSerializer();
             var body = '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
@@ -85,8 +95,10 @@ sap.ui.define([
                     var oModel = new sap.ui.model.json.JSONModel();
                     oModel.setData(dataTipos);
                     that.getOwnerComponent().setModel(oModel, "TipoOperModel");
+                    sap.ui.core.BusyIndicator.hide();
                 },
                 error: function (request, status, err) {
+                    sap.ui.core.BusyIndicator.hide();
                     sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/cartaPorte.missingTipoOperError"));
                 }
             });
@@ -160,12 +172,18 @@ sap.ui.define([
                             sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/cartaPorte.emptyFile"));
                         }
                     },
-                    error: function (request, status, err) {
+                    error: function () {
                         sap.ui.core.BusyIndicator.hide();
                         sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/cartaPorte.downloadError"));
                     }
                 });
             }
+        },
+            
+        _clearInputs() {
+            this.cboxComboBoxDet.setSelectedKey(null);
+            this.cboxTipoOper.setSelectedKey(null);
+            this.inputFolio.setValue(null);
         }
     });
 });
