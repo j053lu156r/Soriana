@@ -600,11 +600,27 @@ ModelXlsPedidos.prototype.constructor = ModelXlsPedidos;
 
 //Servicios Carta Porte
 function CartaPorte() {
-    var host = window.location.host; 
+    const host = window.location.host;
+    const modulo = "/CartaPorteProxy/wscartaporte.asmx"
     if (host !== hostPro){
-        url = endpointQASwebService + "/CartaPorteProxy/wscartaporte.asmx" //QAS
+        url = endpointQASwebService + modulo //QAS
     } else {
-        url = endpointPROwebService + "/CartaPorteProxy/wscartaporte.asmx" //PRO
+        url = endpointPROwebService + modulo //PRO
+    }
+    var params = {};
+    params.sUrl = url;
+    params.sModel = "cartaPorte";
+    BaseModel.call(this, params);
+}
+
+//Download/Upload Carta Porte
+function FilesCartaPorte() {
+    const host = window.location.host;
+    const modulo = "/CartaPorteProxy/ReceiveCartaPorteFile.ashx"
+    if (host !== hostPro){
+        url = endpointQASwebService + modulo //QAS
+    } else {
+        url = endpointPROwebService + modulo //PRO
     }
     var params = {};
     params.sUrl = url;
