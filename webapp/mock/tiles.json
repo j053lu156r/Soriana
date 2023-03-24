@@ -545,7 +545,7 @@
             "tiles": [
                 {
                     "id": "0037",
-                    "title": "/tiles.acuerdos",
+                    "title": "/tiles.acuerdosGral",
                     "subHeader": "",
                     "icon": "sap-icon://customer-order-entry",
                     "numeric": " ",
@@ -559,8 +559,23 @@
                     ]
                 },
                 {
-                    "id": "0044",
+                    "id": "0050",
                     "title": "/tiles.acuerdosNS",
+                    "subHeader": "",
+                    "icon": "sap-icon://customer-order-entry",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterCargoNS",
+                    "functions": [
+                        {
+                            "idFunction": 65
+                        }
+                    ]
+                },
+                {
+                    "id": "0044",
+                    "title": "/tiles.acuerdosHGral",
                     "subHeader": "",
                     "icon": "sap-icon://customer-order-entry",
                     "numeric": " ",
@@ -574,8 +589,23 @@
                     ]
                 },
                 {
+                    "id": "0052",
+                    "title": "/tiles.acuerdosHNS",
+                    "subHeader": "",
+                    "icon": "sap-icon://customer-order-entry",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterAcuerdosHNS",
+                    "functions": [
+                        {
+                            "idFunction": 70
+                        }
+                    ]
+                },
+                {
                     "id": "0045",
-                    "title": "/tiles.acuerdosGral",
+                    "title": "/tiles.acuerdosMGral",
                     "subHeader": "",
                     "icon": "sap-icon://customer-order-entry",
                     "numeric": " ",
@@ -590,7 +620,7 @@
                 },
                 {
                     "id": "0046",
-                    "title": "/tiles.acuerdosNser",
+                    "title": "/tiles.acuerdosMNS",
                     "subHeader": "",
                     "icon": "sap-icon://customer-order-entry",
                     "numeric": " ",
@@ -600,21 +630,6 @@
                     "functions": [
                         {
                             "idFunction": 63
-                        }
-                    ]
-                },
-                {
-                    "id": "0050",
-                    "title": "/tiles.cargoNS",
-                    "subHeader": "",
-                    "icon": "sap-icon://customer-order-entry",
-                    "numeric": " ",
-                    "footer": "",
-                    "type": "standard",
-                    "binding": "masterCargoNS",
-                    "functions": [
-                        {
-                            "idFunction": 65
                         }
                     ]
                 },

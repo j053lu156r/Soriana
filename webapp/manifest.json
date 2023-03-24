@@ -802,6 +802,21 @@
                     ]
                 },
                 {
+                    "name": "masterAcuerdosHNS",
+                    "pattern": "masterAcuerdosHNS",
+                    "target": [
+                        "masterAcuerdosHNS"
+                    ]
+                },
+                {
+                    "pattern": "detailAcuerdosHNS/{layout}/{proveedor}/{referencia}/{centro}",
+                    "name": "detailAcuerdosHNS",
+                    "target": [
+                        "masterAcuerdosHNS",
+                        "detailAcuerdosHNS"
+                    ]
+                },
+                {
                     "name": "Products",
                     "pattern": "Products",
                     "target": [
@@ -1383,6 +1398,16 @@
                 "detailCargoNS": {
                     "viewName": "Detail",
                     "viewPath": "demo.views.CargoNS",
+                    "controlAggregation": "midColumnPages"
+                },
+                "masterAcuerdosHNS": {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.AcuerdosHNS",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailAcuerdosHNS": {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.AcuerdosHNS",
                     "controlAggregation": "midColumnPages"
                 },
                 "Products": {
