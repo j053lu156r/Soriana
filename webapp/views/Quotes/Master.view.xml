@@ -59,6 +59,48 @@
                                 </fb:control>
                             </fb:FilterGroupItem>
 
+                            <!-- -->
+  <fb:FilterGroupItem groupName="__$INTERNAL$" name="c" label="{appTxts>/quotes.quoteCentro}" mandatory="false" partOfCurrentVariant="false" visibleInFilterBar="true">
+                                <fb:control>
+                                 
+                                    	<ComboBox id="quoteCentroInput"
+				items="{
+				  path: 'appoinmentsCatalogs>/ECONFIGCEDISNAV/results',
+					sorter: { path: 'ZTipocita' }
+				}">
+				 <core:Item key="{appoinmentsCatalogs>Werks}" text="{appoinmentsCatalogs>Werks}" />
+			</ComboBox>
+                                 
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                              <fb:FilterGroupItem groupName="__$INTERNAL$" name="d" label="{appTxts>/quotes.quoteEstatus}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                
+                                	<ComboBox id="Ztipoestatus"
+				items="{
+				  path: 'appoinmentsCatalogs>/ETIPOCITANAV/results',
+					sorter: { path: 'ZTipocita' }
+				}">
+				 <core:Item key="{appoinmentsCatalogs>ZNumcita}" text="{appoinmentsCatalogs>ZTipocita}" />
+			</ComboBox>
+                             
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                              <fb:FilterGroupItem groupName="__$INTERNAL$" name="e" label="{appTxts>/quotes.quoteTcita}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                            <fb:control>
+                                    <ComboBox id="ZtipoCita"
+                                                items="{
+                                                path: 'TCitas>/',
+                                                sorter: { path: 'Nombre' }
+                                                }">
+                                            <core:Item key="{TCitas>Codigo}" text="{TCitas>Nombre}" />
+                                            </ComboBox>
+
+                           
+                                </fb:control>
+                            </fb:FilterGroupItem>
                           
                         </fb:filterGroupItems>
                     </fb:FilterBar>
@@ -97,9 +139,9 @@
                             </header>
                             <footer/>
                         </Column>
-                        <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" mergeDuplicates="false">
+                        <Column  width="12px" minScreenWidth="Phone" mergeDuplicates="false">
                             <header>
-                                <Text text="{appTxts>/quotes.quoteCreationDate}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                <Text text="{appTxts>/quotes.quoteCreationDate}" width="auto" maxLines="1" wrapping="true" />
                             </header>
                             <footer/>
                         </Column>
@@ -109,7 +151,7 @@
                             </header>
                             <footer/>
                         </Column>
-                        <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" mergeDuplicates="false">
+                        <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" mergeDuplicates="false">
                             <header>
                                 <Text text="{appTxts>/quotes.supplier}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             </header>
@@ -121,25 +163,25 @@
 						</header>
 						<footer/>
 					</Column>  -->
-                        <Column width="auto" vAlign="Top" minScreenWidth="Tablet" mergeDuplicates="false">
+                        <Column width="auto" vAlign="Top" minScreenWidth="Phone" mergeDuplicates="false">
                             <header>
                                 <Text text="{appTxts>/quotes.quoteType}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             </header>
                             <footer/>
                         </Column>
-                        <Column width="auto" vAlign="Top" minScreenWidth="Tablet" mergeDuplicates="false">
+                        <Column width="auto" vAlign="Top" minScreenWidth="Phone" mergeDuplicates="false">
                             <header>
                                 <Text text="{appTxts>/quotes.unitType}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             </header>
                             <footer/>
                         </Column>
-                           <Column width="auto" vAlign="Top" minScreenWidth="Tablet" mergeDuplicates="false">
+                           <Column width="auto" vAlign="Top" minScreenWidth="Phone" mergeDuplicates="false">
                             <header>
                                 <Text text="Estado" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             </header>
                             <footer/>
                         </Column>
-                            <Column width="auto" vAlign="Top" minScreenWidth="Tablet" mergeDuplicates="false">
+                            <Column width="auto" vAlign="Top" minScreenWidth="Phone" mergeDuplicates="false">
                             <header>
                                 <Text text="" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             </header>
