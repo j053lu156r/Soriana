@@ -294,7 +294,7 @@ sap.ui.define(
       onCloseWizard: function () {
         var Datos = this.getView().getModel("ModelLectura").getData();
         var auxJsonModel = new sap.ui.model.json.JSONModel([]);
-
+        this.getView().byId("tableWizardOrder").setEnableSelectAll(false)
         this.getOwnerComponent().setModel(auxJsonModel, "Platforms");
         if (Datos.lectura) {
           this._handleMessageBoxOpen(
@@ -701,7 +701,14 @@ sap.ui.define(
             that.getConfigModel().getProperty("/supplierInputKey")
           )
         );
+        
 
+        filtros.push(
+          that.buildFiltro(
+            "Iwerks",
+            that.getView().byId("sOrdenes").getSelectedKey()
+          )
+        );
         filtros.push(that.buildFiltro("IKdatb", date));
         var Datos = that.getOwnerComponent().getModel("ModelLectura").getData();
 
@@ -728,6 +735,16 @@ sap.ui.define(
 
 
             for (var x = 0; x < resp.data.results[0].ETOC.results.length; x++) {
+              
+            resp.data.results[0].ETOC.results[x].Menge = parseInt(resp.data.results[0].ETOC.results[x].Menge)
+            resp.data.results[0].ETOC.results[x].Menge = resp.data.results[0].ETOC.results[x].Menge.toString()
+
+            resp.data.results[0].ETOC.results[x].MengeR = parseInt(resp.data.results[0].ETOC.results[x].MengeR)
+            resp.data.results[0].ETOC.results[x].MengeR = resp.data.results[0].ETOC.results[x].MengeR.toString()
+
+            resp.data.results[0].ETOC.results[x].MengeA = parseInt(resp.data.results[0].ETOC.results[x].MengeA)
+            resp.data.results[0].ETOC.results[x].MengeA = resp.data.results[0].ETOC.results[x].MengeA.toString()
+          
               resp.data.results[0].ETOC.results[x].Selected = true;
 
               for (var y = 0; y < PosicionesG.length; y++) {
@@ -751,22 +768,30 @@ sap.ui.define(
                 }
               }
             }
-           
+
 
             resp.data.results[0].ETOC.results = ARRTV;
           } else {
             this.getView().byId("tableWizardOrder").setEnableSelectAll(false)
             let ArgTemp = [];
 
-            for (var x = 0;x < resp.data.results[0].ETOC.results.length;  x++  ) {
+            for (var x = 0; x < resp.data.results[0].ETOC.results.length; x++) {
+              resp.data.results[0].ETOC.results[x].Menge = parseInt(resp.data.results[0].ETOC.results[x].Menge)
+              resp.data.results[0].ETOC.results[x].Menge = resp.data.results[0].ETOC.results[x].Menge.toString()
+  
+              resp.data.results[0].ETOC.results[x].MengeR = parseInt(resp.data.results[0].ETOC.results[x].MengeR)
+              resp.data.results[0].ETOC.results[x].MengeR = resp.data.results[0].ETOC.results[x].MengeR.toString()
+  
+              resp.data.results[0].ETOC.results[x].MengeA = parseInt(resp.data.results[0].ETOC.results[x].MengeA)
+              resp.data.results[0].ETOC.results[x].MengeA = resp.data.results[0].ETOC.results[x].MengeA.toString()
               FechasI.push({ Finicio: new Date(resp.data.results[0].ETOC.results[x].Kdatb), });
               FechasF.push({ Ffin: new Date(resp.data.results[0].ETOC.results[x].Kdate), });
               resp.data.results[0].ETOC.results[x].Selected = false;
-          
+
               if (that.getView().byId("sTipoCita").getSelectedKey() === "01") {
-                
+
                 for (var y = 0; y < resp.data.results[0].ETOCSTO.results.length; y++) {
-                  if (parseInt(resp.data.results[0].ETOC.results[x].Ebeln) === parseInt(resp.data.results[0].ETOCSTO.results[y].Bednr) && resp.data.results[0].ETOC.results[x].Abelp === resp.data.results[0].ETOCSTO.results[y].Abelp && Number(resp.data.results[0].ETOC.results[x].MengeA) >0) {
+                  if (parseInt(resp.data.results[0].ETOC.results[x].Ebeln) === parseInt(resp.data.results[0].ETOCSTO.results[y].Bednr) && resp.data.results[0].ETOC.results[x].Abelp === resp.data.results[0].ETOCSTO.results[y].Abelp && Number(resp.data.results[0].ETOC.results[x].MengeA) > 0) {
                     ArgTemp.push({
                       Abeln: resp.data.results[0].ETOC.results[x].Abeln,
                       Bwart: resp.data.results[0].ETOC.results[x].Bwart,
@@ -809,10 +834,10 @@ sap.ui.define(
               }
 
               if (that.getView().byId("sTipoCita").getSelectedKey() === "04") {
-               
+
                 for (var y = 0; y < resp.data.results[0].ETMINIFULL03.results.length; y++) {
 
-                  if (resp.data.results[0].ETOC.results[x].Abeln === resp.data.results[0].ETMINIFULL03.results[y].Zabeln && resp.data.results[0].ETOC.results[x].Abelp === resp.data.results[0].ETMINIFULL03.results[y].Zabelp && Number(resp.data.results[0].ETOC.results[x].MengeA) >0) {
+                  if (resp.data.results[0].ETOC.results[x].Abeln === resp.data.results[0].ETMINIFULL03.results[y].Zabeln && resp.data.results[0].ETOC.results[x].Abelp === resp.data.results[0].ETMINIFULL03.results[y].Zabelp && Number(resp.data.results[0].ETOC.results[x].MengeA) > 0) {
                     resp.data.results[0].ETOC.results[x].Zceqfp = resp.data.results[0].ETMINIFULL03.results[y].Zceqfp;
                     resp.data.results[0].ETOC.results[x].Zceqfu = resp.data.results[0].ETMINIFULL03.results[y].Zceqfu;
                     resp.data.results[0].ETOC.results[x].Zcjpic = resp.data.results[0].ETMINIFULL03.results[y].Zcjpic;
@@ -822,14 +847,14 @@ sap.ui.define(
                 }
               }
 
-              if ( that.getView().byId("sTipoCita").getSelectedKey() === "02") {
-            
-                for ( var y = 0; y < resp.data.results[0].ETMINIFULL03.results.length;  y++ ) {
+              if (that.getView().byId("sTipoCita").getSelectedKey() === "02") {
+
+                for (var y = 0; y < resp.data.results[0].ETMINIFULL03.results.length; y++) {
                   if (
                     resp.data.results[0].ETOC.results[x].Abeln ===
                     resp.data.results[0].ETMINIFULL03.results[y].Zabeln &&
                     resp.data.results[0].ETOC.results[x].Abelp ===
-                    resp.data.results[0].ETMINIFULL03.results[y].Zabelp && Number(resp.data.results[0].ETOC.results[x].MengeA) >0
+                    resp.data.results[0].ETMINIFULL03.results[y].Zabelp && Number(resp.data.results[0].ETOC.results[x].MengeA) > 0
                   ) {
                     ArgTemp.push({
                       Abeln: resp.data.results[0].ETOC.results[x].Abeln,
@@ -855,17 +880,19 @@ sap.ui.define(
                 }
               }
               console.log(that.getView().byId("sTipoCita").getSelectedKey())
-              if ( that.getView().byId("sTipoCita").getSelectedKey() === "03") {
+              if (that.getView().byId("sTipoCita").getSelectedKey() === "03") {
                 console.log("entra")
-           // console.log(parseInt(resp.data.results[0].ETOC.results[x].MengeA) > 0)
-                  if (parseInt(resp.data.results[0].ETOC.results[x].MengeA) > 0) {
-                  
-                    ArgTemp.push(resp.data.results[0].ETOC.results[x]);
-                 }
-               
+                // console.log(parseInt(resp.data.results[0].ETOC.results[x].MengeA) > 0)
+                if (parseInt(resp.data.results[0].ETOC.results[x].MengeA) > 0) {
+                  resp.data.results[0].ETOC.results[x].MengeA = parseInt(resp.data.results[0].ETOC.results[x].MengeA)
+                  resp.data.results[0].ETOC.results[x].MengeA = resp.data.results[0].ETOC.results[x].MengeA.toString()
+                  ArgTemp.push(resp.data.results[0].ETOC.results[x]);
+                }
+
               }
             }
-            if (that.getView().byId("sTipoCita").getSelectedKey() === "02" || that.getView().byId("sTipoCita").getSelectedKey() === "01"|| that.getView().byId("sTipoCita").getSelectedKey() === "03") {
+            console.log(ArgTemp)
+            if (that.getView().byId("sTipoCita").getSelectedKey() === "02" || that.getView().byId("sTipoCita").getSelectedKey() === "01" || that.getView().byId("sTipoCita").getSelectedKey() === "03") {
               resp.data.results[0].ETOC.results = [];
               resp.data.results[0].ETOC.results = ArgTemp;
             }
@@ -1099,7 +1126,7 @@ sap.ui.define(
       onListItemPress: function (oEvent) { },
       appointmentDateChange(oEvent) {
 
-       console.log( this.getOwnerComponent().getModel("Modeleditable"))
+        console.log(this.getOwnerComponent().getModel("Modeleditable"))
         let source = oEvent.getSource();
         let dateSelected = source.getDateValue();
 
@@ -1405,9 +1432,9 @@ sap.ui.define(
           _invalidinputs = temparray;
         }
 
-        this.byId("btnAppoimentNext").setEnabled(
+      /*  this.byId("btnAppoimentNext").setEnabled(
           _invalidinputs.length == 0 && cantidad > 0
-        );
+        );*/
 
         let creationArray = this.getOwnerComponent()
           .getModel("CitaCreationArray")
@@ -1607,7 +1634,7 @@ sap.ui.define(
 
         var that = this;
         if (this._oWizard.getProgress() === 1) {
-         // that.getView().byId("sTipoCita").setEditable(true);
+          // that.getView().byId("sTipoCita").setEditable(true);
           that.getView().byId("totalpackagesInput").setEditable(true);
           that.getView().byId("platformsInput").setEditable(true);
           that.getView().byId("sTipoUnidad").setEditable(true);
@@ -1693,6 +1720,12 @@ sap.ui.define(
           )
         );
 
+        filtros.push(
+          that.buildFiltro(
+            "Iwerks",
+            that.getView().byId("sOrdenes").getSelectedKey()
+          )
+        );
         filtros.push(that.buildFiltro("IKdatb", date));
         var Datos = that.getOwnerComponent().getModel("ModelLectura").getData();
 
@@ -1713,122 +1746,134 @@ sap.ui.define(
           let FechasI = [];
           let FechasF = [];
           //aqui vamos
-       
 
-            let ArgTemp = [];
 
-            for (var x = 0;x < resp.data.results[0].ETOC.results.length;  x++  ) {
-              FechasI.push({ Finicio: new Date(resp.data.results[0].ETOC.results[x].Kdatb), });
-              FechasF.push({ Ffin: new Date(resp.data.results[0].ETOC.results[x].Kdate), });
-              resp.data.results[0].ETOC.results[x].Selected = false;
+          let ArgTemp = [];
+
+          for (var x = 0; x < resp.data.results[0].ETOC.results.length; x++) {
+            FechasI.push({ Finicio: new Date(resp.data.results[0].ETOC.results[x].Kdatb), });
+            FechasF.push({ Ffin: new Date(resp.data.results[0].ETOC.results[x].Kdate), });
+            resp.data.results[0].ETOC.results[x].Selected = false;
           
-              if (that.getView().byId("sTipoCita").getSelectedKey() === "01") {
-               
-                for (var y = 0; y < resp.data.results[0].ETOCSTO.results.length; y++) {
-                  if (parseInt(resp.data.results[0].ETOC.results[x].Ebeln) === parseInt(resp.data.results[0].ETOCSTO.results[y].Bednr) && resp.data.results[0].ETOC.results[x].Abelp === resp.data.results[0].ETOCSTO.results[y].Abelp && Number(resp.data.results[0].ETOC.results[x].MengeA) >0) {
-                    ArgTemp.push({
-                      Abeln: resp.data.results[0].ETOC.results[x].Abeln,
-                      Bwart: resp.data.results[0].ETOC.results[x].Bwart,
-                      Citado: resp.data.results[0].ETOC.results[x].Zpmngu,
-                      Ean11: resp.data.results[0].ETOC.results[x].Ean11,
-                      Ebeln: resp.data.results[0].ETOC.results[x].Ebeln,
-                      Ebelp: resp.data.results[0].ETOC.results[x].Ebelp,
-                      Kdatb: resp.data.results[0].ETOC.results[x].Kdatb,
-                      Kdate: resp.data.results[0].ETOC.results[x].Kdate,
-                      Lifnr: resp.data.results[0].ETOC.results[x].Lifnr,
-                      Matnr: resp.data.results[0].ETOC.results[x].Matnr,
-                      Meins: resp.data.results[0].ETOC.results[x].Meins,
-                      Menge: resp.data.results[0].ETOC.results[x].Menge,
-                      Menge2: resp.data.results[0].ETOCSTO.results[y].Menge,
-                      MengeA: resp.data.results[0].ETOCSTO.results[y].MengeA,
-                      MengeR: resp.data.results[0].ETOC.results[x].MengeR,
-                      Selected: resp.data.results[0].ETOC.results[x].Selected,
-                      Werks: resp.data.results[0].ETOC.results[x].Werks,
-                      ZwerksD: resp.data.results[0].ETOCSTO.results[y].Werks,
-                      Tarima: [],
-                      ZAbeln: resp.data.results[0].ETOCSTO.results[y].Abeln,
-                      ZAbelp: resp.data.results[0].ETOCSTO.results[y].Abelp,
-                      ZBednr: resp.data.results[0].ETOCSTO.results[y].Bednr,
-                      ZBwart: resp.data.results[0].ETOCSTO.results[y].Bwart,
-                      ZEan11: resp.data.results[0].ETOCSTO.results[y].Ean11,
-                      ZEbeln: resp.data.results[0].ETOCSTO.results[y].Ebeln,
-                      ZEbelp: resp.data.results[0].ETOCSTO.results[y].Ebelp,
-                      ZKdatb: resp.data.results[0].ETOCSTO.results[y].Kdatb,
-                      ZKdate: resp.data.results[0].ETOCSTO.results[y].Kdate,
-                      ZLifnr: resp.data.results[0].ETOCSTO.results[y].Lifnr,
-                      ZMatnr: resp.data.results[0].ETOCSTO.results[y].Matnr,
-                      ZMeins: resp.data.results[0].ETOCSTO.results[y].Meins,
-                      ZMenge: resp.data.results[0].ETOCSTO.results[y].Menge,
-                      ZMengeA: resp.data.results[0].ETOCSTO.results[y].MengeA,
-                      ZMengeR: resp.data.results[0].ETOCSTO.results[y].MengeR,
-                      ZWerks: resp.data.results[0].ETOCSTO.results[y].Werks
-                    });
-                  }
+            resp.data.results[0].ETOC.results[x].Menge = parseInt(resp.data.results[0].ETOC.results[x].Menge)
+            resp.data.results[0].ETOC.results[x].Menge = resp.data.results[0].ETOC.results[x].Menge.toString()
+
+            resp.data.results[0].ETOC.results[x].MengeR = parseInt(resp.data.results[0].ETOC.results[x].MengeR)
+            resp.data.results[0].ETOC.results[x].MengeR = resp.data.results[0].ETOC.results[x].MengeR.toString()
+
+            resp.data.results[0].ETOC.results[x].MengeA = parseInt(resp.data.results[0].ETOC.results[x].MengeA)
+            resp.data.results[0].ETOC.results[x].MengeA = resp.data.results[0].ETOC.results[x].MengeA.toString()
+          
+            if (that.getView().byId("sTipoCita").getSelectedKey() === "01") {
+
+              for (var y = 0; y < resp.data.results[0].ETOCSTO.results.length; y++) {
+                if (parseInt(resp.data.results[0].ETOC.results[x].Ebeln) === parseInt(resp.data.results[0].ETOCSTO.results[y].Bednr) && resp.data.results[0].ETOC.results[x].Abelp === resp.data.results[0].ETOCSTO.results[y].Abelp && Number(resp.data.results[0].ETOC.results[x].MengeA) > 0) {
+                  ArgTemp.push({
+                    Abeln: resp.data.results[0].ETOC.results[x].Abeln,
+                    Bwart: resp.data.results[0].ETOC.results[x].Bwart,
+                    Citado: resp.data.results[0].ETOC.results[x].Zpmngu,
+                    Ean11: resp.data.results[0].ETOC.results[x].Ean11,
+                    Ebeln: resp.data.results[0].ETOC.results[x].Ebeln,
+                    Ebelp: resp.data.results[0].ETOC.results[x].Ebelp,
+                    Kdatb: resp.data.results[0].ETOC.results[x].Kdatb,
+                    Kdate: resp.data.results[0].ETOC.results[x].Kdate,
+                    Lifnr: resp.data.results[0].ETOC.results[x].Lifnr,
+                    Matnr: resp.data.results[0].ETOC.results[x].Matnr,
+                    Meins: resp.data.results[0].ETOC.results[x].Meins,
+                    Menge: resp.data.results[0].ETOC.results[x].Menge,
+                    Menge2: resp.data.results[0].ETOCSTO.results[y].Menge,
+                    MengeA: resp.data.results[0].ETOCSTO.results[y].MengeA,
+                    MengeR: resp.data.results[0].ETOC.results[x].MengeR,
+                    Selected: resp.data.results[0].ETOC.results[x].Selected,
+                    Werks: resp.data.results[0].ETOC.results[x].Werks,
+                    ZwerksD: resp.data.results[0].ETOCSTO.results[y].Werks,
+                    Tarima: [],
+                    ZAbeln: resp.data.results[0].ETOCSTO.results[y].Abeln,
+                    ZAbelp: resp.data.results[0].ETOCSTO.results[y].Abelp,
+                    ZBednr: resp.data.results[0].ETOCSTO.results[y].Bednr,
+                    ZBwart: resp.data.results[0].ETOCSTO.results[y].Bwart,
+                    ZEan11: resp.data.results[0].ETOCSTO.results[y].Ean11,
+                    ZEbeln: resp.data.results[0].ETOCSTO.results[y].Ebeln,
+                    ZEbelp: resp.data.results[0].ETOCSTO.results[y].Ebelp,
+                    ZKdatb: resp.data.results[0].ETOCSTO.results[y].Kdatb,
+                    ZKdate: resp.data.results[0].ETOCSTO.results[y].Kdate,
+                    ZLifnr: resp.data.results[0].ETOCSTO.results[y].Lifnr,
+                    ZMatnr: resp.data.results[0].ETOCSTO.results[y].Matnr,
+                    ZMeins: resp.data.results[0].ETOCSTO.results[y].Meins,
+                    ZMenge: resp.data.results[0].ETOCSTO.results[y].Menge,
+                    ZMengeA: resp.data.results[0].ETOCSTO.results[y].MengeA,
+                    ZMengeR: resp.data.results[0].ETOCSTO.results[y].MengeR,
+                    ZWerks: resp.data.results[0].ETOCSTO.results[y].Werks
+                  });
                 }
               }
+            }
 
-              if (that.getView().byId("sTipoCita").getSelectedKey() === "04") {
-             
-                for (var y = 0; y < resp.data.results[0].ETMINIFULL03.results.length; y++) {
+            if (that.getView().byId("sTipoCita").getSelectedKey() === "04") {
 
-                  if (resp.data.results[0].ETOC.results[x].Abeln === resp.data.results[0].ETMINIFULL03.results[y].Zabeln && resp.data.results[0].ETOC.results[x].Abelp === resp.data.results[0].ETMINIFULL03.results[y].Zabelp && Number(resp.data.results[0].ETOC.results[x].MengeA) >0) {
-                    resp.data.results[0].ETOC.results[x].Zceqfp = resp.data.results[0].ETMINIFULL03.results[y].Zceqfp;
-                    resp.data.results[0].ETOC.results[x].Zceqfu = resp.data.results[0].ETMINIFULL03.results[y].Zceqfu;
-                    resp.data.results[0].ETOC.results[x].Zcjpic = resp.data.results[0].ETMINIFULL03.results[y].Zcjpic;
-                    resp.data.results[0].ETOC.results[x].Zcpemf = resp.data.results[0].ETMINIFULL03.results[y].Zcpemf;
-                    resp.data.results[0].ETOC.results[x].Zcpemp = resp.data.results[0].ETMINIFULL03.results[y].Zcpemp;
-                  }
+              for (var y = 0; y < resp.data.results[0].ETMINIFULL03.results.length; y++) {
+
+                if (resp.data.results[0].ETOC.results[x].Abeln === resp.data.results[0].ETMINIFULL03.results[y].Zabeln && resp.data.results[0].ETOC.results[x].Abelp === resp.data.results[0].ETMINIFULL03.results[y].Zabelp && Number(resp.data.results[0].ETOC.results[x].MengeA) > 0) {
+                  
+                  resp.data.results[0].ETOC.results[x].Zceqfp = resp.data.results[0].ETMINIFULL03.results[y].Zceqfp;
+                  resp.data.results[0].ETOC.results[x].Zceqfu = resp.data.results[0].ETMINIFULL03.results[y].Zceqfu;
+                  resp.data.results[0].ETOC.results[x].Zcjpic = resp.data.results[0].ETMINIFULL03.results[y].Zcjpic;
+                  resp.data.results[0].ETOC.results[x].Zcpemf = resp.data.results[0].ETMINIFULL03.results[y].Zcpemf;
+                  resp.data.results[0].ETOC.results[x].Zcpemp = resp.data.results[0].ETMINIFULL03.results[y].Zcpemp;
                 }
               }
+            }
 
-              if ( that.getView().byId("sTipoCita").getSelectedKey() === "02") {
-              
-                for ( var y = 0; y < resp.data.results[0].ETMINIFULL03.results.length;  y++ ) {
-                  if (
-                    resp.data.results[0].ETOC.results[x].Abeln ===
-                    resp.data.results[0].ETMINIFULL03.results[y].Zabeln &&
-                    resp.data.results[0].ETOC.results[x].Abelp ===
-                    resp.data.results[0].ETMINIFULL03.results[y].Zabelp && Number(resp.data.results[0].ETOC.results[x].MengeA) >0
-                  ) {
-                    ArgTemp.push({
-                      Abeln: resp.data.results[0].ETOC.results[x].Abeln,
-                      Bwart: resp.data.results[0].ETOC.results[x].Bwart,
-                      Citado: resp.data.results[0].ETMINIFULL03.results[y].Zpmngu.trim().split(".")[0],
-                      Ean11: resp.data.results[0].ETOC.results[x].Ean11,
-                      Ebeln: resp.data.results[0].ETOC.results[x].Ebeln,
-                      Ebelp: resp.data.results[0].ETOC.results[x].Ebelp,
-                      Kdatb: resp.data.results[0].ETOC.results[x].Kdatb,
-                      Kdate: resp.data.results[0].ETOC.results[x].Kdate,
-                      Lifnr: resp.data.results[0].ETOC.results[x].Lifnr,
-                      Matnr: resp.data.results[0].ETOC.results[x].Matnr,
-                      Meins: resp.data.results[0].ETOC.results[x].Meins,
-                      Menge: resp.data.results[0].ETOC.results[x].Menge,
-                      MengeA: resp.data.results[0].ETOC.results[x].MengeA,
-                      MengeR: resp.data.results[0].ETOC.results[x].MengeR,
-                      Selected: resp.data.results[0].ETOC.results[x].Selected,
-                      Werks: resp.data.results[0].ETOC.results[x].Werks,
-                      ZwerksD: resp.data.results[0].ETMINIFULL03.results[y].ZwerksD,
-                      Abelp: resp.data.results[0].ETMINIFULL03.results[y].Zabelp,
-                    });
-                  }
+            if (that.getView().byId("sTipoCita").getSelectedKey() === "02") {
+
+              for (var y = 0; y < resp.data.results[0].ETMINIFULL03.results.length; y++) {
+                if (
+                  resp.data.results[0].ETOC.results[x].Abeln ===
+                  resp.data.results[0].ETMINIFULL03.results[y].Zabeln &&
+                  resp.data.results[0].ETOC.results[x].Abelp ===
+                  resp.data.results[0].ETMINIFULL03.results[y].Zabelp && Number(resp.data.results[0].ETOC.results[x].MengeA) > 0
+                ) {
+                  resp.data.results[0].ETOC.results[x].MengeA = parseInt(resp.data.results[0].ETOC.results[x].MengeA)
+                  resp.data.results[0].ETOC.results[x].MengeA = resp.data.results[0].ETOC.results[x].MengeA.toString()
+                  ArgTemp.push({
+                    Abeln: resp.data.results[0].ETOC.results[x].Abeln,
+                    Bwart: resp.data.results[0].ETOC.results[x].Bwart,
+                    Citado: resp.data.results[0].ETMINIFULL03.results[y].Zpmngu.trim().split(".")[0],
+                    Ean11: resp.data.results[0].ETOC.results[x].Ean11,
+                    Ebeln: resp.data.results[0].ETOC.results[x].Ebeln,
+                    Ebelp: resp.data.results[0].ETOC.results[x].Ebelp,
+                    Kdatb: resp.data.results[0].ETOC.results[x].Kdatb,
+                    Kdate: resp.data.results[0].ETOC.results[x].Kdate,
+                    Lifnr: resp.data.results[0].ETOC.results[x].Lifnr,
+                    Matnr: resp.data.results[0].ETOC.results[x].Matnr,
+                    Meins: resp.data.results[0].ETOC.results[x].Meins,
+                    Menge: resp.data.results[0].ETOC.results[x].Menge,
+                    MengeA: resp.data.results[0].ETOC.results[x].MengeA,
+                    MengeR: resp.data.results[0].ETOC.results[x].MengeR,
+                    Selected: resp.data.results[0].ETOC.results[x].Selected,
+                    Werks: resp.data.results[0].ETOC.results[x].Werks,
+                    ZwerksD: resp.data.results[0].ETMINIFULL03.results[y].ZwerksD,
+                    Abelp: resp.data.results[0].ETMINIFULL03.results[y].Zabelp,
+                  });
                 }
               }
-              if ( that.getView().byId("sTipoCita").getSelectedKey() === "03") {
-           
-               if (parseInt(resp.data.results[0].ETOC.results[x].MengeA) > 0) {
-                 
-                    ArgTemp.push(resp.data.results[0].ETOC.results[x]);
-                  }
-               
+            }
+            if (that.getView().byId("sTipoCita").getSelectedKey() === "03") {
+
+              if (parseInt(resp.data.results[0].ETOC.results[x].MengeA) > 0) {
+                
+                ArgTemp.push(resp.data.results[0].ETOC.results[x]);
               }
+
             }
-            if (that.getView().byId("sTipoCita").getSelectedKey() === "02" || that.getView().byId("sTipoCita").getSelectedKey() === "01"|| that.getView().byId("sTipoCita").getSelectedKey() === "03") {
-              resp.data.results[0].ETOC.results = [];
-              resp.data.results[0].ETOC.results = ArgTemp;
-            }
-            for (var v = 0; v < dataNL.ETOC.results.length; v++) {
-              resp.data.results[0].ETOC.results.push(dataNL.ETOC.results[v]);
-            }
+          }
+          if (that.getView().byId("sTipoCita").getSelectedKey() === "02" || that.getView().byId("sTipoCita").getSelectedKey() === "01" || that.getView().byId("sTipoCita").getSelectedKey() === "03") {
+            resp.data.results[0].ETOC.results = [];
+            resp.data.results[0].ETOC.results = ArgTemp;
+          }
+          for (var v = 0; v < dataNL.ETOC.results.length; v++) {
+            resp.data.results[0].ETOC.results.push(dataNL.ETOC.results[v]);
+          }
 
 
           that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "Pedidos");
@@ -1955,44 +2000,224 @@ sap.ui.define(
       },
       onUpload: function (e) {
         console.log(e.getParameter("files") && e.getParameter("files")[0])
-     this._import(e.getParameter("files") && e.getParameter("files")[0]);
-    //    console.log(archivo)
+        this._import(e.getParameter("files") && e.getParameter("files")[0]);
+        //    console.log(archivo)
       },
 
       _import: function (file) {
-        console.log(file)
+
+
         var that = this;
+        var modeloPosGlobal = that.getView().getModel("Pedidos").getData().ETOC.results;
+        var modeloPosGlobal2 = that.getView().getModel("Pedidos").getData().ETMINIFULL03.results;
         var excelData = {};
         if (file && window.FileReader) {
           var reader = new FileReader();
           reader.onload = function (e) {
             var data = e.target.result;
-            console.log(data)
-            var workbook = XLSX.read(data, {
-              type: "binary",
-            });
-            workbook.SheetNames.forEach(function (sheetName) {
-              excelData = XLSX.utils.sheet_to_row_object_array(
-                workbook.Sheets[sheetName]
+            var prov = Number(that.getConfigModel().getProperty("/supplierInputKey").padStart(10, 0))
+            console.log()
+            console.log(data.split("\n")[1].split("|")[1])
+            if (prov !== Number(data.split("\n")[1].split("|")[1])) {
+              sap.m.MessageBox.error(
+                that.getView().getModel("appTxts").getProperty("/quotes.ErrorMasivo")
               );
-            });
+              return
+            }
+            if (that.getView().byId("sTipoCita").getSelectedKey() === "02") {
+              let pos = [];
 
-            that.valida_excel(excelData);
+              for (var x = 0; x < data.split("\n").length; x++) {
+                if (data.split("\n")[x].split("|")[0] == "DD") {
+                  pos.push({
+                    tipo: data.split("\n")[x].split("|")[0],
+                    Ebeln: data.split("\n")[x].split("|")[1],
+                    Ean11: data.split("\n")[x].split("|")[2],
+                    ZwerksD: data.split("\n")[x].split("|")[3]
+                  })
+                }
+
+                //
+              }
+            
+              var ARRTem = []
+              if (pos.length > 0) {
+                for (var x = 0; x < pos.length; x++) {
+                  for (var y = 0; y < modeloPosGlobal.length; y++) {
+                  
+                    if ((modeloPosGlobal[y].Ebeln === pos[x].Ebeln) && (modeloPosGlobal[y].Ean11 === pos[x].Ean11) && (modeloPosGlobal[y].ZwerksD === pos[x].ZwerksD)) {
+                   
+                      ARRTem.push(modeloPosGlobal[y])
+                    }
+
+                  }
+                }
+
+              }
+
+              that.getOwnerComponent().getModel("Pedidos").setProperty("/ETOC/results", [])
+              that.getOwnerComponent().getModel("Pedidos").setProperty("/ETOC/results", ARRTem)
+              that.getView().byId("tableWizardOrder").setEnableSelectAll(true)
+              that.getView().byId("tableWizardOrder").setSelectionInterval(0,(ARRTem.length-1))
+              that.selectPedido()
+
+
+            }
+            if (that.getView().byId("sTipoCita").getSelectedKey() === "01") {
+              let pos = [];
+
+              for (var x = 0; x < data.split("\n").length; x++) {
+                if (data.split("\n")[x].split("|")[0] == "DD") {
+                  pos.push({
+                    tipo: data.split("\n")[x].split("|")[0],
+                    Ebeln: data.split("\n")[x].split("|")[1],
+                    Ean11: data.split("\n")[x].split("|")[2],
+                    ZwerksD: data.split("\n")[x].split("|")[3],
+                    Tarima: data.split("\n")[x].split("|")[4],
+                    Citado: Number(data.split("\n")[x].split("|")[5])
+                  })
+                }
+
+                //
+              }
+              console.log(pos)
+              var ARRTem = []
+              var cantTar = that.getView().byId("platformsInput").getValue();
+              if (pos.length > 0) {
+                for (var x = 0; x < pos.length; x++) {
+                  for (var y = 0; y < modeloPosGlobal.length; y++) {
+
+                    if ((modeloPosGlobal[y].Ebeln === pos[x].Ebeln) && (modeloPosGlobal[y].Ean11 === pos[x].Ean11) && (modeloPosGlobal[y].ZwerksD === pos[x].ZwerksD)) {
+                     
+
+                      for (var c = 1; c <= cantTar; c++) {
+
+                        if (pos[x].Tarima === c.toString()) {
+                          modeloPosGlobal[y].Tarima.push({
+                            Ztarima: pos[x].Tarima,
+                            Bednr: modeloPosGlobal[y].ZBednr,
+                            Abeln: modeloPosGlobal[y].ZAbeln,
+                            Abelp: modeloPosGlobal[y].ZAbelp,
+                            Werks: modeloPosGlobal[y].ZWerks,
+                            Menge: pos[x].Citado.toString()
+                          });
+                        }
+
+
+                      }
+
+                   
+                      ARRTem.push(modeloPosGlobal[y])
+                    }
+
+                  }
+                }
+
+              }
+
+              that.getOwnerComponent().getModel("Pedidos").setProperty("/ETOC/results", [])
+              that.getOwnerComponent().getModel("Pedidos").setProperty("/ETOC/results", ARRTem)
+
+              that.getView().byId("tableWizardOrder").setEnableSelectAll(true)
+              that.getView().byId("tableWizardOrder").setSelectionInterval(0,(ARRTem.length-1))
+              that.selectPedido()
+
+
+            }
+              if (that.getView().byId("sTipoCita").getSelectedKey() === "03") {
+                let pos = [];
+
+                for (var x = 0; x < data.split("\n").length; x++) {
+                  if (data.split("\n")[x].split("|")[0] == "DD") {
+                    pos.push({
+                      tipo: data.split("\n")[x].split("|")[0],
+                      Ebeln: data.split("\n")[x].split("|")[1],
+                      Ean11: data.split("\n")[x].split("|")[2],
+                      ZwerksD: data.split("\n")[x].split("|")[3],
+                      Tarima: data.split("\n")[x].split("|")[4],
+                      Citado: Number(data.split("\n")[x].split("|")[5])
+                    })
+                  }
+                }
+
+                var ARRTem = []
+             
+                if (pos.length > 0) {
+                  for (var x = 0; x < pos.length; x++) {
+                    for (var y = 0; y < modeloPosGlobal.length; y++) {
+
+                      if ((modeloPosGlobal[y].Ebeln === pos[x].Ebeln) && (modeloPosGlobal[y].Ean11 === pos[x].Ean11) ) {
+                       
+                        modeloPosGlobal[y].Citado=pos[x].Citado.toString();
+                        ARRTem.push(modeloPosGlobal[y])
+                        //Menge: pos[x].Citado.toString()
+                      }
+
+                    }
+                  }
+
+                }
+
+                that.getOwnerComponent().getModel("Pedidos").setProperty("/ETOC/results", [])
+                that.getOwnerComponent().getModel("Pedidos").setProperty("/ETOC/results", ARRTem)
+                that.getView().byId("tableWizardOrder").setEnableSelectAll(true)
+                 that.getView().byId("tableWizardOrder").setSelectionInterval(0,(ARRTem.length-1))
+                 that.selectPedido()
+
+
+              }
+            if (that.getView().byId("sTipoCita").getSelectedKey() === "04") {
+              let pos = [];
+
+              for (var x = 0; x < data.split("\n").length; x++) {
+                if (data.split("\n")[x].split("|")[0] == "DD") {
+                  pos.push({
+                    tipo: data.split("\n")[x].split("|")[0],
+                    Ebeln: data.split("\n")[x].split("|")[1],
+                    Ean11: data.split("\n")[x].split("|")[2],
+                    ZwerksD: data.split("\n")[x].split("|")[3],
+                    Tarima: data.split("\n")[x].split("|")[4],
+                    Citado: Number(data.split("\n")[x].split("|")[5])
+                  })
+                }
+
+                //
+              }
+              console.log(pos)
+              var ARRTem = []
+console.log(modeloPosGlobal)
+if (pos.length > 0) {
+  for (var x = 0; x < pos.length; x++) {
+    for (var y = 0; y < modeloPosGlobal.length; y++) {
+
+      if ((modeloPosGlobal[y].Ebeln === pos[x].Ebeln) && (modeloPosGlobal[y].Ean11 === pos[x].Ean11) ) {
+       
+        modeloPosGlobal[y].Citado=pos[x].Citado.toString();
+       
+        ARRTem.push(modeloPosGlobal[y])
+
+
+      }
+
+    }
+  }
+
+}
+that.getOwnerComponent().getModel("Pedidos").setProperty("/ETOC/results", [])
+that.getOwnerComponent().getModel("Pedidos").setProperty("/ETOC/results", ARRTem)
+that.getView().byId("tableWizardOrder").setEnableSelectAll(true)
+ that.getView().byId("tableWizardOrder").setSelectionInterval(0,(ARRTem.length-1))
+ that.selectPedido()
+          
+            }
+
+
           };
           reader.onerror = function (ex) { };
           reader.readAsBinaryString(file);
         }
       },
-      valida_excel: function (excelData) {
-        console.log(excelData)
-        var modeloPosGlobal = this.getView().getModel("Pedidos").getData()
-          .ETOC.results;
 
-        var Mensaje = [];
-        for (var x = 0; x < modeloPosGlobal.length; x++) {
-          for (var y = 0; y < excelData.length; y++) { }
-        }
-      },
     });
   }
 );

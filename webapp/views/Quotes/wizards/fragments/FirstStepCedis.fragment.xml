@@ -15,6 +15,7 @@
                     <core:Item key="{appoinmentsCatalogs>ZNumcita}" text="{appoinmentsCatalogs>ZTipocita}" />
                 </items>
             </Select>
+           
             <Label text="{appTxts>/quotes.totalpackages}" />
             <Input id="totalpackagesInput" class= "sapUiSmallMarginBottom" width="auto" change=".hasOnlyNumbers" type="Number" />
             <Label text="{appTxts>/quotes.platforms}"/>
@@ -24,6 +25,15 @@
 
         </VBox>
         <VBox width="40%" class="sapUiTinyMargins">
+          <Label text="{appTxts>/quotes.Ordenes}" labelFor="currency"/>
+             <Select id="sOrdenes" class="sapUiSmallMarginBottom"  items="{
+                        path: 'appoinmentsCatalogs>/ECONFIGCEDISNAV/results',
+                        sorter: { path: 'Werks' }
+                    }" >
+                <items>
+                    <core:Item key="{appoinmentsCatalogs>Werks}" text="{appoinmentsCatalogs>Werks}" />
+                </items>
+            </Select>
             <Label text="{appTxts>/quotes.unitType}" />     
             <Select id="sTipoUnidad" class= "sapUiSmallMarginBottom" items="{
                         path: 'appoinmentsCatalogs>/ETIPOUNIDADNAV/results'
