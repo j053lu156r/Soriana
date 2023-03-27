@@ -118,24 +118,24 @@ sap.ui.define([
             })
             );
 
-            console.log(this.getView().byId("Ztipoestatus").getSelectedKey())
-            console.log(this.getView().byId("ZtipoCita").getSelectedKey())
+            
 
-            if (this.getView().byId("Ztipoestatus").getSelectedKey() !== "") {
-
+            if (this.getView().byId("ZEstatus").getSelectedKey() !== "") {
+                console.log("estatus")
                 filtros.push(new sap.ui.model.Filter({
                     path: "Zestatus",
                     operator: sap.ui.model.FilterOperator.EQ,
-                    value1: this.getView().byId("Ztipoestatus").getSelectedKey()
+                    value1:"0"+ this.getView().byId("ZEstatus").getSelectedKey()
                 })
                 );
             }
 
-            if (this.getView().byId("ZtipoCita").getSelectedKey() !== "") {
+            if (this.getView().byId("ZTipocita").getSelectedKey() !== "") {
+                console.log("tipocita")
                 filtros.push(new sap.ui.model.Filter({
                     path: "Tipocita",
                     operator: sap.ui.model.FilterOperator.EQ,
-                    value1: "0"+this.getView().byId("ZtipoCita").getSelectedKey()
+                    value1: this.getView().byId("ZTipocita").getSelectedKey()
                 })
                 );
             }
