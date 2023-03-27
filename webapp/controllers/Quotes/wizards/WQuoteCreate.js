@@ -26,12 +26,10 @@ sap.ui.define(
       pedidos: [],
     };
 
-    //http://azqasgtwsq01.soriana.com:8000/sap/opu/odata/sap/ZOSP_PO_CITAS_SRV/$metadata
+    
     var _oDataModelAppoimnet = "ZOSP_CITAS_ADM_SRV";
     var _oDataEntityAppoiment = "MainSet";
-    //var _oDataModelOC = "ZOSP_DEVO_NC_SRV_01";
     var _oDataModelOC = "ZOSP_PO_CITAS_SRV";
-    //var _oDataEntityOC = "notCreditSet";
     var _oDataEntityOC = "CitasPOSet";
     var _centroSeleccionado = null;
     var _invalidinputs = [];
@@ -117,7 +115,7 @@ sap.ui.define(
 
             var Datos = selectedKey;
 
-
+console.log(Datos)
 
             if (selectedKey === "N") {
 
@@ -135,6 +133,7 @@ sap.ui.define(
               that.getView().byId("sTipoCita").setSelectedKey("");
               that.getView().byId("sTipoUnidad").setSelectedKey("");
               that.getView().byId("sTipoCita").setEditable(true);
+              that.getView().byId("sOrdenes").setEditable(true);
               that.getView().byId("totalpackagesInput").setEditable(true);
               that.getView().byId("platformsInput").setEditable(true);
               that.getView().byId("sTipoUnidad").setEditable(true);
@@ -148,6 +147,7 @@ sap.ui.define(
               that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(Datos), "ModelLectura");
               that.getView().byId("wizardDialog").setTitle(that.getView().getModel("appTxts").getProperty("/quotes.editNewQuote"));
               that.getView().byId("sTipoCita").setSelectedKey(Datos.Tipocita);
+              that.getView().byId("sOrdenes").setSelectedKey(Datos.Centro);
               that.getView().byId("sTipoUnidad").setSelectedKey(Datos.Tipounidad);
               that.getView().byId("DP1").setDateValue(new Date((Datos.Fechacita).replaceAll("-", ",")));
 
@@ -161,6 +161,7 @@ sap.ui.define(
               }
 
               that.getView().byId("sTipoCita").setEditable(false);
+              that.getView().byId("sOrdenes").setEditable(false);
               that.getView().byId("totalpackagesInput").setEditable(false);
               that.getView().byId("platformsInput").setEditable(false);
               that.getView().byId("sTipoUnidad").setEditable(false);
@@ -751,19 +752,31 @@ sap.ui.define(
                 if (resp.data.results[0].ETOC.results[x].Matnr === PosicionesG[y].Matnr && resp.data.results[0].ETOC.results[x].Werks === PosicionesG[y].Werks && resp.data.results[0].ETOC.results[x].Ebeln === PosicionesG[y].Ebeln) {
 
                   resp.data.results[0].ETOC.results[x].Citado = PosicionesG[y].Citado;
-                  resp.data.results[0].ETOC.results[x].ZwerksD = PosicionesG[y].Werks
+               
 
                   if (Datos.Tipocita === "01") {
-
+                
+for (var f = 0; f < resp.data.results[0].ETOCSTO.results.length; f++) {
+  console.log(parseInt(resp.data.results[0].ETOC.results[x].Ebeln) , parseInt(resp.data.results[0].ETOCSTO.results[f].Bednr)) 
+  console.log(resp.data.results[0].ETOC.results[x].Abeln , resp.data.results[0].ETOCSTO.results[f].Abeln)
+  if (parseInt(resp.data.results[0].ETOC.results[x].Ebeln) === parseInt(resp.data.results[0].ETOCSTO.results[f].Bednr) && resp.data.results[0].ETOC.results[x].Abeln === resp.data.results[0].ETOCSTO.results[f].Abeln) {
+  
+    resp.data.results[0].ETOC.results[x].ZwerksD= resp.data.results[0].ETOCSTO.results[f].Werks
+  }   
+} 
                     resp.data.results[0].ETOC.results[x].Tarima = PosicionesG[y].ETOCSTOPALLEXT.results
                     for (var c = 0; c < resp.data.results[0].ETOC.results[x].Tarima.length; c++) {
                       resp.data.results[0].ETOC.results[x].Tarima[c].Menge = Number(resp.data.results[0].ETOC.results[x].Tarima[c].Menge)
                     }
                   } else {
                     resp.data.results[0].ETOC.results[x].Tarima = [];
+                    resp.data.results[0].ETOC.results[x].ZwerksD = PosicionesG[y].Werks
                   }
+
+                
                   resp.data.results[0].ETOC.results[x].Ltc = true
 
+               
                   ARRTV.push(resp.data.results[0].ETOC.results[x]);
                 }
               }
@@ -771,6 +784,7 @@ sap.ui.define(
 
 
             resp.data.results[0].ETOC.results = ARRTV;
+            console.log(ARRTV)
           } else {
             this.getView().byId("tableWizardOrder").setEnableSelectAll(false)
             let ArgTemp = [];
@@ -808,6 +822,7 @@ sap.ui.define(
                       Menge2: resp.data.results[0].ETOCSTO.results[y].Menge,
                       MengeA: resp.data.results[0].ETOCSTO.results[y].MengeA,
                       MengeR: resp.data.results[0].ETOC.results[x].MengeR,
+                      Maktx: resp.data.results[0].ETOC.results[x].Maktx,
                       Selected: resp.data.results[0].ETOC.results[x].Selected,
                       Werks: resp.data.results[0].ETOC.results[x].Werks,
                       ZwerksD: resp.data.results[0].ETOCSTO.results[y].Werks,
@@ -871,6 +886,7 @@ sap.ui.define(
                       Menge: resp.data.results[0].ETOC.results[x].Menge,
                       MengeA: resp.data.results[0].ETOC.results[x].MengeA,
                       MengeR: resp.data.results[0].ETOC.results[x].MengeR,
+                      Maktx: resp.data.results[0].ETOC.results[x].Maktx,
                       Selected: resp.data.results[0].ETOC.results[x].Selected,
                       Werks: resp.data.results[0].ETOC.results[x].Werks,
                       ZwerksD: resp.data.results[0].ETMINIFULL03.results[y].ZwerksD,
@@ -1784,6 +1800,7 @@ sap.ui.define(
                     Menge2: resp.data.results[0].ETOCSTO.results[y].Menge,
                     MengeA: resp.data.results[0].ETOCSTO.results[y].MengeA,
                     MengeR: resp.data.results[0].ETOC.results[x].MengeR,
+                    Maktx: resp.data.results[0].ETOC.results[x].Maktx,
                     Selected: resp.data.results[0].ETOC.results[x].Selected,
                     Werks: resp.data.results[0].ETOC.results[x].Werks,
                     ZwerksD: resp.data.results[0].ETOCSTO.results[y].Werks,
@@ -1850,6 +1867,7 @@ sap.ui.define(
                     Menge: resp.data.results[0].ETOC.results[x].Menge,
                     MengeA: resp.data.results[0].ETOC.results[x].MengeA,
                     MengeR: resp.data.results[0].ETOC.results[x].MengeR,
+                    Maktx: resp.data.results[0].ETOC.results[x].Maktx,
                     Selected: resp.data.results[0].ETOC.results[x].Selected,
                     Werks: resp.data.results[0].ETOC.results[x].Werks,
                     ZwerksD: resp.data.results[0].ETMINIFULL03.results[y].ZwerksD,
