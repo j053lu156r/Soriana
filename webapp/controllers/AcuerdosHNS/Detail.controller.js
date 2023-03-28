@@ -37,7 +37,8 @@ sap.ui.define([
                 {
                     layout: sNextLayout,
                     proveedor: this._proveedor,
-                    referencia: this._referencia,
+                    ref1: this._ref1,
+                    ref2: this._ref2,
                     centro: this._centro
                 }
             );
@@ -49,7 +50,8 @@ sap.ui.define([
                 {
                     layout: sNextLayout,
                     proveedor: this._proveedor,
-                    referencia: this._referencia,
+                    ref1: this._ref1,
+                    ref2: this._ref2,
                     centro: this._centro
                 }
             );
@@ -60,12 +62,19 @@ sap.ui.define([
         },
         _onDocumentMatched: function (oEvent) {
             this._proveedor = oEvent.getParameter("arguments").proveedor || this._proveedor || "0";
-            this._referencia = oEvent.getParameter("arguments").referencia || this._referencia || "0";
+            this._ref1 = oEvent.getParameter("arguments").ref1 || this._ref1 || "0";
+            this._ref2 = oEvent.getParameter("arguments").ref2 || this._ref2 || "0";
             this._centro = oEvent.getParameter("arguments").centro || this._centro || "0";
+
+            if (this._ref2 !== "NOREF2") {
+                var referencia = this._ref1 + "/" + this._ref2;
+            } else {
+                referencia = this._ref1;
+            }
 
             var headerDeatil = {
                 "Proveedor": this._proveedor,
-                "Referencia": this._referencia,
+                "Referencia": referencia,
                 "Centro": this._centro
             };
 
@@ -73,7 +82,7 @@ sap.ui.define([
 
             var url = "AcuerdosHNSDetSet?$filter=";
                 url += "Lifnr eq '" + this._proveedor + "'";
-                url += " and Refer eq '" + this._referencia + "'";
+                url += " and Refer eq '" + referencia + "'";
                 url += " and Werks eq '" + this._centro + "'";
 
             this.getView().byId('AcuerdosDetHNS').setBusy(true);

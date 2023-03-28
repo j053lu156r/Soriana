@@ -13,12 +13,12 @@
 		<headerTitle>
             <ObjectPageDynamicHeaderTitle>
                 <expandedHeading>
-                    <m:Title text="Tienda: {acuHeadDetDetModel>/Tienda}" wrapping="true"/>
+                    <m:Title text="Sucursal: {acuHeadDetDetModel>/Centro}" wrapping="true"/>
                 </expandedHeading>
 
                 <snappedHeading>
                     <m:FlexBox fitContainer="true" alignItems="Center">
-                        <m:Title text="Tienda: {acuHeadDetDetModel>/Tienda}" wrapping="true" />
+                        <m:Title text="Sucursal: {acuHeadDetDetModel>/Centro}" wrapping="true" />
                     </m:FlexBox>
                 </snappedHeading>
 
@@ -34,7 +34,7 @@
             <m:VBox>
                 <!--<m:Panel>-->
     			    <m:FlexBox direction="Column" alignItems="Center">
-                        <m:Label text="Documento: {acuHeadDetDetModel>/Documento}" design="Bold"/>
+                        <m:Label text="Referencia: {acuHeadDetDetModel>/Referencia}" design="Bold"/>
 			        </m:FlexBox>
                 <!--</m:Panel>-->
             </m:VBox>
@@ -131,11 +131,11 @@
                                                 <m:Text text="{appTxts>/acuerdos.detPDesc}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                             </m:header>
                                         </m:Column>
-                                        <m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                                        <!--<m:Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                             <m:header>
                                                 <m:Text text="{appTxts>/acuerdosNS.indIEPS}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                             </m:header>
-                                        </m:Column>
+                                        </m:Column>-->
                                         <m:Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                             <m:header>
                                                 <m:Text text="{appTxts>/acuerdosNS.ieps}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -183,10 +183,10 @@
                                                     number="{AcuDetDetHdr>Prdes}"
                                                     unit="%"
                                                     state="Success" />
-                                                <m:ObjectNumber
+                                                <!--<m:ObjectNumber
                                                     number="{AcuDetDetHdr>Bitieps}"
                                                     unit=""
-                                                    state="None" />
+                                                    state="None" />-->
                                                 <m:ObjectNumber
                                                     number="{
                                                         parts:[{path:'AcuDetDetHdr>Impieps'},{path:'CurrencyCode'}],

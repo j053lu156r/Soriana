@@ -166,19 +166,24 @@ sap.ui.define([
             var results = odata.getProperty("/");
 
             var docResult = results[line];
-
-            /*var sociedad = this.getView().byId("sociedadInput").getValue();
-            var documento = this.getView().byId("documentoInput").getValue();
-            var ejercicio = this.getView().byId("ejercicioInput").getValue();*/
             
             var proveedor = this.getConfigModel().getProperty("/supplierInputKey");
             var referencia = this.getView().byId('referenciaInput').getValue();
+
+            if (referencia.includes("/")) {
+                var ref1 = referencia.substring(0, referencia.indexOf("/"));
+                var ref2 = referencia.split('/')[1];
+            } else {
+                ref1 = referencia;
+                ref2 = "NOREF2";
+            }
 
             this.getOwnerComponent().getRouter().navTo("detailAcuerdosHNS",
                 {
                     layout: sap.f.LayoutType.TwoColumnsMidExpanded,
                     proveedor: proveedor,
-                    referencia: referencia,
+                    ref1: ref1,
+                    ref2: ref2,
                     centro: docResult.Werks
 
                }, true);

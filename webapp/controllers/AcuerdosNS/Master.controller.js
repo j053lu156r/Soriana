@@ -29,29 +29,22 @@ sap.ui.define([
                 oModel.initModel();
             }
 
-            var sociedad = this.getView().byId('sociedadInput').getValue();
-            var documento = this.getView().byId('documentoInput').getValue();
-            var ejercicio = this.getView().byId('ejercicioInput').getValue();
+            var proveedor = this.getConfigModel().getProperty("/supplierInputKey");
+            var referencia = this.getView().byId('referenciaInput').getValue();
 
-            if ( documento == "" || documento == null ) {
-                MessageBox.error(texts.getProperty("/acuerdosNS.indNo"));
+            if ( proveedor == "" || proveedor == null ) {
+                MessageBox.error(texts.getProperty("/acuerdosHNS.indProveedor"));
                 bContinue = false;
-            } else if ( documento != "" && documento != null ) {
-                if ( sociedad == "" || sociedad == null ){
-                    MessageBox.error(texts.getProperty("/acuerdos.indSoc"));
-                    bContinue = false;
-                } else if ( ejercicio == "" || ejercicio == null ) {
-                    MessageBox.error(texts.getProperty("/acuerdos.indEje"));
-                    bContinue = false;
-                }
+            } else if ( referencia == "" || referencia == null ) {
+                MessageBox.error(texts.getProperty("/acuerdosHNS.indReferencia"));
+                bContinue = false;
             }
 
             if (bContinue) {
 
                 var url = "AcuerdosNSSet?$filter=";
-                    url += "Bukrs eq '" + sociedad + "'";
-                    url += " and Belnr eq '" + documento + "'";
-                    url += " and Gjahr eq '" + ejercicio + "'";
+                    url += "Lifnr eq '" + proveedor + "'";
+                    url += " and Refer eq '" + referencia + "'";
 
                 this.getView().byId('tableAcuerdos').setBusy(true);
                 oModel.getJsonModelAsync(
@@ -96,15 +89,15 @@ sap.ui.define([
         },
 
         clearFilters : function(){
-            var d = new Date();
-            var currentYear = d.getFullYear();
 
-            this.getView().byId("sociedadInput").setValue("2001");
-            this.getView().byId("documentoInput").setValue("");
-            this.getView().byId("ejercicioInput").setValue(currentYear);
+            this.getView().byId("referenciaInput").setValue("");
             var oModel = this.getOwnerComponent().getModel("AcuerdosHdr");
             if (oModel) {
                 oModel.setData([]);
+            }
+            var oModelTot = this.getOwnerComponent().getModel("acuTotDetModel");
+            if (oModelTot) {
+                oModelTot.setData([]);
             }
         },
 
@@ -204,17 +197,24 @@ sap.ui.define([
 
             var docResult = results[line];
 
-            var sociedad = this.getView().byId("sociedadInput").getValue();
-            var documento = this.getView().byId("documentoInput").getValue();
-            var ejercicio = this.getView().byId("ejercicioInput").getValue();
+            var proveedor = this.getConfigModel().getProperty("/supplierInputKey");
+            var referencia = this.getView().byId('referenciaInput').getValue();
+
+            if (referencia.includes("/")) {
+                var ref1 = referencia.substring(0, referencia.indexOf("/"));
+                var ref2 = referencia.split('/')[1];
+            } else {
+                ref1 = referencia;
+                ref2 = "NOREF2";
+            }
 
             this.getOwnerComponent().getRouter().navTo("detailDetailAcuNS",
                 {
                     layout: sap.f.LayoutType.TwoColumnsMidExpanded,
-                    sociedad: sociedad,
-                    documento: documento,
-                    ejercicio: ejercicio,
-                    tienda: docResult.Werks
+                    proveedor: proveedor,
+                    ref1: ref1,
+                    ref2: ref2,
+                    centro: docResult.Werks
 
                }, true);
 
