@@ -765,7 +765,7 @@
                     ]
                 },
                 {
-                    "pattern": "detailDetailAcuNS/{layout}/{sociedad}/{documento}/{ejercicio}/{tienda}",
+                    "pattern": "detailDetailAcuNS/{layout}/{proveedor}/{ref1}/{ref2}/{centro}",
                     "name": "detailDetailAcuNS",
                     "target": [
                         "masterAcuerdosNS",
@@ -809,7 +809,7 @@
                     ]
                 },
                 {
-                    "pattern": "detailAcuerdosHNS/{layout}/{proveedor}/{referencia}/{centro}",
+                    "pattern": "detailAcuerdosHNS/{layout}/{proveedor}/{ref1}/{ref2}/{centro}",
                     "name": "detailAcuerdosHNS",
                     "target": [
                         "masterAcuerdosHNS",

@@ -27,37 +27,20 @@
 		                showRestoreButton="false" showClearButton="false" useToolbar="false"> 
 			
                         <fb:filterGroupItems>
-                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="{appTxts>/acuerdos.sociedad}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="{appTxts>/acuerdosHNS.proveedor}" mandatory="true" visibleInFilterBar="true">
                                 <fb:control>
-                                    <Input
-                                        id="sociedadInput"
-                                        placeholder="{appTxts>/acuerdos.sociedad}"
-                                        showSuggestion="true"
-                                        maxLength="4"
-                                        >
-                                    </Input>
+                                    <Input id="supplierInput" placeholder="{appTxts>/acuerdosHNS.proveedor}" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}" />
                                 </fb:control>
                             </fb:FilterGroupItem>
                         
-                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="B" label="{appTxts>/acuerdos.docto}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="B" label="{appTxts>/acuerdosHNS.refer}" mandatory="true" partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
                                     <Input
-                                        id="documentoInput"
-                                        placeholder="{appTxts>/acuerdos.docto}"
+                                        id="referenciaInput"
+                                        placeholder="{appTxts>/acuerdosHNS.refer}"
                                         showSuggestion="true"
-                                        maxLength="10"
-                                        >
-                                    </Input>
-                                </fb:control>
-                            </fb:FilterGroupItem>
-
-                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="C" label="{appTxts>/acuerdos.ejercicio}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
-                                <fb:control>
-                                    <Input
-                                        id="ejercicioInput"
-                                        placeholder="{appTxts>/acuerdos.ejercicio}"
-                                        showSuggestion="true"
-                                        maxLength="4"
+                                        maxLength="30"
                                         >
                                     </Input>
                                 </fb:control>
@@ -89,7 +72,7 @@
                 items="{AcuerdosHdr>/}">
                 <headerToolbar>
                     <OverflowToolbar>
-                        <Title text="{appTxts>/acuerdos.title} ({AcuerdosHdr>/length})" />
+                        <Title text="Acuerdos Hist. Gral. ({AcuerdosHdr>/length})" />
                         <ToolbarSpacer/>
                         <!--<OverflowToolbarButton type="Transparent" 
                             icon="sap-icon://pdf-attachment" 
@@ -150,13 +133,13 @@
 						<footer>
                         </footer>
 					</Column>
-                    <Column width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                    <!--<Column width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
 						<header>
 							<Text text="{appTxts>/acuerdosNS.proveedor}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 						</header>
 						<footer>
                         </footer>
-					</Column>
+					</Column>-->
                     <Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
 						<header>
 							<Text text="{appTxts>/acuerdos.base}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -211,12 +194,12 @@
 						</header>
 						<footer/>
 					</Column>
-                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                    <!--<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
 						<header>
 							<Text text="{appTxts>/acuerdosNS.indIEPS}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 						</header>
 						<footer/>
-					</Column>
+					</Column>-->
                     <Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
 						<header>
 							<Text text="{appTxts>/acuerdosNS.ieps}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -250,9 +233,9 @@
                             <ObjectIdentifier 
                                 title="{AcuerdosHdr>Folio}" 
                                 titleActive="false"/>
-                            <ObjectIdentifier 
+                            <!--<ObjectIdentifier 
                                 title="{AcuerdosHdr>Lifnr}" 
-                                titleActive="false"/>
+                                titleActive="false"/>-->
                             <ObjectNumber
                                 number="{
                                     parts:[{path:'AcuerdosHdr>Base'},{path:'CurrencyCode'}],
@@ -282,10 +265,10 @@
                                 number="{AcuerdosHdr>Cvefac}"
                                 unit=""
                                 state="None" />
-                            <ObjectNumber
+                            <!--<ObjectNumber
                                 number="{AcuerdosHdr>Bitieps}"
                                 unit=""
-                                state="None" />
+                                state="None" />-->
                             <ObjectNumber
                                 number="{
                                     parts:[{path:'AcuerdosHdr>Impieps'},{path:'CurrencyCode'}],
