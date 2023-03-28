@@ -38,10 +38,10 @@ sap.ui.define([
             this.oRouter.navTo("detailDetailAcuNS",
                 {
                     layout: sNextLayout,
-                    sociedad: this._sociedad,
-                    documento: this._documento,
-                    ejercicio: this._ejercicio,
-                    tienda: this._tienda
+                    proveedor: this._proveedor,
+                    ref1: this._ref1,
+                    ref2: this._ref2,
+                    centro: this._centro
                 }
             );
         },
@@ -51,10 +51,10 @@ sap.ui.define([
             this.oRouter.navTo("detailDetailAcuNS",
                 {
                     layout: sNextLayout,
-                    sociedad: this._sociedad,
-                    documento: this._documento,
-                    ejercicio: this._ejercicio,
-                    tienda: this._tienda
+                    proveedor: this._proveedor,
+                    ref1: this._ref1,
+                    ref2: this._ref2,
+                    centro: this._centro
                 }
             );
         },
@@ -63,25 +63,29 @@ sap.ui.define([
             this.oRouter.navTo("masterAcuerdosNS", { layout: sNextLayout });
         },
         _onDocumentMatched: function (oEvent) {
-            this._sociedad = oEvent.getParameter("arguments").sociedad || this._sociedad || "0";
-            this._documento = oEvent.getParameter("arguments").documento || this._documento || "0";
-            this._ejercicio = oEvent.getParameter("arguments").ejercicio || this._ejercicio || "0";
-            this._tienda = oEvent.getParameter("arguments").tienda || this._tienda || "0";
+            this._proveedor = oEvent.getParameter("arguments").proveedor || this._proveedor || "0";
+            this._ref1 = oEvent.getParameter("arguments").ref1 || this._ref1 || "0";
+            this._ref2 = oEvent.getParameter("arguments").ref2 || this._ref2 || "0";
+            this._centro = oEvent.getParameter("arguments").centro || this._centro || "0";
+
+            if (this._ref2 !== "NOREF2") {
+                var referencia = this._ref1 + "/" + this._ref2;
+            } else {
+                referencia = this._ref1;
+            }
 
             var headerDeatil = {
-                "Sociedad": this._sociedad,
-                "Documento": this._documento,
-                "Ejercicio": this._ejercicio,
-                "Tienda": this._tienda
+                "Proveedor": this._proveedor,
+                "Referencia": referencia,
+                "Centro": this._centro
             };
 
             this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "acuHeadDetDetModel");
 
             var url = "AcuerdosNSDetSet?$filter=";
-                url += "Bukrs eq '" + this._sociedad + "'";
-                url += " and Belnr eq '" + this._documento + "'";
-                url += " and Gjahr eq '" + this._ejercicio + "'";
-                url += " and Werks eq '" + this._tienda + "'";
+                url += "Lifnr eq '" + this._proveedor + "'";
+                url += " and Refer eq '" + referencia + "'";
+                url += " and Werks eq '" + this._centro + "'";
 
             this.getView().byId('AcuerdosDetDet').setBusy(true);
             oModel.getJsonModelAsync(
