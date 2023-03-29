@@ -131,7 +131,7 @@ sap.ui.define([
                 function (jsonModel, parent) {
                     var objResponse = jsonModel.getProperty("/results");
 
-                    if (objResponse != null) {
+                    if (objResponse != null && objResponse.length) {
 
                         var totCost = objResponse.reduce((a, b) => +a + (+b["Cost"] || 0), 0);
                         var totPrice = objResponse.reduce((a, b) => +a + (+b["Price"] || 0), 0);

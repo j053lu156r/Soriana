@@ -73,14 +73,16 @@
                             var objResponse = jsonModel.getProperty("/results");
     
                             if (objResponse != null) {
-                                if (objResponse.length > 0) {
+                                //if (objResponse.length > 0) {
                                     
                                     var totImporte = objResponse.reduce((a, b) => +a + (+b["dmbtr"] || 0), 0);
                                     var totDescto = objResponse.reduce((a, b) => +a + (+b["zboni"] || 0), 0);
                                     var totIVA = objResponse.reduce((a, b) => +a + (+b["ziva"] || 0), 0);
                                     var totIEPS = objResponse.reduce((a, b) => +a + (+b["zieps"] || 0), 0);
                                     var TotStot = objResponse.reduce((a, b) => +a + (+b["stotal"] || 0), 0);
+                                    if (objResponse.length > 0) {
                                     var currCode = objResponse[0].waers;
+                                    }
                                     var totalAcuDet = {
                                         "totImporte": Number(totImporte.toFixed(2)),
                                         "TotDescto": Number(totDescto.toFixed(2)),
@@ -96,7 +98,7 @@
                                         "EscalasDta");
         
                                     parent.paginate("EscalasDta", "/", 1, 0);
-                                }
+                                //}
                             }
                             parent.getView().byId('tableEscalas').setBusy(false);
                         },
@@ -130,81 +132,69 @@
                 var texts = this.getOwnerComponent().getModel("appTxts");
                 var columns = [
                      {
-                        name: texts.getProperty("/Polizas.sucursal"),
-                        template: {
-                            content: "{bukrs}"
-                        }
-                    },
-                    {
-                        name: texts.getProperty("/Polizas.base"),
-                        template: {
-                            content: "{mblnr}"
-                        }
-                    },
-                    {
-                        name: texts.getProperty("/Polizas.desc"),
-                        template: {
-                            content: "{mjahr}"
-                        }
-                    },
-                    {
-                        name: texts.getProperty("/Polizas.iva"),
-                        template: {
-                            content: "{lifnr}"
-                        }
-                    },
-                    {
-                        name: texts.getProperty("/Polizas.pDesc"),
+                        name: texts.getProperty("/ACEscalas.arrangement"),
                         template: {
                             content: "{knuma}"
                         }
                     },
                     {
-                        name: texts.getProperty("/Polizas.unidad"),
+                        name: texts.getProperty("/ACEscalas.matdoc"),
+                        template: {
+                            content: "{mblnr}"
+                        }
+                    },
+                    {
+                        name: texts.getProperty("/ACEscalas.matdocYear"),
+                        template: {
+                            content: "{mjahr}"
+                        }
+                    },
+                    {
+                        name: texts.getProperty("/ACEscalas.movClass"),
                         template: {
                             content: "{bwart}"
                         }
                     },
                     {
-                        name: texts.getProperty("/Polizas.unidad"),
+                        name: texts.getProperty("/ACEscalas.reference"),
                         template: {
                             content: "{xblnr}"
                         }
                     },
                     {
-                        name: texts.getProperty("/Polizas.unidad"),
+                        name: texts.getProperty("/ACEscalas.plant"),
                         template: {
                             content: "{werks}"
                         }
                     },
                     {
-                        name: texts.getProperty("/Polizas.unidad"),
+                        name: texts.getProperty("/ACEscalas.amount"),
                         template: {
                             content: "{dmbtr}"
                         }
                     },
                     {
-                        name: texts.getProperty("/Polizas.unidad"),
+                        name: texts.getProperty("/ACEscalas.Descount"),
                         template: {
                             content: "{zboni}"
                         }
                     },
                     {
-                        name: texts.getProperty("/Polizas.unidad"),
+                        name: texts.getProperty("/ACEscalas.IVA"),
                         template: {
-                            content: "{zmgn3}"
+                            content: "{ziva}"
                         }
                     },
                     {
-                        name: texts.getProperty("/Polizas.unidad"),
+                        name: texts.getProperty("/ACEscalas.IEPS"),
                         template: {
-                            content: "{meins}"
+                            content: "{zipes}"
                         }
                     },
                     {
-                        name: texts.getProperty("/Polizas.unidad"),
+                        name: texts.getProperty("/ACEscalas.subtotal"),
                         template: {
-                            content: "{konwa}"
+                            content: "{stotal}"
                         }
                     }
 
