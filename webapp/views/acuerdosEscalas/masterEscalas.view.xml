@@ -86,15 +86,13 @@
                         <OverflowToolbar id="OTB01">
                             <Title id="Title01" text="{appTxts>/polizas.Position} ({EscalasDta>/length})" />
                             <ToolbarSpacer id="TBS01"/>
-    
-                            <Button id="BTNC" icon="sap-icon://monitor-payments" text="{appTxts>/polizas.detCargo}" 
-                                press=".onDebitDetail"
-                                visible="{= ${EscalasDta>/length} > 0}"
-                            />
+
                             <Button id="BTNE" icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
                                 press=".buildExportTable"
                                 visible="{= ${EscalasDta>/length} > 0}"
                             />
+
+                            <!--
                             <Select id="sel01"
                                 visible="{= ${EscalasDta>/length} > 0 }"
                                 change=".paginateValue(${$parameters>/selectedItem}, 'EscalasDta', '/')">
@@ -105,6 +103,7 @@
                                     <core:Item id="is04" key="100" text="100"/>
                                 </items>
                             </Select>
+                            -->
                         </OverflowToolbar>
                     </headerToolbar>
 
@@ -263,7 +262,7 @@
                                     unit="{EscalasDta>waers}" />
                                 <ObjectNumber id="ONDSTIEPS"
                                     number="{
-                                        parts:[{path:'EscalasDta>zieps'},{path:'CurrencyCode'}],
+                                        parts:[{path:'EscalasDta>zipes'},{path:'CurrencyCode'}],
                                         type: 'sap.ui.model.type.Currency',
                                         formatOptions: {showMeasure: false}
                                             }"
