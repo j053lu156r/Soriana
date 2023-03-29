@@ -5,7 +5,7 @@ sap.ui.define([
     "use strict";
 
     var oModel = new this.Acuerdos();
-    return Controller.extend("demo.controllers.AcuerdosNS.DetailDetail", {
+    return Controller.extend("demo.controllers.AcuerdosHNS.Detail", {
         onInit: function () {
             var oExitButton = this.getView().byId("exitFullScreenBtn"),
                 oEnterButton = this.getView().byId("enterFullScreenBtn");
@@ -13,7 +13,7 @@ sap.ui.define([
             this.oRouter = this.getOwnerComponent().getRouter();
             this.oModel = this.getOwnerComponent().getModel();
 
-            this.oRouter.getRoute("detailDetailAcuNS").attachPatternMatched(this._onDocumentMatched, this);
+            this.oRouter.getRoute("detailAcuerdosHNS").attachPatternMatched(this._onDocumentMatched, this);
 
             [oExitButton, oEnterButton].forEach(function (oButton) {
                 oButton.addEventDelegate({
@@ -27,15 +27,13 @@ sap.ui.define([
             }, this);
         },
         handleItemPress: function (oEvent) {
-			/*var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(2),
-				supplierPath = oEvent.getSource().getBindingContext("tableItemsCompl").getPath(),
-				supplier = supplierPath.split("/").slice(-1).pop();*/
+			
 
         },
         handleFullScreen: function () {
             this.bFocusFullScreenButton = true;
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
-            this.oRouter.navTo("detailDetailAcuNS",
+            this.oRouter.navTo("detailAcuerdosHNS",
                 {
                     layout: sNextLayout,
                     proveedor: this._proveedor,
@@ -48,7 +46,7 @@ sap.ui.define([
         handleExitFullScreen: function () {
             this.bFocusFullScreenButton = true;
 			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
-            this.oRouter.navTo("detailDetailAcuNS",
+            this.oRouter.navTo("detailAcuerdosHNS",
                 {
                     layout: sNextLayout,
                     proveedor: this._proveedor,
@@ -60,7 +58,7 @@ sap.ui.define([
         },
         handleClose: function () {
             var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
-            this.oRouter.navTo("masterAcuerdosNS", { layout: sNextLayout });
+            this.oRouter.navTo("masterAcuerdosHNS", { layout: sNextLayout });
         },
         _onDocumentMatched: function (oEvent) {
             this._proveedor = oEvent.getParameter("arguments").proveedor || this._proveedor || "0";
@@ -80,14 +78,14 @@ sap.ui.define([
                 "Centro": this._centro
             };
 
-            this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "acuHeadDetDetModel");
+            this.getOwnerComponent().setModel(new JSONModel(headerDeatil), "acuHeadDetHNSModel");
 
-            var url = "AcuerdosNSDetSet?$filter=";
+            var url = "AcuerdosHNSDetSet?$filter=";
                 url += "Lifnr eq '" + this._proveedor + "'";
                 url += " and Refer eq '" + referencia + "'";
                 url += " and Werks eq '" + this._centro + "'";
 
-            this.getView().byId('AcuerdosDetDet').setBusy(true);
+            this.getView().byId('AcuerdosDetHNS').setBusy(true);
             oModel.getJsonModelAsync(
                 url,
                 function (jsonModel, parent) {
@@ -95,28 +93,34 @@ sap.ui.define([
 
                     if (objResponse != null) {
 
-                        var totBase = objResponse.reduce((a, b) => +a + (+b["Base"] || 0), 0);
-                        var totDescto = objResponse.reduce((a, b) => +a + (+b["Desct"] || 0), 0);
-                        var totIVA = objResponse.reduce((a, b) => +a + (+b["Iva"] || 0), 0);
-                        var totIEPS = objResponse.reduce((a, b) => +a + (+b["Impieps"] || 0), 0);
+                        var totCanti = objResponse.reduce((a, b) => +a + (+b["Canti"] || 0), 0);
+                        var totCnorm = objResponse.reduce((a, b) => +a + (+b["Cnorm"] || 0), 0);
+                        var totCofer = objResponse.reduce((a, b) => +a + (+b["Cofer"] || 0), 0);
+                        var totDifer = objResponse.reduce((a, b) => +a + (+b["Difer"] || 0), 0);
+                        var totBonif = objResponse.reduce((a, b) => +a + (+b["Bonif"] || 0), 0);
+                        var totImpieps = objResponse.reduce((a, b) => +a + (+b["Impieps"] || 0), 0);
+                        var totIva = objResponse.reduce((a, b) => +a + (+b["Iva"] || 0), 0);
 
-                        var totalDetDet = {
-                            "TotBase": Number(totBase.toFixed(2)),
-                            "TotDescto": Number(totDescto.toFixed(2)),
-                            "TotIVA": Number(totIVA.toFixed(2)),
-                            "TotIEPS": Number(totIEPS.toFixed(2))
+                        var totalDetHNS = {
+                            "TotCanti": Number(totCanti.toFixed(4)),
+                            "TotCnorm": Number(totCnorm.toFixed(4)),
+                            "TotCofer": Number(totCofer.toFixed(4)),
+                            "TotDifer": Number(totDifer.toFixed(4)),
+                            "TotBonif": Number(totBonif.toFixed(4)),
+                            "TotImpieps": Number(totImpieps.toFixed(4)),
+                            "TotIva": Number(totIva.toFixed(4))
                         };
-                        parent.getOwnerComponent().setModel(new JSONModel(totalDetDet), "acuTotDetDetModel");
+                        parent.getOwnerComponent().setModel(new JSONModel(totalDetHNS), "acuTotDetHNSModel");
 
                         parent.getOwnerComponent().setModel(new JSONModel(objResponse),
-                            "AcuDetDetHdr");
+                            "AcuDetHNSHdr");
 
                         //parent.paginate("AcuDetDetHdr", "/AcuDetDet", 1, 0);
                     }
-                    parent.getView().byId('AcuerdosDetDet').setBusy(false);
+                    parent.getView().byId('AcuerdosDetHNS').setBusy(false);
                 },
                 function (parent) {
-                    parent.getView().byId('AcuerdosDetDet').setBusy(false);
+                    parent.getView().byId('AcuerdosDetHNS').setBusy(false);
                 },
                 this
             );
@@ -126,62 +130,80 @@ sap.ui.define([
             var texts = this.getOwnerComponent().getModel("appTxts");
             var columns = [
                 {
-                    name: texts.getProperty("/acuerdos.sucursal"),
-                    template: {
-                        content: "{Werks}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/acuerdosNS.referencia"),
+                   name: texts.getProperty("/acuerdosHNS.centro"),
+                   template: {
+                       content: "{Werks}"
+                   }
+               },
+               {
+                    name: texts.getProperty("/acuerdosHNS.refer"),
                     template: {
                         content: "{Refer}"
                     }
                 },
                 {
-                    name: texts.getProperty("/acuerdosNS.proveedor"),
+                    name: texts.getProperty("/acuerdosHNS.docCompras"),
                     template: {
-                        content: "{Lifnr}"
+                        content: "{Ebeln}"
                     }
                 },
                 {
-                    name: texts.getProperty("/acuerdos.base"),
+                    name: texts.getProperty("/acuerdosHNS.material"),
                     template: {
-                        content: "{Base}"
+                        content: "{Matnr}"
                     }
                 },
                 {
-                    name: texts.getProperty("/acuerdos.detDesc"),
+                    name: texts.getProperty("/acuerdosHNS.desc"),
                     template: {
-                        content: "{Desct}"
+                        content: "{Descp}"
                     }
                 },
-                {
-                    name: texts.getProperty("/acuerdos.detIVA"),
-                    template: {
-                        content: "{Iva}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/acuerdos.detPDesc"),
-                    template: {
-                        content: "{Prdes}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/acuerdosNS.indIEPS"),
-                    template: {
-                        content: "{Bitieps}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/acuerdosNS.ieps"),
-                    template: {
-                        content: "{Impieps}"
-                    }
-                }
-            ];
+               {
+                   name: texts.getProperty("/acuerdosHNS.canti"),
+                   template: {
+                       content: "{Canti}"
+                   }
+               },
+               {
+                   name: texts.getProperty("/acuerdosHNS.cNorm"),
+                   template: {
+                       content: "{Cnorm}"
+                   }
+               },
+               {
+                   name: texts.getProperty("/acuerdosHNS.cOfer"),
+                   template: {
+                       content: "{Cofer}"
+                   }
+               },
+               {
+                   name: texts.getProperty("/acuerdosHNS.difer"),
+                   template: {
+                       content: "{Difer}"
+                   }
+               },
+               {
+                   name: texts.getProperty("/acuerdosHNS.bonif"),
+                   template: {
+                       content: "{Bonif}"
+                   }
+               },
+               {
+                   name: texts.getProperty("/acuerdosHNS.ieps"),
+                   template: {
+                       content: "{Impieps}"
+                   }
+               },
+               {
+                   name: texts.getProperty("/acuerdosHNS.iva"),
+                   template: {
+                       content: "{Iva}"
+                   }
+               }
+           ];
 
-            this.exportxls('AcuDetDetHdr', '/', columns);
+            this.exportxls('AcuDetHNSHdr', '/', columns);
         }
     });
 });

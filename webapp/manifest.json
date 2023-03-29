@@ -765,7 +765,7 @@
                     ]
                 },
                 {
-                    "pattern": "detailDetailAcuNS/{layout}/{sociedad}/{documento}/{ejercicio}/{tienda}",
+                    "pattern": "detailDetailAcuNS/{layout}/{proveedor}/{ref1}/{ref2}/{centro}",
                     "name": "detailDetailAcuNS",
                     "target": [
                         "masterAcuerdosNS",
@@ -799,6 +799,21 @@
                     "target": [
                         "masterCargoNS",
                         "detailCargoNS"
+                    ]
+                },
+                {
+                    "name": "masterAcuerdosHNS",
+                    "pattern": "masterAcuerdosHNS",
+                    "target": [
+                        "masterAcuerdosHNS"
+                    ]
+                },
+                {
+                    "pattern": "detailAcuerdosHNS/{layout}/{proveedor}/{ref1}/{ref2}/{centro}",
+                    "name": "detailAcuerdosHNS",
+                    "target": [
+                        "masterAcuerdosHNS",
+                        "detailAcuerdosHNS"
                     ]
                 },
                 {
@@ -1383,6 +1398,16 @@
                 "detailCargoNS": {
                     "viewName": "Detail",
                     "viewPath": "demo.views.CargoNS",
+                    "controlAggregation": "midColumnPages"
+                },
+                "masterAcuerdosHNS": {
+                    "viewName": "Master",
+                    "viewPath": "demo.views.AcuerdosHNS",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "detailAcuerdosHNS": {
+                    "viewName": "Detail",
+                    "viewPath": "demo.views.AcuerdosHNS",
                     "controlAggregation": "midColumnPages"
                 },
                 "Products": {

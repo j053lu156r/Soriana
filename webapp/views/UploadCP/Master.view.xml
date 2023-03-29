@@ -1,5 +1,5 @@
 <mvc:View
-    controllerName="demo.controllers.DownloadCP.Master"
+    controllerName="demo.controllers.UploadCP.Master"
     xmlns:m="sap.m"
     xmlns:vm="sap.ui.comp.variants"
     xmlns:f="sap.f"
@@ -11,6 +11,7 @@
     height="100%"
     xmlns:form="sap.ui.layout.form"
     xmlns:u="sap.ui.unified"
+    xmlns:core="sap.ui.core"
 >
     <f:DynamicPage class="sapUiContentPadding">
         <!-- DynamicPage Title -->
@@ -21,42 +22,26 @@
                 </f:heading>
             </f:DynamicPageTitle>
         </f:title>
-        <!-- DynamicPage Header 
-        <f:header>
-            <f:DynamicPageHeader pinnable="true">
-                <f:content>
-                    <fb:FilterBar id="filterBar" header="Header" reset="onReset" search="searchData" clear="onClear" cancel="onCancel" filtersDialogClosed="onFiltersDialogClosed" showRestoreButton="false" showClearButton="false" useToolbar="false">
-                        <fb:filterGroupItems>
-                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab" label="{appTxts>/order.supplier}" mandatory="true" partOfCurrentVariant="true" visibleInFilterBar="true">
-                                <fb:control>
-                                    <Input id="supplierInput" placeholder="{appTxts>/clarifications.supplier}" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}" />
-                                </fb:control>
-                            </fb:FilterGroupItem>
-                        </fb:filterGroupItems>
-                    </fb:FilterBar>
-                </f:content>
-            </f:DynamicPageHeader>
-        </f:header>
-        -->
         <f:content>
             <l:Grid defaultSpan="L12 M7 S12" width="auto">
                 <l:content>
                     <form:SimpleForm id="SimpleFormChange354" minWidth="1024" maxContainerCols="2" layout="ResponsiveLayout" editable="true" visible="true">
                         <form:content>
-                            <m:Label text="{appTxts>/cartaPorte.determinante}" labelFor="ComboBoxDet" />
-                            <m:ComboBox id="ComboBoxDet" required="true" width="40%" />
+                        
+                            <m:Label text="{appTxts>/cartaPorte.determinante}" labelFor="UCPComboBoxDet" />
+                            <m:ComboBox id="UCPComboBoxDet" required="true" width="40%" items="{CedisModel>/Cedis}" showSecondaryValues= "true"> 
+                                <core:ListItem key="{CedisModel>Ids_Num_UN}" text="{CedisModel>Ids_Num_UN} {CedisModel>Desc_UN}" additionalText="{CedisModel>Id_Num_UN}"/>
+                            </m:ComboBox>
 
-                            <m:Label text="{appTxts>/cartaPorte.operacion}" labelFor="ComboBoxOp" />
-                            <m:ComboBox id="ComboBoxOp" required="true" width="40%" />
+                            <m:Label text="{appTxts>/cartaPorte.operacion}" labelFor="UCPComboBoxOp"/>
+                            <m:ComboBox id="UCPComboBoxOp" required="true" width="40%" items="{TipoOperModel>/TipoOperacion}">
+                                <core:ListItem key="{TipoOperModel>Id_Num_TipoOper}" text="{TipoOperModel>Desc_TipoOper}"/>
+                            </m:ComboBox>
 
                             <m:Label text="{appTxts>/cartaPorte.file}" labelFor="fuFile" />
-                            <u:FileUploader id="fuFile" width="40%" name="fuFile" uploadComplete="handleUploadComplete" change="handleValueChange" style="Emphasized" fileType="{configSite>/updateFormatsSingle}">
-                                <u:parameters>
-                                    <u:FileUploaderParameter name="Accept-CH" value="Viewport-Width" />
-                                    <u:FileUploaderParameter name="Accept-CH" value="Width" />
-                                    <u:FileUploaderParameter name="Accept-CH-Lifetime" value="86400" />
-                                </u:parameters>
-                            </u:FileUploader>
+                            <u:FileUploader id="fuTxt" width="40%" name="fuTxt" uploadComplete="handleUploadComplete" 
+                                change="handleValueChange" style="Emphasized" fileType="txt"
+                                uploadUrl="{oCartaPorte.sUrl}"/>
                         </form:content>
                     </form:SimpleForm>
                     <m:FlexBox alignItems="Center" justifyContent="Center">
@@ -70,27 +55,11 @@
                     </m:FlexBox>
                     <m:FlexBox alignItems="Center" justifyContent="Center">
                         <m:items>
-                            <m:Button type="Accept" press="submit" text="{appTxts>/cartaPorte.upload}" width="100%" />
+                            <m:Button type="Accept" press="cpUploadPress" text="{appTxts>/cartaPorte.upload}" width="100%" />
                         </m:items>
                     </m:FlexBox>
                 </l:content>
             </l:Grid>
-            <!--
-            <l:VerticalLayout class="sapUiContentPadding" width="100%">
-                <Label id="suggestionsComboBoxLabel" text="Products" labelFor="suggestionsComboBox" />
-                <ComboBox id="suggestionsComboBox" change="handleChange" input="handleInput" selectionChange="handleSelectionChange" ariaLabelledBy="suggestionsComboBoxLabel" items="{/ProductCollection}">
-                    <items>
-                        <ComboBoxItem text="{Name}" />
-                    </items>
-                </ComboBox>
-                <Label id="ComboBoxNoEditLabel" text="Readonly" labelFor="ComboBoxNoEdit" />
-                <ComboBox id="ComboBoxNoEdit" readonly="true" ariaLabelledBy="ComboBoxNoEditLabel" items="{/ProductCollection}">
-                    <items>
-                        <ComboBoxItem text="{Name}" />
-                    </items>
-                </ComboBox>
-            </l:VerticalLayout>
-            -->
         </f:content>
     </f:DynamicPage>
 </mvc:View>

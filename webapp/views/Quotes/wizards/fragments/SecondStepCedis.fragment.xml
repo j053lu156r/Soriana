@@ -16,7 +16,7 @@
 			uploadUrl="upload/"
 			tooltip="Upload your file to the local server"
             fileType="TXT,txt,csv"
-            visible="{=${path:'TemporalModel>/generalData/tipoCita'}==='02'  ? true :false}"
+             visible="true"
 			change="onUpload"/>
 		
 		
@@ -52,6 +52,15 @@
                             <ObjectIdentifier text="{Pedidos>Ean11}"/>
                         </t:template>
                     </t:Column>
+    <t:Column >
+                        <Label text="{appTxts>/quotes.Descri}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+
+                        <t:template>
+                            <ObjectIdentifier text="{Pedidos>Maktx}"/>
+                        </t:template>
+                    </t:Column>
+                    
+
                     <t:Column filterProperty="Menge">
                         <Label text="{appTxts>/quotes.quantity}" width="auto" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 

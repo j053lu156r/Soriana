@@ -5,19 +5,10 @@
     xmlns:vm="sap.ui.comp.variants" 
     xmlns="sap.m" 
     xmlns:core="sap.ui.core"
-	controllerName="demo.controllers.AcuerdosNS.Master" height="100%">
+	controllerName="demo.controllers.AcuerdosHNS.Master" height="100%">
 	<f:DynamicPage  
 		class="sapUiContentPadding">
-        <!-- DynamicPage Title -->
-        <!--<f:title>
-            <f:DynamicPageTitle backgroundDesign="Transparent">
-                <f:heading>
-                    <vm:VariantManagement standardItemText="{appTxts>/acuerdos.title}">
-                    </vm:VariantManagement>
-                </f:heading>
-            </f:DynamicPageTitle>
-        </f:title>-->
-        <!-- DynamicPage Header -->
+
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
@@ -27,7 +18,6 @@
 		                showRestoreButton="false" showClearButton="false" useToolbar="false"> 
 			
                         <fb:filterGroupItems>
-
                             <fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="{appTxts>/acuerdosHNS.proveedor}" mandatory="true" visibleInFilterBar="true">
                                 <fb:control>
                                     <Input id="supplierInput" placeholder="{appTxts>/acuerdosHNS.proveedor}" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}" />
@@ -46,18 +36,6 @@
                                 </fb:control>
                             </fb:FilterGroupItem>
 
-                            <!--<fb:FilterGroupItem groupName="__$INTERNAL$" name="D" label="{appTxts>/acuerdos.acuerdo}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
-                                <fb:control>
-                                    <Input
-                                        id="acuerdoInput"
-                                        placeholder="{appTxts>/acuerdos.acuerdo}"
-                                        showSuggestion="true"
-                                        maxLength="10"
-                                        >
-                                    </Input>
-                                </fb:control>
-                            </fb:FilterGroupItem>-->
-
                         </fb:filterGroupItems>
 
 	                </fb:FilterBar>
@@ -67,12 +45,12 @@
 		<f:content>
             <VBox>
 			<Table 
-                noDataText="{appTxts>/acuerdos.noData}" 
-                id="tableAcuerdos"
-                items="{AcuerdosHdr>/}">
+                noDataText="{appTxts>/acuerdosHNS.noData}" 
+                id="tableAcuerdosHNS"
+                items="{AcuerdosHdrHNS>/}">
                 <headerToolbar>
                     <OverflowToolbar>
-                        <Title text="Acuerdos Hist. Gral. ({AcuerdosHdr>/length})" />
+                        <Title text="{appTxts>/acuerdosHNS.title} ({AcuerdosHdr>/length})" />
                         <ToolbarSpacer/>
                         <!--<OverflowToolbarButton type="Transparent" 
                             icon="sap-icon://pdf-attachment" 
@@ -82,7 +60,7 @@
                             visible="{= ${AcuerdosHdr>/UUID} === undefined || ${AcuerdosHdr>/UUID} === '' ? false : true }"/>-->
                         <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
                             press=".buildExportTable"
-                            visible="{= ${AcuerdosHdr>/length} > 0}"
+                            visible="{= ${AcuerdosHdrHNS>/length} > 0}"
                         />
                         <!--<Select 
                             visible="{= ${AcuerdosHdr>/length} > 0 }"
@@ -99,7 +77,7 @@
 				<columns>
                 	<Column width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
 						<header>
-							<Text text="{appTxts>/acuerdos.sucursal}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+							<Text text="{appTxts>/acuerdosHNS.centro}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 						</header>
 						<footer>
                             <Text text="Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
@@ -107,61 +85,82 @@
 					</Column>
                     <Column width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
 						<header>
-							<Text text="{appTxts>/acuerdosNS.referencia}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-						</header>
-						<footer>
-                        </footer>
-					</Column>
-                    <Column width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-						<header>
-							<Text text="{appTxts>/acuerdos.detConv}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-						</header>
-						<footer>
-                        </footer>
-					</Column>
-                    <Column width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-						<header>
-							<Text text="{appTxts>/acuerdos.detCveMov}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-						</header>
-						<footer>
-                        </footer>
-					</Column>
-                    <Column width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-						<header>
-							<Text text="{appTxts>/acuerdos.detFolio}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-						</header>
-						<footer>
-                        </footer>
-					</Column>
-                    <!--<Column width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-						<header>
-							<Text text="{appTxts>/acuerdosNS.proveedor}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-						</header>
-						<footer>
-                        </footer>
-					</Column>-->
-                    <Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-						<header>
-							<Text text="{appTxts>/acuerdos.base}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+							<Text text="{appTxts>/acuerdosHNS.canti}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 						</header>
 						<footer>
                             <ObjectNumber
                                 number="{
-                                    parts:[{path:'acuTotDetModel>/TotBase'},{path:'CurrencyCode'}],
+                                    parts:[{path:'acuTotHNSModel>/TotCanti'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="" />
+                        </footer>
+					</Column>
+                    <Column width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/acuerdosHNS.cNorm}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer>
+                            <ObjectNumber
+                                number="{
+                                    parts:[{path:'acuTotHNSModel>/TotCnorm'},{path:'CurrencyCode'}],
                                     type: 'sap.ui.model.type.Currency',
                                     formatOptions: {showMeasure: false}
                                         }"
                                 unit="MXN" />
                         </footer>
 					</Column>
-					<Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                    <Column width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
 						<header>
-							<Text text="{appTxts>/acuerdos.desc}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+							<Text text="{appTxts>/acuerdosHNS.cOfer}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 						</header>
 						<footer>
                             <ObjectNumber
                                 number="{
-                                    parts:[{path:'acuTotDetModel>/TotDescto'},{path:'CurrencyCode'}],
+                                    parts:[{path:'acuTotHNSModel>/TotCofer'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="MXN" />
+                        </footer>
+					</Column>
+                    <Column width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/acuerdosHNS.difer}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer>
+                            <ObjectNumber
+                                number="{
+                                    parts:[{path:'acuTotHNSModel>/TotDifer'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="MXN" />
+                        </footer>
+					</Column>
+                    <Column width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/acuerdosHNS.bonif}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer>
+                            <ObjectNumber
+                                number="{
+                                    parts:[{path:'acuTotHNSModel>/TotBonif'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="MXN" />
+                        </footer>
+					</Column>
+                    <Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="{appTxts>/acuerdosHNS.ieps}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer>
+                            <ObjectNumber
+                                number="{
+                                    parts:[{path:'acuTotHNSModel>/TotImpieps'},{path:'CurrencyCode'}],
                                     type: 'sap.ui.model.type.Currency',
                                     formatOptions: {showMeasure: false}
                                         }"
@@ -170,108 +169,71 @@
 					</Column>
 					<Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
 						<header>
-							<Text text="{appTxts>/acuerdos.iva}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+							<Text text="{appTxts>/acuerdosHNS.iva}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 						</header>
 						<footer>
                             <ObjectNumber
                                 number="{
-                                    parts:[{path:'acuTotDetModel>/TotIVA'},{path:'CurrencyCode'}],
+                                    parts:[{path:'acuTotHNSModel>/TotIva'},{path:'CurrencyCode'}],
                                     type: 'sap.ui.model.type.Currency',
                                     formatOptions: {showMeasure: false}
                                         }"
                                 unit="MXN" />
                         </footer>
 					</Column>
-					<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-						<header>
-							<Text text="{appTxts>/acuerdos.pDesc}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-						</header>
-						<footer/>
-					</Column>
-                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-						<header>
-							<Text text="{appTxts>/acuerdosNS.cveFact}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-						</header>
-						<footer/>
-					</Column>
-                    <!--<Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-						<header>
-							<Text text="{appTxts>/acuerdosNS.indIEPS}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-						</header>
-						<footer/>
-					</Column>-->
-                    <Column width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
-						<header>
-							<Text text="{appTxts>/acuerdosNS.ieps}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-						</header>
-						<footer>
-                            <ObjectNumber
-                                number="{
-                                    parts:[{path:'acuTotDetModel>/TotIEPS'},{path:'CurrencyCode'}],
-                                    type: 'sap.ui.model.type.Currency',
-                                    formatOptions: {showMeasure: false}
-                                        }"
-                                unit="MXN" />
-                        </footer>
-					</Column>
+
 				</columns>
 				<items>
 					<ColumnListItem type="Navigation" press="onListItemPress">                    
 						<cells>
                             <ObjectIdentifier 
-                                title="{AcuerdosHdr>Werks}" 
+                                title="{AcuerdosHdrHNS>Werks}" 
                                 titleActive="true"/>
-                            <ObjectIdentifier 
-                                title="{AcuerdosHdr>Refer}" 
-                                titleActive="false"/>
-                            <ObjectIdentifier 
-                                title="{AcuerdosHdr>Conve}" 
-                                titleActive="false"/>
-                            <ObjectIdentifier 
-                                title="{AcuerdosHdr>Cvemo}" 
-                                titleActive="false"/>
-                            <ObjectIdentifier 
-                                title="{AcuerdosHdr>Folio}" 
-                                titleActive="false"/>
-                            <!--<ObjectIdentifier 
-                                title="{AcuerdosHdr>Lifnr}" 
-                                titleActive="false"/>-->
                             <ObjectNumber
                                 number="{
-                                    parts:[{path:'AcuerdosHdr>Base'},{path:'CurrencyCode'}],
+                                    parts:[{path:'AcuerdosHdrHNS>Canti'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="" />
+                            <ObjectNumber
+                                number="{
+                                    parts:[{path:'AcuerdosHdrHNS>Cnorm'},{path:'CurrencyCode'}],
                                     type: 'sap.ui.model.type.Currency',
                                     formatOptions: {showMeasure: false}
                                         }"
                                 unit="MXN" />
                             <ObjectNumber
                                 number="{
-                                    parts:[{path:'AcuerdosHdr>Desct'},{path:'CurrencyCode'}],
+                                    parts:[{path:'AcuerdosHdrHNS>Cofer'},{path:'CurrencyCode'}],
                                     type: 'sap.ui.model.type.Currency',
                                     formatOptions: {showMeasure: false}
                                         }"
                                 unit="MXN" />
                             <ObjectNumber
                                 number="{
-                                    parts:[{path:'AcuerdosHdr>Iva'},{path:'CurrencyCode'}],
+                                    parts:[{path:'AcuerdosHdrHNS>Difer'},{path:'CurrencyCode'}],
                                     type: 'sap.ui.model.type.Currency',
                                     formatOptions: {showMeasure: false}
                                         }"
                                 unit="MXN" />
                             <ObjectNumber
-                                number="{AcuerdosHdr>Prdes}"
-                                unit="%"
-                                state="Success" />
-                            <ObjectNumber
-                                number="{AcuerdosHdr>Cvefac}"
-                                unit=""
-                                state="None" />
-                            <!--<ObjectNumber
-                                number="{AcuerdosHdr>Bitieps}"
-                                unit=""
-                                state="None" />-->
+                                number="{
+                                    parts:[{path:'AcuerdosHdrHNS>Bonif'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="MXN" />
                             <ObjectNumber
                                 number="{
-                                    parts:[{path:'AcuerdosHdr>Impieps'},{path:'CurrencyCode'}],
+                                    parts:[{path:'AcuerdosHdrHNS>Impieps'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="MXN" />
+                            <ObjectNumber
+                                number="{
+                                    parts:[{path:'AcuerdosHdrHNS>Iva'},{path:'CurrencyCode'}],
                                     type: 'sap.ui.model.type.Currency',
                                     formatOptions: {showMeasure: false}
                                         }"

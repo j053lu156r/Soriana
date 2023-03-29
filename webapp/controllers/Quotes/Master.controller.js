@@ -33,6 +33,30 @@ sap.ui.define([
             }, this);
             this.configFilterLanguage(this.getView().byId("filterBar"));
             this.getConfigModel().setProperty("/updateFormatsSingle", "xls,xlsx");
+
+            var json = [{
+                Codigo: "1",
+                Nombre: "POR CONFIRMAR"
+            },
+            {
+                Codigo: "2",
+                Nombre: "ACTIVA"
+            }, {
+                Codigo: "3",
+                Nombre: "AUSENCIA"
+            }, {
+                Codigo: "4",
+                Nombre: "CANCELADA"
+            }, {
+                Codigo: "5",
+                Nombre: "PROCESADA"
+            }]
+
+
+
+
+            this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(json), "TCitas")
+
         },
 
         setInitialDates() {
@@ -85,7 +109,7 @@ sap.ui.define([
                 value1: '1'
             })
             );
-         
+
 
             filtros.push(new sap.ui.model.Filter({
                 path: "Proveedor",
@@ -93,6 +117,37 @@ sap.ui.define([
                 value1: vLifnr
             })
             );
+
+            
+
+            if (this.getView().byId("ZEstatus").getSelectedKey() !== "") {
+                console.log("estatus")
+                filtros.push(new sap.ui.model.Filter({
+                    path: "Zestatus",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1:"0"+ this.getView().byId("ZEstatus").getSelectedKey()
+                })
+                );
+            }
+
+            if (this.getView().byId("ZTipocita").getSelectedKey() !== "") {
+                console.log("tipocita")
+                filtros.push(new sap.ui.model.Filter({
+                    path: "Tipocita",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: this.getView().byId("ZTipocita").getSelectedKey()
+                })
+                );
+            }
+          if (this.getView().byId("quoteCentroInput").getSelectedKey() !== "") {
+                filtros.push(new sap.ui.model.Filter({
+                    path: "Centro",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: this.getView().byId("quoteCentroInput").getSelectedKey()
+                })
+                );
+            }
+
 
             if (vFolioIni != null && vFolioIni != ""
                 && vFolioFin != null && vFolioFin != "") {
@@ -130,17 +185,17 @@ sap.ui.define([
             console.warn(this.getOwnerComponent().getModel("userdata").getProperty("/AdminC"))
             sap.ui.core.BusyIndicator.show();
             let that = this;
-            this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASCAB"], "").then(resp => {
-console.warn(resp.data.results[0].CTCITASCAB.results)
-for(var x =0;x<resp.data.results[0].CTCITASCAB.results.length;x++){
-    if(resp.data.results[0].CTCITASCAB.results[x].Zestatus==="1" &&  that.getOwnerComponent().getModel("userdata").getProperty("/AdminC") ==="X"){
-        resp.data.results[0].CTCITASCAB.results[x].AdminV=true;
-    }else{
-        resp.data.results[0].CTCITASCAB.results[x].AdminV=false;
-    }
+            this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASCAB","CTCITASDETEXT"], "").then(resp => {
+                console.warn(resp.data.results[0].CTCITASCAB.results)
+                for (var x = 0; x < resp.data.results[0].CTCITASCAB.results.length; x++) {
+                    if (resp.data.results[0].CTCITASCAB.results[x].Zestatus === "1" && that.getOwnerComponent().getModel("userdata").getProperty("/AdminC") === "X") {
+                        resp.data.results[0].CTCITASCAB.results[x].AdminV = true;
+                    } else {
+                        resp.data.results[0].CTCITASCAB.results[x].AdminV = false;
+                    }
 
-}
-           
+                }
+
                 that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(resp.data.results[0]), "tableQuotesModel");
                 that.paginate("tableQuotesModel", "/CTCITASCAB", 1, 0);
                 sap.ui.core.BusyIndicator.hide();
@@ -150,8 +205,8 @@ for(var x =0;x<resp.data.results[0].CTCITASCAB.results.length;x++){
             });
         },
         isAdmin: function () {
-// Validamos si hay datos validos
-       
+            // Validamos si hay datos validos
+
 
             let filtros = [];
 
@@ -173,13 +228,13 @@ for(var x =0;x<resp.data.results[0].CTCITASCAB.results.length;x++){
             let that = this;
             this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASCAB"], "").then(resp => {
 
-             
-             console.log(resp.data.results[0].Isadmin)
-             if(resp.data.results[0].Isadmin ==="X"){
-                this.getOwnerComponent().getModel("userdata").setProperty("/AdminC", "X")
-             }else{
-                this.getOwnerComponent().getModel("userdata").setProperty("/AdminC", "")
-             }
+
+                console.log(resp.data.results[0].Isadmin)
+                if (resp.data.results[0].Isadmin === "X") {
+                    this.getOwnerComponent().getModel("userdata").setProperty("/AdminC", "X")
+                } else {
+                    this.getOwnerComponent().getModel("userdata").setProperty("/AdminC", "")
+                }
                 sap.ui.core.BusyIndicator.hide();
             }).catch(error => {
                 sap.ui.core.BusyIndicator.hide();
@@ -191,10 +246,6 @@ for(var x =0;x<resp.data.results[0].CTCITASCAB.results.length;x++){
         },
         searchDetail: function (dato) {
 
-      
-
-         
-
             let filtros = [];
 
             filtros.push(new sap.ui.model.Filter({
@@ -203,105 +254,105 @@ for(var x =0;x<resp.data.results[0].CTCITASCAB.results.length;x++){
                 value1: '2'
             })
             );
-            
+
             filtros.push(new sap.ui.model.Filter({
                 path: "Folioini ",
                 operator: sap.ui.model.FilterOperator.EQ,
-                value1: "'"+dato+"'"
+                value1: "'" + dato + "'"
             })
             );
 
-           
+
             sap.ui.core.BusyIndicator.show();
             let that = this;
-            this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASDETEXT/ETOCSTOPALLEXT","CTCITASDETEXT"], "").then(resp => {
+            this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASDETEXT/ETOCSTOPALLEXT", "CTCITASDETEXT"], "").then(resp => {
 
-            console.log(resp.data.results[0].CTCITASDETEXT.results)
+                console.log(resp.data.results[0].CTCITASDETEXT.results)
                 that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(resp.data.results[0].CTCITASDETEXT.results), "PosicionesG");
-              // that.paginate("tableQuotesModel", "/CTCITASCAB", 1, 0);
+                // that.paginate("tableQuotesModel", "/CTCITASCAB", 1, 0);
                 sap.ui.core.BusyIndicator.hide();
             }).catch(error => {
                 sap.ui.core.BusyIndicator.hide();
                 console.error(error);
             });
         },
-        codigoEstado:function(valor){
-            var result=""
+        codigoEstado: function (valor) {
+            var result = ""
             switch (valor) {
                 case '1':
-                 
-                  result="POR CONFIRMAR"
-                  break;
+
+                    result = "POR CONFIRMAR"
+                    break;
                 case '2':
-                 
-                  result="ACTIVA"
-                  break;
+
+                    result = "ACTIVA"
+                    break;
                 case '3':
-                  
-                  result="AUSENCIA"
-                  break;
+
+                    result = "AUSENCIA"
+                    break;
                 case '4':
-                
-                  result="CANCELADA"
-                  break; 
-                  case '5':
-                
-                  result="PROCESADA"
-                  break;  
-              }
-              return  result
+
+                    result = "CANCELADA"
+                    break;
+                case '5':
+
+                    result = "PROCESADA"
+                    break;
+            }
+            return result
 
         },
-        codigotipocita:function(valor){
-            var result=""
+        codigotipocita: function (valor) {
+            var result = ""
             switch (valor) {
                 case '01':
-                 
-                  result="PALLET BLINDADO"
-                  break;
+
+                    result = "PALLET BLINDADO"
+                    break;
                 case '02':
-                 
-                  result="RECIBO EN SITIO"
-                  break;
+
+                    result = "RECIBO EN SITIO"
+                    break;
                 case '03':
-                  
-                  result="CEDIS"
-                  break;
+
+                    result = "CEDIS"
+                    break;
                 case '04':
-                
-                  result="PALL-MINIPALL"
-                  break;  
-              }
-              return  result
+
+                    result = "PALL-MINIPALL"
+                    break;
+            }
+            return result
 
         },
-        codigotipounidad:function(valor){
-            var result=""
+        codigotipounidad: function (valor) {
+            var result = ""
             switch (valor) {
                 case '01':
-                 
-                  result="TRAILER"
-                  break;
+
+                    result = "TRAILER"
+                    break;
                 case '02':
-                 
-                  result="CAMIONETA"
-                  break;
+
+                    result = "CAMIONETA"
+                    break;
                 case '03':
-                  
-                  result="THORTON"
-                  break;
-              
-              }
-              return  result
+
+                    result = "THORTON"
+                    break;
+
+            }
+            return result
 
 
         },
-        
+
 
 
         clearFilds: function () {
             // this.getView().byId("quoteFolioInput").setValue("");
-       //     this.getView().byId("dateRange").setDateValue("");
+            //     this.getView().byId("dateRange").setDateValue("");
             this.getView().byId("quoteType").setValue("");
             this.getView().byId("quoteStatus").setValue("");
             this.getView().byId("quoteUnitType").setValue("");
@@ -311,7 +362,9 @@ for(var x =0;x<resp.data.results[0].CTCITASCAB.results.length;x++){
             this.getView().byId("branchInput").setValue("");
         },
         getCatalogs: function () {
-            var url = "/HeaderCITASSet?$expand=ETIPOCITANAV,ETIPOPRODUCTONAV,ETIPOTURNONAV,ETIPOUNIDADNAV,ETIPOSTATUSNAV&$filter=IOption eq '3'&$format=json";
+          //var url = "/HeaderCITASSet?$expand=ETIPOCITANAV,ETIPOPRODUCTONAV,ETIPOTURNONAV,ETIPOUNIDADNAV,ETIPOSTATUSNAV&$filter=IOption eq '3'&$format=json";
+
+             var url = "/HeaderCITASSet?$expand=ECONFIGCEDISNAV,ETIPOCITANAV,ETIPOPRODUCTONAV,ETIPOTURNONAV,ETIPOUNIDADNAV,ETIPOSTATUSNAV&$filter=IOption eq '3'&$format=json";
 
             var catalogsModel = cModel2.getJsonModel(url);
 
@@ -402,103 +455,103 @@ for(var x =0;x<resp.data.results[0].CTCITASCAB.results.length;x++){
                 this.getOwnerComponent().getRouter().navTo("detailQuotes", { layout: sap.f.LayoutType.MidColumnFullScreen, document: document }, true);
             }
         },
-        Confirmacion:function(oEvent){
+        Confirmacion: function (oEvent) {
             var oSelectedItem = oEvent.getSource().getParent();
-           
-           
 
 
 
 
-    sap.m.MessageBox["confirm"](
-        this.getView().getModel("appTxts").getProperty("/quotes.confirmcitabtn"),{
-          actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
-          onClose: async function (oAction) {
-            if (oAction === sap.m.MessageBox.Action.YES) {
-                var json = {
-                    Proveedor: oSelectedItem.getBindingContext("tableQuotesModel").getProperty("Proveedor"),
-                    Action: "4",
-                
-                    CTCITASCAB: [
-                      {
-                        Folio: oSelectedItem.getBindingContext("tableQuotesModel").getProperty("Folio"),
-                        Centro: oSelectedItem.getBindingContext("tableQuotesModel").getProperty("Centro"),
-                        Fechacita: oSelectedItem.getBindingContext("tableQuotesModel").getProperty("Fechacita"),
-                        Proveedor: oSelectedItem.getBindingContext("tableQuotesModel").getProperty("Proveedor"),
-                      },
-                    ],
-                    CTCITASDET: [],
-                    ETRETURN: [],
-                  };
-                
-                  var model = "ZOSP_CITAS_ADM_SRV";
-                  var entity = "/MainSet" ;
-                  var json2 = JSON.stringify(json);
-                  var that = this;
-                
-                  that._POSToData(model, entity, json2).then(function (_GEToDataV2Response) {
-                      sap.ui.core.BusyIndicator.hide();
-                
-                      var response = _GEToDataV2Response.d;
-                
-                      if (response.Success === "X") {
-                        sap.m.MessageBox.success(that.getView().getModel("appTxts").getProperty("/quotes.confirmcita"));
-                        
-                      } else {
-                        sap.m.MessageBox.error(response.ETRETURN.results[0].Message);
-                      }
-                
-                     
-                      that.searchData();
-                    });
+
+
+            sap.m.MessageBox["confirm"](
+                this.getView().getModel("appTxts").getProperty("/quotes.confirmcitabtn"), {
+                actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+                onClose: async function (oAction) {
+                    if (oAction === sap.m.MessageBox.Action.YES) {
+                        var json = {
+                            Proveedor: oSelectedItem.getBindingContext("tableQuotesModel").getProperty("Proveedor"),
+                            Action: "4",
+
+                            CTCITASCAB: [
+                                {
+                                    Folio: oSelectedItem.getBindingContext("tableQuotesModel").getProperty("Folio"),
+                                    Centro: oSelectedItem.getBindingContext("tableQuotesModel").getProperty("Centro"),
+                                    Fechacita: oSelectedItem.getBindingContext("tableQuotesModel").getProperty("Fechacita"),
+                                    Proveedor: oSelectedItem.getBindingContext("tableQuotesModel").getProperty("Proveedor"),
+                                },
+                            ],
+                            CTCITASDET: [],
+                            ETRETURN: [],
+                        };
+
+                        var model = "ZOSP_CITAS_ADM_SRV";
+                        var entity = "/MainSet";
+                        var json2 = JSON.stringify(json);
+                        var that = this;
+
+                        that._POSToData(model, entity, json2).then(function (_GEToDataV2Response) {
+                            sap.ui.core.BusyIndicator.hide();
+
+                            var response = _GEToDataV2Response.d;
+
+                            if (response.Success === "X") {
+                                sap.m.MessageBox.success(that.getView().getModel("appTxts").getProperty("/quotes.confirmcita"));
+
+                            } else {
+                                sap.m.MessageBox.error(response.ETRETURN.results[0].Message);
+                            }
+
+
+                            that.searchData();
+                        });
+                    }
+                }.bind(this),
             }
-          }.bind(this),
-        }
-      );
+            );
 
 
 
         },
 
         onListItemPress: function (oEvent) {
-      
-      var that =this;
-    
-            var modelo=that.getView().getModel("tableQuotesModel").getData();
-            modelo=modelo.CTCITASCAB.results;
-          
-     if(that.getView().getModel("tableQuotesModel").getData().CTCITASCAB.Paginated.iterator>1){
-      
-        var productPath = oEvent.getSource().getBindingContext("tableQuotesModel").getPath(),
-        product = productPath.split("/").slice(-1).pop();
-        var iteracion=(Number(that.getView().getModel("tableQuotesModel").getData().CTCITASCAB.Paginated.iterator)-1).toString()
-     
-        product=iteracion+product
+
+            var that = this;
+
+            var modelo = that.getView().getModel("tableQuotesModel").getData();
+            modelo = modelo.CTCITASCAB.results;
+
+            if (that.getView().getModel("tableQuotesModel").getData().CTCITASCAB.Paginated.iterator > 1) {
+
+                var productPath = oEvent.getSource().getBindingContext("tableQuotesModel").getPath(),
+                    product = productPath.split("/").slice(-1).pop();
+                var iteracion = (Number(that.getView().getModel("tableQuotesModel").getData().CTCITASCAB.Paginated.iterator) - 1).toString()
+
+                product = iteracion + product
 
 
-     
-     }else{
-       
-        var productPath = oEvent.getSource().getBindingContext("tableQuotesModel").getPath(),
-        product = productPath.split("/").slice(-1).pop();
-      
-     }
-        
-      
-      that.searchDetail(modelo[product].Folio)
-        modelo[product].lectura=true;
-        modelo[product].Estilo='V';
 
-      
-      //  var  cmModel = new sap.ui.model.json.JSONModel(modelo[product]);
-        that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(modelo[product]),
-        "ModelLectura");
-       // that.getOwnerComponent().setModel(cmModel, "ModelLectura");
-        //that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({editable: false,}), "Modeleditable");
-        console.log("paso 1")
-        that.createQuote(modelo[product])
+            } else {
 
-       
+                var productPath = oEvent.getSource().getBindingContext("tableQuotesModel").getPath(),
+                    product = productPath.split("/").slice(-1).pop();
+
+            }
+
+
+            that.searchDetail(modelo[product].Folio)
+            modelo[product].lectura = true;
+            modelo[product].Estilo = 'V';
+
+
+            //  var  cmModel = new sap.ui.model.json.JSONModel(modelo[product]);
+            that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(modelo[product]),
+                "ModelLectura");
+            // that.getOwnerComponent().setModel(cmModel, "ModelLectura");
+            //that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({editable: false,}), "Modeleditable");
+            console.log("paso 1")
+            that.createQuote(modelo[product])
+
+
         },
 
         formatDateQuote: function (v) {
@@ -597,7 +650,7 @@ for(var x =0;x<resp.data.results[0].CTCITASCAB.results.length;x++){
             }
         },
         btnValidateFile: function () {
-        
+
         }
     });
 });
