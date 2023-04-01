@@ -293,11 +293,12 @@ console.log(Datos)
       },
 
       onCloseWizard: function () {
-        var Datos = this.getView().getModel("ModelLectura").getData();
-        var auxJsonModel = new sap.ui.model.json.JSONModel([]);
-        this.getView().byId("tableWizardOrder").setEnableSelectAll(false)
-        this.getOwnerComponent().setModel(auxJsonModel, "Platforms");
-        if (Datos.lectura) {
+        
+        var Datos = this.getOwnerComponent().getModel("ModelLectura").getData();
+       
+        //console.log(this.getOwnerComponent().getModel("ModelLectura").getData())
+        console.log(Datos.lectura)
+        if (!Datos.lectura) {
           this._handleMessageBoxOpen(
             this.getView()
               .getModel("appTxts")
@@ -334,12 +335,62 @@ console.log(Datos)
                 var Datos = this.getOwnerComponent().getModel("ModelLectura").getData();
 
                 console.log(appoimentModel)
+                console.log(this.getOwnerComponent().getModel("Pedidos").getData())
                 if (this.getOwnerComponent().getModel("ModelLectura").getData().lectura === true) {
                   var ArrtPos = [];
 
                   for (var x = 0; x < this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results.length; x++) {
                     if (this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Selected) {
+                      if(Model2.generalData.tipoCita==="01"){
+                        for(var pos of this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Tarima){
+                        pos.Menge=pos.Menge.toString()
+                        }
+                        console.log("01")
+                        ArrtPos.push({
+                          Abeln: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Abeln,
+                          Abelp: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Abelp,
+                          Bednr: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Bednr,
+                          Bwart: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Bwart,
+                          Ean11: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Ean11,
+                          Ebeln: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Ebeln,
+                          Ebelp: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Ebelp,
+                          Kdatb: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Kdatb+"T00:00:00",
+                          Kdate: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Kdate+"T00:00:00",
+                          Lifnr: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Lifnr,
+                          Matnr: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Matnr,
+                          Meins: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Meins,
+                          Menge: (this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Menge).toString(),
+                          MengeA: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].MengeA,
+                          MengeR: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].MengeR,
+                          Werks: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Werks,
+                          ETOCSTOPALLDET: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Tarima,
+                        });
+
+                      }else if(Model2.generalData.tipoCita==="02"){
+                        console.log("02")
+                        ArrtPos.push({
+                          Abeln: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Abeln,
+                          Abelp: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Abelp,
+                          Bednr: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Bednr,
+                          Bwart: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Bwart,
+                          Ean11: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Ean11,
+                          Ebeln: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Ebeln,
+                          Ebelp: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Ebelp,
+                          Kdatb: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Kdatb+"T00:00:00",
+                          Kdate: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Kdate+"T00:00:00",
+                          Lifnr: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Lifnr,
+                          Matnr: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Matnr,
+                          Meins: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Meins,
+                          Menge: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Menge,
+                          MengeA: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].MengeA,
+                          MengeR: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].MengeR,
+                          Werks: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Werks,
+                        
+                        });
+                      }else{
+                        console.log("03-4")
                       ArrtPos.push({
+                        
                         Folio: this.getOwnerComponent().getModel("ModelLectura").getData().Folio,
                         Ebeln: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Ebeln,
                         Ebelp: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Ebelp,
@@ -351,9 +402,11 @@ console.log(Datos)
                         Citado: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado,
                       });
                     }
+                    }
                   }
                   var json = []
                   if (appoimentModel[0].Anden !== undefined && appoimentModel[0].Anden !== null) {
+                    console.log(Model2.generalData.tipoCita)
                     json = {
                       Proveedor: this.getOwnerComponent().getModel("ModelLectura").getData().Proveedor,
                       Action: "2",
@@ -365,7 +418,7 @@ console.log(Datos)
                           Fechacita: appoimentModel[0].FechaCita,
                           FechaAud: appoimentModel[0].FechaAud,
                           Proveedor: this.getOwnerComponent().getModel("ModelLectura").getData().Proveedor,
-                          Tipocita: Model2.generalData.Tipocita,
+                          Tipocita: Model2.generalData.tipoCita,
                           Tipounidad: Model2.generalData.tipoUnidad,
                           Transportista: Model2.generalData.transportista,
                           Bultos: Model2.generalData.totalBultos,
@@ -379,7 +432,9 @@ console.log(Datos)
                       CTCITASDET: ArrtPos,
                       ETRETURN: [],
                     };
+                    console.log(json)
                   } else {
+                    console.log(Model2.generalData.tipoCita)
                     json = {
                       Proveedor: this.getOwnerComponent().getModel("ModelLectura").getData().Proveedor,
                       Action: "2",
@@ -392,7 +447,7 @@ console.log(Datos)
                           Fechacita: this.getOwnerComponent().getModel("ModelLectura").getData().Fechacita,
                           FechaAud: this.getOwnerComponent().getModel("ModelLectura").getData().FechaAud,
                           Proveedor: this.getOwnerComponent().getModel("ModelLectura").getData().Proveedor,
-                          Tipocita: Model2.generalData.Tipocita,
+                        
                           Tipounidad: Model2.generalData.tipoUnidad,
                           Transportista: Model2.generalData.transportista,
                           Bultos: Model2.generalData.totalBultos,
@@ -400,11 +455,13 @@ console.log(Datos)
                           HoraIni: this.getOwnerComponent().getModel("ModelLectura").getData().HoraIni,
                           HoraFin: this.getOwnerComponent().getModel("ModelLectura").getData().HoraFin,
                           Anden: this.getOwnerComponent().getModel("ModelLectura").getData().Anden,
+                          Tipocita: Model2.generalData.tipoCita,
                         },
                       ],
                       CTCITASDET: ArrtPos,
                       ETRETURN: [],
                     };
+                    console.log(json)
                   }
 
                   var model = _oDataModelAppoimnet;
@@ -456,8 +513,9 @@ console.log(Datos)
                         }
                       }
                     }
-
+console.log(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results)
                     for (var x = 0; x < appoimentModel.length; x++) {
+                      
                       ArrTCN.push({
                         Ebeln: appoimentModel[x].Ebeln,
                         Ebelp: appoimentModel[x].Ebelp,
@@ -652,6 +710,9 @@ console.log(Datos)
           actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
           onClose: function (oAction) {
             if (oAction === sap.m.MessageBox.Action.YES) {
+              var auxJsonModel = new sap.ui.model.json.JSONModel([]);
+              this.getView().byId("tableWizardOrder").setEnableSelectAll(false)
+              this.getOwnerComponent().setModel(auxJsonModel, "Platforms");
               this._oWizard.discardProgress(this._oWizard.getSteps()[0]);
               this.byId("wizardDialog").destroy();
               this._pDialog = null;
@@ -756,14 +817,14 @@ console.log(Datos)
 
                   if (Datos.Tipocita === "01") {
                 
-for (var f = 0; f < resp.data.results[0].ETOCSTO.results.length; f++) {
-  console.log(parseInt(resp.data.results[0].ETOC.results[x].Ebeln) , parseInt(resp.data.results[0].ETOCSTO.results[f].Bednr)) 
-  console.log(resp.data.results[0].ETOC.results[x].Abeln , resp.data.results[0].ETOCSTO.results[f].Abeln)
-  if (parseInt(resp.data.results[0].ETOC.results[x].Ebeln) === parseInt(resp.data.results[0].ETOCSTO.results[f].Bednr) && resp.data.results[0].ETOC.results[x].Abeln === resp.data.results[0].ETOCSTO.results[f].Abeln) {
-  
-    resp.data.results[0].ETOC.results[x].ZwerksD= resp.data.results[0].ETOCSTO.results[f].Werks
-  }   
-} 
+                      for (var f = 0; f < resp.data.results[0].ETOCSTO.results.length; f++) {
+                        console.log(parseInt(resp.data.results[0].ETOC.results[x].Ebeln) , parseInt(resp.data.results[0].ETOCSTO.results[f].Bednr)) 
+                        console.log(resp.data.results[0].ETOC.results[x].Abeln , resp.data.results[0].ETOCSTO.results[f].Abeln)
+                        if (parseInt(resp.data.results[0].ETOC.results[x].Ebeln) === parseInt(resp.data.results[0].ETOCSTO.results[f].Bednr) && resp.data.results[0].ETOC.results[x].Abeln === resp.data.results[0].ETOCSTO.results[f].Abeln) {
+                        
+                          resp.data.results[0].ETOC.results[x].ZwerksD= resp.data.results[0].ETOCSTO.results[f].Werks
+                        }   
+                      } 
                     resp.data.results[0].ETOC.results[x].Tarima = PosicionesG[y].ETOCSTOPALLEXT.results
                     for (var c = 0; c < resp.data.results[0].ETOC.results[x].Tarima.length; c++) {
                       resp.data.results[0].ETOC.results[x].Tarima[c].Menge = Number(resp.data.results[0].ETOC.results[x].Tarima[c].Menge)
@@ -1542,6 +1603,7 @@ for (var f = 0; f < resp.data.results[0].ETOCSTO.results.length; f++) {
           .then(function (_GEToDataV2Response) {
             sap.ui.core.BusyIndicator.hide();
             var data = _GEToDataV2Response.data.results[0].ETCONFIG.results;
+            console.log(data)
             var N = "";
             var Arrt = [];
 
@@ -1598,7 +1660,8 @@ for (var f = 0; f < resp.data.results[0].ETOCSTO.results.length; f++) {
         let filtros = [];
 
         filtros.push(new sap.ui.model.Filter({ path: "Action", operator: sap.ui.model.FilterOperator.EQ, value1: "1", }));
-        filtros.push(new sap.ui.model.Filter({ path: "Proveedor", operator: sap.ui.model.FilterOperator.EQ, value1: vLifnr, }));
+       // filtros.push(new sap.ui.model.Filter({ path: "Proveedor", operator: sap.ui.model.FilterOperator.EQ, value1: vLifnr, }));
+        filtros.push(new sap.ui.model.Filter({ path: "Centro", operator: sap.ui.model.FilterOperator.EQ, value1: that.getView().byId("sOrdenes").getSelectedKey(), }));
         if (vFolioIni != null && vFolioIni != "" && vFolioFin != null && vFolioFin != "") {
           filtros.push(new sap.ui.model.Filter({ path: "Folioini", operator: sap.ui.model.FilterOperator.EQ, value1: vFolioIni, }));
           filtros.push(new sap.ui.model.Filter({ path: "Foliofin", operator: sap.ui.model.FilterOperator.EQ, value1: vFolioFin, }));
@@ -1621,7 +1684,7 @@ for (var f = 0; f < resp.data.results[0].ETOCSTO.results.length; f++) {
           sap.ui.core.BusyIndicator.hide();
 
           var data = _GEToDataV2Response.data.results[0].CTCITASCAB.results;
-
+console.log(data)
 
           for (var x = 0; x < data.length; x++) {
             for (var y = 0; y < dataPos.length; y++) {
