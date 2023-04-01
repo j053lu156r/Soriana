@@ -638,7 +638,7 @@ sap.ui.define([
 				console.log(sociedad, ejercicio, tcode)
 				var doc = results.Belnr
 				var acuerdosTCodes = ['MEB4', 'WLF4', 'MEB2', 'MEB0', 'WLF2', 'ZMMFILACUERDO', 'WFL5', 'MEB4']
-
+				var Placreci = ['ZM10','ZM60','ZM61','ZM62']
 				var aportacionesTCodes = ['Z_APORTACIONES']
 				var boletinVentasTCodes = ['ZMM_ACUERDOS_LIQUI']
 
@@ -646,7 +646,7 @@ sap.ui.define([
 
 				console.log(acuerdosTCodes.includes(tcode))
 				console.log(doc)
-				console.log(results.Foliodescuento)
+				console.log(results)
 
 				if ((tcode.match("(ZMMFILACUERDO|MEB|WLF).*") && doc.startsWith('51')) || (tcode == "" && !(doc.startsWith("170") && results.Foliodescuento))) {
 					//1500000453  1500177301
@@ -694,7 +694,7 @@ sap.ui.define([
 
 
 
-				}
+				} 
 
 
 
@@ -884,13 +884,13 @@ sap.ui.define([
 			var ejercicio = ejercicio2.substr(0, 4) ? ejercicio2.substr(0, 4) : ""
 
 			var tcode = results.Tcode
-			console.log(sociedad, ejercicio, tcode)
+			console.log(results)
 			var doc = results.Belnr
 			var boart = results.Boart
 
 			var aportacionesTCodes = ['Z_APORTACIONES']
 			var boletinVentasTCodes = ['ZMM_ACUERDOS_LIQUI']
-
+			var Placreci = ['ZM10','ZM60','ZM61','ZM62']
 			var acuerdosNSBoart = ['ZD33', 'ZD34', 'ZM33', 'ZM34']
 
 			//logica para enviar a Aportaciones o a Acuerdos
@@ -912,7 +912,16 @@ sap.ui.define([
 							// lifnr: docResult.Lifnr
 						}, true);
 
-				} else {
+				} else if (Placreci.includes(results.Boart)) {
+					console.log(results)
+				
+				   this.getOwnerComponent().getRouter().navTo("detaicrecimiento", {
+						layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+						document: results.Belnr,
+						sociedad: this._sociedad+"-"+results.Budat.split("-")[0]
+	
+					}, true);
+				}else {
 
 					this.getOwnerComponent().getRouter().navTo("detailAcuerdos",
 						{
@@ -964,6 +973,15 @@ sap.ui.define([
 
 
 
+			}else if (Placreci.includes(results.Boart)) {
+				console.log(results)
+			
+			   this.getOwnerComponent().getRouter().navTo("DetailCrecimiento", {
+					layout: sap.f.LayoutType.ThreeColumnsEndExpanded,
+					document: results.Belnr,
+					sociedad: this._sociedad+"-"+results.Budat.split("-")[0]
+
+				}, true);
 			}
 
 
