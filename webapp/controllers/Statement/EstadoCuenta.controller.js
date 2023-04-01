@@ -1448,12 +1448,14 @@ sap.ui.define([
             var acuerdosTCodes = ['MEB4', 'WLF4', 'MEB2', 'MEB0', 'WLF2', 'ZMMFILACUERDO', 'WFL5']
             var aportacionesTCodes = ['Z_APORTACIONES']
             var boletinVentasTCodes = ['ZMM_ACUERDOS_LIQUI']
+            var Placreci = ['ZM10','ZM60','ZM61','ZM62']
 
             var boart = results.Boart
             var acuerdosNSBoart = ['ZD33', 'ZD34', 'ZM33', 'ZM34']
 
             console.log(results)
-
+            console.log(acuerdosTCodes.includes(tcode))
+            console.log(doc)
             if ((acuerdosTCodes.includes(tcode) && doc.startsWith('510')) || (tcode == "" && !(doc.startsWith("1700") && results.Xblnr))) {
 
                 console.log('on detailAcuerdosAS')
@@ -1535,6 +1537,18 @@ sap.ui.define([
                     layout: sap.f.LayoutType.TwoColumnsMidExpanded,
                     document: doc,
                     sociedad: sociedad
+
+                }, true);
+            }
+            else if (Placreci.includes(results.Boart)) {
+                console.log(results)
+                console.log(results.Budat.split("-")[0])
+                console.log(sociedad)
+                console.log(doc)
+               this.getOwnerComponent().getRouter().navTo("Crecimiento", {
+                    layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+                    document: doc,
+                    sociedad: sociedad+"-"+results.Budat.split("-")[0]
 
                 }, true);
             }
