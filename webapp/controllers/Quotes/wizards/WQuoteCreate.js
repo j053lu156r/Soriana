@@ -749,7 +749,7 @@ console.log(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results)
       searchOrders: function (date) {
         let filtros = [];
         let that = this;
-console.log(that.getOwnerComponent().getModel("PosicionesG").getData())
+
         filtros.push(
           this.buildFiltro(
             "IOption",
@@ -773,7 +773,7 @@ console.log(that.getOwnerComponent().getModel("PosicionesG").getData())
         );
         filtros.push(that.buildFiltro("IKdatb", date));
         var Datos = that.getOwnerComponent().getModel("ModelLectura").getData();
-var datos2=that.getOwnerComponent().getModel("PosicionesG").getData()
+
 
         if (that.getView().getModel("PosicionesG") === undefined) {
           var PosicionesG = [];
@@ -792,6 +792,7 @@ var datos2=that.getOwnerComponent().getModel("PosicionesG").getData()
           let FechasF = [];
           //aqui vamos
           if (Datos.lectura) {
+            var datos2=that.getOwnerComponent().getModel("PosicionesG").getData()
             this.getView().byId("tableWizardOrder").setEnableSelectAll(true)
             this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({ editable: false, }), "Modeleditable");
 
