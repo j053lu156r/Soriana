@@ -384,7 +384,7 @@ console.log(Datos)
                           Menge: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Menge,
                           MengeA: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].MengeA,
                           MengeR: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].MengeR,
-                          Werks: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Werks,
+                          Werks: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].ZwerksD ,
                         
                         });
                       }else{
@@ -749,7 +749,7 @@ console.log(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results)
       searchOrders: function (date) {
         let filtros = [];
         let that = this;
-
+console.log(that.getOwnerComponent().getModel("PosicionesG").getData())
         filtros.push(
           this.buildFiltro(
             "IOption",
@@ -773,7 +773,7 @@ console.log(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results)
         );
         filtros.push(that.buildFiltro("IKdatb", date));
         var Datos = that.getOwnerComponent().getModel("ModelLectura").getData();
-
+var datos2=that.getOwnerComponent().getModel("PosicionesG").getData()
 
         if (that.getView().getModel("PosicionesG") === undefined) {
           var PosicionesG = [];
@@ -829,6 +829,56 @@ console.log(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results)
                     for (var c = 0; c < resp.data.results[0].ETOC.results[x].Tarima.length; c++) {
                       resp.data.results[0].ETOC.results[x].Tarima[c].Menge = Number(resp.data.results[0].ETOC.results[x].Tarima[c].Menge)
                     }
+                  } else if (that.getView().byId("sTipoCita").getSelectedKey() === "02") {
+var ArgTemp=[];
+
+                      for (var y = 0; y < resp.data.results[0].ETMINIFULL03.results.length; y++) {
+                        for (var c = 0; c < datos2.length; c++) {
+                        console.log(resp.data.results[0].ETOC.results[x].Abeln)
+                        console.log(resp.data.results[0].ETMINIFULL03.results[y].Zabeln)
+                        console.log(resp.data.results[0].ETOC.results[x].Abelp)
+                        console.log(resp.data.results[0].ETMINIFULL03.results[y].Zabelp)
+                        console.log(datos2[c].Zabeln )
+                        console.log(datos2[c].Zabelp )
+                        console.log("------------")
+                        if (
+                          resp.data.results[0].ETOC.results[x].Abeln === resp.data.results[0].ETMINIFULL03.results[y].Zabeln &&
+
+                          resp.data.results[0].ETOC.results[x].Abelp === resp.data.results[0].ETMINIFULL03.results[y].Zabelp &&
+                          resp.data.results[0].ETOC.results[x].Abeln === datos2[c].Zabeln &&
+                          resp.data.results[0].ETOC.results[x].Abelp === datos2[c].Zabelp &&
+                          resp.data.results[0].ETMINIFULL03.results[y].ZwerksD===datos2[c].ZwerksD
+
+                        ) {
+
+                          ArgTemp.push({
+                            Abeln: resp.data.results[0].ETOC.results[x].Abeln,
+                            Bwart: resp.data.results[0].ETOC.results[x].Bwart,
+                            Citado: resp.data.results[0].ETMINIFULL03.results[y].Zpmngu.trim().split(".")[0],
+                            Ean11: resp.data.results[0].ETOC.results[x].Ean11,
+                            Ebeln: resp.data.results[0].ETOC.results[x].Ebeln,
+                            Ebelp: resp.data.results[0].ETOC.results[x].Ebelp,
+                            Kdatb: resp.data.results[0].ETOC.results[x].Kdatb,
+                            Kdate: resp.data.results[0].ETOC.results[x].Kdate,
+                            Lifnr: resp.data.results[0].ETOC.results[x].Lifnr,
+                            Matnr: resp.data.results[0].ETOC.results[x].Matnr,
+                            Meins: resp.data.results[0].ETOC.results[x].Meins,
+                            Menge: resp.data.results[0].ETOC.results[x].Menge,
+                            MengeA: resp.data.results[0].ETOC.results[x].MengeA,
+                            MengeR: resp.data.results[0].ETOC.results[x].MengeR,
+                            Maktx: resp.data.results[0].ETOC.results[x].Maktx,
+                            Selected: resp.data.results[0].ETOC.results[x].Selected,
+                            Werks: resp.data.results[0].ETOC.results[x].Werks,
+                            ZwerksD: resp.data.results[0].ETMINIFULL03.results[y].ZwerksD,
+                            Abelp: resp.data.results[0].ETMINIFULL03.results[y].Zabelp,
+                          });
+                        }
+                      }
+                      }
+                      console.log(ArgTemp)
+                      resp.data.results[0].ETOC.results=ArgTemp
+                      that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "Pedidos");
+                       console.log( resp.data.results[0].ETOC.results)
                   } else {
                     resp.data.results[0].ETOC.results[x].Tarima = [];
                     resp.data.results[0].ETOC.results[x].ZwerksD = PosicionesG[y].Werks
@@ -1911,8 +1961,9 @@ console.log(data)
                   resp.data.results[0].ETOC.results[x].Abeln ===
                   resp.data.results[0].ETMINIFULL03.results[y].Zabeln &&
                   resp.data.results[0].ETOC.results[x].Abelp ===
-                  resp.data.results[0].ETMINIFULL03.results[y].Zabelp && Number(resp.data.results[0].ETOC.results[x].MengeA) > 0
+                  resp.data.results[0].ETMINIFULL03.results[y].Zabelp && Number(resp.data.results[0].ETOC.results[x].MengeA) > 0 && Number(resp.data.results[0].ETMINIFULL03.results[y].Zpmngu.trim().split(".")[0])>0
                 ) {
+                  console.log(resp.data.results[0].ETMINIFULL03.results[y].Zpmngu.trim().split(".")[0])
                   resp.data.results[0].ETOC.results[x].MengeA = parseInt(resp.data.results[0].ETOC.results[x].MengeA)
                   resp.data.results[0].ETOC.results[x].MengeA = resp.data.results[0].ETOC.results[x].MengeA.toString()
                   ArgTemp.push({
