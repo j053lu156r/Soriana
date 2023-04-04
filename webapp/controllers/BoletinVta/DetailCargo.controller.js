@@ -131,7 +131,7 @@ sap.ui.define([
                 function (jsonModel, parent) {
                     var objResponse = jsonModel.getProperty("/results");
 
-                    if (objResponse != null && objResponse.length) {
+                    if (objResponse != null) {
 
                         var totCost = objResponse.reduce((a, b) => +a + (+b["Cost"] || 0), 0);
                         var totPrice = objResponse.reduce((a, b) => +a + (+b["Price"] || 0), 0);
@@ -141,7 +141,10 @@ sap.ui.define([
                         var totDiscount = objResponse.reduce((a, b) => +a + (+b["Discount"] || 0), 0);
                         var total = objResponse.reduce((a, b) => +a + (+b["Total"] || 0), 0);
                         var TotDistQty = objResponse.reduce((a, b) => +a + (+b["DistQty"] || 0), 0);
-                        var currCode = objResponse[0].Currency;
+                        if (objResponse.length > 0) {
+                            var currCode = objResponse[0].Currency;
+                            var promotion = objResponse[0].Promotion;
+                        }
                         var totalAcuDet = {
                             "TotCost": Number(totCost.toFixed(2)),
                             "TotPrice": Number(totPrice.toFixed(2)),
@@ -151,7 +154,7 @@ sap.ui.define([
                             "TotDiscount": Number(totDiscount.toFixed(2)),
                             "Total": Number(total.toFixed(2)),
                             "TotDistQty": Number(TotDistQty.toFixed(3)),
-                            "Promotion": objResponse[0].Promotion,
+                            "Promotion": promotion,
                             "currCode": currCode
                         };
                         parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(totalAcuDet), 
