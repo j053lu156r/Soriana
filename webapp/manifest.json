@@ -454,6 +454,17 @@
                         "detailAportacionesComplemento"
                     ]
                 },
+                  {
+                    "pattern": "DetailCrecimiento/{layout}/{document}/{sociedad}",
+                    "name": "DetailCrecimiento",
+                    "target": [
+                        "masterCompl",
+                        "detailComplPagos",
+                        "DetailCrecimiento"
+                    ]
+                },
+
+                
                 {
                     "pattern": "detailAportacionesFactoraje/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{fecha}",
                     "name": "detailAportacionesFactoraje",
@@ -564,6 +575,14 @@
                     "target": [
                         "EstadoCuenta",
                         "EstadoCuentaReporte"
+                    ]
+                },
+                {
+                    "name": "Crecimiento",
+                    "pattern": "Crecimiento/{layout}/{document}/{sociedad}",
+                    "target": [
+                        "EstadoCuenta",
+                        "Crecimiento"
                     ]
                 },
                 {
@@ -1087,6 +1106,13 @@
                     "viewPath": "demo.views.Statement"
                   
                 },
+                "Crecimiento": {
+                 
+                    "viewName": "Crecimiento",
+                    "controlAggregation": "midColumnPages",
+                    "viewPath": "demo.views.Statement"
+                  
+                },
              
                 "ComplementoReporteMC": {
                     "viewType": "XML",
@@ -1289,6 +1315,11 @@
                     "viewName": "DetailDetailAS",
                     "viewPath": "demo.views.Aportaciones",
                     "controlAggregation": "endColumnPages"
+                },
+                "DetailCrecimiento":{
+                    "viewName": "DetailCrecimiento",
+                    "controlAggregation": "endColumnPages",
+                    "viewPath": "demo.views.ComplPago"
                 },
                 "detailAportacionesFactoraje": {
                     "viewName": "DetailDetailAS",

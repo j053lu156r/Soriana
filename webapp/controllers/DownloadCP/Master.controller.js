@@ -22,7 +22,7 @@ sap.ui.define([
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("masterDownloadCP").attachMatched(this._onRouteMatched, this);
         },
-
+        
         _onRouteMatched: function (oEvent) {
 			this._clearInputs();
 		},

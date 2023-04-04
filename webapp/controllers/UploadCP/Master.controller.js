@@ -25,8 +25,8 @@ sap.ui.define([
         },
 
         _onRouteMatched: function (oEvent) {
-			this._clearInputs();
-		},
+            this._clearInputs();
+        },
 
         onExit: function () {
             that._clearInputs();
@@ -129,6 +129,7 @@ sap.ui.define([
 
         cpUploadPress: function () {
             let that = this;
+            const s = new XMLSerializer();
             let lifnr = this.getConfigModel().getProperty("/supplierInputKey");
             var file = this.oFileUploader.oFileUpload.files[0];
             let determinante = this.cboxComboBoxDet.getSelectedKey();
@@ -159,12 +160,27 @@ sap.ui.define([
                     data: form,
                     success: function (response) {
                         sap.ui.core.BusyIndicator.hide();
-                        if (response !== "") {
-                            sap.m.MessageBox.error(response);
+                        //if (response !== "") {
+                        var oXMLModel = new sap.ui.model.xml.XMLModel();
+                        oXMLModel.setXML(response);
+                        var oXml = oXMLModel.getData()
+                        var strResponse = "";
+                        let json = xml2js(s.serializeToString(oXml.getElementsByTagName("mensajes")[0]), { compact: true })
+                        var mensajes = json.mensajes.mensaje;
+                        if (mensajes.length !== undefined){
+                            mensajes.forEach(function (mensaje) {
+                                strResponse = strResponse + mensaje._text + "\n\n";
+                            });
+                            sap.m.MessageBox.success(strResponse);
+                        } else {
+                            sap.m.MessageBox.success(mensajes._text);
+                        }
+                        /*
                         } else {
                             sap.m.MessageBox.success(that.getOwnerComponent().getModel("appTxts").getProperty("/cartaPorte.uploadSuccess"));
                             that._clearInputs();
                         }
+                        */
                     },
                     error: function () {
                         sap.ui.core.BusyIndicator.hide();
