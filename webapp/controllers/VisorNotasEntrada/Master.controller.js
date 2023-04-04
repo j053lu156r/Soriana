@@ -211,18 +211,12 @@ if (that.getView().byId("dateRange").getValue().split("-")[1].trim() === that.ge
 
             if (this.getView().byId("FtiendNT").getSelectedKey()!==""){
                 var valor="";
-              
-                
-               
                 auxFilters.push(new sap.ui.model.Filter({
                     path: "Ekorg",
                     operator: sap.ui.model.FilterOperator.EQ,
                     value1:this.getView().byId("FtiendNT").getSelectedKey()
                 })
                 )
-            }else{
-                sap.m.MessageBox.error("Favor Seleccione Formato Tienda");
-                return false;
             }
 
             if (this.getView().byId("inpInvoice").getValue()!==""){

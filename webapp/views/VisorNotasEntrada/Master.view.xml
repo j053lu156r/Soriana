@@ -51,7 +51,7 @@
                                     groupTitle="Fechas" name="Fecha de entrega" mandatory="false" 
                                     partOfCurrentVariant="true" visibleInFilterBar="true">
                                     <fb:control>
-                                     <ComboBox items="{path: 'Tienda>/'}" required="true" id="FtiendNT">
+                                     <ComboBox items="{path: 'Tienda>/'}" id="FtiendNT">
 				<core:Item key="{Tienda>Ekorg}" text="{Tienda>Ekotx}"  />
 			</ComboBox>
                                     </fb:control>
