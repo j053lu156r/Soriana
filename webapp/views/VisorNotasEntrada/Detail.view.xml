@@ -28,21 +28,25 @@
                 </m:VBox>
 
                 <m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
+                    <!--
                     <m:Label text="{appTxts>/visor.order}" />
                     <m:Text text="{DetalleModel>/Ebeln}" class="sapUiTinyMarginBegin" />
-
-                    <m:Label text="{appTxts>/visor.Frecibo}" />
-                    <m:Text text="{DetalleModel>/Xblnr}" class="sapUiTinyMarginBegin" />
+                    -->
                 </m:VBox>
 
                 <m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
                     <m:Label text="{appTxts>/visor.supplier}" />
                     <m:Text text="{DetalleModel>/Lifnr}" class="sapUiTinyMarginBegin" />
+
                     <m:layoutData>
                         <m:FlexItemData growFactor="1" />
                     </m:layoutData>
+
                     <m:Label text=" " />
                     <m:Text text=" " class="sapUiTinyMarginBegin" />
+
+                    <m:Label text="{appTxts>/visor.Frecibo}" />
+                    <m:Text text="{DetalleModel>/Xblnr}" class="sapUiTinyMarginBegin" />
                 </m:VBox>
 
                 <m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">

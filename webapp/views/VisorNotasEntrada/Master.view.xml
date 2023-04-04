@@ -119,12 +119,14 @@
                                 <Text text="{migoModel>Mblnr}" wrapping="false"/>
                             </t:template>
                         </t:Column>
+                        <!--
                         <t:Column width="auto" id="idEbeln" visible="true" sortProperty="Ebeln" filterProperty="Ebeln">
                             <Label text="{appTxts>/visor.order}" />
                             <t:template>
                                 <Text text="{migoModel>Ebeln}" wrapping="false"/>
                             </t:template>
                         </t:Column>
+                        -->
                        
                         <t:Column width="auto" id="idBudatMkpf" visible="true" sortProperty="BudatMkpf" filterProperty="BudatMkpf">
                             <Label text="{appTxts>/visor.receivedDate}" />

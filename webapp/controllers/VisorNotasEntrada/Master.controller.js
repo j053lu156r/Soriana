@@ -54,8 +54,8 @@ idXblnr2: true
            var data=[];
            data.push(
         {"text":texts.getProperty("/visor.invoice"),  "key":"XblnrFact"},
-           {"text": texts.getProperty("/visor.Frecibo"),  "key":"Xblnr"},
-            {"text":texts.getProperty("/visor.order"),  "key":"Ebeln"}
+           {"text": texts.getProperty("/visor.Frecibo"),  "key":"Xblnr"}
+            //{"text":texts.getProperty("/visor.order"),  "key":"Ebeln"}
            )
            
             var auxJsonModel = new sap.ui.model.json.JSONModel(data);
@@ -100,7 +100,7 @@ console.log(data)
             var that = this;
 
             that.getView().byId("idMblnr").setVisible(that.getView().getModel().getProperty("/idMblnr"));
-            that.getView().byId("idEbeln").setVisible(that.getView().getModel().getProperty("/idEbeln"));
+            //that.getView().byId("idEbeln").setVisible(that.getView().getModel().getProperty("/idEbeln"));
            
             that.getView().byId("idBudatMkpf").setVisible(that.getView().getModel().getProperty("/idBudatMkpf"));
             that.getView().byId("idWerks").setVisible(that.getView().getModel().getProperty("/idWerks"));
