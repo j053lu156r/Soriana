@@ -1026,6 +1026,13 @@
                     "target": [
                         "masterEscalas"
                     ]
+                },
+                {
+                    "name": "detailEscalasCentro",
+                    "pattern": "detailEscalasCentro/{layout}/{bukrs}/{belnr}/{gjahr}/{lifnr}/{werks}/{name}",
+                    "target": [
+                        "detailEscalasCentro"
+                    ]
                 }
             ],
             "targets": {
@@ -1574,6 +1581,11 @@
                     "viewName": "masterEscalas",
                     "viewPath": "demo.views.acuerdosEscalas",
                     "controlAggregation": "beginColumnPages"
+                },
+                "detailEscalasCentro": {
+                    "viewName": "detailEscalasCentro",
+                    "viewPath": "demo.views.acuerdosEscalas",
+                    "controlAggregation": "midColumnPages"
                 }
             }
         },
