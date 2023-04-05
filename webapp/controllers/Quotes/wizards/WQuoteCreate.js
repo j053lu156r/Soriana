@@ -41,7 +41,7 @@ sap.ui.define(
         let datepicker = this.getView().byId("DP1");
         let todayDate = new Date();
 
-        todayDate = todayDate.getTime() + 1000 * 60 * 60 * 24 * 2;
+        todayDate = todayDate.getTime() + 1000 * 60 * 60 * 24 * 1;
         datepicker.setDateValue(new Date(todayDate));
         datepicker.setMinDate(new Date(todayDate));
         datepicker.fireChange();
@@ -1668,7 +1668,7 @@ var ArgTemp=[];
               }
             }
             var todayDate = new Date();
-            todayDate = todayDate.getTime() + 1000 * 60 * 60 * 24 * 2;
+            todayDate = todayDate.getTime() + 1000 * 60 * 60 * 24 * 1;
 
             todayDate = new Date(todayDate).toISOString().slice(0, 10);
 
