@@ -80,8 +80,7 @@
                                     partOfCurrentVariant="true" visibleInFilterBar="true">
                                     <fb:control>
                                      
-                                        <Input
-                                            id="inpInvoice" placeholder="{appTxts>/visor.placeholder}" liveChange="Validacion"/>
+                                        <Input id="inpInvoice" placeholder="{appTxts>/visor.placeholder}" liveChange="Validacion"/>
                                     </fb:control>
                                     
                                 </fb:FilterGroupItem>
@@ -119,15 +118,6 @@
                                 <Text text="{migoModel>Mblnr}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <!--
-                        <t:Column width="auto" id="idEbeln" visible="true" sortProperty="Ebeln" filterProperty="Ebeln">
-                            <Label text="{appTxts>/visor.order}" />
-                            <t:template>
-                                <Text text="{migoModel>Ebeln}" wrapping="false"/>
-                            </t:template>
-                        </t:Column>
-                        -->
-                       
                         <t:Column width="auto" id="idBudatMkpf" visible="true" sortProperty="BudatMkpf" filterProperty="BudatMkpf">
                             <Label text="{appTxts>/visor.receivedDate}" />
                             <t:template>
@@ -140,7 +130,7 @@
                                 <Text text="{migoModel>Werks}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                         <t:Column width="auto" id="idXblnr" visible="true" sortProperty="Xblnr"  filterProperty="Xblnr">
+                        <t:Column width="auto" id="idXblnr" visible="true" sortProperty="Xblnr"  filterProperty="Xblnr">
                             <Label text="{appTxts>/visor.Frecibo}" />
                             <t:template>
                                 <Text text="{migoModel>Xblnr}" wrapping="false"/>
@@ -152,7 +142,18 @@
                                 <Text text="{migoModel>XblnrFact}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                      
+                        <t:Column width="auto" id="idTotal" visible="true" sortProperty="Total"  filterProperty="Total">
+                            <Label text="{appTxts>/visor.total}" />
+                            <t:template>
+                                <Text text="{migoModel>Total} {migoModel>Waers}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="auto" id="idTotalImp" visible="true" sortProperty="TotalImp" filterProperty="TotalImp"> 
+                            <Label text="{appTxts>/visor.totalImp}" />
+                            <t:template>
+                                <Text text="{migoModel>TotalImp} {migoModel>Waers}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
                        
                           
                     </t:columns>
