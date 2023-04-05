@@ -875,7 +875,7 @@
                 },
                 {
                     "name": "detailVisorNotas",
-                    "pattern": "detailVisorNotas/{layout}/{Mblnr}/{Mjahr}/{Ebeln}/{Lifnr}/{BudatMkpf}/{Werks}/{Xblnr}/{XblnrFact}/{Total}/{TotImp}",
+                    "pattern": "detailVisorNotas/{layout}/{Mblnr}/{Mjahr}/{Ebeln}/{Lifnr}/{BudatMkpf}/{Werks}/{Xblnr}/{XblnrFact}/{Total}/{TotImp}/{Waers}",
                     "target": [
                         "masterVisorNotas",
                         "detailVisorNotas"

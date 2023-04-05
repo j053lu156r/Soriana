@@ -157,6 +157,7 @@ sap.ui.define([
             var XblnrFact = oSelectedItem.getBindingContext("migoModel").getProperty("XblnrFact");
             var Total = oSelectedItem.getBindingContext("migoModel").getProperty("Total");
             var TotImp = oSelectedItem.getBindingContext("migoModel").getProperty("TotImp");
+            var Waers = oSelectedItem.getBindingContext("migoModel").getObject().DocDetalleNav.results[0].Waers;
 
             if (Xblnr === '') {
                 Xblnr = '0.1'
@@ -164,7 +165,20 @@ sap.ui.define([
             if (XblnrFact === '') {
                 XblnrFact = '0.1'
             }
-            this.getOwnerComponent().getRouter().navTo("detailVisorNotas", { layout: sap.f.LayoutType.MidColumnFullScreen, Mblnr: Mblnr, Mjahr: Mjahr, Ebeln: Ebeln, Lifnr: Lifnr, BudatMkpf: BudatMkpf, Werks: Werks, Xblnr: Xblnr, XblnrFact: XblnrFact, Total: Total, TotImp: TotImp });
+            this.getOwnerComponent().getRouter().navTo("detailVisorNotas", 
+                { layout: sap.f.LayoutType.MidColumnFullScreen, 
+                    Mblnr: Mblnr, 
+                    Mjahr: Mjahr, 
+                    Ebeln: Ebeln, 
+                    Lifnr: Lifnr, 
+                    BudatMkpf: BudatMkpf, 
+                    Werks: Werks, 
+                    Xblnr: Xblnr, 
+                    XblnrFact: XblnrFact, 
+                    Total: Total, 
+                    TotImp: TotImp, 
+                    Waers: Waers
+                });
 
         },
 
@@ -242,8 +256,11 @@ sap.ui.define([
             that._GEToDataV2(model, entity, filter, expand, select).then(function (_GEToDataV2Response) {
                 sap.ui.core.BusyIndicator.hide();
                 var data = _GEToDataV2Response.data.results;
+                console.log(data)
+                var moneda = data[0].DocDetalleNav.results[0].Waers
                 for (var x = 0; x < data.length; x++) {
                     data[x].BudatMkpf = new Date(data[x].BudatMkpf).toISOString().slice(0, 10)
+                    data[x].Waers = moneda;
                 }
                 var auxJsonModel = new sap.ui.model.json.JSONModel(data);
                 that.getView().setModel(auxJsonModel, 'migoModel');
@@ -316,12 +333,24 @@ sap.ui.define([
             });
 
             aCols.push({
-                label: texts.getProperty("/visor.invoice"),
+                label: texts.getProperty("/visor.total"),
                 type: EdmType.String,
-                property: 'XblnrFact'
-
-
+                property: 'Total'
             });
+
+            aCols.push({
+                label: texts.getProperty("/visor.totalImp"),
+                type: EdmType.String,
+                property: 'TotImp'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/visor.currency"),
+                type: EdmType.String,
+                property: 'Waers'
+            });
+
+
 
             /*aCols.push({
                  label: texts.getProperty("/visor.SerieFolio"),
@@ -411,6 +440,9 @@ sap.ui.define([
                     Werks: oModel[x].Werks,
                     Xblnr: oModel[x].Xblnr,
                     XblnrFact: oModel[x].XblnrFact,
+                    Total: oModel[x].Total,
+                    TotImp: oModel[x].TotImp,
+                    Waers: oModel[x].Waers,
                     Ean11p: "",
                     Ebelnp: "",
                     Ebelpp: "",
@@ -436,6 +468,9 @@ sap.ui.define([
                         Werks: "",
                         Xblnr: "",
                         XblnrFact: "",
+                        Total: "",
+                        TotImp: "",
+                        Waers: "",
                         Ean11p: TemP[y].Ean11,
                         Ebelnp: TemP[y].Ebeln,
                         Ebelpp: TemP[y].Ebelp,
@@ -511,9 +546,37 @@ sap.ui.define([
                 property: 'Xblnr'
             });
 
+            aCols.push({
+                label: texts.getProperty("/visor.total"),
+                type: EdmType.String,
+                property: 'Total'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/visor.totalImp"),
+                type: EdmType.String,
+                property: 'TotImp'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/visor.currency"),
+                type: EdmType.String,
+                property: 'Waers'
+            });
+
 
             //detalle
+            aCols.push({
+                label: texts.getProperty("/visor.positionG"),
+                type: EdmType.String,
+                property: 'Zeilep'
+            });
 
+            aCols.push({
+                label: texts.getProperty("/visor.order"),
+                type: EdmType.String,
+                property: 'Ebelnp'
+            });
 
             aCols.push({
                 label: texts.getProperty("/visor.position"),
@@ -556,32 +619,6 @@ sap.ui.define([
         },
         //exporta excel
         buildExportTable2: function () {
-            /*    var aCols, oRowBinding, oSettings, oSheet, oTable, that = this;
-    
-                if (!that._oTable) {
-                    that._oTable = this.byId('tableVisor');
-                }
-    
-                oTable = that._oTable;
-    
-                oRowBinding = oTable.getBinding().oList;
-    
-                aCols = that.createColumnConfig2();
-    
-                oSettings = {
-                    workbook: {
-                        columns: aCols,
-                        hierarchyLevel: 'Level'
-                    },
-                    dataSource: oRowBinding,
-                    fileName: 'Notas de Entrada',
-                    worker: false // We need to disable worker because we are using a MockServer as OData Service
-                };
-    
-                oSheet = new Spreadsheet(oSettings);
-                oSheet.build().finally(function () {
-                    oSheet.destroy();
-                });*/
             var aCols, aProducts, oSettings, oSheet;
 
             aCols = this.createColumnConfig2();

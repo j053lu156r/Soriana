@@ -85,6 +85,7 @@ sap.ui.define([
                 "XblnrFact": ModeloN.XblnrFact,
                 "Total": ModeloN.Total,
                 "TotImp": ModeloN.TotImp,
+                "Waers": ModeloN.Waers,
                 "posiciones": []
 
 
