@@ -148,10 +148,10 @@
                                 <Text text="{migoModel>Total} {migoModel>Waers}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                        <t:Column width="auto" id="idTotalImp" visible="true" sortProperty="TotalImp" filterProperty="TotalImp"> 
+                        <t:Column width="auto" id="idTotalImp" visible="true" sortProperty="TotImp" filterProperty="TotImp"> 
                             <Label text="{appTxts>/visor.totalImp}" />
                             <t:template>
-                                <Text text="{migoModel>TotalImp} {migoModel>Waers}" wrapping="false"/>
+                                <Text text="{migoModel>TotImp} {migoModel>Waers}" wrapping="false"/>
                             </t:template>
                         </t:Column>
                        
