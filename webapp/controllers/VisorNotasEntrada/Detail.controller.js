@@ -87,8 +87,6 @@ sap.ui.define([
                 "TotImp": ModeloN.TotImp,
                 "Waers": ModeloN.Waers,
                 "posiciones": []
-
-
             };
             var that = this;
             var model = "ZOSP_MMIM_MIGO_DOC_SRV";
@@ -156,8 +154,6 @@ sap.ui.define([
                 idErfmg: true,
                 idFconver: true,
                 idMenge: true
-
-
             })
             that.getView().setModel(that.oModel);
             that.TableVisible()
@@ -165,21 +161,12 @@ sap.ui.define([
         },
         TableVisible: function () {
             var that = this;
-
-
-
-
-
-
             that.getView().byId("idEbelp").setVisible(that.getView().getModel().getProperty("/idEbelp"));
             that.getView().byId("idEan11").setVisible(that.getView().getModel().getProperty("/idEan11"));
             that.getView().byId("idMaktx").setVisible(that.getView().getModel().getProperty("/idMaktx"));
             that.getView().byId("idErfmg").setVisible(that.getView().getModel().getProperty("/idErfmg"));
             that.getView().byId("idFconver").setVisible(that.getView().getModel().getProperty("/idFconver"));
             that.getView().byId("idMenge").setVisible(that.getView().getModel().getProperty("/idMenge"));
-
-
-
         },
         onParentClicked: function (oEvent) {
             var bSelected = oEvent.getParameter("selected");
@@ -190,24 +177,27 @@ sap.ui.define([
                 idErfmg: bSelected,
                 idFconver: bSelected,
                 idMenge: bSelected
-
-
-
-
             });
         },
 
         createColumnConfig: function () {
-
-
-
-
-
             var that = this;
             var oModel = that.getView().getModel("migoModel").getData(),
                 aCols = [];
 
             var texts = this.getOwnerComponent().getModel("appTxts");
+
+            aCols.push({
+                label: texts.getProperty("/visor.positionG"),
+                type: EdmType.String,
+                property: 'Zeile'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/visor.order"),
+                type: EdmType.String,
+                property: 'Ebeln'
+            });
 
             aCols.push({
                 label: texts.getProperty("/visor.position"),
@@ -238,19 +228,19 @@ sap.ui.define([
                 type: EdmType.String,
                 property: 'Fconver'
             });
+
+            aCols.push({
+                label: texts.getProperty("/visor.netpr"),
+                type: EdmType.String,
+                property: 'Netpr'
+            });
+
             aCols.push({
                 label: texts.getProperty("/visor.Fconver"),
                 type: EdmType.String,
                 property: 'Ctotal',
 
             });
-
-
-
-
-
-
-
             return aCols;
         },
         //exporta excel
@@ -264,6 +254,8 @@ sap.ui.define([
             oTable = that._oTable;
 
             oRowBinding = oTable.getBinding().oList;
+
+            console.log(oRowBinding)
 
             aCols = that.createColumnConfig();
 
