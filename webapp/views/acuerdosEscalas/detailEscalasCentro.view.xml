@@ -1,0 +1,211 @@
+<mvc:View xmlns="sap.uxap" xmlns:mvc="sap.ui.core.mvc" xmlns:m="sap.m" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" displayBlock="true" controllerName="demo.controllers.acuerdosEscalas.detailEscalasCentro" height="100%">
+
+	<ObjectPageLayout id="ObjectPageLayout"
+					showTitleInHeaderContent="true"
+					alwaysShowContentHeader="false"
+					preserveHeaderStateOnScroll="false"
+					headerContentPinnable="true"
+					isChildPage="true"
+					upperCaseAnchorBar="false">
+
+				<headerTitle>
+					<ObjectPageDynamicHeaderTitle>
+						<expandedHeading>
+							<m:Title text="{scalDetModel>/werks}" wrapping="true" class="sapUiSmallMarginEnd"/>
+						</expandedHeading>
+						<snappedHeading>
+							<m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Center">
+								<m:FlexBox wrap="NoWrap" fitContainer="true" alignItems="Center" class="sapUiTinyMarginEnd">
+									<f:Avatar src="../../../../../../../{products>ProductPicUrl}" displaySize="S" displayShape="Square" class="sapUiTinyMarginEnd"/>
+									<m:Title text="{scalDetModel>/werks}" wrapping="true" class="sapUiTinyMarginEnd"/>
+								</m:FlexBox>
+							</m:FlexBox>
+						</snappedHeading>
+                        <expandedContent>
+                            <m:Text text="{scalDetModel>/name}"/>
+                        </expandedContent>
+                        <snappedContent>
+                            <m:Text text="{scalDetModel>/name}"/>
+                        </snappedContent>
+						<navigationActions>
+                           
+							<m:OverflowToolbarButton 
+                                type="Transparent" 
+                                icon="sap-icon://full-screen" 
+                                press="handleFullScreen" 
+                                id="enterFullScreenBtn" 
+                                tooltip="Enter Full Screen Mode" 
+                                visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
+							<m:OverflowToolbarButton 
+                                type="Transparent" 
+                                icon="sap-icon://exit-full-screen" 
+                                press="handleExitFullScreen" id="exitFullScreenBtn" 
+                                tooltip="Exit Full Screen Mode" 
+                                visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>				
+                            <m:OverflowToolbarButton 
+                                type="Transparent" 
+                                icon="sap-icon://decline" 
+                                press="handleClose"  
+                                tooltip="Close column" 
+                                visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/> 
+						</navigationActions>
+					</ObjectPageDynamicHeaderTitle>
+				</headerTitle>
+		<sections>
+    
+			<ObjectPageSection >
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+
+							<m:Table sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
+									noDataText="{appTxts>/foliosCapDet.noData}" 
+									id="scalDetTable" 
+									alternateRowColors="true" 
+									items="{scalDetDta>/}">
+								<m:headerToolbar>
+									<m:OverflowToolbar>
+										<m:Title text="{appTxts>/foliosCapCenter.titleCenter} ({scalDetDta>/length})"/>
+										<m:ToolbarSpacer/>
+											<m:Button icon="sap-icon://excel-attachment" 
+														text="{appTxts>/global.export}" 
+														press=".buildExportTable" 
+														visible="{= ${scalDetDta>/length} > 0}"/>
+										</m:OverflowToolbar>
+								</m:headerToolbar>
+								<m:columns>
+									<m:Column id="CAcc" width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+										<m:header>
+											<m:Text id="txtA" text="{appTxts>/ACEscalas.arrangement}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										</m:header>
+										<m:footer>
+											<m:Text id="txtT" text="Total" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										</m:footer>
+									</m:Column>
+										<m:Column id="CCDoc" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+									<m:header>
+										<m:Text id="txtMD" text="{appTxts>/ACEscalas.matdoc}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+									</m:header>
+									</m:Column>
+									<m:Column id="CCEj" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+										<m:header>
+											<m:Text id="txtMY" text="{appTxts>/ACEscalas.matdocYear}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										</m:header>
+									</m:Column>
+									<m:Column id="CClas" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+										<m:header>
+											<m:Text id="txtC" text="{appTxts>/ACEscalas.movClass}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										</m:header>
+									</m:Column>
+									<m:Column id="CRef" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+										<m:header>
+											<m:Text id="txtR" text="{appTxts>/ACEscalas.reference}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										</m:header>
+									</m:Column>
+									<!--
+									<m:Column id="CPlanta" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+										<m:header>
+											<m:Text id="txtP" text="{appTxts>/ACEscalas.plant}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										</m:header>
+									</m:Column>
+									-->
+									<m:Column id="CImp" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+										<m:header>
+											<m:Text id="txtI" text="{appTxts>/ACEscalas.amount}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										</m:header>
+										<m:footer>
+											<m:ObjectNumber id="ONT" number="{ parts:[{path:'scalDetTotModel>/totImporte'},{path:'CurrencyCode'}], 
+																				type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }" 
+															unit="{scalDetTotModel>/currCode}"/>
+										</m:footer>
+									</m:Column>
+									<m:Column id="CDescP" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+										<m:header>
+											<m:Text id="txtDS" text="{appTxts>/ACEscalas.perDescount}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										</m:header>
+									</m:Column>
+									<m:Column id="CDesc" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+										<m:header>
+											<m:Text id="txtD" text="{appTxts>/ACEscalas.Descount}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										</m:header>
+										<m:footer>
+											<m:ObjectNumber id="OND" number="{ parts:[{path:'scalDetTotModel>/TotDescto'},{path:'CurrencyCode'}],
+																				type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }" 
+															unit="{scalDetTotModel>/currCode}"/>
+										</m:footer>
+									</m:Column>
+									<m:Column id="CsIVA" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+										<m:header>
+											<m:Text id="txtIVA" text="{appTxts>/ACEscalas.IVA}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										</m:header>
+										<m:footer>
+											<m:ObjectNumber id="ONDIVA" number="{ parts:[{path:'scalDetTotModel>/totIVA'},{path:'CurrencyCode'}], 
+																					type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
+																			unit="{escalaTotModel>/currCode}"/>
+										</m:footer>
+									</m:Column>
+										<m:Column id="CsIEPS" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+											<m:header>
+												<m:Text id="txtIPES" text="{appTxts>/ACEscalas.IEPS}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+											</m:header>
+											<m:footer>
+												<m:ObjectNumber id="ONDIEPS" number="{ parts:[{path:'scalDetTotModel>/totIEPS'},{path:'CurrencyCode'}], 
+																						type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }" 
+																			unit="{scalDetTotModel>/currCode}"/>
+											</m:footer>
+										</m:Column>
+									<m:Column id="Cstot" width="auto" hAlign="Right" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+										<m:header>
+											<m:Text id="txtST" text="{appTxts>/ACEscalas.subtotal}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+										</m:header>
+										<m:footer>
+											<m:ObjectNumber id="ONDSTT" number="{ parts:[{path:'scalDetTotModel>/TotStot'},{path:'CurrencyCode'}], 
+																					type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }" 
+																		unit="{scalDetTotModel>/currCode}"/>
+										</m:footer>
+									</m:Column>
+								</m:columns>
+								<m:items>
+									<m:ColumnListItem id="CItems">
+										<m:cells>
+											<m:ObjectIdentifier id="OIK" title="{scalDetDta>knuma}" titleActive="false"/>
+											<m:ObjectIdentifier text="{scalDetDta>mblnr}"/>
+											<m:ObjectIdentifier text="{scalDetDta>mjahr}"/>
+											<m:ObjectIdentifier text="{scalDetDta>bwart}"/>
+											<m:ObjectIdentifier text="{scalDetDta>xblnr}"/>
+											<!-- <m:ObjectIdentifier text="{scalDetDta>werks}"/> -->
+											<m:ObjectNumber id="ONDM" 
+															number="{ parts:[{path:'scalDetDta>dmbtr'},{path:'CurrencyCode'}], 
+																		type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
+															 unit="{scalDetDta>waers}"/>
+											<m:ObjectNumber id="ONDS" 
+															number="{ parts:[{path:'scalDetDta>zboni'},{path:'CurrencyCode'}], 
+																		type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }" 
+															unit="{scalDetDta>konwa}"/>
+											<m:ObjectIdentifier text="{scalDetDta>zmgn3}"/>
+											<m:ObjectNumber id="ONDSTIVA" 
+															number="{ parts:[{path:'scalDetDta>ziva'},{path:'CurrencyCode'}], 
+																		type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }" 
+															unit="{scalDetDta>waers}"/>
+											<m:ObjectNumber id="ONDSTIEPS" 
+															number="{ parts:[{path:'scalDetDta>zipes'},{path:'CurrencyCode'}], 
+																		type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }" 
+															unit="{scalDetDta>waers}"/>
+											<m:ObjectNumber id="ONDST" 
+															number="{ parts:[{path:'scalDetDta>stotal'},{path:'CurrencyCode'}], 
+																		type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }" 
+															unit="{scalDetDta>waers}"/>
+										</m:cells>
+									</m:ColumnListItem>
+								</m:items>
+							</m:Table>
+
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+           
+		</sections>
+	</ObjectPageLayout>
+
+</mvc:View>
