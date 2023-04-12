@@ -307,12 +307,7 @@ sap.ui.define([
                 type: EdmType.String,
                 property: 'Mblnr'
             });
-
-            aCols.push({
-                label: texts.getProperty("/visor.order"),
-                type: EdmType.String,
-                property: 'Ebeln'
-            });
+            
             aCols.push({
                 label: texts.getProperty("/visor.supplier"),
                 type: EdmType.String,
@@ -509,11 +504,6 @@ sap.ui.define([
             });
 
             aCols.push({
-                label: texts.getProperty("/visor.order"),
-                type: EdmType.String,
-                property: 'Ebeln'
-            });
-            aCols.push({
                 label: texts.getProperty("/visor.supplier"),
                 type: EdmType.String,
                 property: 'Lifnr'
@@ -602,12 +592,13 @@ sap.ui.define([
             });
 
             aCols.push({
-                label: texts.getProperty("/visor.Fconver"),
+                label: texts.getProperty("/visor.capacidad"),
                 type: EdmType.String,
                 property: 'Fconverp'
             });
+
             aCols.push({
-                label: texts.getProperty("/visor.capacidad"),
+                label: texts.getProperty("/visor.Fconver"),
                 type: EdmType.String,
                 property: 'Mengep'
             });
