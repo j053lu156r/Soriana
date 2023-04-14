@@ -171,16 +171,24 @@ sap.ui.define([
                             mensajes.forEach(function (mensaje) {
                                 strResponse = strResponse + mensaje._text + "\n\n";
                             });
-                            sap.m.MessageBox.success(strResponse);
+                            sap.m.MessageBox.alert(
+                                strResponse, {
+                                    icon: sap.m.MessageBox.Icon.INFORMATION,
+                                    title: that.getOwnerComponent().getModel("appTxts").getProperty("/cartaPorte.ResponseTitle"),
+                                    actions: [sap.m.MessageBox.Action.OK],
+                                    emphasizedAction: sap.m.MessageBox.Action.OK
+                                }
+                            );
                         } else {
-                            sap.m.MessageBox.success(mensajes._text);
+                            sap.m.MessageBox.alert(
+                                mensajes._text, {
+                                    icon: sap.m.MessageBox.Icon.INFORMATION,
+                                    title: that.getOwnerComponent().getModel("appTxts").getProperty("/cartaPorte.ResponseTitle"),
+                                    actions: [sap.m.MessageBox.Action.OK],
+                                    emphasizedAction: sap.m.MessageBox.Action.OK
+                                }
+                            );
                         }
-                        /*
-                        } else {
-                            sap.m.MessageBox.success(that.getOwnerComponent().getModel("appTxts").getProperty("/cartaPorte.uploadSuccess"));
-                            that._clearInputs();
-                        }
-                        */
                     },
                     error: function () {
                         sap.ui.core.BusyIndicator.hide();
