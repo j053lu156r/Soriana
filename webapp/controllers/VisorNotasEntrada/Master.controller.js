@@ -165,18 +165,19 @@ sap.ui.define([
             if (XblnrFact === '') {
                 XblnrFact = '0.1'
             }
-            this.getOwnerComponent().getRouter().navTo("detailVisorNotas", 
-                { layout: sap.f.LayoutType.MidColumnFullScreen, 
-                    Mblnr: Mblnr, 
-                    Mjahr: Mjahr, 
-                    Ebeln: Ebeln, 
-                    Lifnr: Lifnr, 
-                    BudatMkpf: BudatMkpf, 
-                    Werks: Werks, 
-                    Xblnr: Xblnr, 
-                    XblnrFact: XblnrFact, 
-                    Total: Total, 
-                    TotImp: TotImp, 
+            this.getOwnerComponent().getRouter().navTo("detailVisorNotas",
+                {
+                    layout: sap.f.LayoutType.MidColumnFullScreen,
+                    Mblnr: Mblnr,
+                    Mjahr: Mjahr,
+                    Ebeln: Ebeln,
+                    Lifnr: Lifnr,
+                    BudatMkpf: BudatMkpf,
+                    Werks: Werks,
+                    Xblnr: Xblnr,
+                    XblnrFact: XblnrFact,
+                    Total: Total,
+                    TotImp: TotImp,
                     Waers: Waers
                 });
 
@@ -307,7 +308,7 @@ sap.ui.define([
                 type: EdmType.String,
                 property: 'Mblnr'
             });
-            
+
             aCols.push({
                 label: texts.getProperty("/visor.supplier"),
                 type: EdmType.String,
@@ -633,8 +634,24 @@ sap.ui.define([
             this.getView().byId("inpInvoice").setValue('');
             this.getView().byId("dateRange").setValue('');
         },
+        onDownload: function (oEvent) {
+            var that = this;
+            var data = {};
+            var oItem = oEvent.getSource().getBindingContext("migoModel").getObject();
+            data.EvneDet = oItem.DocDetalleNav.results;
+            delete oItem.DocDetalleNav;
+            data.EvneCab = oItem;
 
+            var model = "ZOSP_NE_PDF_SRV";
+            var entity = "/EnvPDFSet";
+            var body = JSON.stringify(data);
 
+            console.log(body)
 
+            that._POSToDataV2(model, entity, body ).then(function (response) {
+                sap.ui.core.BusyIndicator.hide();
+                console.log(response)
+            });
+        }
     });
 });
