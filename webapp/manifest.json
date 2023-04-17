@@ -707,6 +707,13 @@
                     ]
                 },
                 {
+                    "name": "DashboardNew",
+                    "pattern": "DashboardNew",
+                    "target": [
+                        "DashboardNew"
+                    ]
+                },
+                {
                     "name": "masterRepartidores",
                     "pattern": "masterRepartidores",
                     "target": [
@@ -1274,6 +1281,11 @@
                     "controlAggregation": "endColumnPages"
                 },
                 "Dashboard": {
+                    "viewName": "MasterResp",
+                    "controlAggregation": "beginColumnPages",
+                    "viewPath": "demo.views.Dashboard"
+                },
+                "DashboardNew": {
                     "viewName": "Master",
                     "controlAggregation": "beginColumnPages",
                     "viewPath": "demo.views.Dashboard"
