@@ -1,4 +1,11 @@
-<mvc:View xmlns="sap.uxap" xmlns:mvc="sap.ui.core.mvc" xmlns:m="sap.m" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" displayBlock="true" controllerName="demo.controllers.acuerdosEscalas.detailEscalasCentro" height="100%">
+<mvc:View xmlns="sap.uxap" 
+			xmlns:mvc="sap.ui.core.mvc" 
+			xmlns:m="sap.m" 
+			xmlns:f="sap.f" 
+			xmlns:form="sap.ui.layout.form" 
+			displayBlock="true" 
+			controllerName="demo.controllers.acuerdosEscalas.detailEscalasCentro" 
+			height="100%">
 
 	<ObjectPageLayout id="ObjectPageLayout"
 					showTitleInHeaderContent="true"
@@ -35,19 +42,19 @@
                                 press="handleFullScreen" 
                                 id="enterFullScreenBtn" 
                                 tooltip="Enter Full Screen Mode" 
-                                visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
+                                visible="{= ${/actionButtonsInfo/endColumn/fullScreen} !== null }"/>
 							<m:OverflowToolbarButton 
                                 type="Transparent" 
                                 icon="sap-icon://exit-full-screen" 
                                 press="handleExitFullScreen" id="exitFullScreenBtn" 
                                 tooltip="Exit Full Screen Mode" 
-                                visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>				
+                                visible="{= ${/actionButtonsInfo/endColumn/exitFullScreen} !== null }"/>				
                             <m:OverflowToolbarButton 
                                 type="Transparent" 
                                 icon="sap-icon://decline" 
                                 press="handleClose"  
                                 tooltip="Close column" 
-                                visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/> 
+                                visible="{= ${/actionButtonsInfo/endColumn/closeColumn} !== null }"/> 
 						</navigationActions>
 					</ObjectPageDynamicHeaderTitle>
 				</headerTitle>
@@ -71,7 +78,7 @@
 														text="{appTxts>/global.export}" 
 														press=".buildExportTable" 
 														visible="{= ${scalDetDta>/length} > 0}"/>
-										</m:OverflowToolbar>
+									</m:OverflowToolbar>
 								</m:headerToolbar>
 								<m:columns>
 									<m:Column id="CAcc" width="auto" hAlign="Center" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
