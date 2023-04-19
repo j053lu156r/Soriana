@@ -36,7 +36,7 @@ sap.ui.define([
 		handleFullScreen: function () {
             
 			this.bFocusFullScreenButton = true;
-			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
+			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/fullScreen");
 			this.oRouter.navTo("detailEscalasCentro", 
                 {
                     layout: sNextLayout, 
@@ -52,7 +52,7 @@ sap.ui.define([
 
 		handleExitFullScreen: function () {
 			this.bFocusFullScreenButton = true;
-			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
+			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/exitFullScreen");
 			this.oRouter.navTo("detailEscalasCentro", 
                 {
                     layout: sNextLayout, 
@@ -68,9 +68,9 @@ sap.ui.define([
 
 		handleClose: function () {
 			
-			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
+			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/exitFullScreen");
             sNextLayout = sap.f.LayoutType.TwoColumnsMidExpanded;
-			this.oRouter.navTo("masterEscalas",
+			this.oRouter.navTo("summarizedEscalas",
             {
                 layout: sNextLayout,
                 bukrs: this._bukrs,

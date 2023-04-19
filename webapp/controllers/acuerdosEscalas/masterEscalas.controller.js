@@ -5,6 +5,7 @@ sap.ui.define([
     "sap/m/PDFViewer",
     "sap/ui/core/routing/History",
     "sap/ui/core/routing/Router",
+    //"sap/m/MessageToast"
 ], function (Controller, MessageBox, PDFViewer, History, Router) {
     "use strict";
 
@@ -13,15 +14,12 @@ sap.ui.define([
         onInit: function () {
             this._pdfViewer = new PDFViewer();
             this.getView().addDependent(this._pdfViewer);
-
-            //this.oRouter = this.getOwnerComponent().getRouter();
-            //this.oModel = this.getOwnerComponent().getModel();
-
+            
             this.getView().addEventDelegate({
                 onAfterShow: function (oEvent) {
                     var barModel = this.getOwnerComponent().getModel();
                     barModel.setProperty("/barVisible", true);
-                    this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "EscalasDta");
+                    this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(), "policyEscalasDta");
                     this.clearFilters();
                 }
             }, this);
@@ -63,53 +61,49 @@ sap.ui.define([
 
             if (bContinue) {
 
-                var url = "ScaleByForumSet?$filter=bukrs eq '" + sociedad + "' and belnr eq '" + documento +
+                var url = "accPolicySet?$filter=bukrs eq '" + sociedad + "' and belnr eq '" + documento +
                           "' and gjahr eq '" + ejercicio + "' and lifnr eq '" + vLifnr + "'";
 
-                this.getView().byId('tableEscalas').setBusy(true);
+                this.getView().byId('tablePolicyEscalas').setBusy(true);
                 oModel.getJsonModelAsync(
                     url,
                     function (jsonModel, parent) {
                         var objResponse = jsonModel.getProperty("/results");
 
                         if (objResponse != null) {
-                            //if (objResponse.length > 0) {
-                                
-                                var totImporte = objResponse.reduce((a, b) => +a + (+b["dmbtr"] || 0), 0);
-                                var totDescto = objResponse.reduce((a, b) => +a + (+b["zboni"] || 0), 0);
-                                var totIVA = objResponse.reduce((a, b) => +a + (+b["ziva"] || 0), 0);
-                                var totIEPS = objResponse.reduce((a, b) => +a + (+b["zieps"] || 0), 0);
-                                var TotStot = objResponse.reduce((a, b) => +a + (+b["stotal"] || 0), 0);
-                                if (objResponse.length > 0) {
+
+                            var TotBase = objResponse.reduce((a, b) => +a + (+b["dmbtr"] || 0), 0);
+                            var totDescto = objResponse.reduce((a, b) => +a + (+b["wrbtr"] || 0), 0);
+                            var totIVA = objResponse.reduce((a, b) => +a + (+b["wmwst"] || 0), 0);
+                            if (objResponse.length > 0) {
                                 var currCode = objResponse[0].waers;
-                                }
-                                var totalAcuDet = {
-                                    "totImporte": Number(totImporte.toFixed(2)),
-                                    "TotDescto": Number(totDescto.toFixed(2)),
-                                    "totIVA": Number(totIVA.toFixed(2)),
-                                    "totIEPS": Number(totIEPS.toFixed(2)),
-                                    "TotStot": Number(TotStot.toFixed(2)),
-                                    "currCode": currCode
-                                };
-                                parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(totalAcuDet), 
-                                    "escalaTotModel");
-    
-                                parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(objResponse),
-                                    "EscalasDta");
-    
-                                parent.paginate("EscalasDta", "/", 1, 0);
-                            //}
+                                var vendorName = objResponse[0].name;
+                            }
+                            var totalAcuDet = {
+                                "totImporte": Number(TotBase.toFixed(2)),
+                                "TotDescto": Number(totDescto.toFixed(2)),
+                                "TotIVA": Number(totIVA.toFixed(2)),
+                                "currCode": currCode,
+                                "VendorName": vendorName
+                            };
+                            parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(totalAcuDet), 
+                                "policyEscalaTotModel");
+
+                            parent.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(objResponse),
+                                "policyEscalasDta");
+
+                            parent.paginate("policyEscalasDta", "/", 1, 0);
                         }
-                        parent.getView().byId('tableEscalas').setBusy(false);
+                        parent.getView().byId('tablePolicyEscalas').setBusy(false);
                     },
                     function (parent) {
-                        parent.getView().byId('tableEscalas').setBusy(false);
-                    },
-                    this
+                        parent.getView().byId('tablePolicyEscalas').setBusy(false);
+                    }, this
                 );
             }
 
         },
+
         onExit: function () {
 
         },
@@ -132,51 +126,33 @@ sap.ui.define([
             var texts = this.getOwnerComponent().getModel("appTxts");
             var columns = [
                 {
-                    name: texts.getProperty("/ACEscalas.plant"),
+                    name: texts.getProperty("/ACEscalas.polizas.sucursal"),
                     template: {
-                        content: "{werks}"
+                        content: "{segment}"
                     }
                 },
                 {
-                    name: texts.getProperty("/ACEscalas.plantName"),
-                    template: {
-                        content: "{name}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/ACEscalas.amount"),
+                    name: texts.getProperty("/ACEscalas.polizas.base"),
                     template: {
                         content: "{dmbtr}"
                     }
                 },
                 {
-                    name: texts.getProperty("/ACEscalas.Descount"),
+                    name: texts.getProperty("/ACEscalas.polizas.desc"),
                     template: {
-                        content: "{zboni}"
+                        content: "{wrbtr}"
                     }
                 },
                 {
-                    name: texts.getProperty("/ACEscalas.IVA"),
+                    name: texts.getProperty("/ACEscalas.polizas.iva"),
                     template: {
-                        content: "{ziva}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/ACEscalas.IEPS"),
-                    template: {
-                        content: "{zieps}"
-                    }
-                },
-                {
-                    name: texts.getProperty("/ACEscalas.subtotal"),
-                    template: {
-                        content: "{stotal}"
+                        content: "{wmwst}"
                     }
                 }
 
             ];
 
-            this.exportxls('EscalasDta', '/', columns);
+            this.exportxls('policyEscalasDta', '/', columns);
         },
 
         onClose: function (){
@@ -188,6 +164,30 @@ sap.ui.define([
             } else {
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.navTo("", true);
+            }
+        },
+
+        onSummarizedScale: function () {
+
+            var sociedad = this.getView().byId('sociedadInput').getValue();
+            var documento = this.getView().byId('documentoInput').getValue();
+            var ejercicio = this.getView().byId('ejercicioInput').getValue();
+
+            var odata = this.getOwnerComponent().getModel("policyEscalasDta");
+            var results = odata.getProperty("/");
+            var docResult = results[0]; 
+            if (docResult.lifnr!=="") {
+                this.getOwnerComponent().getRouter().navTo("summarizedEscalas",
+                    {
+                        layout: sap.f.LayoutType.TwoColumnsMidExpanded,
+                        bukrs: sociedad,
+                        belnr: documento,
+                        gjahr: ejercicio,
+                        lifnr : docResult.lifnr
+
+                    }, true);
+            } else {
+                sap.m.MessageToast.show(this.getOwnerComponent().getModel('appTxts').getProperty("/ACEscalas.polizas.nodetailData"));
             }
         },
 
