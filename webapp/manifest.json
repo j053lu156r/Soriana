@@ -1035,6 +1035,13 @@
                     ]
                 },
                 {
+                    "name": "summarizedEscalas",
+                    "pattern": "summarizedEscalas/{layout}/{bukrs}/{belnr}/{gjahr}/{lifnr}",
+                    "target": [
+                        "summarizedEscalas"
+                    ]
+                },
+                {
                     "name": "detailEscalasCentro",
                     "pattern": "detailEscalasCentro/{layout}/{bukrs}/{belnr}/{gjahr}/{lifnr}/{werks}/{name}",
                     "target": [
@@ -1594,10 +1601,15 @@
                     "viewPath": "demo.views.acuerdosEscalas",
                     "controlAggregation": "beginColumnPages"
                 },
+                "summarizedEscalas": {
+                    "viewName": "summarizedEscalas",
+                    "viewPath": "demo.views.acuerdosEscalas",
+                    "controlAggregation": "midColumnPages"
+                },
                 "detailEscalasCentro": {
                     "viewName": "detailEscalasCentro",
                     "viewPath": "demo.views.acuerdosEscalas",
-                    "controlAggregation": "midColumnPages"
+                    "controlAggregation": "endColumnPages"
                 }
             }
         },
