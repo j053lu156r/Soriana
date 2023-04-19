@@ -51,6 +51,28 @@
                                                 </ComboBox>
                                             </fb:control>
                                         </fb:FilterGroupItem>
+
+                                        <fb:FilterGroupItem groupName="__$INTERNAL$" label="{appTxts>/dashboard.repGeneral.filter.status}" 
+                                            groupTitle="Estatus" name="Estatus" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                            <fb:control>
+                                                <ComboBox selectedKey="T">
+                                                    <core:Item key="E" text="{appTxts>/dashboard.filter.estatusE}" />
+                                                    <core:Item key="H" text="{appTxts>/dashboard.filter.estatusH}" />
+                                                    <core:Item key="T" text="{appTxts>/dashboard.filter.estatusT}" />
+                                                </ComboBox>
+                                            </fb:control>
+                                        </fb:FilterGroupItem>
+
+                                        <fb:FilterGroupItem groupName="__$INTERNAL$" label="{appTxts>/dashboard.repGeneral.filter.antiguedad}" 
+                                            groupTitle="Antiguedad" name="Antiguedad" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                            <fb:control>
+                                                <ComboBox selectedKey="T">
+                                                    <core:Item key="1" text="{appTxts>/dashboard.filter.antiguedad1}" />
+                                                    <core:Item key="2" text="{appTxts>/dashboard.filter.antiguedad2}" />
+                                                    <core:Item key="3" text="{appTxts>/dashboard.filter.antiguedad3}" />
+                                                </ComboBox>
+                                            </fb:control>
+                                        </fb:FilterGroupItem>
                                     </fb:filterGroupItems>
                                 </fb:FilterBar>
                             </f:content>

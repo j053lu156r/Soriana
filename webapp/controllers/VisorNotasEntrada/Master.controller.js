@@ -635,23 +635,37 @@ sap.ui.define([
             this.getView().byId("dateRange").setValue('');
         },
         onDownload: function (oEvent) {
+            sap.ui.core.BusyIndicator.show();
             var that = this;
             var data = {};
             var oItem = oEvent.getSource().getBindingContext("migoModel").getObject();
             data.EvneDet = oItem.DocDetalleNav.results;
             delete oItem.DocDetalleNav;
-            data.EvneCab = oItem;
+            delete oItem.BudatMkpf;
+            data.EvneCab = [oItem];
 
             var model = "ZOSP_NE_PDF_SRV";
             var entity = "/EnvPDFSet";
             var body = JSON.stringify(data);
 
-            console.log(body)
-
-            that._POSToDataV2(model, entity, body ).then(function (response) {
-                sap.ui.core.BusyIndicator.hide();
-                console.log(response)
-            });
+            $.ajax({
+                url: "/sap/opu/odata/sap/" + model + entity,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: body,
+                headers: {
+                  "X-Requested-With": "X",
+                },
+                success: function (response) {
+                    sap.ui.core.BusyIndicator.hide();
+                    console.log(response)
+                },
+                error: function (error, status, err) {
+                  sap.ui.core.BusyIndicator.hide();
+                  console.log({"status": status, "error": error, "err": err})
+                },
+              });
         }
     });
 });
