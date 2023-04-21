@@ -640,13 +640,21 @@ sap.ui.define([
             var data = {};
             var oItem = oEvent.getSource().getBindingContext("migoModel").getObject();
             data.EvneDet = oItem.DocDetalleNav.results;
+            for (var i=0; i<data.EvneDet.length; i++){
+                delete data.EvneDet[i].__metadata;
+            }
             delete oItem.DocDetalleNav;
             delete oItem.BudatMkpf;
+            delete oItem.Waers;
+            oItem.TotalImp = oItem.TotImp;
+            delete oItem.TotImp
+            delete oItem.__metadata;
             data.EvneCab = [oItem];
 
             var model = "ZOSP_NE_PDF_SRV";
             var entity = "/EnvPDFSet";
             var body = JSON.stringify(data);
+            console.log(data)
 
             $.ajax({
                 url: "/sap/opu/odata/sap/" + model + entity,
@@ -660,10 +668,17 @@ sap.ui.define([
                 success: function (response) {
                     sap.ui.core.BusyIndicator.hide();
                     console.log(response)
+                    const linkSource = `data:application/pdf;base64,${response.d.Pdf}`;
+                    const downloadLink = document.createElement("a");
+                    const fileName = `${response.d.Mblnr}_${response.d.Mjahr}.pdf`;
+                    downloadLink.href = linkSource;
+                    downloadLink.download = fileName;
+                    downloadLink.click();
                 },
                 error: function (error, status, err) {
                   sap.ui.core.BusyIndicator.hide();
                   console.log({"status": status, "error": error, "err": err})
+                  sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/visor.downloadPdfError'));
                 },
               });
         }

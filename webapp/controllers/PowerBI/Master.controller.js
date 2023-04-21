@@ -25,7 +25,12 @@ sap.ui.define([
         onAfterRendering: function(){
             var lifnr = this.getConfigModel().getProperty("/supplierInputKey");
             var user = this.getOwnerComponent().getModel("userdata").getProperty('/IMail');
-            this.onSuggestionItemSelected(lifnr, user);
+            console.log(lifnr)
+            if (lifnr !== undefined) {
+                this.onSuggestionItemSelected(lifnr, user);
+            } else {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/indicadores.error.lifnr'));
+            }
         },
 
         onExit: function () {
@@ -41,6 +46,16 @@ sap.ui.define([
             var aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
             var encryptedBytes = aesCtr.encrypt(payloadBytes);
             var encryptedHex = aesjs.utils.hex.fromBytes(encryptedBytes);
+
+            /* Desencriptar */
+            /*
+            var encryptedBytes = aesjs.utils.hex.toBytes(encryptedHex);
+            var aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
+            var decryptedBytes = aesCtr.decrypt(encryptedBytes);
+            var decryptedText = aesjs.utils.utf8.fromBytes(decryptedBytes);
+            console.log(decryptedText);
+            */
+
             var oFrameContent = oFrame.$()[0];
             oFrameContent.setAttribute("src", "https://brave-flower-02269970f.2.azurestaticapps.net/getReportEmbedded?token=" + encryptedHex);
         }

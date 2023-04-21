@@ -9,315 +9,220 @@
     xmlns:card="sap.f.cards"
     xmlns:l="sap.ui.layout"
     xmlns:mc="sap.suite.ui.microchart">
-
     <IconTabBar
         id="idIconTabBar"
         class="sapUiResponsiveContentPadding"
-        expandable="false">
+        expandable="false"
+        stretchContentHeight="true">
         <items>
             <IconTabFilter
                 icon="sap-icon://manager-insight"
                 text="{appTxts>/dashboard.tab.title.repGeneral}"
                 key="repGeneral">
-                <fb:FilterBar id="filterBar" header="Header" reset="onReset" search="searchData"
-                    clear="clearFilters" cancel="onCancel"
-                    filtersDialogClosed="onFiltersDialogClosed"
-                    showRestoreButton="false" showClearButton="false" useToolbar="false"
-                    filterBarExpanded="true">
-                    <fb:filterGroupItems>
-                        <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab"
-                            label="{appTxts>/dashboard.repGeneral.filter.supplier}" mandatory="true"
-                            partOfCurrentVariant="true" visibleInFilterBar="true">
-                            <fb:control>
-                                <Input
-                                    id="supplierInput"
-                                    placeholder="{appTxts>/dashboard.repGeneral.filter.supplier}"
-                                    showSuggestion="true" valueHelpOnly="true"
-                                    showValueHelp="true" valueHelpRequest=".onValueHelpRequest"
-                                    value="{configSite>/supplierInput}">
-                                </Input>
-                            </fb:control>
-                        </fb:FilterGroupItem>
+                <ScrollContainer
+                    height="100%"
+                    width="100%"
+                    horizontal="false"
+                    vertical="true">
 
-                        <fb:FilterGroupItem groupName="__$INTERNAL$"
-                            label="{appTxts>/dashboard.repGeneral.filter.date}"
-                            groupTitle="FechaAlta" name="FechaAlta" partOfCurrentVariant="true"
-                            visibleInFilterBar="true">
-                            <fb:control>
-                                <DateRangeSelection id="dateRange" change="onChangeDate" />
-                            </fb:control>
-                        </fb:FilterGroupItem>
+                    <fb:FilterBar id="filterBar" header="Header" reset="onReset" search="searchData"
+                        clear="clearFilters" cancel="onCancel"
+                        filtersDialogClosed="onFiltersDialogClosed"
+                        showRestoreButton="false" showClearButton="false" useToolbar="false"
+                        filterBarExpanded="true">
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab"
+                                label="{appTxts>/dashboard.repGeneral.filter.supplier}"
+                                partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        id="supplierInput"
+                                        placeholder="{appTxts>/dashboard.repGeneral.filter.supplier}"
+                                        showSuggestion="true" valueHelpOnly="true"
+                                        showValueHelp="true" valueHelpRequest=".onValueHelpRequest"
+                                        value="{configSite>/supplierInput}">
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
 
-                        <fb:FilterGroupItem groupName="__$INTERNAL$"
-                            label="{appTxts>/dashboard.repGeneral.filter.tipo}"
-                            groupTitle="Tipo" name="Tipo" partOfCurrentVariant="true"
-                            visibleInFilterBar="true">
-                            <fb:control>
-                                <ComboBox items="" showClearIcon="true">
-                                    <core:Item key="" text="" />
-                                </ComboBox>
-                            </fb:control>
-                        </fb:FilterGroupItem>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repGeneral.filter.date}"
+                                groupTitle="FechaAlta" name="FechaAlta" partOfCurrentVariant="true"
+                                mandatory="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <DateRangeSelection id="dateAlta" change="onChangeDate" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
 
-                        <fb:FilterGroupItem groupName="__$INTERNAL$"
-                            label="{appTxts>/dashboard.repGeneral.filter.status}"
-                            groupTitle="Estatus" name="Estatus" partOfCurrentVariant="true"
-                            visibleInFilterBar="true">
-                            <fb:control>
-                                <ComboBox selectedKey="T">
-                                    <core:Item key="E" text="{appTxts>/dashboard.filter.estatusE}" />
-                                    <core:Item key="H" text="{appTxts>/dashboard.filter.estatusH}" />
-                                    <core:Item key="T" text="{appTxts>/dashboard.filter.estatusT}" />
-                                </ComboBox>
-                            </fb:control>
-                        </fb:FilterGroupItem>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repGeneral.filter.tipo}"
+                                groupTitle="Tipo" name="Tipo" partOfCurrentVariant="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <ComboBox id="cboxTipo" items="{TiposAclaracion>/Tipos}" showClearIcon="true">
+                                        <core:Item key="{TiposAclaracion>TipAcla}" text="{TiposAclaracion>DesAcla}" />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
 
-                        <fb:FilterGroupItem groupName="__$INTERNAL$"
-                            label="{appTxts>/dashboard.repGeneral.filter.antiguedad}"
-                            groupTitle="Antiguedad" name="Antiguedad" partOfCurrentVariant="true"
-                            visibleInFilterBar="true">
-                            <fb:control>
-                                <ComboBox selectedKey="T">
-                                    <core:Item key="1"
-                                        text="{appTxts>/dashboard.filter.antiguedad1}" />
-                                    <core:Item key="2"
-                                        text="{appTxts>/dashboard.filter.antiguedad2}" />
-                                    <core:Item key="3"
-                                        text="{appTxts>/dashboard.filter.antiguedad3}" />
-                                </ComboBox>
-                            </fb:control>
-                        </fb:FilterGroupItem>
-                    </fb:filterGroupItems>
-                </fb:FilterBar>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repGeneral.filter.status}"
+                                groupTitle="Estatus" name="Estatus" partOfCurrentVariant="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <Select selectedKey="T" id="cboxEstatus">
+                                        <core:Item key="E"
+                                            text="{appTxts>/dashboard.filter.estatusE}" />
+                                        <core:Item key="H"
+                                            text="{appTxts>/dashboard.filter.estatusH}" />
+                                        <core:Item key="T"
+                                            text="{appTxts>/dashboard.filter.estatusT}" />
+                                    </Select>
+                                </fb:control>
+                            </fb:FilterGroupItem>
 
-                <l:VerticalLayout>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repGeneral.filter.antiguedad}"
+                                groupTitle="Antiguedad" name="Antiguedad"
+                                partOfCurrentVariant="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <Select selectedKey="1" id="cboxAntiguedad">
+                                        <core:Item key="1"
+                                            text="{appTxts>/dashboard.filter.antiguedad1}" />
+                                        <core:Item key="2"
+                                            text="{appTxts>/dashboard.filter.antiguedad2}" />
+                                        <core:Item key="3"
+                                            text="{appTxts>/dashboard.filter.antiguedad3}" />
+                                    </Select>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+                    </fb:FilterBar>
 
-                    <HeaderContainer scrollStep="300">
-                        <TileContent footer="Cantidad recibidas">
+                    <l:HorizontalLayout class="sapUiContentPadding" >
+                        <Text text="{appTxts>/dashboard.repGeneral.graph.title.cant}" class="sapUiSmallMargin">
+                            <layoutData>
+                                <l:GridData span="XL12 L12 M12 S12" />
+                            </layoutData>
+                        </Text>
+                        <FlexBox width="20rem" height="10rem" alignItems="Start"
+                            justifyContent="SpaceBetween">
+                            <items>
+                                <mc:InteractiveDonutChart selectionChanged="onSelectionChanged">
+                                    <mc:segments>
+                                        <mc:InteractiveDonutChartSegment label="{appTxts>/dashboard.card.title.porcetajePend}"
+                                            value="{CardsModel>/Porcentajependientes}" displayedValue="{CardsModel>/Porcentajependientes}%" />
+                                        <mc:InteractiveDonutChartSegment label="{appTxts>/dashboard.card.title.porcetajeRes}"
+                                            value="{CardsModel>/Porcentajeresueltas}" displayedValue="{CardsModel>/Porcentajeresueltas}%" />
+                                    </mc:segments>
+                                </mc:InteractiveDonutChart>
+                            </items>
+                        </FlexBox>
+
+                        <Text text="{appTxts>/dashboard.repGeneral.graph.title.imp}" class="sapUiSmallMargin">
+                            <layoutData>
+                                <l:GridData span="XL12 L12 M12 S12" />
+                            </layoutData>
+                        </Text>
+                        <FlexBox width="20rem" height="10rem" alignItems="Start"
+                            justifyContent="SpaceBetween">
+                            <items>
+                                <mc:InteractiveDonutChart selectionChanged="onSelectionChanged">
+                                    <mc:segments>
+                                        <mc:InteractiveDonutChartSegment label="{appTxts>/dashboard.card.title.impPend}"
+                                            value="{CardsModel>/Porcentajependientes}" displayedValue="{CardsModel>/Importependientes}" />
+                                        <mc:InteractiveDonutChartSegment label="{appTxts>/dashboard.card.title.impRes}"
+                                            value="{CardsModel>/Porcentajeresueltas}" displayedValue="{CardsModel>/Importeresueltas}" />
+                                    </mc:segments>
+                                </mc:InteractiveDonutChart>
+                            </items>
+                        </FlexBox>
+                    </l:HorizontalLayout>
+
+                    <HeaderContainer id="container2" scrollStep="200">
+                        <TileContent
+                            footer="{appTxts>/dashboard.repGeneral.card.title.recibidasCant}">
                             <content>
-                                <NumericContent value="35" icon="sap-icon://receipt" />
+                                <NumericContent value="{CardsModel>/Cantrecibidas}" icon="sap-icon://receipt" />
                             </content>
                         </TileContent>
-                        <TileContent footer="Importe recibidas">
+                        <TileContent
+                            footer="{appTxts>/dashboard.repGeneral.card.title.recibidasImp}">
                             <content>
-                                <NumericContent value="35" icon="sap-icon://lead" />
+                                <NumericContent value="{CardsModel>/Importerecibidas}"
+                                    formatterValue="true"
+                                    scale="M"
+                                    icon="sap-icon://simple-payment" />
                             </content>
                         </TileContent>
-                        <TileContent footer="Cantidad resueltas">
+                        <TileContent
+                            footer="{appTxts>/dashboard.repGeneral.card.title.resueltasCant}">
                             <content>
-                                <NumericContent value="35" icon="sap-icon://activity-2" />
+                                <NumericContent
+                                    value="{
+                                    parts: [{path: 'CardsModel>/Cantresueltas'}], 
+                                    type:'sap.ui.model.type.Currency', 
+                                    formatOptions: {showMeasure:false}}"
+                                    icon="sap-icon://activity-2" />
                             </content>
                         </TileContent>
-                        <TileContent footer="Importe resueltas">
+                        <TileContent
+                            footer="{appTxts>/dashboard.repGeneral.card.title.resueltasImp}">
                             <content>
-                                <NumericContent value="35" icon="sap-icon://payment-approval" />
+                                <NumericContent
+                                    value="{
+                                    parts: [{path: 'CardsModel>/Importeresueltas'}], 
+                                    type:'sap.ui.model.type.Currency', 
+                                    formatOptions: {showMeasure:false}}"
+                                    icon="sap-icon://payment-approval" />
                             </content>
                         </TileContent>
-                        <TileContent footer="Cantidad pendientes">
+                        <TileContent
+                            footer="{appTxts>/dashboard.repGeneral.card.title.pendientesCant}">
                             <content>
-                                <NumericContent value="35" icon="sap-icon://pending" />
+                                <NumericContent
+                                    value="{
+                                    parts: [{path: 'CardsModel>/Cantpendientes'}], 
+                                    type:'sap.ui.model.type.Currency', 
+                                    formatOptions: {showMeasure:false}}"
+                                    icon="sap-icon://pending" />
                             </content>
                         </TileContent>
-                        <TileContent footer="Importe pendientes">
+                        <TileContent
+                            footer="{appTxts>/dashboard.repGeneral.card.title.pendientesImp}">
                             <content>
-                                <NumericContent value="35" icon="sap-icon://time-overtime" />
+                                <NumericContent
+                                    value="{
+                                    parts: [{path: 'CardsModel>/Importependientes'}], 
+                                    type:'sap.ui.model.type.Currency', 
+                                    formatOptions: {showMeasure:false}}"
+                                    icon="sap-icon://time-overtime" />
                             </content>
                         </TileContent>
-                        <TileContent footer="Cantidad pagadas">
+                        <TileContent footer="{appTxts>/dashboard.repGeneral.card.title.pagadasCant}">
                             <content>
-                                <NumericContent value="35" icon="sap-icon://paid-leave" />
+                                <NumericContent
+                                    value="{
+                                    parts: [{path: 'CardsModel>/Cantpagadas'}], 
+                                    type:'sap.ui.model.type.Currency', 
+                                    formatOptions: {showMeasure:false}}"
+                                    icon="sap-icon://paid-leave" />
                             </content>
                         </TileContent>
-                        <TileContent footer="Importe pagadas">
+                        <TileContent footer="{appTxts>/dashboard.repGeneral.card.title.pagadasImp}">
                             <content>
-                                <NumericContent value="35" icon="sap-icon://expense-report" />
+                                <NumericContent
+                                    value="{
+                                    parts: [{path: 'CardsModel>/Importepagadas'}], 
+                                    type:'sap.ui.model.type.Currency', 
+                                    formatOptions: {showMeasure:false}}"
+                                    icon="sap-icon://loan" />
                             </content>
                         </TileContent>
                     </HeaderContainer>
-
-                    <!--
-                    <l:HorizontalLayout class="sapUiContentPadding">
-
-                        <f:Card class="sapUiMediumMargin" width="200px">
-                            <f:header>
-                                <card:Header
-                                    title="{appTxts>/dashboard.repGeneral.card.title.recibidas}" />
-                            </f:header>
-                            <f:content>
-                                <List>
-                                    <CustomListItem>
-                                        <HBox alignItems="Center" justifyContent="SpaceBetween">
-                                            <VBox
-                                                class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
-                                                <Title level="H3" text="Cantidad" />
-                                            </VBox>
-                                            <ObjectStatus
-                                                class="sapUiTinyMargin sapUiSmallMarginEnd"
-                                                text="100"
-                                                state="Success" />
-                                        </HBox>
-                                    </CustomListItem>
-                                    <CustomListItem>
-                                        <HBox alignItems="Center" justifyContent="SpaceBetween">
-                                            <VBox
-                                                class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
-                                                <Title level="H3" text="Importe" />
-                                            </VBox>
-                                            <ObjectStatus
-                                                class="sapUiTinyMargin sapUiSmallMarginEnd"
-                                                text="{
-                                                    parts:[{path:'debTotMatModel>/TotCost'}, {path:'CurrencyCode'}], 
-                                                    type:'sap.ui.model.type.Currency', 
-                                                    formatOptions: {showMeasure:true}
-                                                }"
-                                                state="Success" />
-                                        </HBox>
-                                    </CustomListItem>
-                                </List>
-                            </f:content>
-                        </f:Card>
-
-                        <f:Card class="sapUiMediumMargin" width="200px">
-                            <f:header>
-                                <card:Header
-                                    title="{appTxts>/dashboard.repGeneral.card.title.resueltas}" />
-                            </f:header>
-                            <f:content>
-                                <List>
-                                    <CustomListItem>
-                                        <HBox alignItems="Center" justifyContent="SpaceBetween">
-                                            <VBox
-                                                class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
-                                                <Title level="H3" text="Cantidad" />
-                                            </VBox>
-                                            <ObjectStatus
-                                                class="sapUiTinyMargin sapUiSmallMarginEnd"
-                                                text="100"
-                                                state="Success" />
-                                        </HBox>
-                                    </CustomListItem>
-                                    <CustomListItem>
-                                        <HBox alignItems="Center" justifyContent="SpaceBetween">
-                                            <VBox
-                                                class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
-                                                <Title level="H3" text="Importe" />
-                                            </VBox>
-                                            <ObjectStatus
-                                                class="sapUiTinyMargin sapUiSmallMarginEnd"
-                                                text="{
-                                                    parts:[{path:'debTotMatModel>/TotCost'}, {path:'CurrencyCode'}], 
-                                                    type:'sap.ui.model.type.Currency', 
-                                                    formatOptions: {showMeasure:true}
-                                                }"
-                                                state="Success" />
-                                        </HBox>
-                                    </CustomListItem>
-                                </List>
-                            </f:content>
-                        </f:Card>
-
-                        <f:Card class="sapUiMediumMargin" width="200px">
-                            <f:header>
-                                <card:Header
-                                    title="{appTxts>/dashboard.repGeneral.card.title.pendientes}" />
-                            </f:header>
-                            <f:content>
-                                <List>
-                                    <CustomListItem>
-                                        <HBox alignItems="Center" justifyContent="SpaceBetween">
-                                            <VBox
-                                                class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
-                                                <Title level="H3" text="Cantidad" />
-                                            </VBox>
-                                            <ObjectStatus
-                                                class="sapUiTinyMargin sapUiSmallMarginEnd"
-                                                text="100"
-                                                state="Success" />
-                                        </HBox>
-                                    </CustomListItem>
-                                    <CustomListItem>
-                                        <HBox alignItems="Center" justifyContent="SpaceBetween">
-                                            <VBox
-                                                class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
-                                                <Title level="H3" text="Importe" />
-                                            </VBox>
-                                            <ObjectStatus
-                                                class="sapUiTinyMargin sapUiSmallMarginEnd"
-                                                text="{
-                                                    parts:[{path:'debTotMatModel>/TotCost'}, {path:'CurrencyCode'}], 
-                                                    type:'sap.ui.model.type.Currency', 
-                                                    formatOptions: {showMeasure:true}
-                                                }"
-                                                state="Success" />
-                                        </HBox>
-                                    </CustomListItem>
-                                </List>
-                            </f:content>
-                        </f:Card>
-
-                        <f:Card class="sapUiMediumMargin" width="200px">
-                            <f:header>
-                                <card:Header
-                                    title="{appTxts>/dashboard.repGeneral.card.title.pagadas}" />
-                            </f:header>
-                            <f:content>
-                                <List>
-                                    <CustomListItem>
-                                        <HBox alignItems="Center" justifyContent="SpaceBetween">
-                                            <VBox
-                                                class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
-                                                <Title level="H3" text="Cantidad" />
-                                            </VBox>
-                                            <ObjectStatus
-                                                class="sapUiTinyMargin sapUiSmallMarginEnd"
-                                                text="100"
-                                                state="Success" />
-                                        </HBox>
-                                    </CustomListItem>
-                                    <CustomListItem>
-                                        <HBox alignItems="Center" justifyContent="SpaceBetween">
-                                            <VBox
-                                                class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
-                                                <Title level="H3" text="Importe" />
-                                            </VBox>
-                                            <ObjectStatus
-                                                class="sapUiTinyMargin sapUiSmallMarginEnd"
-                                                text="{
-                                                    parts:[{path:'debTotMatModel>/TotCost'}, {path:'CurrencyCode'}], 
-                                                    type:'sap.ui.model.type.Currency', 
-                                                    formatOptions: {showMeasure:true}
-                                                }"
-                                                state="Success" />
-                                        </HBox>
-                                    </CustomListItem>
-                                </List>
-                            </f:content>
-                        </f:Card>
-                    </l:HorizontalLayout>
-                    -->
-                    <Text text="Three segments" class="sapUiSmallMargin">
-                        <layoutData>
-                            <l:GridData span="XL12 L12 M12 S12" />
-                        </layoutData>
-                    </Text>
-                    <FlexBox width="20rem" height="10rem" alignItems="Start"
-                        justifyContent="SpaceBetween">
-                        <items>
-                            <mc:InteractiveDonutChart selectionChanged="onSelectionChanged">
-                                <mc:segments>
-                                    <mc:InteractiveDonutChartSegment label="Implementation Phase"
-                                        value="40.0" displayedValue="40.0%" />
-                                    <mc:InteractiveDonutChartSegment label="Design Phase"
-                                        value="21.5"
-                                        displayedValue="21.5%" />
-                                    <mc:InteractiveDonutChartSegment label="Test Phase" value="38.5"
-                                        displayedValue="38.5%" />
-                                </mc:segments>
-                            </mc:InteractiveDonutChart>
-                        </items>
-                    </FlexBox>
-                </l:VerticalLayout>
-
+                </ScrollContainer>
             </IconTabFilter>
             <IconTabFilter
                 icon="sap-icon://company-view"
@@ -351,5 +256,4 @@
             </IconTabFilter>
         </items>
     </IconTabBar>
-
 </mvc:View>
