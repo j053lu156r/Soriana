@@ -102,43 +102,47 @@
                     </fb:FilterBar>
 
                     <l:HorizontalLayout class="sapUiContentPadding" >
-                        <Text text="{appTxts>/dashboard.repGeneral.graph.title.cant}" class="sapUiSmallMargin">
-                            <layoutData>
-                                <l:GridData span="XL12 L12 M12 S12" />
-                            </layoutData>
-                        </Text>
-                        <FlexBox width="20rem" height="10rem" alignItems="Start"
-                            justifyContent="SpaceBetween">
-                            <items>
-                                <mc:InteractiveDonutChart selectionChanged="onSelectionChanged">
-                                    <mc:segments>
-                                        <mc:InteractiveDonutChartSegment label="{appTxts>/dashboard.card.title.porcetajePend}"
-                                            value="{CardsModel>/Porcentajependientes}" displayedValue="{CardsModel>/Porcentajependientes}%" />
-                                        <mc:InteractiveDonutChartSegment label="{appTxts>/dashboard.card.title.porcetajeRes}"
-                                            value="{CardsModel>/Porcentajeresueltas}" displayedValue="{CardsModel>/Porcentajeresueltas}%" />
-                                    </mc:segments>
-                                </mc:InteractiveDonutChart>
-                            </items>
-                        </FlexBox>
+                        <l:VerticalLayout class="sapUiLargeMarginEnd">
+                            <Text text="{appTxts>/dashboard.repGeneral.graph.title.cant}" class="sapUiSmallMargin">
+                                <layoutData>
+                                    <l:GridData span="XL12 L12 M12 S12" />
+                                </layoutData>
+                            </Text>
+                            <FlexBox width="20rem" height="10rem" alignItems="Start"
+                                justifyContent="SpaceBetween">
+                                <items>
+                                    <mc:InteractiveDonutChart selectionChanged="onSelectionChanged">
+                                        <mc:segments>
+                                            <mc:InteractiveDonutChartSegment label="{appTxts>/dashboard.card.title.porcetajePend}"
+                                                value="{CardsModel>/Porcentajependientes}" displayedValue="{CardsModel>/Porcentajependientes}%" />
+                                            <mc:InteractiveDonutChartSegment label="{appTxts>/dashboard.card.title.porcetajeRes}"
+                                                value="{CardsModel>/Porcentajeresueltas}" displayedValue="{CardsModel>/Porcentajeresueltas}%" />
+                                        </mc:segments>
+                                    </mc:InteractiveDonutChart>
+                                </items>
+                            </FlexBox>
+                        </l:VerticalLayout>
 
-                        <Text text="{appTxts>/dashboard.repGeneral.graph.title.imp}" class="sapUiSmallMargin">
-                            <layoutData>
-                                <l:GridData span="XL12 L12 M12 S12" />
-                            </layoutData>
-                        </Text>
-                        <FlexBox width="20rem" height="10rem" alignItems="Start"
-                            justifyContent="SpaceBetween">
-                            <items>
-                                <mc:InteractiveDonutChart selectionChanged="onSelectionChanged">
-                                    <mc:segments>
-                                        <mc:InteractiveDonutChartSegment label="{appTxts>/dashboard.card.title.impPend}"
-                                            value="{CardsModel>/Porcentajependientes}" displayedValue="{CardsModel>/Importependientes}" />
-                                        <mc:InteractiveDonutChartSegment label="{appTxts>/dashboard.card.title.impRes}"
-                                            value="{CardsModel>/Porcentajeresueltas}" displayedValue="{CardsModel>/Importeresueltas}" />
-                                    </mc:segments>
-                                </mc:InteractiveDonutChart>
-                            </items>
-                        </FlexBox>
+                        <l:VerticalLayout class="sapUiLargeMarginBegin">
+                            <Text text="{appTxts>/dashboard.repGeneral.graph.title.imp}" class="sapUiSmallMargin">
+                                <layoutData>
+                                    <l:GridData span="XL12 L12 M12 S12" />
+                                </layoutData>
+                            </Text>
+                            <FlexBox width="20rem" height="10rem" alignItems="Start"
+                                justifyContent="SpaceBetween">
+                                <items>
+                                    <mc:InteractiveDonutChart selectionChanged="onSelectionChanged">
+                                        <mc:segments>
+                                            <mc:InteractiveDonutChartSegment label="{appTxts>/dashboard.card.title.impPend}"
+                                                value="{CardsModel>/Porcentajependientes}" displayedValue="{CardsModel>/Importependientes}" />
+                                            <mc:InteractiveDonutChartSegment label="{appTxts>/dashboard.card.title.impRes}"
+                                                value="{CardsModel>/Porcentajeresueltas}" displayedValue="{CardsModel>/Importeresueltas}" />
+                                        </mc:segments>
+                                    </mc:InteractiveDonutChart>
+                                </items>
+                            </FlexBox>
+                        </l:VerticalLayout>
                     </l:HorizontalLayout>
 
                     <HeaderContainer id="container2" scrollStep="200">
