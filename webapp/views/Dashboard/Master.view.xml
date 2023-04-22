@@ -111,7 +111,7 @@
                             <FlexBox width="20rem" height="10rem" alignItems="Start"
                                 justifyContent="SpaceBetween">
                                 <items>
-                                    <mc:InteractiveDonutChart selectionChanged="onSelectionChanged">
+                                    <mc:InteractiveDonutChart id="donutCantidad" selectionChanged="onSelectionChanged">
                                         <mc:segments>
                                             <mc:InteractiveDonutChartSegment label="{appTxts>/dashboard.card.title.porcetajePend}"
                                                 value="{CardsModel>/Porcentajependientes}" displayedValue="{CardsModel>/Porcentajependientes}%" />
@@ -132,7 +132,7 @@
                             <FlexBox width="20rem" height="10rem" alignItems="Start"
                                 justifyContent="SpaceBetween">
                                 <items>
-                                    <mc:InteractiveDonutChart selectionChanged="onSelectionChanged">
+                                    <mc:InteractiveDonutChart id="donutImporte" selectionChanged="onSelectionChanged">
                                         <mc:segments>
                                             <mc:InteractiveDonutChartSegment label="{appTxts>/dashboard.card.title.impPend}"
                                                 value="{CardsModel>/Porcentajependientes}" displayedValue="{CardsModel>/Importependientes}" />
@@ -143,6 +143,7 @@
                                 </items>
                             </FlexBox>
                         </l:VerticalLayout>
+                        <Button icon="sap-icon://excel-attachment" text="{appTxts>/dashboard.download.excel}" press="downloadExcel" />
                     </l:HorizontalLayout>
 
                     <HeaderContainer id="container2" scrollStep="200">
@@ -235,7 +236,7 @@
                 <Text text="Attachments go here ..." />
             </IconTabFilter>
             <IconTabFilter
-                icon="sap-icon://timesheet"
+                icon="sap-icon://fob-watch"
                 text="{appTxts>/dashboard.tab.title.repAvgTime}"
                 key="repAvgTime">
                 <Text text="Notes go here ..." />

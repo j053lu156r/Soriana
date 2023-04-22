@@ -3,8 +3,9 @@ sap.ui.define([
     "demo/controllers/BaseController",
     "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator"
-], function (Controller, BaseController, JSONModel, Filter, FilterOperator) {
+    "sap/ui/model/FilterOperator",
+    "demo/models/formatter",
+], function (Controller, BaseController, JSONModel, Filter, FilterOperator, formatter) {
     "use strict";
 
     var oCatalog = new this.CatalogosDashboard();
@@ -12,10 +13,14 @@ sap.ui.define([
 
     var Controller = BaseController.extend("sap.m.sample.SplitApp.C", {
 
+        formatter: formatter,
         cboxAntiguedad: undefined,
         dateAlta: undefined,
         cboxTipo: undefined,
         cboxEstatus: undefined,
+        detailData: [],
+        donutImporte: undefined,
+        donutCantidad: undefined,
 
         onInit: function () {
             var oIconTabBar = this.byId("idIconTabBar");
@@ -28,6 +33,8 @@ sap.ui.define([
             this.cboxTipo = this.getView().byId("cboxTipo");
             this.cboxEstatus = this.getView().byId("cboxEstatus");
             this.dateAlta = this.getView().byId("dateAlta");
+            this.donutImporte = this.getView().byId("donutImporte");
+            this.donutCantidad = this.getView().byId("donutCantidad");
             this.onLoadTiposAclaracion();
             this.onLoadAnalistas();
             this.onLoadGrupos();
@@ -121,9 +128,9 @@ sap.ui.define([
                 },
                 filters: aFilters,
                 success: function(response){
-                    console.log(response)
                     let dollarUSLocale = Intl.NumberFormat('en-US');
                     var cardsData = response.results[0].TOTALESNAV.results[0];
+                    that.detailData = response.results[0].DETALLESNAV.results;
                     cardsData.Cantpagadas = dollarUSLocale.format(parseFloat(cardsData.Cantpagadas).toFixed(2));
                     cardsData.Cantpendientes = dollarUSLocale.format(parseFloat(cardsData.Cantpendientes).toFixed(2));
                     cardsData.Cantrecibidas = dollarUSLocale.format(parseFloat(cardsData.Cantrecibidas).toFixed(2));
@@ -134,7 +141,6 @@ sap.ui.define([
                     cardsData.Importeresueltas = dollarUSLocale.format(parseFloat(cardsData.Importeresueltas).toFixed(2));
                     cardsData.Porcentajependientes = parseFloat(cardsData.Porcentajependientes);
                     cardsData.Porcentajeresueltas = parseFloat(cardsData.Porcentajeresueltas);
-                    console.log(cardsData)
                     var cardsModel = new JSONModel(cardsData);
                     that.getView().setModel(cardsModel, 'CardsModel');
                 }, 
@@ -143,6 +149,122 @@ sap.ui.define([
                 }
             });
         },
+
+        onSelectionChanged: function(oEvent){
+
+        },
+
+        downloadExcel: function(){
+            if(this.detailData.length > 0){
+                var that = this;
+                var texts = this.getOwnerComponent().getModel("appTxts");
+                var selectedCant = this.donutCantidad.getSelectedSegments();
+                var selectedImp = this.donutImporte.getSelectedSegments();
+                var filters = [];
+                var columns = [
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.proveedor"),
+                        property: "Proveedor",
+                        type: sap.ui.export.EdmType.Number,
+                        width: 12
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.razonsocial"),
+                        property: "Razonsocial",
+                        width: 40
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.fechaalta"),
+                        property: "Fechaalta",
+                        type: sap.ui.export.EdmType.Date,
+                        format: "dddd, d.mmmm yyyy",
+                        width: 30
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.fechasolucion"),
+                        property: "Fechasolucion",
+                        type: sap.ui.export.EdmType.Date,
+                        format: "dddd, d.mmmm yyyy",
+                        width: 30
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.tipo"),
+                        property: ["Tipo", "Desctipo"],
+                        template: "{0} {1}",
+                        width: 26
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.estatus"),
+                        property: "Estatus",
+                        width: 10
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.grupo"),
+                        property: "Grupo",
+                        width: 25
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.totalrecla"),
+                        property: "Totalreclamado",
+                        type: sap.ui.export.EdmType.Number,
+                        delimiter: true,
+                        scale: 2,
+                        width: 20
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.totalaclarado"),
+                        property: "Totalaclarado",
+                        type: sap.ui.export.EdmType.Number,
+                        delimiter: true,
+                        scale: 2,
+                        width: 20
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.importepagado"),
+                        property: "Importepagado",
+                        type: sap.ui.export.EdmType.Number,
+                        delimiter: true,
+                        scale: 2,
+                        width: 20
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.diasantiguedad"),
+                        property: "Diasantiguedad",
+                        type: sap.ui.export.EdmType.Number,
+                        width: 21
+                    },
+                ];
+                if((selectedCant.length === 0 && selectedImp.length === 0) || 
+                    (selectedCant.length === 2 && selectedImp.length === 2)){
+                    this.buildExcelSpreadSheet(columns, this.detailData, "Reporte Dashboard de Aclaraciones.xlsx");
+                } else {
+                    const segments = selectedCant.concat(selectedImp);
+                    let dataFiltered = [];
+                    if (segments.length > 0) {
+                        segments.forEach(function(segment) {
+                            if(segment.getLabel() === texts.getProperty("/dashboard.card.title.porcetajePend") || 
+                                segment.getLabel() === texts.getProperty("/dashboard.card.title.impPend")) {
+                                filters.push("E");
+                            } else {
+                                filters.push("H");
+                            }
+                        });
+                        let unique = [...new Set(filters)];
+                        unique.forEach(function(estatus) {
+                            let filteredArray = that.detailData.filter((item) => item.Estatus === estatus);
+                            dataFiltered = dataFiltered.concat(filteredArray);
+                        });
+                        if(dataFiltered.length > 0){
+                            this.buildExcelSpreadSheet(columns, dataFiltered, "Reporte Dashboard de Aclaraciones.xlsx");
+                        } else {
+                            sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.excel.error.data"));
+                        }
+                    }
+                }
+            } else {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.excel.error.data"));
+            }
+        }
     });
     return Controller;
 });
