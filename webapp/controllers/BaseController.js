@@ -1210,7 +1210,7 @@ sap.ui.define([
                             icon: MessageBox.Icon.ERROR,
                             title: err
                         });*/
-                        fnReject(new Error(error));
+                        fnReject({"status": status, "error": error, "err": err});
                     }
                 });
             });

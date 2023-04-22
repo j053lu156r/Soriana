@@ -627,3 +627,25 @@ function FilesCartaPorte() {
     params.sModel = "cartaPorte";
     BaseModel.call(this, params);
 }
+
+//Model Catalogos para Dashboard nuevo
+function CatalogosDashboard() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_DB07_CATALOGOS_SRV/";
+    params.sModel = "catDashboard";
+    BaseModel.call(this, params);
+}
+
+CatalogosDashboard.prototype = Object.create(BaseModel.prototype);
+CatalogosDashboard.prototype.constructor = CatalogosDashboard;
+
+//Model Dashboard: Reporte general 
+function ReporteGralDashboard() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_DB01_EJECUTIVO_GRAL_ACLA_SRV";
+    params.sModel = "dashboardRepGen";
+    BaseModel.call(this, params);
+}
+
+ReporteGralDashboard.prototype = Object.create(BaseModel.prototype);
+ReporteGralDashboard.prototype.constructor = ReporteGralDashboard;

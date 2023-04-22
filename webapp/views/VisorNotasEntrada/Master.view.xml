@@ -154,8 +154,12 @@
                                 <Text text="{migoModel>TotImp} {migoModel>Waers}" wrapping="false"/>
                             </t:template>
                         </t:Column>
-                       
-                          
+                       <t:Column width="auto" id="download" visible="true"> 
+                            <Label text="{appTxts>/visor.downloadPDF}" />
+                            <t:template>
+                                <Button icon="sap-icon://pdf-attachment" press="onDownload" tooltip="{appTxts>/visor.downloadPDF}"/>
+                            </t:template>
+                        </t:Column>
                     </t:columns>
                   
                 </t:Table>

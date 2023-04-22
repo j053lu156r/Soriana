@@ -165,18 +165,19 @@ sap.ui.define([
             if (XblnrFact === '') {
                 XblnrFact = '0.1'
             }
-            this.getOwnerComponent().getRouter().navTo("detailVisorNotas", 
-                { layout: sap.f.LayoutType.MidColumnFullScreen, 
-                    Mblnr: Mblnr, 
-                    Mjahr: Mjahr, 
-                    Ebeln: Ebeln, 
-                    Lifnr: Lifnr, 
-                    BudatMkpf: BudatMkpf, 
-                    Werks: Werks, 
-                    Xblnr: Xblnr, 
-                    XblnrFact: XblnrFact, 
-                    Total: Total, 
-                    TotImp: TotImp, 
+            this.getOwnerComponent().getRouter().navTo("detailVisorNotas",
+                {
+                    layout: sap.f.LayoutType.MidColumnFullScreen,
+                    Mblnr: Mblnr,
+                    Mjahr: Mjahr,
+                    Ebeln: Ebeln,
+                    Lifnr: Lifnr,
+                    BudatMkpf: BudatMkpf,
+                    Werks: Werks,
+                    Xblnr: Xblnr,
+                    XblnrFact: XblnrFact,
+                    Total: Total,
+                    TotImp: TotImp,
                     Waers: Waers
                 });
 
@@ -307,7 +308,7 @@ sap.ui.define([
                 type: EdmType.String,
                 property: 'Mblnr'
             });
-            
+
             aCols.push({
                 label: texts.getProperty("/visor.supplier"),
                 type: EdmType.String,
@@ -633,8 +634,53 @@ sap.ui.define([
             this.getView().byId("inpInvoice").setValue('');
             this.getView().byId("dateRange").setValue('');
         },
+        onDownload: function (oEvent) {
+            sap.ui.core.BusyIndicator.show();
+            var that = this;
+            var data = {};
+            var oItem = oEvent.getSource().getBindingContext("migoModel").getObject();
+            data.EvneDet = oItem.DocDetalleNav.results;
+            for (var i=0; i<data.EvneDet.length; i++){
+                delete data.EvneDet[i].__metadata;
+            }
+            delete oItem.DocDetalleNav;
+            delete oItem.BudatMkpf;
+            delete oItem.Waers;
+            oItem.TotalImp = oItem.TotImp;
+            delete oItem.TotImp
+            delete oItem.__metadata;
+            data.EvneCab = [oItem];
 
+            var model = "ZOSP_NE_PDF_SRV";
+            var entity = "/EnvPDFSet";
+            var body = JSON.stringify(data);
+            console.log(data)
 
-
+            $.ajax({
+                url: "/sap/opu/odata/sap/" + model + entity,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: body,
+                headers: {
+                  "X-Requested-With": "X",
+                },
+                success: function (response) {
+                    sap.ui.core.BusyIndicator.hide();
+                    console.log(response)
+                    const linkSource = `data:application/pdf;base64,${response.d.Pdf}`;
+                    const downloadLink = document.createElement("a");
+                    const fileName = `${response.d.Mblnr}_${response.d.Mjahr}.pdf`;
+                    downloadLink.href = linkSource;
+                    downloadLink.download = fileName;
+                    downloadLink.click();
+                },
+                error: function (error, status, err) {
+                  sap.ui.core.BusyIndicator.hide();
+                  console.log({"status": status, "error": error, "err": err})
+                  sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty('/visor.downloadPdfError'));
+                },
+              });
+        }
     });
 });
