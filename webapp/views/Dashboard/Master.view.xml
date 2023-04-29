@@ -8,7 +8,10 @@
     xmlns:x="sap.uxap"
     xmlns:card="sap.f.cards"
     xmlns:l="sap.ui.layout"
-    xmlns:mc="sap.suite.ui.microchart">
+    xmlns:mc="sap.suite.ui.microchart"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:viz.data="sap.viz.ui5.data">
     <IconTabBar
         id="idIconTabBar"
         class="sapUiResponsiveContentPadding"
@@ -25,7 +28,7 @@
                     horizontal="false"
                     vertical="true">
 
-                    <fb:FilterBar id="filterBar" header="Header" reset="onReset" search="searchData"
+                    <fb:FilterBar header="Header" reset="onReset" search="searchData"
                         clear="clearFilters" cancel="onCancel"
                         filtersDialogClosed="onFiltersDialogClosed"
                         showRestoreButton="false" showClearButton="false" useToolbar="false"
@@ -36,12 +39,10 @@
                                 partOfCurrentVariant="true" visibleInFilterBar="true">
                                 <fb:control>
                                     <Input
-                                        id="supplierInput"
                                         placeholder="{appTxts>/dashboard.repGeneral.filter.supplier}"
                                         showSuggestion="true" valueHelpOnly="true"
                                         showValueHelp="true" valueHelpRequest=".onValueHelpRequest"
-                                        value="{configSite>/supplierInput}">
-                                    </Input>
+                                        value="{configSite>/supplierInput}" />
                                 </fb:control>
                             </fb:FilterGroupItem>
 
@@ -51,7 +52,7 @@
                                 mandatory="true"
                                 visibleInFilterBar="true">
                                 <fb:control>
-                                    <DateRangeSelection id="dateAlta" change="onChangeDate" />
+                                    <DateRangeSelection id="dateAlta" />
                                 </fb:control>
                             </fb:FilterGroupItem>
 
@@ -60,8 +61,12 @@
                                 groupTitle="Tipo" name="Tipo" partOfCurrentVariant="true"
                                 visibleInFilterBar="true">
                                 <fb:control>
-                                    <ComboBox id="cboxTipo" items="{TiposAclaracion>/Tipos}" showClearIcon="true">
-                                        <core:Item key="{TiposAclaracion>TipAcla}" text="{TiposAclaracion>DesAcla}" />
+                                    <ComboBox showSecondaryValues="true" id="cboxTipo"
+                                        items="{TiposAclaracion>/Tipos}"
+                                        showClearIcon="true">
+                                        <core:ListItem key="{TiposAclaracion>TipAcla}"
+                                            text="{TiposAclaracion>DesAcla}"
+                                            additionalText="{TiposAclaracion>TipAcla}" />
                                     </ComboBox>
                                 </fb:control>
                             </fb:FilterGroupItem>
@@ -101,9 +106,10 @@
                         </fb:filterGroupItems>
                     </fb:FilterBar>
 
-                    <l:HorizontalLayout class="sapUiContentPadding" >
+                    <l:HorizontalLayout class="sapUiContentPadding">
                         <l:VerticalLayout class="sapUiLargeMarginEnd">
-                            <Text text="{appTxts>/dashboard.repGeneral.graph.title.cant}" class="sapUiSmallMargin">
+                            <Text text="{appTxts>/dashboard.repGeneral.graph.title.cant}"
+                                class="sapUiSmallMargin">
                                 <layoutData>
                                     <l:GridData span="XL12 L12 M12 S12" />
                                 </layoutData>
@@ -111,12 +117,17 @@
                             <FlexBox width="20rem" height="10rem" alignItems="Start"
                                 justifyContent="SpaceBetween">
                                 <items>
-                                    <mc:InteractiveDonutChart id="donutCantidad" selectionChanged="onSelectionChanged">
+                                    <mc:InteractiveDonutChart id="donutCantidad"
+                                        selectionChanged="onSelectionChanged">
                                         <mc:segments>
-                                            <mc:InteractiveDonutChartSegment label="{appTxts>/dashboard.card.title.porcetajePend}"
-                                                value="{CardsModel>/Porcentajependientes}" displayedValue="{CardsModel>/Porcentajependientes}%" />
-                                            <mc:InteractiveDonutChartSegment label="{appTxts>/dashboard.card.title.porcetajeRes}"
-                                                value="{CardsModel>/Porcentajeresueltas}" displayedValue="{CardsModel>/Porcentajeresueltas}%" />
+                                            <mc:InteractiveDonutChartSegment
+                                                label="{appTxts>/dashboard.card.title.porcetajePend}"
+                                                value="{CardsModel>/Porcentajependientes}"
+                                                displayedValue="{CardsModel>/Porcentajependientes}%" />
+                                            <mc:InteractiveDonutChartSegment
+                                                label="{appTxts>/dashboard.card.title.porcetajeRes}"
+                                                value="{CardsModel>/Porcentajeresueltas}"
+                                                displayedValue="{CardsModel>/Porcentajeresueltas}%" />
                                         </mc:segments>
                                     </mc:InteractiveDonutChart>
                                 </items>
@@ -124,7 +135,8 @@
                         </l:VerticalLayout>
 
                         <l:VerticalLayout class="sapUiLargeMarginBegin">
-                            <Text text="{appTxts>/dashboard.repGeneral.graph.title.imp}" class="sapUiSmallMargin">
+                            <Text text="{appTxts>/dashboard.repGeneral.graph.title.imp}"
+                                class="sapUiSmallMargin">
                                 <layoutData>
                                     <l:GridData span="XL12 L12 M12 S12" />
                                 </layoutData>
@@ -132,25 +144,32 @@
                             <FlexBox width="20rem" height="10rem" alignItems="Start"
                                 justifyContent="SpaceBetween">
                                 <items>
-                                    <mc:InteractiveDonutChart id="donutImporte" selectionChanged="onSelectionChanged">
+                                    <mc:InteractiveDonutChart id="donutImporte"
+                                        selectionChanged="onSelectionChanged">
                                         <mc:segments>
-                                            <mc:InteractiveDonutChartSegment label="{appTxts>/dashboard.card.title.impPend}"
-                                                value="{CardsModel>/Porcentajependientes}" displayedValue="{CardsModel>/Importependientes}" />
-                                            <mc:InteractiveDonutChartSegment label="{appTxts>/dashboard.card.title.impRes}"
-                                                value="{CardsModel>/Porcentajeresueltas}" displayedValue="{CardsModel>/Importeresueltas}" />
+                                            <mc:InteractiveDonutChartSegment
+                                                label="{appTxts>/dashboard.card.title.impPend}"
+                                                value="{CardsModel>/Porcentajependientes}"
+                                                displayedValue="{CardsModel>/Importependientes}" />
+                                            <mc:InteractiveDonutChartSegment
+                                                label="{appTxts>/dashboard.card.title.impRes}"
+                                                value="{CardsModel>/Porcentajeresueltas}"
+                                                displayedValue="{CardsModel>/Importeresueltas}" />
                                         </mc:segments>
                                     </mc:InteractiveDonutChart>
                                 </items>
                             </FlexBox>
                         </l:VerticalLayout>
-                        <Button icon="sap-icon://excel-attachment" text="{appTxts>/dashboard.download.excel}" press="downloadExcel" />
+                        <Button icon="sap-icon://excel-attachment"
+                            text="{appTxts>/dashboard.download.excel}" press="downloadExcelGralRep" />
                     </l:HorizontalLayout>
 
                     <HeaderContainer id="container2" scrollStep="200">
                         <TileContent
                             footer="{appTxts>/dashboard.repGeneral.card.title.recibidasCant}">
                             <content>
-                                <NumericContent value="{CardsModel>/Cantrecibidas}" icon="sap-icon://receipt" />
+                                <NumericContent value="{CardsModel>/Cantrecibidas}"
+                                    icon="sap-icon://receipt" />
                             </content>
                         </TileContent>
                         <TileContent
@@ -233,19 +252,270 @@
                 icon="sap-icon://company-view"
                 text="{appTxts>/dashboard.tab.title.repSolGroup}"
                 key="repSolGroup">
-                <Text text="Attachments go here ..." />
+                <ScrollContainer
+                    height="100%"
+                    width="100%"
+                    horizontal="false"
+                    vertical="true">
+
+                    <fb:FilterBar header="Header" reset="onReset" search="searchData"
+                        clear="clearFilters" cancel="onCancel"
+                        filtersDialogClosed="onFiltersDialogClosed"
+                        showRestoreButton="false" showClearButton="false" useToolbar="false"
+                        filterBarExpanded="true">
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab"
+                                label="{appTxts>/dashboard.repGeneral.filter.supplier}"
+                                partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        placeholder="{appTxts>/dashboard.repGeneral.filter.supplier}"
+                                        showSuggestion="true" valueHelpOnly="true"
+                                        showValueHelp="true" valueHelpRequest=".onValueHelpRequest"
+                                        value="{configSite>/supplierInput}" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repGeneral.filter.date}"
+                                groupTitle="FechaAlta" name="FechaAlta" partOfCurrentVariant="true"
+                                mandatory="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <DateRangeSelection id="dateAltaGR" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repGeneral.filter.grupoRes}"
+                                groupTitle="Grupo" name="Grupo" partOfCurrentVariant="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <ComboBox showSecondaryValues="true" id="cboxGrupoRes"
+                                        items="{GruposModel>/Grupos}"
+                                        showClearIcon="true">
+                                        <core:ListItem key="{GruposModel>Idusua}"
+                                            text="{GruposModel>Analista}"
+                                            additionalText="{GruposModel>Idusua}" />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repGeneral.filter.tipo}"
+                                groupTitle="Tipo" name="Tipo" partOfCurrentVariant="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <ComboBox showSecondaryValues="true" id="cboxTipoGR"
+                                        items="{TiposAclaracion>/Tipos}"
+                                        showClearIcon="true">
+                                        <core:ListItem key="{TiposAclaracion>TipAcla}"
+                                            text="{TiposAclaracion>DesAcla}"
+                                            additionalText="{TiposAclaracion>TipAcla}" />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repGeneral.filter.status}"
+                                groupTitle="Estatus" name="Estatus" partOfCurrentVariant="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <Select selectedKey="T" id="cboxEstatusGR">
+                                        <core:Item key="E"
+                                            text="{appTxts>/dashboard.filter.estatusE}" />
+                                        <core:Item key="H"
+                                            text="{appTxts>/dashboard.filter.estatusH}" />
+                                        <core:Item key="T"
+                                            text="{appTxts>/dashboard.filter.estatusT}" />
+                                    </Select>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+                    </fb:FilterBar>
+
+                    <l:HorizontalLayout class="sapUiContentPadding">
+                        <l:Grid defaultSpan="XL12 L12 M12 S12">
+                            <!-- Example with absolute and percentage values -->
+                            <FlexBox width="40rem" height="10rem" alignItems="Center" class="sapUiSmallMargin">
+                                <items>
+                                    <mc:InteractiveBarChart id="barChar" labelWidth="30%"
+                                        bars="{GpoResModel>/oData}">
+                                        <mc:bars>
+                                            <mc:InteractiveBarChartBar label="{GpoResModel>Descgrupo}: ${ path: 'GpoResModel>Importe', type: 'sap.ui.model.type.Float' }" 
+                                                value="{GpoResModel>Cantidad}" 
+                                                displayedValue="{GpoResModel>Cantidad}"/>
+                                        </mc:bars>
+                                    </mc:InteractiveBarChart>
+                                </items>
+                            </FlexBox>
+                        </l:Grid>
+                        <Button icon="sap-icon://excel-attachment"
+                                text="{appTxts>/dashboard.download.excel}" press="onDownloadExcelGpoRes" />
+                    </l:HorizontalLayout>
+
+                </ScrollContainer>
             </IconTabFilter>
             <IconTabFilter
                 icon="sap-icon://fob-watch"
                 text="{appTxts>/dashboard.tab.title.repAvgTime}"
                 key="repAvgTime">
-                <Text text="Notes go here ..." />
+                <ScrollContainer
+                    height="100%"
+                    width="100%"
+                    horizontal="false"
+                    vertical="true">
+                    <fb:FilterBar header="Header" reset="onReset" search="searchData"
+                        clear="clearFilters" cancel="onCancel"
+                        filtersDialogClosed="onFiltersDialogClosed"
+                        showRestoreButton="false" showClearButton="false" useToolbar="false"
+                        filterBarExpanded="true">
+                        <fb:filterGroupItems>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab"
+                                label="{appTxts>/dashboard.repGeneral.filter.supplier}"
+                                partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        placeholder="{appTxts>/dashboard.repGeneral.filter.supplier}"
+                                        showSuggestion="true" valueHelpOnly="true"
+                                        showValueHelp="true" valueHelpRequest=".onValueHelpRequest"
+                                        value="{configSite>/supplierInput}" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repGeneral.filter.date}"
+                                groupTitle="FechaAlta" name="FechaAlta" partOfCurrentVariant="true"
+                                mandatory="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <DateRangeSelection id="dateAltaAvgT" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repGeneral.filter.tipo}"
+                                groupTitle="Tipo" name="Tipo" partOfCurrentVariant="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <ComboBox showSecondaryValues="true" id="cboxTipoAvgT"
+                                        items="{TiposAclaracion>/Tipos}"
+                                        showClearIcon="true">
+                                        <core:ListItem key="{TiposAclaracion>TipAcla}"
+                                            text="{TiposAclaracion>DesAcla}"
+                                            additionalText="{TiposAclaracion>TipAcla}" />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repGeneral.filter.status}"
+                                groupTitle="Estatus" name="Estatus" partOfCurrentVariant="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <Select selectedKey="T" id="cboxEstatusAvgT">
+                                        <core:Item key="E"
+                                            text="{appTxts>/dashboard.filter.estatusE}" />
+                                        <core:Item key="H"
+                                            text="{appTxts>/dashboard.filter.estatusH}" />
+                                        <core:Item key="T"
+                                            text="{appTxts>/dashboard.filter.estatusT}" />
+                                    </Select>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                        </fb:filterGroupItems>
+                    </fb:FilterBar>
+                </ScrollContainer>
             </IconTabFilter>
             <IconTabFilter
                 icon="sap-icon://compare-2"
                 text="{appTxts>/dashboard.tab.title.repCompExec}"
                 key="repCompExec">
-                <Text text="People content goes here ..." />
+                <ScrollContainer
+                    height="100%"
+                    width="100%"
+                    horizontal="false"
+                    vertical="true">
+                    <fb:FilterBar header="Header" reset="onReset" search="searchData"
+                        clear="clearFilters" cancel="onCancel"
+                        filtersDialogClosed="onFiltersDialogClosed"
+                        showRestoreButton="false" showClearButton="false" useToolbar="false"
+                        filterBarExpanded="true">
+                        <fb:filterGroupItems>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repEjecutivoC.filter.year}"
+                                groupTitle="Year" name="Year" partOfCurrentVariant="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <Select selectedKey="T" id="cboxEjercicioExecC">
+                                        <core:Item key="1"
+                                            text="{appTxts>/dashboard.repEjecutivoC.year}" />
+                                        <core:Item key="2"
+                                            text="{appTxts>/dashboard.repEjecutivoC.yearPre}" />
+                                        <core:Item key="3"
+                                            text="{appTxts>/dashboard.repEjecutivoC.both}" />
+                                    </Select>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repEjecutivoC.filter.month}"
+                                groupTitle="Date" name="Date" partOfCurrentVariant="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <DateRangeSelection id="dpDateExecC" displayFormat="MMMM" valueFormat="MMMM"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab"
+                                label="{appTxts>/dashboard.repGeneral.filter.supplier}"
+                                partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        placeholder="{appTxts>/dashboard.repGeneral.filter.supplier}"
+                                        showSuggestion="true" valueHelpOnly="true"
+                                        showValueHelp="true" valueHelpRequest=".onValueHelpRequest"
+                                        value="{configSite>/supplierInput}" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repGeneral.filter.tipo}"
+                                groupTitle="Tipo" name="Tipo" partOfCurrentVariant="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <ComboBox showSecondaryValues="true" id="cboxTipoExecC"
+                                        items="{TiposAclaracion>/Tipos}"
+                                        showClearIcon="true">
+                                        <core:ListItem key="{TiposAclaracion>TipAcla}"
+                                            text="{TiposAclaracion>DesAcla}"
+                                            additionalText="{TiposAclaracion>TipAcla}" />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repGeneral.filter.status}"
+                                groupTitle="Estatus" name="Estatus" partOfCurrentVariant="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <Select selectedKey="T" id="cboxEstatusExecC">
+                                        <core:Item key="E"
+                                            text="{appTxts>/dashboard.filter.estatusE}" />
+                                        <core:Item key="H"
+                                            text="{appTxts>/dashboard.filter.estatusH}" />
+                                        <core:Item key="T"
+                                            text="{appTxts>/dashboard.filter.estatusT}" />
+                                    </Select>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                        </fb:filterGroupItems>
+                    </fb:FilterBar>
+                </ScrollContainer>
             </IconTabFilter>
             <IconTabFilter
                 icon="sap-icon://supplier"

@@ -649,3 +649,36 @@ function ReporteGralDashboard() {
 
 ReporteGralDashboard.prototype = Object.create(BaseModel.prototype);
 ReporteGralDashboard.prototype.constructor = ReporteGralDashboard;
+
+//Model Dashboard: Reporte Grupo resolutor 
+function ReporteGpoResolutor() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_DB02_GRUPO_RESOLUTOR_SRV";
+    params.sModel = "dashboardRepGpoRes";
+    BaseModel.call(this, params);
+}
+
+ReporteGpoResolutor.prototype = Object.create(BaseModel.prototype);
+ReporteGpoResolutor.prototype.constructor = ReporteGpoResolutor;
+
+//Model Dashboard: Reporte Tiempo promedio de resolucion
+function ReporteAvgTiempo() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_DB03_TIEMPO_PROMEDIO_ACLA_SRV/";
+    params.sModel = "dashboardRepAvgTime";
+    BaseModel.call(this, params);
+}
+
+ReporteAvgTiempo.prototype = Object.create(BaseModel.prototype);
+ReporteAvgTiempo.prototype.constructor = ReporteAvgTiempo;
+
+//Model Dashboard: Reporte Ejecutivo comparativo
+function ReporteExecComp() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_DB04_EJEC_COMPARATIVO_MES_SRV/";
+    params.sModel = "dashboardRepAvgTime";
+    BaseModel.call(this, params);
+}
+
+ReporteExecComp.prototype = Object.create(BaseModel.prototype);
+ReporteExecComp.prototype.constructor = ReporteExecComp;
