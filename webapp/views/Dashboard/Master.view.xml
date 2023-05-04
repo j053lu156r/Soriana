@@ -424,9 +424,45 @@
                                     </Select>
                                 </fb:control>
                             </fb:FilterGroupItem>
-
                         </fb:filterGroupItems>
                     </fb:FilterBar>
+
+                    <l:HorizontalLayout class="sapUiContentPadding">
+                        <l:Grid defaultSpan="XL6 L6 M6 S12">
+                            <!-- Example with absolute and percentage values -->
+                            <FlexBox width="20rem" height="10rem" alignItems="Center" class="sapUiSmallMargin">
+                                <items>
+                                    <mc:InteractiveBarChart id="barCharAvgTRes" labelWidth="30%"
+                                        bars="{AvgTimeModel>/oData}">
+                                        <mc:bars>
+                                            <mc:InteractiveBarChartBar label="{AvgTimeModel>Tipoaclaracion}: {AvgTimeModel>Descaclaracion}" 
+                                                value="{AvgTimeModel>Cerradas}" 
+                                                displayedValue="{AvgTimeModel>Cerradas}"/>
+                                        </mc:bars>
+                                    </mc:InteractiveBarChart>
+                                </items>
+                            </FlexBox>
+                        </l:Grid>
+
+                        <l:Grid defaultSpan="XL6 L6 M6 S12">
+                            <!-- Example with absolute and percentage values -->
+                            <FlexBox width="20rem" height="10rem" alignItems="Center" class="sapUiSmallMargin">
+                                <items>
+                                    <mc:InteractiveBarChart id="barCharAvgTPend" labelWidth="30%"
+                                        bars="{GpoResModel>/oData}">
+                                        <mc:bars>
+                                            <mc:InteractiveBarChartBar label="{AvgTimeModel>Tipoaclaracion}: {AvgTimeModel>Descaclaracion}" 
+                                                value="{AvgTimeModel>Pendientes}" 
+                                                displayedValue="{AvgTimeModel>Pendientes}"/>
+                                        </mc:bars>
+                                    </mc:InteractiveBarChart>
+                                </items>
+                            </FlexBox>
+                        </l:Grid>
+
+                        <Button icon="sap-icon://excel-attachment"
+                                text="{appTxts>/dashboard.download.excel}" press="onDownloadExcelAvgT" />
+                    </l:HorizontalLayout>
                 </ScrollContainer>
             </IconTabFilter>
             <IconTabFilter
@@ -450,7 +486,7 @@
                                 groupTitle="Year" name="Year" partOfCurrentVariant="true"
                                 visibleInFilterBar="true">
                                 <fb:control>
-                                    <Select selectedKey="T" id="cboxEjercicioExecC">
+                                    <Select selectedKey="3" id="cboxEjercicioExecC">
                                         <core:Item key="1"
                                             text="{appTxts>/dashboard.repEjecutivoC.year}" />
                                         <core:Item key="2"
@@ -462,11 +498,70 @@
                             </fb:FilterGroupItem>
 
                             <fb:FilterGroupItem groupName="__$INTERNAL$"
-                                label="{appTxts>/dashboard.repEjecutivoC.filter.month}"
-                                groupTitle="Date" name="Date" partOfCurrentVariant="true"
+                                label="{appTxts>/dashboard.repEjecutivoC.filter.monthI}"
+                                groupTitle="DateI" name="DateI" partOfCurrentVariant="true"
                                 visibleInFilterBar="true">
                                 <fb:control>
-                                    <DateRangeSelection id="dpDateExecC" displayFormat="MMMM" valueFormat="MMMM"/>
+                                    <Select selectedKey="01" id="cboxDateIniExecC">
+                                        <core:Item key="01"
+                                            text="{appTxts>/dashboard.repExectC.month1}" />
+                                        <core:Item key="02"
+                                            text="{appTxts>/dashboard.repExectC.month2}" />
+                                        <core:Item key="03"
+                                            text="{appTxts>/dashboard.repExectC.month3}" />
+                                        <core:Item key="04"
+                                            text="{appTxts>/dashboard.repExectC.month4}" />
+                                        <core:Item key="05"
+                                            text="{appTxts>/dashboard.repExectC.month5}" />
+                                        <core:Item key="06"
+                                            text="{appTxts>/dashboard.repExectC.month6}" />
+                                        <core:Item key="07"
+                                            text="{appTxts>/dashboard.repExectC.month7}" />
+                                        <core:Item key="08"
+                                            text="{appTxts>/dashboard.repExectC.month8}" />
+                                        <core:Item key="09"
+                                            text="{appTxts>/dashboard.repExectC.month9}" />
+                                        <core:Item key="10"
+                                            text="{appTxts>/dashboard.repExectC.month10}" />
+                                        <core:Item key="11"
+                                            text="{appTxts>/dashboard.repExectC.month11}" />
+                                        <core:Item key="12"
+                                            text="{appTxts>/dashboard.repExectC.month12}" />
+                                    </Select>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repEjecutivoC.filter.monthF}"
+                                groupTitle="DateF" name="DateF" partOfCurrentVariant="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <Select selectedKey="12" id="cboxDateFinExecC">
+                                        <core:Item key="01"
+                                            text="{appTxts>/dashboard.repExectC.month1}" />
+                                        <core:Item key="02"
+                                            text="{appTxts>/dashboard.repExectC.month2}" />
+                                        <core:Item key="03"
+                                            text="{appTxts>/dashboard.repExectC.month3}" />
+                                        <core:Item key="04"
+                                            text="{appTxts>/dashboard.repExectC.month4}" />
+                                        <core:Item key="05"
+                                            text="{appTxts>/dashboard.repExectC.month5}" />
+                                        <core:Item key="06"
+                                            text="{appTxts>/dashboard.repExectC.month6}" />
+                                        <core:Item key="07"
+                                            text="{appTxts>/dashboard.repExectC.month7}" />
+                                        <core:Item key="08"
+                                            text="{appTxts>/dashboard.repExectC.month8}" />
+                                        <core:Item key="09"
+                                            text="{appTxts>/dashboard.repExectC.month9}" />
+                                        <core:Item key="10"
+                                            text="{appTxts>/dashboard.repExectC.month10}" />
+                                        <core:Item key="11"
+                                            text="{appTxts>/dashboard.repExectC.month11}" />
+                                        <core:Item key="12"
+                                            text="{appTxts>/dashboard.repExectC.month12}" />
+                                    </Select>
                                 </fb:control>
                             </fb:FilterGroupItem>
 
@@ -512,9 +607,63 @@
                                     </Select>
                                 </fb:control>
                             </fb:FilterGroupItem>
-
                         </fb:filterGroupItems>
                     </fb:FilterBar>
+
+                    <Panel headerText="Smart Stacked Bar Micro Chart With Criticality"
+                            class="sapUiSmallMarginBottom">
+                        <mc:ComparisonMicroChart size="S" scale="M" class="sapUiSmallMargin" press="press">
+                            <mc:data>
+                                <mc:ComparisonMicroChartData title="EMEA" displayValue="USD 0" color="Good" />
+                                <mc:ComparisonMicroChartData title="EMEA" value="50" color="Good"/>
+                                <mc:ComparisonMicroChartData title="APAC" value="-20" color="Error"/>
+                            </mc:data>
+                        </mc:ComparisonMicroChart>
+                    </Panel>
+
+                    <!--
+                    <HeaderContainer>
+                        <TileContent
+                            footer="{appTxts>/dashboard.repGeneral.card.title.recibidasCant}">
+                            <content>
+                                <NumericContent value="{CardsModel>/Cantrecibidas}"
+                                    icon="sap-icon://receipt" />
+                            </content>
+                        </TileContent>
+
+                        <TileContent
+                            footer="{appTxts>/dashboard.repGeneral.card.title.resueltasCant}">
+                            <content>
+                                <NumericContent
+                                    value="{
+                                    parts: [{path: 'CardsModel>/Cantresueltas'}], 
+                                    type:'sap.ui.model.type.Currency', 
+                                    formatOptions: {showMeasure:false}}"
+                                    icon="sap-icon://activity-2" />
+                            </content>
+                        </TileContent>
+
+                        <TileContent
+                            footer="{appTxts>/dashboard.repGeneral.card.title.recibidasCant}">
+                            <content>
+                                <NumericContent value="{CardsModel>/Cantrecibidas}"
+                                    icon="sap-icon://receipt" />
+                            </content>
+                        </TileContent>
+
+                        <TileContent
+                            footer="{appTxts>/dashboard.repGeneral.card.title.resueltasCant}">
+                            <content>
+                                <NumericContent
+                                    value="{
+                                    parts: [{path: 'CardsModel>/Cantresueltas'}], 
+                                    type:'sap.ui.model.type.Currency', 
+                                    formatOptions: {showMeasure:false}}"
+                                    icon="sap-icon://activity-2" />
+                            </content>
+                        </TileContent>
+                    </HeaderContainer>
+                    -->
                 </ScrollContainer>
             </IconTabFilter>
             <IconTabFilter
