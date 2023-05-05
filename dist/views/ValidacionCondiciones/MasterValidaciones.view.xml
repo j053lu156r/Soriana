@@ -1,0 +1,420 @@
+<mvc:View displayBlock="true" 
+    xmlns:f="sap.f" 
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar" 
+    xmlns:vm="sap.ui.comp.variants" 
+    xmlns:unified="sap.ui.unified"
+    xmlns="sap.m" 
+      xmlns:t="sap.ui.table"
+    xmlns:core="sap.ui.core"
+    controllerName="demo.controllers.ValidacionCondiciones.MasterValidaciones"
+    height="100%">
+    <f:DynamicPage class="sapUiContentPadding">
+        <f:title>
+            <f:DynamicPageTitle backgroundDesign="Transparent">
+                <f:heading>
+                    <vm:VariantManagement standardItemText="{appTxts>/ValCondi.title}"/>
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>
+        
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <fb:FilterBar id="filterBar"  header="Header" reset="onReset" search="searchData2" 
+                        clear="clearFilters" cancel="onCancel" filtersDialogClosed = "onFiltersDialogClosed" 
+                        showRestoreButton="false" showClearButton="false" useToolbar="false">
+
+                            <fb:filterGroupItems>
+                                <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab" 
+                                    label="{appTxts>/ValCondi.Acreedor}" mandatory="true" 
+                                    partOfCurrentVariant="true" visibleInFilterBar="true">
+                                    <fb:control>
+                                        <Input
+                                            id="supplierInput" placeholder="{appTxts>/ValCondi.Acreedor}" 
+                                            showSuggestion="true" valueHelpOnly="true"
+                                            showValueHelp="true" valueHelpRequest=".onValueHelpRequest" 
+                                            value="{configSite>/supplierInput}" >
+                                        </Input>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+
+                                <fb:FilterGroupItem groupName="F1" label="{appTxts>/ValCondi.Ifecha}" 
+                                    groupTitle="Fechas" name="Fecha de entrega" mandatory="false" 
+                                    partOfCurrentVariant="true" visibleInFilterBar="true">
+                                    <fb:control>
+                                        <DateRangeSelection id="dateRange" required="false"/>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+
+                                <fb:FilterGroupItem groupName="__$INTERNAL$" name="Invoice2" 
+                                    label="{appTxts>/ValCondi.Folio}" mandatory="false" 
+                                    partOfCurrentVariant="true" visibleInFilterBar="true">
+                                    <fb:control>
+                                     
+                                        <Input
+                                            id="IDFolio" placeholder="" liveChange=""/>
+                                       
+                                    </fb:control>
+                                    
+                                </fb:FilterGroupItem>
+                                 <fb:FilterGroupItem groupName="__$INTERNAL$" name="Invoice" 
+                                    label="{appTxts>/ValCondi.Iserie}" mandatory="false" 
+                                    partOfCurrentVariant="true" visibleInFilterBar="true">
+                                    <fb:control>
+                                     
+                                        <Input
+                                            id="IDSerie" placeholder="" liveChange=""/>
+                                    </fb:control>
+                                    
+                                </fb:FilterGroupItem>
+                            </fb:filterGroupItems>
+                    </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+
+        </f:header>
+        <f:content>
+           <VBox>
+            <t:Table selectionMode="None" noData="{appTxts>/acuerdos.noData}" id="tableValidacion" rows="{ModelValidacion>/}">
+                    <t:extension>
+                        <OverflowToolbar> 
+                            <Title text="Validación de condiciones ({ModelValidacion>/length})" />
+                            <ToolbarSpacer/>
+
+                            <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${ModelValidacion>/length} > 0}" />
+      <Button icon="sap-icon://action-settings" press="ConfigTable" />
+                  
+                        </OverflowToolbar>
+                    </t:extension>
+                    <t:columns>
+                        <t:Column 	sortProperty="TeSalida/DocCompra" filterProperty="TeSalida/DocCompra" 	width="10rem" hAlign="Left" id="A">
+                            <Text text="{appTxts>/ValCondi.headerOrden}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/DocCompra}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column  sortProperty="TeSalida/Posicion" filterProperty="TeSalida/Posicion" 	width="10rem"  hAlign="Left" id="B">
+                            <Text text="Posición" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/Posicion}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column  sortProperty="TeSalida/FolionEntrada" filterProperty="TeSalida/FolionEntrada" 	width="10rem"  hAlign="Left" id="C">
+                            <Text text="{appTxts>/ValCondi.headerNE}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/FolionEntrada}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column 	sortProperty="TeSalida/DocMaterial" filterProperty="TeSalida/DocMaterial" 	width="10rem" hAlign="Left" id="D">
+                            <Text text="{appTxts>/ValCondi.headerEntradaMercancia}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/DocMaterial}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column 	sortProperty="TeSalida/DocFactura" filterProperty="TeSalida/DocFactura"	width="10rem" hAlign="Left" id="E">
+                            <Text text="{appTxts>/ValCondi.headerRegFactura}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/DocFactura}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column  	sortProperty="TeSalida/DocCargo" filterProperty="TeSalida/DocCargo"	width="10rem" id="F">
+                            <Text text="{appTxts>/ValCondi.folioCargo}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/DocCargo}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column 	sortProperty="TeSalida/Cmsucfol" filterProperty="TeSalida/Cmsucfol"	width="10rem" hAlign="Left" id="G">
+                            <Text text="{appTxts>/ValCondi.refInterna}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/Cmsucfol}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column 	sortProperty="TeSalida/EanUpc" filterProperty="TeSalida/EanUpc"	width="10rem" hAlign="Left" id="H">
+                            <Text text="{appTxts>/ValCondi.EAN}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/EanUpc}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column  sortProperty="TeSalida/MaterialSap" filterProperty="TeSalida/MaterialSap"	width="10rem" hAlign="Left" id="I">
+                            <Text text="{appTxts>/ValCondi.mterialRecibo}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/MaterialSap}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column  sortProperty="TeSalida/FecharSap"  filterProperty="TeSalida/FecharSap"	width="10rem" hAlign="Left" id="J">
+                            <Text text="{appTxts>/ValCondi.fechaRecibo}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ path: 'ModelValidacion>TeSalida/FecharSap'  }" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/UmedidaPSap" filterProperty="TeSalida/UmedidaPSap"	width="10rem" hAlign="Left" id="K">
+                            <Text text="{appTxts>/ValCondi.unidadRecibo}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/UmedidaPSap}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column  sortProperty="TeSalida/CantidadSap" filterProperty="TeSalida/CantidadSap"	 width="10rem" hAlign="Left" id="L">
+                            <Text text="{appTxts>/ValCondi.cantidadRecibo}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/CantidadSap}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column  sortProperty="TeSalida/PrecCDescSap" filterProperty="TeSalida/PrecCDescSap" width="10rem" hAlign="Left" id="M">
+                            <Text text="{appTxts>/ValCondi.costoRecibo}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'ModelValidacion>TeSalida/PrecCDescSap'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/ImporteSap" filterProperty="TeSalida/ImporteSap" width="10rem" hAlign="Left" id="N">
+                            <Text text="{appTxts>/ValCondi.subtotalRecibo}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'ModelValidacion>TeSalida/ImporteSap'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/ImpuestosSap" filterProperty="TeSalida/ImpuestosSap" width="10rem" hAlign="Left" id="O">
+                            <Text text="{appTxts>/ValCondi.impuestosRecibo}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'ModelValidacion>TeSalida/ImpuestosSap'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column  sortProperty="TeSalida/ImpTotCImpSap" filterProperty="TeSalida/ImpTotCImpSap" width="10rem" hAlign="Left" id="P">
+                            <Text text="{appTxts>/ValCondi.totalRecibo}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'ModelValidacion>TeSalida/ImpTotCImpSap'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column  sortProperty="TeSalida/FechaRegSap" filterProperty="TeSalida/FechaRegSap" width="10rem" hAlign="Left" id="Q">
+                            <Text text="{appTxts>/ValCondi.recepcionCFDI}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/FechaRegSap}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column  sortProperty="TeSalida/Serfol" filterProperty="TeSalida/Serfol" width="10rem" hAlign="Left" id="R">
+                            <Text text="{appTxts>/ValCondi.factura}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/Serfol}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column   sortProperty="TeSalida/Material" filterProperty="TeSalida/Material" width="10rem" hAlign="Left" id="S">
+                            <Text text="{appTxts>/ValCondi.materialCFDI}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/Material}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column  sortProperty="TeSalida/Unidad" filterProperty="TeSalida/Unidad" width="10rem" hAlign="Left" id="T">
+                            <Text text="{appTxts>/ValCondi.unidadMedida}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/Unidad}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column  sortProperty="TeSalida/Cantidad"  filterProperty="TeSalida/Cantidad" width="10rem" hAlign="Left" id="U">
+
+                            <Text text="{appTxts>/ValCondi.cantidadCFDI}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'ModelValidacion>TeSalida/Cantidad'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column sortProperty="TeSalida/PrecioUnSi"  filterProperty="TeSalida/PrecioUnSi" width="10rem" hAlign="Left" id="V">
+                            <Text text="{appTxts>/ValCondi.costoCFDI}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'ModelValidacion>TeSalida/PrecioUnSi'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/ImporteTotal" filterProperty="TeSalida/ImporteTotal" width="10rem" hAlign="Left" id="W">
+                            <Text text="{appTxts>/ValCondi.subtotalCFDI}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'ModelValidacion>TeSalida/ImporteTotal'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column  sortProperty="TeSalida/ImpuestosFact" filterProperty="TeSalida/ImpuestosFact"  width="10rem" hAlign="Left" id="X">
+                            <Text text="{appTxts>/ValCondi.impuestosCFDI}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'ModelValidacion>TeSalida/ImpuestosFact'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column  sortProperty="TeSalida/ImporteTotCi" filterProperty="TeSalida/ImporteTotCi"  width="10rem" hAlign="Left" id="Y">
+                            <Text text="{appTxts>/ValCondi.totalCFDI}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'ModelValidacion>TeSalida/ImporteTotCi'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/MejorCantidad" filterProperty="TeSalida/ImporteTotCi"  width="10rem" hAlign="Left" id="Z">
+                            <Text text="{appTxts>/ValCondi.cantidadMC}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'ModelValidacion>TeSalida/MejorCantidad'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/MejorPrecio" filterProperty="TeSalida/MejorPrecio" width="10rem" hAlign="Left" id="AA">
+                            <Text text="{appTxts>/ValCondi.costoMC}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'ModelValidacion>TeSalida/MejorPrecio'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/MejorSubtotal" filterProperty="TeSalida/MejorSubtotal"  width="10rem" hAlign="Left" id="BB">
+                            <Text text="{appTxts>/ValCondi.subtotalMC}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'ModelValidacion>TeSalida/MejorSubtotal'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/ImpuestosTotal"  filterProperty="TeSalida/ImpuestosTotal" width="10rem" hAlign="Left" id="CC">
+                            <Text text="{appTxts>/ValCondi.impuestosMC}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'ModelValidacion>TeSalida/ImpuestosTotal'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/MejorTotal" filterProperty="TeSalida/MejorTotal" width="10rem" hAlign="Left" id="DD">
+                            <Text text="{appTxts>/ValCondi.totalMC}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'ModelValidacion>TeSalida/MejorTotal'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/NcargoMc" filterProperty="TeSalida/NcargoMc" width="10rem" hAlign="Left" id="EE">
+                            <Text text="{appTxts>/ValCondi.subtotalNC}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'ModelValidacion>TeSalida/NcargoMc'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/NcargoImpMc" filterProperty="TeSalida/NcargoImpMc" width="10rem" hAlign="Left" id="FF">
+                            <Text text="{appTxts>/ValCondi.impuestosNC}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'ModelValidacion>TeSalida/NcargoImpMc'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/NcargoTotMc" filterProperty="TeSalida/NcargoTotMc" width="10rem" hAlign="Left" id="GG">
+                            <Text text="{appTxts>/ValCondi.totalNC}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <ObjectNumber number="{parts: [{path: 'ModelValidacion>TeSalida/NcargoTotMc'}, {path:'CurrencyCode'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" unit="{path:'CurrencyCode'}" emphasized="false" state="None" textAlign="Right"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/Estatus"  filterProperty="TeSalida/Estatus" width="10rem" hAlign="Left" id="HH">
+                            <Text text="{appTxts>/ValCondi.Estatus}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/Estatus}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/DescEstat" filterProperty="TeSalida/DescEstat" width="10rem" hAlign="Left" id="II">
+                            <Text text="{appTxts>/ValCondi.Estatus}" width="auto" maxLines="1" wrapping="true" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/DescEstat}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/Centro" width="10rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.sucursal}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/Centro}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/SubtotalXML" width="10rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.subtXML}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/SubtotalXML}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/TotalXML" width="10rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.totalXML}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/TotalXML}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/DifAddenda" width="10rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.difXML}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/DifAddenda}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/TivaXML" width="10rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.tasaIvaXML}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/TivaXML}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/TiepsXML" width="10rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.tasaIepsXML}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/TiepsXML}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/TivaSAP" width="10rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.tasaIvaSap}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/TivaSAP}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/TiepsSap" width="10rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.tasaIepsSap}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/TiepsSap}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/DifImpuestos" width="10rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.difImp}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/DifImpuestos}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/NoExisteEAN" width="10rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.NoEAN}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/NoExisteEAN}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                        <t:Column sortProperty="TeSalida/MsjProv" width="10rem" hAlign="Left">
+                            <Text text="{appTxts>/reporte.proveedorMsj}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            <t:template>
+                                <Text text="{ModelValidacion>TeSalida/MsjProv}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+
+                    </t:columns>
+               
+                </t:Table>
+     
+                   </VBox>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

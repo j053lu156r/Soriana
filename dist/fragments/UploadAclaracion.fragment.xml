@@ -1,0 +1,62 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:unified="sap.ui.unified">
+	<Dialog id="idDialog" title="{appTxts>/upload.title}" horizontalScrolling="false">
+		<UploadCollection id="UploadCollection" maximumFilenameLength="55" maximumFileSize="10" instantUpload="false" change="onChange"
+			fileDeleted="onFileDeleted" filenameLengthExceed="onFilenameLengthExceed" fileSizeExceed="onFileSizeExceed" typeMissmatch="onTypeMissmatch"
+			beforeUploadStarts="onBeforeUploadStarts" noDataText="{appTxts>/upload.noData}" mode="MultiSelect"
+			noDataDescription=" {appTxts>/upload.noDataDesc}" multiple="false" uploadTerminated="onUploadTerminated"/>
+		<Table noDataText="{appTxts>/upload.noDataA}" id="factList" alternateRowColors="true" backgroundDesign="Solid" fixedLayout="false" visible="false">
+			<items>
+				<ColumnListItem type="Inactive">
+					<cells>
+						<Text text="" renderWhitespace="true" maxLines="1" id="nombreArchivo"/>
+						<Image src="" decorative="false" width="100px" densityAware="false" id="prevImage">
+							<detailBox>
+								<LightBox>
+									<LightBoxItem imageSrc="" id="lightPrev"></LightBoxItem>
+								</LightBox>
+							</detailBox>
+							<!-- Fixes Hbox layout on Android Stock Browser for Android 5.0 -->
+							<layoutData>
+								<FlexItemData growFactor="1" shrinkFactor="0"/>
+							</layoutData>
+						</Image>
+						<Toolbar>
+							<content>
+								<Button xmlns:core="sap.ui.core" xmlns:unified="sap.ui.unified" xmlns="sap.m" icon="sap-icon://pdf-attachment" type="Transparent"
+									press="pdfView" tooltip="{appTxts>/upload.pdf}" binding="{deliverTable>/pdf}" id="prevPDF"/>
+								<Button xmlns:core="sap.ui.core" xmlns:unified="sap.ui.unified" xmlns="sap.m" icon="sap-icon://undo" type="Transparent" press="delFact"
+									tooltip="{appTxts>/upload.return}" binding="{deliverTable>/xml}"/>
+								<Button xmlns:core="sap.ui.core" xmlns:unified="sap.ui.unified" xmlns="sap.m" icon="sap-icon://upload" type="Transparent" tooltip="{appTxts>/upload.load}"
+									press="sendFact" visible="false"/>
+							</content>
+						</Toolbar>
+					</cells>
+				</ColumnListItem>
+			</items>
+			<columns>
+				<Column>
+					<header>
+						<Label text="{appTxts>/upload.archive}"/>
+					</header>
+				</Column>
+				<Column>
+					<header>
+						<Label text="{appTxts>/upload.image}" id="dispImage"/>
+					</header>
+				</Column>
+				<Column>
+					<header>
+						<Text id="text1"/>
+					</header>
+				</Column>
+			</columns>
+		</Table>
+		<Text text="{appTxts>/upload.contact} " class="sapUiTinyMarginTop sapUiTinyMarginBegin sapUiTinyMarginEnd" id="tContacto"/><Label text="" id="idCto" class="sapUiTinyMarginTop sapUiTinyMarginEnd" design="Bold"/><Text text="" id="persCto" class="sapUiTinyMarginTop"/>
+		<TextArea xmlns="sap.m" rows="4" id="cmntAnexo" maxLength="256" height="10%" width="100%"
+			placeholder="{appTxts>/upload.desc}"/>
+		<buttons>
+			<Button id="enviarDialog" text="{appTxts>/upload.send}" press="onSubmitAcla"/>
+			<Button id="closeDialog" text="{appTxts>/upload.close}" press="onCloseDialogUpload"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

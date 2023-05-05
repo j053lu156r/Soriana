@@ -1,0 +1,56 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <HBox alignItems="Center" justifyContent="Center" width="100%">
+        <VBox width="40%" class="sapUiTinyMargins">
+            <!-- <RadioButtonGroup id="rbgOpciones" select="onSelectRBOption">
+                <RadioButton text="{appTxts>/quotes.secos}" selected="true" />
+                <RadioButton text="{appTxts>/quotes.frescos}" />
+            </RadioButtonGroup> -->
+            <Label text="{appTxts>/quotes.quoteType}" labelFor="currency"/>
+            <Select id="sTipoCita" class="sapUiSmallMarginBottom"  items="{
+                        path: 'appoinmentsCatalogs>/ETIPOCITANAV/results',
+                        sorter: { path: 'Name' }
+                    }" change="onChangeSelectTipoCita">
+                <items>
+                    <core:Item key="{appoinmentsCatalogs>ZNumcita}" text="{appoinmentsCatalogs>ZTipocita}" />
+                </items>
+            </Select>
+           
+            <Label text="{appTxts>/quotes.totalpackages}" />
+            <Input id="totalpackagesInput" class= "sapUiSmallMarginBottom" width="auto" change=".hasOnlyNumbers" type="Number" />
+            <Label text="{appTxts>/quotes.platforms}"/>
+            <Input id="platformsInput" class= "sapUiSmallMarginBottom" width="auto" change=".hasOnlyNumbers" type="Number" />
+             <Label text="{appTxts>/quotes.quoteDateIns}" labelFor="DP2" id="txtDP2"/>
+            <DatePicker id="DP2" width="auto" class="sapUiSmallMarginBottom" placeholder="{appTxts>/quotes.quoteDateIns}" change="inspeccion" visible="true"/>
+
+        </VBox>
+        <VBox width="40%" class="sapUiTinyMargins">
+          <Label text="{appTxts>/quotes.Ordenes}" labelFor="currency"/>
+             <Select id="sOrdenes" class="sapUiSmallMarginBottom"  items="{
+                        path: 'appoinmentsCatalogs>/ECONFIGCEDISNAV/results',
+                        sorter: { path: 'Werks' }
+                    }" >
+                <items>
+                    <core:Item key="{appoinmentsCatalogs>Werks}" text="{appoinmentsCatalogs>Werks}" />
+                </items>
+            </Select>
+            <Label text="{appTxts>/quotes.unitType}" />     
+            <Select id="sTipoUnidad" class= "sapUiSmallMarginBottom" items="{
+                        path: 'appoinmentsCatalogs>/ETIPOUNIDADNAV/results'
+                    }"
+                change = "onChangeSelectTipoUnidad">
+                <items>
+                    <core:Item key="{appoinmentsCatalogs>ZNumunidad}" text="{appoinmentsCatalogs>ZTipounidad}" />
+                </items>
+            </Select>
+            <!-- <Label text="{appTxts>/quotes.productType}" />
+            <Input id="productTypeC" placeholder="{appTxts>/quotes.productType}" showSuggestion="true" valueHelpOnly="false" showValueHelp="true" width="auto" valueHelpRequest="helpProductType(true)" suggestionItemSelected="onSelectProductType"/> -->
+            <Label text="{appTxts>/quotes.carrier}" />
+            <Input id="carrierInput" class= "sapUiSmallMarginBottom" width="auto" change=".hasOnlyNumbers" type="Number" />
+            <Label text="{appTxts>/quotes.quoteDate}" labelFor="DP1"/>
+            <DatePicker id="DP1" width="auto" class="sapUiSmallMarginBottom" placeholder="{appTxts>/quotes.quoteDate}" change="appointmentDateChange"/>
+             <!--  <Label text="Cant Tarimas" labelFor="tarimaInput" id="txttarimaInput"/>
+            <Input id="tarimaInput" class= "sapUiSmallMarginBottom" width="auto" change="tes" type="Number" />-->
+        </VBox>
+    </HBox>
+</core:FragmentDefinition>
