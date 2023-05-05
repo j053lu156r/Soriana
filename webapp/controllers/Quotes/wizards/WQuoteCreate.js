@@ -585,11 +585,21 @@ console.log(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results)
 
                   } else {
                     for (var x = 0; x < appoimentModel.length; x++) {
+                      console.log(appoimentModel[x].Citado)
+                   //   appoimentModel[x].Citado =1,400;
+let citado=""
+                      if(appoimentModel[x].Citado.toLocaleString().includes(',')){
+                        citado=appoimentModel[x].Citado.toLocaleString()
+                        citado=citado.replace(",", "")
+                      }else{
+                        citado=appoimentModel[x].Citado.toLocaleString()
+                      }
+                      console.log(citado)
                       ArrTCN.push({
                         Ebeln: appoimentModel[x].Ebeln,
                         Ebelp: appoimentModel[x].Ebelp,
                         Matnr: appoimentModel[x].Matnr,
-                        Citado: appoimentModel[x].Citado.toLocaleString(),
+                        Citado: citado,
                         FechaCita: appoimentModel[x].FechaCita,
                         HoraIni: appoimentModel[x].HoraIni,
                         HoraFin: appoimentModel[x].HoraFin,
