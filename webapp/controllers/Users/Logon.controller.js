@@ -272,6 +272,6 @@ sap.ui.define([
                     sap.m.MessageBox.error(this.getOwnerComponent().getModel('appTxts').getProperty("/logonCon.verifyPass"));
                 }
             }
-        }
+        },
     });
 });

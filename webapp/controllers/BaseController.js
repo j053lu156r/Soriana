@@ -467,6 +467,10 @@ sap.ui.define([
                             }
                         }
                     });
+                    if (t.functions.length === 0 ) {
+                        userTileAuth.tiles.push(t.id);
+                        userTileAuth.sections.push(section.title);
+                    }
                 });
             });
 

@@ -794,6 +794,22 @@
                     ]
                 }
             ]
+        },
+        {
+            "title": "/tiles.titleTC",
+            "tiles": [
+                {
+                    "id": "0067",
+                    "title": "/tiles.titleTC.0001.terms",
+                    "subHeader": "",
+                    "icon": "sap-icon://documents",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterTermsAndConds",
+                    "functions": []
+                }
+            ]
         }
     ]
 }

@@ -1047,6 +1047,13 @@
                     "target": [
                         "detailEscalasCentro"
                     ]
+                },
+                {
+                    "name": "masterTermsAndConds",
+                    "pattern": "masterTermsAndConds",
+                    "target": [
+                        "masterTermsAndConds"
+                    ]
                 }
             ],
             "targets": {
@@ -1610,6 +1617,12 @@
                     "viewName": "detailEscalasCentro",
                     "viewPath": "demo.views.acuerdosEscalas",
                     "controlAggregation": "endColumnPages"
+                },
+                "masterTermsAndConds": {
+                    "viewType": "XML",
+                    "viewName": "Master",
+                    "controlAggregation": "beginColumnPages",
+                    "viewPath": "demo.views.TermsAndConds"
                 }
             }
         },
