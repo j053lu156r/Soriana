@@ -1,0 +1,23 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:unified="sap.ui.unified">
+	<Dialog title="{appTxts>/date.title}" horizontalScrolling="true">
+		<sap.ui.layout:VerticalLayout xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+			xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout" xmlns:sap.ui.layout="sap.ui.layout"
+			class="sapUiResponsiveMargin" id="layout2_1551750048512">
+			<sap.ui.layout:content>
+				<unified:Calendar xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+					xmlns:html="http://www.w3.org/1999/xhtml" xmlns:sap.ui.layout="sap.ui.layout" xmlns:unified="sap.ui.unified" id="oCalFin"
+					select="handleCalendarSelect" intervalSelection="true" maxDate="{path: '/maxDate'}" disabledDates="{path: '/disabled'}">
+					<unified:disabledDates>
+						<unified:DateRange startDate="{start}" endDate="{end}" id="range1_oCalFin_0_oCalFin_0_copy_oCalFin_0"/>
+					</unified:disabledDates>
+				</unified:Calendar>
+			</sap.ui.layout:content>
+		</sap.ui.layout:VerticalLayout>
+		<buttons>
+			<Button id="realizaConsulta" text="{appTxts>/date.consult}" press="searchData"/>
+		</buttons>
+		<buttons>
+			<Button id="closeDialog" text="{appTxts>/date.close}" press="onCloseDialog"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>
