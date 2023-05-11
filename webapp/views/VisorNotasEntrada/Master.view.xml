@@ -148,12 +148,14 @@
                                 <Text text="{migoModel>Total} {migoModel>Waers}" wrapping="false"/>
                             </t:template>
                         </t:Column>
+                        <!--
                         <t:Column width="auto" id="idTotalImp" visible="true" sortProperty="TotImp" filterProperty="TotImp"> 
                             <Label text="{appTxts>/visor.totalImp}" />
                             <t:template>
                                 <Text text="{migoModel>TotImp} {migoModel>Waers}" wrapping="false"/>
                             </t:template>
                         </t:Column>
+                        -->
                        <t:Column width="auto" id="download" visible="true"> 
                             <Label text="{appTxts>/visor.downloadPDF}" />
                             <t:template>

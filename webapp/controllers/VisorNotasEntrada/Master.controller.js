@@ -333,12 +333,13 @@ sap.ui.define([
                 type: EdmType.String,
                 property: 'Total'
             });
-
+            /*
             aCols.push({
                 label: texts.getProperty("/visor.totalImp"),
                 type: EdmType.String,
                 property: 'TotImp'
             });
+            */
 
             aCols.push({
                 label: texts.getProperty("/visor.currency"),
@@ -542,12 +543,13 @@ sap.ui.define([
                 type: EdmType.String,
                 property: 'Total'
             });
-
+            /*
             aCols.push({
                 label: texts.getProperty("/visor.totalImp"),
                 type: EdmType.String,
                 property: 'TotImp'
             });
+            */
 
             aCols.push({
                 label: texts.getProperty("/visor.currency"),
