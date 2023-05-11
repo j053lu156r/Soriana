@@ -26,21 +26,20 @@
                     <m:Label text="{appTxts>/visor.total}" />
                     <m:Text text="{DetalleModel>/Total} {DetalleModel>/Waers}" class="sapUiTinyMarginBegin" />
 
+                    <m:Label text="{appTxts>/visor.supplier}" />
+                    <m:Text text="{DetalleModel>/Lifnr}" class="sapUiTinyMarginBegin" />
+                    <!--
                     <m:Label text="{appTxts>/visor.totalImp}" />
-                    <m:Text text="{DetalleModel>/TotImp} {DetalleModel>/Waers}" class="sapUiTinyMarginBegin" />                  
+                    <m:Text text="{DetalleModel>/TotImp} {DetalleModel>/Waers}" class="sapUiTinyMarginBegin" /> 
+                    -->                
                 </m:VBox>
 
                 <m:VBox justifyContent="Center" class="sapUiLargeMargin">
-                    <m:Label text="{appTxts>/visor.supplier}" />
-                    <m:Text text="{DetalleModel>/Lifnr}" class="sapUiTinyMarginBegin" />
+                    <m:Label text="{appTxts>/visor.receivedDate}" />
+                    <m:Text text="{DetalleModel>/BudatMkpf}" class="sapUiTinyMarginBegin" />
 
                     <m:Label text="{appTxts>/visor.Frecibo}" />
                     <m:Text text="{DetalleModel>/Xblnr}" class="sapUiTinyMarginBegin" />
-                </m:VBox>
-
-                <m:VBox justifyContent="Center">
-                    <m:Label text="{appTxts>/visor.receivedDate}" />
-                    <m:Text text="{DetalleModel>/BudatMkpf}" class="sapUiTinyMarginBegin" />
                 </m:VBox>
             </m:FlexBox>
         </headerContent>
@@ -115,7 +114,7 @@
                                             </t:template>
                                         </t:Column>
                                         <t:Column width="auto" id="idTotal" visible="true" sortProperty="Total" filterProperty="Total">
-                                            <m:Label text="{appTxts>/visor.total}" />
+                                            <m:Label text="{appTxts>/visor.unitPrice}" />
                                             <t:template>
                                                 <m:Text text="{DetallePosiciones>Brtwr} {DetallePosiciones>Waers}" wrapping="false" />
                                             </t:template>
