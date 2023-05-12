@@ -1,0 +1,54 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" width="100%">
+    <Dialog title="{appTxts>/user.extendUser}">
+        <f:SimpleForm editable="false" layout="ColumnLayout" title="{appTxts>/user.selectSupplier}" columnsM="2" columnsL="3"
+            columnsXL="4">
+            <f:content>
+                <Input id="supplierInputExtend" placeholder="{appTxts>/user.vendor}" showSuggestion="true" valueHelpOnly="true" showValueHelp="true"
+                    valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}">
+
+                </Input>
+            </f:content>
+        </f:SimpleForm>
+
+        <FlexBox 
+            direction="Column"
+            alignItems="Start"
+            alignContent="Stretch" 
+            items="{tilesModelLocal>/sections}">
+            <items>
+                <FlexBox 
+                alignItems="Stretch" 
+                alignContent="Stretch" 
+                direction="Row" 
+                renderType="Bare" 
+                wrap="NoWrap" 
+                width="100%" 
+                displayInline="false" 
+                fitContainer="true" 
+                items="{path: 'tilesModelLocal>tiles', templateShareable:false}"
+                class="sapUiMediumMargin">
+                    <items>
+                        <VBox width="25%">
+                            <Title text="{path: 'tilesModelLocal>title', formatter: '.formatTranslate'}" />
+                            <FlexBox
+                            direction="Column" 
+                            alignItems="Start"
+                            items="{path: 'tilesModelLocal>functions', templateShareable:false}">
+                                <items>
+                                    <CheckBox width="100%" 
+                                    text="{path: 'tilesModelLocal>idFunction', formatter: '.findFunName'}" 
+                                    select=".functionSelectedExtended"
+                                    visible="{path: 'tilesModelLocal>roles', formatter: '.adminFields'}" />
+                                </items>
+                            </FlexBox>
+                        </VBox>                            
+                    </items>
+                </FlexBox>
+            </items>
+        </FlexBox>
+        <buttons>
+            <Button text="{appTxts>/nuser.cancel}" press="extendDialogClose" />
+            <Button type="Accept" text="{appTxts>/parameters.save}" press="extendUserSave" />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

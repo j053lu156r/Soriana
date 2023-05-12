@@ -1,0 +1,60 @@
+{
+    "results": [
+        {
+            "PoNumber": "4500000239",
+            "PoItem": "10",
+            "Material": "400005",
+            "ShortText": "Material generico 1",
+            "TargetQty": 600,
+            "Quantity": 500,
+            "Unit": "PZ",
+            "NetPrice": 25963.2,
+            "TaxCode": "MXN",
+            "NetValue": 2489.53,
+            "PriceUnit": 2532,
+            "DeleteInd": ""
+        },
+        {
+            "PoNumber": "4500000239",
+            "PoItem": "20",
+            "Material": "400005",
+            "ShortText": "Material generico 1",
+            "TargetQty": 600,
+            "Quantity": 500,
+            "Unit": "PZ",
+            "NetPrice": 25963.2,
+            "TaxCode": "MXN",
+            "NetValue": 2489.53,
+            "PriceUnit": 2532,
+            "DeleteInd": ""
+        },
+        {
+            "PoNumber": "4500000239",
+            "PoItem": "30",
+            "Material": "400005",
+            "ShortText": "Material generico 1",
+            "TargetQty": 600,
+            "Quantity": 500,
+            "Unit": "PZ",
+            "NetPrice": 25963.2,
+            "TaxCode": "MXN",
+            "NetValue": 2489.53,
+            "PriceUnit": 2532,
+            "DeleteInd": ""
+        },
+        {
+            "PoNumber": "4500000239",
+            "PoItem": "40",
+            "Material": "400005",
+            "ShortText": "Material generico 1",
+            "TargetQty": 600,
+            "Quantity": 500,
+            "Unit": "PZ",
+            "NetPrice": 25963.2,
+            "TaxCode": "MXN",
+            "NetValue": 2489.53,
+            "PriceUnit": 2532,
+            "DeleteInd": ""
+        }
+    ]
+}

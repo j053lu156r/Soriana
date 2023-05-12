@@ -1,0 +1,173 @@
+<mvc:View displayBlock="true" 
+        controllerName="demo.controllers.FacSoriana.Detail" 
+        height="100%"
+		xmlns="sap.uxap"
+		xmlns:mvc="sap.ui.core.mvc"
+		xmlns:m="sap.m"
+		xmlns:f="sap.f"
+        xmlns:core="sap.ui.core" 
+        xmlns:t="sap.ui.table"        
+		xmlns:form="sap.ui.layout.form">
+
+	<ObjectPageLayout id="ObjectPageLayout"
+            showTitleInHeaderContent="true"
+            alwaysShowContentHeader="false"
+            preserveHeaderStateOnScroll="false"
+            headerContentPinnable="true"
+            isChildPage="true"
+            upperCaseAnchorBar="false">
+        <headerTitle>
+            <ObjectPageDynamicHeaderTitle>
+                <expandedHeading>
+                    <m:Title text="{appTxts>/fs.docno}: {facSorianaHdr>/Espmthd/Vblnr}" wrapping="true" class="sapUiSmallMarginEnd"/>
+                </expandedHeading>
+
+                <navigationActions>
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose"  tooltip="Close column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }" />
+                </navigationActions>
+
+            </ObjectPageDynamicHeaderTitle>
+        </headerTitle>
+
+        <headerContent>
+            <m:FlexBox class="columns" renderType="Bare">
+                <f:Avatar src="sap-icon://customer-order-entry"
+                            displaySize="L"
+                            displayShape="Square"
+                            class="sapUiTinyMarginEnd">
+                </f:Avatar>
+                <m:VBox class="sapUiSmallMarginEnd">
+                    <m:ObjectAttribute title="{appTxts>/fs.Fechapago}" />
+                    <m:ObjectStatus text="{path: 'facSorianaHdr>/Espmthd/Augdt', formatter: '.ReverseDate'}"/>
+                    
+                    <m:ObjectAttribute title="{appTxts>/global.vendor}" />
+                    <m:ObjectStatus text="{facSorianaHdr>/Espmthd/Lifnr} - {facSorianaHdr>/Espmthd/Pname}"/>
+                    <m:layoutData>
+                        <m:FlexItemData
+                            growFactor="1"
+                            baseSize="auto"
+                            backgroundDesign="Solid"
+                            styleClass="sapUiTinyMargin" />
+                    </m:layoutData>
+                </m:VBox>
+                <m:VBox class="sapUiSmallMarginEnd">
+<!--Se deja vacío para de dar espacio -->
+                </m:VBox>
+                <m:VBox class="sapUiSmallMarginEnd">
+                    <m:ObjectAttribute title="{appTxts>/plan.amount}"/>
+                    <ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.commons.layout"
+                    xmlns="sap.m"
+                    number="{parts: [{path: 'facSorianaHdr>/EZtotimp'}, {path: 'facSorianaHdr>/Waers'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}"
+                    unit="{facSorianaHdr>/Waers}" emphasized="false" state="None"/>
+
+                    <m:ObjectAttribute title="{appTxts>/global.company}" />
+                    <m:ObjectStatus text="{facSorianaHdr>/Espmthd/Zbukr}"/>
+                    <m:ObjectAttribute title="{appTxts>/global.year}" />
+                    <m:ObjectStatus text="{facSorianaHdr>/Espmthd/Zyaldt}"/>
+                    <m:layoutData>
+                        <m:FlexItemData
+                            growFactor="1"
+                            baseSize="auto"
+                            backgroundDesign="Solid"
+                            styleClass="sapUiTinyMargin" />
+                    </m:layoutData>
+                </m:VBox>
+            </m:FlexBox>
+        </headerContent>
+
+		<sections>
+                <ObjectPageSection showTitle="false" title="{appTxts>/fs.detailtype}">
+                    <subSections>
+                        <ObjectPageSubSection>
+                            <blocks>
+                            <m:VBox>
+                                <m:Table items="{path : 'facSorianaHdr>/ETAGDOCNAV/Paginated/results'}">
+                                        <m:headerToolbar>
+                                            <m:OverflowToolbar>
+                                                <!--<m:Title text="{appTxts>/order.positions}" /> -->
+                                                <m:ToolbarSpacer/>
+                                                <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" 
+                                                    press=".buildExcel"
+                                                    />
+                                                <m:Select 
+                                                    visible="{= ${facSorianaDocs>/ETDCTDTNAV/Paginated/results/length} > 0 }"
+                                                    change=".paginateValue(${$parameters>/selectedItem}, 'facSorianaDocs', '/ETDCTDTNAV')">
+                                                    <m:items>
+                                                        <core:Item key="10" text="10"/>
+                                                        <core:Item key="20" text="20"/>
+                                                        <core:Item key="50" text="50"/>
+                                                        <core:Item key="100" text="100"/>
+                                                    </m:items>
+                                                </m:Select>
+                                            </m:OverflowToolbar>
+                                        </m:headerToolbar>
+                                    <m:columns>
+                                        <m:Column><m:Text text="{appTxts>/fs.doctype}" visible="false" /></m:Column>
+                                        <m:Column><m:Text text="{appTxts>/fs.amount}" /></m:Column>
+                                        <m:Column><m:Text text="{appTxts>/fs.docqty}" /></m:Column>
+                                    </m:columns>
+                                    <m:items>
+
+                                    <m:ColumnListItem >
+                                    <m:cells>
+                                        <m:ObjectIdentifier text="{facSorianaHdr>Ltext}"/>
+                                        <m:ObjectIdentifier text="{facSorianaHdr>Dmbtr}"/>
+                                        <m:ObjectIdentifier text="{facSorianaHdr>Zcon}"/>                                    
+                                      <!--  <m:ObjectIdentifier text="{ parts: ['facSorianaHdr>Vtext', 'facSorianaHdr>Vtext', 'appTxts>/fs.total'], formatter: '.formatDesc'}"/> 
+                                        <m:ObjectIdentifier text="{ parts: ['facSorianaHdr>Dmbtr', 'facSorianaHdr>Dmbtr', 'facSorianaHdr>Ztotimp'], type:'sap.ui.model.type.Currency', formatter: '.formatTotal' }"/>
+                                        <m:ObjectIdentifier text="{ parts: ['facSorianaHdr>Zcon', 'facSorianaHdr>Zcon', 'facSorianaHdr>Ztotcomp'], formatter: '.formatTotal'}" /> -->  
+                                    </m:cells>
+                                    </m:ColumnListItem>
+                                    </m:items>
+                                </m:Table>
+                                </m:VBox>                           
+                            </blocks>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+		</sections>
+		<sections>
+                <ObjectPageSection showTitle="false" title="{appTxts>/fs.detaildoctype}" titleUppercase="false">
+                    <subSections>
+                        <ObjectPageSubSection>
+                            <blocks>
+                                <m:VBox>
+                                <m:Table  items="{path : 'facSorianaDocs>/ETDCTDTNAV/Paginated/results'}">
+                                    <m:columns> 
+                                        <m:Column><m:Text text="{appTxts>/fs.documento}" /></m:Column>
+                                        <m:Column><m:Text text="{appTxts>/fs.descrip}" /></m:Column>                                  
+                                        <m:Column><m:Text text="{appTxts>/fs.Fechapago}" /></m:Column>
+                                        <m:Column><m:Text text="{appTxts>/fs.amount}" /></m:Column>    
+                                        <m:Column><m:Text text="{appTxts>/fs.foliofact}" /></m:Column>                                              
+                                        <m:Column><m:Text text="{appTxts>/fs.uuid}" /></m:Column>                                        
+                                    </m:columns>
+                                    <m:items> 
+    
+                                    <m:ColumnListItem >
+                                    <m:cells> 
+                                        <m:ObjectIdentifier text="{facSorianaDocs>Belnr}"/>
+                                        <m:ObjectIdentifier text="{facSorianaDocs>Ltext}"/>
+                                        <m:ObjectIdentifier text="{path: 'facSorianaDocs>Budat', formatter: '.ReverseDate'}"/>
+                                        <m:ObjectIdentifier text="{facSorianaDocs>Dmbtr} {facSorianaDocs>/Waers} "/>                                        
+                                        <m:ObjectIdentifier text="{facSorianaDocs>FolfacRef}" />    
+                                        <m:ObjectIdentifier text="{facSorianaDocs>CveUuid}"/>                                      
+                                    </m:cells>
+                                    </m:ColumnListItem>
+                                    </m:items>
+                                </m:Table>
+                                <m:OverflowToolbar visible="{= ${facSorianaDocs>/ETDCTDTNAV/Paginated/results/length} > 0 }">
+                                    <m:Text text="{facSorianaDocs>/ETDCTDTNAV/Paginated/initRow} - {facSorianaDocs>/ETDCTDTNAV/Paginated/endRow} {appTxts>/pagination.of} {facSorianaDocs>/ETDCTDTNAV/results/length}" />
+                                    <m:ToolbarSpacer/>
+                                    <m:Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${facSorianaDocs>/ETDCTDTNAV/Paginated/iterator}, ${facSorianaDocs>/ETDCTDTNAV/Paginated/initRow}, 'facSorianaDocs', '/ETDCTDTNAV')" enabled="{= ${facSorianaDocs>/ETDCTDTNAV/Paginated/iterator} !== 1}" />
+                                    <m:Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${facSorianaDocs>/ETDCTDTNAV/Paginated/iterator}, ${facSorianaDocs>/ETDCTDTNAV/Paginated/endRow}, 'facSorianaDocs', '/ETDCTDTNAV')" enabled="{= ${facSorianaDocs>/ETDCTDTNAV/Paginated/endRow} !== ${facSorianaDocs>/ETDCTDTNAV/results/length}}" />
+                                </m:OverflowToolbar>
+                                </m:VBox>
+                            </blocks>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+		</sections>
+	</ObjectPageLayout>
+</mvc:View>

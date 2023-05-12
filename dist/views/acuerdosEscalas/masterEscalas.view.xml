@@ -1,0 +1,222 @@
+<mvc:View xmlns:f="sap.f" 
+            xmlns:mvc="sap.ui.core.mvc" 
+            xmlns:fb="sap.ui.comp.filterbar" 
+            xmlns:vm="sap.ui.comp.variants" 
+            xmlns="sap.m" 
+            xmlns:core="sap.ui.core" 
+            xmlns:layout="sap.ui.layout" 
+            displayBlock="true" 
+            controllerName="demo.controllers.acuerdosEscalas.masterEscalas" 
+            height="100%">
+    <f:DynamicPage id="DP01" class="sapUiContentPadding">
+        <f:header>
+            <f:DynamicPageHeader id="DPH" pinnable="true">
+                <f:content>
+                    <fb:FilterBar   id="filterBar" 
+                                    header="Header" 
+                                    reset="onReset" 
+                                    search="searchData" 
+                                    clear="clearFilters" 
+                                    cancel="onCancel" 
+                                    filtersDialogClosed="onFiltersDialogClosed" 
+                                    showRestoreButton="false" 
+                                    showClearButton="false" 
+                                    useToolbar="false">
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem id="FG01" 
+                                                groupName="__$INTERNAL$" 
+                                                name="A" 
+                                                label="{appTxts>/ACEscalas.polizas.sociedad}" 
+                                                mandatory="false" 
+                                                partOfCurrentVariant="true" 
+                                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input  id="sociedadInput" 
+                                            placeholder="{appTxts>/ACEscalas.polizas.sociedad}" 
+                                            showSuggestion="true" 
+                                            maxLength="4"> 
+                                    </Input>
+                                </fb:control>
+                             </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FG02" 
+                                                groupName="__$INTERNAL$" 
+                                                name="B" 
+                                                label="{appTxts>/ACEscalas.polizas.docto}" 
+                                                mandatory="false" 
+                                                partOfCurrentVariant="true" 
+                                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input  id="documentoInput" 
+                                            placeholder="{appTxts>/polizas.docto}" 
+                                            showSuggestion="true" 
+                                            maxLength="10"> 
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem id="FG03" 
+                                                groupName="__$INTERNAL$" 
+                                                name="C" label="{appTxts>/ACEscalas.polizas.ejercicio}" 
+                                                mandatory="false" partOfCurrentVariant="true" 
+                                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input  id="ejercicioInput" 
+                                            placeholder="{appTxts>/ACEscalas.polizas.ejercicio}" 
+                                            showSuggestion="true" 
+                                            maxLength="4"> 
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+                     </fb:FilterBar>
+                    <layout:HorizontalLayout    id="HL01" 
+                                                allowWrapping="true">
+                        <layout:VerticalLayout  id="VL01" 
+                                                class="sapUiMediumMarginEnd">
+                            <ObjectAttribute    id="OA01" 
+                                                title="{appTxts>/ACEscalas.polizas.vendor}"/>
+                        </layout:VerticalLayout>
+                        <layout:VerticalLayout  id="VL01D" 
+                                                class="sapUiMediumMarginEnd">
+                             <ObjectAttribute id="OA01D" text="{policyEscalaTotModel>/VendorName}"/>
+                        </layout:VerticalLayout>
+                    </layout:HorizontalLayout>
+                </f:content>
+            </f:DynamicPageHeader>
+         </f:header>
+        <f:content>
+             <VBox id="VB01">
+                 <Table growing="true" 
+                        growingScrollToLoad="true" 
+                        growingThreshold="10" 
+                        noDataText="{appTxts>/ACEscalas.polizas.noData}" 
+                        id="tablePolicyEscalas" 
+                        items="{policyEscalasDta>/}">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <Title id="Title01" text="{appTxts>/ACEscalas.polizas.Position} ({policyEscalasDta>/length})"/>
+                            <ToolbarSpacer id="TBS01"/>
+                            <Button id="BTNC" 
+                                    icon="sap-icon://monitor-payments" 
+                                    text="{appTxts>/polizas.detCargo}" 
+                                    press=".onSummarizedScale"
+                                    visible="{= ${policyEscalasDta>/length} > 0}"
+                        />
+                            <Button id="BTNE" 
+                                    icon="sap-icon://excel-attachment" 
+                                    text="{appTxts>/global.export}" 
+                                    press=".buildExportTable" 
+                                    visible="{= ${policyEscalasDta>/length} > 0}"/>
+                        </OverflowToolbar>
+                    </headerToolbar>
+
+                    <columns>
+                	<Column id="CCentro" 
+                            width="auto" 
+                            hAlign="Center" 
+                            vAlign="Top" 
+                            minScreenWidth="Phone" 
+                            demandPopin="true" 
+                            popinDisplay="Inline" 
+                            mergeDuplicates="false">
+						<header>
+							<Text   id="txtS" 
+                                    text="{appTxts>/ACEscalas.polizas.sucursal}" 
+                                    width="auto" 
+                                    maxLines="1" 
+                                    wrapping="false" 
+                                    textAlign="Begin" 
+                                    textDirection="Inherit"/>
+						</header>
+						<footer>
+                            <Text   id="txtT" 
+                                    text="Total" 
+                                    width="auto" 
+                                    maxLines="1" 
+                                    wrapping="false" 
+                                    textAlign="Begin" 
+                                    textDirection="Inherit"/>
+                        </footer>
+					</Column>
+                    <Column id="CBase" 
+                            width="auto" 
+                            hAlign="Right" 
+                            vAlign="Top"
+                            minScreenWidth="Phone" 
+                            demandPopin="true" 
+                            popinDisplay="Inline" 
+                            mergeDuplicates="false">
+						<header>
+							<Text   id="txtB" 
+                                    text="{appTxts>/ACEscalas.polizas.base}" 
+                                    width="auto" 
+                                    maxLines="1" 
+                                    wrapping="false" 
+                                    textAlign="Begin" 
+                                    textDirection="Inherit"/>
+						</header>
+						<footer>
+                            <ObjectNumber id="OBNT"
+                                number="{
+                                    parts:[{path:'policyEscalaTotModel>/totImporte'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="{policyEscalaTotModel>/currCode}" />
+                        </footer>
+					</Column>
+					<Column id="CDesc" 
+                            width="auto" 
+                            hAlign="Right" 
+                            vAlign="Top" 
+                            minScreenWidth="Phone" 
+                            demandPopin="true" 
+                            popinDisplay="Inline" 
+                            mergeDuplicates="false">
+						<header>
+							<Text   id="txtD" 
+                                    text="{appTxts>/ACEscalas.polizas.desc}" 
+                                    width="auto" 
+                                    maxLines="1" 
+                                    wrapping="false" 
+                                    textAlign="Begin" 
+                                    textDirection="Inherit"/>
+						</header>
+						<footer>
+                            <ObjectNumber id="ONT"
+                                number="{
+                                    parts:[{path:'policyEscalaTotModel>/TotDescto'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="{policyEscalaTotModel>/currCode}" />
+                        </footer>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem id="CItems">                    
+						<cells>
+                            <ObjectIdentifier id="OIB"
+                                title="{policyEscalasDta>segment}" 
+                                titleActive="false"/>
+                            <ObjectNumber id="ONB"
+                                number="{
+                                    parts:[{path:'policyEscalasDta>dmbtr'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="{policyEscalasDta>waers}" />
+                            <ObjectNumber id="OND"
+                                number="{
+                                    parts:[{path:'policyEscalasDta>wrbtr'},{path:'CurrencyCode'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                        }"
+                                unit="{policyEscalasDta>Waers}" />
+						</cells>
+					</ColumnListItem>
+				</items>
+                </Table>
+            </VBox>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>
