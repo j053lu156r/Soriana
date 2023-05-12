@@ -52,6 +52,7 @@ sap.ui.define([
             var iMail = this.getView().byId("filterMail").getValue();
             var vDropUser = this.getView().byId("sendDorps").getSelected();
             var vCallUser = this.getView().byId("callUser").getSelected();
+            console.log(this.getOwnerComponent().getModel("userdata"))
 
  /* INICIA INSERT BORTA  Se solicita validar que cuando no se ingresan valores a los filtros, enviar error    */           
               if (vLifnr == null || vLifnr == "") {
