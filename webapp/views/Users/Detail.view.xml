@@ -62,7 +62,7 @@
                                     text="{appTxts>/user.unlink}"
                                     type="Transparent"
                                     press="handleUnlink"
-                                    visible="{= ${userdata>/ERol} === '0001' || ${userdata>/ERol} === '0002' ? ${detailUserModel>/Esusdata/Zusuasor} !== 'X' : false }"
+                                    visible="{= ${userdata>/ERol} === '0001' || ${userdata>/ERol} === '0002' || ${userdata>/ERol} === '0005'? ${detailUserModel>/Esusdata/Zusuasor} !== 'X' : false }"
                                      />
                             <m:Button
                                     text="{= ${detailUserModel>/Esusdata/Zactivo} !== 'B' ? ${appTxts>/user.disable} : ${appTxts>/user.enable} }"
