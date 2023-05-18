@@ -5,10 +5,10 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/routing/History",
     "sap/ui/core/routing/HashChanger",
-    "sap/ui/core/Fragment",
-    "sap/m/MessageBox",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
+    "sap/ui/core/Fragment",
+    "sap/m/MessageBox",
     "sap/ui/Device",
     "sap/ui/core/UIComponent",
     "sap/ui/core/util/Export",
@@ -19,6 +19,7 @@ sap.ui.define([
     "use strict";
     var oUser = new this.UserModel();
     var inboxModel = new this.MyInbox();
+    var ModelSTIBO = new this.ProveedorSTIBO();
     return Controller.extend("demo.controllers.BaseController", {
         onBeforeRendering: function () {
             var configModel = this.getConfigModel();
@@ -39,7 +40,7 @@ sap.ui.define([
 
             };
             this.setConfigModel();
-
+            this.oModelSTIBO = new sap.ui.model.odata.v2.ODataModel(ModelSTIBO.sUrl);
         },
         onBeforeShow: function () {
             var router = this.getOwnerComponent().getRouter();
@@ -317,6 +318,7 @@ sap.ui.define([
             this.getConfigModel().setProperty("/supplierInputKey", null);
             this.getConfigModel().setProperty("/supplierTitle", null);
             this.getConfigModel().setProperty("/adendaSimplificada", false);
+            this.getConfigModel().setProperty("/stibo", false);
             /*    if (!this._pValueHelpDialog) {
                     this._pValueHelpDialog = sap.ui.core.Fragment.load({
                         id: oView.getId(),
@@ -409,9 +411,35 @@ sap.ui.define([
             } else {
                 this.getConfigModel().setProperty("/adendaSimplificada", false);
             }
-    
+            this.onVerifyProveedorSTIBO(key);
             this.buildUserTileAuth();
         },
+
+        onVerifyProveedorSTIBO: function(key){
+            if (key !== "" && key !== undefined && key !== null) {
+                var that = this;
+                var aFilter = [];
+                aFilter.push(new Filter("Lifnr", FilterOperator.EQ, key));
+
+                this.oModelSTIBO.read("/PROVSTIBOSet", {
+                    filters: aFilter,
+                    success: function(response){
+                        if(response.results[0].Activo === "X"){
+                            that.getConfigModel().setProperty("/stibo", true);
+                        } else {
+                            that.getConfigModel().setProperty("/stibo", false);
+                        }
+                    }, 
+                    error: function(error){
+                        console.log(error)
+                        that.getConfigModel().setProperty("/stibo", false);
+                    }
+                });
+            } else {
+                this.getConfigModel().setProperty("/stibo", false);
+            }
+        },
+
         detailSupplier: function (key) {
             var suppList = this.getOwnerComponent().getModel("userdata").getProperty("/ETUSUAPROVNAV/results");
 

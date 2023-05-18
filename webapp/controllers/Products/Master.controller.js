@@ -23,6 +23,8 @@ sap.ui.define([
     var _invalidCostoNuevo = {};
     var _testingSteps = (document.location.hostname.slice(-4) == '.sap');// cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
 
+    var oModelStibo = new this.STIBO();
+
     return BaseController.extend("demo.controllers.Products.Master", {
         formatterCatPrd: formatterCatPrd,
         onInit: function () {
@@ -2614,6 +2616,10 @@ sap.ui.define([
             }).catch(error => {
                 console.error(error);
             });
+        },
+
+        altaSTIBO: function(){
+            window.open(oModelStibo.sUrl)
         }
 
     })
