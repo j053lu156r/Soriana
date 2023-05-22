@@ -801,13 +801,13 @@ let citado=""
           let FechasI = [];
           let FechasF = [];
           //aqui vamos
-          if (Datos.lectura) {
+        if (Datos.lectura) {
             var datos2=that.getOwnerComponent().getModel("PosicionesG").getData()
             this.getView().byId("tableWizardOrder").setEnableSelectAll(true)
             this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({ editable: false, }), "Modeleditable");
 
 
-            for (var x = 0; x < resp.data.results[0].ETOC.results.length; x++) {
+          for (var x = 0; x < resp.data.results[0].ETOC.results.length; x++) {
               
             resp.data.results[0].ETOC.results[x].Menge = parseInt(resp.data.results[0].ETOC.results[x].Menge)
             resp.data.results[0].ETOC.results[x].Menge = resp.data.results[0].ETOC.results[x].Menge.toString()
@@ -841,55 +841,56 @@ let citado=""
                       resp.data.results[0].ETOC.results[x].Tarima[c].Menge = Number(resp.data.results[0].ETOC.results[x].Tarima[c].Menge)
                     }
                   } else if (that.getView().byId("sTipoCita").getSelectedKey() === "02") {
-var ArgTemp=[];
-
-                      for (var y = 0; y < resp.data.results[0].ETMINIFULL03.results.length; y++) {
+                      var ArgTemp=[];
+                     
+                    for (var s = 0; s < resp.data.results[0].ETOC.results.length; s++) {
+                      for (var d = 0; d < resp.data.results[0].ETMINIFULL03.results.length; d++) {
                         for (var c = 0; c < datos2.length; c++) {
-                        console.log(resp.data.results[0].ETOC.results[x].Abeln)
-                        console.log(resp.data.results[0].ETMINIFULL03.results[y].Zabeln)
-                        console.log(resp.data.results[0].ETOC.results[x].Abelp)
-                        console.log(resp.data.results[0].ETMINIFULL03.results[y].Zabelp)
-                        console.log(datos2[c].Zabeln )
-                        console.log(datos2[c].Zabelp )
-                        console.log("------------")
+                       
                         if (
-                          resp.data.results[0].ETOC.results[x].Abeln === resp.data.results[0].ETMINIFULL03.results[y].Zabeln &&
+                          resp.data.results[0].ETOC.results[s].Abeln === resp.data.results[0].ETMINIFULL03.results[d].Zabeln &&
+                          resp.data.results[0].ETOC.results[s].Abeln === datos2[c].Zabeln &&
+                         // resp.data.results[0].ETOC.results[x].Abeln === datos2[c].Zabeln &&
 
-                          resp.data.results[0].ETOC.results[x].Abelp === resp.data.results[0].ETMINIFULL03.results[y].Zabelp &&
-                          resp.data.results[0].ETOC.results[x].Abeln === datos2[c].Zabeln &&
-                          resp.data.results[0].ETOC.results[x].Abelp === datos2[c].Zabelp &&
-                          resp.data.results[0].ETMINIFULL03.results[y].ZwerksD===datos2[c].ZwerksD
+                          resp.data.results[0].ETOC.results[s].Abelp === resp.data.results[0].ETMINIFULL03.results[d].Zabelp && 
+                          resp.data.results[0].ETOC.results[s].Abelp === datos2[c].Zabelp  &&
+
+                          resp.data.results[0].ETMINIFULL03.results[d].ZwerksD===datos2[c].ZwerksD
 
                         ) {
 
                           ArgTemp.push({
-                            Abeln: resp.data.results[0].ETOC.results[x].Abeln,
-                            Bwart: resp.data.results[0].ETOC.results[x].Bwart,
-                            Citado: resp.data.results[0].ETMINIFULL03.results[y].Zpmngu.trim().split(".")[0],
-                            Ean11: resp.data.results[0].ETOC.results[x].Ean11,
-                            Ebeln: resp.data.results[0].ETOC.results[x].Ebeln,
-                            Ebelp: resp.data.results[0].ETOC.results[x].Ebelp,
-                            Kdatb: resp.data.results[0].ETOC.results[x].Kdatb,
-                            Kdate: resp.data.results[0].ETOC.results[x].Kdate,
-                            Lifnr: resp.data.results[0].ETOC.results[x].Lifnr,
-                            Matnr: resp.data.results[0].ETOC.results[x].Matnr,
-                            Meins: resp.data.results[0].ETOC.results[x].Meins,
-                            Menge: resp.data.results[0].ETOC.results[x].Menge,
-                            MengeA: resp.data.results[0].ETOC.results[x].MengeA,
-                            MengeR: resp.data.results[0].ETOC.results[x].MengeR,
-                            Maktx: resp.data.results[0].ETOC.results[x].Maktx,
-                            Selected: resp.data.results[0].ETOC.results[x].Selected,
-                            Werks: resp.data.results[0].ETOC.results[x].Werks,
-                            ZwerksD: resp.data.results[0].ETMINIFULL03.results[y].ZwerksD,
-                            Abelp: resp.data.results[0].ETMINIFULL03.results[y].Zabelp,
+                            Abeln: resp.data.results[0].ETOC.results[s].Abeln,
+                            Bwart: resp.data.results[0].ETOC.results[s].Bwart,
+                            Citado: resp.data.results[0].ETMINIFULL03.results[d].Zpmngu.trim().split(".")[0],
+                            Ean11: resp.data.results[0].ETOC.results[s].Ean11,
+                            Ebeln: resp.data.results[0].ETOC.results[s].Ebeln,
+                            Ebelp: resp.data.results[0].ETOC.results[s].Ebelp,
+                            Kdatb: resp.data.results[0].ETOC.results[s].Kdatb,
+                            Kdate: resp.data.results[0].ETOC.results[s].Kdate,
+                            Lifnr: resp.data.results[0].ETOC.results[s].Lifnr,
+                            Matnr: resp.data.results[0].ETOC.results[s].Matnr,
+                            Meins: resp.data.results[0].ETOC.results[s].Meins,
+                            Menge: resp.data.results[0].ETOC.results[s].Menge,
+                            MengeA: resp.data.results[0].ETOC.results[s].MengeA,
+                            MengeR: resp.data.results[0].ETOC.results[s].MengeR,
+                            Maktx: resp.data.results[0].ETOC.results[s].Maktx,
+                            Selected: resp.data.results[0].ETOC.results[s].Selected,
+                            Werks: resp.data.results[0].ETOC.results[s].Werks,
+                            ZwerksD: resp.data.results[0].ETMINIFULL03.results[d].ZwerksD,
+                            Abelp: resp.data.results[0].ETMINIFULL03.results[d].Zabelp,
                           });
                         }
+                      
                       }
+                    
+                    }
+                     
                       }
-                      console.log(ArgTemp)
+                    
                       resp.data.results[0].ETOC.results=ArgTemp
                       that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "Pedidos");
-                       console.log( resp.data.results[0].ETOC.results)
+                     
                   } else {
                     resp.data.results[0].ETOC.results[x].Tarima = [];
                     resp.data.results[0].ETOC.results[x].ZwerksD = PosicionesG[y].Werks

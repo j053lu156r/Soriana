@@ -892,6 +892,7 @@ sap.ui.define([
 			var boletinVentasTCodes = ['ZMM_ACUERDOS_LIQUI']
 			var Placreci = ['ZM10','ZM60','ZM61','ZM62']
 			var acuerdosNSBoart = ['ZD33', 'ZD34', 'ZM33', 'ZM34']
+			var boletinVenta = ["ZD37", "ZD38", "ZD42", "ZM37", "ZM38", "ZM40", "ZM41","ZM42","ZN01"]
 
 			//logica para enviar a Aportaciones o a Acuerdos
 			if ((tcode.match("(ZMMFILACUERDO|MEB|WLF).*") && doc.startsWith('51')) || (tcode == "" && !(doc.startsWith("170") && results.Foliodescuento))) {
@@ -936,7 +937,7 @@ sap.ui.define([
 
 				}
 
-			} else if ((aportacionesTCodes.includes(tcode) || (doc.startsWith("170")) && results.Foliodescuento)) {
+			} else if ((aportacionesTCodes.includes(tcode)  && results.Foliodescuento)) {
 
 
 				console.warn('detailAportacionesComplementoS')
@@ -957,7 +958,7 @@ sap.ui.define([
 
 
 
-			} else if (boletinVentasTCodes.includes(tcode) || tcode === '') {
+			} else if (boletinVenta.includes(boart) ) {
 				console.log('on boletin vtz')
 
 				// navega a pantalla de boltines * revisar condiciones de apertura , conseguir esenarios
@@ -982,6 +983,10 @@ sap.ui.define([
 					sociedad: this._sociedad+"-"+results.Budat.split("-")[0]
 
 				}, true);
+			}else{
+
+				sap.m.MessageBox.error("No Existen Datos");
+				return false;
 			}
 
 
