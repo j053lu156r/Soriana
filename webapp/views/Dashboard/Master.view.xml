@@ -360,110 +360,139 @@
                 icon="sap-icon://fob-watch"
                 text="{appTxts>/dashboard.tab.title.repAvgTime}"
                 key="repAvgTime">
-                <ScrollContainer
-                    height="100%"
-                    width="100%"
-                    horizontal="false"
-                    vertical="true">
-                    <fb:FilterBar header="Header" reset="onReset" search="searchData"
-                        clear="clearFilters" cancel="onCancel"
-                        filtersDialogClosed="onFiltersDialogClosed"
-                        showRestoreButton="false" showClearButton="false" useToolbar="false"
-                        filterBarExpanded="true">
-                        <fb:filterGroupItems>
+                <content>
+                    <ScrollContainer
+                        height="100%"
+                        width="100%"
+                        horizontal="false"
+                        vertical="true">
+                        <fb:FilterBar header="Header" reset="onReset" search="searchData"
+                            clear="clearFilters" cancel="onCancel"
+                            filtersDialogClosed="onFiltersDialogClosed"
+                            showRestoreButton="false" showClearButton="false" useToolbar="false"
+                            filterBarExpanded="true">
+                            <fb:filterGroupItems>
 
-                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab"
-                                label="{appTxts>/dashboard.repGeneral.filter.supplier}"
-                                partOfCurrentVariant="true" visibleInFilterBar="true">
-                                <fb:control>
-                                    <Input
-                                        placeholder="{appTxts>/dashboard.repGeneral.filter.supplier}"
-                                        showSuggestion="true" valueHelpOnly="true"
-                                        showValueHelp="true" valueHelpRequest=".onValueHelpRequest"
-                                        value="{configSite>/supplierInput}" />
-                                </fb:control>
-                            </fb:FilterGroupItem>
+                                <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab"
+                                    label="{appTxts>/dashboard.repGeneral.filter.supplier}"
+                                    partOfCurrentVariant="true" visibleInFilterBar="true">
+                                    <fb:control>
+                                        <Input
+                                            placeholder="{appTxts>/dashboard.repGeneral.filter.supplier}"
+                                            showSuggestion="true" valueHelpOnly="true"
+                                            showValueHelp="true" valueHelpRequest=".onValueHelpRequest"
+                                            value="{configSite>/supplierInput}" />
+                                    </fb:control>
+                                </fb:FilterGroupItem>
 
-                            <fb:FilterGroupItem groupName="__$INTERNAL$"
-                                label="{appTxts>/dashboard.repGeneral.filter.date}"
-                                groupTitle="FechaAlta" name="FechaAlta" partOfCurrentVariant="true"
-                                mandatory="true"
-                                visibleInFilterBar="true">
-                                <fb:control>
-                                    <DateRangeSelection id="dateAltaAvgT" />
-                                </fb:control>
-                            </fb:FilterGroupItem>
+                                <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                    label="{appTxts>/dashboard.repGeneral.filter.date}"
+                                    groupTitle="FechaAlta" name="FechaAlta" partOfCurrentVariant="true"
+                                    mandatory="true"
+                                    visibleInFilterBar="true">
+                                    <fb:control>
+                                        <DateRangeSelection id="dateAltaAvgT" />
+                                    </fb:control>
+                                </fb:FilterGroupItem>
 
-                            <fb:FilterGroupItem groupName="__$INTERNAL$"
-                                label="{appTxts>/dashboard.repGeneral.filter.tipo}"
-                                groupTitle="Tipo" name="Tipo" partOfCurrentVariant="true"
-                                visibleInFilterBar="true">
-                                <fb:control>
-                                    <ComboBox showSecondaryValues="true" id="cboxTipoAvgT"
-                                        items="{TiposAclaracion>/Tipos}"
-                                        showClearIcon="true">
-                                        <core:ListItem key="{TiposAclaracion>TipAcla}"
-                                            text="{TiposAclaracion>DesAcla}"
-                                            additionalText="{TiposAclaracion>TipAcla}" />
-                                    </ComboBox>
-                                </fb:control>
-                            </fb:FilterGroupItem>
+                                <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                    label="{appTxts>/dashboard.repGeneral.filter.tipo}"
+                                    groupTitle="Tipo" name="Tipo" partOfCurrentVariant="true"
+                                    visibleInFilterBar="true">
+                                    <fb:control>
+                                        <ComboBox showSecondaryValues="true" id="cboxTipoAvgT"
+                                            items="{TiposAclaracion>/Tipos}"
+                                            showClearIcon="true">
+                                            <core:ListItem key="{TiposAclaracion>TipAcla}"
+                                                text="{TiposAclaracion>DesAcla}"
+                                                additionalText="{TiposAclaracion>TipAcla}" />
+                                        </ComboBox>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
 
-                            <fb:FilterGroupItem groupName="__$INTERNAL$"
-                                label="{appTxts>/dashboard.repGeneral.filter.status}"
-                                groupTitle="Estatus" name="Estatus" partOfCurrentVariant="true"
-                                visibleInFilterBar="true">
-                                <fb:control>
-                                    <Select selectedKey="T" id="cboxEstatusAvgT">
-                                        <core:Item key="E"
-                                            text="{appTxts>/dashboard.filter.estatusE}" />
-                                        <core:Item key="H"
-                                            text="{appTxts>/dashboard.filter.estatusH}" />
-                                        <core:Item key="T"
-                                            text="{appTxts>/dashboard.filter.estatusT}" />
-                                    </Select>
-                                </fb:control>
-                            </fb:FilterGroupItem>
-                        </fb:filterGroupItems>
-                    </fb:FilterBar>
+                                <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                    label="{appTxts>/dashboard.repGeneral.filter.status}"
+                                    groupTitle="Estatus" name="Estatus" partOfCurrentVariant="true"
+                                    visibleInFilterBar="true">
+                                    <fb:control>
+                                        <Select selectedKey="T" id="cboxEstatusAvgT">
+                                            <core:Item key="E"
+                                                text="{appTxts>/dashboard.filter.estatusE}" />
+                                            <core:Item key="H"
+                                                text="{appTxts>/dashboard.filter.estatusH}" />
+                                            <core:Item key="T"
+                                                text="{appTxts>/dashboard.filter.estatusT}" />
+                                        </Select>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                            </fb:filterGroupItems>
+                        </fb:FilterBar>
 
-                    <l:HorizontalLayout class="sapUiContentPadding">
-                        <l:Grid defaultSpan="XL6 L6 M6 S12">
-                            <!-- Example with absolute and percentage values -->
-                            <FlexBox width="20rem" height="10rem" alignItems="Center" class="sapUiSmallMargin">
+                        <l:VerticalLayout class="sapUiContentPadding" width="100%">
+
+                            <l:HorizontalLayout>
+                                <l:VerticalLayout class="sapUiContentPadding">
+                                    <Text text="{appTxts>/dashboard.avgres.cerradas}" />
+                                    <FlexBox width="350px" height="100px" renderType="Bare"
+                                        class="sapUiSmallMargin">
+                                        <mc:ColumnMicroChart size="Responsive" press="press" 
+                                            class="sapUiSmallMargin" allowColumnLabels="true" columns="{AvgTimeModel>/oData}">
+                                            <mc:columns>
+                                                <mc:ColumnMicroChartData value="{AvgTimeModel>Cerradas}" label="{AvgTimeModel>Tipoaclaracion}" color="Good"/>
+                                            </mc:columns>
+                                        </mc:ColumnMicroChart>
+                                    </FlexBox>
+                                </l:VerticalLayout>
+
+                                <l:VerticalLayout class="sapUiContentPadding">
+                                    <Text text="{appTxts>/dashboard.avgres.pendientes}" />
+                                    <FlexBox width="350px" height="100px" renderType="Bare"
+                                        class="sapUiSmallMargin">
+                                        <mc:ColumnMicroChart size="Responsive" press="press" 
+                                            class="sapUiSmallMargin" allowColumnLabels="true" columns="{AvgTimeModel>/oData}">
+                                            <mc:columns>
+                                                <mc:ColumnMicroChartData value="{AvgTimeModel>Pendientes}" label="{AvgTimeModel>Tipoaclaracion}" color="Critical"/>
+                                            </mc:columns>
+                                        </mc:ColumnMicroChart>
+                                    </FlexBox>
+                                </l:VerticalLayout>
+
+                                <Button icon="sap-icon://excel-attachment"
+                                        text="{appTxts>/dashboard.download.excel}" press="onDownloadExcelAvgT" />
+                            </l:HorizontalLayout>
+
+                            <Table 
+                                fixedLayout="false" 
+                                sticky="ColumnHeaders"
+                                items="{AvgTimeModel>/oData}">
+                                <headerToolbar>
+                                    <OverflowToolbar>
+                                        <content>
+                                            <Title level="H2" text="Acrónimos"/>
+                                            <ToolbarSpacer/>
+                                        </content>
+                                    </OverflowToolbar>
+                                </headerToolbar>
+                                <columns>
+                                    <Column>
+                                        <Text text="Acrónimo"/>
+                                    </Column>
+                                    <Column>
+                                        <Text text="Descripción"/>
+                                    </Column>
+                                </columns>
                                 <items>
-                                    <mc:InteractiveBarChart id="barCharAvgTRes" labelWidth="30%"
-                                        bars="{AvgTimeModel>/oData}">
-                                        <mc:bars>
-                                            <mc:InteractiveBarChartBar label="{AvgTimeModel>Tipoaclaracion}: {AvgTimeModel>Descaclaracion}" 
-                                                value="{AvgTimeModel>Cerradas}" 
-                                                displayedValue="{AvgTimeModel>Cerradas}"/>
-                                        </mc:bars>
-                                    </mc:InteractiveBarChart>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <Text text="{AvgTimeModel>Tipoaclaracion}"/>
+                                            <Text text="{AvgTimeModel>Descaclaracion}"/>
+                                        </cells>
+                                    </ColumnListItem>
                                 </items>
-                            </FlexBox>
-                        </l:Grid>
-
-                        <l:Grid defaultSpan="XL6 L6 M6 S12">
-                            <!-- Example with absolute and percentage values -->
-                            <FlexBox width="20rem" height="10rem" alignItems="Center" class="sapUiSmallMargin">
-                                <items>
-                                    <mc:InteractiveBarChart id="barCharAvgTPend" labelWidth="30%"
-                                        bars="{GpoResModel>/oData}">
-                                        <mc:bars>
-                                            <mc:InteractiveBarChartBar label="{AvgTimeModel>Tipoaclaracion}: {AvgTimeModel>Descaclaracion}" 
-                                                value="{AvgTimeModel>Pendientes}" 
-                                                displayedValue="{AvgTimeModel>Pendientes}"/>
-                                        </mc:bars>
-                                    </mc:InteractiveBarChart>
-                                </items>
-                            </FlexBox>
-                        </l:Grid>
-
-                        <Button icon="sap-icon://excel-attachment"
-                                text="{appTxts>/dashboard.download.excel}" press="onDownloadExcelAvgT" />
-                    </l:HorizontalLayout>
-                </ScrollContainer>
+                            </Table>
+                        </l:VerticalLayout>
+                    </ScrollContainer>
+                </content>
             </IconTabFilter>
             <IconTabFilter
                 icon="sap-icon://compare-2"

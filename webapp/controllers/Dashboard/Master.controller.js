@@ -271,6 +271,7 @@ sap.ui.define([
                     if(response.results[0].TOTALESNAV.results.length > 0){
                         var data = response.results[0].TOTALESNAV.results;
                         that.detailDataGR = response.results[0].DETALLESNAV.results;
+                        console.log(data)
                         var oModel = new JSONModel({oData: data});
                         that.getView().setModel(oModel, 'GpoResModel');
                     } else {
@@ -322,10 +323,10 @@ sap.ui.define([
                 filters: aFilters,
                 success: function(response){
                     if(response.results[0].TOTALESNAV.results.length > 0){
-                        console.log(response)
                         var data = response.results[0].TOTALESNAV.results;
                         that.detailDataAVGT = response.results[0].DETALLESNAV.results;
                         var oModel = new JSONModel({oData: data});
+                        console.log(data)
                         that.getView().setModel(oModel, 'AvgTimeModel');
                     } else {
                         sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.data"));
