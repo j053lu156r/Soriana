@@ -77,9 +77,9 @@
                                 visibleInFilterBar="true">
                                 <fb:control>
                                     <Select selectedKey="T" id="cboxEstatus">
-                                        <core:Item key="E"
+                                        <core:Item key="P"
                                             text="{appTxts>/dashboard.filter.estatusE}" />
-                                        <core:Item key="H"
+                                        <core:Item key="R"
                                             text="{appTxts>/dashboard.filter.estatusH}" />
                                         <core:Item key="T"
                                             text="{appTxts>/dashboard.filter.estatusT}" />
@@ -322,9 +322,9 @@
                                 visibleInFilterBar="true">
                                 <fb:control>
                                     <Select selectedKey="T" id="cboxEstatusGR">
-                                        <core:Item key="E"
+                                        <core:Item key="P"
                                             text="{appTxts>/dashboard.filter.estatusE}" />
-                                        <core:Item key="H"
+                                        <core:Item key="R"
                                             text="{appTxts>/dashboard.filter.estatusH}" />
                                         <core:Item key="T"
                                             text="{appTxts>/dashboard.filter.estatusT}" />
@@ -336,23 +336,59 @@
 
                     <l:HorizontalLayout class="sapUiContentPadding">
                         <l:Grid defaultSpan="XL12 L12 M12 S12">
-                            <!-- Example with absolute and percentage values -->
-                            <FlexBox width="40rem" height="10rem" alignItems="Center" class="sapUiSmallMargin">
-                                <items>
-                                    <mc:InteractiveBarChart id="barChar" labelWidth="30%"
-                                        bars="{GpoResModel>/oData}">
-                                        <mc:bars>
-                                            <mc:InteractiveBarChartBar label="{GpoResModel>Descgrupo}: ${ path: 'GpoResModel>Importe', type: 'sap.ui.model.type.Float' }" 
-                                                value="{GpoResModel>Cantidad}" 
-                                                displayedValue="{GpoResModel>Cantidad}"/>
-                                        </mc:bars>
-                                    </mc:InteractiveBarChart>
-                                </items>
-                            </FlexBox>
+
+                            <l:VerticalLayout class="sapUiContentPadding">
+                                <FlexBox width="350px" height="100px" renderType="Bare"
+                                    class="sapUiSmallMargin">
+                                    <mc:ColumnMicroChart size="Responsive" press="press" 
+                                        class="sapUiSmallMargin" allowColumnLabels="true" columns="{GpoResModel>/oData}">
+                                        <mc:columns>
+                                            <mc:ColumnMicroChartData value="{GpoResModel>Cantidad}" label="{GpoResModel>Grupo}" color="Good"/>
+                                        </mc:columns>
+                                    </mc:ColumnMicroChart>
+                                </FlexBox>
+                            </l:VerticalLayout>
                         </l:Grid>
+
                         <Button icon="sap-icon://excel-attachment"
                                 text="{appTxts>/dashboard.download.excel}" press="onDownloadExcelGpoRes" />
                     </l:HorizontalLayout>
+
+                    <Table 
+                        fixedLayout="false" 
+                        sticky="ColumnHeaders"
+                        items="{GpoResModel>/oData}">
+                        <headerToolbar>
+                            <OverflowToolbar>
+                                <content>
+                                    <Title level="H2" text="Montos"/>
+                                    <ToolbarSpacer/>
+                                </content>
+                            </OverflowToolbar>
+                        </headerToolbar>
+                        <columns>
+                            <Column>
+                                <Text text="{appTxts>/dashboard.table.gpoRes.aconimos}"/>
+                            </Column>
+                            <Column>
+                                <Text text="{appTxts>/dashboard.table.gpoRes.descAcron}"/>
+                            </Column>
+                            <Column>
+                                <Text text="{appTxts>/dashboard.table.gpoRes.amount}"/>
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem>
+                                <cells>
+                                    <Text text="{GpoResModel>Grupo}"/>
+                                    <Text text="{GpoResModel>Descgrupo}"/>
+                                    <Text text="{parts: [{path: 'GpoResModel>Importe'},{path: 'GpoResModel>Currency'}], 
+                                    type:'sap.ui.model.type.Currency', 
+                                    formatOptions: {showMeasure:false}}"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
 
                 </ScrollContainer>
             </IconTabFilter>
@@ -416,9 +452,9 @@
                                     visibleInFilterBar="true">
                                     <fb:control>
                                         <Select selectedKey="T" id="cboxEstatusAvgT">
-                                            <core:Item key="E"
+                                            <core:Item key="P"
                                                 text="{appTxts>/dashboard.filter.estatusE}" />
-                                            <core:Item key="H"
+                                            <core:Item key="R"
                                                 text="{appTxts>/dashboard.filter.estatusH}" />
                                             <core:Item key="T"
                                                 text="{appTxts>/dashboard.filter.estatusT}" />
@@ -627,9 +663,9 @@
                                 visibleInFilterBar="true">
                                 <fb:control>
                                     <Select selectedKey="T" id="cboxEstatusExecC">
-                                        <core:Item key="E"
+                                        <core:Item key="P"
                                             text="{appTxts>/dashboard.filter.estatusE}" />
-                                        <core:Item key="H"
+                                        <core:Item key="R"
                                             text="{appTxts>/dashboard.filter.estatusH}" />
                                         <core:Item key="T"
                                             text="{appTxts>/dashboard.filter.estatusT}" />

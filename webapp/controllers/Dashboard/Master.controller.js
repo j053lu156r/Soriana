@@ -512,7 +512,7 @@ sap.ui.define([
             if(this.detailDataGR.length > 0){
                 var that = this;
                 var texts = this.getOwnerComponent().getModel("appTxts");
-                var selectedBars = this.barChar.getSelectedBars();
+                //var selectedBars = this.barChar.getSelectedBars();
                 var columns = [
                     {
                         label: texts.getProperty("/dashboard.repGeneral.excel.grupo"),
@@ -587,6 +587,7 @@ sap.ui.define([
                         width: 21
                     }
                 ];
+                /*
                 if(selectedBars.length === 0 || selectedBars.length === this.barChar.getBars().length){
                     this.buildExcelSpreadSheet(columns, this.detailDataGR, "Reporte Dashboard Grupo Resolutor.xlsx");
                 } else {
@@ -598,6 +599,8 @@ sap.ui.define([
                     });
                     this.buildExcelSpreadSheet(columns, dataFiltered, "Reporte Dashboard Grupo Resolutor.xlsx");
                 }
+                */
+               this.buildExcelSpreadSheet(columns, this.detailDataGR, "Reporte Dashboard Grupo Resolutor.xlsx");
             } else {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.excel.error.data"));
             }
@@ -607,8 +610,8 @@ sap.ui.define([
             if(this.detailDataAVGT.length > 0){
                 var that = this;
                 var texts = this.getOwnerComponent().getModel("appTxts");
-                let selectedRes = this.barCharAvgTRes.getSelectedBars();
-                let selectedPend = this.barCharAvgTPend.getSelectedBars();
+                //let selectedRes = this.barCharAvgTRes.getSelectedBars();
+                //let selectedPend = this.barCharAvgTPend.getSelectedBars();
                 var columns = [
                     {
                         label: texts.getProperty("/dashboard.repGeneral.excel.proveedor"),
@@ -686,6 +689,8 @@ sap.ui.define([
                         width: 21
                     }
                 ];
+                this.buildExcelSpreadSheet(columns, this.detailDataAVGT, "Reporte Dashboard Tiempo Promedio de Resolución.xlsx");
+                /*
                 if( (selectedRes.length === 0 && selectedPend === 0) || 
                     (selectedRes.length === this.barCharAvgTRes.getBars().length && selectedPend.length === this.selectedPend.getBars().length) ) {
                         this.buildExcelSpreadSheet(columns, this.detailDataAVGT, "Reporte Dashboard Tiempo Promedio de Resolución.xlsx");
@@ -703,6 +708,7 @@ sap.ui.define([
                     });
                     this.buildExcelSpreadSheet(columns, dataFiltered, "Reporte Dashboard Tiempo Promedio de Resolución.xlsx");
                 }
+                */
             } else {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.excel.error.data"));
             }
