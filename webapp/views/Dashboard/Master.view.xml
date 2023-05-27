@@ -675,16 +675,151 @@
                         </fb:filterGroupItems>
                     </fb:FilterBar>
 
-                    <Panel headerText="Smart Stacked Bar Micro Chart With Criticality"
-                            class="sapUiSmallMarginBottom">
-                        <mc:ComparisonMicroChart size="S" scale="M" class="sapUiSmallMargin" press="press">
-                            <mc:data>
-                                <mc:ComparisonMicroChartData title="EMEA" displayValue="USD 0" color="Good" />
-                                <mc:ComparisonMicroChartData title="EMEA" value="50" color="Good"/>
-                                <mc:ComparisonMicroChartData title="APAC" value="-20" color="Error"/>
-                            </mc:data>
-                        </mc:ComparisonMicroChart>
-                    </Panel>
+                    <l:HorizontalLayout>
+                        <l:VerticalLayout>
+                            <OverflowToolbar id="otb1">
+                                <ToolbarSpacer/>
+                                <RadioButtonGroup id="rbg1" columns="3" valueState="Error">
+                                    <RadioButton id="RB1-1" text="Recibidas" />
+                                    <RadioButton id="RB1-2" text="Pagadas" />
+                                </RadioButtonGroup>
+                                <RadioButtonGroup id="rbg2" columns="3" valueState="Error">
+                                    <RadioButton id="RB2-1" text="Por cantidad" />
+                                    <RadioButton id="RB2-2" text="Por importe" />
+                                </RadioButtonGroup>
+                            </OverflowToolbar>
+                            <Panel headerText="Año en curso" class="sapUiSmallMarginBottom">
+                                <l:HorizontalLayout>
+                                    <GenericTile header="Cantidad" frameType="OneByOne" class="sapUiMediumMarginEnd">
+                                        <tileContent>
+                                            <TileContent>
+                                                <content>
+                                                    <mc:ComparisonMicroChart size="Responsive">
+                                                        <mc:data>
+                                                            <mc:ComparisonMicroChartData title="Recibidas" value="500" color="Critical" />
+                                                            <mc:ComparisonMicroChartData title="Pagadas" value="100" color="Good" />
+                                                        </mc:data>
+                                                    </mc:ComparisonMicroChart>
+                                                </content>
+                                            </TileContent>
+                                        </tileContent>
+                                    </GenericTile>
+
+                                    <GenericTile header="Importe" frameType="OneByOne">
+                                        <tileContent>
+                                            <TileContent>
+                                                <content>
+                                                    <mc:ComparisonMicroChart scale="$" size="Responsive">
+                                                        <mc:data>
+                                                            <mc:ComparisonMicroChartData title="Recibidas" value="5000" color="Critical" />
+                                                            <mc:ComparisonMicroChartData title="Pagadas" value="2000" color="Good" />
+                                                        </mc:data>
+                                                    </mc:ComparisonMicroChart>
+                                                </content>
+                                            </TileContent>
+                                        </tileContent>
+                                    </GenericTile>
+
+                                    <l:Grid defaultSpan="XL6 L6 M6 S6">
+                                        <FlexBox width="20rem" height="10rem" alignItems="Center" class="sapUiMediumMarginBegin">
+                                            <items>
+                                                <mc:InteractiveLineChart selectionChanged="selectionChanged" press="press" succeedingPoint="33.1">
+                                                    <mc:points>
+                                                        <mc:InteractiveLineChartPoint value="100" label="May"/>
+                                                        <mc:InteractiveLineChartPoint value="12" label="June"/>
+                                                        <mc:InteractiveLineChartPoint value="51.4" label="July"/>
+                                                        <mc:InteractiveLineChartPoint value="52" label="Aug"/>
+                                                        <mc:InteractiveLineChartPoint value="69.9" label="Sep"/>
+                                                        <mc:InteractiveLineChartPoint value="0.9" label="Oct"/>
+                                                    </mc:points>
+                                                </mc:InteractiveLineChart>
+                                            </items>
+                                        </FlexBox>
+                                        <FlexBox width="20rem" height="10rem" alignItems="Center" >
+                                            <items>
+                                                <mc:InteractiveLineChart selectionChanged="selectionChanged" press="press" precedingPoint="0.9">
+                                                    <mc:points>
+                                                        <mc:InteractiveLineChartPoint value="33.1" displayedValue="33.1%" label="May"/>
+                                                        <mc:InteractiveLineChartPoint value="2.2" displayedValue="2.2%" label="June"/>
+                                                        <mc:InteractiveLineChartPoint value="51.4" displayedValue="51.4%" label="July"/>
+                                                        <mc:InteractiveLineChartPoint value="19.9" displayedValue="19.9%" label="Aug"/>
+                                                        <mc:InteractiveLineChartPoint value="69.9" displayedValue="69.9%" label="Sep"/>
+                                                        <mc:InteractiveLineChartPoint value="0.9" displayedValue="0.9%" label="Oct"/>
+                                                    </mc:points>
+                                                </mc:InteractiveLineChart>
+                                            </items>
+                                        </FlexBox>
+                                    </l:Grid>
+                                </l:HorizontalLayout>
+                            </Panel>
+
+                            <Panel headerText="Año anterior" class="sapUiSmallMarginBottom">
+                                <l:HorizontalLayout>
+                                    <GenericTile header="Cantidad" frameType="OneByOne" class="sapUiMediumMarginEnd">
+                                        <tileContent>
+                                            <TileContent>
+                                                <content>
+                                                    <mc:ComparisonMicroChart size="Responsive">
+                                                        <mc:data>
+                                                            <mc:ComparisonMicroChartData title="Recibidas" value="500" color="Critical" />
+                                                            <mc:ComparisonMicroChartData title="Pagadas" value="100" color="Good" />
+                                                        </mc:data>
+                                                    </mc:ComparisonMicroChart>
+                                                </content>
+                                            </TileContent>
+                                        </tileContent>
+                                    </GenericTile>
+
+                                    <GenericTile header="Importe" frameType="OneByOne">
+                                        <tileContent>
+                                            <TileContent>
+                                                <content>
+                                                    <mc:ComparisonMicroChart scale="$" size="Responsive">
+                                                        <mc:data>
+                                                            <mc:ComparisonMicroChartData title="Recibidas" value="5000" color="Critical" />
+                                                            <mc:ComparisonMicroChartData title="Pagadas" value="2000" color="Good" />
+                                                        </mc:data>
+                                                    </mc:ComparisonMicroChart>
+                                                </content>
+                                            </TileContent>
+                                        </tileContent>
+                                    </GenericTile>
+
+                                    <l:Grid defaultSpan="XL6 L6 M6 S6">
+                                        <FlexBox width="20rem" height="10rem" alignItems="Center" class="sapUiMediumMarginBegin sapUiMediumMarginEnd">
+                                            <items>
+                                                <mc:InteractiveLineChart selectionChanged="selectionChanged" press="press" precedingPoint="15"
+                                                                    succeedingPoint="89">
+                                                    <mc:points>
+                                                        <mc:InteractiveLineChartPoint value="33.1" label="May"/>
+                                                        <mc:InteractiveLineChartPoint value="12" label="June"/>
+                                                        <mc:InteractiveLineChartPoint value="51.4" label="July"/>
+                                                        <mc:InteractiveLineChartPoint value="52" label="Aug"/>
+                                                        <mc:InteractiveLineChartPoint value="69.9" label="Sep"/>
+                                                        <mc:InteractiveLineChartPoint value="0.9" label="Oct"/>
+                                                    </mc:points>
+                                                </mc:InteractiveLineChart>
+                                            </items>
+                                        </FlexBox>
+                                        <FlexBox width="20rem" height="10rem" alignItems="Center">
+                                            <items>
+                                                <mc:InteractiveLineChart selectionChanged="selectionChanged" press="press" precedingPoint="-20">
+                                                    <mc:points>
+                                                        <mc:InteractiveLineChartPoint value="33.1" displayedValue="33.1%" label="May"/>
+                                                        <mc:InteractiveLineChartPoint value="2.2" displayedValue="2.2%" label="June"/>
+                                                        <mc:InteractiveLineChartPoint value="51.4" displayedValue="51.4%" label="July"/>
+                                                        <mc:InteractiveLineChartPoint value="19.9" displayedValue="19.9%" label="Aug"/>
+                                                        <mc:InteractiveLineChartPoint value="69.9" displayedValue="69.9%" label="Sep"/>
+                                                        <mc:InteractiveLineChartPoint value="0.9" displayedValue="0.9%" label="Oct"/>
+                                                    </mc:points>
+                                                </mc:InteractiveLineChart>
+                                            </items>
+                                        </FlexBox>
+                                    </l:Grid>
+                                </l:HorizontalLayout>
+                            </Panel>
+                        </l:VerticalLayout>
+                    </l:HorizontalLayout>
 
                     <!--
                     <HeaderContainer>
