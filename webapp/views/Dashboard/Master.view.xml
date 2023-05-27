@@ -687,6 +687,8 @@
                                     <RadioButton id="RB2-1" text="Por cantidad" />
                                     <RadioButton id="RB2-2" text="Por importe" />
                                 </RadioButtonGroup>
+                                <Button icon="sap-icon://excel-attachment"
+                                        text="{appTxts>/dashboard.download.excel}" press="onDownloadExcelAvgT" />
                             </OverflowToolbar>
                             <Panel headerText="Año en curso" class="sapUiSmallMarginBottom">
                                 <l:HorizontalLayout>
@@ -721,7 +723,7 @@
                                     </GenericTile>
 
                                     <l:Grid defaultSpan="XL6 L6 M6 S6">
-                                        <FlexBox width="20rem" height="10rem" alignItems="Center" class="sapUiMediumMarginBegin">
+                                        <FlexBox width="20rem" height="10rem" alignItems="Center" class="sapUiLargeMarginBegin">
                                             <items>
                                                 <mc:InteractiveLineChart selectionChanged="selectionChanged" press="press" succeedingPoint="33.1">
                                                     <mc:points>
@@ -735,7 +737,7 @@
                                                 </mc:InteractiveLineChart>
                                             </items>
                                         </FlexBox>
-                                        <FlexBox width="20rem" height="10rem" alignItems="Center" >
+                                        <FlexBox width="20rem" height="10rem" alignItems="Center" class="sapUiLargeMarginBegin">
                                             <items>
                                                 <mc:InteractiveLineChart selectionChanged="selectionChanged" press="press" precedingPoint="0.9">
                                                     <mc:points>
@@ -786,7 +788,7 @@
                                     </GenericTile>
 
                                     <l:Grid defaultSpan="XL6 L6 M6 S6">
-                                        <FlexBox width="20rem" height="10rem" alignItems="Center" class="sapUiMediumMarginBegin sapUiMediumMarginEnd">
+                                        <FlexBox width="20rem" height="10rem" alignItems="Center" class="sapUiLargeMarginBegin">
                                             <items>
                                                 <mc:InteractiveLineChart selectionChanged="selectionChanged" press="press" precedingPoint="15"
                                                                     succeedingPoint="89">
@@ -801,7 +803,7 @@
                                                 </mc:InteractiveLineChart>
                                             </items>
                                         </FlexBox>
-                                        <FlexBox width="20rem" height="10rem" alignItems="Center">
+                                        <FlexBox width="20rem" height="10rem" alignItems="Center" class="sapUiLargeMarginBegin">
                                             <items>
                                                 <mc:InteractiveLineChart selectionChanged="selectionChanged" press="press" precedingPoint="-20">
                                                     <mc:points>
