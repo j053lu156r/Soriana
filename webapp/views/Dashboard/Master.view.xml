@@ -100,6 +100,8 @@
                                             text="{appTxts>/dashboard.filter.antiguedad2}" />
                                         <core:Item key="3"
                                             text="{appTxts>/dashboard.filter.antiguedad3}" />
+                                        <core:Item key=""
+                                            text="{appTxts>/dashboard.filter.antiguedad4}" />
                                     </Select>
                                 </fb:control>
                             </fb:FilterGroupItem>
