@@ -698,8 +698,8 @@
                                                 <content>
                                                     <mc:ComparisonMicroChart size="Responsive">
                                                         <mc:data>
-                                                            <mc:ComparisonMicroChartData title="Recibidas" value="500" color="Critical" />
-                                                            <mc:ComparisonMicroChartData title="Pagadas" value="100" color="Good" />
+                                                            <mc:ComparisonMicroChartData title="Recibidas" value="{CardsModelExec>/Cantrecibidasactual}" color="Critical" />
+                                                            <mc:ComparisonMicroChartData title="Pagadas" value="{CardsModelExec>/Cantpagadasactual}" color="Good" />
                                                         </mc:data>
                                                     </mc:ComparisonMicroChart>
                                                 </content>
@@ -713,8 +713,8 @@
                                                 <content>
                                                     <mc:ComparisonMicroChart scale="$" size="Responsive">
                                                         <mc:data>
-                                                            <mc:ComparisonMicroChartData title="Recibidas" value="5000" color="Critical" />
-                                                            <mc:ComparisonMicroChartData title="Pagadas" value="2000" color="Good" />
+                                                            <mc:ComparisonMicroChartData title="Recibidas" value="{CardsModelExec>/Importerecibidasactual}" color="Critical" />
+                                                            <mc:ComparisonMicroChartData title="Pagadas" value="{CardsModelExec>/Importepagadasactual}" color="Good" />
                                                         </mc:data>
                                                     </mc:ComparisonMicroChart>
                                                 </content>
@@ -763,8 +763,8 @@
                                                 <content>
                                                     <mc:ComparisonMicroChart size="Responsive">
                                                         <mc:data>
-                                                            <mc:ComparisonMicroChartData title="Recibidas" value="500" color="Critical" />
-                                                            <mc:ComparisonMicroChartData title="Pagadas" value="100" color="Good" />
+                                                            <mc:ComparisonMicroChartData title="Recibidas" value="{CardsModelExec>/Cantrecibidasanterior}" color="Critical" />
+                                                            <mc:ComparisonMicroChartData title="Pagadas" value="{CardsModelExec>/Cantpagadasanterior}" color="Good" />
                                                         </mc:data>
                                                     </mc:ComparisonMicroChart>
                                                 </content>
@@ -778,8 +778,8 @@
                                                 <content>
                                                     <mc:ComparisonMicroChart scale="$" size="Responsive">
                                                         <mc:data>
-                                                            <mc:ComparisonMicroChartData title="Recibidas" value="5000" color="Critical" />
-                                                            <mc:ComparisonMicroChartData title="Pagadas" value="2000" color="Good" />
+                                                            <mc:ComparisonMicroChartData title="Recibidas" value="{CardsModelExec>/Importerecibidasanterior}" color="Critical" />
+                                                            <mc:ComparisonMicroChartData title="Pagadas" value="{CardsModelExec>/Importepagadasanterior}" color="Good" />
                                                         </mc:data>
                                                     </mc:ComparisonMicroChart>
                                                 </content>

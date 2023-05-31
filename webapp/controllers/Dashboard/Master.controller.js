@@ -46,6 +46,9 @@ sap.ui.define([
         barCharAvgTRes: undefined,
         barCharAvgTPend: undefined,
 
+        rbg1: undefined,
+        rbg2: undefined,
+
         onInit: function () {
             var oModel = new JSONModel();
             oModel.setData({
@@ -87,6 +90,9 @@ sap.ui.define([
 
             this.cboxDateIniExecC = this.getView().byId("cboxDateIniExecC");
             this.cboxDateFinExecC = this.getView().byId("cboxDateFinExecC");
+
+            this.rbg1 = this.getView().byId("rbg1");
+            this.rbg2 = this.getView().byId("rbg2");
 
             this.onLoadTiposAclaracion();
             this.onLoadAnalistas();
@@ -348,6 +354,8 @@ sap.ui.define([
             var month1 = this.cboxDateIniExecC.getSelectedKey();
             var month2 = this.cboxDateFinExecC.getSelectedKey();
             var aFilters = [];
+            console.log(this.rbg1.getSelectedIndex())
+            console.log(this.rbg2.getSelectedIndex())
 
             if(year !== undefined && year !== null && year !== "") {
                 aFilters.push(new Filter("Ejercicio", FilterOperator.EQ, year));
@@ -384,7 +392,11 @@ sap.ui.define([
                         console.log(response)
                         let dollarUSLocale = Intl.NumberFormat('en-US');
                         var cardsData = response.results[0].TOTALESNAV.results[0];
-                        var cardsModel = new JSONModel({oData: cardsData});
+                        cardsData.Importepagadasactual = parseFloat(cardsData.Importepagadasactual);
+                        cardsData.Importepagadasanterior = parseFloat(cardsData.Importepagadasanterior);
+                        cardsData.Importerecibidasactual = parseFloat(cardsData.Importerecibidasactual);
+                        cardsData.Importerecibidasanterior = parseFloat(cardsData.Importerecibidasanterior);
+                        var cardsModel = new JSONModel(cardsData);
                         that.getView().setModel(cardsModel, 'CardsModelExec');
                     } else {
                         sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.data"));
