@@ -14,6 +14,7 @@ sap.ui.define([
     const oRepGpoRes = new this.ReporteGpoResolutor();
     const oRepAvgTime = new this.ReporteAvgTiempo();
     const oRepExecComp = new this.ReporteExecComp();
+    const oReporteAclProv = new this.ReporteAclProv();
 
     var Controller = BaseController.extend("sap.m.sample.SplitApp.C", {
 
@@ -23,6 +24,7 @@ sap.ui.define([
         dateAlta: undefined,
         dateAltaGr: undefined,
         dateAltaAvgT: undefined,
+        dateAltaByProv: undefined,
         cboxTipo: undefined,
         cboxTipoGr: undefined,
         cboxTipoAvgT: undefined,
@@ -35,6 +37,12 @@ sap.ui.define([
         cboxEjercicioExecC: undefined,
         cboxDateIniExecC: undefined,
         cboxDateFinExecC: undefined,
+        cboxTipoExecByProv: undefined,
+        cboxEstatusByProv: undefined,
+        inptAmountIniProv: undefined,
+        inptAmountEndProv: undefined,
+        inptCantIniProv: undefined,
+        inptCantEndProv: undefined,
 
         detailData: [],
         detailDataGR: [],
@@ -63,6 +71,7 @@ sap.ui.define([
             this.reporteGpoRes = new sap.ui.model.odata.v2.ODataModel(oRepGpoRes.sUrl);
             this.reporteAvgTime = new sap.ui.model.odata.v2.ODataModel(oRepAvgTime.sUrl);
             this.reporteExecComp = new sap.ui.model.odata.v2.ODataModel(oRepExecComp.sUrl);
+            this.reporteAclProv = new sap.ui.model.odata.v2.ODataModel(oReporteAclProv.sUrl);
             this.iconTabBar = this.getView().byId("idIconTabBar");
             this.cboxAntiguedad = this.getView().byId("cboxAntiguedad");
             this.cboxTipo = this.getView().byId("cboxTipo");
@@ -94,6 +103,14 @@ sap.ui.define([
             this.rbg1 = this.getView().byId("rbg1");
             this.rbg2 = this.getView().byId("rbg2");
 
+            this.dateAltaByProv = this.getView().byId("dateAltaByProv")
+            this.cboxTipoExecByProv = this.getView().byId("cboxTipoExecByProv")
+            this.cboxEstatusByProv = this.getView().byId("cboxEstatusByProv")
+            this.inptAmountIniProv = this.getView().byId("inptAmountIniProv")
+            this.inptAmountEndProv = this.getView().byId("inptAmountEndProv")
+            this.inptCantIniProv = this.getView().byId("inptCantIniProv")
+            this.inptCantEndProv = this.getView().byId("inptCantEndProv")
+
             this.onLoadTiposAclaracion();
             this.onLoadAnalistas();
             this.onLoadGrupos();
@@ -115,6 +132,7 @@ sap.ui.define([
                     this.onExecCompRep();
                     break;
                 case 'repAclarProv':
+                    this.onAclProvRep();
                     break;
                 case 'repAclarAnalyst':
                     break;
@@ -398,6 +416,71 @@ sap.ui.define([
                         cardsData.Importerecibidasanterior = parseFloat(cardsData.Importerecibidasanterior);
                         var cardsModel = new JSONModel(cardsData);
                         that.getView().setModel(cardsModel, 'CardsModelExec');
+                    } else {
+                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.data"));
+                    }
+                }, 
+                error: function(error){
+                    sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.execute"));
+                }
+            });
+        },
+
+        onAclProvRep: function(){
+            var that = this;
+            var aFilters = [];
+            var lifnr = this.getConfigModel().getProperty("/supplierInputKey");
+            var dateInicial = this.dateAltaByProv.getDateValue();
+            var dateFinal = this.dateAltaByProv.getSecondDateValue();
+            var tipo = this.cboxTipoExecByProv.getSelectedKey();
+            var estatus = this.cboxEstatusByProv.getSelectedKey();
+            var montoInicial = this.inptAmountIniProv.getValue();
+            var montoFinal = this.inptAmountEndProv.getValue();
+            var cantidadInicial = this.inptCantIniProv.getValue();
+            var cantidadFinal = this.inptCantEndProv.getValue();
+
+            if (
+                dateInicial !== "" && dateInicial !== null && dateInicial !== undefined &&
+                dateFinal !== "" && dateFinal !== null && dateFinal !== undefined
+            ) {
+                aFilters.push(new Filter("Fechaalta", FilterOperator.BT, dateInicial, dateFinal));
+            } else {
+                sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.dates"))
+                return
+            }
+
+            if (lifnr !== undefined && lifnr !== null && lifnr !== "") {
+                aFilters.push(new Filter("Acreedor", FilterOperator.EQ, lifnr));
+            }
+
+            if (tipo !== null && tipo !== "" && tipo !== undefined) {
+                aFilters.push(new Filter("Tipo", FilterOperator.EQ, tipo));
+            }
+
+            if (estatus !== null && estatus !== "" && estatus !== undefined) {
+                aFilters.push(new Filter("Estatus", FilterOperator.EQ, estatus));
+            }
+
+            if (montoInicial !== null && montoInicial !== "" && montoInicial !== undefined &&
+                montoFinal !== null && montoFinal !== "" && montoFinal !== undefined) {
+                    aFilters.push(new Filter("Importe", FilterOperator.BT, montoInicial, montoFinal));
+            }
+
+            if (cantidadInicial !== null && cantidadInicial !== "" && cantidadInicial !== undefined &&
+                cantidadFinal !== null && cantidadFinal !== "" && cantidadFinal !== undefined) {
+                    aFilters.push(new Filter("Cantidad", FilterOperator.BT, cantidadInicial, cantidadFinal));
+            }
+
+            this.reporteAclProv.read("/DASHMAINSet", {
+                method: "GET",
+                urlParameters: {
+                    "$expand": "TOTALESNAV,DETALLESNAV",
+                },
+                filters: aFilters,
+                success: function(response){
+                    if(response.results[0].TOTALESNAV.results.length > 0){
+                        console.log(response)
+                        //var cardsData = response.results[0].TOTALESNAV.results[0];
                     } else {
                         sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.data"));
                     }

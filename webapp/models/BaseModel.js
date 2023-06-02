@@ -713,3 +713,14 @@ function ProveedorSTIBO() {
 
 ProveedorSTIBO.prototype = Object.create(BaseModel.prototype);
 ProveedorSTIBO.prototype.constructor = ProveedorSTIBO;
+
+//Model Dashboard: Reporte Aclaraciones por proveedor
+function ReporteAclProv() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_DB05_ACLARACION_X_PROVEED_SRV/";
+    params.sModel = "dashboardReporteAclProv";
+    BaseModel.call(this, params);
+}
+
+ReporteAclProv.prototype = Object.create(BaseModel.prototype);
+ReporteAclProv.prototype.constructor = ReporteAclProv;

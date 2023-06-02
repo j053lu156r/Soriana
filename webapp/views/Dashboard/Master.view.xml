@@ -3,6 +3,7 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
     xmlns:f="sap.f"
+    xmlns:t ="sap.ui.table"
     xmlns:fb="sap.ui.comp.filterbar"
     xmlns:core="sap.ui.core"
     xmlns:x="sap.uxap"
@@ -824,57 +825,170 @@
                             </Panel>
                         </l:VerticalLayout>
                     </l:HorizontalLayout>
-
-                    <!--
-                    <HeaderContainer>
-                        <TileContent
-                            footer="{appTxts>/dashboard.repGeneral.card.title.recibidasCant}">
-                            <content>
-                                <NumericContent value="{CardsModel>/Cantrecibidas}"
-                                    icon="sap-icon://receipt" />
-                            </content>
-                        </TileContent>
-
-                        <TileContent
-                            footer="{appTxts>/dashboard.repGeneral.card.title.resueltasCant}">
-                            <content>
-                                <NumericContent
-                                    value="{
-                                    parts: [{path: 'CardsModel>/Cantresueltas'}], 
-                                    type:'sap.ui.model.type.Currency', 
-                                    formatOptions: {showMeasure:false}}"
-                                    icon="sap-icon://activity-2" />
-                            </content>
-                        </TileContent>
-
-                        <TileContent
-                            footer="{appTxts>/dashboard.repGeneral.card.title.recibidasCant}">
-                            <content>
-                                <NumericContent value="{CardsModel>/Cantrecibidas}"
-                                    icon="sap-icon://receipt" />
-                            </content>
-                        </TileContent>
-
-                        <TileContent
-                            footer="{appTxts>/dashboard.repGeneral.card.title.resueltasCant}">
-                            <content>
-                                <NumericContent
-                                    value="{
-                                    parts: [{path: 'CardsModel>/Cantresueltas'}], 
-                                    type:'sap.ui.model.type.Currency', 
-                                    formatOptions: {showMeasure:false}}"
-                                    icon="sap-icon://activity-2" />
-                            </content>
-                        </TileContent>
-                    </HeaderContainer>
-                    -->
                 </ScrollContainer>
             </IconTabFilter>
             <IconTabFilter
                 icon="sap-icon://supplier"
                 text="{appTxts>/dashboard.tab.title.repAclarProv}"
                 key="repAclarProv">
-                <Text text="People content goes here ..." />
+                <ScrollContainer
+                    height="100%"
+                    width="100%"
+                    horizontal="false"
+                    vertical="true">
+                    <fb:FilterBar header="Header" reset="onReset" search="searchData"
+                        clear="clearFilters" cancel="onCancel"
+                        filtersDialogClosed="onFiltersDialogClosed"
+                        showRestoreButton="false" showClearButton="false" useToolbar="false"
+                        filterBarExpanded="true">
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Proveedor"
+                                label="{appTxts>/dashboard.repGeneral.filter.supplier}"
+                                partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        placeholder="{appTxts>/dashboard.repGeneral.filter.supplier}"
+                                        showSuggestion="true" valueHelpOnly="true"
+                                        showValueHelp="true" valueHelpRequest=".onValueHelpRequest"
+                                        value="{configSite>/supplierInput}" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repGeneral.filter.date}"
+                                groupTitle="FechaAlta" name="FechaAlta" partOfCurrentVariant="true"
+                                mandatory="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <DateRangeSelection id="dateAltaByProv" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repGeneral.filter.tipo}"
+                                groupTitle="Tipo" name="Tipo" partOfCurrentVariant="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <ComboBox showSecondaryValues="true" id="cboxTipoExecByProv"
+                                        items="{TiposAclaracion>/Tipos}"
+                                        showClearIcon="true">
+                                        <core:ListItem key="{TiposAclaracion>TipAcla}"
+                                            text="{TiposAclaracion>DesAcla}"
+                                            additionalText="{TiposAclaracion>TipAcla}" />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repGeneral.filter.status}"
+                                groupTitle="Estatus" name="Estatus" partOfCurrentVariant="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <Select selectedKey="T" id="cboxEstatusByProv">
+                                        <core:Item key="P"
+                                            text="{appTxts>/dashboard.filter.estatusE}" />
+                                        <core:Item key="R"
+                                            text="{appTxts>/dashboard.filter.estatusH}" />
+                                        <core:Item key="T"
+                                            text="{appTxts>/dashboard.filter.estatusT}" />
+                                    </Select>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="MontoInicial"
+                                label="{appTxts>/dashboard.repAclarProv.filter.initAmount}"
+                                partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="inptAmountIniProv" type="Number"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="MontoFinal"
+                                label="{appTxts>/dashboard.repAclarProv.filter.endAmount}"
+                                partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="inptAmountEndProv" type="Number"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="CantIni"
+                                label="{appTxts>/dashboard.repAclarProv.filter.initCant}"
+                                partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="inptCantIniProv" type="Number"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="CantFinal"
+                                label="{appTxts>/dashboard.repAclarProv.filter.endCant}"
+                                partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="inptCantEndProv" type="Number"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+                    </fb:FilterBar>
+
+                    <t:Table fixedLayout="false" selectionMode="None">
+                        <t:extension>
+                            <OverflowToolbar>
+                                <content>
+                                    <Title level="H2" text="{appTxts>/dashboard.repAclarProv.toolbar.supplier}"/>
+                                </content>
+                            </OverflowToolbar>
+                        </t:extension>
+                        <t:columns>
+                            <t:Column sortProperty="Lifnr">
+                                <Text text="{appTxts>/dashboard.repAclarProv.table.numSupplier}"/>
+                                <t:template>
+                                    <Text text="{ECuentaAcl>Lifnr}" wrapping="false"/>
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="Lifnr">
+                                <Text text="{appTxts>/dashboard.repAclarProv.table.supplier}"/>
+                                <t:template>
+                                    <Text text="{ECuentaAcl>Lifnr}" wrapping="false"/>
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="Lifnr">
+                                <Text text="{appTxts>/dashboard.repAclarProv.table.impReclamado}"/>
+                                <t:template>
+                                    <Text text="{ECuentaAcl>Lifnr}" wrapping="false"/>
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="Lifnr">
+                                <Text text="{appTxts>/dashboard.repAclarProv.table.cantReclamada}"/>
+                                <t:template>
+                                    <Text text="{ECuentaAcl>Lifnr}" wrapping="false"/>
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="Lifnr">
+                                <Text text="{appTxts>/dashboard.repAclarProv.table.impResuelto}"/>
+                                <t:template>
+                                    <Text text="{ECuentaAcl>Lifnr}" wrapping="false"/>
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="Lifnr">
+                                <Text text="{appTxts>/dashboard.repAclarProv.table.cantResuelto}"/>
+                                <t:template>
+                                    <Text text="{ECuentaAcl>Lifnr}" wrapping="false"/>
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="Lifnr">
+                                <Text text="{appTxts>/dashboard.repAclarProv.table.impPendiente}"/>
+                                <t:template>
+                                    <Text text="{ECuentaAcl>Lifnr}" wrapping="false"/>
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="Lifnr">
+                                <Text text="{appTxts>/dashboard.repAclarProv.table.cantPendiente}"/>
+                                <t:template>
+                                    <Text text="{ECuentaAcl>Lifnr}" wrapping="false"/>
+                                </t:template>
+                            </t:Column>
+                        </t:columns>
+                    </t:Table>
+                </ScrollContainer>
             </IconTabFilter>
             <IconTabFilter
                 icon="sap-icon://idea-wall"

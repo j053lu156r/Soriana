@@ -411,7 +411,7 @@ sap.ui.define([
             } else {
                 this.getConfigModel().setProperty("/adendaSimplificada", false);
             }
-            //this.onVerifyProveedorSTIBO(key);
+            this.onVerifyProveedorSTIBO(key);
             this.buildUserTileAuth();
         },
 
