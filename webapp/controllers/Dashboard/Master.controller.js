@@ -479,8 +479,9 @@ sap.ui.define([
                 filters: aFilters,
                 success: function(response){
                     if(response.results[0].TOTALESNAV.results.length > 0){
-                        console.log(response)
-                        //var cardsData = response.results[0].TOTALESNAV.results[0];
+                        var totales = response.results[0].TOTALESNAV.results;
+                        var totalesModel = new JSONModel({oData: totales});
+                        that.getView().setModel(totalesModel, 'TotalesModelProv');
                     } else {
                         sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.data"));
                     }

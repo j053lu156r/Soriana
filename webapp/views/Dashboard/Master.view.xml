@@ -929,7 +929,7 @@
                         </fb:filterGroupItems>
                     </fb:FilterBar>
 
-                    <t:Table fixedLayout="false" selectionMode="None">
+                    <t:Table fixedLayout="false" selectionMode="None" rows="{TotalesModelProv>/oData}">
                         <t:extension>
                             <OverflowToolbar>
                                 <content>
@@ -938,52 +938,52 @@
                             </OverflowToolbar>
                         </t:extension>
                         <t:columns>
-                            <t:Column sortProperty="Lifnr">
+                            <t:Column sortProperty="Proveedor">
                                 <Text text="{appTxts>/dashboard.repAclarProv.table.numSupplier}"/>
                                 <t:template>
-                                    <Text text="{ECuentaAcl>Lifnr}" wrapping="false"/>
+                                    <Text text="{TotalesModelProv>Proveedor}" wrapping="false"/>
                                 </t:template>
                             </t:Column>
-                            <t:Column sortProperty="Lifnr">
+                            <t:Column sortProperty="Razonsocial">
                                 <Text text="{appTxts>/dashboard.repAclarProv.table.supplier}"/>
                                 <t:template>
-                                    <Text text="{ECuentaAcl>Lifnr}" wrapping="false"/>
+                                    <Text text="{TotalesModelProv>Razonsocial}" wrapping="false"/>
                                 </t:template>
                             </t:Column>
-                            <t:Column sortProperty="Lifnr">
+                            <t:Column sortProperty="Totalreclamado">
                                 <Text text="{appTxts>/dashboard.repAclarProv.table.impReclamado}"/>
                                 <t:template>
-                                    <Text text="{ECuentaAcl>Lifnr}" wrapping="false"/>
+                                    <ObjectNumber number= "{parts: [{path: 'TotalesModelProv>Totalreclamado'}, {path: 'TotalesModelProv>Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
                                 </t:template>
                             </t:Column>
-                            <t:Column sortProperty="Lifnr">
+                            <t:Column sortProperty="Cantreclamada">
                                 <Text text="{appTxts>/dashboard.repAclarProv.table.cantReclamada}"/>
                                 <t:template>
-                                    <Text text="{ECuentaAcl>Lifnr}" wrapping="false"/>
+                                    <Text text="{TotalesModelProv>Cantreclamada}" wrapping="false"/>
                                 </t:template>
                             </t:Column>
-                            <t:Column sortProperty="Lifnr">
+                            <t:Column sortProperty="Totalresuelto">
                                 <Text text="{appTxts>/dashboard.repAclarProv.table.impResuelto}"/>
                                 <t:template>
-                                    <Text text="{ECuentaAcl>Lifnr}" wrapping="false"/>
+                                    <ObjectNumber number= "{parts: [{path: 'TotalesModelProv>Totalresuelto'}, {path: 'TotalesModelProv>Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
                                 </t:template>
                             </t:Column>
-                            <t:Column sortProperty="Lifnr">
+                            <t:Column sortProperty="Cantresuelto">
                                 <Text text="{appTxts>/dashboard.repAclarProv.table.cantResuelto}"/>
                                 <t:template>
-                                    <Text text="{ECuentaAcl>Lifnr}" wrapping="false"/>
+                                    <Text text="{TotalesModelProv>Cantresuelto}" wrapping="false"/>
                                 </t:template>
                             </t:Column>
-                            <t:Column sortProperty="Lifnr">
+                            <t:Column sortProperty="Totalpendiente">
                                 <Text text="{appTxts>/dashboard.repAclarProv.table.impPendiente}"/>
                                 <t:template>
-                                    <Text text="{ECuentaAcl>Lifnr}" wrapping="false"/>
+                                    <ObjectNumber number= "{parts: [{path: 'TotalesModelProv>Totalpendiente'}, {path: 'TotalesModelProv>Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
                                 </t:template>
                             </t:Column>
-                            <t:Column sortProperty="Lifnr">
+                            <t:Column sortProperty="Cantpendiente">
                                 <Text text="{appTxts>/dashboard.repAclarProv.table.cantPendiente}"/>
                                 <t:template>
-                                    <Text text="{ECuentaAcl>Lifnr}" wrapping="false"/>
+                                    <Text text="{TotalesModelProv>Cantpendiente}" wrapping="false"/>
                                 </t:template>
                             </t:Column>
                         </t:columns>
