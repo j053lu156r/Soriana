@@ -15,6 +15,7 @@ sap.ui.define([
     const oRepAvgTime = new this.ReporteAvgTiempo();
     const oRepExecComp = new this.ReporteExecComp();
     const oReporteAclProv = new this.ReporteAclProv();
+    const oReporteAnalista = new this.ReporteAnalista();
 
     var Controller = BaseController.extend("sap.m.sample.SplitApp.C", {
 
@@ -25,6 +26,7 @@ sap.ui.define([
         dateAltaGr: undefined,
         dateAltaAvgT: undefined,
         dateAltaByProv: undefined,
+        dateAltaAnalista: undefined,
         cboxTipo: undefined,
         cboxTipoGr: undefined,
         cboxTipoAvgT: undefined,
@@ -39,6 +41,10 @@ sap.ui.define([
         cboxDateFinExecC: undefined,
         cboxTipoExecByProv: undefined,
         cboxEstatusByProv: undefined,
+        cboxGrupoResAnalista: undefined,
+        cboxAnalista: undefined,
+        cboxEstatusAnalista: undefined,
+        cboxTipoExecAnalista: undefined,
         inptAmountIniProv: undefined,
         inptAmountEndProv: undefined,
         inptCantIniProv: undefined,
@@ -66,13 +72,16 @@ sap.ui.define([
 			this.getView().setModel(oModel);
             var oIconTabBar = this.byId("idIconTabBar");
             oIconTabBar.setHeaderMode("Inline");
-            this.configFilterLanguage(this.getView().byId("filterBar"));
+            
             this.catalogModel = new sap.ui.model.odata.v2.ODataModel(oCatalog.sUrl);
             this.reporteGral = new sap.ui.model.odata.v2.ODataModel(oRepGral.sUrl);
             this.reporteGpoRes = new sap.ui.model.odata.v2.ODataModel(oRepGpoRes.sUrl);
             this.reporteAvgTime = new sap.ui.model.odata.v2.ODataModel(oRepAvgTime.sUrl);
             this.reporteExecComp = new sap.ui.model.odata.v2.ODataModel(oRepExecComp.sUrl);
             this.reporteAclProv = new sap.ui.model.odata.v2.ODataModel(oReporteAclProv.sUrl);
+            this.reporteAnalista = new sap.ui.model.odata.v2.ODataModel(oReporteAnalista.sUrl);
+
+            this.configFilterLanguage(this.getView().byId("filterBar"));
             this.iconTabBar = this.getView().byId("idIconTabBar");
             this.cboxAntiguedad = this.getView().byId("cboxAntiguedad");
             this.cboxTipo = this.getView().byId("cboxTipo");
@@ -112,6 +121,12 @@ sap.ui.define([
             this.inptCantIniProv = this.getView().byId("inptCantIniProv")
             this.inptCantEndProv = this.getView().byId("inptCantEndProv")
 
+            this.dateAltaAnalista = this.getView().byId("dateAltaAnalista")
+            this.cboxGrupoResAnalista = this.getView().byId("cboxGrupoResAnalista")
+            this.cboxAnalista = this.getView().byId("cboxAnalista")
+            this.cboxEstatusAnalista = this.getView().byId("cboxEstatusAnalista")
+            this.cboxTipoExecAnalista = this.getView().byId("cboxTipoExecAnalista")
+
             this.onLoadTiposAclaracion();
             this.onLoadAnalistas();
             this.onLoadGrupos();
@@ -136,6 +151,7 @@ sap.ui.define([
                     this.onAclProvRep();
                     break;
                 case 'repAclarAnalyst':
+                    this.onAclaAnalistaRep();
                     break;
                 default:
                     break;
@@ -492,6 +508,69 @@ sap.ui.define([
                     sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.execute"));
                 }
             });
+        },
+
+        onAclaAnalistaRep: function(){
+            var that = this;
+            var aFilters = [];
+            
+            var dateInicial = this.dateAltaAnalista.getDateValue();
+            var dateFinal = this.dateAltaAnalista.getSecondDateValue();
+            var grupoRes = this.cboxGrupoResAnalista.getSelectedKey();
+            var analista = this.cboxAnalista.getSelectedKey();
+            var estatus = this.cboxEstatusAnalista.getSelectedKey();
+            var tipo = this.cboxTipoExecAnalista.getSelectedKey();
+
+            if (
+                dateInicial !== "" && dateInicial !== null && dateInicial !== undefined &&
+                dateFinal !== "" && dateFinal !== null && dateFinal !== undefined
+            ) {
+                aFilters.push(new Filter("Fechaalta", FilterOperator.BT, dateInicial, dateFinal));
+            } else {
+                sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.dates"))
+                return
+            }
+
+            if (grupoRes !== null && grupoRes !== "" && grupoRes !== undefined) {
+                aFilters.push(new Filter("Gporesolutor", FilterOperator.EQ, grupoRes));
+            }
+
+            if (analista !== null && analista !== "" && analista !== undefined) {
+                aFilters.push(new Filter("Analista", FilterOperator.EQ, analista));
+            }
+
+            if (estatus !== null && estatus !== "" && estatus !== undefined) {
+                aFilters.push(new Filter("Estatus", FilterOperator.EQ, estatus));
+            }
+
+            if (tipo !== null && tipo !== "" && tipo !== undefined) {
+                aFilters.push(new Filter("Tipo", FilterOperator.EQ, tipo));
+            }
+
+            this.reporteAnalista.read("/DASHMAINSet", {
+                method: "GET",
+                urlParameters: {
+                    "$expand": "DETALLESNAV",
+                },
+                filters: aFilters,
+                success: function(response){
+                    console.log(response)
+                    /*
+                    if(response.results[0].TOTALESNAV.results.length > 0){
+                        var totales = response.results[0].TOTALESNAV.results;
+                        var totalesModel = new JSONModel({oData: totales});
+                        that.detailDataAclProv = response.results[0].DETALLESNAV.results;
+                        that.getView().setModel(totalesModel, 'TotalesModelProv');
+                    } else {
+                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.data"));
+                    }
+                    */
+                }, 
+                error: function(error){
+                    sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.execute"));
+                }
+            });
+
         },
 
         downloadExcelGralRep: function(){

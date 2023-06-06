@@ -724,3 +724,14 @@ function ReporteAclProv() {
 
 ReporteAclProv.prototype = Object.create(BaseModel.prototype);
 ReporteAclProv.prototype.constructor = ReporteAclProv;
+
+//Model Dashboard: Reporte Aclaraciones por analista
+function ReporteAnalista() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_DB06_ACLARACION_XANALISTA_SRV/";
+    params.sModel = "dashboardReporteAnalista";
+    BaseModel.call(this, params);
+}
+
+ReporteAnalista.prototype = Object.create(BaseModel.prototype);
+ReporteAnalista.prototype.constructor = ReporteAnalista;

@@ -996,7 +996,90 @@
                 icon="sap-icon://idea-wall"
                 text="{appTxts>/dashboard.tab.title.repAclarAnalyst}"
                 key="repAclarAnalyst">
-                <Text text="People content goes here ..." />
+                <ScrollContainer
+                    height="100%"
+                    width="100%"
+                    horizontal="false"
+                    vertical="true">
+                        <fb:FilterBar header="Header" reset="onReset" search="searchData"
+                        clear="clearFilters" cancel="onCancel"
+                        filtersDialogClosed="onFiltersDialogClosed"
+                        showRestoreButton="false" showClearButton="false" useToolbar="false"
+                        filterBarExpanded="true">
+                            <fb:filterGroupItems>
+                                <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                    label="{appTxts>/dashboard.repGeneral.filter.date}"
+                                    groupTitle="FechaAlta" name="FechaAlta" partOfCurrentVariant="true"
+                                    mandatory="true"
+                                    visibleInFilterBar="true">
+                                    <fb:control>
+                                        <DateRangeSelection id="dateAltaAnalista" />
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+
+                                <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                    label="{appTxts>/dashboard.repGeneral.filter.grupoRes}"
+                                    groupTitle="Grupo" name="Grupo" partOfCurrentVariant="true"
+                                    visibleInFilterBar="true">
+                                    <fb:control>
+                                        <ComboBox showSecondaryValues="true" id="cboxGrupoResAnalista"
+                                            items="{GruposModel>/Grupos}"
+                                            showClearIcon="true">
+                                            <core:ListItem key="{GruposModel>Idusua}"
+                                                text="{GruposModel>Analista}"
+                                                additionalText="{GruposModel>Idusua}" />
+                                        </ComboBox>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+
+                                <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                    label="{appTxts>/dashboard.repGeneral.filter.analista}"
+                                    groupTitle="Analista" name="Analista" partOfCurrentVariant="true"
+                                    visibleInFilterBar="true">
+                                    <fb:control>
+                                        <ComboBox showSecondaryValues="true" id="cboxAnalista"
+                                            items="{AnalistasModel>/Analistas}"
+                                            showClearIcon="true">
+                                            <core:ListItem key="{AnalistasModel>Idpuesto}"
+                                                text="{AnalistasModel>Analista}"
+                                                additionalText="{AnalistasModel>Idgpores}" />
+                                        </ComboBox>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+
+                                <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                    label="{appTxts>/dashboard.repGeneral.filter.status}"
+                                    groupTitle="Estatus" name="Estatus" partOfCurrentVariant="true"
+                                    visibleInFilterBar="true">
+                                    <fb:control>
+                                        <Select selectedKey="T" id="cboxEstatusAnalista">
+                                            <core:Item key="P"
+                                                text="{appTxts>/dashboard.filter.estatusE}" />
+                                            <core:Item key="R"
+                                                text="{appTxts>/dashboard.filter.estatusH}" />
+                                            <core:Item key="T"
+                                                text="{appTxts>/dashboard.filter.estatusT}" />
+                                        </Select>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+
+                                <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                    label="{appTxts>/dashboard.repGeneral.filter.tipo}"
+                                    groupTitle="Tipo" name="Tipo" partOfCurrentVariant="true"
+                                    visibleInFilterBar="true">
+                                    <fb:control>
+                                        <ComboBox showSecondaryValues="true" id="cboxTipoExecAnalista"
+                                            items="{TiposAclaracion>/Tipos}"
+                                            showClearIcon="true">
+                                            <core:ListItem key="{TiposAclaracion>TipAcla}"
+                                                text="{TiposAclaracion>DesAcla}"
+                                                additionalText="{TiposAclaracion>TipAcla}" />
+                                        </ComboBox>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                            </fb:filterGroupItems>
+                        </fb:FilterBar>
+                </ScrollContainer>
             </IconTabFilter>
         </items>
     </IconTabBar>
