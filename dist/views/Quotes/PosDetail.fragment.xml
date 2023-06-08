@@ -1,0 +1,59 @@
+<core:FragmentDefinition
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core">
+    <Dialog title="{appTxts>/quotes.titlePosDetail}" class="sapUiContentPadding">
+        <VBox>
+            <Table id="suppliersTable"
+                        items="{path : 'tableQuotesDetailPositions>/ECITASARTPEDNAV/Paginated/results'}">
+                        <headerToolbar>
+                        <OverflowToolbar>
+                                <ToolbarSpacer/>
+                            <Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExcelPositions" visible="{= ${tableDetailMoves>/EDOCDTLNAV/results/length} > 0}" />
+                            <Select 
+                                visible="{= ${tableQuotesDetailPositions>/ECITASARTPEDNAV/Paginated/results/length} > 0 }"
+                                change=".paginateValue(${$parameters>/selectedItem}, 'tableQuotesDetailPositions', '/ECITASARTPEDNAV')">
+                                <items>
+                                    <core:Item key="10" text="10"/>
+                                    <core:Item key="20" text="20"/>
+                                    <core:Item key="50" text="50"/>
+                                    <core:Item key="100" text="100"/>
+                                </items>
+                            </Select>
+                        </OverflowToolbar>
+                    </headerToolbar>
+                <columns>
+                    <Column><Text text="{appTxts>/quotes.order}" /></Column>
+                    <Column><Text text="{appTxts>/quotes.position}" /></Column>
+                    <Column><Text text="{appTxts>/quotes.branch}" /></Column>
+                    <Column><Text text="{appTxts>/quotes.codebar}" /></Column>
+                    <Column><Text text="{appTxts>/quotes.description}" /></Column>
+                    <Column><Text text="{appTxts>/quotes.palletBox}" /></Column>
+                    <Column><Text text="{appTxts>/quotes.quantity}" /></Column>
+                </columns>
+                <items>
+                    <ColumnListItem >
+                        <cells>
+                            <ObjectIdentifier text="{tableQuotesDetailPositions>ZNumpedido}" />
+                            <ObjectIdentifier text="{tableQuotesDetailPositions>ZPosicion}" />
+                            <ObjectIdentifier text="{tableQuotesDetailPositions>ZSucursal} - {tableQuotesDetailPositions>ZDescrsucursal}" />
+                            <ObjectIdentifier text="{tableQuotesDetailPositions>Zean11}" />
+                            <ObjectIdentifier text="{tableQuotesDetailPositions>ZDescrarticulo}" />
+                            <ObjectIdentifier text="{tableQuotesDetailPositions>ZCtdartarima1}" />
+                            <ObjectIdentifier text="{tableQuotesDetailPositions>ZCtdtarrec}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+
+            <OverflowToolbar visible="{= ${tableQuotesDetailPositions>/ECITASARTPEDNAV/Paginated/results/length} > 0 }">
+                <Text text="{tableQuotesDetailPositions>/ECITASARTPEDNAV/Paginated/initRow} - {tableQuotesDetailPositions>/ECITASARTPEDNAV/Paginated/endRow} {appTxts>/pagination.of} {tableQuotesDetailPositions>/ECITASARTPEDNAV/results/length}" />
+                <ToolbarSpacer/>
+                <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableQuotesDetailPositions>/ECITASARTPEDNAV/Paginated/iterator}, ${tableQuotesDetailPositions>/ECITASARTPEDNAV/Paginated/initRow}, 'tableQuotesDetailPositions', '/ECITASARTPEDNAV')" enabled="{= ${tableQuotesDetailPositions>/ECITASARTPEDNAV/Paginated/iterator} !== 1}" />
+                <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableQuotesDetailPositions>/ECITASARTPEDNAV/Paginated/iterator}, ${tableQuotesDetailPositions>/ECITASARTPEDNAV/Paginated/endRow}, 'tableQuotesDetailPositions', '/ECITASARTPEDNAV')" enabled="{= ${tableQuotesDetailPositions>/ECITASARTPEDNAV/Paginated/endRow} !== ${tableQuotesDetailPositions>/ECITASARTPEDNAV/results/length}}" />
+            </OverflowToolbar>
+        </VBox>
+        <buttons>
+            <Button id="closeDialog" text="{appTxts>/date.close}" press="onCloseDialogPosDetails"/>
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,38 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:u="sap.ui.unified"
+    xmlns:layout="sap.ui.layout">
+    <Dialog id="wizardDialog" showHeader="true" title="" verticalScrolling="false" stretch="true">
+        <f:DynamicPage stickySubheaderProvider="QuoteCedisWizard" toggleHeaderOnTitleClick="true" class="sapUiNoContentPadding" showFooter="true">
+            <f:content>
+                <Wizard id="QuoteCedisWizard" class="sapUiResponsivePadding--header sapUiResponsivePadding--content" showNextButton="false" renderMode="Page">
+                    <WizardStep id="RemissionDetail" title="{appTxts>/quotes.generalData}" validated="true">
+                        <core:Fragment fragmentName="demo.views.Quotes.wizards.fragments.FirstStepCedis" type="XML" />
+                    </WizardStep>
+                    <WizardStep id="ProductInfoStep" validated="true" title="{appTxts>/quotes.orders}">
+                        <core:Fragment fragmentName="demo.views.Quotes.wizards.fragments.SecondStepCedis" type="XML" />
+                    </WizardStep>
+                    <WizardStep validated="true" id="QuantityStep" title="{appTxts>/quotes.preview}">
+                        <core:Fragment fragmentName="demo.views.Quotes.wizards.fragments.ThirdStepCedis" type="XML" />
+                    </WizardStep>
+                </Wizard>
+            </f:content>
+
+            <f:footer>
+                <OverflowToolbar> 
+                 <ToolbarSpacer/>
+                   <Button text="Modificar" visible="{path:'ModelLectura>/lectura'}" press="Modificar_Primera_Vista" id="ModCita"/>
+                    <Button text="Cancelar cita" visible="{path:'ModelLectura>/lectura'}" press="CancelarCita" id="cancCita"/>
+                  
+                    <Button text="{appTxts>/rem.back}" visible="{/backButtonVisible}" press="onDialogBackButton" />
+                    <Button id="btnAppoimentNext" text="{appTxts>/rem.next}" type="Emphasized" enabled="{/nextButtonEnabled}" visible="{/nextButtonVisible}" press="onDialogNextButton" />
+                    <!-- <Button text="{appTxts>/rem.review}" type="Emphasized" enabled="{/reviewButtonEnabled}" visible="{/reviewButtonVisible}" press="onDialogNextButton" /> -->
+                    <Button text="{appTxts>/rem.finish}" type="Emphasized" visible="{/finishButtonVisible}" press="handleWizardSubmit" />
+                    <Button text="{appTxts>/quotes.cancel2}" type="Transparent" press="onCloseWizard"/>
+                </OverflowToolbar>
+            </f:footer>
+        </f:DynamicPage>
+    </Dialog>
+</core:FragmentDefinition>

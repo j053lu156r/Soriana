@@ -1,0 +1,140 @@
+<mvc:View displayBlock="true" controllerName="demo.controllers.VisorNotasEntrada.Detail" height="100%" xmlns="sap.uxap" xmlns:mvc="sap.ui.core.mvc" xmlns:m="sap.m" xmlns:f="sap.f" xmlns:t="sap.ui.table" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form">
+    <ObjectPageLayout id="ObjectPageLayout" showTitleInHeaderContent="true" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false" headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
+        <headerTitle>
+            <ObjectPageDynamicHeaderTitle>
+                <expandedHeading>
+                    <m:Title text="{appTxts>/visor.detailTitle}: " wrapping="true" class="sapUiSmallMarginEnd" />
+                </expandedHeading>
+                <navigationActions>
+                    <!-- <m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="{appTxts>/visor.expand}" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="{appTxts>/visor.dismiss}" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>-->
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose" tooltip="{appTxts>/visor.close}" visible="true" />
+                </navigationActions>
+            </ObjectPageDynamicHeaderTitle>
+        </headerTitle>
+        <headerContent>
+            <m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Stretch" class="sapUiSmallMarginBottom">
+                <m:VBox justifyContent="Center" class="sapUiLargeMargin">
+                    <m:Label text="{appTxts>/visor.branchOffice}" />
+                    <m:Text text="{DetalleModel>/Werks}" class="sapUiTinyMarginBegin" />
+
+                    <m:Label text="{appTxts>/visor.invoice}" />
+                    <m:Text text="{DetalleModel>/XblnrFact}" class="sapUiTinyMarginBegin" />
+                </m:VBox>
+
+                <m:VBox justifyContent="Center" class="sapUiLargeMargin">
+                    <m:Label text="{appTxts>/visor.total}" />
+                    <m:Text text="{DetalleModel>/Total} {DetalleModel>/Waers}" class="sapUiTinyMarginBegin" />
+
+                    <m:Label text="{appTxts>/visor.supplier}" />
+                    <m:Text text="{DetalleModel>/Lifnr}" class="sapUiTinyMarginBegin" />
+                    <!--
+                    <m:Label text="{appTxts>/visor.totalImp}" />
+                    <m:Text text="{DetalleModel>/TotImp} {DetalleModel>/Waers}" class="sapUiTinyMarginBegin" /> 
+                    -->                
+                </m:VBox>
+
+                <m:VBox justifyContent="Center" class="sapUiLargeMargin">
+                    <m:Label text="{appTxts>/visor.receivedDate}" />
+                    <m:Text text="{DetalleModel>/BudatMkpf}" class="sapUiTinyMarginBegin" />
+
+                    <m:Label text="{appTxts>/visor.Frecibo}" />
+                    <m:Text text="{DetalleModel>/Xblnr}" class="sapUiTinyMarginBegin" />
+                </m:VBox>
+            </m:FlexBox>
+        </headerContent>
+        <sections>
+            <ObjectPageSection title="{appTxts>/visor.positions}">
+                <subSections>
+                    <ObjectPageSubSection>
+                        <blocks>
+                            <m:VBox>
+                                <t:Table noData="{appTxts>/visor.noData}" id="tableVisor" alternateRowColors="true" rows="{ path : 'DetallePosiciones>/' }" enableColumnReordering="false" enableSelectAll="false" visibleRowCount="10" selectionMode="None">
+                                    <t:extension>
+                                        <m:OverflowToolbar style="Clear">
+                                            <m:Title id="title" text="{appTxts>/state.detail} ({DetallePosiciones>/length})" />
+                                            <m:ToolbarSpacer />
+                                            <m:Button icon="sap-icon://excel-attachment" text="{appTxts>/global.export}" press=".buildExportTable" visible="{= ${DetallePosiciones>/length} > 0}" />
+                                            <m:Button icon="sap-icon://action-settings" press="ConfigTable" />
+                                        </m:OverflowToolbar>
+                                    </t:extension>
+                                    <t:columns>
+                                        <t:Column width="auto" id="idZeile" visible="true" sortProperty="Zeile" filterProperty="Zeile">
+                                            <m:Label text="{appTxts>/visor.positionG}" />
+                                            <t:template>
+                                                <m:Text text="{DetallePosiciones>Zeile}" wrapping="false" />
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="auto" id="idEbeln" visible="true" sortProperty="Ebeln" filterProperty="Ebeln">
+                                            <m:Label text="{appTxts>/visor.order}" />
+                                            <t:template>
+                                                <m:Text text="{DetallePosiciones>Ebeln}" wrapping="false" />
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="auto" id="idEbelp" visible="true" sortProperty="Ebelp" filterProperty="Ebelp">
+                                            <m:Label text="{appTxts>/visor.position}" />
+                                            <t:template>
+                                                <m:Text text="{DetallePosiciones>Ebelp}" wrapping="false" />
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="auto" id="idEan11" visible="true" sortProperty="Ean11" filterProperty="Ean11">
+                                            <m:Label text="{appTxts>/visor.codigo}" />
+                                            <t:template>
+                                                <m:Text text="{DetallePosiciones>Ean11}" wrapping="false" />
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="auto" id="idMaktx" visible="true" sortProperty="Maktx" filterProperty="Maktx">
+                                            <m:Label text="{appTxts>/visor.descripcion}" />
+                                            <t:template>
+                                                <m:Text text="{DetallePosiciones>Maktx}" wrapping="false" />
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="auto" id="idErfmg" visible="true" sortProperty="Erfmg" filterProperty="Erfmg">
+                                            <m:Label text="{appTxts>/visor.quantity}" />
+                                            <t:template>
+                                                <m:Text text="{DetallePosiciones>Erfmg} {DetallePosiciones>Erfme}" wrapping="false" />
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="auto" id="idMenge" visible="true" sortProperty="Umrez" filterProperty="Umrez">
+                                            <m:Label text="{appTxts>/visor.capacidad} " />
+                                            <t:template>
+                                                <m:Text text="{DetallePosiciones>Umrez}" wrapping="false" />
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="auto" id="idFconver" visible="true" sortProperty="Menge" filterProperty="Menge">
+                                            <m:Label text="{appTxts>/visor.Fconver}" />
+                                            <t:template>
+                                                <m:Text text="{DetallePosiciones>Menge} {DetallePosiciones>Meins}" wrapping="false" />
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="auto" id="idNetpr" visible="true" sortProperty="Netpr" filterProperty="Netpr">
+                                            <m:Label text="{appTxts>/visor.netpr}" />
+                                            <t:template>
+                                                <m:Text text="{DetallePosiciones>Netpr} {DetallePosiciones>Waers}" wrapping="false" />
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="auto" id="idTotal" visible="true" sortProperty="Total" filterProperty="Total">
+                                            <m:Label text="{appTxts>/visor.unitPrice}" />
+                                            <t:template>
+                                                <m:Text text="{DetallePosiciones>Brtwr} {DetallePosiciones>Waers}" wrapping="false" />
+                                            </t:template>
+                                        </t:Column>
+                                    </t:columns>
+                                    <t:footer>
+                                        <m:OverflowToolbar >
+                                            <m:Label design="Bold" text="Total" />
+                                              <m:ToolbarSpacer />
+                                               <m:Label design="Bold" id="sumatxt"/>
+                                               <m:ToolbarSpacer />
+                                                   <m:Label design="Bold" text=" " />
+                                        </m:OverflowToolbar>
+                                    </t:footer>
+                                </t:Table>
+                            </m:VBox>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+        </sections>
+    </ObjectPageLayout>
+</mvc:View>
