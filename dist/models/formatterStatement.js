@@ -1,1 +1,0 @@
-sap.ui.define([],function(){"use strict";return{hasReport:function(e){return Number(e)>0?true:false}}});
