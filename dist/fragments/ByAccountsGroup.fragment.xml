@@ -1,0 +1,29 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		contentWidth= "450px"
+		contentHeight= "300px"
+		noDataText="{appTxts>/account.noData}"
+		title="{appTxts>/account.title}"
+		search="ohandleSearch"
+		confirm="ohandleClose"
+		cancel="ohandleClose"
+		multiSelect="true" 
+		items="{
+			
+			path: 'cNotice>/',
+			sorter: {
+						path: '/',
+						descending: false
+					}
+		}" >
+		<StandardListItem
+			title="{cNotice>Landk}"
+			description="{cNotice>Land1}"
+			iconDensityAware="false"
+			iconInset="false"
+			type="Active"
+			/>
+	</SelectDialog>
+</core:FragmentDefinition>
