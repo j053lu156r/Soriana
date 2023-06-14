@@ -247,8 +247,7 @@ sap.ui.define([
             var html = "";
 
             html = '<div id="codeGroupDiv" style= "text-align: center; width: 100%;" >' +
-                '<img src ="./images/LogoSoriana.svg" width="150px" />' +
-                '<div style="display: grid;grid-template-columns: auto auto; width:40%;">';
+                '<div style="display: grid;grid-template-columns: auto auto auto; width:40%;">';
 
             var positions = this.getView().getModel("tableRemissionDetail").getData();
 
@@ -256,8 +255,10 @@ sap.ui.define([
 
                 var cajsTarimas = this.groupByAuto(positions.ETREMDNAV.results, "Cajtar")
                 let cajTarIndex = 1;
+                let count = 0;
                 for (const key in cajsTarimas) {
-                    html += '<div style="padding:5px;display:inline; margin:5px;border:1px solid #999999;text-align:center;">' +
+                    count ++;
+                    html += '<div style="padding:5px;display:inline; margin-top:40px; margin-right:10px; margin-left:10px; border:1px solid #999999;text-align:center;">' +
                         `<p style="width:100%;font-size: smaller;">${positions.Eremh.Zremision}</p>` +
                         `<p style="width:100%;font-size: smaller;">${this.getConfigModel().getProperty("/supplierInput")}</p>` +
                         `<p style="width:100%;font-size: smaller;">${cajsTarimas[key][0].Werks} - ${cajsTarimas[key][0].Name1}</p>` +
@@ -269,6 +270,10 @@ sap.ui.define([
                         `<p style="width:60%; text-align:left; font-size: smaller;">${this.getView().getModel("appTxts").getProperty("/rem.palletbox")}: ${cajTarIndex} de ${Object.keys(cajsTarimas).length}</p>` +
                         '</div>';
                     cajTarIndex++;
+                    if (count === 6){
+                        count = 0;
+                        html += '<br><br><br> <br><br><br> <br><br><br> <br><br><br>';
+                    }
                 }
 
             }
@@ -298,17 +303,17 @@ sap.ui.define([
         saveCoordinates: function () {
             var element = document.getElementById('codeGroupDiv');
             var opt = {
-                margin: 1,
+                margin: 0,
                 filename: 'GroupCode.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'in', format: 'letter'},//, orientation: 'landscape' 
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape'},//, orientation: 'landscape' 
                 pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
             };
 
             // New Promise-based usage:
             html2pdf().set(opt).from(element).save();
-            element.clear();
+            //element.innerHTML = "";
         },
         printConsolidated: function () {
             if (!this._uploadDialog2) {

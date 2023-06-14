@@ -64,6 +64,8 @@ sap.ui.define([
         rbg1: undefined,
         rbg2: undefined,
 
+        barsData: undefined,
+
         onInit: function () {
             var oModel = new JSONModel();
             oModel.setData({
@@ -388,9 +390,9 @@ sap.ui.define([
             var year = this.cboxEjercicioExecC.getSelectedKey();
             var month1 = this.cboxDateIniExecC.getSelectedKey();
             var month2 = this.cboxDateFinExecC.getSelectedKey();
+            var generalStatus = this.rbg1.getSelectedIndex();
+            var metrica = this.rbg2.getSelectedIndex()
             var aFilters = [];
-            console.log(this.rbg1.getSelectedIndex())
-            console.log(this.rbg2.getSelectedIndex())
 
             if(year !== undefined && year !== null && year !== "") {
                 aFilters.push(new Filter("Ejercicio", FilterOperator.EQ, year));
@@ -419,20 +421,33 @@ sap.ui.define([
             this.reporteExecComp.read("/DASHMAINSet", {
                 method: "GET",
                 urlParameters: {
-                    "$expand": "TOTALESNAV,DETALLESEJERCICIONAV,DETALLESEJERMESNAV",
+                    "$expand": "TOTALESNAV,DETALLESEJERCICIONAV,DETALLECMPHNAV,DETALLECMPHNAV/DETALLECMPHDETNAV,DETALLECMPHNAV/DETALLECMPHDETNAV/DETALLECMPHDETMESNAV",
                 },
                 filters: aFilters,
-                success: function(response){
+                success: async function(response){
                     if(response.results[0].TOTALESNAV.results.length > 0){
                         console.log(response)
                         let dollarUSLocale = Intl.NumberFormat('en-US');
                         var cardsData = response.results[0].TOTALESNAV.results[0];
+                        that.barsData = response.results[0].DETALLECMPHNAV.results[generalStatus].DETALLECMPHDETNAV.results;
+                        that.currentData = that.barsData.filter(item => item.Ejercicio === new Date().getFullYear().toString())[0].DETALLECMPHDETMESNAV.results
+                        that.lastData = that.barsData.filter(item => item.Ejercicio !== new Date().getFullYear().toString())[0].DETALLECMPHDETMESNAV.results
                         cardsData.Importepagadasactual = parseFloat(cardsData.Importepagadasactual);
                         cardsData.Importepagadasanterior = parseFloat(cardsData.Importepagadasanterior);
                         cardsData.Importerecibidasactual = parseFloat(cardsData.Importerecibidasactual);
                         cardsData.Importerecibidasanterior = parseFloat(cardsData.Importerecibidasanterior);
                         var cardsModel = new JSONModel(cardsData);
                         that.getView().setModel(cardsModel, 'CardsModelExec');
+
+                        console.log(that.currentData)
+                        console.log(that.lastData)
+
+                        that.currentData = await that.formatData(that.currentData, generalStatus, that);
+                        that.lastData = await that.formatData(that.lastData, generalStatus, that);
+
+                        console.log(that.currentData)
+                        console.log(that.lastData)
+                        
                     } else {
                         sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.data"));
                     }
@@ -571,6 +586,55 @@ sap.ui.define([
                 }
             });
 
+        },
+
+        formatData: async function(data, estatus, that){
+            var node = "";
+            if (estatus === 0){
+                node = "Totalreclamado"
+            } else if (estatus === 1){
+                node = "Totalaclarado"
+            }
+
+            await data.forEach((item, indx) => {
+                const object = {
+                    cantidad: parseInt(item.Cantidad),
+                    importe: item[node],
+                    mes: that.formatMonth(item['Mes'])
+                }
+                data[indx] = object;
+            });
+
+            return data;
+        },
+
+        formatMonth: function(mes){
+            switch (mes) {
+                case "01":
+                    return "Enero";
+                case "02":
+                    return "Febrero";
+                case "03":
+                    return "Marzo";
+                case "04":
+                    return "Abril";
+                case "05":
+                    return "Mayo";
+                case "06":
+                    return "Junio";
+                case "07":
+                    return "Julio";
+                case "08":
+                    return "Agosto";
+                case "09":
+                    return "Septiembre";
+                case "10":
+                    return "Octubre";
+                case "11":
+                    return "Noviembre";
+                case "12":
+                    return "Diciembre";
+            }
         },
 
         downloadExcelGralRep: function(){
