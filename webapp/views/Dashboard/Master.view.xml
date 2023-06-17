@@ -682,16 +682,16 @@
                         <l:VerticalLayout>
                             <OverflowToolbar id="otb1">
                                 <ToolbarSpacer/>
-                                <RadioButtonGroup id="rbg1" columns="3" valueState="Error">
+                                <RadioButtonGroup id="rbg1" columns="3" valueState="Error" select="onChangeRadioBtnSelect">
                                     <RadioButton id="RB1-1" text="Recibidas" />
                                     <RadioButton id="RB1-2" text="Pagadas" />
                                 </RadioButtonGroup>
-                                <RadioButtonGroup id="rbg2" columns="3" valueState="Error">
+                                <RadioButtonGroup id="rbg2" columns="3" valueState="Error" select="onChangeRadioBtnSelect">
                                     <RadioButton id="RB2-1" text="Por cantidad" />
                                     <RadioButton id="RB2-2" text="Por importe" />
                                 </RadioButtonGroup>
                                 <Button icon="sap-icon://excel-attachment"
-                                        text="{appTxts>/dashboard.download.excel}" press="onDownloadExcelAvgT" />
+                                        text="{appTxts>/dashboard.download.excel}" press="onDownloadExcelEjecComp" />
                             </OverflowToolbar>
                             <Panel headerText="Año en curso" class="sapUiSmallMarginBottom">
                                 <l:HorizontalLayout>
@@ -726,30 +726,22 @@
                                     </GenericTile>
 
                                     <l:Grid defaultSpan="XL6 L6 M6 S6">
-                                        <FlexBox width="20rem" height="10rem" alignItems="Center" class="sapUiLargeMarginBegin">
+                                        <FlexBox width="30rem" height="10rem" alignItems="Center" class="sapUiLargeMarginBegin">
                                             <items>
-                                                <mc:InteractiveLineChart selectionChanged="selectionChanged" press="press" succeedingPoint="33.1">
+                                                <mc:InteractiveLineChart selectionChanged="selectionChanged" press="press" precedingPoint="15"
+                                                                    succeedingPoint="89" points="{CurrentData1>/data}">
                                                     <mc:points>
-                                                        <mc:InteractiveLineChartPoint value="100" label="May"/>
-                                                        <mc:InteractiveLineChartPoint value="12" label="June"/>
-                                                        <mc:InteractiveLineChartPoint value="51.4" label="July"/>
-                                                        <mc:InteractiveLineChartPoint value="52" label="Aug"/>
-                                                        <mc:InteractiveLineChartPoint value="69.9" label="Sep"/>
-                                                        <mc:InteractiveLineChartPoint value="0.9" label="Oct"/>
+                                                        <mc:InteractiveLineChartPoint value="{CurrentData1>valor}" label="{CurrentData1>mes}"/>
                                                     </mc:points>
                                                 </mc:InteractiveLineChart>
                                             </items>
                                         </FlexBox>
-                                        <FlexBox width="20rem" height="10rem" alignItems="Center" class="sapUiLargeMarginBegin">
+                                        <FlexBox width="30rem" height="10rem" alignItems="Center" class="sapUiLargeMarginBegin">
                                             <items>
-                                                <mc:InteractiveLineChart selectionChanged="selectionChanged" press="press" precedingPoint="0.9">
+                                                <mc:InteractiveLineChart selectionChanged="selectionChanged" press="press" precedingPoint="15"
+                                                                    succeedingPoint="89" points="{CurrentData2>/data}">
                                                     <mc:points>
-                                                        <mc:InteractiveLineChartPoint value="33.1" displayedValue="33.1%" label="May"/>
-                                                        <mc:InteractiveLineChartPoint value="2.2" displayedValue="2.2%" label="June"/>
-                                                        <mc:InteractiveLineChartPoint value="51.4" displayedValue="51.4%" label="July"/>
-                                                        <mc:InteractiveLineChartPoint value="19.9" displayedValue="19.9%" label="Aug"/>
-                                                        <mc:InteractiveLineChartPoint value="69.9" displayedValue="69.9%" label="Sep"/>
-                                                        <mc:InteractiveLineChartPoint value="0.9" displayedValue="0.9%" label="Oct"/>
+                                                        <mc:InteractiveLineChartPoint value="{CurrentData2>valor}" label="{CurrentData2>mes}"/>
                                                     </mc:points>
                                                 </mc:InteractiveLineChart>
                                             </items>
@@ -791,31 +783,22 @@
                                     </GenericTile>
 
                                     <l:Grid defaultSpan="XL6 L6 M6 S6">
-                                        <FlexBox width="20rem" height="10rem" alignItems="Center" class="sapUiLargeMarginBegin">
+                                        <FlexBox width="30rem" height="10rem" alignItems="Center" class="sapUiLargeMarginBegin">
                                             <items>
                                                 <mc:InteractiveLineChart selectionChanged="selectionChanged" press="press" precedingPoint="15"
-                                                                    succeedingPoint="89">
+                                                                    succeedingPoint="89" points="{LastData1>/data}">
                                                     <mc:points>
-                                                        <mc:InteractiveLineChartPoint value="33.1" label="May"/>
-                                                        <mc:InteractiveLineChartPoint value="12" label="June"/>
-                                                        <mc:InteractiveLineChartPoint value="51.4" label="July"/>
-                                                        <mc:InteractiveLineChartPoint value="52" label="Aug"/>
-                                                        <mc:InteractiveLineChartPoint value="69.9" label="Sep"/>
-                                                        <mc:InteractiveLineChartPoint value="0.9" label="Oct"/>
+                                                        <mc:InteractiveLineChartPoint value="{LastData1>valor}" label="{LastData1>mes}"/>
                                                     </mc:points>
                                                 </mc:InteractiveLineChart>
                                             </items>
                                         </FlexBox>
-                                        <FlexBox width="20rem" height="10rem" alignItems="Center" class="sapUiLargeMarginBegin">
+                                        <FlexBox width="30rem" height="10rem" alignItems="Center" class="sapUiLargeMarginBegin">
                                             <items>
-                                                <mc:InteractiveLineChart selectionChanged="selectionChanged" press="press" precedingPoint="-20">
+                                                <mc:InteractiveLineChart selectionChanged="selectionChanged" press="press" precedingPoint="15"
+                                                                    succeedingPoint="89" points="{LastData2>/data}">
                                                     <mc:points>
-                                                        <mc:InteractiveLineChartPoint value="33.1" displayedValue="33.1%" label="May"/>
-                                                        <mc:InteractiveLineChartPoint value="2.2" displayedValue="2.2%" label="June"/>
-                                                        <mc:InteractiveLineChartPoint value="51.4" displayedValue="51.4%" label="July"/>
-                                                        <mc:InteractiveLineChartPoint value="19.9" displayedValue="19.9%" label="Aug"/>
-                                                        <mc:InteractiveLineChartPoint value="69.9" displayedValue="69.9%" label="Sep"/>
-                                                        <mc:InteractiveLineChartPoint value="0.9" displayedValue="0.9%" label="Oct"/>
+                                                        <mc:InteractiveLineChartPoint value="{LastData2>valor}" label="{LastData2>mes}"/>
                                                     </mc:points>
                                                 </mc:InteractiveLineChart>
                                             </items>

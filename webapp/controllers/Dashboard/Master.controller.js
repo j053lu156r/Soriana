@@ -54,6 +54,7 @@ sap.ui.define([
         detailDataGR: [],
         detailDataAVGT: [],
         detailDataAclProv: [],
+        detailDataEC: [],
 
         donutImporte: undefined,
         donutCantidad: undefined,
@@ -425,29 +426,35 @@ sap.ui.define([
                 },
                 filters: aFilters,
                 success: async function(response){
+                    console.log(response)
                     if(response.results[0].TOTALESNAV.results.length > 0){
-                        console.log(response)
-                        let dollarUSLocale = Intl.NumberFormat('en-US');
                         var cardsData = response.results[0].TOTALESNAV.results[0];
                         that.barsData = response.results[0].DETALLECMPHNAV.results[generalStatus].DETALLECMPHDETNAV.results;
+                        that.detailDataEC = response.results[0].DETALLESEJERCICIONAV.results;
                         that.currentData = that.barsData.filter(item => item.Ejercicio === new Date().getFullYear().toString())[0].DETALLECMPHDETMESNAV.results
                         that.lastData = that.barsData.filter(item => item.Ejercicio !== new Date().getFullYear().toString())[0].DETALLECMPHDETMESNAV.results
                         cardsData.Importepagadasactual = parseFloat(cardsData.Importepagadasactual);
                         cardsData.Importepagadasanterior = parseFloat(cardsData.Importepagadasanterior);
                         cardsData.Importerecibidasactual = parseFloat(cardsData.Importerecibidasactual);
                         cardsData.Importerecibidasanterior = parseFloat(cardsData.Importerecibidasanterior);
+
                         var cardsModel = new JSONModel(cardsData);
                         that.getView().setModel(cardsModel, 'CardsModelExec');
 
-                        console.log(that.currentData)
-                        console.log(that.lastData)
+                        that.currentData = await that.formatData(that.currentData, generalStatus, metrica, that);
+                        that.lastData = await that.formatData(that.lastData, generalStatus, metrica, that);
 
-                        that.currentData = await that.formatData(that.currentData, generalStatus, that);
-                        that.lastData = await that.formatData(that.lastData, generalStatus, that);
+                        var currentModel = new JSONModel({data: that.currentData[0]});
+                        that.getView().setModel(currentModel, 'CurrentData1');
 
-                        console.log(that.currentData)
-                        console.log(that.lastData)
-                        
+                        var currentModel2 = new JSONModel({data: that.currentData[1]});
+                        that.getView().setModel(currentModel2, 'CurrentData2');
+
+                        var lastModel = new JSONModel({data: that.lastData[0]});
+                        that.getView().setModel(lastModel, 'LastData1');
+
+                        var lastModel = new JSONModel({data: that.lastData[1]});
+                        that.getView().setModel(lastModel, 'LastData2');
                     } else {
                         sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.data"));
                     }
@@ -588,8 +595,12 @@ sap.ui.define([
 
         },
 
-        formatData: async function(data, estatus, that){
+        formatData: async function(data, estatus, metrica, that){
             var node = "";
+            var dataArray = [
+                [],
+                []
+            ];
             if (estatus === 0){
                 node = "Totalreclamado"
             } else if (estatus === 1){
@@ -597,15 +608,22 @@ sap.ui.define([
             }
 
             await data.forEach((item, indx) => {
-                const object = {
-                    cantidad: parseInt(item.Cantidad),
-                    importe: item[node],
-                    mes: that.formatMonth(item['Mes'])
+                let object = {};
+                if (metrica === 0){
+                    object["valor"] = parseInt(item.Cantidad);
+                } else if (metrica === 1){
+                    object["valor"] = parseFloat(item[node]);
                 }
-                data[indx] = object;
+                object["mes"] = that.formatMonth(item['Mes'])
+
+                if (indx <= 5){
+                    dataArray[0].push(object)
+                } else {
+                    dataArray[1].push(object)
+                }
             });
 
-            return data;
+            return dataArray;
         },
 
         formatMonth: function(mes){
@@ -635,6 +653,10 @@ sap.ui.define([
                 case "12":
                     return "Diciembre";
             }
+        },
+
+        onChangeRadioBtnSelect: function(oEvent){
+            this.onExecCompRep();
         },
 
         downloadExcelGralRep: function(){
@@ -1035,6 +1057,61 @@ sap.ui.define([
                     }
                 ];
                 this.buildExcelSpreadSheet(columns, this.detailDataAclProv, "Reporte Dashboard Aclaraciones por Proveedor.xlsx");
+            } else {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.excel.error.data"));
+            }
+        },
+
+        onDownloadExcelEjecComp: function() {
+            if(this.detailDataEC.length > 0){
+                var texts = this.getOwnerComponent().getModel("appTxts");
+                var columns = [
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.proveedor"),
+                        property: "Proveedor",
+                        type: sap.ui.export.EdmType.Number,
+                        width: 12
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.razonsocial"),
+                        property: "Razonsocial",
+                        width: 40
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.tipo"),
+                        property: ["Tipo", "Desctipo"],
+                        template: "{0} {1}",
+                        width: 26
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.grupo"),
+                        property: "Nombregrupo",
+                        width: 25
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.totalrecla"),
+                        property: "Totalreclamado",
+                        type: sap.ui.export.EdmType.Number,
+                        delimiter: true,
+                        scale: 2,
+                        width: 20
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.totalaclarado"),
+                        property: "Totalaclarado",
+                        type: sap.ui.export.EdmType.Number,
+                        delimiter: true,
+                        scale: 2,
+                        width: 20
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGpoRes.table.quantity"),
+                        property: "Cantidad",
+                        type: sap.ui.export.EdmType.Number,
+                        width: 21
+                    }
+                ];
+                this.buildExcelSpreadSheet(columns, this.detailDataEC, "Reporte Dashboard Ejecutivo Comparativo.xlsx");
             } else {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.excel.error.data"));
             }
