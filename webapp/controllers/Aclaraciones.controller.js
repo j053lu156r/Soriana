@@ -536,14 +536,16 @@ onChange:function(){
             var aCols, oRowBinding, oSettings, oSheet, oTable, that = this;
 
             if (!that._oTable) {
-                that._oTable = this.byId('aclaracionesList');
+                that._oTable = this.getOwnerComponent().getModel('Aclaraciones').getProperty('/Detalles/results');
             }
+            //cambios 08-06
+            console.log(this.getOwnerComponent().getModel('Aclaraciones').getProperty('/Detalles/results'))
 
             oTable = that._oTable;
             console.log(oTable);
             //oRowBinding = oTable.getBinding('items');
             //oRowBinding = oTable.getBinding('rows');
-            oRowBinding = oTable.getBinding().oList;
+            oRowBinding = oTable //.getBinding().oList;
 
             aCols = that.createColumnConfig();
 

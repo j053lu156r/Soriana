@@ -1449,6 +1449,7 @@ sap.ui.define([
             var aportacionesTCodes = ['Z_APORTACIONES']
             var boletinVentasTCodes = ['ZMM_ACUERDOS_LIQUI']
             var Placreci = ['ZM10','ZM60','ZM61','ZM62']
+            var boletinvtz = [    'ZD37', 'ZD38', 'ZD42', 'ZM37', 'ZM38', 'ZM40', 'ZM41', 'ZM42', 'ZN01']
 
             var boart = results.Boart
             var acuerdosNSBoart = ['ZD33', 'ZD34', 'ZM33', 'ZM34']
@@ -1456,7 +1457,7 @@ sap.ui.define([
             console.log(results)
             console.log(acuerdosTCodes.includes(tcode))
             console.log(doc)
-            if ((acuerdosTCodes.includes(tcode) && doc.startsWith('510')) || (tcode == "" && !(doc.startsWith("1700") && results.Xblnr))) {
+            if ((acuerdosTCodes.includes(tcode) && doc.startsWith('510')) || (tcode == "" && !(doc.startsWith("1700") && results.Xblnr)) && !boletinvtz.includes(results.Boart)) {
 
                 console.log('on detailAcuerdosAS')
 
@@ -1514,7 +1515,7 @@ sap.ui.define([
 
                     MessageToast.show("Sin detalle");
                 }
-            } else if (tcode === 'ZMM_ACUERDOS_LIQUI') {
+            } else if (tcode === 'ZMM_ACUERDOS_LIQUI' || boletinvtz.includes(results.Boart)) {
                 console.log('on boletin vtz')
 
                 // navega a pantalla de boltines * revisar condiciones de apertura , conseguir esenarios
