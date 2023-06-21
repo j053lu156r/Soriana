@@ -15,6 +15,7 @@ xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants" xmlns="sap.m" x
                     <Button
                             text="{appTxts>/release.btnCreate}"
                             type="Emphasized"
+                             visible="{= ${userdata>/ERol} === '0001'  ? true : false }"
                             press="newRelease"/>
                 </f:actions>
             </f:DynamicPageTitle>
