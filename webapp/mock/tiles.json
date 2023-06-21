@@ -438,26 +438,6 @@
                     "numeric": " ",
                     "footer": "",
                     "type": "standard",
-                    "binding": "Dashboard",
-                    "functions": [
-                        {
-                            "idFunction": 26,
-                            "roles": [
-                                "0001",
-                                "0004",
-                                "0005"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "0032",
-                    "title": "/tiles.dashboardNew",
-                    "subHeader": "",
-                    "icon": "sap-icon://bbyd-dashboard",
-                    "numeric": " ",
-                    "footer": "",
-                    "type": "standard",
                     "binding": "DashboardNew",
                     "functions": [
                         {
