@@ -323,6 +323,12 @@ sap.ui.define([
             });
 
             aCols.push({
+                label: texts.getProperty("/visor.Frecibo"),
+                type: EdmType.String,
+                property: 'Xblnr'
+            });
+
+            aCols.push({
                 label: texts.getProperty("/visor.branchOffice"),
                 type: EdmType.String,
                 property: 'Werks'
@@ -452,6 +458,7 @@ sap.ui.define([
                     Mengep: "",
                     Mjahrp: "",
                     Zeilep: "",
+                    Brtwr: ""
                 });
 
                 for (var y = 0; y < TemP.length; y++) {
@@ -480,6 +487,7 @@ sap.ui.define([
                         Mengep: TemP[y].Menge,
                         Mjahrp: TemP[y].Mjahr,
                         Zeilep: TemP[y].Zeile,
+                        Brtwr: TemP[y].Brtwr,
                         Fconverp: (Number(TemP[y].Menge) / Number(TemP[y].Erfmg))
                     });
                 }
@@ -592,6 +600,12 @@ sap.ui.define([
                 label: texts.getProperty("/visor.quantity"),
                 type: EdmType.String,
                 property: 'Erfmgp'
+            });
+
+            aCols.push({
+                label: texts.getProperty("/visor.unitPrice"),
+                type: EdmType.String,
+                property: 'Brtwr'
             });
 
             aCols.push({

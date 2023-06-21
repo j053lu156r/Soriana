@@ -3,6 +3,7 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
     xmlns:f="sap.f"
+    xmlns:t ="sap.ui.table"
     xmlns:fb="sap.ui.comp.filterbar"
     xmlns:core="sap.ui.core"
     xmlns:x="sap.uxap"
@@ -77,9 +78,9 @@
                                 visibleInFilterBar="true">
                                 <fb:control>
                                     <Select selectedKey="T" id="cboxEstatus">
-                                        <core:Item key="E"
+                                        <core:Item key="P"
                                             text="{appTxts>/dashboard.filter.estatusE}" />
-                                        <core:Item key="H"
+                                        <core:Item key="R"
                                             text="{appTxts>/dashboard.filter.estatusH}" />
                                         <core:Item key="T"
                                             text="{appTxts>/dashboard.filter.estatusT}" />
@@ -100,6 +101,8 @@
                                             text="{appTxts>/dashboard.filter.antiguedad2}" />
                                         <core:Item key="3"
                                             text="{appTxts>/dashboard.filter.antiguedad3}" />
+                                        <core:Item key=""
+                                            text="{appTxts>/dashboard.filter.antiguedad4}" />
                                     </Select>
                                 </fb:control>
                             </fb:FilterGroupItem>
@@ -322,9 +325,9 @@
                                 visibleInFilterBar="true">
                                 <fb:control>
                                     <Select selectedKey="T" id="cboxEstatusGR">
-                                        <core:Item key="E"
+                                        <core:Item key="P"
                                             text="{appTxts>/dashboard.filter.estatusE}" />
-                                        <core:Item key="H"
+                                        <core:Item key="R"
                                             text="{appTxts>/dashboard.filter.estatusH}" />
                                         <core:Item key="T"
                                             text="{appTxts>/dashboard.filter.estatusT}" />
@@ -336,23 +339,59 @@
 
                     <l:HorizontalLayout class="sapUiContentPadding">
                         <l:Grid defaultSpan="XL12 L12 M12 S12">
-                            <!-- Example with absolute and percentage values -->
-                            <FlexBox width="40rem" height="10rem" alignItems="Center" class="sapUiSmallMargin">
-                                <items>
-                                    <mc:InteractiveBarChart id="barChar" labelWidth="30%"
-                                        bars="{GpoResModel>/oData}">
-                                        <mc:bars>
-                                            <mc:InteractiveBarChartBar label="{GpoResModel>Descgrupo}: ${ path: 'GpoResModel>Importe', type: 'sap.ui.model.type.Float' }" 
-                                                value="{GpoResModel>Cantidad}" 
-                                                displayedValue="{GpoResModel>Cantidad}"/>
-                                        </mc:bars>
-                                    </mc:InteractiveBarChart>
-                                </items>
-                            </FlexBox>
+
+                            <l:VerticalLayout class="sapUiContentPadding">
+                                <FlexBox width="350px" height="100px" renderType="Bare"
+                                    class="sapUiSmallMargin">
+                                    <mc:ColumnMicroChart size="Responsive" press="press" 
+                                        class="sapUiSmallMargin" allowColumnLabels="true" columns="{GpoResModel>/oData}">
+                                        <mc:columns>
+                                            <mc:ColumnMicroChartData value="{GpoResModel>Cantidad}" label="{GpoResModel>Grupo}" color="Good"/>
+                                        </mc:columns>
+                                    </mc:ColumnMicroChart>
+                                </FlexBox>
+                            </l:VerticalLayout>
                         </l:Grid>
+
                         <Button icon="sap-icon://excel-attachment"
                                 text="{appTxts>/dashboard.download.excel}" press="onDownloadExcelGpoRes" />
                     </l:HorizontalLayout>
+
+                    <Table 
+                        fixedLayout="false" 
+                        sticky="ColumnHeaders"
+                        items="{GpoResModel>/oData}">
+                        <headerToolbar>
+                            <OverflowToolbar>
+                                <content>
+                                    <Title level="H2" text="Montos"/>
+                                    <ToolbarSpacer/>
+                                </content>
+                            </OverflowToolbar>
+                        </headerToolbar>
+                        <columns>
+                            <Column>
+                                <Text text="{appTxts>/dashboard.table.gpoRes.aconimos}"/>
+                            </Column>
+                            <Column>
+                                <Text text="{appTxts>/dashboard.table.gpoRes.descAcron}"/>
+                            </Column>
+                            <Column>
+                                <Text text="{appTxts>/dashboard.table.gpoRes.amount}"/>
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem>
+                                <cells>
+                                    <Text text="{GpoResModel>Grupo}"/>
+                                    <Text text="{GpoResModel>Descgrupo}"/>
+                                    <Text text="{parts: [{path: 'GpoResModel>Importe'},{path: 'GpoResModel>Currency'}], 
+                                    type:'sap.ui.model.type.Currency', 
+                                    formatOptions: {showMeasure:false}}"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
 
                 </ScrollContainer>
             </IconTabFilter>
@@ -360,110 +399,139 @@
                 icon="sap-icon://fob-watch"
                 text="{appTxts>/dashboard.tab.title.repAvgTime}"
                 key="repAvgTime">
-                <ScrollContainer
-                    height="100%"
-                    width="100%"
-                    horizontal="false"
-                    vertical="true">
-                    <fb:FilterBar header="Header" reset="onReset" search="searchData"
-                        clear="clearFilters" cancel="onCancel"
-                        filtersDialogClosed="onFiltersDialogClosed"
-                        showRestoreButton="false" showClearButton="false" useToolbar="false"
-                        filterBarExpanded="true">
-                        <fb:filterGroupItems>
+                <content>
+                    <ScrollContainer
+                        height="100%"
+                        width="100%"
+                        horizontal="false"
+                        vertical="true">
+                        <fb:FilterBar header="Header" reset="onReset" search="searchData"
+                            clear="clearFilters" cancel="onCancel"
+                            filtersDialogClosed="onFiltersDialogClosed"
+                            showRestoreButton="false" showClearButton="false" useToolbar="false"
+                            filterBarExpanded="true">
+                            <fb:filterGroupItems>
 
-                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab"
-                                label="{appTxts>/dashboard.repGeneral.filter.supplier}"
-                                partOfCurrentVariant="true" visibleInFilterBar="true">
-                                <fb:control>
-                                    <Input
-                                        placeholder="{appTxts>/dashboard.repGeneral.filter.supplier}"
-                                        showSuggestion="true" valueHelpOnly="true"
-                                        showValueHelp="true" valueHelpRequest=".onValueHelpRequest"
-                                        value="{configSite>/supplierInput}" />
-                                </fb:control>
-                            </fb:FilterGroupItem>
+                                <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab"
+                                    label="{appTxts>/dashboard.repGeneral.filter.supplier}"
+                                    partOfCurrentVariant="true" visibleInFilterBar="true">
+                                    <fb:control>
+                                        <Input
+                                            placeholder="{appTxts>/dashboard.repGeneral.filter.supplier}"
+                                            showSuggestion="true" valueHelpOnly="true"
+                                            showValueHelp="true" valueHelpRequest=".onValueHelpRequest"
+                                            value="{configSite>/supplierInput}" />
+                                    </fb:control>
+                                </fb:FilterGroupItem>
 
-                            <fb:FilterGroupItem groupName="__$INTERNAL$"
-                                label="{appTxts>/dashboard.repGeneral.filter.date}"
-                                groupTitle="FechaAlta" name="FechaAlta" partOfCurrentVariant="true"
-                                mandatory="true"
-                                visibleInFilterBar="true">
-                                <fb:control>
-                                    <DateRangeSelection id="dateAltaAvgT" />
-                                </fb:control>
-                            </fb:FilterGroupItem>
+                                <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                    label="{appTxts>/dashboard.repGeneral.filter.date}"
+                                    groupTitle="FechaAlta" name="FechaAlta" partOfCurrentVariant="true"
+                                    mandatory="true"
+                                    visibleInFilterBar="true">
+                                    <fb:control>
+                                        <DateRangeSelection id="dateAltaAvgT" />
+                                    </fb:control>
+                                </fb:FilterGroupItem>
 
-                            <fb:FilterGroupItem groupName="__$INTERNAL$"
-                                label="{appTxts>/dashboard.repGeneral.filter.tipo}"
-                                groupTitle="Tipo" name="Tipo" partOfCurrentVariant="true"
-                                visibleInFilterBar="true">
-                                <fb:control>
-                                    <ComboBox showSecondaryValues="true" id="cboxTipoAvgT"
-                                        items="{TiposAclaracion>/Tipos}"
-                                        showClearIcon="true">
-                                        <core:ListItem key="{TiposAclaracion>TipAcla}"
-                                            text="{TiposAclaracion>DesAcla}"
-                                            additionalText="{TiposAclaracion>TipAcla}" />
-                                    </ComboBox>
-                                </fb:control>
-                            </fb:FilterGroupItem>
+                                <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                    label="{appTxts>/dashboard.repGeneral.filter.tipo}"
+                                    groupTitle="Tipo" name="Tipo" partOfCurrentVariant="true"
+                                    visibleInFilterBar="true">
+                                    <fb:control>
+                                        <ComboBox showSecondaryValues="true" id="cboxTipoAvgT"
+                                            items="{TiposAclaracion>/Tipos}"
+                                            showClearIcon="true">
+                                            <core:ListItem key="{TiposAclaracion>TipAcla}"
+                                                text="{TiposAclaracion>DesAcla}"
+                                                additionalText="{TiposAclaracion>TipAcla}" />
+                                        </ComboBox>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
 
-                            <fb:FilterGroupItem groupName="__$INTERNAL$"
-                                label="{appTxts>/dashboard.repGeneral.filter.status}"
-                                groupTitle="Estatus" name="Estatus" partOfCurrentVariant="true"
-                                visibleInFilterBar="true">
-                                <fb:control>
-                                    <Select selectedKey="T" id="cboxEstatusAvgT">
-                                        <core:Item key="E"
-                                            text="{appTxts>/dashboard.filter.estatusE}" />
-                                        <core:Item key="H"
-                                            text="{appTxts>/dashboard.filter.estatusH}" />
-                                        <core:Item key="T"
-                                            text="{appTxts>/dashboard.filter.estatusT}" />
-                                    </Select>
-                                </fb:control>
-                            </fb:FilterGroupItem>
-                        </fb:filterGroupItems>
-                    </fb:FilterBar>
+                                <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                    label="{appTxts>/dashboard.repGeneral.filter.status}"
+                                    groupTitle="Estatus" name="Estatus" partOfCurrentVariant="true"
+                                    visibleInFilterBar="true">
+                                    <fb:control>
+                                        <Select selectedKey="T" id="cboxEstatusAvgT">
+                                            <core:Item key="P"
+                                                text="{appTxts>/dashboard.filter.estatusE}" />
+                                            <core:Item key="R"
+                                                text="{appTxts>/dashboard.filter.estatusH}" />
+                                            <core:Item key="T"
+                                                text="{appTxts>/dashboard.filter.estatusT}" />
+                                        </Select>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                            </fb:filterGroupItems>
+                        </fb:FilterBar>
 
-                    <l:HorizontalLayout class="sapUiContentPadding">
-                        <l:Grid defaultSpan="XL6 L6 M6 S12">
-                            <!-- Example with absolute and percentage values -->
-                            <FlexBox width="20rem" height="10rem" alignItems="Center" class="sapUiSmallMargin">
+                        <l:VerticalLayout class="sapUiContentPadding" width="100%">
+
+                            <l:HorizontalLayout>
+                                <l:VerticalLayout class="sapUiContentPadding">
+                                    <Text text="{appTxts>/dashboard.avgres.cerradas}" />
+                                    <FlexBox width="350px" height="100px" renderType="Bare"
+                                        class="sapUiSmallMargin">
+                                        <mc:ColumnMicroChart size="Responsive" press="press" 
+                                            class="sapUiSmallMargin" allowColumnLabels="true" columns="{AvgTimeModel>/oData}">
+                                            <mc:columns>
+                                                <mc:ColumnMicroChartData value="{AvgTimeModel>Cerradas}" label="{AvgTimeModel>Tipoaclaracion}" color="Good"/>
+                                            </mc:columns>
+                                        </mc:ColumnMicroChart>
+                                    </FlexBox>
+                                </l:VerticalLayout>
+
+                                <l:VerticalLayout class="sapUiContentPadding">
+                                    <Text text="{appTxts>/dashboard.avgres.pendientes}" />
+                                    <FlexBox width="350px" height="100px" renderType="Bare"
+                                        class="sapUiSmallMargin">
+                                        <mc:ColumnMicroChart size="Responsive" press="press" 
+                                            class="sapUiSmallMargin" allowColumnLabels="true" columns="{AvgTimeModel>/oData}">
+                                            <mc:columns>
+                                                <mc:ColumnMicroChartData value="{AvgTimeModel>Pendientes}" label="{AvgTimeModel>Tipoaclaracion}" color="Critical"/>
+                                            </mc:columns>
+                                        </mc:ColumnMicroChart>
+                                    </FlexBox>
+                                </l:VerticalLayout>
+
+                                <Button icon="sap-icon://excel-attachment"
+                                        text="{appTxts>/dashboard.download.excel}" press="onDownloadExcelAvgT" />
+                            </l:HorizontalLayout>
+
+                            <Table 
+                                fixedLayout="false" 
+                                sticky="ColumnHeaders"
+                                items="{AvgTimeModel>/oData}">
+                                <headerToolbar>
+                                    <OverflowToolbar>
+                                        <content>
+                                            <Title level="H2" text="Acrónimos"/>
+                                            <ToolbarSpacer/>
+                                        </content>
+                                    </OverflowToolbar>
+                                </headerToolbar>
+                                <columns>
+                                    <Column>
+                                        <Text text="Acrónimo"/>
+                                    </Column>
+                                    <Column>
+                                        <Text text="Descripción"/>
+                                    </Column>
+                                </columns>
                                 <items>
-                                    <mc:InteractiveBarChart id="barCharAvgTRes" labelWidth="30%"
-                                        bars="{AvgTimeModel>/oData}">
-                                        <mc:bars>
-                                            <mc:InteractiveBarChartBar label="{AvgTimeModel>Tipoaclaracion}: {AvgTimeModel>Descaclaracion}" 
-                                                value="{AvgTimeModel>Cerradas}" 
-                                                displayedValue="{AvgTimeModel>Cerradas}"/>
-                                        </mc:bars>
-                                    </mc:InteractiveBarChart>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <Text text="{AvgTimeModel>Tipoaclaracion}"/>
+                                            <Text text="{AvgTimeModel>Descaclaracion}"/>
+                                        </cells>
+                                    </ColumnListItem>
                                 </items>
-                            </FlexBox>
-                        </l:Grid>
-
-                        <l:Grid defaultSpan="XL6 L6 M6 S12">
-                            <!-- Example with absolute and percentage values -->
-                            <FlexBox width="20rem" height="10rem" alignItems="Center" class="sapUiSmallMargin">
-                                <items>
-                                    <mc:InteractiveBarChart id="barCharAvgTPend" labelWidth="30%"
-                                        bars="{GpoResModel>/oData}">
-                                        <mc:bars>
-                                            <mc:InteractiveBarChartBar label="{AvgTimeModel>Tipoaclaracion}: {AvgTimeModel>Descaclaracion}" 
-                                                value="{AvgTimeModel>Pendientes}" 
-                                                displayedValue="{AvgTimeModel>Pendientes}"/>
-                                        </mc:bars>
-                                    </mc:InteractiveBarChart>
-                                </items>
-                            </FlexBox>
-                        </l:Grid>
-
-                        <Button icon="sap-icon://excel-attachment"
-                                text="{appTxts>/dashboard.download.excel}" press="onDownloadExcelAvgT" />
-                    </l:HorizontalLayout>
-                </ScrollContainer>
+                            </Table>
+                        </l:VerticalLayout>
+                    </ScrollContainer>
+                </content>
             </IconTabFilter>
             <IconTabFilter
                 icon="sap-icon://compare-2"
@@ -598,9 +666,9 @@
                                 visibleInFilterBar="true">
                                 <fb:control>
                                     <Select selectedKey="T" id="cboxEstatusExecC">
-                                        <core:Item key="E"
+                                        <core:Item key="P"
                                             text="{appTxts>/dashboard.filter.estatusE}" />
-                                        <core:Item key="H"
+                                        <core:Item key="R"
                                             text="{appTxts>/dashboard.filter.estatusH}" />
                                         <core:Item key="T"
                                             text="{appTxts>/dashboard.filter.estatusT}" />
@@ -610,73 +678,391 @@
                         </fb:filterGroupItems>
                     </fb:FilterBar>
 
-                    <Panel headerText="Smart Stacked Bar Micro Chart With Criticality"
-                            class="sapUiSmallMarginBottom">
-                        <mc:ComparisonMicroChart size="S" scale="M" class="sapUiSmallMargin" press="press">
-                            <mc:data>
-                                <mc:ComparisonMicroChartData title="EMEA" displayValue="USD 0" color="Good" />
-                                <mc:ComparisonMicroChartData title="EMEA" value="50" color="Good"/>
-                                <mc:ComparisonMicroChartData title="APAC" value="-20" color="Error"/>
-                            </mc:data>
-                        </mc:ComparisonMicroChart>
-                    </Panel>
+                    <l:HorizontalLayout>
+                        <l:VerticalLayout>
+                            <OverflowToolbar id="otb1">
+                                <ToolbarSpacer/>
+                                <RadioButtonGroup id="rbg1" columns="3" valueState="Error" select="onChangeRadioBtnSelect">
+                                    <RadioButton id="RB1-1" text="Recibidas" />
+                                    <RadioButton id="RB1-2" text="Pagadas" />
+                                </RadioButtonGroup>
+                                <RadioButtonGroup id="rbg2" columns="3" valueState="Error" select="onChangeRadioBtnSelect">
+                                    <RadioButton id="RB2-1" text="Por cantidad" />
+                                    <RadioButton id="RB2-2" text="Por importe" />
+                                </RadioButtonGroup>
+                                <Button icon="sap-icon://excel-attachment"
+                                        text="{appTxts>/dashboard.download.excel}" press="onDownloadExcelEjecComp" />
+                            </OverflowToolbar>
+                            <Panel headerText="Año en curso" class="sapUiSmallMarginBottom">
+                                <l:HorizontalLayout>
+                                    <GenericTile header="Cantidad" frameType="OneByOne" class="sapUiMediumMarginEnd">
+                                        <tileContent>
+                                            <TileContent>
+                                                <content>
+                                                    <mc:ComparisonMicroChart size="Responsive">
+                                                        <mc:data>
+                                                            <mc:ComparisonMicroChartData title="Recibidas" value="{CardsModelExec>/Cantrecibidasactual}" color="Critical" />
+                                                            <mc:ComparisonMicroChartData title="Pagadas" value="{CardsModelExec>/Cantpagadasactual}" color="Good" />
+                                                        </mc:data>
+                                                    </mc:ComparisonMicroChart>
+                                                </content>
+                                            </TileContent>
+                                        </tileContent>
+                                    </GenericTile>
 
-                    <!--
-                    <HeaderContainer>
-                        <TileContent
-                            footer="{appTxts>/dashboard.repGeneral.card.title.recibidasCant}">
-                            <content>
-                                <NumericContent value="{CardsModel>/Cantrecibidas}"
-                                    icon="sap-icon://receipt" />
-                            </content>
-                        </TileContent>
+                                    <GenericTile header="Importe" frameType="OneByOne">
+                                        <tileContent>
+                                            <TileContent>
+                                                <content>
+                                                    <mc:ComparisonMicroChart scale="$" size="Responsive">
+                                                        <mc:data>
+                                                            <mc:ComparisonMicroChartData title="Recibidas" value="{CardsModelExec>/Importerecibidasactual}" color="Critical" />
+                                                            <mc:ComparisonMicroChartData title="Pagadas" value="{CardsModelExec>/Importepagadasactual}" color="Good" />
+                                                        </mc:data>
+                                                    </mc:ComparisonMicroChart>
+                                                </content>
+                                            </TileContent>
+                                        </tileContent>
+                                    </GenericTile>
 
-                        <TileContent
-                            footer="{appTxts>/dashboard.repGeneral.card.title.resueltasCant}">
-                            <content>
-                                <NumericContent
-                                    value="{
-                                    parts: [{path: 'CardsModel>/Cantresueltas'}], 
-                                    type:'sap.ui.model.type.Currency', 
-                                    formatOptions: {showMeasure:false}}"
-                                    icon="sap-icon://activity-2" />
-                            </content>
-                        </TileContent>
+                                    <l:Grid defaultSpan="XL6 L6 M6 S6">
+                                        <FlexBox width="30rem" height="10rem" alignItems="Center" class="sapUiLargeMarginBegin">
+                                            <items>
+                                                <mc:InteractiveLineChart selectionChanged="selectionChanged" press="press" precedingPoint="15"
+                                                                    succeedingPoint="89" points="{CurrentData1>/data}">
+                                                    <mc:points>
+                                                        <mc:InteractiveLineChartPoint value="{CurrentData1>valor}" label="{CurrentData1>mes}"/>
+                                                    </mc:points>
+                                                </mc:InteractiveLineChart>
+                                            </items>
+                                        </FlexBox>
+                                        <FlexBox width="30rem" height="10rem" alignItems="Center" class="sapUiLargeMarginBegin">
+                                            <items>
+                                                <mc:InteractiveLineChart selectionChanged="selectionChanged" press="press" precedingPoint="15"
+                                                                    succeedingPoint="89" points="{CurrentData2>/data}">
+                                                    <mc:points>
+                                                        <mc:InteractiveLineChartPoint value="{CurrentData2>valor}" label="{CurrentData2>mes}"/>
+                                                    </mc:points>
+                                                </mc:InteractiveLineChart>
+                                            </items>
+                                        </FlexBox>
+                                    </l:Grid>
+                                </l:HorizontalLayout>
+                            </Panel>
 
-                        <TileContent
-                            footer="{appTxts>/dashboard.repGeneral.card.title.recibidasCant}">
-                            <content>
-                                <NumericContent value="{CardsModel>/Cantrecibidas}"
-                                    icon="sap-icon://receipt" />
-                            </content>
-                        </TileContent>
+                            <Panel headerText="Año anterior" class="sapUiSmallMarginBottom">
+                                <l:HorizontalLayout>
+                                    <GenericTile header="Cantidad" frameType="OneByOne" class="sapUiMediumMarginEnd">
+                                        <tileContent>
+                                            <TileContent>
+                                                <content>
+                                                    <mc:ComparisonMicroChart size="Responsive">
+                                                        <mc:data>
+                                                            <mc:ComparisonMicroChartData title="Recibidas" value="{CardsModelExec>/Cantrecibidasanterior}" color="Critical" />
+                                                            <mc:ComparisonMicroChartData title="Pagadas" value="{CardsModelExec>/Cantpagadasanterior}" color="Good" />
+                                                        </mc:data>
+                                                    </mc:ComparisonMicroChart>
+                                                </content>
+                                            </TileContent>
+                                        </tileContent>
+                                    </GenericTile>
 
-                        <TileContent
-                            footer="{appTxts>/dashboard.repGeneral.card.title.resueltasCant}">
-                            <content>
-                                <NumericContent
-                                    value="{
-                                    parts: [{path: 'CardsModel>/Cantresueltas'}], 
-                                    type:'sap.ui.model.type.Currency', 
-                                    formatOptions: {showMeasure:false}}"
-                                    icon="sap-icon://activity-2" />
-                            </content>
-                        </TileContent>
-                    </HeaderContainer>
-                    -->
+                                    <GenericTile header="Importe" frameType="OneByOne">
+                                        <tileContent>
+                                            <TileContent>
+                                                <content>
+                                                    <mc:ComparisonMicroChart scale="$" size="Responsive">
+                                                        <mc:data>
+                                                            <mc:ComparisonMicroChartData title="Recibidas" value="{CardsModelExec>/Importerecibidasanterior}" color="Critical" />
+                                                            <mc:ComparisonMicroChartData title="Pagadas" value="{CardsModelExec>/Importepagadasanterior}" color="Good" />
+                                                        </mc:data>
+                                                    </mc:ComparisonMicroChart>
+                                                </content>
+                                            </TileContent>
+                                        </tileContent>
+                                    </GenericTile>
+
+                                    <l:Grid defaultSpan="XL6 L6 M6 S6">
+                                        <FlexBox width="30rem" height="10rem" alignItems="Center" class="sapUiLargeMarginBegin">
+                                            <items>
+                                                <mc:InteractiveLineChart selectionChanged="selectionChanged" press="press" precedingPoint="15"
+                                                                    succeedingPoint="89" points="{LastData1>/data}">
+                                                    <mc:points>
+                                                        <mc:InteractiveLineChartPoint value="{LastData1>valor}" label="{LastData1>mes}"/>
+                                                    </mc:points>
+                                                </mc:InteractiveLineChart>
+                                            </items>
+                                        </FlexBox>
+                                        <FlexBox width="30rem" height="10rem" alignItems="Center" class="sapUiLargeMarginBegin">
+                                            <items>
+                                                <mc:InteractiveLineChart selectionChanged="selectionChanged" press="press" precedingPoint="15"
+                                                                    succeedingPoint="89" points="{LastData2>/data}">
+                                                    <mc:points>
+                                                        <mc:InteractiveLineChartPoint value="{LastData2>valor}" label="{LastData2>mes}"/>
+                                                    </mc:points>
+                                                </mc:InteractiveLineChart>
+                                            </items>
+                                        </FlexBox>
+                                    </l:Grid>
+                                </l:HorizontalLayout>
+                            </Panel>
+                        </l:VerticalLayout>
+                    </l:HorizontalLayout>
                 </ScrollContainer>
             </IconTabFilter>
             <IconTabFilter
                 icon="sap-icon://supplier"
                 text="{appTxts>/dashboard.tab.title.repAclarProv}"
                 key="repAclarProv">
-                <Text text="People content goes here ..." />
+                <ScrollContainer
+                    height="100%"
+                    width="100%"
+                    horizontal="false"
+                    vertical="true">
+                    <fb:FilterBar header="Header" reset="onReset" search="searchData"
+                        clear="clearFilters" cancel="onCancel"
+                        filtersDialogClosed="onFiltersDialogClosed"
+                        showRestoreButton="false" showClearButton="false" useToolbar="false"
+                        filterBarExpanded="true">
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Proveedor"
+                                label="{appTxts>/dashboard.repGeneral.filter.supplier}"
+                                partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input
+                                        placeholder="{appTxts>/dashboard.repGeneral.filter.supplier}"
+                                        showSuggestion="true" valueHelpOnly="true"
+                                        showValueHelp="true" valueHelpRequest=".onValueHelpRequest"
+                                        value="{configSite>/supplierInput}" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repGeneral.filter.date}"
+                                groupTitle="FechaAlta" name="FechaAlta" partOfCurrentVariant="true"
+                                mandatory="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <DateRangeSelection id="dateAltaByProv" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repGeneral.filter.tipo}"
+                                groupTitle="Tipo" name="Tipo" partOfCurrentVariant="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <ComboBox showSecondaryValues="true" id="cboxTipoExecByProv"
+                                        items="{TiposAclaracion>/Tipos}"
+                                        showClearIcon="true">
+                                        <core:ListItem key="{TiposAclaracion>TipAcla}"
+                                            text="{TiposAclaracion>DesAcla}"
+                                            additionalText="{TiposAclaracion>TipAcla}" />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                label="{appTxts>/dashboard.repGeneral.filter.status}"
+                                groupTitle="Estatus" name="Estatus" partOfCurrentVariant="true"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <Select selectedKey="T" id="cboxEstatusByProv">
+                                        <core:Item key="P"
+                                            text="{appTxts>/dashboard.filter.estatusE}" />
+                                        <core:Item key="R"
+                                            text="{appTxts>/dashboard.filter.estatusH}" />
+                                        <core:Item key="T"
+                                            text="{appTxts>/dashboard.filter.estatusT}" />
+                                    </Select>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="MontoInicial"
+                                label="{appTxts>/dashboard.repAclarProv.filter.initAmount}"
+                                partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="inptAmountIniProv" type="Number"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="MontoFinal"
+                                label="{appTxts>/dashboard.repAclarProv.filter.endAmount}"
+                                partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="inptAmountEndProv" type="Number"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="CantIni"
+                                label="{appTxts>/dashboard.repAclarProv.filter.initCant}"
+                                partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="inptCantIniProv" type="Number"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="CantFinal"
+                                label="{appTxts>/dashboard.repAclarProv.filter.endCant}"
+                                partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="inptCantEndProv" type="Number"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+                    </fb:FilterBar>
+
+                    <t:Table fixedLayout="false" selectionMode="None" rows="{TotalesModelProv>/oData}">
+                        <t:extension>
+                            <OverflowToolbar>
+                                <content>
+                                    <Title level="H2" text="{appTxts>/dashboard.repAclarProv.toolbar.supplier}"/>
+                                    <ToolbarSpacer/>
+                                    <Button text="{appTxts>/dashboard.download.excel}" icon="sap-icon://download" press="onDownloadExcelAclProv"/>
+                                </content>
+                            </OverflowToolbar>
+                        </t:extension>
+                        <t:columns>
+                            <t:Column sortProperty="Proveedor">
+                                <Text text="{appTxts>/dashboard.repAclarProv.table.numSupplier}"/>
+                                <t:template>
+                                    <Text text="{TotalesModelProv>Proveedor}" wrapping="false"/>
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="Razonsocial">
+                                <Text text="{appTxts>/dashboard.repAclarProv.table.supplier}"/>
+                                <t:template>
+                                    <Text text="{TotalesModelProv>Razonsocial}" wrapping="false"/>
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="Totalreclamado">
+                                <Text text="{appTxts>/dashboard.repAclarProv.table.impReclamado}"/>
+                                <t:template>
+                                    <ObjectNumber number= "{parts: [{path: 'TotalesModelProv>Totalreclamado'}, {path: 'TotalesModelProv>Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="Cantreclamada">
+                                <Text text="{appTxts>/dashboard.repAclarProv.table.cantReclamada}"/>
+                                <t:template>
+                                    <Text text="{TotalesModelProv>Cantreclamada}" wrapping="false"/>
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="Totalresuelto">
+                                <Text text="{appTxts>/dashboard.repAclarProv.table.impResuelto}"/>
+                                <t:template>
+                                    <ObjectNumber number= "{parts: [{path: 'TotalesModelProv>Totalresuelto'}, {path: 'TotalesModelProv>Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="Cantresuelto">
+                                <Text text="{appTxts>/dashboard.repAclarProv.table.cantResuelto}"/>
+                                <t:template>
+                                    <Text text="{TotalesModelProv>Cantresuelto}" wrapping="false"/>
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="Totalpendiente">
+                                <Text text="{appTxts>/dashboard.repAclarProv.table.impPendiente}"/>
+                                <t:template>
+                                    <ObjectNumber number= "{parts: [{path: 'TotalesModelProv>Totalpendiente'}, {path: 'TotalesModelProv>Banks'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure:false}}" />
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="Cantpendiente">
+                                <Text text="{appTxts>/dashboard.repAclarProv.table.cantPendiente}"/>
+                                <t:template>
+                                    <Text text="{TotalesModelProv>Cantpendiente}" wrapping="false"/>
+                                </t:template>
+                            </t:Column>
+                        </t:columns>
+                    </t:Table>
+                </ScrollContainer>
             </IconTabFilter>
             <IconTabFilter
                 icon="sap-icon://idea-wall"
                 text="{appTxts>/dashboard.tab.title.repAclarAnalyst}"
                 key="repAclarAnalyst">
-                <Text text="People content goes here ..." />
+                <ScrollContainer
+                    height="100%"
+                    width="100%"
+                    horizontal="false"
+                    vertical="true">
+                        <fb:FilterBar header="Header" reset="onReset" search="searchData"
+                        clear="clearFilters" cancel="onCancel"
+                        filtersDialogClosed="onFiltersDialogClosed"
+                        showRestoreButton="false" showClearButton="false" useToolbar="false"
+                        filterBarExpanded="true">
+                            <fb:filterGroupItems>
+                                <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                    label="{appTxts>/dashboard.repGeneral.filter.date}"
+                                    groupTitle="FechaAlta" name="FechaAlta" partOfCurrentVariant="true"
+                                    mandatory="true"
+                                    visibleInFilterBar="true">
+                                    <fb:control>
+                                        <DateRangeSelection id="dateAltaAnalista" />
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+
+                                <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                    label="{appTxts>/dashboard.repGeneral.filter.grupoRes}"
+                                    groupTitle="Grupo" name="Grupo" partOfCurrentVariant="true"
+                                    visibleInFilterBar="true">
+                                    <fb:control>
+                                        <ComboBox showSecondaryValues="true" id="cboxGrupoResAnalista"
+                                            items="{GruposModel>/Grupos}"
+                                            showClearIcon="true">
+                                            <core:ListItem key="{GruposModel>Idusua}"
+                                                text="{GruposModel>Analista}"
+                                                additionalText="{GruposModel>Idusua}" />
+                                        </ComboBox>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+
+                                <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                    label="{appTxts>/dashboard.repGeneral.filter.analista}"
+                                    groupTitle="Analista" name="Analista" partOfCurrentVariant="true"
+                                    visibleInFilterBar="true">
+                                    <fb:control>
+                                        <ComboBox showSecondaryValues="true" id="cboxAnalista"
+                                            items="{AnalistasModel>/Analistas}"
+                                            showClearIcon="true">
+                                            <core:ListItem key="{AnalistasModel>Idpuesto}"
+                                                text="{AnalistasModel>Analista}"
+                                                additionalText="{AnalistasModel>Idgpores}" />
+                                        </ComboBox>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+
+                                <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                    label="{appTxts>/dashboard.repGeneral.filter.status}"
+                                    groupTitle="Estatus" name="Estatus" partOfCurrentVariant="true"
+                                    visibleInFilterBar="true">
+                                    <fb:control>
+                                        <Select selectedKey="T" id="cboxEstatusAnalista">
+                                            <core:Item key="P"
+                                                text="{appTxts>/dashboard.filter.estatusE}" />
+                                            <core:Item key="R"
+                                                text="{appTxts>/dashboard.filter.estatusH}" />
+                                            <core:Item key="T"
+                                                text="{appTxts>/dashboard.filter.estatusT}" />
+                                        </Select>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+
+                                <fb:FilterGroupItem groupName="__$INTERNAL$"
+                                    label="{appTxts>/dashboard.repGeneral.filter.tipo}"
+                                    groupTitle="Tipo" name="Tipo" partOfCurrentVariant="true"
+                                    visibleInFilterBar="true">
+                                    <fb:control>
+                                        <ComboBox showSecondaryValues="true" id="cboxTipoExecAnalista"
+                                            items="{TiposAclaracion>/Tipos}"
+                                            showClearIcon="true">
+                                            <core:ListItem key="{TiposAclaracion>TipAcla}"
+                                                text="{TiposAclaracion>DesAcla}"
+                                                additionalText="{TiposAclaracion>TipAcla}" />
+                                        </ComboBox>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                            </fb:filterGroupItems>
+                        </fb:FilterBar>
+                </ScrollContainer>
             </IconTabFilter>
         </items>
     </IconTabBar>

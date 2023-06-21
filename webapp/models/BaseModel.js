@@ -1,5 +1,10 @@
-let endpointQASwebService = "https://servicioswebsorianaqa.soriana.com";
-let endpointPROwebService = "https://enviodocumentos.soriana.com";
+const endpointQASwebService = "https://servicioswebsorianaqa.soriana.com";
+const endpointPROwebService = "https://enviodocumentos.soriana.com";
+const endpointQASSTIBO = "https://soriana-qa.mdm.stibosystems.com";
+const endpointPROSTIBO = "https://soriana-prod.mdm.stibosystems.com";
+const stiboQASModule = " [soriana-qa.mdm.stibosystems.com]"
+const stiboPROModule = "  [soriana-prod.mdm.stibosystems.com]"
+
 let hostPro = "socios.soriana.com"
 
 //INICIA BASE MODEL
@@ -682,3 +687,51 @@ function ReporteExecComp() {
 
 ReporteExecComp.prototype = Object.create(BaseModel.prototype);
 ReporteExecComp.prototype.constructor = ReporteExecComp;
+
+//Model STIBO: Proveedores en STIBO
+function STIBO() {
+    const host = window.location.host;
+    const modulo = "/webui/SupplierUI"
+    if (host !== hostPro){
+        url = endpointQASSTIBO + modulo + stiboQASModule//QAS
+    } else {
+        url = endpointPROwebService + modulo + stiboPROModule//PRO
+    }
+    var params = {};
+    params.sUrl = url;
+    params.sModel = "stibo";
+    BaseModel.call(this, params);
+}
+
+//Model Dashboard: Reporte Ejecutivo comparativo
+function ProveedorSTIBO() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_PROVSTIBO_SRV/";
+    params.sModel = "proveedorSTIBO";
+    BaseModel.call(this, params);
+}
+
+ProveedorSTIBO.prototype = Object.create(BaseModel.prototype);
+ProveedorSTIBO.prototype.constructor = ProveedorSTIBO;
+
+//Model Dashboard: Reporte Aclaraciones por proveedor
+function ReporteAclProv() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_DB05_ACLARACION_X_PROVEED_SRV/";
+    params.sModel = "dashboardReporteAclProv";
+    BaseModel.call(this, params);
+}
+
+ReporteAclProv.prototype = Object.create(BaseModel.prototype);
+ReporteAclProv.prototype.constructor = ReporteAclProv;
+
+//Model Dashboard: Reporte Aclaraciones por analista
+function ReporteAnalista() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_DB06_ACLARACION_XANALISTA_SRV/";
+    params.sModel = "dashboardReporteAnalista";
+    BaseModel.call(this, params);
+}
+
+ReporteAnalista.prototype = Object.create(BaseModel.prototype);
+ReporteAnalista.prototype.constructor = ReporteAnalista;

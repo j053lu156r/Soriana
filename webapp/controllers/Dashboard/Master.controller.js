@@ -14,6 +14,8 @@ sap.ui.define([
     const oRepGpoRes = new this.ReporteGpoResolutor();
     const oRepAvgTime = new this.ReporteAvgTiempo();
     const oRepExecComp = new this.ReporteExecComp();
+    const oReporteAclProv = new this.ReporteAclProv();
+    const oReporteAnalista = new this.ReporteAnalista();
 
     var Controller = BaseController.extend("sap.m.sample.SplitApp.C", {
 
@@ -23,6 +25,8 @@ sap.ui.define([
         dateAlta: undefined,
         dateAltaGr: undefined,
         dateAltaAvgT: undefined,
+        dateAltaByProv: undefined,
+        dateAltaAnalista: undefined,
         cboxTipo: undefined,
         cboxTipoGr: undefined,
         cboxTipoAvgT: undefined,
@@ -35,16 +39,33 @@ sap.ui.define([
         cboxEjercicioExecC: undefined,
         cboxDateIniExecC: undefined,
         cboxDateFinExecC: undefined,
+        cboxTipoExecByProv: undefined,
+        cboxEstatusByProv: undefined,
+        cboxGrupoResAnalista: undefined,
+        cboxAnalista: undefined,
+        cboxEstatusAnalista: undefined,
+        cboxTipoExecAnalista: undefined,
+        inptAmountIniProv: undefined,
+        inptAmountEndProv: undefined,
+        inptCantIniProv: undefined,
+        inptCantEndProv: undefined,
 
         detailData: [],
         detailDataGR: [],
         detailDataAVGT: [],
+        detailDataAclProv: [],
+        detailDataEC: [],
 
         donutImporte: undefined,
         donutCantidad: undefined,
         barChar: undefined,
         barCharAvgTRes: undefined,
         barCharAvgTPend: undefined,
+
+        rbg1: undefined,
+        rbg2: undefined,
+
+        barsData: undefined,
 
         onInit: function () {
             var oModel = new JSONModel();
@@ -54,12 +75,16 @@ sap.ui.define([
 			this.getView().setModel(oModel);
             var oIconTabBar = this.byId("idIconTabBar");
             oIconTabBar.setHeaderMode("Inline");
-            this.configFilterLanguage(this.getView().byId("filterBar"));
+            
             this.catalogModel = new sap.ui.model.odata.v2.ODataModel(oCatalog.sUrl);
             this.reporteGral = new sap.ui.model.odata.v2.ODataModel(oRepGral.sUrl);
             this.reporteGpoRes = new sap.ui.model.odata.v2.ODataModel(oRepGpoRes.sUrl);
             this.reporteAvgTime = new sap.ui.model.odata.v2.ODataModel(oRepAvgTime.sUrl);
             this.reporteExecComp = new sap.ui.model.odata.v2.ODataModel(oRepExecComp.sUrl);
+            this.reporteAclProv = new sap.ui.model.odata.v2.ODataModel(oReporteAclProv.sUrl);
+            this.reporteAnalista = new sap.ui.model.odata.v2.ODataModel(oReporteAnalista.sUrl);
+
+            this.configFilterLanguage(this.getView().byId("filterBar"));
             this.iconTabBar = this.getView().byId("idIconTabBar");
             this.cboxAntiguedad = this.getView().byId("cboxAntiguedad");
             this.cboxTipo = this.getView().byId("cboxTipo");
@@ -88,6 +113,23 @@ sap.ui.define([
             this.cboxDateIniExecC = this.getView().byId("cboxDateIniExecC");
             this.cboxDateFinExecC = this.getView().byId("cboxDateFinExecC");
 
+            this.rbg1 = this.getView().byId("rbg1");
+            this.rbg2 = this.getView().byId("rbg2");
+
+            this.dateAltaByProv = this.getView().byId("dateAltaByProv")
+            this.cboxTipoExecByProv = this.getView().byId("cboxTipoExecByProv")
+            this.cboxEstatusByProv = this.getView().byId("cboxEstatusByProv")
+            this.inptAmountIniProv = this.getView().byId("inptAmountIniProv")
+            this.inptAmountEndProv = this.getView().byId("inptAmountEndProv")
+            this.inptCantIniProv = this.getView().byId("inptCantIniProv")
+            this.inptCantEndProv = this.getView().byId("inptCantEndProv")
+
+            this.dateAltaAnalista = this.getView().byId("dateAltaAnalista")
+            this.cboxGrupoResAnalista = this.getView().byId("cboxGrupoResAnalista")
+            this.cboxAnalista = this.getView().byId("cboxAnalista")
+            this.cboxEstatusAnalista = this.getView().byId("cboxEstatusAnalista")
+            this.cboxTipoExecAnalista = this.getView().byId("cboxTipoExecAnalista")
+
             this.onLoadTiposAclaracion();
             this.onLoadAnalistas();
             this.onLoadGrupos();
@@ -109,8 +151,10 @@ sap.ui.define([
                     this.onExecCompRep();
                     break;
                 case 'repAclarProv':
+                    this.onAclProvRep();
                     break;
                 case 'repAclarAnalyst':
+                    this.onAclaAnalistaRep();
                     break;
                 default:
                     break;
@@ -176,7 +220,7 @@ sap.ui.define([
                 return
             }
 
-            if (lifnr !== undefined) {
+            if (lifnr !== undefined && lifnr !== null && lifnr !== "") {
                 aFilters.push(new Filter("Acreedor", FilterOperator.EQ, lifnr));
             }
 
@@ -257,7 +301,7 @@ sap.ui.define([
                 aFilters.push(new Filter("Gporesolutor", FilterOperator.EQ, grupoRes));
             }
 
-            if (lifnr !== undefined) {
+            if (lifnr !== undefined && lifnr !== null && lifnr !== "") {
                 aFilters.push(new Filter("Acreedor", FilterOperator.EQ, lifnr));
             }
 
@@ -271,6 +315,7 @@ sap.ui.define([
                     if(response.results[0].TOTALESNAV.results.length > 0){
                         var data = response.results[0].TOTALESNAV.results;
                         that.detailDataGR = response.results[0].DETALLESNAV.results;
+                        console.log(data)
                         var oModel = new JSONModel({oData: data});
                         that.getView().setModel(oModel, 'GpoResModel');
                     } else {
@@ -310,7 +355,7 @@ sap.ui.define([
                 aFilters.push(new Filter("Estatus", FilterOperator.EQ, estatus));
             }
 
-            if (lifnr !== undefined) {
+            if (lifnr !== undefined && lifnr !== null && lifnr !== "") {
                 aFilters.push(new Filter("Acreedor", FilterOperator.EQ, lifnr));
             }
 
@@ -322,10 +367,10 @@ sap.ui.define([
                 filters: aFilters,
                 success: function(response){
                     if(response.results[0].TOTALESNAV.results.length > 0){
-                        console.log(response)
                         var data = response.results[0].TOTALESNAV.results;
                         that.detailDataAVGT = response.results[0].DETALLESNAV.results;
                         var oModel = new JSONModel({oData: data});
+                        console.log(data)
                         that.getView().setModel(oModel, 'AvgTimeModel');
                     } else {
                         sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.data"));
@@ -346,6 +391,8 @@ sap.ui.define([
             var year = this.cboxEjercicioExecC.getSelectedKey();
             var month1 = this.cboxDateIniExecC.getSelectedKey();
             var month2 = this.cboxDateFinExecC.getSelectedKey();
+            var generalStatus = this.rbg1.getSelectedIndex();
+            var metrica = this.rbg2.getSelectedIndex()
             var aFilters = [];
 
             if(year !== undefined && year !== null && year !== "") {
@@ -360,7 +407,7 @@ sap.ui.define([
                 aFilters.push(new Filter("Mes", FilterOperator.BT, month1, month2));
             }
 
-            if (lifnr !== undefined) {
+            if (lifnr !== undefined && lifnr !== null && lifnr !== "") {
                 aFilters.push(new Filter("Acreedor", FilterOperator.EQ, lifnr));
             }
 
@@ -375,16 +422,39 @@ sap.ui.define([
             this.reporteExecComp.read("/DASHMAINSet", {
                 method: "GET",
                 urlParameters: {
-                    "$expand": "TOTALESNAV,DETALLESEJERCICIONAV,DETALLESEJERMESNAV",
+                    "$expand": "TOTALESNAV,DETALLESEJERCICIONAV,DETALLECMPHNAV,DETALLECMPHNAV/DETALLECMPHDETNAV,DETALLECMPHNAV/DETALLECMPHDETNAV/DETALLECMPHDETMESNAV",
                 },
                 filters: aFilters,
-                success: function(response){
+                success: async function(response){
+                    console.log(response)
                     if(response.results[0].TOTALESNAV.results.length > 0){
-                        console.log(response)
-                        let dollarUSLocale = Intl.NumberFormat('en-US');
                         var cardsData = response.results[0].TOTALESNAV.results[0];
-                        var cardsModel = new JSONModel({oData: cardsData});
+                        that.barsData = response.results[0].DETALLECMPHNAV.results[generalStatus].DETALLECMPHDETNAV.results;
+                        that.detailDataEC = response.results[0].DETALLESEJERCICIONAV.results;
+                        that.currentData = that.barsData.filter(item => item.Ejercicio === new Date().getFullYear().toString())[0].DETALLECMPHDETMESNAV.results
+                        that.lastData = that.barsData.filter(item => item.Ejercicio !== new Date().getFullYear().toString())[0].DETALLECMPHDETMESNAV.results
+                        cardsData.Importepagadasactual = parseFloat(cardsData.Importepagadasactual);
+                        cardsData.Importepagadasanterior = parseFloat(cardsData.Importepagadasanterior);
+                        cardsData.Importerecibidasactual = parseFloat(cardsData.Importerecibidasactual);
+                        cardsData.Importerecibidasanterior = parseFloat(cardsData.Importerecibidasanterior);
+
+                        var cardsModel = new JSONModel(cardsData);
                         that.getView().setModel(cardsModel, 'CardsModelExec');
+
+                        that.currentData = await that.formatData(that.currentData, generalStatus, metrica, that);
+                        that.lastData = await that.formatData(that.lastData, generalStatus, metrica, that);
+
+                        var currentModel = new JSONModel({data: that.currentData[0]});
+                        that.getView().setModel(currentModel, 'CurrentData1');
+
+                        var currentModel2 = new JSONModel({data: that.currentData[1]});
+                        that.getView().setModel(currentModel2, 'CurrentData2');
+
+                        var lastModel = new JSONModel({data: that.lastData[0]});
+                        that.getView().setModel(lastModel, 'LastData1');
+
+                        var lastModel = new JSONModel({data: that.lastData[1]});
+                        that.getView().setModel(lastModel, 'LastData2');
                     } else {
                         sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.data"));
                     }
@@ -393,6 +463,200 @@ sap.ui.define([
                     sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.execute"));
                 }
             });
+        },
+
+        onAclProvRep: function(){
+            var that = this;
+            var aFilters = [];
+            var lifnr = this.getConfigModel().getProperty("/supplierInputKey");
+            var dateInicial = this.dateAltaByProv.getDateValue();
+            var dateFinal = this.dateAltaByProv.getSecondDateValue();
+            var tipo = this.cboxTipoExecByProv.getSelectedKey();
+            var estatus = this.cboxEstatusByProv.getSelectedKey();
+            var montoInicial = this.inptAmountIniProv.getValue();
+            var montoFinal = this.inptAmountEndProv.getValue();
+            var cantidadInicial = this.inptCantIniProv.getValue();
+            var cantidadFinal = this.inptCantEndProv.getValue();
+
+            if (
+                dateInicial !== "" && dateInicial !== null && dateInicial !== undefined &&
+                dateFinal !== "" && dateFinal !== null && dateFinal !== undefined
+            ) {
+                aFilters.push(new Filter("Fechaalta", FilterOperator.BT, dateInicial, dateFinal));
+            } else {
+                sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.dates"))
+                return
+            }
+
+            if (lifnr !== undefined && lifnr !== null && lifnr !== "") {
+                aFilters.push(new Filter("Acreedor", FilterOperator.EQ, lifnr));
+            }
+
+            if (tipo !== null && tipo !== "" && tipo !== undefined) {
+                aFilters.push(new Filter("Tipo", FilterOperator.EQ, tipo));
+            }
+
+            if (estatus !== null && estatus !== "" && estatus !== undefined) {
+                aFilters.push(new Filter("Estatus", FilterOperator.EQ, estatus));
+            }
+
+            if (montoInicial !== null && montoInicial !== "" && montoInicial !== undefined &&
+                montoFinal !== null && montoFinal !== "" && montoFinal !== undefined) {
+                    aFilters.push(new Filter("Importe", FilterOperator.BT, montoInicial, montoFinal));
+            }
+
+            if (cantidadInicial !== null && cantidadInicial !== "" && cantidadInicial !== undefined &&
+                cantidadFinal !== null && cantidadFinal !== "" && cantidadFinal !== undefined) {
+                    aFilters.push(new Filter("Cantidad", FilterOperator.BT, cantidadInicial, cantidadFinal));
+            }
+
+            this.reporteAclProv.read("/DASHMAINSet", {
+                method: "GET",
+                urlParameters: {
+                    "$expand": "TOTALESNAV,DETALLESNAV",
+                },
+                filters: aFilters,
+                success: function(response){
+                    if(response.results[0].TOTALESNAV.results.length > 0){
+                        var totales = response.results[0].TOTALESNAV.results;
+                        var totalesModel = new JSONModel({oData: totales});
+                        that.detailDataAclProv = response.results[0].DETALLESNAV.results;
+                        that.getView().setModel(totalesModel, 'TotalesModelProv');
+                    } else {
+                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.data"));
+                    }
+                }, 
+                error: function(error){
+                    sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.execute"));
+                }
+            });
+        },
+
+        onAclaAnalistaRep: function(){
+            var that = this;
+            var aFilters = [];
+            
+            var dateInicial = this.dateAltaAnalista.getDateValue();
+            var dateFinal = this.dateAltaAnalista.getSecondDateValue();
+            var grupoRes = this.cboxGrupoResAnalista.getSelectedKey();
+            var analista = this.cboxAnalista.getSelectedKey();
+            var estatus = this.cboxEstatusAnalista.getSelectedKey();
+            var tipo = this.cboxTipoExecAnalista.getSelectedKey();
+
+            if (
+                dateInicial !== "" && dateInicial !== null && dateInicial !== undefined &&
+                dateFinal !== "" && dateFinal !== null && dateFinal !== undefined
+            ) {
+                aFilters.push(new Filter("Fechaalta", FilterOperator.BT, dateInicial, dateFinal));
+            } else {
+                sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.dates"))
+                return
+            }
+
+            if (grupoRes !== null && grupoRes !== "" && grupoRes !== undefined) {
+                aFilters.push(new Filter("Gporesolutor", FilterOperator.EQ, grupoRes));
+            }
+
+            if (analista !== null && analista !== "" && analista !== undefined) {
+                aFilters.push(new Filter("Analista", FilterOperator.EQ, analista));
+            }
+
+            if (estatus !== null && estatus !== "" && estatus !== undefined) {
+                aFilters.push(new Filter("Estatus", FilterOperator.EQ, estatus));
+            }
+
+            if (tipo !== null && tipo !== "" && tipo !== undefined) {
+                aFilters.push(new Filter("Tipo", FilterOperator.EQ, tipo));
+            }
+
+            this.reporteAnalista.read("/DASHMAINSet", {
+                method: "GET",
+                urlParameters: {
+                    "$expand": "DETALLESNAV",
+                },
+                filters: aFilters,
+                success: function(response){
+                    console.log(response)
+                    /*
+                    if(response.results[0].TOTALESNAV.results.length > 0){
+                        var totales = response.results[0].TOTALESNAV.results;
+                        var totalesModel = new JSONModel({oData: totales});
+                        that.detailDataAclProv = response.results[0].DETALLESNAV.results;
+                        that.getView().setModel(totalesModel, 'TotalesModelProv');
+                    } else {
+                        sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.data"));
+                    }
+                    */
+                }, 
+                error: function(error){
+                    sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.execute"));
+                }
+            });
+
+        },
+
+        formatData: async function(data, estatus, metrica, that){
+            var node = "";
+            var dataArray = [
+                [],
+                []
+            ];
+            if (estatus === 0){
+                node = "Totalreclamado"
+            } else if (estatus === 1){
+                node = "Totalaclarado"
+            }
+
+            await data.forEach((item, indx) => {
+                let object = {};
+                if (metrica === 0){
+                    object["valor"] = parseInt(item.Cantidad);
+                } else if (metrica === 1){
+                    object["valor"] = parseFloat(item[node]);
+                }
+                object["mes"] = that.formatMonth(item['Mes'])
+
+                if (indx <= 5){
+                    dataArray[0].push(object)
+                } else {
+                    dataArray[1].push(object)
+                }
+            });
+
+            return dataArray;
+        },
+
+        formatMonth: function(mes){
+            switch (mes) {
+                case "01":
+                    return "Enero";
+                case "02":
+                    return "Febrero";
+                case "03":
+                    return "Marzo";
+                case "04":
+                    return "Abril";
+                case "05":
+                    return "Mayo";
+                case "06":
+                    return "Junio";
+                case "07":
+                    return "Julio";
+                case "08":
+                    return "Agosto";
+                case "09":
+                    return "Septiembre";
+                case "10":
+                    return "Octubre";
+                case "11":
+                    return "Noviembre";
+                case "12":
+                    return "Diciembre";
+            }
+        },
+
+        onChangeRadioBtnSelect: function(oEvent){
+            this.onExecCompRep();
         },
 
         downloadExcelGralRep: function(){
@@ -511,7 +775,7 @@ sap.ui.define([
             if(this.detailDataGR.length > 0){
                 var that = this;
                 var texts = this.getOwnerComponent().getModel("appTxts");
-                var selectedBars = this.barChar.getSelectedBars();
+                //var selectedBars = this.barChar.getSelectedBars();
                 var columns = [
                     {
                         label: texts.getProperty("/dashboard.repGeneral.excel.grupo"),
@@ -586,6 +850,7 @@ sap.ui.define([
                         width: 21
                     }
                 ];
+                /*
                 if(selectedBars.length === 0 || selectedBars.length === this.barChar.getBars().length){
                     this.buildExcelSpreadSheet(columns, this.detailDataGR, "Reporte Dashboard Grupo Resolutor.xlsx");
                 } else {
@@ -597,6 +862,8 @@ sap.ui.define([
                     });
                     this.buildExcelSpreadSheet(columns, dataFiltered, "Reporte Dashboard Grupo Resolutor.xlsx");
                 }
+                */
+               this.buildExcelSpreadSheet(columns, this.detailDataGR, "Reporte Dashboard Grupo Resolutor.xlsx");
             } else {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.excel.error.data"));
             }
@@ -606,8 +873,8 @@ sap.ui.define([
             if(this.detailDataAVGT.length > 0){
                 var that = this;
                 var texts = this.getOwnerComponent().getModel("appTxts");
-                let selectedRes = this.barCharAvgTRes.getSelectedBars();
-                let selectedPend = this.barCharAvgTPend.getSelectedBars();
+                //let selectedRes = this.barCharAvgTRes.getSelectedBars();
+                //let selectedPend = this.barCharAvgTPend.getSelectedBars();
                 var columns = [
                     {
                         label: texts.getProperty("/dashboard.repGeneral.excel.proveedor"),
@@ -685,6 +952,8 @@ sap.ui.define([
                         width: 21
                     }
                 ];
+                this.buildExcelSpreadSheet(columns, this.detailDataAVGT, "Reporte Dashboard Tiempo Promedio de Resolución.xlsx");
+                /*
                 if( (selectedRes.length === 0 && selectedPend === 0) || 
                     (selectedRes.length === this.barCharAvgTRes.getBars().length && selectedPend.length === this.selectedPend.getBars().length) ) {
                         this.buildExcelSpreadSheet(columns, this.detailDataAVGT, "Reporte Dashboard Tiempo Promedio de Resolución.xlsx");
@@ -702,6 +971,147 @@ sap.ui.define([
                     });
                     this.buildExcelSpreadSheet(columns, dataFiltered, "Reporte Dashboard Tiempo Promedio de Resolución.xlsx");
                 }
+                */
+            } else {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.excel.error.data"));
+            }
+        },
+
+        onDownloadExcelAclProv: function() {
+            if(this.detailDataAclProv.length > 0){
+                var texts = this.getOwnerComponent().getModel("appTxts");
+                var columns = [
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.proveedor"),
+                        property: "Proveedor",
+                        type: sap.ui.export.EdmType.Number,
+                        width: 12
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.razonsocial"),
+                        property: "Razonsocial",
+                        width: 40
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGpoRes.excel.folio"),
+                        property: "Folio",
+                        width: 26
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.fechaalta"),
+                        property: "Fechaalta",
+                        type: sap.ui.export.EdmType.Date,
+                        format: "dddd, d.mmmm yyyy",
+                        width: 30
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.tipo"),
+                        property: ["Tipo", "Desctipo"],
+                        template: "{0} {1}",
+                        width: 26
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.estatus"),
+                        property: "Estatus",
+                        width: 10
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.grupo"),
+                        property: "Nombregrupo",
+                        width: 25
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGpoRes.excel.analista"),
+                        property: "Analista",
+                        width: 25
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.totalrecla"),
+                        property: "Totalreclamado",
+                        type: sap.ui.export.EdmType.Number,
+                        delimiter: true,
+                        scale: 2,
+                        width: 20
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.totalaclarado"),
+                        property: "Totalaclarado",
+                        type: sap.ui.export.EdmType.Number,
+                        delimiter: true,
+                        scale: 2,
+                        width: 20
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.importepagado"),
+                        property: "Importepagado",
+                        type: sap.ui.export.EdmType.Number,
+                        delimiter: true,
+                        scale: 2,
+                        width: 20
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.diasantiguedad"),
+                        property: "Antiguedad",
+                        type: sap.ui.export.EdmType.Number,
+                        width: 21
+                    }
+                ];
+                this.buildExcelSpreadSheet(columns, this.detailDataAclProv, "Reporte Dashboard Aclaraciones por Proveedor.xlsx");
+            } else {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.excel.error.data"));
+            }
+        },
+
+        onDownloadExcelEjecComp: function() {
+            if(this.detailDataEC.length > 0){
+                var texts = this.getOwnerComponent().getModel("appTxts");
+                var columns = [
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.proveedor"),
+                        property: "Proveedor",
+                        type: sap.ui.export.EdmType.Number,
+                        width: 12
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.razonsocial"),
+                        property: "Razonsocial",
+                        width: 40
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.tipo"),
+                        property: ["Tipo", "Desctipo"],
+                        template: "{0} {1}",
+                        width: 26
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.grupo"),
+                        property: "Nombregrupo",
+                        width: 25
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.totalrecla"),
+                        property: "Totalreclamado",
+                        type: sap.ui.export.EdmType.Number,
+                        delimiter: true,
+                        scale: 2,
+                        width: 20
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.totalaclarado"),
+                        property: "Totalaclarado",
+                        type: sap.ui.export.EdmType.Number,
+                        delimiter: true,
+                        scale: 2,
+                        width: 20
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGpoRes.table.quantity"),
+                        property: "Cantidad",
+                        type: sap.ui.export.EdmType.Number,
+                        width: 21
+                    }
+                ];
+                this.buildExcelSpreadSheet(columns, this.detailDataEC, "Reporte Dashboard Ejecutivo Comparativo.xlsx");
             } else {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.excel.error.data"));
             }
