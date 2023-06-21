@@ -10,6 +10,7 @@ sap.ui.define([
 
 	return Controller.extend("demo.controllers.MiBandeja.Releases.Detail", {
 		onInit: function () {
+            console.log("3")
 			var oExitButton = this.getView().byId("exitFullScreenBtn"),
 				oEnterButton = this.getView().byId("enterFullScreenBtn");
 
@@ -28,6 +29,7 @@ sap.ui.define([
 					}.bind(this)
 				});
 			}, this);
+            console.log(this.getOwnerComponent().getModel("userdata"))
 		},
 		handleFullScreen: function () {
 			this.bFocusFullScreenButton = true;
@@ -81,6 +83,7 @@ sap.ui.define([
            // var allSupp = this.getView().byId("allSupp");
             
             var userData = this.getOwnerComponent().getModel("userdata");
+          
             var sendMail = userData.getProperty("/IMail");// this.getView().byId("sendMail"); //userData.getProperty("/EIdusua")
             var idUser = userData.getProperty("/EIdusua");
             var attachControl = this.getView().byId("attacheds");
