@@ -255,9 +255,11 @@ sap.ui.define([
 
                 var cajsTarimas = this.groupByAuto(positions.ETREMDNAV.results, "Cajtar")
                 let cajTarIndex = 1;
-                let count = 0;
+                let count = 0, num = 0;
+                let limit = 100;
                 for (const key in cajsTarimas) {
                     count ++;
+                    num ++;
                     html += '<div style="padding:5px;display:inline; margin-top:40px; margin-right:10px; margin-left:10px; border:1px solid #999999;text-align:center;">' +
                         `<p style="width:100%;font-size: smaller;">${positions.Eremh.Zremision}</p>` +
                         `<p style="width:100%;font-size: smaller;">${this.getConfigModel().getProperty("/supplierInput")}</p>` +
@@ -274,8 +276,13 @@ sap.ui.define([
                         count = 0;
                         html += '<br><br><br> <br><br><br> <br><br><br> <br><br><br>';
                     }
-                }
 
+                    /*
+                    if (num === 200) {
+                        break;
+                    }
+                    */
+                }
             }
 
             html += '</div></div>';
@@ -306,13 +313,16 @@ sap.ui.define([
                 margin: 0,
                 filename: 'GroupCode.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape'},//, orientation: 'landscape' 
-                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+                //html2canvas: { scale: 2, useCORS: true },
+                html2canvas: {dpi: 192, letterRendering: true},
+                //jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape'},//, orientation: 'landscape'
+                jsPDF: {unit: 'mm', format: 'letter', orientation: 'landscape'},
+                //pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+                pageBreak: {mode: ['avoid-all', 'css'], avoid: ['.pi-row']},
             };
 
             // New Promise-based usage:
-            html2pdf().set(opt).from(element).save();
+            html2pdf().set(opt).from(element).toPdf().save();
             //element.innerHTML = "";
         },
         printConsolidated: function () {
