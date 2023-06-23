@@ -174,7 +174,7 @@
                                             uploadEnabled="true" 
                                             terminationEnabled="false" 
                                             fileTypes="xml,pdf,zip,rar,xls,xlsx,doc,docx,txt" 
-                                            maxFileNameLength="15" 
+                                            maxFileNameLength="50" 
                                             maxFileSize="5" 
                                             mode="None"
                                             selectionChanged="onChangeUpload" 
