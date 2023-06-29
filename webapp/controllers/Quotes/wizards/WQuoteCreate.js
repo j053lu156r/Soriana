@@ -478,6 +478,7 @@ console.log(Datos)
                       sap.m.MessageBox.error(response.Message);
                     }
                   });
+                
                 } else {
                   var ArrT = [];
                   var ArrTCN = [];
@@ -513,7 +514,7 @@ console.log(Datos)
                         }
                       }
                     }
-console.log(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results)
+                        console.log(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results)
                     for (var x = 0; x < appoimentModel.length; x++) {
                       
                       ArrTCN.push({
@@ -584,15 +585,18 @@ console.log(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results)
 
 
                   } else {
+                    console.log( this.getOwnerComponent().getModel("Pedidos").getData())
                     for (var x = 0; x < appoimentModel.length; x++) {
-                      console.log(appoimentModel[x].Citado)
+                   
                    //   appoimentModel[x].Citado =1,400;
 let citado=""
-                      if(appoimentModel[x].Citado.toLocaleString().includes(',')){
-                        citado=appoimentModel[x].Citado.toLocaleString()
+console.log(appoimentModel[x].Citado)
+console.log(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado)
+                      if(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado.toLocaleString().includes(',')){
+                        citado=this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado.toLocaleString()
                         citado=citado.replace(",", "")
                       }else{
-                        citado=appoimentModel[x].Citado.toLocaleString()
+                        citado=this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado.toLocaleString()
                       }
                       console.log(citado)
                       ArrTCN.push({
@@ -858,7 +862,7 @@ let citado=""
                           resp.data.results[0].ETMINIFULL03.results[d].ZwerksD===datos2[c].ZwerksD
 
                         ) {
-
+console.log(resp.data.results[0].ETMINIFULL03.results[d].Zpmngu)
                           ArgTemp.push({
                             Abeln: resp.data.results[0].ETOC.results[s].Abeln,
                             Bwart: resp.data.results[0].ETOC.results[s].Bwart,
