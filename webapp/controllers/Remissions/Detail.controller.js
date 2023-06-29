@@ -8,6 +8,7 @@ sap.ui.define([
     var oModel = new this.Remissions();
     var cModel = new this.RemissionCancel();
     return Controller.extend("demo.controllers.Remissions.Detail", {
+        cajasTarimas: null,
         onInit: function () {
             var oExitButton = this.getView().byId("exitFullScreenBtn"),
                 oEnterButton = this.getView().byId("enterFullScreenBtn");
@@ -37,12 +38,12 @@ sap.ui.define([
         handleFullScreen: function () {
             this.bFocusFullScreenButton = true;
             var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
-            this.oRouter.navTo("detailRemission", { layout: sNextLayout, document: this._document, folio: this._folio});
+            this.oRouter.navTo("detailRemission", { layout: sNextLayout, document: this._document, folio: this._folio });
         },
         handleExitFullScreen: function () {
             this.bFocusFullScreenButton = true;
             var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
-            this.oRouter.navTo("detailRemission", { layout: sNextLayout, document: this._document, folio: this._folio});
+            this.oRouter.navTo("detailRemission", { layout: sNextLayout, document: this._document, folio: this._folio });
         },
         handleClose: function () {
             var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
@@ -236,7 +237,7 @@ sap.ui.define([
             }
         },
         printLabels: function () {
-            
+
             if (!this._uploadDialog2) {
                 this._uploadDialog2 = sap.ui.xmlfragment("printBoxesLabels", "demo.views.Remissions.fragments.LabelsRemission", this);
                 this.getView().addDependent(this._uploadDialog2);
@@ -256,32 +257,83 @@ sap.ui.define([
                 var cajsTarimas = this.groupByAuto(positions.ETREMDNAV.results, "Cajtar")
                 let cajTarIndex = 1;
                 let count = 0, num = 0;
-                let limit = 100;
+
+                /*
+                this.cajasTarimas = cajsTarimas;
+                let arrayTarimas = [];
+                let length = Object.keys(cajsTarimas).length
                 for (const key in cajsTarimas) {
+                    let obj = {
+                        key: key,
+                        werks: cajsTarimas[key][0].Werks,
+                        name: cajsTarimas[key][0].Name1,
+                        index: cajTarIndex
+                    }
+                    arrayTarimas.push(obj);
+                    cajTarIndex++;
+                }
+
+                arrayTarimas.forEach((tarima) => {
                     count ++;
                     num ++;
+
+                    if (num === 1){
+                        let html = '<div id="codeGroupDiv" style= "text-align: center; width: 100%;" >' +
+                                    '<div style="display: grid;grid-template-columns: auto auto auto; width:40%;">';
+                    }
+
                     html += '<div style="padding:5px;display:inline; margin-top:40px; margin-right:10px; margin-left:10px; border:1px solid #999999;text-align:center;">' +
                         `<p style="width:100%;font-size: smaller;">${positions.Eremh.Zremision}</p>` +
                         `<p style="width:100%;font-size: smaller;">${this.getConfigModel().getProperty("/supplierInput")}</p>` +
-                        `<p style="width:100%;font-size: smaller;">${cajsTarimas[key][0].Werks} - ${cajsTarimas[key][0].Name1}</p>` +
+                        `<p style="width:100%;font-size: smaller;">${tarima.werks} - ${tarima.name}</p>` +
                         '<svg class="barcode"' +
-                        `jsbarcode-value="${key}"` +
+                        `jsbarcode-value="${tarima.key}"` +
                         'jsbarcode-textmargin="0"' +
                         'jsbarcode-fontoptions="bold" jsbarcode-width="2" jsbarcode-fontSize="12">' +
                         '</svg>' +
-                        `<p style="width:60%; text-align:left; font-size: smaller;">${this.getView().getModel("appTxts").getProperty("/rem.palletbox")}: ${cajTarIndex} de ${Object.keys(cajsTarimas).length}</p>` +
+                        `<p style="width:60%; text-align:left; font-size: smaller;">${this.getView().getModel("appTxts").getProperty("/rem.palletbox")}: ${tarima.index} de ${length}</p>` +
                         '</div>';
-                    cajTarIndex++;
+
                     if (count === 6){
                         count = 0;
                         html += '<br><br><br> <br><br><br> <br><br><br> <br><br><br>';
                     }
 
-                    /*
                     if (num === 200) {
-                        break;
+                        num = 0;
+                        html += '</div></div>';
+
+                        ojbResponse.html = html;
+
+                        this._uploadDialog2.setModel(new JSONModel(ojbResponse));
+                        this._uploadDialog2.open();
+                        JsBarcode(".barcode").init();
                     }
-                    */
+                });
+
+                */
+
+
+
+                for (const key in cajsTarimas) {
+                    count++;
+                    num++;
+                    html += '<div style="padding:5px;display:inline; margin-top:40px; margin-right:10px; margin-left:10px; border:1px solid #999999;text-align:center;">' +
+                        `<p style="width:100%;font-size: smaller;">${positions.Eremh.Zremision}</p>` +
+                        `<p style="width:100%;font-size: smaller;">${this.getConfigModel().getProperty("/supplierInput")}</p>` +
+                        `<p style="width:100%;font-size: smaller;">${cajsTarimas[key][0].Werks} - ${cajsTarimas[key][0].Name1}</p>` +
+                        '<img class="barcode"' +
+                        `jsbarcode-value="${key}"` +
+                        'jsbarcode-textmargin="0"' +
+                        'jsbarcode-fontoptions="bold" jsbarcode-width="2" jsbarcode-fontSize="12">' +
+                        '</img>' +
+                        `<p style="width:60%; text-align:left; font-size: smaller;">${this.getView().getModel("appTxts").getProperty("/rem.palletbox")}: ${cajTarIndex} de ${Object.keys(cajsTarimas).length}</p>` +
+                        '</div>';
+                    cajTarIndex++;
+                    if (count === 6) {
+                        count = 0;
+                        html += '<br><br><br> <br><br><br> <br><br><br> <br><br><br>';
+                    }
                 }
             }
 
@@ -308,22 +360,40 @@ sap.ui.define([
             }
         },
         saveCoordinates: function () {
+            var svgElements = document.body.querySelectorAll('svg');
+            svgElements.forEach(function(item) {
+                item.setAttribute("width", item.getBoundingClientRect().width);
+                item.setAttribute("height", item.getBoundingClientRect().height);
+                item.style.width = null;
+                item.style.height= null;
+            });
             var element = document.getElementById('codeGroupDiv');
+            /*
             var opt = {
                 margin: 0,
                 filename: 'GroupCode.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
-                //html2canvas: { scale: 2, useCORS: true },
-                html2canvas: {dpi: 192, letterRendering: true},
-                //jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape'},//, orientation: 'landscape'
-                jsPDF: {unit: 'mm', format: 'letter', orientation: 'landscape'},
-                //pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-                pageBreak: {mode: ['avoid-all', 'css'], avoid: ['.pi-row']},
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape'},//, orientation: 'landscape'
+            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
             };
 
             // New Promise-based usage:
             html2pdf().set(opt).from(element).toPdf().save();
             //element.innerHTML = "";
+            */
+
+            window.jsPDF = window.jspdf.jsPDF;
+            var docPDF = new jsPDF();
+            docPDF.html(element, {
+                callback: function (docPDF) {
+                    docPDF.save('HTML Linuxhint web page.pdf');
+                },
+                x: 15,
+                y: 15,
+                width: 170,
+                windowWidth: 650
+            });
         },
         printConsolidated: function () {
             if (!this._uploadDialog2) {
@@ -343,7 +413,7 @@ sap.ui.define([
 
                 var cajsTarimas = this.groupByAuto(positions.ETREMDNAV.results, "Cajtar");
 
-                for(const key in cajsTarimas){
+                for (const key in cajsTarimas) {
                     var caj = {
                         "Cajtar": key,
                         "Werks": cajsTarimas[key][0].Werks,
