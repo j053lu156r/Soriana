@@ -67,8 +67,8 @@ sap.ui.define([
                 }
 
                 var data = _GEToDataV2Response.d.results;
-                console.log(data)
-
+                const unicos3 = data
+                /*
                 const unicos3 = [];
 
                 for (var indice = 0; indice < data.length; indice++) {
@@ -87,8 +87,7 @@ sap.ui.define([
                         unicos3.push(persona);
                     }
                 }
-
-                console.log(unicos3)
+                */
 
                 unicos3.sort((a, b) => {
                     if (Number(a.TeSalida.Cmsucfol) === Number(b.TeSalida.Cmsucfol)) {
