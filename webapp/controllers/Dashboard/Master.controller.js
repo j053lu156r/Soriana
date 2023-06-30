@@ -55,6 +55,7 @@ sap.ui.define([
         detailDataAVGT: [],
         detailDataAclProv: [],
         detailDataEC: [],
+        detailDataAclAnalista: [],
 
         donutImporte: undefined,
         donutCantidad: undefined,
@@ -572,21 +573,24 @@ sap.ui.define([
             this.reporteAnalista.read("/DASHMAINSet", {
                 method: "GET",
                 urlParameters: {
-                    "$expand": "DETALLESNAV",
+                    "$expand": "DETALLESNAV,DETALLESGPONAV",
                 },
                 filters: aFilters,
                 success: function(response){
                     console.log(response)
-                    /*
-                    if(response.results[0].TOTALESNAV.results.length > 0){
-                        var totales = response.results[0].TOTALESNAV.results;
-                        var totalesModel = new JSONModel({oData: totales});
-                        that.detailDataAclProv = response.results[0].DETALLESNAV.results;
-                        that.getView().setModel(totalesModel, 'TotalesModelProv');
+                    if(response.results[0].DETALLESGPONAV.results.length > 0){
+                        var data = response.results[0].DETALLESGPONAV.results;
+                        data.forEach((item, index) => {
+                            data[index].Totalaclarado = parseFloat(item.Totalaclarado)
+                            data[index].Antiguedad = parseInt(item.Antiguedad)
+                        });
+                        console.log(data)
+                        var dataModel = new JSONModel({oData: data});
+                        that.detailDataAclAnalista = response.results[0].DETALLESNAV.results;
+                        that.getView().setModel(dataModel, 'AclaracionesAnalista');
                     } else {
                         sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.data"));
                     }
-                    */
                 }, 
                 error: function(error){
                     sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.error.execute"));
@@ -1112,6 +1116,100 @@ sap.ui.define([
                     }
                 ];
                 this.buildExcelSpreadSheet(columns, this.detailDataEC, "Reporte Dashboard Ejecutivo Comparativo.xlsx");
+            } else {
+                sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.excel.error.data"));
+            }
+        },
+
+        downloadExcelAnalista: function(){
+            if(this.detailDataAclAnalista.length > 0){
+                var texts = this.getOwnerComponent().getModel("appTxts");
+                var columns = [
+                    {
+                        label: texts.getProperty("/dashboard.repGpoRes.excel.folio"),
+                        property: "Folio",
+                        width: 26
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.fechaalta"),
+                        property: "Fechaalta",
+                        type: sap.ui.export.EdmType.Date,
+                        format: "dddd, d.mmmm yyyy",
+                        width: 30
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.proveedor"),
+                        property: "Proveedor",
+                        type: sap.ui.export.EdmType.Number,
+                        width: 12
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.razonsocial"),
+                        property: "Razonsocial",
+                        width: 40
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.tipo"),
+                        property: ["Tipo", "Desctipo"],
+                        template: "{0} {1}",
+                        width: 26
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repAclarAnalist.excel.subtotalAclarado"),
+                        property: "Subtotalacl",
+                        type: sap.ui.export.EdmType.Number,
+                        delimiter: true,
+                        scale: 2,
+                        width: 20
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repAclarAnalist.excel.ivaAclarado"),
+                        property: "Ivaacl",
+                        type: sap.ui.export.EdmType.Number,
+                        delimiter: true,
+                        scale: 2,
+                        width: 20
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.totalaclarado"),
+                        property: "Totalaclarado",
+                        type: sap.ui.export.EdmType.Number,
+                        delimiter: true,
+                        scale: 2,
+                        width: 20
+                    },
+                    {
+                        label: texts.getProperty("/clarifications.headerAnalyst"),
+                        property: "Analista",
+                        width: 10
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.grupo"),
+                        property: "Nombregrupo",
+                        width: 25
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGpoRes.excel.fechaasignacion"),
+                        property: "Fechaasignacion",
+                        type: sap.ui.export.EdmType.Date,
+                        format: "dddd, d.mmmm yyyy",
+                        width: 30
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.fechasolucion"),
+                        property: "Fechasolucion",
+                        type: sap.ui.export.EdmType.Date,
+                        format: "dddd, d.mmmm yyyy",
+                        width: 30
+                    },
+                    {
+                        label: texts.getProperty("/dashboard.repGeneral.excel.diasantiguedad"),
+                        property: "Antiguedad",
+                        type: sap.ui.export.EdmType.Number,
+                        width: 21
+                    }
+                ];
+                this.buildExcelSpreadSheet(columns, this.detailDataAclAnalista, "Reporte Dashboard Aclaraciones por analista.xlsx");
             } else {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.excel.error.data"));
             }

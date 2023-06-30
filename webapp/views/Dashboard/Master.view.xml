@@ -364,7 +364,7 @@
                         <headerToolbar>
                             <OverflowToolbar>
                                 <content>
-                                    <Title level="H2" text="Montos"/>
+                                    <Title level="H2" text="{appTxts>/dashboard.table.gpoRes.amounts}"/>
                                     <ToolbarSpacer/>
                                 </content>
                             </OverflowToolbar>
@@ -507,17 +507,17 @@
                                 <headerToolbar>
                                     <OverflowToolbar>
                                         <content>
-                                            <Title level="H2" text="Acrónimos"/>
+                                            <Title level="H2" text="{appTxts>/dashboard.table.gpoRes.aconimos}"/>
                                             <ToolbarSpacer/>
                                         </content>
                                     </OverflowToolbar>
                                 </headerToolbar>
                                 <columns>
                                     <Column>
-                                        <Text text="Acrónimo"/>
+                                        <Text text="{appTxts>/dashboard.table.gpoRes.aconimo}"/>
                                     </Column>
                                     <Column>
-                                        <Text text="Descripción"/>
+                                        <Text text="{appTxts>/sendInv.description}"/>
                                     </Column>
                                 </columns>
                                 <items>
@@ -542,7 +542,6 @@
                     width="100%"
                     horizontal="false"
                     vertical="true">
-                    <!--
                     <fb:FilterBar header="Header" reset="onReset" search="searchData"
                         clear="clearFilters" cancel="onCancel"
                         filtersDialogClosed="onFiltersDialogClosed"
@@ -684,26 +683,26 @@
                             <OverflowToolbar id="otb1">
                                 <ToolbarSpacer/>
                                 <RadioButtonGroup id="rbg1" columns="3" valueState="Error" select="onChangeRadioBtnSelect">
-                                    <RadioButton id="RB1-1" text="Recibidas" />
-                                    <RadioButton id="RB1-2" text="Pagadas" />
+                                    <RadioButton id="RB1-1" text="{appTxts>/dashboard.repExectC.radio.recibidas}" />
+                                    <RadioButton id="RB1-2" text="{appTxts>/dashboard.repExectC.radio.pagadas}" />
                                 </RadioButtonGroup>
                                 <RadioButtonGroup id="rbg2" columns="3" valueState="Error" select="onChangeRadioBtnSelect">
-                                    <RadioButton id="RB2-1" text="Por cantidad" />
-                                    <RadioButton id="RB2-2" text="Por importe" />
+                                    <RadioButton id="RB2-1" text="{appTxts>/dashboard.repExectC.radio.cantidad}" />
+                                    <RadioButton id="RB2-2" text="{appTxts>/dashboard.repExectC.radio.importe}" />
                                 </RadioButtonGroup>
                                 <Button icon="sap-icon://excel-attachment"
                                         text="{appTxts>/dashboard.download.excel}" press="onDownloadExcelEjecComp" />
                             </OverflowToolbar>
-                            <Panel headerText="Año en curso" class="sapUiSmallMarginBottom">
+                            <Panel headerText="{appTxts>/dashboard.repExectC.panel.title.curso}" class="sapUiSmallMarginBottom">
                                 <l:HorizontalLayout>
-                                    <GenericTile header="Cantidad" frameType="OneByOne" class="sapUiMediumMarginEnd">
+                                    <GenericTile header="{appTxts>/dashboard.repGpoRes.chart.quantity}" frameType="OneByOne" class="sapUiMediumMarginEnd">
                                         <tileContent>
                                             <TileContent>
                                                 <content>
                                                     <mc:ComparisonMicroChart size="Responsive">
                                                         <mc:data>
-                                                            <mc:ComparisonMicroChartData title="Recibidas" value="{CardsModelExec>/Cantrecibidasactual}" color="Critical" />
-                                                            <mc:ComparisonMicroChartData title="Pagadas" value="{CardsModelExec>/Cantpagadasactual}" color="Good" />
+                                                            <mc:ComparisonMicroChartData title="{appTxts>/dashboard.repExectC.radio.recibidas}" value="{CardsModelExec>/Cantrecibidasactual}" color="Critical" />
+                                                            <mc:ComparisonMicroChartData title="{appTxts>/dashboard.repExectC.radio.pagadas}" value="{CardsModelExec>/Cantpagadasactual}" color="Good" />
                                                         </mc:data>
                                                     </mc:ComparisonMicroChart>
                                                 </content>
@@ -711,14 +710,14 @@
                                         </tileContent>
                                     </GenericTile>
 
-                                    <GenericTile header="Importe" frameType="OneByOne">
+                                    <GenericTile header="{appTxts>/dashboard.repGpoRes.table.amount}" frameType="OneByOne">
                                         <tileContent>
                                             <TileContent>
                                                 <content>
                                                     <mc:ComparisonMicroChart scale="$" size="Responsive">
                                                         <mc:data>
-                                                            <mc:ComparisonMicroChartData title="Recibidas" value="{CardsModelExec>/Importerecibidasactual}" color="Critical" />
-                                                            <mc:ComparisonMicroChartData title="Pagadas" value="{CardsModelExec>/Importepagadasactual}" color="Good" />
+                                                            <mc:ComparisonMicroChartData title="{appTxts>/dashboard.repExectC.radio.recibidas}" value="{CardsModelExec>/Importerecibidasactual}" color="Critical" />
+                                                            <mc:ComparisonMicroChartData title="{appTxts>/dashboard.repExectC.radio.pagadas}" value="{CardsModelExec>/Importepagadasactual}" color="Good" />
                                                         </mc:data>
                                                     </mc:ComparisonMicroChart>
                                                 </content>
@@ -751,16 +750,16 @@
                                 </l:HorizontalLayout>
                             </Panel>
 
-                            <Panel headerText="Año anterior" class="sapUiSmallMarginBottom">
+                            <Panel headerText="{appTxts>/dashboard.repExectC.panel.title.anterior}" class="sapUiSmallMarginBottom">
                                 <l:HorizontalLayout>
-                                    <GenericTile header="Cantidad" frameType="OneByOne" class="sapUiMediumMarginEnd">
+                                    <GenericTile header="{appTxts>/dashboard.repGpoRes.chart.quantity}" frameType="OneByOne" class="sapUiMediumMarginEnd">
                                         <tileContent>
                                             <TileContent>
                                                 <content>
                                                     <mc:ComparisonMicroChart size="Responsive">
                                                         <mc:data>
-                                                            <mc:ComparisonMicroChartData title="Recibidas" value="{CardsModelExec>/Cantrecibidasanterior}" color="Critical" />
-                                                            <mc:ComparisonMicroChartData title="Pagadas" value="{CardsModelExec>/Cantpagadasanterior}" color="Good" />
+                                                            <mc:ComparisonMicroChartData title="{appTxts>/dashboard.repExectC.radio.recibidas}" value="{CardsModelExec>/Cantrecibidasanterior}" color="Critical" />
+                                                            <mc:ComparisonMicroChartData title="{appTxts>/dashboard.repExectC.radio.pagadas}" value="{CardsModelExec>/Cantpagadasanterior}" color="Good" />
                                                         </mc:data>
                                                     </mc:ComparisonMicroChart>
                                                 </content>
@@ -768,14 +767,14 @@
                                         </tileContent>
                                     </GenericTile>
 
-                                    <GenericTile header="Importe" frameType="OneByOne">
+                                    <GenericTile header="{appTxts>/dashboard.repGpoRes.table.amount}" frameType="OneByOne">
                                         <tileContent>
                                             <TileContent>
                                                 <content>
                                                     <mc:ComparisonMicroChart scale="$" size="Responsive">
                                                         <mc:data>
-                                                            <mc:ComparisonMicroChartData title="Recibidas" value="{CardsModelExec>/Importerecibidasanterior}" color="Critical" />
-                                                            <mc:ComparisonMicroChartData title="Pagadas" value="{CardsModelExec>/Importepagadasanterior}" color="Good" />
+                                                            <mc:ComparisonMicroChartData title="{appTxts>/dashboard.repExectC.radio.recibidas}" value="{CardsModelExec>/Importerecibidasanterior}" color="Critical" />
+                                                            <mc:ComparisonMicroChartData title="{appTxts>/dashboard.repExectC.radio.pagadas}" value="{CardsModelExec>/Importepagadasanterior}" color="Good" />
                                                         </mc:data>
                                                     </mc:ComparisonMicroChart>
                                                 </content>
@@ -809,7 +808,7 @@
                             </Panel>
                         </l:VerticalLayout>
                     </l:HorizontalLayout>
-                    -->
+
                 </ScrollContainer>
             </IconTabFilter>
             <IconTabFilter
@@ -986,7 +985,6 @@
                     width="100%"
                     horizontal="false"
                     vertical="true">
-                    <!--
                         <fb:FilterBar header="Header" reset="onReset" search="searchData"
                         clear="clearFilters" cancel="onCancel"
                         filtersDialogClosed="onFiltersDialogClosed"
@@ -1065,7 +1063,43 @@
                                 </fb:FilterGroupItem>
                             </fb:filterGroupItems>
                         </fb:FilterBar>
-                    -->
+
+                        <l:VerticalLayout>
+                            <Panel class="sapUiSmallMarginBottom">
+                                <headerToolbar>
+                                    <OverflowToolbar>
+                                        <Title text="{appTxts>/dashboard.repAclarProv.panel.averageDays}"/>
+                                        <ToolbarSpacer />
+                                        <Button icon="sap-icon://excel-attachment" text="{appTxts>/dashboard.download.excel}" press="downloadExcelAnalista" />
+                                    </OverflowToolbar>
+                                </headerToolbar>
+                                <FlexBox width="350px" height="100px" renderType="Bare"
+                                    class="sapUiSmallMargin">
+                                    <mc:ColumnMicroChart size="Responsive" press="press" 
+                                        class="sapUiSmallMargin" allowColumnLabels="true" columns="{AclaracionesAnalista>/oData}">
+                                        <mc:columns>
+                                            <mc:ColumnMicroChartData value="{AclaracionesAnalista>Antiguedad}" label="{AclaracionesAnalista>Analista}" color="Good"/>
+                                        </mc:columns>
+                                    </mc:ColumnMicroChart>
+                                </FlexBox>
+                            </Panel>
+
+                            <Panel headerText="{appTxts>/dashboard.repAclarProv.panel.importeAclaraciones}" class="sapUiSmallMarginBottom">
+                                <FlexBox width="350px" height="100px" renderType="Bare"
+                                    class="sapUiSmallMargin">
+                                    <mc:ColumnMicroChart size="Responsive" press="press" 
+                                        class="sapUiSmallMargin" allowColumnLabels="true" columns="{AclaracionesAnalista>/oData}">
+                                        <mc:columns>
+                                            <mc:ColumnMicroChartData value="{AclaracionesAnalista>Totalaclarado}" label="{AclaracionesAnalista>Analista}" color="Good"/>
+                                        </mc:columns>
+                                    </mc:ColumnMicroChart>
+                                </FlexBox>
+                            </Panel>
+
+                            <Panel headerText="{appTxts>/dashboard.repAclarProv.panel.cantidadAclaraciones}" class="sapUiSmallMarginBottom">
+                            
+                            </Panel>
+                        </l:VerticalLayout>
                 </ScrollContainer>
             </IconTabFilter>
         </items>
