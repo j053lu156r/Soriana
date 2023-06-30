@@ -809,7 +809,7 @@ console.log(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[
             var datos2=that.getOwnerComponent().getModel("PosicionesG").getData()
             this.getView().byId("tableWizardOrder").setEnableSelectAll(true)
             this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({ editable: false, }), "Modeleditable");
-
+console.log(PosicionesG)
 
           for (var x = 0; x < resp.data.results[0].ETOC.results.length; x++) {
               
@@ -862,11 +862,11 @@ console.log(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[
                           resp.data.results[0].ETMINIFULL03.results[d].ZwerksD===datos2[c].ZwerksD
 
                         ) {
-console.log(resp.data.results[0].ETMINIFULL03.results[d].Zpmngu)
+
                           ArgTemp.push({
                             Abeln: resp.data.results[0].ETOC.results[s].Abeln,
                             Bwart: resp.data.results[0].ETOC.results[s].Bwart,
-                            Citado: resp.data.results[0].ETMINIFULL03.results[d].Zpmngu.trim().split(".")[0],
+                            Citado: resp.data.results[0].ETOC.results[s].Citado, //resp.data.results[0].ETMINIFULL03.results[d].Zpmngu.trim().split(".")[0],
                             Ean11: resp.data.results[0].ETOC.results[s].Ean11,
                             Ebeln: resp.data.results[0].ETOC.results[s].Ebeln,
                             Ebelp: resp.data.results[0].ETOC.results[s].Ebelp,
