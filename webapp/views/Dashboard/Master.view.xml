@@ -1097,7 +1097,15 @@
                             </Panel>
 
                             <Panel headerText="{appTxts>/dashboard.repAclarProv.panel.cantidadAclaraciones}" class="sapUiSmallMarginBottom">
-                            
+                                <FlexBox width="350px" height="100px" renderType="Bare"
+                                    class="sapUiSmallMargin">
+                                    <mc:ColumnMicroChart size="Responsive" press="press" 
+                                        class="sapUiSmallMargin" allowColumnLabels="true" columns="{AclaracionesAnalista>/oData}">
+                                        <mc:columns>
+                                            <mc:ColumnMicroChartData value="{AclaracionesAnalista>Cantidad}" label="{AclaracionesAnalista>Analista}" color="Good"/>
+                                        </mc:columns>
+                                    </mc:ColumnMicroChart>
+                                </FlexBox>
                             </Panel>
                         </l:VerticalLayout>
                 </ScrollContainer>

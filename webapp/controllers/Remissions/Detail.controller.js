@@ -256,85 +256,27 @@ sap.ui.define([
 
                 var cajsTarimas = this.groupByAuto(positions.ETREMDNAV.results, "Cajtar")
                 let cajTarIndex = 1;
-                let count = 0, num = 0;
-
-                /*
-                this.cajasTarimas = cajsTarimas;
-                let arrayTarimas = [];
-                let length = Object.keys(cajsTarimas).length
+                let count = 0;
                 for (const key in cajsTarimas) {
-                    let obj = {
-                        key: key,
-                        werks: cajsTarimas[key][0].Werks,
-                        name: cajsTarimas[key][0].Name1,
-                        index: cajTarIndex
-                    }
-                    arrayTarimas.push(obj);
-                    cajTarIndex++;
-                }
-
-                arrayTarimas.forEach((tarima) => {
                     count ++;
-                    num ++;
-
-                    if (num === 1){
-                        let html = '<div id="codeGroupDiv" style= "text-align: center; width: 100%;" >' +
-                                    '<div style="display: grid;grid-template-columns: auto auto auto; width:40%;">';
-                    }
-
-                    html += '<div style="padding:5px;display:inline; margin-top:40px; margin-right:10px; margin-left:10px; border:1px solid #999999;text-align:center;">' +
-                        `<p style="width:100%;font-size: smaller;">${positions.Eremh.Zremision}</p>` +
-                        `<p style="width:100%;font-size: smaller;">${this.getConfigModel().getProperty("/supplierInput")}</p>` +
-                        `<p style="width:100%;font-size: smaller;">${tarima.werks} - ${tarima.name}</p>` +
-                        '<svg class="barcode"' +
-                        `jsbarcode-value="${tarima.key}"` +
-                        'jsbarcode-textmargin="0"' +
-                        'jsbarcode-fontoptions="bold" jsbarcode-width="2" jsbarcode-fontSize="12">' +
-                        '</svg>' +
-                        `<p style="width:60%; text-align:left; font-size: smaller;">${this.getView().getModel("appTxts").getProperty("/rem.palletbox")}: ${tarima.index} de ${length}</p>` +
-                        '</div>';
-
-                    if (count === 6){
-                        count = 0;
-                        html += '<br><br><br> <br><br><br> <br><br><br> <br><br><br>';
-                    }
-
-                    if (num === 200) {
-                        num = 0;
-                        html += '</div></div>';
-
-                        ojbResponse.html = html;
-
-                        this._uploadDialog2.setModel(new JSONModel(ojbResponse));
-                        this._uploadDialog2.open();
-                        JsBarcode(".barcode").init();
-                    }
-                });
-
-                */
-
-
-
-                for (const key in cajsTarimas) {
-                    count++;
-                    num++;
                     html += '<div style="padding:5px;display:inline; margin-top:40px; margin-right:10px; margin-left:10px; border:1px solid #999999;text-align:center;">' +
                         `<p style="width:100%;font-size: smaller;">${positions.Eremh.Zremision}</p>` +
                         `<p style="width:100%;font-size: smaller;">${this.getConfigModel().getProperty("/supplierInput")}</p>` +
                         `<p style="width:100%;font-size: smaller;">${cajsTarimas[key][0].Werks} - ${cajsTarimas[key][0].Name1}</p>` +
-                        '<img class="barcode"' +
+                        '<svg class="barcode"' +
                         `jsbarcode-value="${key}"` +
                         'jsbarcode-textmargin="0"' +
                         'jsbarcode-fontoptions="bold" jsbarcode-width="2" jsbarcode-fontSize="12">' +
-                        '</img>' +
+                        '</svg>' +
                         `<p style="width:60%; text-align:left; font-size: smaller;">${this.getView().getModel("appTxts").getProperty("/rem.palletbox")}: ${cajTarIndex} de ${Object.keys(cajsTarimas).length}</p>` +
                         '</div>';
                     cajTarIndex++;
-                    if (count === 6) {
+                    if (count === 6){
                         count = 0;
                         html += '<br><br><br> <br><br><br> <br><br><br> <br><br><br>';
                     }
                 }
+
             }
 
             html += '</div></div>';
@@ -360,40 +302,19 @@ sap.ui.define([
             }
         },
         saveCoordinates: function () {
-            var svgElements = document.body.querySelectorAll('svg');
-            svgElements.forEach(function(item) {
-                item.setAttribute("width", item.getBoundingClientRect().width);
-                item.setAttribute("height", item.getBoundingClientRect().height);
-                item.style.width = null;
-                item.style.height= null;
-            });
             var element = document.getElementById('codeGroupDiv');
-            /*
             var opt = {
                 margin: 0,
                 filename: 'GroupCode.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape'},//, orientation: 'landscape'
-            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape'},//, orientation: 'landscape' 
+                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
             };
 
             // New Promise-based usage:
-            html2pdf().set(opt).from(element).toPdf().save();
+            html2pdf().set(opt).from(element).save();
             //element.innerHTML = "";
-            */
-
-            window.jsPDF = window.jspdf.jsPDF;
-            var docPDF = new jsPDF();
-            docPDF.html(element, {
-                callback: function (docPDF) {
-                    docPDF.save('HTML Linuxhint web page.pdf');
-                },
-                x: 15,
-                y: 15,
-                width: 170,
-                windowWidth: 650
-            });
         },
         printConsolidated: function () {
             if (!this._uploadDialog2) {

@@ -582,7 +582,7 @@ sap.ui.define([
                         var data = response.results[0].DETALLESGPONAV.results;
                         data.forEach((item, index) => {
                             data[index].Totalaclarado = parseFloat(item.Totalaclarado)
-                            data[index].Antiguedad = parseInt(item.Antiguedad)
+                            //data[index].Antiguedad = parseInt(item.Antiguedad)
                         });
                         console.log(data)
                         var dataModel = new JSONModel({oData: data});
@@ -1181,7 +1181,7 @@ sap.ui.define([
                     {
                         label: texts.getProperty("/clarifications.headerAnalyst"),
                         property: "Analista",
-                        width: 10
+                        width: 50
                     },
                     {
                         label: texts.getProperty("/dashboard.repGeneral.excel.grupo"),

@@ -1604,7 +1604,7 @@ console.log(PosicionesG)
           Ebelp: detalle.Ebelp,
           Matnr: detalle.Matnr,
           TipoCita: mainDataModel.TipoCita,
-          FechaAud: mainDataModel.FechaAud,
+          FechaAud: mainDataModel.FechaAud
         };
 
         creationArray.push(newdetail);
