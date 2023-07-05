@@ -115,7 +115,7 @@ sap.ui.define(
 
             var Datos = selectedKey;
 
-console.log(Datos)
+
 
             if (selectedKey === "N") {
 
@@ -143,11 +143,15 @@ console.log(Datos)
               that.getView().byId("platformsInput").setEditable(true);
               that.getView().byId("carrierInput").setEditable(true);
             } else {
+console.log(Datos)
+
 
               that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(Datos), "ModelLectura");
               that.getView().byId("wizardDialog").setTitle(that.getView().getModel("appTxts").getProperty("/quotes.editNewQuote"));
               that.getView().byId("sTipoCita").setSelectedKey(Datos.Tipocita);
               that.getView().byId("sOrdenes").setSelectedKey(Datos.Centro);
+
+
               that.getView().byId("sTipoUnidad").setSelectedKey(Datos.Tipounidad);
               that.getView().byId("DP1").setDateValue(new Date((Datos.Fechacita).replaceAll("-", ",")));
 
@@ -243,6 +247,11 @@ console.log(Datos)
           MessageBox.warning("Cantidad de Tarimas es Obligatorio");
           return;
         }
+        if (
+          this.getView().byId("sTipoUnidad").getSelectedKey() === ""   ) {
+          MessageBox.warning("Tipo de unidad es Obligatorio");
+          return;
+        }
 
         this.getView().getModel("TemporalModel").getData().generalData.totalBultos = this.getView().byId("totalpackagesInput").getValue();
         this.getView().getModel("TemporalModel").getData().generalData.tarimas = this.getView().byId("platformsInput").getValue();
@@ -296,8 +305,7 @@ console.log(Datos)
         
         var Datos = this.getOwnerComponent().getModel("ModelLectura").getData();
        
-        //console.log(this.getOwnerComponent().getModel("ModelLectura").getData())
-        console.log(Datos.lectura)
+      
         if (!Datos.lectura) {
           this._handleMessageBoxOpen(
             this.getView()
@@ -334,8 +342,7 @@ console.log(Datos)
                 var Model3 = this.getView().getModel("Platforms").getData();
                 var Datos = this.getOwnerComponent().getModel("ModelLectura").getData();
 
-                console.log(appoimentModel)
-                console.log(this.getOwnerComponent().getModel("Pedidos").getData())
+     
                 if (this.getOwnerComponent().getModel("ModelLectura").getData().lectura === true) {
                   var ArrtPos = [];
 
@@ -345,7 +352,7 @@ console.log(Datos)
                         for(var pos of this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Tarima){
                         pos.Menge=pos.Menge.toString()
                         }
-                        console.log("01")
+                     
                         ArrtPos.push({
                           Abeln: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Abeln,
                           Abelp: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Abelp,
@@ -367,7 +374,7 @@ console.log(Datos)
                         });
 
                       }else if(Model2.generalData.tipoCita==="02"){
-                        console.log("02")
+                    
                         ArrtPos.push({
                           Abeln: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Abeln,
                           Abelp: this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Abelp,
@@ -388,7 +395,7 @@ console.log(Datos)
                         
                         });
                       }else{
-                        console.log("03-4")
+                    
                       ArrtPos.push({
                         
                         Folio: this.getOwnerComponent().getModel("ModelLectura").getData().Folio,
@@ -406,7 +413,7 @@ console.log(Datos)
                   }
                   var json = []
                   if (appoimentModel[0].Anden !== undefined && appoimentModel[0].Anden !== null) {
-                    console.log(Model2.generalData.tipoCita)
+                   
                     json = {
                       Proveedor: this.getOwnerComponent().getModel("ModelLectura").getData().Proveedor,
                       Action: "2",
@@ -432,9 +439,9 @@ console.log(Datos)
                       CTCITASDET: ArrtPos,
                       ETRETURN: [],
                     };
-                    console.log(json)
+                   
                   } else {
-                    console.log(Model2.generalData.tipoCita)
+                  
                     json = {
                       Proveedor: this.getOwnerComponent().getModel("ModelLectura").getData().Proveedor,
                       Action: "2",
@@ -461,7 +468,7 @@ console.log(Datos)
                       CTCITASDET: ArrtPos,
                       ETRETURN: [],
                     };
-                    console.log(json)
+                  
                   }
 
                   var model = _oDataModelAppoimnet;
@@ -514,7 +521,7 @@ console.log(Datos)
                         }
                       }
                     }
-                        console.log(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results)
+                       
                     for (var x = 0; x < appoimentModel.length; x++) {
                       
                       ArrTCN.push({
@@ -585,20 +592,19 @@ console.log(Datos)
 
 
                   } else {
-                    console.log( this.getOwnerComponent().getModel("Pedidos").getData())
+                
                     for (var x = 0; x < appoimentModel.length; x++) {
                    
                    //   appoimentModel[x].Citado =1,400;
 let citado=""
-console.log(appoimentModel[x].Citado)
-console.log(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado)
+
                       if(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado.toLocaleString().includes(',')){
                         citado=this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado.toLocaleString()
                         citado=citado.replace(",", "")
                       }else{
                         citado=this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado.toLocaleString()
                       }
-                      console.log(citado)
+                 
                       ArrTCN.push({
                         Ebeln: appoimentModel[x].Ebeln,
                         Ebelp: appoimentModel[x].Ebelp,
@@ -809,7 +815,7 @@ console.log(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[
             var datos2=that.getOwnerComponent().getModel("PosicionesG").getData()
             this.getView().byId("tableWizardOrder").setEnableSelectAll(true)
             this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({ editable: false, }), "Modeleditable");
-console.log(PosicionesG)
+
 
           for (var x = 0; x < resp.data.results[0].ETOC.results.length; x++) {
               
@@ -833,8 +839,7 @@ console.log(PosicionesG)
                   if (Datos.Tipocita === "01") {
                 
                       for (var f = 0; f < resp.data.results[0].ETOCSTO.results.length; f++) {
-                        console.log(parseInt(resp.data.results[0].ETOC.results[x].Ebeln) , parseInt(resp.data.results[0].ETOCSTO.results[f].Bednr)) 
-                        console.log(resp.data.results[0].ETOC.results[x].Abeln , resp.data.results[0].ETOCSTO.results[f].Abeln)
+                   
                         if (parseInt(resp.data.results[0].ETOC.results[x].Ebeln) === parseInt(resp.data.results[0].ETOCSTO.results[f].Bednr) && resp.data.results[0].ETOC.results[x].Abeln === resp.data.results[0].ETOCSTO.results[f].Abeln) {
                         
                           resp.data.results[0].ETOC.results[x].ZwerksD= resp.data.results[0].ETOCSTO.results[f].Werks
@@ -911,7 +916,7 @@ console.log(PosicionesG)
 
 
             resp.data.results[0].ETOC.results = ARRTV;
-            console.log(ARRTV)
+    
           } else {
             this.getView().byId("tableWizardOrder").setEnableSelectAll(false)
             let ArgTemp = [];
@@ -1022,10 +1027,9 @@ console.log(PosicionesG)
                   }
                 }
               }
-              console.log(that.getView().byId("sTipoCita").getSelectedKey())
+           
               if (that.getView().byId("sTipoCita").getSelectedKey() === "03") {
-                console.log("entra")
-                // console.log(parseInt(resp.data.results[0].ETOC.results[x].MengeA) > 0)
+              
                 if (parseInt(resp.data.results[0].ETOC.results[x].MengeA) > 0) {
                   resp.data.results[0].ETOC.results[x].MengeA = parseInt(resp.data.results[0].ETOC.results[x].MengeA)
                   resp.data.results[0].ETOC.results[x].MengeA = resp.data.results[0].ETOC.results[x].MengeA.toString()
@@ -1034,7 +1038,7 @@ console.log(PosicionesG)
 
               }
             }
-            console.log(ArgTemp)
+           
             if (that.getView().byId("sTipoCita").getSelectedKey() === "02" || that.getView().byId("sTipoCita").getSelectedKey() === "01" || that.getView().byId("sTipoCita").getSelectedKey() === "03") {
               resp.data.results[0].ETOC.results = [];
               resp.data.results[0].ETOC.results = ArgTemp;
@@ -1252,10 +1256,20 @@ console.log(PosicionesG)
       },
 
       onChangeSelectTipoUnidad: function (oEvent) {
-        dataTempModel.setProperty(
-          "/generalData/tipoUnidad",
-          oEvent.getParameters().selectedItem.getKey()
-        );
+       
+        dataTempModel.setProperty("/generalData/tipoUnidad",oEvent.getParameters().selectedItem.getKey());
+
+console.log(this.getView().getModel("CAtalogo2").getData())
+for(var x=0;x<this.getView().getModel("CAtalogo2").getData().length;x++){
+if(this.getView().getModel("CAtalogo2").getData()[x].ZNumunidad ===oEvent.getParameters().selectedItem.getKey()){
+  dataTempModel.setProperty("/generalData/tiempo",this.getView().getModel("CAtalogo2").getData()[x].ZservMinutos);
+}
+
+}
+
+      
+
+        
       },
 
       onSelectProductType: function (oEvent) {
@@ -1269,7 +1283,7 @@ console.log(PosicionesG)
       onListItemPress: function (oEvent) { },
       appointmentDateChange(oEvent) {
 
-        console.log(this.getOwnerComponent().getModel("Modeleditable"))
+      
         let source = oEvent.getSource();
         let dateSelected = source.getDateValue();
 
@@ -1350,10 +1364,28 @@ console.log(PosicionesG)
           }
         }
         let startHours = oStartDate.getHours();
+     
+        let minutos=Number(this.getView().getModel("TemporalModel").getData().generalData.tiempo)-1
+      
         oStartDate.setHours(startHours);
-        startHours++;
-        oEndDate.setHours(startHours);
+     
+        //var minutosASumar = 30; // Por ejemplo, 30 minutos
+        oEndDate.setMinutes(oStartDate.getMinutes() + minutos);
+        
 
+
+
+
+
+        /**juan es aqui el cambio */
+       /* console.log("hora1",startHours)
+        oStartDate.setHours(startHours);
+        console.log("test1",oStartDate)
+        startHours++;
+        console.log("hora2",startHours)
+        console.log("test2",oStartDate)
+        oEndDate.setHours(startHours);
+        console.log("test3",oEndDate)*/
         var FI = new Date(
           new Date(oStartDate).toISOString().slice(0, 10) +
           " " +
@@ -1669,7 +1701,7 @@ console.log(PosicionesG)
           .then(function (_GEToDataV2Response) {
             sap.ui.core.BusyIndicator.hide();
             var data = _GEToDataV2Response.data.results[0].ETCONFIG.results;
-            console.log(data)
+       
             var N = "";
             var Arrt = [];
 
@@ -1750,7 +1782,7 @@ console.log(PosicionesG)
           sap.ui.core.BusyIndicator.hide();
 
           var data = _GEToDataV2Response.data.results[0].CTCITASCAB.results;
-console.log(data)
+
 
           for (var x = 0; x < data.length; x++) {
             for (var y = 0; y < dataPos.length; y++) {
@@ -1979,7 +2011,7 @@ console.log(data)
                   resp.data.results[0].ETOC.results[x].Abelp ===
                   resp.data.results[0].ETMINIFULL03.results[y].Zabelp && Number(resp.data.results[0].ETOC.results[x].MengeA) > 0 && Number(resp.data.results[0].ETMINIFULL03.results[y].Zpmngu.trim().split(".")[0])>0
                 ) {
-                  console.log(resp.data.results[0].ETMINIFULL03.results[y].Zpmngu.trim().split(".")[0])
+              
                   resp.data.results[0].ETOC.results[x].MengeA = parseInt(resp.data.results[0].ETOC.results[x].MengeA)
                   resp.data.results[0].ETOC.results[x].MengeA = resp.data.results[0].ETOC.results[x].MengeA.toString()
                   ArgTemp.push({
@@ -2147,9 +2179,9 @@ console.log(data)
         this.getOwnerComponent().getModel("CitaMainData").setProperty("/FechaAud", new Date(dateSelected).toISOString().slice(0, 10));
       },
       onUpload: function (e) {
-        console.log(e.getParameter("files") && e.getParameter("files")[0])
+      
         this._import(e.getParameter("files") && e.getParameter("files")[0]);
-        //    console.log(archivo)
+       
       },
 
       _import: function (file) {
@@ -2164,8 +2196,7 @@ console.log(data)
           reader.onload = function (e) {
             var data = e.target.result;
             var prov = Number(that.getConfigModel().getProperty("/supplierInputKey").padStart(10, 0))
-            console.log()
-            console.log(data.split("\n")[1].split("|")[1])
+           
             if (prov !== Number(data.split("\n")[1].split("|")[1])) {
               sap.m.MessageBox.error(
                 that.getView().getModel("appTxts").getProperty("/quotes.ErrorMasivo")
@@ -2228,7 +2259,7 @@ console.log(data)
 
                 //
               }
-              console.log(pos)
+             
               var ARRTem = []
               var cantTar = that.getView().byId("platformsInput").getValue();
               if (pos.length > 0) {
@@ -2331,9 +2362,8 @@ console.log(data)
 
                 //
               }
-              console.log(pos)
+           
               var ARRTem = []
-console.log(modeloPosGlobal)
 if (pos.length > 0) {
   for (var x = 0; x < pos.length; x++) {
     for (var y = 0; y < modeloPosGlobal.length; y++) {
