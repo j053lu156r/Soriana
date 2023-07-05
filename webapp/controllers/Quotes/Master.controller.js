@@ -372,7 +372,7 @@ sap.ui.define([
 
                 var response = catalogsModel.getProperty("/results/0");
                 this.getView().setModel(new sap.ui.model.json.JSONModel(response), "appoinmentsCatalogs");
-
+                this.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(response.ETIPOUNIDADNAV.results), "CAtalogo2");
                 var algo = this.getView().getModel("appoinmentsCatalogs");
             }
         },
