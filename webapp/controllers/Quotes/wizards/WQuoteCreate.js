@@ -13,6 +13,7 @@ sap.ui.define(
     var citas1Model = new this.Citas1();
     var dataTempModel = null;
     var Posicion = "";
+    var DataDocument = false;
     var dataTemp = {
       generalData: {
         cedisType: "",
@@ -264,12 +265,21 @@ console.log(Datos)
             this.searchOrders(this.buildSapDate(dateSelected));
           }
           if (this._oWizard.getProgressStep().sButtonText === "Paso 3") {
+            
 
             if (this.getView().byId("tableWizardOrder").getSelectedIndices().length === 0) {
               MessageBox.warning("No Existen Posiciones Seleccionadas");
               return;
 
             } else {
+              console.log("true hijooo")
+              console.log(this.getView().byId("fileUploader").getValue())
+              if(this.getView().byId("fileUploader").getValue()===""){
+                DataDocument=false
+              }else{
+                DataDocument=true
+              }
+              console.log(DataDocument)
               if (this.getView().byId("sTipoCita").getSelectedKey() === "01") {
                 var flag = false
                 for (var x = 0; x < this.getView().byId("tableWizardOrder").getSelectedIndices().length; x++) {
@@ -593,17 +603,33 @@ console.log(Datos)
 
                   } else {
                 
+                    console.log(appoimentModel)
+                    console.log(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results)
+                    console.log(DataDocument)
                     for (var x = 0; x < appoimentModel.length; x++) {
                    
                    //   appoimentModel[x].Citado =1,400;
-let citado=""
 
-                      if(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado.toLocaleString().includes(',')){
-                        citado=this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado.toLocaleString()
-                        citado=citado.replace(",", "")
-                      }else{
-                        citado=this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado.toLocaleString()
-                      }
+                   /**juan es aqui */
+let citado=""
+//if(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado!== undefined){
+if(DataDocument===false){
+  if(appoimentModel[x].Citado.toLocaleString().includes(',')){
+    citado=appoimentModel[x].Citado.toLocaleString()
+    citado=citado.replace(",", "")
+  }else{
+    citado=appoimentModel[x].Citado.toLocaleString()
+  }
+}else{
+  if(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado.toLocaleString().includes(',')){
+    citado=this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado.toLocaleString()
+    citado=citado.replace(",", "")
+  }else{
+    citado=this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado.toLocaleString()
+  }
+}
+
+                   
                  
                       ArrTCN.push({
                         Ebeln: appoimentModel[x].Ebeln,
@@ -621,6 +647,7 @@ let citado=""
                         TipoUnidad: Model2.generalData.tipoUnidad,
                         Transportista: Model2.generalData.transportista,
                       });
+                 //   }
                     }
                   }
                   let createObjReq;
@@ -759,7 +786,7 @@ let citado=""
                 new sap.ui.model.json.JSONModel([]),
                 "Platforms"
               );
-
+             // DataDocument=false;
               _centroSeleccionado = null;
             }
           }.bind(this),
@@ -2188,6 +2215,7 @@ if(this.getView().getModel("CAtalogo2").getData()[x].ZNumunidad ===oEvent.getPar
 
 
         var that = this;
+       // DataDocument=true;
         var modeloPosGlobal = that.getView().getModel("Pedidos").getData().ETOC.results;
         var modeloPosGlobal2 = that.getView().getModel("Pedidos").getData().ETMINIFULL03.results;
         var excelData = {};
