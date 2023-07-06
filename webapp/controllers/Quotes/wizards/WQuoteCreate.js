@@ -272,8 +272,7 @@ console.log(Datos)
               return;
 
             } else {
-              console.log("true hijooo")
-              console.log(this.getView().byId("fileUploader").getValue())
+             
               if(this.getView().byId("fileUploader").getValue()===""){
                 DataDocument=false
               }else{
@@ -610,7 +609,7 @@ console.log(Datos)
                    
                    //   appoimentModel[x].Citado =1,400;
 
-                   /**juan es aqui */
+                  
 let citado=""
 //if(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results[x].Citado!== undefined){
 if(DataDocument===false){
@@ -1404,7 +1403,7 @@ if(this.getView().getModel("CAtalogo2").getData()[x].ZNumunidad ===oEvent.getPar
 
 
 
-        /**juan es aqui el cambio */
+       
        /* console.log("hora1",startHours)
         oStartDate.setHours(startHours);
         console.log("test1",oStartDate)
