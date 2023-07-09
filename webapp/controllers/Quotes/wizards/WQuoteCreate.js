@@ -14,6 +14,7 @@ sap.ui.define(
     var dataTempModel = null;
     var Posicion = "";
     var DataDocument = false;
+    var Tcita="";
     var dataTemp = {
       generalData: {
         cedisType: "",
@@ -144,11 +145,13 @@ sap.ui.define(
               that.getView().byId("platformsInput").setEditable(true);
               that.getView().byId("carrierInput").setEditable(true);
             } else {
-console.log(Datos)
+
 
 
               that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(Datos), "ModelLectura");
               that.getView().byId("wizardDialog").setTitle(that.getView().getModel("appTxts").getProperty("/quotes.editNewQuote"));
+              //TipoCita
+              Tcita=Datos.Tipocita;
               that.getView().byId("sTipoCita").setSelectedKey(Datos.Tipocita);
               that.getView().byId("sOrdenes").setSelectedKey(Datos.Centro);
 
@@ -278,7 +281,7 @@ console.log(Datos)
               }else{
                 DataDocument=true
               }
-              console.log(DataDocument)
+             
               if (this.getView().byId("sTipoCita").getSelectedKey() === "01") {
                 var flag = false
                 for (var x = 0; x < this.getView().byId("tableWizardOrder").getSelectedIndices().length; x++) {
@@ -602,9 +605,7 @@ console.log(Datos)
 
                   } else {
                 
-                    console.log(appoimentModel)
-                    console.log(this.getOwnerComponent().getModel("Pedidos").getData().ETOC.results)
-                    console.log(DataDocument)
+                  
                     for (var x = 0; x < appoimentModel.length; x++) {
                    
                    //   appoimentModel[x].Citado =1,400;
@@ -877,7 +878,7 @@ if(DataDocument===false){
                     }
                   } else if (that.getView().byId("sTipoCita").getSelectedKey() === "02") {
                       var ArgTemp=[];
-                     
+                    
                     for (var s = 0; s < resp.data.results[0].ETOC.results.length; s++) {
                       for (var d = 0; d < resp.data.results[0].ETMINIFULL03.results.length; d++) {
                         for (var c = 0; c < datos2.length; c++) {
@@ -889,11 +890,13 @@ if(DataDocument===false){
 
                           resp.data.results[0].ETOC.results[s].Abelp === resp.data.results[0].ETMINIFULL03.results[d].Zabelp && 
                           resp.data.results[0].ETOC.results[s].Abelp === datos2[c].Zabelp  &&
-
-                          resp.data.results[0].ETMINIFULL03.results[d].ZwerksD===datos2[c].ZwerksD
+                          resp.data.results[0].ETOC.results[s].Ebelp === datos2[c].Ebelp &&
+                          resp.data.results[0].ETMINIFULL03.results[d].ZwerksD===datos2[c].ZwerksD 
 
                         ) {
-
+                        
+                       
+                        
                           ArgTemp.push({
                             Abeln: resp.data.results[0].ETOC.results[s].Abeln,
                             Bwart: resp.data.results[0].ETOC.results[s].Bwart,
@@ -915,6 +918,8 @@ if(DataDocument===false){
                             ZwerksD: resp.data.results[0].ETMINIFULL03.results[d].ZwerksD,
                             Abelp: resp.data.results[0].ETMINIFULL03.results[d].Zabelp,
                           });
+                          resp.data.results[0].ETOC.results[s].ZwerksD= resp.data.results[0].ETMINIFULL03.results[d].ZwerksD
+                          resp.data.results[0].ETOC.results[s].Abelp= resp.data.results[0].ETMINIFULL03.results[d].Zabelp
                         }
                       
                       }
@@ -923,7 +928,9 @@ if(DataDocument===false){
                      
                       }
                     
-                      resp.data.results[0].ETOC.results=ArgTemp
+                      console.log(Tcita)
+                     // resp.data.results[0].ETOC.results = [];
+                    //  resp.data.results[0].ETOC.results = ArgTemp;
                       that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "Pedidos");
                      
                   } else {
@@ -959,7 +966,7 @@ if(DataDocument===false){
               FechasI.push({ Finicio: new Date(resp.data.results[0].ETOC.results[x].Kdatb), });
               FechasF.push({ Ffin: new Date(resp.data.results[0].ETOC.results[x].Kdate), });
               resp.data.results[0].ETOC.results[x].Selected = false;
-
+                console.log(that.getView().byId("sTipoCita").getSelectedKey())
               if (that.getView().byId("sTipoCita").getSelectedKey() === "01") {
 
                 for (var y = 0; y < resp.data.results[0].ETOCSTO.results.length; y++) {
@@ -1019,8 +1026,9 @@ if(DataDocument===false){
                   }
                 }
               }
-
+                console.log(that.getView().byId("sTipoCita").getSelectedKey())
               if (that.getView().byId("sTipoCita").getSelectedKey() === "02") {
+               
 
                 for (var y = 0; y < resp.data.results[0].ETMINIFULL03.results.length; y++) {
                   if (
@@ -1029,6 +1037,10 @@ if(DataDocument===false){
                     resp.data.results[0].ETOC.results[x].Abelp ===
                     resp.data.results[0].ETMINIFULL03.results[y].Zabelp && Number(resp.data.results[0].ETOC.results[x].MengeA) > 0
                   ) {
+
+                  //  resp.data.results[0].ETOC.results[x].ZwerksD=resp.data.results[0].ETMINIFULL03.results[y].ZwerksD;
+                    //resp.data.results[0].ETOC.results[x].Abelp=resp.data.results[0].ETMINIFULL03.results[y].Zabelp;
+                    //that.getOwnerComponent().setModel(new JSONModel(resp.data.results[0]), "Pedidos");
                     ArgTemp.push({
                       Abeln: resp.data.results[0].ETOC.results[x].Abeln,
                       Bwart: resp.data.results[0].ETOC.results[x].Bwart,
@@ -1064,6 +1076,7 @@ if(DataDocument===false){
 
               }
             }
+           
            
             if (that.getView().byId("sTipoCita").getSelectedKey() === "02" || that.getView().byId("sTipoCita").getSelectedKey() === "01" || that.getView().byId("sTipoCita").getSelectedKey() === "03") {
               resp.data.results[0].ETOC.results = [];
@@ -1285,7 +1298,7 @@ if(DataDocument===false){
        
         dataTempModel.setProperty("/generalData/tipoUnidad",oEvent.getParameters().selectedItem.getKey());
 
-console.log(this.getView().getModel("CAtalogo2").getData())
+
 for(var x=0;x<this.getView().getModel("CAtalogo2").getData().length;x++){
 if(this.getView().getModel("CAtalogo2").getData()[x].ZNumunidad ===oEvent.getParameters().selectedItem.getKey()){
   dataTempModel.setProperty("/generalData/tiempo",this.getView().getModel("CAtalogo2").getData()[x].ZservMinutos);
@@ -1398,20 +1411,6 @@ if(this.getView().getModel("CAtalogo2").getData()[x].ZNumunidad ===oEvent.getPar
         //var minutosASumar = 30; // Por ejemplo, 30 minutos
         oEndDate.setMinutes(oStartDate.getMinutes() + minutos);
         
-
-
-
-
-
-       
-       /* console.log("hora1",startHours)
-        oStartDate.setHours(startHours);
-        console.log("test1",oStartDate)
-        startHours++;
-        console.log("hora2",startHours)
-        console.log("test2",oStartDate)
-        oEndDate.setHours(startHours);
-        console.log("test3",oEndDate)*/
         var FI = new Date(
           new Date(oStartDate).toISOString().slice(0, 10) +
           " " +
