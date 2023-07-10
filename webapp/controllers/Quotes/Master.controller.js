@@ -121,7 +121,7 @@ sap.ui.define([
             
 
             if (this.getView().byId("ZEstatus").getSelectedKey() !== "") {
-                console.log("estatus")
+               
                 filtros.push(new sap.ui.model.Filter({
                     path: "Zestatus",
                     operator: sap.ui.model.FilterOperator.EQ,
@@ -131,7 +131,7 @@ sap.ui.define([
             }
 
             if (this.getView().byId("ZTipocita").getSelectedKey() !== "") {
-                console.log("tipocita")
+               
                 filtros.push(new sap.ui.model.Filter({
                     path: "Tipocita",
                     operator: sap.ui.model.FilterOperator.EQ,
@@ -182,11 +182,11 @@ sap.ui.define([
                 })
                 );
             }
-            console.warn(this.getOwnerComponent().getModel("userdata").getProperty("/AdminC"))
+        
             sap.ui.core.BusyIndicator.show();
             let that = this;
             this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASCAB","CTCITASDETEXT"], "").then(resp => {
-                console.warn(resp.data.results[0].CTCITASCAB.results)
+              
                 for (var x = 0; x < resp.data.results[0].CTCITASCAB.results.length; x++) {
                     if (resp.data.results[0].CTCITASCAB.results[x].Zestatus === "1" && that.getOwnerComponent().getModel("userdata").getProperty("/AdminC") === "X") {
                         resp.data.results[0].CTCITASCAB.results[x].AdminV = true;
@@ -229,7 +229,7 @@ sap.ui.define([
             this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASCAB"], "").then(resp => {
 
 
-                console.log(resp.data.results[0].Isadmin)
+              
                 if (resp.data.results[0].Isadmin === "X") {
                     this.getOwnerComponent().getModel("userdata").setProperty("/AdminC", "X")
                 } else {
@@ -242,7 +242,7 @@ sap.ui.define([
             });
 
 
-            console.log(this.getOwnerComponent().getModel("userdata").getProperty("/"))
+           
         },
         searchDetail: function (dato) {
 
@@ -267,7 +267,7 @@ sap.ui.define([
             let that = this;
             this._GetODataV2(_oDataModel, _oDataEntity, filtros, ["CTCITASDETEXT/ETOCSTOPALLEXT", "CTCITASDETEXT"], "").then(resp => {
 
-                console.log(resp.data.results[0].CTCITASDETEXT.results)
+             
                 that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel(resp.data.results[0].CTCITASDETEXT.results), "PosicionesG");
                 // that.paginate("tableQuotesModel", "/CTCITASCAB", 1, 0);
                 sap.ui.core.BusyIndicator.hide();
@@ -353,13 +353,13 @@ sap.ui.define([
         clearFilds: function () {
             // this.getView().byId("quoteFolioInput").setValue("");
             //     this.getView().byId("dateRange").setDateValue("");
-            this.getView().byId("quoteType").setValue("");
-            this.getView().byId("quoteStatus").setValue("");
-            this.getView().byId("quoteUnitType").setValue("");
+        //    this.getView().byId("quoteType").setValue("");
+         //   this.getView().byId("quoteStatus").setValue("");
+          /*  this.getView().byId("quoteUnitType").setValue("");
             this.getView().byId("productType").setValue("");
             this.getView().byId("orderInput").setValue("");
             this.getView().byId("quoteTurn").setValue("");
-            this.getView().byId("branchInput").setValue("");
+            this.getView().byId("branchInput").setValue("");*/
         },
         getCatalogs: function () {
           //var url = "/HeaderCITASSet?$expand=ETIPOCITANAV,ETIPOPRODUCTONAV,ETIPOTURNONAV,ETIPOUNIDADNAV,ETIPOSTATUSNAV&$filter=IOption eq '3'&$format=json";
@@ -548,7 +548,7 @@ sap.ui.define([
                 "ModelLectura");
             // that.getOwnerComponent().setModel(cmModel, "ModelLectura");
             //that.getOwnerComponent().setModel(new sap.ui.model.json.JSONModel({editable: false,}), "Modeleditable");
-            console.log("paso 1")
+           
             that.createQuote(modelo[product])
 
 
