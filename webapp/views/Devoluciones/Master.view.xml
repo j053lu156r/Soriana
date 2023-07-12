@@ -169,7 +169,7 @@ xmlns:core="sap.ui.core"
                             <ObjectIdentifier title="{tableHeaderDevo>Xblnr}" text="" titleActive="false" visible="true" />
 							<Text text="{path: 'tableHeaderDevo>Budat', formatter: '.ReverseDate'}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <Text text="{tableHeaderDevo>Werks} - {tableHeaderDevo>Nwerks}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/> 
-                            <Text text="{tableHeaderDevo>Zfolfedex }" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>   
+                            <Text text="{tableHeaderDevo>Zfolfedex}"/>
                             <Text text="{tableHeaderDevo>Zfolagrup}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                             <Text text="{tableHeaderDevo>Devol}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>   
 						</cells>                        

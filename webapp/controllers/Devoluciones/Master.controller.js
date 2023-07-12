@@ -129,6 +129,7 @@ sap.ui.define([
                 
                 this._GetODataV2(_oDataModel, _oDataEntity, aFilter, ["ETDTDEVNAV","ETFDEVNAV","ITDFAGR"]).then(resp => {
                     var ojbResponse = resp.data.results[0];
+                    console.log(ojbResponse)
                     this.getOwnerComponent().setModel(new JSONModel(ojbResponse),"tableHeaderDevo");
                     this.paginate('tableHeaderDevo', '/ETFDEVNAV', 1, 0);
                     sap.ui.core.BusyIndicator.hide();
