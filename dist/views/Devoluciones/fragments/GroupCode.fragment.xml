@@ -1,0 +1,14 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+    <Dialog title="Formato código agrupador" class="sapUiContentPadding">
+        <core:HTML content='{tableprint>/Esprintd/html}'>
+		</core:HTML>
+        <buttons>
+            <Button id="closeDialog" text="{appTxts>/date.close}" press="onCloseDialogPrint"/>
+        </buttons>
+        <buttons>
+            <Button id="realizaConsulta" text="{appTxts>/devo.printcode}" press="saveCoordinates"/>
+        </buttons>
+	</Dialog>
+</core:FragmentDefinition>
