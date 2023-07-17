@@ -35,7 +35,7 @@
                 </items>
             </Select>
             <Label text="{appTxts>/quotes.unitType}" />     
-            <Select id="sTipoUnidad" class= "sapUiSmallMarginBottom"   items="{
+            <Select id="sTipoUnidad" class= "sapUiSmallMarginBottom"  forceSelection="false" items="{
                         path: 'appoinmentsCatalogs>/ETIPOUNIDADNAV/results'
                     }"
                 change = "onChangeSelectTipoUnidad">
