@@ -41,7 +41,7 @@
                                                 <form:fields>
                                                     <ComboBox required="true" selectedKey="{Folio>/EanUpcType}" id="codeType" items="{
                                                                     path : 'Catalogos>/TipoCodigo/results'
-                                                                }" selectionChange="codeTypeChange">
+                                                                }" selectionChange="codeTypeChange" change="ValidacionCombobox">
                                                         <items>
                                                             <core:Item key="{Catalogos>Numtp}" text="{Catalogos>Ntbez}"/>
                                                         </items>
@@ -63,7 +63,7 @@
                                                 <form:fields>
                                                     <ComboBox selectedKey="{Folio>/TipArt}" required="true" change="changePrecioSugerido" id="productType" items="{
                                                                     path : 'Catalogos>/TiposProducto/results'
-                                                                }" editable="{ValidBarCode>/value}">
+                                                                }" editable="{ValidBarCode>/value}" >
                                                         <items>
                                                             <core:Item key="{Catalogos>Mtart}" text="{Catalogos>Mtbez}"/>
                                                         </items>
@@ -278,7 +278,7 @@
                                         <form:formElements>
                                             <form:FormElement label="{appTxts>/products.labelPresentation}">
                                                 <form:fields>
-                                                    <ComboBox required="true" selectedKey="{Folio>/Present}" id="presentation" items="{
+                                                    <ComboBox required="true" selectedKey="{Folio>/Present}"  change="ValidacionCombobox" id="presentation" items="{
                                                                     path : 'Catalogos>/Presentaciones/results'
                                                                 }">
                                                         <items>
@@ -294,7 +294,7 @@
                                             </form:FormElement>
                                             <form:FormElement label="{appTxts>/products.labelUnitMeasure}">
                                                 <form:fields>
-                                                    <ComboBox required="true" selectedKey="{Folio>/UndCont}" id="contentUnit" items="{
+                                                    <ComboBox required="true" selectedKey="{Folio>/UndCont}" change="ValidacionCombobox"  id="contentUnit" items="{
                                                                     path : 'Catalogos>/UnidadMedida/results'
                                                                 }">
                                                         <items>
@@ -310,7 +310,7 @@
                                             </form:FormElement>
                                             <form:FormElement label="{appTxts>/products.salesUnitMeasure}">
                                                 <form:fields>
-                                                    <ComboBox required="true" selectedKey="{Folio>/UndMventa}" id="salesUnit" items="{
+                                                    <ComboBox required="true" selectedKey="{Folio>/UndMventa}" change="ValidacionCombobox" id="salesUnit" items="{
                                                                     path : 'Catalogos>/UnidadMedida/results'
                                                                 }">
                                                         <items>
@@ -326,7 +326,7 @@
                                             </form:FormElement>
                                             <form:FormElement label="{appTxts>/products.purchaseUnit}">
                                                 <form:fields>
-                                                    <ComboBox selectedKey="{Folio>/UndCompra}" required="true" id="purchaseUnit" items="{
+                                                    <ComboBox selectedKey="{Folio>/UndCompra}" required="true" change="ValidacionCombobox"  id="purchaseUnit" items="{
                                                                     path : 'Catalogos>/UnidadMedida/results'
                                                                 }">
                                                         <items>
@@ -360,7 +360,7 @@
 
                                             <form:FormElement visible="false" id="characteristicFormElement" label="{appTxts>/products.artWithVarients}">
                                                 <form:fields>
-                                                    <ComboBox selectedKey="{Folio>/VariantArt}" id="characteristic" items="{
+                                                    <ComboBox selectedKey="{Folio>/VariantArt}" id="characteristic"  change="ValidacionCombobox" items="{
                                                                     path : 'Catalogos>/Caracteristicas/results'
                                                                 }">
                                                         <items>
@@ -468,7 +468,7 @@
                                     <Label text="{appTxts>/products.volume}" />
                                     <Input id="EcVolumen" value="{Folio>/EcVolumen}" type="Number" editable="false" enabled="true" />
                                     <Label text="{appTxts>/products.volumeUnit}" />
-                                    <ComboBox id="EcUndvol" selectedKey="{Folio>/EcUndvol}" items="{path : 'Catalogos>/UnidadVolumen/results'}" required="true">
+                                    <ComboBox id="EcUndvol" selectedKey="{Folio>/EcUndvol}" change="ValidacionCombobox" items="{path : 'Catalogos>/UnidadVolumen/results'}" required="true">
                                         <items>
                                             <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
                                         </items>
@@ -478,7 +478,7 @@
                                     <Label text="{appTxts>/products.netWeight}" />
                                     <Input id="EcPneto" value="{Folio>/EcPneto}" type="Number" required="true" editable="{ValidBarCode>/gs1Finded}"/>
                                     <Label text="{appTxts>/products.weightUnit}" />
-                                    <ComboBox id="EcUndp" selectedKey="{Folio>/EcUndp}" items="{path : 'Catalogos>/UnidadPeso/results'}" required="true" editable="{ValidBarCode>/gs1Finded}">
+                                    <ComboBox id="EcUndp" selectedKey="{Folio>/EcUndp}" change="ValidacionCombobox" items="{path : 'Catalogos>/UnidadPeso/results'}" required="true" editable="{ValidBarCode>/gs1Finded}">
                                         <items>
                                             <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
                                         </items>
@@ -492,7 +492,7 @@
                                     <Label text="{appTxts>/products.deep}" />
                                     <Input id="PvProfundo" value="{Folio>/PvProfundo}" type="Number" required="true" liveChange="calcularPvVolumen"/>
                                     <Label text="{appTxts>/products.msgExpressedIn}" />
-                                    <ComboBox id="PvUndaap" selectedKey="{Folio>/PvUndaap}" items="{path : 'Catalogos>/UnidadLongitud/results'}" required="true">
+                                    <ComboBox id="PvUndaap" selectedKey="{Folio>/PvUndaap}" change="ValidacionCombobox" items="{path : 'Catalogos>/UnidadLongitud/results'}" required="true">
                                         <items>
                                             <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
                                         </items>
@@ -500,7 +500,7 @@
                                     <Label text="{appTxts>/products.volume}" />
                                     <Input id="PvVolumen" value="{Folio>/PvVolumen}" type="Number" editable="false" enabled="true" required="true"/>
                                     <Label text="{appTxts>/products.volumeUnit}" />
-                                    <ComboBox id="PvUndvol" selectedKey="{Folio>/PvUndvol}" items="{path : 'Catalogos>/UnidadVolumen/results'}" required="true">
+                                    <ComboBox id="PvUndvol" selectedKey="{Folio>/PvUndvol}"  change="ValidacionCombobox" items="{path : 'Catalogos>/UnidadVolumen/results'}" required="true">
                                         <items>
                                             <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
                                         </items>
@@ -510,7 +510,7 @@
                                     <Label text="{appTxts>/products.netWeight}" />
                                     <Input id="PvPneto" value="{Folio>/PvPneto}" type="Number" required="true"/>
                                     <Label text="{appTxts>/products.weightUnit}" />
-                                    <ComboBox id="PvUndp" selectedKey="{Folio>/PvUndp}" items="{path : 'Catalogos>/UnidadPeso/results'}" required="true">
+                                    <ComboBox id="PvUndp" selectedKey="{Folio>/PvUndp}" change="ValidacionCombobox" items="{path : 'Catalogos>/UnidadPeso/results'}" required="true">
                                         <items>
                                             <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}" />
                                         </items>
@@ -597,7 +597,7 @@
 
                         <Text text="{appTxts>/products.msgImgs}"/>
 
-                        <upload:UploadSet id="ImageUploadSet" instantUpload="false" showIcons="false" uploadEnabled="true" terminationEnabled="true" fileTypes="jpg" maxFileNameLength="20" maxFileSize="0.3" items="{path:'FolioImages>/items', templateShareable: false}" multiple="true" mode="MultiSelect" afterItemAdded="imageAfterAddedTriggered" afterItemRemoved="imageRemovedTriggered">
+                        <upload:UploadSet id="ImageUploadSet" instantUpload="false" showIcons="false"   fileSizeExceed="onFileSizeExceed" uploadEnabled="true" terminationEnabled="true" fileTypes="jpg" maxFileNameLength="20" maxFileSize="0.290" items="{path:'FolioImages>/items', templateShareable: false}" multiple="true" mode="MultiSelect" afterItemAdded="imageAfterAddedTriggered" afterItemRemoved="imageRemovedTriggered">
                             <upload:toolbar>
                                 <OverflowToolbar>
                                     <Label text="{appTxts>/products.numImages}"/>
@@ -906,7 +906,7 @@
 
             <f:footer>
                 <OverflowToolbar>
-                    <CheckBox text="{appTxts>/products.confirmationMssg}" class="" selected="false" select="selectAgree" visible="{/checkConfirmation}"/>
+                    <CheckBox text="{appTxts>/products.confirmationMssg}" class="" selected="false" select="selectAgree" visible="{/checkConfirmation}" id="checkconfirm"/>
                     <ToolbarSpacer/>
                     <Button text="{appTxts>/products.previous}" visible="{/backButtonVisible}" press="onDialogBackButton" />
                     <Button text="{appTxts>/products.nextStep}" type="Emphasized" enabled="{/nextButtonEnabled}" visible="{/nextButtonVisible}" press="onDialogNextButton" />

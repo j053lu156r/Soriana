@@ -757,7 +757,7 @@ sap.ui.define([
             if (!this.hasAccess(42)) {
                 return false;
             }
-
+      
             try {
                 var oView = this.getView();
 
@@ -1077,6 +1077,8 @@ sap.ui.define([
                     oModel.setProperty("/finishButtonVisible", true);
                     oModel.setProperty("/backButtonVisible", true);
                     oModel.setProperty("/reviewButtonVisible", false);
+                        //  this.getView().byId('variants').getSelected();
+            this.getView().byId("checkconfirm").setSelected(false)
                     this.cloneFolioModel();
                     let step = this._oWizard.getProgressStep();
                     this._oWizard.goToStep(step);
@@ -1133,7 +1135,7 @@ sap.ui.define([
 
                             if (resp.ESuccess) {
 
-                                MessageBox.success(resp.EMessage);
+                                MessageBox.success(" Folio N° "+ resp.EMessage+" Registrado Correctamente") ;
                                 let that = this;
 
                                 setTimeout(function () {
@@ -1950,8 +1952,8 @@ sap.ui.define([
 
                     if (response != null) {
                         if (response.ESuccess === 'X') {
-                            const msg = "Se han generado correctamente la solicitud de cambio de costos.";
-                            sap.m.MessageBox.success(msg, {
+                           // const msg = "Se han generado correctamente la solicitud de cambio de costos.";
+                            sap.m.MessageBox.success(response.EMessage, {
                                 actions: [sap.m.MessageBox.Action.CLOSE],
                                 emphasizedAction: sap.m.MessageBox.Action.CLOSE,
                                 onClose: function (sAction) {
@@ -2620,6 +2622,21 @@ sap.ui.define([
 
         altaSTIBO: function(){
             window.open(oModelStibo.sUrl)
+        },
+        ValidacionCombobox:function(oEvent){
+          
+            var key = oEvent.getSource().getSelectedItem();
+       if(key=== null ){
+        oEvent.getSource().setValue()
+        oEvent.getSource().setValueState("Error");
+
+       }else{
+        oEvent.getSource().setValueState("None");
+      }
+
+        },
+        onFileSizeExceed:function(){
+            alert("tamaño Excede limite")
         }
 
     })
