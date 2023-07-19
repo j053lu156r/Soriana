@@ -305,7 +305,7 @@
                                             </form:FormElement>
                                             <form:FormElement label="{appTxts>/products.salesCode}">
                                                 <form:fields>
-                                                    <Input id="salesCode" value="{Folio>/CodVent}" type="Number" />
+                                                    <Input id="salesCode" value="{Folio>/CodVent}" type="Number" editable="false"/>
                                                 </form:fields>
                                             </form:FormElement>
                                             <form:FormElement label="{appTxts>/products.salesUnitMeasure}">
@@ -321,7 +321,7 @@
                                             </form:FormElement>
                                             <form:FormElement label="{appTxts>/products.purchaseUnitCode}">
                                                 <form:fields>
-                                                    <Input value="{Folio>/CodCompra}" id="purchaseUnitCode" type="Number" />
+                                                    <Input value="{Folio>/CodCompra}" id="purchaseUnitCode" type="Number"  change="Validate_purchaseUnitCode" required="true"/>
                                                 </form:fields>
                                             </form:FormElement>
                                             <form:FormElement label="{appTxts>/products.purchaseUnit}">
@@ -460,7 +460,7 @@
                                     <Label text="{appTxts>/products.deep}" />
                                     <Input id="EcProfundo" value="{Folio>/EcProfundo}" type="Number" required="true" liveChange="calcularECVolumen" editable="{ValidBarCode>/gs1Finded}"/>
                                     <Label text="{appTxts>/products.msgExpressedIn}" />
-                                    <ComboBox id="EcUndaap" selectedKey="{Folio>/EcUndaap}" items="{path : 'Catalogos>/UnidadLongitud/results'}" required="true" editable="{ValidBarCode>/gs1Finded}">
+                                    <ComboBox id="EcUndaap" selectedKey="{Folio>/EcUndaap}" change="ValidacionCombobox" items="{path : 'Catalogos>/UnidadLongitud/results'}" required="true" editable="{ValidBarCode>/gs1Finded}">
                                         <items>
                                             <core:Item key="{Catalogos>IsoCode}" text="{Catalogos>Unidad}"/>
                                         </items>
@@ -597,7 +597,7 @@
 
                         <Text text="{appTxts>/products.msgImgs}"/>
 
-                        <upload:UploadSet id="ImageUploadSet" instantUpload="false" showIcons="false"   fileSizeExceed="onFileSizeExceed" uploadEnabled="true" terminationEnabled="true" fileTypes="jpg" maxFileNameLength="20" maxFileSize="0.290" items="{path:'FolioImages>/items', templateShareable: false}" multiple="true" mode="MultiSelect" afterItemAdded="imageAfterAddedTriggered" afterItemRemoved="imageRemovedTriggered">
+                        <upload:UploadSet id="ImageUploadSet" instantUpload="false" showIcons="false"   uploadEnabled="true" terminationEnabled="true" fileTypes="jpg" maxFileNameLength="20" items="{path:'FolioImages>/items', templateShareable: false}" multiple="true" mode="MultiSelect" afterItemAdded="imageAfterAddedTriggered" afterItemRemoved="imageRemovedTriggered">
                             <upload:toolbar>
                                 <OverflowToolbar>
                                     <Label text="{appTxts>/products.numImages}"/>

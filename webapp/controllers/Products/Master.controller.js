@@ -21,6 +21,7 @@ sap.ui.define([
     var swProveedorExcluido = false;
     var _selectedEanType = {};
     var _invalidCostoNuevo = {};
+    var ArrTPO=[]
     var _testingSteps = (document.location.hostname.slice(-4) == '.sap');// cambiar valor para probar brincando Validaciones (true = Brincar) (false= No brincar)
 
     var oModelStibo = new this.STIBO();
@@ -185,6 +186,7 @@ sap.ui.define([
                     that.getOwnerComponent().setModel(new JSONModel(pModel), "Paises");
 
                     that.getOwnerComponent().getModel("Paises").setSizeLimit(parseInt(Paises.length, 10));
+                    ArrTPO=Paises
 
                 }, function () {
                     sap.m.MessageBox.error("No se lograron obtener los datos del proveedor registrado en GS1.");
@@ -797,7 +799,7 @@ sap.ui.define([
                 console.error(err);
             }
 
-            this.byId('codeType').setEditable(true);
+          //  this.getView().byId('codeType').setEditable(true);
         },
         changePriceProduct: function () {
 
@@ -1061,7 +1063,12 @@ sap.ui.define([
                     oModel.setProperty("/backButtonVisible", false);
                     break;
                 case 2:
+                    //aqui  
+                    console.log(this.getOwnerComponent().getModel("Folio"))
+                    console.log(this.getOwnerComponent().getModel("Folio").getProperty("/CodEan"))
+                    this.getOwnerComponent().getModel("Folio").setProperty("/CodVent", this.getOwnerComponent().getModel("Folio").getProperty("/CodEan") )
                 case 3:
+
                 case 4:
                 case 5:
                 case 6:
@@ -1086,6 +1093,13 @@ sap.ui.define([
                 default: break;
             }
 
+        },
+        Validate_purchaseUnitCode:function(){
+if (this.getOwnerComponent().getModel("Folio").getProperty("/CodEan")=== this.getOwnerComponent().getModel("Folio").getProperty("/CodCompra")){
+    this.getView().byId("purchaseUnitCode").setValue()
+   
+    sap.m.MessageBox.error("Código de unidad de compra No puede ser igual a Código de venta");
+}
         },
 
         handleWizardCancel: function () {
@@ -1394,6 +1408,15 @@ sap.ui.define([
             }
             else {
                 this.getView().byId('salesUnit').setValueState(sap.ui.core.ValueState.None);
+            }
+             // Capacidad de empaque
+             if (ModelFolio.getProperty('/CodCompra') == undefined || ModelFolio.getProperty('/CapEmpaq').trim() == '' || ModelFolio.getProperty('/CapEmpaq').trim().length > 5) {
+                validated = false;
+                this.getView().byId('purchaseUnitCode').setValueState(sap.ui.core.ValueState.Error);
+          
+             }else {
+
+                this.getView().byId('purchaseUnitCode').setValueState(sap.ui.core.ValueState.None);
             }
 
             // Unidad de compra
@@ -2085,23 +2108,67 @@ sap.ui.define([
         onValueHelpCountrySearch: function (oEvent) {
             var sValue = oEvent.getParameter("value");
             var oFilter = new Filter("Landx50", FilterOperator.Contains, sValue);
+  // oEvent.getSource().getBinding("items").filter([oFilter]);
+            console.log(ArrTPO)
+            console.log(sValue)
+          if(sValue===""){
+            console.log("entro")
+           // this.getOwnerComponent().getModel("Paises").setProperty("/results", ArrTPO)
+           var pModel = {
+            "results": ArrTPO
+        }
+            var auxJsonModel = new sap.ui.model.json.JSONModel(pModel);
+            this.getView().setModel(auxJsonModel, 'Paises');
+            oEvent.getSource().getBinding("items").refresh(true);
+          } 
+            var ArrTT=[];
 
-            oEvent.getSource().getBinding("items").filter([oFilter]);
+            for(var x =0;x<ArrTPO.length;x++){
+
+                if(ArrTPO[x].Landx50.toUpperCase().includes(sValue.toUpperCase())){
+                    ArrTT.push(ArrTPO[x])
+                }
+
+            }
+            var pModel = {
+                "results": ArrTT
+            }
+                var auxJsonModel = new sap.ui.model.json.JSONModel(pModel);
+                this.getView().setModel(auxJsonModel, 'Paises');
+                oEvent.getSource().getBinding("items").refresh(true);
+            
         },
 
         onValueHelpCountryClose: function (oEvent) {
             var sDescription,
                 oSelectedItem = oEvent.getParameter("selectedItem");
-            oEvent.getSource().getBinding("items").filter([]);
+    //  oEvent.getSource().getBinding("items").filter([]);
 
+            console.log( oSelectedItem)   
+            console.log( oSelectedItem.getTitle())
+            console.log( oSelectedItem.getDescription())
             if (!oSelectedItem) {
+                var pModel = {
+                    "results": ArrTPO
+                }
+                    var auxJsonModel = new sap.ui.model.json.JSONModel(pModel);
+                    this.getView().setModel(auxJsonModel, 'Paises');
+                    oEvent.getSource().getBinding("items").refresh(true);
                 return;
             }
 
             const title = oSelectedItem.getTitle();
-            const description = oSelectedItem.getDescription();
+             sDescription = oSelectedItem.getDescription();
             //this.getOwnerComponent().getModel('Folio').setProperty("/txtPais", title);
-            this.byId("country").setSelectedKey(description);
+            this.byId("country").setSelectedKey(sDescription);
+
+         /*   var pModel = {
+                "results": ArrTPO
+            }
+                var auxJsonModel = new sap.ui.model.json.JSONModel(pModel);
+                this.getView().setModel(auxJsonModel, 'Paises');
+                oEvent.getSource().getBinding("items").refresh(true);*/
+             //this.getOwnerComponent().getModel("Paises").setProperty("/results", ArrTPO)
 
         },
 
@@ -2126,16 +2193,17 @@ sap.ui.define([
             let numberItemsAdded = this.byId("ImageUploadSet").getItems().length;
 
             let incommingUploadSetItem = oControlEvent.getParameter("item");
-
+            console.log(incommingUploadSetItem.getFileObject().size)
             let fileSize = (incommingUploadSetItem.getFileObject().size / 1024); //getting MBs for validation
             let path = URL.createObjectURL(incommingUploadSetItem.getFileObject());
             let imageObj = new Image();
-
+            console.log(fileSize)
             imageObj.src = path;
 
             await imageObj.decode();
-
+            console.log("antes de")
             if (numberItemsAdded <= 4 && fileSize < 300 && imageObj.height < 1024 && imageObj.width < 1024) {
+                console.log("if1")
                 incommingUploadSetItem.setUploadState(sap.m.UploadState.Complete);
                 incommingUploadSetItem.setUrl(path);
                 incommingUploadSetItem.setThumbnailUrl(path);
@@ -2143,14 +2211,20 @@ sap.ui.define([
                 this.getOwnerComponent().getModel("FolioImages").setProperty("/items", this.byId("ImageUploadSet").getItems());
                 this.attachImagesToModel();
             } else if (fileSize > 300) {
+                console.log("if2")
+             
                 sap.m.MessageBox.warning("Max size is 300 KB");
                 this.byId("ImageUploadSet").removeItem(incommingUploadSetItem);
             } else if (imageObj.height >= 1024 || imageObj.width >= 1024) {
+                console.log("if3")
                 sap.m.MessageBox.warning("Max img dimensions are 1024x1024 pixels");
                 this.byId("ImageUploadSet").removeItem(incommingUploadSetItem);
             } else if (numberItemsAdded >= 4) {
+                console.log("if4")
                 sap.m.MessageBox.warning("Max 5 imgs");
                 this.byId("ImageUploadSet").setUploadEnabled(false);
+            }else{
+                console.log("no entro a nada")
             }
 
             this.byId("imagesCounter").setText(this.byId("ImageUploadSet").getItems().length);
@@ -2195,6 +2269,16 @@ sap.ui.define([
         },
 
         changeTipoBonif(oControlEvent) {
+
+            var key = oControlEvent.getSource().getSelectedItem();
+            if(key=== null ){
+                oControlEvent.getSource().setValue()
+                oControlEvent.getSource().setValueState("Error");
+     
+            }else{
+                oControlEvent.getSource().setValueState("None");
+    }
+     
             let selected = oControlEvent.getParameter("value");
 
             this.byId("ValBoni").setValue("0");
