@@ -1,0 +1,13 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog
+		id="selectDialog"
+		title="{appTxts>/quotes.supplier}"
+		items="{userdata>/ETUSUAPROVNAV/results}"
+		search=".onValueHelpSearch"
+		confirm=".onValueHelpClose"
+		cancel=".onValueHelpClose">
+		<StandardListItem
+			title="{userdata>Lifnr}"
+			description="{userdata>Name}" />
+	</SelectDialog>
+</core:FragmentDefinition>
