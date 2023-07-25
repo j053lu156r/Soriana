@@ -249,7 +249,7 @@ sap.ui.define([
                         if (ojbResponse.Esprintd.Wname != "" && ojbResponse.Esprintd.Nlif != ""
                             && ojbResponse.Esprintd.Ref != "" && ojbResponse.Esprintd.Zfolagrup != "") {
                             html = '<div id="codeGroupDiv" style= "text-align: center; width: 100%;" >' +
-                                '<img src ="./images/LogoSoriana.svg" width="350px" />' +
+                                '<img src ="../images/LogoSoriana.svg" width="350px" />' +
                                 '<div style="text-align: center; width: 100%; font-size: large; font-weight: bold; margin: 10pt;" >' +
                                 'Formatos de devoluciones y retiros a recolectar' +
                                 '</div>' +

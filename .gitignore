@@ -9,3 +9,4 @@ archive.zip
 .abap-deploy
 .ABAPDeployResources/
 .nwabaprc
+dist/

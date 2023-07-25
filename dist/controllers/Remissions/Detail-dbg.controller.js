@@ -7,11 +7,14 @@ sap.ui.define([
 
     var oModel = new this.Remissions();
     var cModel = new this.RemissionCancel();
+    var oEtiquetas = new this.EtiquetasAviso();
     return Controller.extend("demo.controllers.Remissions.Detail", {
         cajasTarimas: null,
         onInit: function () {
             var oExitButton = this.getView().byId("exitFullScreenBtn"),
                 oEnterButton = this.getView().byId("enterFullScreenBtn");
+            
+            this.etiquetasModel = new sap.ui.model.odata.v2.ODataModel(oEtiquetas.sUrl);
 
             this.oRouter = this.getOwnerComponent().getRouter();
             this.oModel = this.getOwnerComponent().getModel();
@@ -238,6 +241,7 @@ sap.ui.define([
         },
         printLabels: function () {
 
+            /*
             if (!this._uploadDialog2) {
                 this._uploadDialog2 = sap.ui.xmlfragment("printBoxesLabels", "demo.views.Remissions.fragments.LabelsRemission", this);
                 this.getView().addDependent(this._uploadDialog2);
@@ -249,12 +253,16 @@ sap.ui.define([
 
             html = '<div id="codeGroupDiv" style= "text-align: center; width: 100%;" >' +
                 '<div style="display: grid;grid-template-columns: auto auto auto; width:40%;">';
+                */
 
             var positions = this.getView().getModel("tableRemissionDetail").getData();
+            console.log(positions.ETREMDNAV.results)
 
             if (positions.ETREMDNAV.results != null) {
 
                 var cajsTarimas = this.groupByAuto(positions.ETREMDNAV.results, "Cajtar")
+                var aCajasTarimas = [];
+                /*
                 let cajTarIndex = 1;
                 let count = 0;
                 for (const key in cajsTarimas) {
@@ -276,9 +284,36 @@ sap.ui.define([
                         html += '<br><br><br> <br><br><br> <br><br><br> <br><br><br>';
                     }
                 }
+                */
+                for (const key in cajsTarimas) {
+                    var cajaTarima = {
+                        Remision: cajsTarimas[key][0].Zremision,
+                        Lifnr: this.getConfigModel().getProperty("/supplierInputKey"),
+                        Nlifnr: this.getConfigModel().getProperty("/supplierInput"),
+                        Werks: cajsTarimas[key][0].Werks,
+                        Nwerks: cajsTarimas[key][0].Name1,
+                        Ean11: cajsTarimas[key][0].Ean11
+                    }
+                    aCajasTarimas.push(cajaTarima)
+                }
 
+                /*
+                this.etiquetasModel.create("", {
+                    success: function(response){
+                        console.log(response)
+                    }, 
+                    error: function(error){
+                        //sap.m.MessageBox.error(that.getOwnerComponent().getModel("appTxts").getProperty("/dashboard.catalog.tipos"));
+                        console.log(error)
+                    }
+                });
+                */
+
+                var response = oEtiquetas.create("", JSON.stringify({Esetiq: aCajasTarimas}));
+                console.log(response)
             }
 
+            /*
             html += '</div></div>';
 
             ojbResponse.html = html;
@@ -286,6 +321,7 @@ sap.ui.define([
             this._uploadDialog2.setModel(new JSONModel(ojbResponse));
             this._uploadDialog2.open();
             JsBarcode(".barcode").init();
+            */
         },
         groupByAuto: function (data, key) {
             var groups = {};

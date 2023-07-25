@@ -467,7 +467,7 @@ sap.ui.define([
 
             html = '<div id="codeGroupDiv" style= "text-align: center; width: 100%;" >' +
                 `<p style="width:100%;text-align:center;"><h1>${this.getView().getModel("appTxts").getProperty("/quotes.cardTitle")}</h1></p>` +
-                '<img src ="./images/LogoSoriana.svg" width="350px" />' +
+                '<img src ="../images/LogoSoriana.svg" width="350px" />' +
                 '<div style="width:100%;">' +
                 `<p style="width:100%;font-size:smaller;text-align:right;"><font style="font-weight:bold;">${vTexts.getProperty("/quotes.quoteFolio")}:` +
                 `</font> ${vFolio}</p>` +

@@ -735,3 +735,14 @@ function ReporteAnalista() {
 
 ReporteAnalista.prototype = Object.create(BaseModel.prototype);
 ReporteAnalista.prototype.constructor = ReporteAnalista;
+
+//Model Etiquetas: Etiquetas de aviso anticipado
+function EtiquetasAviso() {
+    var params = {};
+    params.sUrl = "/sap/opu/odata/sap/ZOSP_AVISO_ETIQ_SRV/";
+    params.sModel = "etiquetasAviso";
+    BaseModel.call(this, params);
+}
+
+EtiquetasAviso.prototype = Object.create(BaseModel.prototype);
+EtiquetasAviso.prototype.constructor = EtiquetasAviso;

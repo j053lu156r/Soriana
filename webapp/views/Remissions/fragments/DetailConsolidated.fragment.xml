@@ -4,7 +4,7 @@
     <Dialog title="{appTxts>/rem.consolidatedDetail}" stretch="true" class="sapUiContentPadding">
         <Panel width="100%">
             <VBox id="consolidatedDetail" width="100%" alignItems="Center">
-                <Image src="./images/LogoSoriana.svg" width="350px" />
+                <Image src="../images/LogoSoriana.svg" width="350px" />
                 <Title text="{appTxts>/rem.consolidatedReportTilte}" titleStyle="H3" width="100%" />
                 <FlexBox alignItems="Start" justifyContent="SpaceBetween" width="100%">
                     <Text text="{/supplier}" />
