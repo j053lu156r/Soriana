@@ -289,7 +289,7 @@ sap.ui.define([
                     var cajaTarima = {
                         Remision: cajsTarimas[key][0].Zremision,
                         Lifnr: this.getConfigModel().getProperty("/supplierInputKey"),
-                        Nlifnr: this.getConfigModel().getProperty("/supplierInput"),
+                        Nlifnr: this.getConfigModel().getProperty("/supplierInput").split("-")[1],
                         Werks: cajsTarimas[key][0].Werks,
                         Nwerks: cajsTarimas[key][0].Name1,
                         Ean11: cajsTarimas[key][0].Ean11
@@ -309,8 +309,21 @@ sap.ui.define([
                 });
                 */
 
-                var response = oEtiquetas.create("", JSON.stringify({Esetiq: aCajasTarimas}));
-                console.log(response)
+                //var response = oEtiquetas.create("EnvPDFSet", JSON.stringify({Esetiq: aCajasTarimas}));
+                //var response = oEtiquetas.create("EnvPDFSet", {Esetiq: aCajasTarimas});
+                console.log(JSON.stringify({Esetiq: aCajasTarimas}))
+
+                let headers = {
+                    "X-Requested-With" : "X",
+                    "Content-Type": "application/json;charset=utf-8",
+                    "Accept": "application/json, text/javascript, */*;q=0.01"
+                };
+
+                this._PostODataV2Async("ZOSP_AVISO_ETIQ_SRV", "EnvPDFSet", {Esetiq: aCajasTarimas}, headers).then(resp => {
+                    console.log(resp)
+                }).catch(error => {
+                    console.log(error);
+                });
             }
 
             /*
