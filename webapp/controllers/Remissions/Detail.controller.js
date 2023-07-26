@@ -289,7 +289,7 @@ sap.ui.define([
                     var cajaTarima = {
                         Remision: cajsTarimas[key][0].Zremision,
                         Lifnr: this.getConfigModel().getProperty("/supplierInputKey"),
-                        Nlifnr: this.getConfigModel().getProperty("/supplierInput").split("-")[1],
+                        Nlifnr: this.getConfigModel().getProperty("/supplierInput").split("- ")[1],
                         Werks: cajsTarimas[key][0].Werks,
                         Nwerks: cajsTarimas[key][0].Name1,
                         Ean11: cajsTarimas[key][0].Ean11
@@ -309,10 +309,6 @@ sap.ui.define([
                 });
                 */
 
-                //var response = oEtiquetas.create("EnvPDFSet", JSON.stringify({Esetiq: aCajasTarimas}));
-                //var response = oEtiquetas.create("EnvPDFSet", {Esetiq: aCajasTarimas});
-                console.log(JSON.stringify({Esetiq: aCajasTarimas}))
-
                 let headers = {
                     "X-Requested-With" : "X",
                     "Content-Type": "application/json;charset=utf-8",
@@ -320,7 +316,12 @@ sap.ui.define([
                 };
 
                 this._PostODataV2Async("ZOSP_AVISO_ETIQ_SRV", "EnvPDFSet", {Esetiq: aCajasTarimas}, headers).then(resp => {
-                    console.log(resp)
+					const linkSource = `data:application/pdf;base64,${resp.d.Pdf}`;
+                    const downloadLink = document.createElement("a");
+                    const fileName = `${aCajasTarimas[0].Remision}.pdf`;
+                    downloadLink.href = linkSource;
+                    downloadLink.download = fileName;
+                    downloadLink.click();
                 }).catch(error => {
                     console.log(error);
                 });
