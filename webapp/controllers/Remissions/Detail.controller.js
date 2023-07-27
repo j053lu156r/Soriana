@@ -261,6 +261,7 @@ sap.ui.define([
             if (positions.ETREMDNAV.results != null) {
 
                 var cajsTarimas = this.groupByAuto(positions.ETREMDNAV.results, "Cajtar")
+                console.log(cajsTarimas)
                 var aCajasTarimas = [];
                 /*
                 let cajTarIndex = 1;
@@ -292,7 +293,7 @@ sap.ui.define([
                         Nlifnr: this.getConfigModel().getProperty("/supplierInput").split("- ")[1],
                         Werks: cajsTarimas[key][0].Werks,
                         Nwerks: cajsTarimas[key][0].Name1,
-                        Ean11: cajsTarimas[key][0].Ean11
+                        Ean11: cajsTarimas[key][0].Cajtar
                     }
                     aCajasTarimas.push(cajaTarima)
                 }
