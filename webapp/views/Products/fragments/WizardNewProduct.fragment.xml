@@ -518,14 +518,14 @@
 
                                     <core:Title text="{appTxts>/products.capPerPallet}" />
                                     <Label text="{appTxts>/products.palletCode}" />
-                                    <Input value="{Folio>/CodTarima}" type="Number" required="true" />
+                                    <Input value="{Folio>/CodTarima}" type="Number" />
                                     <Label text="{appTxts>/products.boxesByContent}" />
-                                    <Input value="{Folio>/CajasTend}" type="Number" required="true"/>
+                                    <Input value="{Folio>/CajasTend}" type="Number" />
 
                                     <Label text="{appTxts>/products.stretchedByPlatform}" />
-                                    <Input value="{Folio>/TendTarima}" type="Number" required="true" />
+                                    <Input value="{Folio>/TendTarima}" type="Number"  />
                                     <Label text="{appTxts>/products.boxesPerPallet}" />
-                                    <Input value="{Folio>/CajasTarima}" type="Number" required="true" />
+                                    <Input value="{Folio>/CajasTarima}" type="Number" />
                                 </form:content>
                             </form:SimpleForm>
                         </VBox>

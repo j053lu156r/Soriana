@@ -1633,10 +1633,10 @@ if (this.getOwnerComponent().getModel("Folio").getProperty("/CodEan")=== this.ge
                 validated = false;
             }
 
-            if (Folio.CodTarima == undefined || Folio.CodTarima.trim() == '') {
-                validated = false;
-            }
-            if (Folio.CajasTend == undefined || Folio.CajasTend.trim() == '') {
+          //  if (Folio.CodTarima == undefined || Folio.CodTarima.trim() == '') {
+           //     validated = false;
+           // }
+          /*  if (Folio.CajasTend == undefined || Folio.CajasTend.trim() == '') {
                 validated = false;
             }
             if (Folio.TendTarima == undefined || Folio.TendTarima.trim() == '') {
@@ -1644,7 +1644,7 @@ if (this.getOwnerComponent().getModel("Folio").getProperty("/CodEan")=== this.ge
             }
             if (Folio.CajasTarima == undefined || Folio.CajasTarima.trim() == '') {
                 validated = false;
-            }
+            }*/
 
             if (!validated) {
                 sap.m.MessageBox.warning("Capture correctamente todos los campos.");
