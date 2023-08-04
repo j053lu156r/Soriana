@@ -874,9 +874,9 @@ sap.ui.define([
                 var url = `/HdrcatproSet?$expand=ETTART,ETCOUNTRYNAV,ETCODENAV,ETBRANDSNAV&$filter=IOption eq '8' and ILifnr eq '${ILifnr_proveedor}'`;
                 Model.getJsonModelAsync(url, function (response, that) {
 
-                    swProveedorEnGS1 = (response.getProperty('/results/0/Esdprov/GnlSucces') === 'X');
-                    swProveedorExcluido = (response.getProperty('/results/0/Esexprov/Zexc') === 'X');
-                    if (!swProveedorEnGS1 && !swProveedorExcluido) {
+                  swProveedorEnGS1 = (response.getProperty('/results/0/Esdprov/GnlSucces') === 'X');
+                  swProveedorExcluido = (response.getProperty('/results/0/Esexprov/Zexc') === 'X');
+               if (  swProveedorEnGS1  || response.getProperty('/results/0/Esexprov/Zbloq')) {
                         MessageBox.error("El proveedor no se encuentra habilitado para alta de productos.", {
                             onClose: function () {
                                 that.getView().byId('wizardDialog').close();
