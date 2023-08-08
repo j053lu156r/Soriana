@@ -882,9 +882,13 @@ sap.ui.define([
                                 that.getView().byId('wizardDialog').close();
                             }
                         });
+                        that.byId('btnValidateDataSupplierGS1').setEnabled(false);
+                    }else{
+                        that.byId('btnValidateDataSupplierGS1').setEnabled(true);
                     }
+                    
 
-                    that.byId('btnValidateDataSupplierGS1').setEnabled(swProveedorEnGS1);
+                  
 
                     let codeGS1 = response.getProperty('/results/0/Esdprov/Gnl');
                     let country = response.getProperty('/results/0/Esdprov/Land1');
