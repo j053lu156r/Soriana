@@ -884,7 +884,7 @@ sap.ui.define([
                         });
                     }
 
-                    that.byId('btnValidateDataSupplierGS1').setEnabled(swProveedorEnGS1);
+                   that.byId('btnValidateDataSupplierGS1').setEnabled(true);
 
                     let codeGS1 = response.getProperty('/results/0/Esdprov/Gnl');
                     let country = response.getProperty('/results/0/Esdprov/Land1');
