@@ -876,7 +876,7 @@ sap.ui.define([
 
                   swProveedorEnGS1 = (response.getProperty('/results/0/Esdprov/GnlSucces') === 'X');
                   swProveedorExcluido = (response.getProperty('/results/0/Esexprov/Zexc') === 'X');
-               if (  swProveedorEnGS1  || response.getProperty('/results/0/Esexprov/Zbloq')) {
+               if (  response.getProperty('/results/0/Esdprov/Fimpor')  || response.getProperty('/results/0/Esexprov/Zbloq')) {
                         MessageBox.error("El proveedor no se encuentra habilitado para alta de productos.", {
                             onClose: function () {
                                 that.getView().byId('wizardDialog').close();
@@ -886,7 +886,7 @@ sap.ui.define([
                     }else{
                         that.byId('btnValidateDataSupplierGS1').setEnabled(true);
                     }
-                    
+
 
                   
 
