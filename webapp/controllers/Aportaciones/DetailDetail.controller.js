@@ -38,8 +38,9 @@ sap.ui.define([
 
         },
         handleFullScreen: function () {
+
             this.bFocusFullScreenButton = true;
-			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/fullScreen");
+            var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
             this.oRouter.navTo("detailDetailAporta",
                 {
                     layout: sNextLayout,
@@ -52,7 +53,7 @@ sap.ui.define([
         },
         handleExitFullScreen: function () {
             this.bFocusFullScreenButton = true;
-			var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/exitFullScreen");
+            var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
             this.oRouter.navTo("detailDetailAporta",
                 {
                     layout: sNextLayout,
@@ -64,7 +65,9 @@ sap.ui.define([
             );
         },
         handleClose: function () {
-            var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/closeColumn");
+            var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
+			this.oRouter.navTo("masterAportaciones", {layout: sNextLayout});
+       /*     var sNextLayout = this.oModel.getProperty("/actionButtonsInfo/endColumn/closeColumn");
             this.oRouter.navTo("detailAportaciones", 
                 { 
                     layout: sNextLayout,
@@ -73,13 +76,18 @@ sap.ui.define([
                     gerencia: this._gerencia,
                     importe: this._importe
                 }
-            );
+            );*/
         },
         _onDocumentMatched: function (oEvent) {
+            console.log("3")
             this._folio = oEvent.getParameter("arguments").folio || this._folio || "0";
+            console.log("3.1")
             this._concepto = oEvent.getParameter("arguments").concepto || this.concepto || "0";
+            console.log("3.2")
             this._gerencia = oEvent.getParameter("arguments").gerencia || this.gerencia || "0";
+            console.log("3.3")
             this._importe = oEvent.getParameter("arguments").importe || this.importe || "0";
+            console.log("3.4")
 
             var url = "AportaSet?$expand=AportaDet&$filter=IOption eq '1'";
             ;
@@ -94,6 +102,7 @@ sap.ui.define([
                     var objResponse = jsonModel.getProperty("/results/0");
 
                     if (objResponse != null) {
+                        console.log(objResponse)
                         parent.getOwnerComponent().setModel(new JSONModel(objResponse.AportaDet.results[0]),
                             "AportaDetDet");
                     }

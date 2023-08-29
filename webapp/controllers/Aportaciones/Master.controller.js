@@ -138,8 +138,8 @@ sap.ui.define([
             //this.createButton(docResult, true);
 
             docResult.Concepto = docResult.Concepto.replace (/\//g, "_");
-
-            this.getOwnerComponent().getRouter().navTo("detailAportaciones",
+            console.log("4")
+            this.getOwnerComponent().getRouter().navTo("detailDetailAporta",
                 {
                     layout: sap.f.LayoutType.TwoColumnsMidExpanded,
                     folio: docResult.Folio,
@@ -148,6 +148,7 @@ sap.ui.define([
                     importe: docResult.ImpTotal
 
                 }, true);
+                console.log("5")
 
         },
         clearFilters: function () {
