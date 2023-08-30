@@ -128,12 +128,14 @@ sap.ui.define([
         onListItemPress: function (oEvent) {
             var resource = oEvent.getSource().getBindingContext("AportacionesHdr").getPath(),
                 line = resource.split("/").slice(-1).pop();
-
+console.log(line)
             var odata = this.getOwnerComponent().getModel("AportacionesHdr");
             var results = odata.getProperty("/AportaDet/Paginated/results");
-
+            console.log(results)
+            
             var docResult = results[line]; //.campo para obtener el campo deseado            
-
+            console.log(docResult)
+            
             //this.getOwnerComponent().setModel(new JSONModel(status), "catalogStatus");
             //this.createButton(docResult, true);
 

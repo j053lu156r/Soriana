@@ -141,9 +141,15 @@
 						</header>
 						<footer/>
 					</Column>  
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+						<header>
+							<Text text="PDF" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+						</header>
+						<footer/>
+					</Column>  
 				</columns>
 				<items>
-					<ColumnListItem type="Navigation" press="onListItemPress">                    
+					<ColumnListItem type="Active" >                    
 						<cells>
                             <!--<Text xmlns="sap.m" text="{AportacionesHdr>Folio}"/>-->
                             <ObjectIdentifier xmlns="sap.m" 
@@ -171,6 +177,12 @@
                                     press="onPressAccept"
                                     icon="sap-icon://accept"
                                     enabled="{= ${AportacionesHdr>Zestatus} === '3' ? true : false }"/>
+                             <Button xmlns="sap.m" 
+                                  
+                                    text="" 
+                                    press="onListItemPress"
+                                    icon="sap-icon://receipt"
+                                    />
 						</cells>
 					</ColumnListItem>
 				</items>
