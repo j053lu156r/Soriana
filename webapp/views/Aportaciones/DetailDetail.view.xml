@@ -125,7 +125,7 @@
                                                     type: 'sap.ui.model.type.Currency',
                                                     formatOptions: {showMeasure: false}
                                                         }"
-                                                unit="MXN" />
+                                                unit="{AportaDetDet>/Moneda}" />
                                         </m:HBox>
                                         <m:HBox>
                                             <m:Label text="{appTxts>/aportaciones.detDetIeps}" class="sapUiSmallMarginEnd"/>
@@ -135,7 +135,7 @@
                                                     type: 'sap.ui.model.type.Currency',
                                                     formatOptions: {showMeasure: false}
                                                         }"
-                                                unit="MXN" />
+                                                unit="{AportaDetDet>/Moneda}" />
                                         </m:HBox>
                                         <m:HBox>
                                             <m:Label text="{appTxts>/aportaciones.detDetIva}" class="sapUiSmallMarginEnd"/>
@@ -145,7 +145,7 @@
                                                     type: 'sap.ui.model.type.Currency',
                                                     formatOptions: {showMeasure: false}
                                                         }"
-                                                unit="MXN" />
+                                                unit="{AportaDetDet>/Moneda}" />
                                         </m:HBox>
                                         <m:HBox>
                                             <m:Label text="{appTxts>/aportaciones.detDetTot}" class="sapUiSmallMarginEnd"/>
@@ -155,7 +155,7 @@
                                                     type: 'sap.ui.model.type.Currency',
                                                     formatOptions: {showMeasure: false}
                                                         }"
-                                                unit="MXN" />
+                                                unit="{AportaDetDet>/Moneda}" />
                                         </m:HBox>
                                     </m:FlexBox>
                                 </m:Panel>
