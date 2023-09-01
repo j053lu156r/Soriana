@@ -710,8 +710,9 @@ function ProveedorSTIBO() {
     params.sModel = "proveedorSTIBO";
     BaseModel.call(this, params);
 }
-
+console.log(BaseModel.prototype)
 ProveedorSTIBO.prototype = Object.create(BaseModel.prototype);
+console.log(ProveedorSTIBO)
 ProveedorSTIBO.prototype.constructor = ProveedorSTIBO;
 
 //Model Dashboard: Reporte Aclaraciones por proveedor

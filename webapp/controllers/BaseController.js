@@ -19,7 +19,7 @@ sap.ui.define([
     "use strict";
     var oUser = new this.UserModel();
     var inboxModel = new this.MyInbox();
-    //var ModelSTIBO = new this.ProveedorSTIBO();
+    var ModelSTIBO = new this.ProveedorSTIBO();
     return Controller.extend("demo.controllers.BaseController", {
         onBeforeRendering: function () {
             var configModel = this.getConfigModel();
@@ -40,7 +40,7 @@ sap.ui.define([
 
             };
             this.setConfigModel();
-            //this.oModelSTIBO = new sap.ui.model.odata.v2.ODataModel(ModelSTIBO.sUrl);
+            this.oModelSTIBO = new sap.ui.model.odata.v2.ODataModel(ModelSTIBO.sUrl);
         },
         onBeforeShow: function () {
             var router = this.getOwnerComponent().getRouter();
@@ -411,7 +411,7 @@ sap.ui.define([
             } else {
                 this.getConfigModel().setProperty("/adendaSimplificada", false);
             }
-            //this.onVerifyProveedorSTIBO(key);
+            this.onVerifyProveedorSTIBO(key);
             this.buildUserTileAuth();
         },
 

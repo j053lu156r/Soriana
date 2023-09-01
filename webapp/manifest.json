@@ -748,7 +748,7 @@
                     "pattern": "masterAportaciones",
                     "target": [
                         "masterAportaciones",
-                        "detailDetailAporta"
+                        "detailAportaciones"
                     ]
                 },
                 {
@@ -764,6 +764,7 @@
                     "name": "detailDetailAporta",
                     "target": [
                         "masterAportaciones",
+                        "detailAportaciones",
                         "detailDetailAporta"
                     ]
                 },
@@ -1336,7 +1337,7 @@
                 "detailDetailAporta": {
                     "viewName": "DetailDetail",
                     "viewPath": "demo.views.Aportaciones",
-                    "controlAggregation": "midColumnPages"
+                    "controlAggregation": "endColumnPages"
                 },
                 "detailAportacionesAccount": {
                     "viewName": "DetailDetailAS",

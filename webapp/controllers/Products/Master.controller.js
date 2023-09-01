@@ -48,6 +48,7 @@ sap.ui.define([
             }, this);
             this.configFilterLanguage(this.getView().byId("filterBar"));
             this.setInitialDates();
+            console.log(this.getOwnerComponent().getModel("configSite").getProperty("/") )
         },
 
         async getGS1ProductData() {
