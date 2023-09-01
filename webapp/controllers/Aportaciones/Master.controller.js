@@ -141,7 +141,8 @@ console.log(line)
 
             docResult.Concepto = docResult.Concepto.replace (/\//g, "_");
             console.log("4")
-            this.getOwnerComponent().getRouter().navTo("detailDetailAporta",
+           // this.getOwnerComponent().getRouter().navTo("detailDetailAporta",
+           this.getOwnerComponent().getRouter().navTo("detailAportaciones",
                 {
                     layout: sap.f.LayoutType.TwoColumnsMidExpanded,
                     folio: docResult.Folio,
