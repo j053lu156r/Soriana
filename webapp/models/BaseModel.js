@@ -4,6 +4,7 @@ const endpointQASSTIBO = "https://soriana-qa.mdm.stibosystems.com";
 const endpointPROSTIBO = "https://soriana-prod.mdm.stibosystems.com";
 const stiboQASModule = " [soriana-qa.mdm.stibosystems.com]"
 const stiboPROModule = "  [soriana-prod.mdm.stibosystems.com]"
+// https://soriana-prod.mdm.stibosystems.com/webui/SupplierUI [soriana-prod.mdm.stibosystems.com]
 
 let hostPro = "socios.soriana.com"
 
@@ -695,7 +696,7 @@ function STIBO() {
     if (host !== hostPro){
         url = endpointQASSTIBO + modulo + stiboQASModule//QAS
     } else {
-        url = endpointPROwebService + modulo + stiboPROModule//PRO
+        url = endpointPROSTIBO + modulo + stiboPROModule//PRO
     }
     var params = {};
     params.sUrl = url;

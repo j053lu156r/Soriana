@@ -33,7 +33,7 @@
                     <Button text="{appTxts>/products.massiveRegister}" type="Emphasized" press="massiveRegisterBatch" visible="{= ${configSite>/stibo}===false }"/>
                     <Button text="{appTxts>/products.newProduct}" type="Emphasized" press="newProduct" visible="{= ${configSite>/stibo}===false }"/>
                     <Button text="{appTxts>/products.changePriceTxt}" type="Emphasized" press="changePriceProduct"/>
-                    <Button text="{appTxts>/products.deleteProductsTxt}" type="Emphasized" press="deleteProducts" visible="{= ${configSite>/stibo}===false }"/>
+                    <Button text="{appTxts>/products.deleteProductsTxt}" type="Emphasized" press="deleteProducts" />
                     <Button text="{appTxts>/products.altaSTIBO}" type="Emphasized" press="altaSTIBO" visible="{configSite>/stibo}"/>
                    
                      <!--
