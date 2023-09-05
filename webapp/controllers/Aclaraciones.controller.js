@@ -539,9 +539,9 @@ onChange:function(){
                 that._oTable = this.getOwnerComponent().getModel('Aclaraciones').getProperty('/Detalles/results');
             }
             //cambios 08-06
-            console.log(this.getOwnerComponent().getModel('Aclaraciones').getProperty('/Detalles/results'))
+            console.log()
 
-            oTable = that._oTable;
+            oTable = this.getOwnerComponent().getModel('Aclaraciones').getProperty('/Detalles/results');
             console.log(oTable);
             //oRowBinding = oTable.getBinding('items');
             //oRowBinding = oTable.getBinding('rows');
