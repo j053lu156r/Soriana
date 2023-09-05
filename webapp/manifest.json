@@ -404,13 +404,13 @@
                     ]
                 },
                 {
-					"pattern": "detailCompl2",
-					"name": "detailCompl2",
-					"target": [
+                    "pattern": "detailCompl2",
+                    "name": "detailCompl2",
+                    "target": [
                         "masterCompl",
-						"detailCompl2"
-					]
-	  		},
+                        "detailCompl2"
+                    ]
+                },
                 {
                     "pattern": "detailComplPagos/{document}/{layout}/{sociedad}/{ejercicio}/{fecha}",
                     "name": "detailComplPagos",
@@ -454,7 +454,7 @@
                         "detailAportacionesComplemento"
                     ]
                 },
-                  {
+                {
                     "pattern": "DetailCrecimiento/{layout}/{document}/{sociedad}",
                     "name": "DetailCrecimiento",
                     "target": [
@@ -463,8 +463,6 @@
                         "DetailCrecimiento"
                     ]
                 },
-
-                
                 {
                     "pattern": "detailAportacionesFactoraje/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{fecha}",
                     "name": "detailAportacionesFactoraje",
@@ -490,7 +488,6 @@
                         "detailAcuerdosECNS"
                     ]
                 },
-
                 {
                     "pattern": "detailDetailECNS/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{tda}",
                     "name": "detailDetailECNS",
@@ -500,7 +497,6 @@
                         "detailDetailECNS"
                     ]
                 },
-             
                 {
                     "pattern": "detailDetailAcuEC/{layout}/{document}/{sociedad}/{ejercicio}/{doc}/{tda}",
                     "name": "detailDetailAcuEC",
@@ -593,7 +589,6 @@
                         "AcuerdosEC"
                     ]
                 },
-               
                 {
                     "pattern": "ComplementoReporteMC/{layout}/{document}/{proveedor}/:serie:/{fecha}",
                     "name": "ComplementoReporteMC",
@@ -748,7 +743,7 @@
                     "pattern": "masterAportaciones",
                     "target": [
                         "masterAportaciones",
-                        "detailAportaciones"
+                        "detailDetailAporta"
                     ]
                 },
                 {
@@ -764,7 +759,6 @@
                     "name": "detailDetailAporta",
                     "target": [
                         "masterAportaciones",
-                        "detailAportaciones",
                         "detailDetailAporta"
                     ]
                 },
@@ -1007,6 +1001,13 @@
                     ]
                 },
                 {
+                    "name": "masterArrendamiento",
+                    "pattern": "masterArrendamiento",
+                    "target": [
+                        "masterArrendamiento"
+                    ]
+                },
+                {
                     "name": "masterPowerBI",
                     "pattern": "masterPowerBI",
                     "target": [
@@ -1128,20 +1129,15 @@
                     "viewPath": "demo.views.Statement"
                 },
                 "AcuerdosEC": {
-                 
                     "viewName": "AcuerdosE",
                     "controlAggregation": "midColumnPages",
                     "viewPath": "demo.views.Statement"
-                  
                 },
                 "Crecimiento": {
-                 
                     "viewName": "Crecimiento",
                     "controlAggregation": "midColumnPages",
                     "viewPath": "demo.views.Statement"
-                  
                 },
-             
                 "ComplementoReporteMC": {
                     "viewType": "XML",
                     "viewName": "DetailReporte",
@@ -1337,7 +1333,7 @@
                 "detailDetailAporta": {
                     "viewName": "DetailDetail",
                     "viewPath": "demo.views.Aportaciones",
-                    "controlAggregation": "endColumnPages"
+                    "controlAggregation": "midColumnPages"
                 },
                 "detailAportacionesAccount": {
                     "viewName": "DetailDetailAS",
@@ -1349,7 +1345,7 @@
                     "viewPath": "demo.views.Aportaciones",
                     "controlAggregation": "endColumnPages"
                 },
-                "DetailCrecimiento":{
+                "DetailCrecimiento": {
                     "viewName": "DetailCrecimiento",
                     "controlAggregation": "endColumnPages",
                     "viewPath": "demo.views.ComplPago"
@@ -1584,6 +1580,12 @@
                     "viewName": "MasterValidaciones",
                     "controlAggregation": "beginColumnPages",
                     "viewPath": "demo.views.ValidacionCondiciones"
+                },
+                "masterArrendamiento": {
+                    "viewType": "XML",
+                    "viewName": "Master",
+                    "controlAggregation": "beginColumnPages",
+                    "viewPath": "demo.views.Arrendamiento"
                 },
                 "masterPowerBI": {
                     "viewType": "XML",
