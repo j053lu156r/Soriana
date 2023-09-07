@@ -208,45 +208,10 @@ console.log(line)
             this.exportxls('AportacionesHdr', '/AportaDet/results', columns);
         },
         onPressAccept: function (oEvent) {
-            /*this.ConfirmApprove = false;
-            this._ConfirmDialog(oEvent);
-            
-            if (!this.ConfirmApprove){ 
-                return; 
-            }*/
-
-            //var texts = this.getOwnerComponent().getModel("appTxts");
             var resource = oEvent.getSource().getBindingContext("AportacionesHdr").getPath(),
                 line = resource.split("/").slice(-1).pop();
 
             this._confirmDialog(line);
-
-            /*var aportaModel = this.getOwnerComponent().getModel("AportacionesHdr");
-            var results = aportaModel.getProperty("/AportaDet/Paginated/results");
-
-            var docResult = results[line];
-
-
-            var url = "AportaSet?$expand=AportaDet&$filter=IOption eq '2'";
-            ;
-
-            url += " and IEstatus eq '4'";
-
-            if (docResult.Folio != "" && docResult.Folio != null) {
-                url += " and IFolio eq '" + docResult.Folio + "'";
-            }
-
-            var dueModel = oModel.getJsonModel(url);
-            var ojbResponse = dueModel.getProperty("/results/0");
-
-            if (ojbResponse.EError == "X") {
-                MessageBox.error(ojbResponse.EDescripEvent);
-            } else {
-                docResult.Zestatus = "4";
-                aportaModel.setProperty("/AportaDet/Paginated/results", results);
-                //MessageBox.success(texts.getProperty("/aportaciones.aprobada"));
-                MessageBox.success(ojbResponse.EDescripEvent);
-            }*/
         },
 
         _confirmDialog: function (line) {
@@ -277,9 +242,6 @@ console.log(line)
             this.oApproveDialog.open();
         },
         _approve: function (line) {
-            //var texts = this.getOwnerComponent().getModel("appTxts");
-            /*var resource = oEvent.getSource().getBindingContext("AportacionesHdr").getPath(),
-                line = resource.split("/").slice(-1).pop();*/
 
             var aportaModel = this.getOwnerComponent().getModel("AportacionesHdr");
             var results = aportaModel.getProperty("/AportaDet/Paginated/results");
@@ -290,9 +252,6 @@ console.log(line)
             if (docResult.Folio != "" && docResult.Folio != null) {
                 url += " and IFolio eq '" + docResult.Folio + "'";
             }
-
-            /*var dueModel = oModel.getJsonModel(url);
-            var ojbResponse = dueModel.getProperty("/results/0");*/
             
             this.getView().byId('tableAportaciones').setBusy(true);
             oModel.getJsonModelAsync(
@@ -307,6 +266,102 @@ console.log(line)
                         } else {
                             docResult.Descest = "Autorizado Proveedor";
                             docResult.Zestatus = "4";
+                            aportaModel.setProperty("/AportaDet/Paginated/results", results);
+                            MessageBox.success(objResponse.EDescripEvent);
+                        }
+                    }
+                },
+                function (parent) {
+                    parent.getView().byId('tableAportaciones').setBusy(false);
+                },
+                this
+            );
+        },
+        onPressReject: function (oEvent) {
+            var resource = oEvent.getSource().getBindingContext("AportacionesHdr").getPath(),
+                line = resource.split("/").slice(-1).pop();
+
+            this._confirmReject(line);
+        },
+        _confirmReject: function (line) {
+            var texts = this.getOwnerComponent().getModel("appTxts");
+            this._line_reject = line;
+
+            if (!this.oRejectDialog) {
+                this.oRejectDialog = new sap.m.Dialog({
+                    type: DialogType.Message,
+                    title: texts.getProperty("/aportaciones.rechazar"),
+                    content: new sap.m.Text({ text: texts.getProperty("/aportaciones.txtRechazar") }),
+                    beginButton: new sap.m.Button({
+                        type: ButtonType.Emphasized,
+                        text: texts.getProperty("/aportaciones.rechazar"),
+                        press: function () {
+                            this.oRejectDialog.close();
+                            this._confirmReject2(this._line_reject);
+                        }.bind(this)
+                    }),
+                    endButton: new sap.m.Button({
+                        text: texts.getProperty("/aportaciones.cancelar"),
+                        press: function () {
+                            this.oRejectDialog.close();
+                        }.bind(this)
+                    })
+                });
+            }
+            this.oRejectDialog.open();
+        },
+        _confirmReject2: function (line) {
+            var texts = this.getOwnerComponent().getModel("appTxts");
+            this._line_reject = line;
+
+            if (!this.oReject2Dialog) {
+                this.oReject2Dialog = new sap.m.Dialog({
+                    type: DialogType.Message,
+                    title: texts.getProperty("/aportaciones.rechazar"),
+                    content: new sap.m.Text({ text: texts.getProperty("/aportaciones.txtRechazarConf") }),
+                    beginButton: new sap.m.Button({
+                        type: ButtonType.Emphasized,
+                        text: texts.getProperty("/aportaciones.aceptar"),
+                        press: function () {
+                            this.oReject2Dialog.close();
+                            this._reject(this._line_reject);
+                        }.bind(this)
+                    }),
+                    endButton: new sap.m.Button({
+                        text: texts.getProperty("/aportaciones.cancelar"),
+                        press: function () {
+                            this.oReject2Dialog.close();
+                        }.bind(this)
+                    })
+                });
+            }
+            this.oReject2Dialog.open();
+        },
+        _reject: function (line) {
+
+            var aportaModel = this.getOwnerComponent().getModel("AportacionesHdr");
+            var results = aportaModel.getProperty("/AportaDet/Paginated/results");
+            var docResult = results[line];
+
+            var url = "AportaSet?$expand=AportaDet&$filter=IOption eq '2' and IEstatus eq '7'";
+
+            if (docResult.Folio != "" && docResult.Folio != null) {
+                url += " and IFolio eq '" + docResult.Folio + "'";
+            }
+            
+            this.getView().byId('tableAportaciones').setBusy(true);
+            oModel.getJsonModelAsync(
+                url,
+                function (jsonModel, parent) {
+                    var objResponse = jsonModel.getProperty("/results/0");
+                    parent.getView().byId('tableAportaciones').setBusy(false);
+
+                    if (objResponse != null) {
+                        if (objResponse.EError == "X") {
+                            MessageBox.error(objResponse.EDescripEvent);
+                        } else {
+                            docResult.Descest = "Cancelado";
+                            docResult.Zestatus = "7";
                             aportaModel.setProperty("/AportaDet/Paginated/results", results);
                             MessageBox.success(objResponse.EDescripEvent);
                         }
