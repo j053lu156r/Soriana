@@ -137,15 +137,14 @@
 					</Column>                
                     <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
 						<header>
-						<Text text="Aprobar" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                    <!--	    <Text text="{appTxts>/aportaciones.accion}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>-->
+						    <Text text="{appTxts>/aportaciones.aprobar}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 						</header>
 						<footer/>
 					</Column>
 
                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
 						<header>
-							<Text text="Cancelar" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+							<Text text="{appTxts>/aportaciones.rechazar}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
 						</header>
 						<footer/>
 					</Column>
@@ -187,14 +186,13 @@
                                     press="onPressAccept"
                                     icon="sap-icon://accept"
                                     enabled="{= ${AportacionesHdr>Zestatus} === '3' ? true : false }"/>
-                           <Button xmlns="sap.m" 
+                            <Button xmlns="sap.m" 
                                     type="Reject" 
-                                    text="Cancelar" 
-                                    press="onPressCancel"
+                                    text="{appTxts>/aportaciones.rechazar}" 
+                                    press="onPressReject"
                                     icon="sap-icon://decline"
                                     enabled="{= ${AportacionesHdr>Zestatus} === '3' ? true : false }"/>
                        <Button xmlns="sap.m" 
-                                  
                                     text="" 
                                     press="onListItemPress"
                                     icon="sap-icon://receipt"
