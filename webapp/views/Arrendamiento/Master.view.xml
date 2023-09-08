@@ -1,0 +1,136 @@
+<mvc:View displayBlock="true"
+    xmlns:f="sap.f"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core" controllerName="demo.controllers.Arrendamiento.Master" height="100%">
+    <f:DynamicPage class="sapUiContentPadding">
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle backgroundDesign="Transparent">
+                <f:heading>
+                    <vm:VariantManagement standardItemText="{appTxts>/Arrendamiento.title}">
+                    </vm:VariantManagement>
+                </f:heading>
+                <f:actions>
+                    <ToolbarSpacer/>
+                  <!--   <Button text="{appTxts>/sendInv.load}" type="Emphasized" press="openUploadDialog" visible="false"/>-->
+                    <Button text="{appTxts>/sendInv.uploadCFDI}" type="Emphasized" press="openUploadDialogAdenda"/>
+                <!--     <Button text="{appTxts>/sendInv.uploadAdenda}" type="Emphasized" press="openUploadDialogAdenda" visible="{configSite>/adendaSimplificada}"/>-->
+                </f:actions>
+            </f:DynamicPageTitle>
+        </f:title>
+        <!-- DynamicPage Header -->
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <fb:FilterBar id="filterBar" header="Header" reset="onReset" search="searchData" clear="onClear" cancel="onCancel" 
+		                filtersDialogClosed = "onFiltersDialogClosed" showRestoreButton="false" showClearButton="false" useToolbar="false">
+
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="{appTxts>/Arrendamiento.Fechas}" mandatory="false" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <DateRangeSelection id="dateRange" required="false"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem groupName="__$INTERNAL$" name="Ab" label="{appTxts>/global.vendor}" mandatory="true" partOfCurrentVariant="true" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="supplierInput" placeholder="{appTxts>/Arrendamiento.supplier}" showSuggestion="true" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" value="{configSite>/supplierInput}">
+                                    </Input>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                           
+
+                        </fb:filterGroupItems>
+
+                    </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
+            <VBox>
+                <Table sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
+                noDataText="{appTxts>/pay.merchandise}" 
+                id="complPagoList" 
+                mode="SingleSelectLeft" 
+                alternateRowColors="true" 
+                items="{path: 'tableItemsCfdi>/EMTDCNAV/Paginated/results', sorter : { path : 'Belnr', descending : true }}" 
+                selectionChange="validateSociety">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <Title text="{appTxts>/sendInv.merchandise} ({tableItemsCfdi>/EMTDCNAV/results/length})" />
+                            <ToolbarSpacer/>
+                            <Select visible="{= ${tableItemsCfdi>/EMTDCNAV/Paginated/results/length} > 0 }" change=".paginateValue(${$parameters>/selectedItem}, 'tableItemsCfdi', '/EMTDCNAV')">
+                                <items>
+                                    <core:Item key="10" text="10"/>
+                                    <core:Item key="20" text="20"/>
+                                    <core:Item key="50" text="50"/>
+                                    <core:Item key="100" text="100"/>
+                                </items>
+                            </Select>
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="{appTxts>/Arrendamiento.CMSUCFOL}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column width="auto" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="{appTxts>/Arrendamiento.FECHA}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="{appTxts>/Arrendamiento.CONCEPTO}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="{appTxts>/Arrendamiento.IMPORTE}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                         <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="{appTxts>/Arrendamiento.ANEXA}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                        <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <header>
+                                <Text text="{appTxts>/Arrendamiento.STATUS}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                            </header>
+                            <footer/>
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem type="Active" press="onListItemPress" >
+                            <cells>
+                                <Text text="{tableItemsCfdi>Doref}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                <Text xmlns="sap.m" text="{tableItemsCfdi>Ebeln}"/>
+                                <Text xmlns="sap.m" text="{tableItemsCfdi>Ebeln}"/>
+                                <Text xmlns="sap.m" text="{tableItemsCfdi>Ebeln}"/>
+                                <Text text="{tableItemsCfdi>Butxt}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                <Text text="{path: 'tableItemsCfdi>Budat', formatter: '.ReverseDate'}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                              
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+                <OverflowToolbar visible="{= ${tableItemsCfdi>/EMTDCNAV/Paginated/results/length} > 0 }">
+                    <Text text="{tableItemsCfdi>/EMTDCNAV/Paginated/initRow} - {tableItemsCfdi>/EMTDCNAV/Paginated/endRow} {appTxts>/pagination.of} {tableItemsCfdi>/EMTDCNAV/results/length}" />
+                    <ToolbarSpacer/>
+                    <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableItemsCfdi>/EMTDCNAV/Paginated/iterator}, ${tableItemsCfdi>/EMTDCNAV/Paginated/initRow}, 'tableItemsCfdi', '/EMTDCNAV')" enabled="{= ${tableItemsCfdi>/EMTDCNAV/Paginated/iterator} !== 1}" />
+                    <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableItemsCfdi>/EMTDCNAV/Paginated/iterator}, ${tableItemsCfdi>/EMTDCNAV/Paginated/endRow}, 'tableItemsCfdi', '/EMTDCNAV')" enabled="{= ${tableItemsCfdi>/EMTDCNAV/Paginated/endRow} !== ${tableItemsCfdi>/EMTDCNAV/results/length}}" />
+                </OverflowToolbar>
+            </VBox>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

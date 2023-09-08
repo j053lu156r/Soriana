@@ -281,6 +281,21 @@
                             "idFunction": 57
                         }
                     ]
+                },
+                {
+                    "id": "0010",
+                    "title": "/tiles.titleFi.0010.Arrendamiento",
+                    "subHeader": "",
+                    "icon": "sap-icon://customer-financial-fact-sheet",
+                    "numeric": " ",
+                    "footer": "",
+                    "type": "standard",
+                    "binding": "masterArrendamiento",
+                    "functions": [
+                        {
+                            "idFunction": 71
+                        }
+                    ]
                 }
             ]
         },
