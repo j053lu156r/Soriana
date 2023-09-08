@@ -57,7 +57,7 @@
             "fullWidth": true
         },
         "dependencies": {
-            "minUI5Version": "1.30",
+            "minUI5Version": "1.102.1",
             "libs": {
                 "sap.f": {},
                 "sap.m": {},
