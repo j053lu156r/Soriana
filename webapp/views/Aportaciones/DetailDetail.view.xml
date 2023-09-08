@@ -103,6 +103,10 @@
                                     <m:FlexBox direction="Column" alignItems="Start">
                                         <m:Label text=""/>
                                         <m:HBox>
+                                            <m:Label text="{appTxts>/aportaciones.detDetUsu}" design="Bold" class="sapUiSmallMarginEnd"/>
+                                            <m:Text text="{AportaDetDet>/UsPortal}"/>
+                                        </m:HBox>
+                                        <m:HBox>
                                             <m:Label text="{appTxts>/aportaciones.detDetFol}" design="Bold" class="sapUiSmallMarginEnd"/>
                                             <m:Text text="{= ${AportaDetDet>/Xblnr}.substr(0,1) === 'P' ? ${AportaDetDet>/Xblnr}.substr(2,10) : '000000' }"/>
                                         </m:HBox>

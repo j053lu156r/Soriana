@@ -246,11 +246,13 @@ console.log(line)
             var aportaModel = this.getOwnerComponent().getModel("AportacionesHdr");
             var results = aportaModel.getProperty("/AportaDet/Paginated/results");
             var docResult = results[line];
+            var eMail = this.getOwnerComponent().getModel("userdata").getProperty("/IMail");
 
             var url = "AportaSet?$expand=AportaDet&$filter=IOption eq '2' and IEstatus eq '4'";
 
             if (docResult.Folio != "" && docResult.Folio != null) {
                 url += " and IFolio eq '" + docResult.Folio + "'";
+                url += " and ICorreo eq '" + eMail + "'";
             }
             
             this.getView().byId('tableAportaciones').setBusy(true);
@@ -342,11 +344,13 @@ console.log(line)
             var aportaModel = this.getOwnerComponent().getModel("AportacionesHdr");
             var results = aportaModel.getProperty("/AportaDet/Paginated/results");
             var docResult = results[line];
+            var eMail = this.getOwnerComponent().getModel("userdata").getProperty("/IMail");
 
             var url = "AportaSet?$expand=AportaDet&$filter=IOption eq '2' and IEstatus eq '7'";
 
             if (docResult.Folio != "" && docResult.Folio != null) {
                 url += " and IFolio eq '" + docResult.Folio + "'";
+                url += " and ICorreo eq '" + eMail + "'";
             }
             
             this.getView().byId('tableAportaciones').setBusy(true);
