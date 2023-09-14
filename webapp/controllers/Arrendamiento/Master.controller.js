@@ -95,9 +95,11 @@ sap.ui.define([
                 this._GetODataV2(_oDataModel, _oDataEntity, aFilter, [] ).then(resp => {
                     var ojbResponse = resp.data.results;
                     for(var x =0;x<ojbResponse.length;x++){
-                       
-                        var fecha=new Date(ojbResponse[x].Budat)
-                        ojbResponse[x].Budat=fecha.toLocaleDateString('ES-MX')
+                        resp.data.results[x].Wrbtr = Math.abs(resp.data.results[x].Wrbtr).toLocaleString("en")
+                        console.log(new Date(ojbResponse[x].Budat))
+                        console.log(ojbResponse[x].Budat.toISOString())
+                        var fecha=ojbResponse[x].Budat.toISOString()
+                        ojbResponse[x].Budat=fecha.split("T")[0]
                     }
                     this.getOwnerComponent().setModel(new JSONModel(ojbResponse), "tableItemsArren");
                     this.paginate('tableItemsArren',  1, 0);
@@ -412,6 +414,7 @@ sap.ui.define([
                     data: body,
                     success: function (response) {
                         console.log(response)
+
                         sap.ui.core.BusyIndicator.hide();
                         that.onCloseDialogUploadAdenda();
                         oFileUploader.clear();
@@ -436,6 +439,9 @@ sap.ui.define([
                 });
             };
             reader.readAsText(file);
+        },
+        truncate: function (num, places) {
+            return Math.trunc(num * Math.pow(10, places)) / Math.pow(10, places);
         },
 
         filtrado: function (evt) {

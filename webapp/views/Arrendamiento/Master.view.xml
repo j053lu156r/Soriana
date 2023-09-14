@@ -115,7 +115,7 @@
                             <cells>
                                 <Text text="{tableItemsArren>Xref3}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
                                 <Text xmlns="sap.m" text="{tableItemsArren>Budat}"/>
-                                <Text xmlns="sap.m" text="{tableItemsArren>Sgtxt}"/>
+                                <Text xmlns="sap.m" text="{tableItemsArren>Sgtxt}" />
                                 <Text xmlns="sap.m" text="{tableItemsArren>Wrbtr}"/>
                                 <Button text="{appTxts>/sendInv.uploadCFDI}" type="Emphasized" press="openUploadDialogAdenda" />
                             	<core:Icon

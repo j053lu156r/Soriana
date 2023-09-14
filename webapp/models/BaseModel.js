@@ -3,7 +3,7 @@ const endpointPROwebService = "https://enviodocumentos.soriana.com";
 const endpointQASSTIBO = "https://soriana-qa.mdm.stibosystems.com";
 const endpointPROSTIBO = "https://soriana-prod.mdm.stibosystems.com";
 const stiboQASModule = " [soriana-qa.mdm.stibosystems.com]"
-const stiboPROModule = "  [soriana-prod.mdm.stibosystems.com]"
+const stiboPROModule = " [soriana-prod.mdm.stibosystems.com]"
 // https://soriana-prod.mdm.stibosystems.com/webui/SupplierUI [soriana-prod.mdm.stibosystems.com]
 
 let hostPro = "socios.soriana.com"
@@ -710,10 +710,12 @@ ReporteExecComp.prototype.constructor = ReporteExecComp;
 function STIBO() {
     const host = window.location.host;
     const modulo = "/webui/SupplierUI"
+    const moduloprd = "/webui/SupplierUI#contextID=Context4&workspaceID=Main&screen=homepage&deepLink=1"
+    
     if (host !== hostPro){
         url = endpointQASSTIBO + modulo + stiboQASModule//QAS
     } else {
-        url = endpointPROSTIBO + modulo + stiboPROModule//PRO
+        url = endpointPROSTIBO + moduloprd + stiboPROModule//PRO
     }
     var params = {};
     params.sUrl = url;
