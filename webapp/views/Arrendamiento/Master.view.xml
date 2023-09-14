@@ -16,7 +16,7 @@
                 <f:actions>
                     <ToolbarSpacer/>
                   <!--   <Button text="{appTxts>/sendInv.load}" type="Emphasized" press="openUploadDialog" visible="false"/>-->
-                    <Button text="{appTxts>/sendInv.uploadCFDI}" type="Emphasized" press="openUploadDialogAdenda"/>
+               
                 <!--     <Button text="{appTxts>/sendInv.uploadAdenda}" type="Emphasized" press="openUploadDialogAdenda" visible="{configSite>/adendaSimplificada}"/>-->
                 </f:actions>
             </f:DynamicPageTitle>
@@ -54,15 +54,15 @@
                 <Table sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" 
                 noDataText="{appTxts>/pay.merchandise}" 
                 id="complPagoList" 
-                mode="SingleSelectLeft" 
+                mode="None" 
                 alternateRowColors="true" 
-                items="{path: 'tableItemsCfdi>/EMTDCNAV/Paginated/results', sorter : { path : 'Belnr', descending : true }}" 
+                items="{path: 'tableItemsArren>/', sorter : { path : 'Xref3', descending : true }}" 
                 selectionChange="validateSociety">
                     <headerToolbar>
                         <OverflowToolbar>
-                            <Title text="{appTxts>/sendInv.merchandise} ({tableItemsCfdi>/EMTDCNAV/results/length})" />
+                            <Title text="{appTxts>/Arrendamiento.FOLIO} ({tableItemsArren>/length})" />
                             <ToolbarSpacer/>
-                            <Select visible="{= ${tableItemsCfdi>/EMTDCNAV/Paginated/results/length} > 0 }" change=".paginateValue(${$parameters>/selectedItem}, 'tableItemsCfdi', '/EMTDCNAV')">
+                            <Select visible="{= ${tableItemsArren>/length} > 0 }" change=".paginateValue(${$parameters>/selectedItem}, 'tableItemsArren', '/EMTDCNAV')">
                                 <items>
                                     <core:Item key="10" text="10"/>
                                     <core:Item key="20" text="20"/>
@@ -113,22 +113,29 @@
                     <items>
                         <ColumnListItem type="Active" press="onListItemPress" >
                             <cells>
-                                <Text text="{tableItemsCfdi>Doref}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                <Text xmlns="sap.m" text="{tableItemsCfdi>Ebeln}"/>
-                                <Text xmlns="sap.m" text="{tableItemsCfdi>Ebeln}"/>
-                                <Text xmlns="sap.m" text="{tableItemsCfdi>Ebeln}"/>
-                                <Text text="{tableItemsCfdi>Butxt}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
-                                <Text text="{path: 'tableItemsCfdi>Budat', formatter: '.ReverseDate'}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                <Text text="{tableItemsArren>Xref3}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"/>
+                                <Text xmlns="sap.m" text="{tableItemsArren>Budat}"/>
+                                <Text xmlns="sap.m" text="{tableItemsArren>Sgtxt}"/>
+                                <Text xmlns="sap.m" text="{tableItemsArren>Wrbtr}"/>
+                                <Button text="{appTxts>/sendInv.uploadCFDI}" type="Emphasized" press="openUploadDialogAdenda" />
+                            	<core:Icon
+			src="sap-icon://sys-enter-2"
+			class="size5"
+			color="#008000"
+            visible="{= ${tableItemsArren>Recibio} === ''  ? false : true }"
+			 />
+			
+                            
                               
                             </cells>
                         </ColumnListItem>
                     </items>
                 </Table>
-                <OverflowToolbar visible="{= ${tableItemsCfdi>/EMTDCNAV/Paginated/results/length} > 0 }">
-                    <Text text="{tableItemsCfdi>/EMTDCNAV/Paginated/initRow} - {tableItemsCfdi>/EMTDCNAV/Paginated/endRow} {appTxts>/pagination.of} {tableItemsCfdi>/EMTDCNAV/results/length}" />
+                <OverflowToolbar visible="{= ${tableItemsArren>/length} > 0 }">
+                    <Text text="{tableItemsArren>/EMTDCNAV/Paginated/initRow} - {tableItemsArren>/EMTDCNAV/Paginated/endRow} {appTxts>/pagination.of} {tableItemsArren>/EMTDCNAV/results/length}" />
                     <ToolbarSpacer/>
-                    <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableItemsCfdi>/EMTDCNAV/Paginated/iterator}, ${tableItemsCfdi>/EMTDCNAV/Paginated/initRow}, 'tableItemsCfdi', '/EMTDCNAV')" enabled="{= ${tableItemsCfdi>/EMTDCNAV/Paginated/iterator} !== 1}" />
-                    <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableItemsCfdi>/EMTDCNAV/Paginated/iterator}, ${tableItemsCfdi>/EMTDCNAV/Paginated/endRow}, 'tableItemsCfdi', '/EMTDCNAV')" enabled="{= ${tableItemsCfdi>/EMTDCNAV/Paginated/endRow} !== ${tableItemsCfdi>/EMTDCNAV/results/length}}" />
+                    <Button type="Default" icon="sap-icon://slim-arrow-left" press=".prevPagination(${tableItemsArren>/EMTDCNAV/Paginated/iterator}, ${tableItemsArren>/EMTDCNAV/Paginated/initRow}, 'tableItemsArren', '/EMTDCNAV')" enabled="{= ${tableItemsArren>/EMTDCNAV/Paginated/iterator} !== 1}" />
+                    <Button type="Default" icon="sap-icon://slim-arrow-right" press=".nextPagination(${tableItemsArren>/EMTDCNAV/Paginated/iterator}, ${tableItemsArren>/EMTDCNAV/Paginated/endRow}, 'tableItemsArren', '/EMTDCNAV')" enabled="{= ${tableItemsArren>/EMTDCNAV/Paginated/endRow} !== ${tableItemsArren>/EMTDCNAV/results/length}}" />
                 </OverflowToolbar>
             </VBox>
         </f:content>
