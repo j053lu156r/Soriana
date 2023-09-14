@@ -44,8 +44,8 @@
                             </u:parameters>
                     </u:FileUploader>
 
-                    <Label text="Folio" />
-                    <Input id="Folio" placeholder="0000000000" editable="true"/>
+                    <Label text="{appTxts>/Arrendamiento.FOLIO}" />
+                    <Input id="Folio" placeholder="0000000000" editable="false"/>
 
                 </f:content>
             </f:SimpleForm>
@@ -66,7 +66,7 @@
                 </List>
             </VBox>
         <buttons>
-            <Button id="btnSaveAdenda" text="{appTxts>/notifications.save}" press="test" class="sapUiSmallMarginBegin"/>
+            <Button id="btnSaveAdenda" text="{appTxts>/notifications.save}" press="adendaArrUploadPress2" class="sapUiSmallMarginBegin"/>
             <Button id="closeDialogAdenda" text="{appTxts>/date.close}" press="onCloseDialogUploadAdenda"/>
         </buttons>
     </Dialog>

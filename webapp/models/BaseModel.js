@@ -269,6 +269,23 @@ function AdendaSimplificada() {
 AdendaSimplificada.prototype = Object.create(BaseModel.prototype);
 AdendaSimplificada.prototype.contructor = AdendaSimplificada;
 
+function ArrendamientoAdendaSimplificada() {
+//https://servicioswebsorianaqa.soriana.com/RecibeCFD/wseDocReciboSimplificadaArrendamiento.asmx?wsdl
+    var host = window.location.host; 
+    if (host !== hostPro){
+        url = endpointQASwebService + "/RecibeCFD/wseDocReciboSimplificadaArrendamiento.asmx" //QAS
+    } else {
+        url = endpointPROwebService + "/RecibeCFD/wseDocReciboSimplificadaArrendamiento.asmx" //PRO
+    }
+    var params = {};
+    params.sUrl = url;
+    params.sModel = "ArrendamientoAdendaSimplificada";
+    BaseModel.call(this, params);
+}
+
+ArrendamientoAdendaSimplificada.prototype = Object.create(BaseModel.prototype);
+ArrendamientoAdendaSimplificada.prototype.contructor = ArrendamientoAdendaSimplificada;
+
 //Plan de pagos
 function PaymentPlan() {
     var params = {};

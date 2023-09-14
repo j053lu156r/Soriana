@@ -18,10 +18,11 @@ sap.ui.define([
     var oModel = new this.EnvioCfdi();
     var cfdiModel = new this.CfdiModel();
     var oValidFiscales = new this.ValidacionesFiscales();
-    var oAdendaSimplificada = new this.AdendaSimplificada();
+    var oAdendaSimplificadaArr = new this.ArrendamientoAdendaSimplificada();
     var fiscalUrl = "";
     var _oDataModel = "ZOSP_CFDI_ARREN_SRV";
-    var _oDataEntity = "EcfdiArrenSet";
+    var _oDataEntity = "EcfdicmsucfolSet";
+    var _oDataEntity2 = "EcfdiArrenSet";
 
     return Controller.extend("demo.controllers.Arrendamiento.Master", {
 
@@ -38,7 +39,7 @@ sap.ui.define([
                     barModel.setProperty("/barVisible", true);
                     this.getView().byId("dateRange").setValue("");
 
-                    this.getOwnerComponent().setModel(new JSONModel(), "tableItemsCfdi");
+                    this.getOwnerComponent().setModel(new JSONModel(), "tableItemsArren");
 
                     this.getConfigModel().setProperty("/updateFormatsSingle", "xml");
                 }
@@ -75,19 +76,31 @@ sap.ui.define([
 
             if (bContinue) {
                 var aFilter = [];
-                aFilter.push(new sap.ui.model.Filter("IOption", sap.ui.model.FilterOperator.EQ, "3"));
-                aFilter.push(new sap.ui.model.Filter("ILifnr", sap.ui.model.FilterOperator.EQ, vLifnr));
+              //  aFilter.push(new sap.ui.model.Filter("IOption", sap.ui.model.FilterOperator.EQ, "3"));
+                aFilter.push(new sap.ui.model.Filter("Lifnr", sap.ui.model.FilterOperator.EQ, vLifnr));
 
 
                 if (startDate != "" && endDate != "") {
-                    aFilter.push(new sap.ui.model.Filter("IStartdate", sap.ui.model.FilterOperator.EQ, startDate));
-                    aFilter.push(new sap.ui.model.Filter("IEnddate", sap.ui.model.FilterOperator.EQ, endDate));
+                   // aFilter.push(new sap.ui.model.Filter("Dateini", sap.ui.model.FilterOperator.GE, "'"+startDate+"'"));
+                   // aFilter.push(new sap.ui.model.Filter("Dateini", sap.ui.model.FilterOperator.LE, "'"+endDate+"'"));
+                    aFilter.push(new sap.ui.model.Filter({
+                        path: "Zbudat",
+                        operator:  sap.ui.model.FilterOperator.BT,
+                        value1:  startDate,
+                        value2: endDate
+                      })
+                    )
                 }
 
-                this._GetODataV2(_oDataModel, _oDataEntity, [], []).then(resp => {
-                    var ojbResponse = resp.data.results[0];
-                    this.getOwnerComponent().setModel(new JSONModel(ojbResponse), "tableItemsCfdi");
-                    this.paginate('tableItemsCfdi', '/EMTDCNAV', 1, 0);
+                this._GetODataV2(_oDataModel, _oDataEntity, aFilter, [] ).then(resp => {
+                    var ojbResponse = resp.data.results;
+                    for(var x =0;x<ojbResponse.length;x++){
+                       
+                        var fecha=new Date(ojbResponse[x].Budat)
+                        ojbResponse[x].Budat=fecha.toLocaleDateString('ES-MX')
+                    }
+                    this.getOwnerComponent().setModel(new JSONModel(ojbResponse), "tableItemsArren");
+                    this.paginate('tableItemsArren',  1, 0);
                     sap.ui.core.BusyIndicator.hide();
                 }).catch(error => {
                     sap.ui.core.BusyIndicator.hide();
@@ -155,7 +168,7 @@ sap.ui.define([
             var docMatList = this.byId("complPagoList").getSelectedItems();
 
             if (docMatList.length > 0) {
-                var docMat = docMatList[0].getBindingContext("tableItemsCfdi").getObject();
+                var docMat = docMatList[0].getBindingContext("tableItemsArren").getObject();
                 objRequest.Docmat = docMat.Mblnr;
                 objRequest.Year = docMat.Gjahr;
             }
@@ -202,18 +215,23 @@ sap.ui.define([
             }
         },
 
-        openUploadDialogAdenda: function () {
+        openUploadDialogAdenda: function (oEvent) {
+            var oSelectedItem = oEvent.getSource().getParent();
+			var idestadoc = oSelectedItem.getBindingContext("tableItemsArren").getProperty("Xref3");
+            console.log(idestadoc)
             var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
             if (!this.hasAccess(3)) {
                 return false;
             }
             if (vLifnr !== undefined && vLifnr !== null) {
-                if (!this._uploadDialog4) {
-                    this._uploadDialog4 = sap.ui.xmlfragment("uploadInvoiceAdenda", "demo.fragments.UploadArrendamiento", this);
-                    this.getView().addDependent(this._uploadDialog4);
+                if (!this._uploadArrDialog4) {
+                    this._uploadArrDialog4 = sap.ui.xmlfragment("uploadInvoiceAdenda", "demo.fragments.UploadArrendamiento", this);
+                    this.getView().addDependent(this._uploadArrDialog4);
                 }
 
-                this._uploadDialog4.open();
+                this._uploadArrDialog4.open();
+                var inptOrder = sap.ui.core.Fragment.byId("uploadInvoiceAdenda", "Folio");
+                inptOrder.setValue(idestadoc)
             } else {
                 sap.m.MessageBox.error(this.getOwnerComponent().getModel("appTxts").getProperty("/clarifications.noSupplier"));
             }
@@ -227,9 +245,9 @@ sap.ui.define([
         },
 
         onCloseDialogUploadAdenda: function () {
-            if (this._uploadDialog4) {
-                this._uploadDialog4.destroy();
-                this._uploadDialog4 = null;
+            if (this._uploadArrDialog4) {
+                this._uploadArrDialog4.destroy();
+                this._uploadArrDialog4 = null;
             }
         },
 
@@ -292,7 +310,7 @@ sap.ui.define([
             };
             reader2.readAsText(file);
         },
-        test: function () {
+      /*  test: function () {
 
             var oModel2 = "/sap/opu/odata/sap/ZOSP_CFDI_ARREN_SRV";
             var that = this;
@@ -323,13 +341,14 @@ sap.ui.define([
                         success: function (oData, oResponse) {
                             console.log(oResponse)
                             sap.ui.core.BusyIndicator.hide();
+                            this.searchData()
                            // fnResolve(oResponse);
                         },
                         error: function (error) {
                             console.log(error)
                             sap.ui.core.BusyIndicator.hide();
-                            MessageBox.error("Error: " + error.responseJSON.error.message, {
-                                icon: MessageBox.Icon.ERROR,
+                            sap.m.MessageBox.error("Error: " + error.responseJSON.error.message, {
+                                icon: sap.m.MessageBox.Icon.ERROR,
                                 title: "Error"
                             });
                           //  fnReject(new Error(error.message));
@@ -339,9 +358,9 @@ sap.ui.define([
             };
             reader.readAsText(file);
 
-        },
+        },*/
 
-        adendaUploadPress2: function () {
+        adendaArrUploadPress2: function () {
             var that = this;
             var vLifnr = this.getConfigModel().getProperty("/supplierInputKey");
             var oFileUploader = sap.ui.core.Fragment.byId("uploadInvoiceAdenda", "fileUploaderAdenda");
@@ -368,16 +387,23 @@ sap.ui.define([
                 var strXML = evn.target.result;
                 console.log(strXML)
 
-                var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' +
+              var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' +
                     'xmlns:tem="http://tempuri.org/"><soapenv:Header/><soapenv:Body><tem:RecibeCFDPortal>' +
                     '<tem:XMLCFD><![CDATA[' + strXML + ']]></tem:XMLCFD>' +
                     '<tem:proveedor>' + vLifnr + '</tem:proveedor>' +
-                    '<tem:FolioPedido>' + order + '</tem:FolioPedido>' +
+                    '<tem:FolioCmsucfol>' + order + '</tem:FolioCmsucfol>' +
                     '</tem:RecibeCFDPortal></soapenv:Body></soapenv:Envelope>';
-                console.log(body)
-                $.ajax({
+               // console.log(body)
+
+               /* var body = {
+                    "Cfdi": strXML,
+                    "Lifnr": vLifnr,
+                    "FolioId": order
+                }*/
+
+               $.ajax({
                     async: true,
-                    url: oAdendaSimplificada.sUrl,
+                    url: oAdendaSimplificadaArr.sUrl,
                     method: "POST",
                     headers: {
                         "Content-Type": "text/xml; charset=utf-8",
@@ -438,10 +464,10 @@ sap.ui.define([
         },
         onListItemPress: function (oEvent) {
             var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(1),
-                productPath = oEvent.getSource().getBindingContext("tableItemsCfdi").getPath(),
+                productPath = oEvent.getSource().getBindingContext("tableItemsArren").getPath(),
                 line = productPath.split("/").slice(-1).pop();
 
-            var odata = this.getOwnerComponent().getModel("tableItemsCfdi");
+            var odata = this.getOwnerComponent().getModel("tableItemsArren");
             var results = odata.getProperty("/EMTDCNAV/Paginated/results");
 
             var document = results[line].Mblnr;
