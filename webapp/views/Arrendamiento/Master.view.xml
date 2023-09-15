@@ -119,10 +119,10 @@
                                 <Text xmlns="sap.m" text="{tableItemsArren>Wrbtr}"/>
                                 <Button text="{appTxts>/sendInv.uploadCFDI}" type="Emphasized" press="openUploadDialogAdenda" />
                             	<core:Icon
-			src="sap-icon://sys-enter-2"
+			src="{tableItemsArren>Icono}"
 			class="size5"
-			color="#008000"
-            visible="{= ${tableItemsArren>Recibio} === ''  ? false : true }"
+			color="{tableItemsArren>color}"
+            visible="{= ${tableItemsArren>Recibio} === '' ? false : true }"
 			 />
 			
                             

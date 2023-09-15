@@ -94,13 +94,27 @@ sap.ui.define([
 
                 this._GetODataV2(_oDataModel, _oDataEntity, aFilter, [] ).then(resp => {
                     var ojbResponse = resp.data.results;
+                  
                     for(var x =0;x<ojbResponse.length;x++){
-                        resp.data.results[x].Wrbtr = Math.abs(resp.data.results[x].Wrbtr).toLocaleString("en")
-                        console.log(new Date(ojbResponse[x].Budat))
-                        console.log(ojbResponse[x].Budat.toISOString())
+                        ojbResponse[x].Wrbtr = Math.abs(ojbResponse[x].Wrbtr).toLocaleString("en")
+                     
+                        if(ojbResponse[x].Recibio !== ""){
+                            if(ojbResponse[x].Recibio == "X"){
+                                ojbResponse[x].Icono ="sap-icon://sys-enter-2";
+                                ojbResponse[x].color ="#008000";
+                            }else{
+                                ojbResponse[x].Icono ="sap-icon://sys-cancel-2";
+                                ojbResponse[x].color ="#FF0000";
+                            }
+                    }
+                  
+                        
+                       
                         var fecha=ojbResponse[x].Budat.toISOString()
                         ojbResponse[x].Budat=fecha.split("T")[0]
                     }
+                    
+                    
                     this.getOwnerComponent().setModel(new JSONModel(ojbResponse), "tableItemsArren");
                     this.paginate('tableItemsArren',  1, 0);
                     sap.ui.core.BusyIndicator.hide();
@@ -413,8 +427,8 @@ sap.ui.define([
                     },
                     data: body,
                     success: function (response) {
-                        console.log(response)
-
+                       
+                        that.searchData()
                         sap.ui.core.BusyIndicator.hide();
                         that.onCloseDialogUploadAdenda();
                         oFileUploader.clear();
