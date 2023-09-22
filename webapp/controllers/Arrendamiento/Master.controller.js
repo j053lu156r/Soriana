@@ -97,6 +97,11 @@ sap.ui.define([
                   
                     for(var x =0;x<ojbResponse.length;x++){
                         ojbResponse[x].Wrbtr = Math.abs(ojbResponse[x].Wrbtr).toLocaleString("en")
+
+                        if(ojbResponse[x].Wrbtr.split(".")[1]=== undefined){
+                            ojbResponse[x].Wrbtr=ojbResponse[x].Wrbtr+".00"
+
+                        }
                      
                         if(ojbResponse[x].Recibio !== ""){
                             if(ojbResponse[x].Recibio == "X"){
@@ -401,7 +406,7 @@ sap.ui.define([
 
             reader.onload = function (evn) {
                 var strXML = evn.target.result;
-                console.log(strXML)
+               // console.log(strXML)
 
               var body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' +
                     'xmlns:tem="http://tempuri.org/"><soapenv:Header/><soapenv:Body><tem:RecibeCFDPortal>' +
@@ -436,10 +441,18 @@ sap.ui.define([
                         oXMLModel.setXML(response.getElementsByTagName("RecibeCFDPortalResult")[0].textContent);
                         var oXml = oXMLModel.getData();
                         var status = oXml.getElementsByTagName("AckErrorApplication")[0].attributes[5].nodeValue;
+                        console.log(oXml.getElementsByTagName("errorDescription")[0].firstChild.errorCode)
                         var strResponse = oXml.getElementsByTagName("errorDescription")[0].firstChild.textContent;
+
                         strResponse = strResponse.replaceAll(";", "\n\n");
                         if (status == "ACCEPTED") {
-                            sap.m.MessageBox.success(strResponse);
+                            if(strResponse.includes("Documento recibido, OK")){
+                                sap.m.MessageBox.success(strResponse);
+
+                            }else{
+                                sap.m.MessageBox.error(strResponse);
+                            }
+                          
                         } else {
                             sap.m.MessageBox.error(strResponse);
                         }
