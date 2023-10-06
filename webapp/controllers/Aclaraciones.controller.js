@@ -345,7 +345,24 @@ onChange:function(){
                 oTemplate.destroy();
                 oTemplate = null;
             }
+            let Rol = this.getOwnerComponent().getModel("userdata").getProperty('/ERol');
+            console.log(Rol)
 
+            if(Rol==="0002" || Rol==="0003" ) {
+                oTemplate = new RowAction({
+                    items: [
+                        new RowActionItem({ icon: "sap-icon://detail-view", text: texts.getProperty("/global.view"), press: (Event) => this.viewClarification(Event) })
+                      //  new RowActionItem({ icon: "sap-icon://edit", text: texts.getProperty("/global.edit"), press: (Event) => this.editClarification(Event) }),
+                    ]
+                });
+            }else{
+                oTemplate = new RowAction({
+                    items: [
+                        new RowActionItem({ icon: "sap-icon://detail-view", text: texts.getProperty("/global.view"), press: (Event) => this.viewClarification(Event) }),
+                        new RowActionItem({ icon: "sap-icon://edit", text: texts.getProperty("/global.edit"), press: (Event) => this.editClarification(Event) }),
+                    ]
+                });
+            }
 
 
             oTemplate = new RowAction({
@@ -378,7 +395,7 @@ onChange:function(){
             if (!this.hasAccess(20)) {
                 return false;
             }
-
+            console.log(this.getOwnerComponent().getModel("userdata"))
             let Rol = this.getOwnerComponent().getModel("userdata").getProperty('/ERol');
             console.log(Rol)
 
@@ -415,9 +432,12 @@ onChange:function(){
                     continuar = false;
                     break;
             }*/
-            if(Estatus==='H'){
+            if(Estatus==='H' ){
                 continuar = false;
 
+            }
+            if(Estatus==='H' && Rol === '0001'){
+                continuar = true;
             }
 
             if (!continuar) {
