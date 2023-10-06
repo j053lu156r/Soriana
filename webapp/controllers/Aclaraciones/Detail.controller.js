@@ -609,7 +609,8 @@ return formateado
                 }
 
                 //Aclaracion.Analista = Datos.results[0].ZtaclaraFd.results[0].Analista;
-                Aclaracion.distributionCenterDescription = Datos.results[0].ZtaclaraFd.results[0].Butxt;
+                //Aclaracion.distributionCenterDescription = Datos.results[0].ZtaclaraFd.results[0].Butxt;
+                Aclaracion.distributionCenterDescription = Datos.results[0].ZtaclaraFo.results[0].Butxt;
 
                 let Documentos = {
                     ZtaclaraDo:{
