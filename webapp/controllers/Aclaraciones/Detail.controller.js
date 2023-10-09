@@ -710,14 +710,15 @@ if (MAcla > Mrecl){
        
         bloquearCampos: function( modo, Estatus ){
             var Model=this.getView().getModel('Aclaracion').getData();
-          
+
+            let Rol = this.getOwnerComponent().getModel("userdata").getProperty('/ERol');
                 let Controles = this.getView().getControlsByFieldGroupId('aclaracion');
 
                 for (let i = 0; i < Controles.length; i++) {
                     const element = Controles[i];
                 
                     if( typeof element.setEditable == 'function' &&  (!(element.sId.includes("clarifiedAmount"))&& Model.descripcionEstatus!== "CONCLUIDA")) 
-                      
+                    
                         element.setEditable( false ).setEnabled( false );
                         
                     else if( typeof element.setEnabled == 'function' && (!(element.sId.includes("clarifiedAmount"))&& Model.descripcionEstatus!== "CONCLUIDA")) 
@@ -734,14 +735,49 @@ if (MAcla > Mrecl){
                 
             }*/
                 
-console.log(modo)
+            console.log(modo)
             if( modo === "edit" ) {
+
                 console.log(Model)
                 Model.Obsgen2=Model.Obsgen
                 //this.getView().byId("analyst").setEnabled(true).setEditable(true);
 
+                var tipAcl=this.getView().getModel("Aclaracion").getData().TipAcla
+                var TAclara=this.getView().getModel("catalogos").getData().Tipos.results;
+                
+                var ArrT=[];
+             
+                    for(var x =0;x<TAclara.length;x++){
+                        if(TAclara[x].TipAcla===tipAcl){
+                            ArrT.push(TAclara[x])
+                        }
+    
+                    } 
+    
+                this.getOwnerComponent().setModel(new JSONModel(ArrT), "TipoAclara");
 
+                if (Rol === '0001') {
 
+                    this.getView().byId("dateCreation").setEnabled(true).setEditable(true)
+                    this.getView().byId("supplierInput").setEnabled(true).setEditable(true)
+                    this.getView().byId("clarificationType").setEnabled(true).setEditable(true)
+                    this.getView().byId("distributionCenter").setEnabled(true).setEditable(true)
+                    this.getView().byId("distributionCenterDescription").setEnabled(true).setEditable(true)
+                    this.getView().byId("status").setEnabled(true).setEditable(true)
+                    this.getView().byId("analyst").setEnabled(true).setEditable(true)
+                    this.getView().byId("sourceDocument").setEnabled(true).setEditable(true)
+                    this.getView().byId("invoice").setEnabled(true).setEditable(true)
+                    this.getView().byId("receipt").setEnabled(true).setEditable(true)
+                    this.getView().byId("reclaimedImport").setEnabled(true).setEditable(true)
+                    this.getView().byId("clarifiedAmount").setEnabled(true).setEditable(true)
+                    this.getView().byId("clarifiedTax").setEnabled(true).setEditable(true)
+                    this.getView().byId("expirationDate").setEnabled(true).setEditable(true)
+                    this.getView().byId("comments").setEnabled(true).setEditable(true)
+                    this.getView().byId("attachmentDocuments").setUploadEnabled( true )
+
+                    this.getView().byId("btnGuardar").setEnabled(true).setVisible(true);
+
+                } else {
 
                 switch (Estatus) {
                     case "B":
@@ -801,8 +837,9 @@ console.log(modo)
                         sap.m.MessageBox.error( this.getOwnerComponent().getModel("appTxts").getProperty('/clarifications.noEditMsg') );
                         this.handleClose();
                         return false;
-                }               
+                    }               
                 
+                }
                 
             }
             else{
