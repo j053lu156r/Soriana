@@ -365,12 +365,12 @@ onChange:function(){
             }
 
 
-            oTemplate = new RowAction({
+            /*oTemplate = new RowAction({
                 items: [
                     new RowActionItem({ icon: "sap-icon://detail-view", text: texts.getProperty("/global.view"), press: (Event) => this.viewClarification(Event) }),
                     new RowActionItem({ icon: "sap-icon://edit", text: texts.getProperty("/global.edit"), press: (Event) => this.editClarification(Event) }),
                 ]
-            });
+            });*/
 
 
             oTable.setRowActionTemplate(oTemplate);
